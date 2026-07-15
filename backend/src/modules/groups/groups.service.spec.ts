@@ -155,8 +155,9 @@ describe('GroupsService.acceptInvite', () => {
       user: { findUnique: jest.fn().mockResolvedValue(user) },
       groupMember: {
         findUnique: jest.fn().mockResolvedValue(null),
+        findUniqueOrThrow: jest.fn().mockResolvedValue({ id: 'membership-1' }),
         create: jest.fn().mockResolvedValue({ id: 'membership-1' }),
-        update: jest.fn().mockResolvedValue({ id: 'membership-1' }),
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
       },
       ...overrides,
     };
@@ -272,16 +273,35 @@ describe('GroupsService.acceptInvite', () => {
       await service.acceptInvite(user.id, 'invite-code');
 
       expect(tx.groupMember.create).not.toHaveBeenCalled();
-      expect(tx.groupMember.update).toHaveBeenCalledWith({
-        where: { id: 'existing-membership' },
+      expect(tx.groupMember.updateMany).toHaveBeenCalledWith({
+        where: { id: 'existing-membership', status },
         data: {
           status: MemberStatus.ACTIVE,
           role: MemberRole.MEMBER,
           joinedAt: expect.any(Date),
         },
       });
+      expect(tx.groupMember.findUniqueOrThrow).toHaveBeenCalledWith({
+        where: { id: 'existing-membership' },
+      });
     },
   );
+
+  it('rolls back with ALREADY_GROUP_MEMBER when inactive membership reactivation loses a race', async () => {
+    const { service, prisma, tx } = setup();
+    tx.groupMember.findUnique.mockResolvedValue({
+      id: 'existing-membership',
+      status: MemberStatus.LEFT,
+    });
+    tx.groupMember.updateMany.mockResolvedValue({ count: 0 });
+
+    await expect(service.acceptInvite(user.id, 'invite-code')).rejects.toEqual(
+      new ConflictException('ALREADY_GROUP_MEMBER'),
+    );
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(tx.groupMember.findUniqueOrThrow).not.toHaveBeenCalled();
+    expect(tx.groupMember.create).not.toHaveBeenCalled();
+  });
 
   it('maps a membership unique race after transaction rollback to ALREADY_GROUP_MEMBER', async () => {
     const error = new Prisma.PrismaClientKnownRequestError('unique conflict', {
@@ -337,7 +357,7 @@ describe('GroupsService.acceptInvite', () => {
       new NotFoundException('INVITE_NOT_FOUND'),
     );
     expect(tx.groupMember.create).not.toHaveBeenCalled();
-    expect(tx.groupMember.update).not.toHaveBeenCalled();
+    expect(tx.groupMember.updateMany).not.toHaveBeenCalled();
   });
 
   it('returns INVITE_ALREADY_USED and does not create membership when consumption loses a race', async () => {

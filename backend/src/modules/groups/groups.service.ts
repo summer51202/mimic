@@ -182,23 +182,35 @@ export class GroupsService {
         throw new ConflictException('INVITE_ALREADY_USED');
       }
 
-      const membership = existingMembership
-        ? await tx.groupMember.update({
-            where: { id: existingMembership.id },
-            data: {
-              status: MemberStatus.ACTIVE,
-              role: MemberRole.MEMBER,
-              joinedAt: acceptedAt,
-            },
-          })
-        : await tx.groupMember.create({
-            data: {
-              groupId: invite.groupId,
-              userId,
-              role: MemberRole.MEMBER,
-              status: MemberStatus.ACTIVE,
-            },
-          });
+      let membership;
+      if (existingMembership) {
+        const reactivated = await tx.groupMember.updateMany({
+          where: {
+            id: existingMembership.id,
+            status: existingMembership.status,
+          },
+          data: {
+            status: MemberStatus.ACTIVE,
+            role: MemberRole.MEMBER,
+            joinedAt: acceptedAt,
+          },
+        });
+        if (reactivated.count !== 1) {
+          throw new ConflictException('ALREADY_GROUP_MEMBER');
+        }
+        membership = await tx.groupMember.findUniqueOrThrow({
+          where: { id: existingMembership.id },
+        });
+      } else {
+        membership = await tx.groupMember.create({
+          data: {
+            groupId: invite.groupId,
+            userId,
+            role: MemberRole.MEMBER,
+            status: MemberStatus.ACTIVE,
+          },
+        });
+      }
 
       return { invite, group: invite.group, membership };
       });
