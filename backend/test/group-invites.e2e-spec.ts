@@ -2,16 +2,19 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
-import { JwtAuthGuard } from '../src/modules/auth/jwt-auth.guard';
-import { GroupInvitesController } from '../src/modules/groups/group-invites.controller';
-import { GroupsController } from '../src/modules/groups/groups.controller';
+import { AppModule } from '../src/app.module';
 import { GroupsService } from '../src/modules/groups/groups.service';
+import { PrismaService } from '../src/modules/prisma/prisma.service';
+
+const TEST_JWT_ACCESS_SECRET =
+  'pairfund-e2e-only-secret-7f58c9a2d10e4b63a91c5f8472de603b';
 
 describe('Group invites', () => {
   let app: INestApplication;
   let jwtService: JwtService;
   let ownerToken: string;
   let memberToken: string;
+  const originalJwtAccessSecret = process.env.JWT_ACCESS_SECRET;
 
   const groupsService = {
     createGroup: jest.fn(),
@@ -22,14 +25,19 @@ describe('Group invites', () => {
   };
 
   beforeAll(async () => {
+    process.env.JWT_ACCESS_SECRET = TEST_JWT_ACCESS_SECRET;
+
     const moduleRef = await Test.createTestingModule({
-      controllers: [GroupsController, GroupInvitesController],
-      providers: [
-        JwtService,
-        JwtAuthGuard,
-        { provide: GroupsService, useValue: groupsService },
-      ],
-    }).compile();
+      imports: [AppModule],
+    })
+      .overrideProvider(GroupsService)
+      .useValue(groupsService)
+      .overrideProvider(PrismaService)
+      .useValue({
+        $connect: jest.fn(),
+        $disconnect: jest.fn(),
+      })
+      .compile();
 
     app = moduleRef.createNestApplication();
     app.setGlobalPrefix('api/v1');
@@ -39,24 +47,32 @@ describe('Group invites', () => {
     await app.init();
 
     jwtService = moduleRef.get(JwtService);
-    const accessSecret =
-      process.env.JWT_ACCESS_SECRET ?? 'pairfund-local-access-secret';
     ownerToken = jwtService.sign(
       { sub: 'owner-1', email: 'owner@example.com' },
-      { secret: accessSecret },
+      { secret: TEST_JWT_ACCESS_SECRET },
     );
     memberToken = jwtService.sign(
       { sub: 'member-1', email: 'member@example.com' },
-      { secret: accessSecret },
+      { secret: TEST_JWT_ACCESS_SECRET },
     );
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   afterAll(async () => {
-    await app.close();
+    try {
+      if (app) {
+        await app.close();
+      }
+    } finally {
+      if (originalJwtAccessSecret === undefined) {
+        delete process.env.JWT_ACCESS_SECRET;
+      } else {
+        process.env.JWT_ACCESS_SECRET = originalJwtAccessSecret;
+      }
+    }
   });
 
   it('creates an invite and maps the exact response', async () => {
