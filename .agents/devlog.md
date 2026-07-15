@@ -53,3 +53,13 @@
 - Added race handling for invite consumption, membership uniqueness, and inactive membership reactivation.
 **Decisions:** Archived groups are rejected as `INVITE_NOT_FOUND`; future group-archive mutation must coordinate row locking or transaction isolation with invite acceptance.
 **Known gaps / follow-ups:** HTTP endpoints, PostgreSQL concurrency integration tests, and mobile integration remain for later tasks.
+## 2026-07-16 — Group invite HTTP endpoints
+
+**Task:** Expose authenticated create-invite and accept-invite HTTP contracts.  
+**Scope:** `backend/src/modules/groups/groups.controller.ts`, `backend/src/modules/groups/group-invites.controller.ts`, `backend/src/modules/groups/groups.module.ts`, `backend/test/group-invites.e2e-spec.ts`  
+**What changed:**
+- Added JWT-protected create and accept invite routes under `/api/v1`.
+- Added stable snake_case response mappings and DTO validation coverage.
+- Added AppModule-based e2e tests covering module wiring, authentication, validation, and service arguments.
+**Decisions:** E2E tests inject and restore a dedicated JWT secret instead of relying on the production fallback.
+**Known gaps / follow-ups:** Production JWT fallback-secret validation remains an existing security backlog; mobile invite integration is next.
