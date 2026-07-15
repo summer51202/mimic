@@ -43,3 +43,13 @@
 - Added secure 72-bit invite codes, seven-day expiry, and focused service/DTO tests.
 **Decisions:** Keep inactive-group and non-owner failures indistinguishable through the same stable error code.
 **Known gaps / follow-ups:** Invite acceptance, HTTP endpoints, code-collision retry, and mobile UI remain for later tasks.
+## 2026-07-15 — Atomic group invite acceptance
+
+**Task:** Implement atomic acceptance of group invites.  
+**Scope:** `backend/src/modules/groups/dto/accept-group-invite.dto.ts`, `backend/src/modules/groups/groups.service.ts`, `backend/src/modules/groups/groups.service.spec.ts`  
+**What changed:**
+- Added invite-code validation and transactional invite acceptance.
+- Added stable domain errors, conditional one-use consumption, and membership creation/reactivation.
+- Added race handling for invite consumption, membership uniqueness, and inactive membership reactivation.
+**Decisions:** Archived groups are rejected as `INVITE_NOT_FOUND`; future group-archive mutation must coordinate row locking or transaction isolation with invite acceptance.
+**Known gaps / follow-ups:** HTTP endpoints, PostgreSQL concurrency integration tests, and mobile integration remain for later tasks.
