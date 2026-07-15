@@ -7,5 +7,5 @@ export class CreateGroupInviteDto {
   @Transform(({ value }) =>
     typeof value === 'string' ? value.trim().toLowerCase() : value,
   )
-  email?: string;
+  invited_email?: string;
 }

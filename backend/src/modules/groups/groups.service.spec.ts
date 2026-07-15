@@ -28,9 +28,13 @@ describe('GroupsService.createInvite', () => {
     const service = new GroupsService(prisma as never);
 
     await expect(
-      service.createInvite('group-1', 'owner-1', {
-        email: 'partner@example.com',
-      }),
+      service.createInvite(
+        'group-1',
+        'owner-1',
+        plainToInstance(CreateGroupInviteDto, {
+          invited_email: ' Partner@Example.com ',
+        }),
+      ),
     ).resolves.toBe(invite);
     expect(prisma.group.findFirst).toHaveBeenCalledWith({
       where: { id: 'group-1', status: GroupStatus.ACTIVE },
@@ -70,7 +74,28 @@ describe('GroupsService.createInvite', () => {
 
     await expect(
       service.createInvite('group-1', 'member-1', {}),
-    ).rejects.toBeInstanceOf(ForbiddenException);
+    ).rejects.toEqual(new ForbiddenException('GROUP_OWNER_REQUIRED'));
+    expect(prisma.groupInvite.create).not.toHaveBeenCalled();
+  });
+
+  it('rejects invite creation when the group is inactive', async () => {
+    const prisma = {
+      group: {
+        findFirst: jest.fn().mockResolvedValue(null),
+      },
+      groupMember: {
+        findFirst: jest.fn(),
+      },
+      groupInvite: {
+        create: jest.fn(),
+      },
+    };
+    const service = new GroupsService(prisma as never);
+
+    await expect(
+      service.createInvite('group-1', 'owner-1', {}),
+    ).rejects.toEqual(new ForbiddenException('GROUP_OWNER_REQUIRED'));
+    expect(prisma.groupMember.findFirst).not.toHaveBeenCalled();
     expect(prisma.groupInvite.create).not.toHaveBeenCalled();
   });
 });
@@ -78,10 +103,18 @@ describe('GroupsService.createInvite', () => {
 describe('CreateGroupInviteDto', () => {
   it('trims and lowercases an optional email', async () => {
     const dto = plainToInstance(CreateGroupInviteDto, {
-      email: '  Partner@Example.COM  ',
+      invited_email: '  Partner@Example.COM  ',
     });
 
     await expect(validate(dto)).resolves.toEqual([]);
-    expect(dto.email).toBe('partner@example.com');
+    expect(dto.invited_email).toBe('partner@example.com');
+  });
+
+  it('rejects an invalid invited email', async () => {
+    const dto = plainToInstance(CreateGroupInviteDto, {
+      invited_email: 'not-an-email',
+    });
+
+    await expect(validate(dto)).resolves.toHaveLength(1);
   });
 });

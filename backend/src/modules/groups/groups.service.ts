@@ -69,7 +69,7 @@ export class GroupsService {
     });
 
     if (!group) {
-      throw new ForbiddenException('Group is not active');
+      throw new ForbiddenException('GROUP_OWNER_REQUIRED');
     }
 
     const ownerMembership = await this.prisma.groupMember.findFirst({
@@ -82,7 +82,7 @@ export class GroupsService {
     });
 
     if (!ownerMembership) {
-      throw new ForbiddenException('Only an active owner can create invites');
+      throw new ForbiddenException('GROUP_OWNER_REQUIRED');
     }
 
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
@@ -92,7 +92,7 @@ export class GroupsService {
         groupId,
         inviteCode: randomBytes(9).toString('base64url'),
         invitedById: actorUserId,
-        invitedEmail: dto.email,
+        invitedEmail: dto.invited_email,
         expiresAt,
       },
     });
