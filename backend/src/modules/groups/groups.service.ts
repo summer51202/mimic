@@ -12,6 +12,7 @@ import {
   InviteStatus,
   MemberRole,
   MemberStatus,
+  Prisma,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -111,16 +112,20 @@ export class GroupsService {
   }
 
   async acceptInvite(userId: string, inviteCode: string) {
-    return this.prisma.$transaction(async (tx) => {
-      const [invite, user] = await Promise.all([
+    try {
+      return await this.prisma.$transaction(async (tx) => {
+        const [invite, user] = await Promise.all([
         tx.groupInvite.findUnique({
           where: { inviteCode },
           include: { group: true },
         }),
-        tx.user.findUnique({ where: { id: userId } }),
+        tx.user.findUnique({
+          where: { id: userId },
+          select: { id: true, email: true },
+        }),
       ]);
 
-      if (!invite || !user) {
+      if (!invite || !user || invite.group.status !== GroupStatus.ACTIVE) {
         throw new NotFoundException('INVITE_NOT_FOUND');
       }
       if (invite.status !== InviteStatus.PENDING) {
@@ -143,7 +148,7 @@ export class GroupsService {
           groupId_userId: { groupId: invite.groupId, userId },
         },
       });
-      if (existingMembership) {
+      if (existingMembership?.status === MemberStatus.ACTIVE) {
         throw new ConflictException('ALREADY_GROUP_MEMBER');
       }
 
@@ -152,6 +157,7 @@ export class GroupsService {
           id: invite.id,
           status: InviteStatus.PENDING,
           expiresAt: { gt: acceptedAt },
+          group: { status: GroupStatus.ACTIVE },
         },
         data: {
           status: InviteStatus.ACCEPTED,
@@ -160,19 +166,60 @@ export class GroupsService {
         },
       });
       if (consumed.count !== 1) {
+        const currentInvite = await tx.groupInvite.findUnique({
+          where: { inviteCode },
+          select: {
+            status: true,
+            group: { select: { status: true } },
+          },
+        });
+        if (
+          !currentInvite ||
+          currentInvite.group.status !== GroupStatus.ACTIVE
+        ) {
+          throw new NotFoundException('INVITE_NOT_FOUND');
+        }
         throw new ConflictException('INVITE_ALREADY_USED');
       }
 
-      const membership = await tx.groupMember.create({
-        data: {
-          groupId: invite.groupId,
-          userId,
-          role: MemberRole.MEMBER,
-          status: MemberStatus.ACTIVE,
-        },
-      });
+      const membership = existingMembership
+        ? await tx.groupMember.update({
+            where: { id: existingMembership.id },
+            data: {
+              status: MemberStatus.ACTIVE,
+              role: MemberRole.MEMBER,
+              joinedAt: acceptedAt,
+            },
+          })
+        : await tx.groupMember.create({
+            data: {
+              groupId: invite.groupId,
+              userId,
+              role: MemberRole.MEMBER,
+              status: MemberStatus.ACTIVE,
+            },
+          });
 
       return { invite, group: invite.group, membership };
-    });
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002' &&
+        isGroupMembershipUniqueTarget(error.meta?.target)
+      ) {
+        throw new ConflictException('ALREADY_GROUP_MEMBER');
+      }
+      throw error;
+    }
   }
+}
+
+function isGroupMembershipUniqueTarget(target: unknown): boolean {
+  const fields = Array.isArray(target) ? target.map(String) : [String(target)];
+  const normalized = fields.join(',').toLowerCase();
+  return (
+    (normalized.includes('group_id') || normalized.includes('groupid')) &&
+    (normalized.includes('user_id') || normalized.includes('userid'))
+  );
 }
