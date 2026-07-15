@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
 import { CreateGroupDto } from './dto/create-group.dto';
+import { CreateGroupInviteDto } from './dto/create-group-invite.dto';
 import { GroupsService } from './groups.service';
 
 @UseGuards(JwtAuthGuard)
@@ -34,6 +35,28 @@ export class GroupsController {
         role: member.role.toLowerCase(),
         status: member.status.toLowerCase(),
       })),
+    };
+  }
+
+  @Post(':groupId/invites')
+  async createInvite(
+    @Param('groupId') groupId: string,
+    @CurrentUser() user: RequestUser,
+    @Body() dto: CreateGroupInviteDto,
+  ) {
+    const invite = await this.groupsService.createInvite(
+      groupId,
+      user.userId,
+      dto,
+    );
+    return {
+      data: {
+        invite_id: invite.id,
+        invite_code: invite.inviteCode,
+        invited_email: invite.invitedEmail,
+        expires_at: invite.expiresAt.toISOString(),
+        status: invite.status.toLowerCase(),
+      },
     };
   }
 
