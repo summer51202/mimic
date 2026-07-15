@@ -1,0 +1,27 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F5F5F5"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#333">9:41</text>
+  <text x="34" y="94" font-family="Arial" font-size="14" fill="#666">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="28" font-weight="700" fill="#111">Activity</text>
+  <rect x="28" y="146" width="334" height="56" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="46" y="180" font-family="Arial" font-size="14" fill="#111">All  Expenses  Contributions  Corrections</text>
+  <rect x="28" y="222" width="334" height="468" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <line x1="44" y1="302" x2="346" y2="302" stroke="#C9C9C9"/>
+  <line x1="44" y1="382" x2="346" y2="382" stroke="#C9C9C9"/>
+  <line x1="44" y1="462" x2="346" y2="462" stroke="#C9C9C9"/>
+  <line x1="44" y1="542" x2="346" y2="542" stroke="#C9C9C9"/>
+  <text x="44" y="258" font-family="Arial" font-size="12" fill="#666">Today</text>
+  <text x="44" y="286" font-family="Arial" font-size="14" fill="#111">Dinner</text>
+  <text x="292" y="286" font-family="Arial" font-size="14" fill="#111">$980</text>
+  <text x="44" y="338" font-family="Arial" font-size="14" fill="#111">April top-up</text>
+  <text x="278" y="338" font-family="Arial" font-size="14" fill="#111">$1,500</text>
+  <text x="44" y="418" font-family="Arial" font-size="12" fill="#666">Settled period</text>
+  <text x="44" y="446" font-family="Arial" font-size="14" fill="#111">Movie night</text>
+  <text x="286" y="446" font-family="Arial" font-size="14" fill="#111">$460</text>
+  <text x="44" y="498" font-family="Arial" font-size="14" fill="#111">Correction: taxi</text>
+  <text x="274" y="498" font-family="Arial" font-size="14" fill="#111">$120</text>
+  <text x="44" y="578" font-family="Arial" font-size="12" fill="#666">Tap settled items to create correction</text>
+  <rect x="28" y="716" width="334" height="58" rx="20" fill="#111"/>
+  <text x="130" y="752" font-family="Arial" font-size="16" font-weight="700" fill="white">Create Correction</text>
+</svg>

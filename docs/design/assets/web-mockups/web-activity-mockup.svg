@@ -1,0 +1,32 @@
+<svg width="1440" height="960" viewBox="0 0 1440 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1440" height="960" fill="#F4ECE4"/>
+  <rect x="24" y="24" width="1392" height="912" rx="28" fill="#F7F1EA"/>
+  <rect x="48" y="48" width="232" height="864" rx="24" fill="#EFE4DB"/>
+  <text x="316" y="94" font-family="Arial" font-size="16" fill="#8A7369">Records</text>
+  <text x="316" y="136" font-family="Arial" font-size="38" font-weight="700" fill="#2F241F">Activity</text>
+  <rect x="316" y="164" width="1068" height="64" rx="20" fill="#FFFFFF"/>
+  <rect x="340" y="180" width="58" height="30" rx="15" fill="#D7795F"/>
+  <rect x="408" y="180" width="88" height="30" rx="15" fill="#F2D7C9"/>
+  <rect x="506" y="180" width="112" height="30" rx="15" fill="#F2D7C9"/>
+  <rect x="628" y="180" width="108" height="30" rx="15" fill="#FBE9DE"/>
+  <text x="359" y="199" font-family="Arial" font-size="12" font-weight="700" fill="white">All</text>
+  <text x="432" y="199" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Expense</text>
+  <text x="528" y="199" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Correction</text>
+  <text x="652" y="199" font-family="Arial" font-size="12" font-weight="700" fill="#8E5B47">Locked</text>
+  <rect x="316" y="252" width="1068" height="616" rx="24" fill="#FFFFFF"/>
+  <text x="344" y="304" font-family="Arial" font-size="14" fill="#8A7369">Date</text>
+  <text x="476" y="304" font-family="Arial" font-size="14" fill="#8A7369">Title</text>
+  <text x="872" y="304" font-family="Arial" font-size="14" fill="#8A7369">Type</text>
+  <text x="1038" y="304" font-family="Arial" font-size="14" fill="#8A7369">Status</text>
+  <text x="1208" y="304" font-family="Arial" font-size="14" fill="#8A7369">Amount</text>
+  <text x="344" y="384" font-family="Arial" font-size="16" fill="#2F241F">2026-04-06</text>
+  <text x="476" y="384" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Dinner</text>
+  <text x="872" y="384" font-family="Arial" font-size="16" fill="#2F241F">Expense</text>
+  <text x="1038" y="384" font-family="Arial" font-size="16" fill="#2F241F">Active</text>
+  <text x="1208" y="384" font-family="Arial" font-size="16" fill="#2F241F">$980</text>
+  <rect x="462" y="430" width="250" height="54" rx="18" fill="#FFF6EF"/>
+  <text x="482" y="462" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">Movie night</text>
+  <text x="872" y="462" font-family="Arial" font-size="16" fill="#2F241F">Expense</text>
+  <text x="1038" y="462" font-family="Arial" font-size="16" fill="#2F241F">Locked</text>
+  <text x="1208" y="462" font-family="Arial" font-size="16" fill="#2F241F">$460</text>
+</svg>

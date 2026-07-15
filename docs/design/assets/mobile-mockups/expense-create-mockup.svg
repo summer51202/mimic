@@ -1,0 +1,41 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F4ECE4"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="#F7F1EA"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#7E6A61">9:41</text>
+  <text x="34" y="94" font-family="Arial" font-size="14" fill="#9A867B">Cancel</text>
+  <text x="34" y="126" font-family="Arial" font-size="30" font-weight="700" fill="#2F241F">New expense</text>
+  <rect x="28" y="146" width="334" height="84" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="176" font-family="Arial" font-size="12" fill="#9A867B">Title</text>
+  <text x="46" y="208" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Dinner after work</text>
+  <rect x="28" y="246" width="160" height="88" rx="24" fill="#FFFFFF"/>
+  <rect x="202" y="246" width="160" height="88" rx="24" fill="#FFFFFF"/>
+  <text x="44" y="278" font-family="Arial" font-size="12" fill="#9A867B">Amount</text>
+  <text x="44" y="314" font-family="Arial" font-size="26" font-weight="700" fill="#2F241F">$980</text>
+  <text x="218" y="278" font-family="Arial" font-size="12" fill="#9A867B">Category</text>
+  <text x="218" y="314" font-family="Arial" font-size="26" font-weight="700" fill="#2F241F">Food</text>
+  <rect x="28" y="350" width="334" height="92" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="382" font-family="Arial" font-size="12" fill="#9A867B">Payer</text>
+  <rect x="46" y="394" width="102" height="30" rx="15" fill="#F2D7C9"/>
+  <text x="78" y="413" font-family="Arial" font-size="13" font-weight="700" fill="#6A4D42">You</text>
+  <text x="285" y="414" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">$980</text>
+  <rect x="28" y="458" width="334" height="118" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="490" font-family="Arial" font-size="12" fill="#9A867B">Split mode</text>
+  <rect x="46" y="504" width="76" height="30" rx="15" fill="#D7795F"/>
+  <rect x="130" y="504" width="76" height="30" rx="15" fill="#F2D7C9"/>
+  <rect x="214" y="504" width="76" height="30" rx="15" fill="#F2D7C9"/>
+  <text x="66" y="523" font-family="Arial" font-size="12" font-weight="700" fill="white">Equal</text>
+  <text x="149" y="523" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Ratio</text>
+  <text x="235" y="523" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Fixed</text>
+  <text x="46" y="554" font-family="Arial" font-size="13" fill="#9A867B">Payer and split participants can be different</text>
+  <rect x="28" y="592" width="334" height="146" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="624" font-family="Arial" font-size="12" fill="#9A867B">Participants</text>
+  <circle cx="58" cy="658" r="10" fill="#D7795F"/>
+  <circle cx="58" cy="700" r="10" fill="#F2D7C9"/>
+  <text x="76" y="663" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">You</text>
+  <text x="298" y="663" font-family="Arial" font-size="14" fill="#2F241F">$490</text>
+  <text x="76" y="687" font-family="Arial" font-size="12" fill="#9A867B">Participates in split</text>
+  <text x="76" y="705" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Partner</text>
+  <text x="298" y="705" font-family="Arial" font-size="14" fill="#2F241F">$490</text>
+  <rect x="28" y="760" width="334" height="56" rx="22" fill="#D7795F"/>
+  <text x="136" y="794" font-family="Arial" font-size="16" font-weight="700" fill="white">Save Expense</text>
+</svg>

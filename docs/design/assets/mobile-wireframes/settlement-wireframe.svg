@@ -1,0 +1,26 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F5F5F5"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#333">9:41</text>
+  <text x="34" y="92" font-family="Arial" font-size="14" fill="#666">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="28" font-weight="700" fill="#111">Settlement</text>
+  <rect x="28" y="144" width="334" height="94" rx="20" fill="#F8F8F8" stroke="#333" stroke-width="1.5"/>
+  <text x="46" y="176" font-family="Arial" font-size="12" fill="#666">Covered period</text>
+  <text x="46" y="206" font-family="Arial" font-size="20" fill="#111">Apr 1 - Apr 30</text>
+  <rect x="28" y="258" width="334" height="120" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="292" font-family="Arial" font-size="12" fill="#666">Suggested transfer</text>
+  <text x="44" y="330" font-family="Arial" font-size="20" font-weight="700" fill="#111">Partner pays you $1,240</text>
+  <text x="44" y="356" font-family="Arial" font-size="13" fill="#666">Based on current fund positions</text>
+  <text x="28" y="416" font-family="Arial" font-size="18" font-weight="700" fill="#111">After completion</text>
+  <rect x="28" y="430" width="334" height="112" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="464" font-family="Arial" font-size="14" fill="#111">This period becomes locked</text>
+  <text x="44" y="492" font-family="Arial" font-size="13" fill="#666">Old records cannot be edited later</text>
+  <text x="44" y="518" font-family="Arial" font-size="13" fill="#666">Use a correction transaction if needed</text>
+  <text x="28" y="580" font-family="Arial" font-size="18" font-weight="700" fill="#111">History</text>
+  <rect x="28" y="594" width="334" height="110" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <line x1="44" y1="645" x2="346" y2="645" stroke="#C9C9C9"/>
+  <text x="44" y="625" font-family="Arial" font-size="14" fill="#111">March settlement completed</text>
+  <text x="44" y="675" font-family="Arial" font-size="14" fill="#111">No pending corrections</text>
+  <rect x="28" y="744" width="334" height="58" rx="20" fill="#111"/>
+  <text x="117" y="780" font-family="Arial" font-size="16" font-weight="700" fill="white">Complete Settlement</text>
+</svg>

@@ -1,0 +1,17 @@
+<svg width="1440" height="960" viewBox="0 0 1440 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1440" height="960" fill="#F5F5F5"/>
+  <rect x="24" y="24" width="1392" height="912" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <rect x="48" y="48" width="232" height="864" rx="24" fill="#FAFAFA" stroke="#333"/>
+  <text x="316" y="94" font-family="Arial" font-size="16" fill="#666">Fund settlement</text>
+  <text x="316" y="136" font-family="Arial" font-size="36" font-weight="700" fill="#111">April settlement</text>
+  <rect x="316" y="164" width="520" height="184" rx="24" fill="#FAFAFA" stroke="#333"/>
+  <rect x="856" y="164" width="528" height="184" rx="24" fill="#FAFAFA" stroke="#333"/>
+  <text x="344" y="208" font-family="Arial" font-size="22" font-weight="700" fill="#111">Current suggestion</text>
+  <text x="884" y="208" font-family="Arial" font-size="22" font-weight="700" fill="#111">Lock effect</text>
+  <rect x="316" y="372" width="1068" height="496" rx="24" fill="#FAFAFA" stroke="#333"/>
+  <text x="344" y="414" font-family="Arial" font-size="22" font-weight="700" fill="#111">Settlement history</text>
+  <line x1="344" y1="494" x2="1356" y2="494" stroke="#C9C9C9"/>
+  <line x1="344" y1="574" x2="1356" y2="574" stroke="#C9C9C9"/>
+  <text x="344" y="462" font-family="Arial" font-size="16" fill="#111">March settlement completed</text>
+  <text x="344" y="542" font-family="Arial" font-size="16" fill="#111">February settlement completed</text>
+</svg>

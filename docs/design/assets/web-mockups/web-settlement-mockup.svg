@@ -1,0 +1,27 @@
+﻿<svg width="1440" height="960" viewBox="0 0 1440 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="settleweb" x1="316" y1="164" x2="836" y2="348" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F6E4C8"/>
+      <stop offset="1" stop-color="#EBCB9B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="960" fill="#F4ECE4"/>
+  <rect x="24" y="24" width="1392" height="912" rx="28" fill="#F7F1EA"/>
+  <rect x="48" y="48" width="232" height="864" rx="24" fill="#EFE4DB"/>
+  <text x="316" y="94" font-family="Arial" font-size="16" fill="#8A7369">Fund settlement</text>
+  <text x="316" y="136" font-family="Arial" font-size="38" font-weight="700" fill="#2F241F">April settlement</text>
+  <rect x="316" y="164" width="520" height="184" rx="24" fill="url(#settleweb)"/>
+  <rect x="856" y="164" width="528" height="184" rx="24" fill="#FFFFFF"/>
+  <text x="344" y="208" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Current suggestion</text>
+  <text x="344" y="274" font-family="Arial" font-size="20" fill="#2F241F">Partner pays you</text>
+  <text x="344" y="318" font-family="Arial" font-size="42" font-weight="700" fill="#D7795F">$1,240</text>
+  <text x="884" y="208" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Lock effect</text>
+  <text x="884" y="260" font-family="Arial" font-size="15" fill="#2F241F">This period becomes locked after completion.</text>
+  <text x="884" y="292" font-family="Arial" font-size="13" fill="#8A7369">Use correction records if something was missed.</text>
+  <rect x="316" y="372" width="1068" height="496" rx="24" fill="#FFFFFF"/>
+  <text x="344" y="414" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Settlement history</text>
+  <text x="344" y="474" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">March settlement completed</text>
+  <text x="344" y="502" font-family="Arial" font-size="12" fill="#8A7369">Trip fund - locked period created</text>
+  <text x="344" y="554" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">February settlement completed</text>
+  <text x="344" y="582" font-family="Arial" font-size="12" fill="#8A7369">No pending corrections</text>
+</svg>

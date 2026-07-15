@@ -1,0 +1,27 @@
+﻿<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F4ECE4"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="#F7F1EA"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#7E6A61">9:41</text>
+  <text x="34" y="92" font-family="Arial" font-size="14" fill="#9A867B">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="30" font-weight="700" fill="#2F241F">Correction</text>
+  <rect x="28" y="146" width="334" height="112" rx="24" fill="#FFF6EF"/>
+  <rect x="46" y="164" width="98" height="26" rx="13" fill="#F6E4C8"/>
+  <text x="73" y="181" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Settled record</text>
+  <text x="46" y="216" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">Original record stays unchanged</text>
+  <text x="46" y="238" font-family="Arial" font-size="12" fill="#8A7369">Movie night - Mar 28 - settled period</text>
+  <rect x="28" y="276" width="334" height="86" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="308" font-family="Arial" font-size="12" fill="#9A867B">Title</text>
+  <text x="46" y="340" font-family="Arial" font-size="20" font-weight="700" fill="#2F241F">Correction: taxi missed</text>
+  <rect x="28" y="378" width="160" height="88" rx="24" fill="#FFFFFF"/>
+  <rect x="202" y="378" width="160" height="88" rx="24" fill="#FFFFFF"/>
+  <text x="44" y="410" font-family="Arial" font-size="12" fill="#9A867B">Amount</text>
+  <text x="44" y="444" font-family="Arial" font-size="24" font-weight="700" fill="#2F241F">$120</text>
+  <text x="218" y="410" font-family="Arial" font-size="12" fill="#9A867B">Category</text>
+  <text x="218" y="444" font-family="Arial" font-size="24" font-weight="700" fill="#2F241F">Transport</text>
+  <rect x="28" y="482" width="334" height="158" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="514" font-family="Arial" font-size="12" fill="#9A867B">Why is this needed?</text>
+  <text x="46" y="548" font-family="Arial" font-size="14" fill="#2F241F">Paid after movie. This cost was missed before the March settlement.</text>
+  <text x="46" y="592" font-family="Arial" font-size="12" fill="#8A7369">This adds a new correction record instead of editing history.</text>
+  <rect x="28" y="744" width="334" height="56" rx="22" fill="#D7795F"/>
+  <text x="120" y="778" font-family="Arial" font-size="16" font-weight="700" fill="white">Save Correction</text>
+</svg>

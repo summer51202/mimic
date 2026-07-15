@@ -1,0 +1,35 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="settlehero" x1="28" y1="144" x2="362" y2="238" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F6E4C8"/>
+      <stop offset="1" stop-color="#EBCB9B"/>
+    </linearGradient>
+  </defs>
+  <rect width="390" height="844" rx="32" fill="#F4ECE4"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="#F7F1EA"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#7E6A61">9:41</text>
+  <text x="34" y="92" font-family="Arial" font-size="14" fill="#9A867B">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="30" font-weight="700" fill="#2F241F">Settlement</text>
+  <rect x="28" y="144" width="334" height="96" rx="26" fill="url(#settlehero)"/>
+  <text x="46" y="178" font-family="Arial" font-size="12" fill="#7A6648">Covered period</text>
+  <text x="46" y="214" font-family="Arial" font-size="24" font-weight="700" fill="#2F241F">Apr 1 - Apr 30</text>
+  <rect x="28" y="260" width="334" height="132" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="294" font-family="Arial" font-size="12" fill="#9A867B">Suggested transfer</text>
+  <text x="46" y="334" font-family="Arial" font-size="24" font-weight="700" fill="#2F241F">Partner pays you</text>
+  <text x="46" y="368" font-family="Arial" font-size="32" font-weight="700" fill="#D7795F">$1,240</text>
+  <rect x="28" y="412" width="334" height="138" rx="24" fill="#FFFFFF"/>
+  <rect x="46" y="432" width="94" height="26" rx="13" fill="#F6E4C8"/>
+  <text x="71" y="449" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Important</text>
+  <text x="46" y="486" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">This period becomes locked after completion</text>
+  <text x="46" y="514" font-family="Arial" font-size="13" fill="#8A7369">Old records stay unchanged.</text>
+  <text x="46" y="536" font-family="Arial" font-size="13" fill="#8A7369">Use a correction record if something was missed.</text>
+  <rect x="28" y="576" width="334" height="154" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="610" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">History</text>
+  <circle cx="58" cy="650" r="10" fill="#DCEAD9"/>
+  <circle cx="58" cy="698" r="10" fill="#F2D7C9"/>
+  <text x="76" y="655" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">March settlement completed</text>
+  <text x="76" y="679" font-family="Arial" font-size="12" fill="#9A867B">Trip fund • locked period created</text>
+  <text x="76" y="703" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">No pending corrections</text>
+  <rect x="28" y="760" width="334" height="56" rx="22" fill="#2F241F"/>
+  <text x="118" y="794" font-family="Arial" font-size="16" font-weight="700" fill="white">Complete Settlement</text>
+</svg>

@@ -1,0 +1,24 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F5F5F5"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#333">9:41</text>
+  <text x="34" y="94" font-family="Arial" font-size="14" fill="#666">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="28" font-weight="700" fill="#111">Correction</text>
+  <rect x="28" y="146" width="334" height="100" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="46" y="180" font-family="Arial" font-size="14" fill="#111">Original record stays unchanged</text>
+  <text x="46" y="208" font-family="Arial" font-size="13" fill="#666">Movie night • Mar 28 • settled period</text>
+  <rect x="28" y="266" width="334" height="80" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="296" font-family="Arial" font-size="12" fill="#666">Title</text>
+  <text x="44" y="326" font-family="Arial" font-size="20" fill="#111">Correction: taxi missed</text>
+  <rect x="28" y="362" width="160" height="80" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <rect x="202" y="362" width="160" height="80" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="392" font-family="Arial" font-size="12" fill="#666">Amount</text>
+  <text x="44" y="422" font-family="Arial" font-size="22" fill="#111">$120</text>
+  <text x="218" y="392" font-family="Arial" font-size="12" fill="#666">Category</text>
+  <text x="218" y="422" font-family="Arial" font-size="22" fill="#111">Transport</text>
+  <rect x="28" y="458" width="334" height="136" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="490" font-family="Arial" font-size="12" fill="#666">Note</text>
+  <text x="44" y="522" font-family="Arial" font-size="14" fill="#111">Paid after movie. This was missed before settlement.</text>
+  <rect x="28" y="716" width="334" height="58" rx="20" fill="#111"/>
+  <text x="120" y="752" font-family="Arial" font-size="16" font-weight="700" fill="white">Save Correction</text>
+</svg>

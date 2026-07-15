@@ -1,0 +1,21 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F5F5F5"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#333">9:41</text>
+  <text x="34" y="94" font-family="Arial" font-size="14" fill="#666">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="28" font-weight="700" fill="#111">Tasks</text>
+  <rect x="28" y="146" width="334" height="92" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="46" y="180" font-family="Arial" font-size="12" fill="#666">Pending items</text>
+  <text x="46" y="220" font-family="Arial" font-size="28" font-weight="700" fill="#111">3 to take care of</text>
+  <rect x="28" y="258" width="334" height="384" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <line x1="44" y1="354" x2="346" y2="354" stroke="#C9C9C9"/>
+  <line x1="44" y1="450" x2="346" y2="450" stroke="#C9C9C9"/>
+  <text x="44" y="294" font-family="Arial" font-size="14" fill="#111">Recurring top-up reminder</text>
+  <text x="44" y="320" font-family="Arial" font-size="13" fill="#666">Date fund • due today</text>
+  <text x="44" y="390" font-family="Arial" font-size="14" fill="#111">Settlement waiting for completion</text>
+  <text x="44" y="416" font-family="Arial" font-size="13" fill="#666">Trip fund • Apr 1 - Apr 30</text>
+  <text x="44" y="486" font-family="Arial" font-size="14" fill="#111">Correction needs review</text>
+  <text x="44" y="512" font-family="Arial" font-size="13" fill="#666">Movie night • settled period</text>
+  <rect x="28" y="664" width="334" height="58" rx="20" fill="#111"/>
+  <text x="136" y="700" font-family="Arial" font-size="16" font-weight="700" fill="white">Open First Task</text>
+</svg>

@@ -1,0 +1,34 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F5F5F5"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#333">9:41</text>
+  <text x="34" y="92" font-family="Arial" font-size="14" fill="#666">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="30" font-weight="700" fill="#111">Date fund</text>
+  <rect x="28" y="144" width="334" height="132" rx="20" fill="#F8F8F8" stroke="#333" stroke-width="1.5"/>
+  <text x="46" y="178" font-family="Arial" font-size="12" fill="#666">Current balance</text>
+  <text x="46" y="220" font-family="Arial" font-size="36" font-weight="700" fill="#111">$6,400</text>
+  <text x="46" y="252" font-family="Arial" font-size="14" fill="#666">2 members</text>
+  <text x="28" y="314" font-family="Arial" font-size="18" font-weight="700" fill="#111">Member positions</text>
+  <rect x="28" y="328" width="334" height="102" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <line x1="44" y1="379" x2="346" y2="379" stroke="#C9C9C9"/>
+  <text x="44" y="360" font-family="Arial" font-size="14" fill="#111">You</text>
+  <text x="291" y="360" font-family="Arial" font-size="14" fill="#111">+$1,240</text>
+  <text x="44" y="410" font-family="Arial" font-size="14" fill="#111">Partner</text>
+  <text x="297" y="410" font-family="Arial" font-size="14" fill="#111">-$1,240</text>
+  <text x="28" y="468" font-family="Arial" font-size="18" font-weight="700" fill="#111">This month</text>
+  <rect x="28" y="482" width="160" height="98" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <rect x="202" y="482" width="160" height="98" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="516" font-family="Arial" font-size="12" fill="#666">Expenses</text>
+  <text x="44" y="551" font-family="Arial" font-size="24" font-weight="700" fill="#111">$2,840</text>
+  <text x="218" y="516" font-family="Arial" font-size="12" fill="#666">Contributions</text>
+  <text x="218" y="551" font-family="Arial" font-size="24" font-weight="700" fill="#111">$3,500</text>
+  <text x="28" y="618" font-family="Arial" font-size="18" font-weight="700" fill="#111">Timeline</text>
+  <rect x="28" y="632" width="334" height="112" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <line x1="44" y1="681" x2="346" y2="681" stroke="#C9C9C9"/>
+  <text x="44" y="663" font-family="Arial" font-size="14" fill="#111">Dinner with split</text>
+  <text x="298" y="663" font-family="Arial" font-size="14" fill="#111">$980</text>
+  <text x="44" y="713" font-family="Arial" font-size="14" fill="#111">April top-up</text>
+  <text x="292" y="713" font-family="Arial" font-size="14" fill="#111">$1,500</text>
+  <rect x="28" y="764" width="334" height="58" rx="20" fill="#111"/>
+  <text x="140" y="800" font-family="Arial" font-size="16" font-weight="700" fill="white">Add Record</text>
+</svg>

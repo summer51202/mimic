@@ -1,0 +1,21 @@
+﻿<svg width="1440" height="960" viewBox="0 0 1440 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1440" height="960" fill="#F4ECE4"/>
+  <rect x="24" y="24" width="1392" height="912" rx="28" fill="#F7F1EA"/>
+  <rect x="48" y="48" width="232" height="864" rx="24" fill="#EFE4DB"/>
+  <text x="316" y="94" font-family="Arial" font-size="16" fill="#8A7369">Preferences</text>
+  <text x="316" y="136" font-family="Arial" font-size="38" font-weight="700" fill="#2F241F">Settings</text>
+  <rect x="316" y="164" width="520" height="180" rx="24" fill="#FFFFFF"/>
+  <rect x="856" y="164" width="528" height="180" rx="24" fill="#FFFFFF"/>
+  <circle cx="372" cy="234" r="32" fill="#F2D7C9"/>
+  <circle cx="386" cy="220" r="10" fill="#E8BDAA"/>
+  <text x="424" y="224" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">Edward Lee</text>
+  <text x="424" y="254" font-family="Arial" font-size="13" fill="#8A7369">zh-TW - Asia/Taipei</text>
+  <rect x="316" y="368" width="1068" height="500" rx="24" fill="#FFFFFF"/>
+  <text x="344" y="424" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Account</text>
+  <text x="344" y="452" font-family="Arial" font-size="12" fill="#8A7369">Profile, password, and identity</text>
+  <text x="344" y="504" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Group &amp; fund settings</text>
+  <text x="344" y="532" font-family="Arial" font-size="12" fill="#8A7369">Manage shared spaces and funds</text>
+  <text x="344" y="584" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Notifications</text>
+  <text x="344" y="612" font-family="Arial" font-size="12" fill="#8A7369">Top-up reminders and account updates</text>
+  <text x="344" y="664" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Help</text>
+</svg>

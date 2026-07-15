@@ -1,0 +1,58 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hero" x1="28" y1="146" x2="362" y2="262" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EDC3AF"/>
+      <stop offset="1" stop-color="#D7795F"/>
+    </linearGradient>
+    <filter id="shadow" x="20" y="138" width="350" height="132" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#CFAE9F" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect width="390" height="844" rx="32" fill="#F4ECE4"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="#F7F1EA"/>
+  <circle cx="330" cy="86" r="30" fill="#F0DED3"/>
+  <circle cx="348" cy="72" r="10" fill="#E9C7B6"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#7E6A61">9:41</text>
+  <text x="34" y="92" font-family="Arial" font-size="14" fill="#9A867B">Good evening</text>
+  <text x="34" y="126" font-family="Arial" font-size="31" font-weight="700" fill="#2F241F">Our shared funds</text>
+  <g filter="url(#shadow)">
+    <rect x="28" y="146" width="334" height="116" rx="26" fill="url(#hero)"/>
+  </g>
+  <text x="46" y="180" font-family="Arial" font-size="12" fill="#FFF2EC">Total balance</text>
+  <text x="46" y="224" font-family="Arial" font-size="38" font-weight="700" fill="white">$18,420</text>
+  <text x="46" y="250" font-family="Arial" font-size="14" fill="#FFF1E8">2 active funds • updated today</text>
+  <rect x="28" y="282" width="160" height="136" rx="24" fill="#FFFFFF"/>
+  <rect x="202" y="282" width="160" height="136" rx="24" fill="#FFFFFF"/>
+  <circle cx="54" cy="316" r="11" fill="#F2D7C9"/>
+  <circle cx="228" cy="316" r="11" fill="#DCEAD9"/>
+  <text x="72" y="322" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">Date fund</text>
+  <text x="44" y="352" font-family="Arial" font-size="12" fill="#9A867B">This month</text>
+  <text x="44" y="392" font-family="Arial" font-size="28" font-weight="700" fill="#2F241F">$6,400</text>
+  <text x="246" y="322" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">Trip fund</text>
+  <text x="218" y="352" font-family="Arial" font-size="12" fill="#9A867B">Summer plan</text>
+  <text x="218" y="392" font-family="Arial" font-size="28" font-weight="700" fill="#2F241F">$12,020</text>
+  <text x="28" y="446" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">Quick actions</text>
+  <rect x="28" y="460" width="334" height="82" rx="24" fill="#FFFFFF"/>
+  <rect x="44" y="480" width="92" height="42" rx="16" fill="#D7795F"/>
+  <rect x="148" y="480" width="102" height="42" rx="16" fill="#F2D7C9"/>
+  <rect x="262" y="480" width="84" height="42" rx="16" fill="#F6E4C8"/>
+  <text x="60" y="506" font-family="Arial" font-size="14" font-weight="700" fill="white">Expense</text>
+  <text x="166" y="506" font-family="Arial" font-size="14" font-weight="700" fill="#6A4D42">Top-up</text>
+  <text x="284" y="506" font-family="Arial" font-size="14" font-weight="700" fill="#6A4D42">Settle</text>
+  <text x="28" y="572" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">Recent activity</text>
+  <rect x="28" y="586" width="334" height="154" rx="24" fill="#FFFFFF"/>
+  <circle cx="54" cy="626" r="10" fill="#F2D7C9"/>
+  <circle cx="54" cy="674" r="10" fill="#DCEAD9"/>
+  <circle cx="54" cy="722" r="10" fill="#F6E4C8"/>
+  <text x="74" y="631" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Dinner</text>
+  <text x="297" y="631" font-family="Arial" font-size="14" fill="#2F241F">$980</text>
+  <text x="74" y="657" font-family="Arial" font-size="12" fill="#9A867B">Date fund • split equally</text>
+  <text x="74" y="679" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">April top-up</text>
+  <text x="286" y="679" font-family="Arial" font-size="14" fill="#2F241F">$3,000</text>
+  <text x="74" y="705" font-family="Arial" font-size="12" fill="#9A867B">Date fund • you contributed</text>
+  <text x="74" y="727" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Movie night</text>
+  <text x="291" y="727" font-family="Arial" font-size="14" fill="#2F241F">$460</text>
+  <text x="74" y="753" font-family="Arial" font-size="12" fill="#9A867B">Trip fund • settled period</text>
+  <rect x="28" y="760" width="334" height="56" rx="22" fill="#2F241F"/>
+  <text x="145" y="794" font-family="Arial" font-size="16" font-weight="700" fill="white">Add Expense</text>
+</svg>

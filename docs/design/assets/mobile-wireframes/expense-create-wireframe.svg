@@ -1,0 +1,34 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F5F5F5"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#333">9:41</text>
+  <text x="34" y="94" font-family="Arial" font-size="14" fill="#666">Cancel</text>
+  <text x="34" y="126" font-family="Arial" font-size="28" font-weight="700" fill="#111">New expense</text>
+  <rect x="28" y="146" width="334" height="80" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="176" font-family="Arial" font-size="12" fill="#666">Title</text>
+  <text x="44" y="206" font-family="Arial" font-size="20" fill="#111">Dinner</text>
+  <rect x="28" y="242" width="160" height="80" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <rect x="202" y="242" width="160" height="80" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="272" font-family="Arial" font-size="12" fill="#666">Amount</text>
+  <text x="44" y="302" font-family="Arial" font-size="22" fill="#111">$980</text>
+  <text x="218" y="272" font-family="Arial" font-size="12" fill="#666">Category</text>
+  <text x="218" y="302" font-family="Arial" font-size="22" fill="#111">Food</text>
+  <rect x="28" y="338" width="334" height="84" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="370" font-family="Arial" font-size="12" fill="#666">Payer</text>
+  <text x="44" y="400" font-family="Arial" font-size="20" fill="#111">You paid $980</text>
+  <rect x="28" y="438" width="334" height="104" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="44" y="470" font-family="Arial" font-size="12" fill="#666">Split mode</text>
+  <text x="44" y="500" font-family="Arial" font-size="20" fill="#111">Equal</text>
+  <text x="44" y="524" font-family="Arial" font-size="13" fill="#666">Payer and split participants are separate</text>
+  <rect x="28" y="558" width="334" height="146" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <line x1="44" y1="609" x2="346" y2="609" stroke="#C9C9C9"/>
+  <line x1="44" y1="657" x2="346" y2="657" stroke="#C9C9C9"/>
+  <text x="44" y="590" font-family="Arial" font-size="14" fill="#111">You</text>
+  <text x="297" y="590" font-family="Arial" font-size="14" fill="#111">$490</text>
+  <text x="44" y="638" font-family="Arial" font-size="14" fill="#111">Partner</text>
+  <text x="297" y="638" font-family="Arial" font-size="14" fill="#111">$490</text>
+  <text x="44" y="686" font-family="Arial" font-size="14" fill="#111">Date</text>
+  <text x="253" y="686" font-family="Arial" font-size="14" fill="#111">2026-04-06</text>
+  <rect x="28" y="744" width="334" height="58" rx="20" fill="#111"/>
+  <text x="135" y="780" font-family="Arial" font-size="16" font-weight="700" fill="white">Save Expense</text>
+</svg>

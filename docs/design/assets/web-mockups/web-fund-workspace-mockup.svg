@@ -1,0 +1,43 @@
+﻿<svg width="1440" height="960" viewBox="0 0 1440 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fundworkspace" x1="316" y1="164" x2="1076" y2="324" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F1D8C8"/>
+      <stop offset="1" stop-color="#E4A98E"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="960" fill="#F4ECE4"/>
+  <rect x="24" y="24" width="1392" height="912" rx="28" fill="#F7F1EA"/>
+  <rect x="48" y="48" width="232" height="864" rx="24" fill="#EFE4DB"/>
+  <text x="76" y="92" font-family="Arial" font-size="28" font-weight="700" fill="#2F241F">PairFund</text>
+  <text x="316" y="94" font-family="Arial" font-size="16" fill="#8A7369">Fund workspace</text>
+  <text x="316" y="136" font-family="Arial" font-size="38" font-weight="700" fill="#2F241F">Date fund</text>
+  <rect x="316" y="164" width="760" height="160" rx="28" fill="url(#fundworkspace)"/>
+  <text x="348" y="208" font-family="Arial" font-size="13" fill="#7A5648">Current balance</text>
+  <text x="348" y="276" font-family="Arial" font-size="50" font-weight="700" fill="#2F241F">$6,400</text>
+  <text x="348" y="302" font-family="Arial" font-size="14" fill="#7A5648">Everyday shared spending</text>
+  <rect x="316" y="348" width="370" height="184" rx="24" fill="#FFFFFF"/>
+  <rect x="706" y="348" width="370" height="184" rx="24" fill="#FFFFFF"/>
+  <text x="344" y="392" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Member positions</text>
+  <text x="344" y="442" font-family="Arial" font-size="16" fill="#2F241F">You</text>
+  <text x="608" y="442" font-family="Arial" font-size="16" fill="#2F241F">+$1,240</text>
+  <text x="344" y="470" font-family="Arial" font-size="12" fill="#8A7369">You covered more this month</text>
+  <text x="344" y="500" font-family="Arial" font-size="16" fill="#2F241F">Partner</text>
+  <text x="592" y="500" font-family="Arial" font-size="16" fill="#2F241F">-$1,240</text>
+  <text x="734" y="392" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">This month</text>
+  <text x="734" y="442" font-family="Arial" font-size="16" fill="#2F241F">Expenses</text>
+  <text x="734" y="478" font-family="Arial" font-size="28" font-weight="700" fill="#2F241F">$2,840</text>
+  <text x="734" y="516" font-family="Arial" font-size="12" fill="#8A7369">Top-ups: $3,500</text>
+  <rect x="316" y="556" width="760" height="312" rx="24" fill="#FFFFFF"/>
+  <text x="344" y="600" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Timeline</text>
+  <text x="344" y="652" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Dinner with split</text>
+  <text x="934" y="652" font-family="Arial" font-size="16" fill="#2F241F">$980</text>
+  <text x="344" y="680" font-family="Arial" font-size="12" fill="#8A7369">Apr 6 - you paid - equal split</text>
+  <text x="344" y="728" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">April top-up</text>
+  <text x="930" y="728" font-family="Arial" font-size="16" fill="#2F241F">$1,500</text>
+  <text x="344" y="756" font-family="Arial" font-size="12" fill="#8A7369">You contributed - regular top-up</text>
+  <rect x="1100" y="48" width="284" height="864" rx="24" fill="#EFE4DB"/>
+  <text x="1128" y="92" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Context</text>
+  <rect x="1128" y="122" width="228" height="124" rx="18" fill="#FFFFFF"/>
+  <text x="1148" y="164" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">Next suggested settlement</text>
+  <text x="1148" y="194" font-family="Arial" font-size="12" fill="#8A7369">Partner pays you $1,240</text>
+</svg>

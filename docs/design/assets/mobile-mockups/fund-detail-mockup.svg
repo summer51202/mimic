@@ -1,0 +1,49 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fundhero" x1="28" y1="144" x2="362" y2="278" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F1D8C8"/>
+      <stop offset="1" stop-color="#E4A98E"/>
+    </linearGradient>
+    <filter id="shadow" x="20" y="138" width="350" height="146" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#D9C1B3" flood-opacity="0.32"/>
+    </filter>
+  </defs>
+  <rect width="390" height="844" rx="32" fill="#F4ECE4"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="#F7F1EA"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#7E6A61">9:41</text>
+  <text x="34" y="92" font-family="Arial" font-size="14" fill="#9A867B">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="30" font-weight="700" fill="#2F241F">Date fund</text>
+  <g filter="url(#shadow)">
+    <rect x="28" y="144" width="334" height="134" rx="26" fill="url(#fundhero)"/>
+  </g>
+  <text x="46" y="178" font-family="Arial" font-size="12" fill="#7A5648">Current balance</text>
+  <text x="46" y="224" font-family="Arial" font-size="38" font-weight="700" fill="#2F241F">$6,400</text>
+  <text x="46" y="250" font-family="Arial" font-size="14" fill="#7A5648">Everyday shared spending</text>
+  <rect x="28" y="330" width="334" height="112" rx="24" fill="#FFFFFF"/>
+  <rect x="28" y="494" width="160" height="108" rx="24" fill="#FFFFFF"/>
+  <rect x="202" y="494" width="160" height="108" rx="24" fill="#FFFFFF"/>
+  <rect x="28" y="656" width="334" height="118" rx="24" fill="#FFFFFF"/>
+  <text x="28" y="316" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">Member positions</text>
+  <circle cx="54" cy="364" r="12" fill="#D7795F"/>
+  <circle cx="54" cy="410" r="12" fill="#F2D7C9"/>
+  <text x="76" y="369" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">You</text>
+  <text x="284" y="369" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">+$1,240</text>
+  <text x="76" y="393" font-family="Arial" font-size="12" fill="#9A867B">You covered more this month</text>
+  <text x="76" y="415" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">Partner</text>
+  <text x="287" y="415" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">-$1,240</text>
+  <text x="28" y="480" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">This month</text>
+  <text x="44" y="526" font-family="Arial" font-size="12" fill="#9A867B">Expenses</text>
+  <text x="44" y="568" font-family="Arial" font-size="28" font-weight="700" fill="#2F241F">$2,840</text>
+  <text x="218" y="526" font-family="Arial" font-size="12" fill="#9A867B">Top-ups</text>
+  <text x="218" y="568" font-family="Arial" font-size="28" font-weight="700" fill="#2F241F">$3,500</text>
+  <text x="28" y="642" font-family="Arial" font-size="18" font-weight="700" fill="#2F241F">Timeline</text>
+  <circle cx="54" cy="692" r="10" fill="#F2D7C9"/>
+  <circle cx="54" cy="738" r="10" fill="#DCEAD9"/>
+  <text x="74" y="697" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Dinner with split</text>
+  <text x="298" y="697" font-family="Arial" font-size="14" fill="#2F241F">$980</text>
+  <text x="74" y="721" font-family="Arial" font-size="12" fill="#9A867B">Apr 6 • you paid • equal split</text>
+  <text x="74" y="743" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">April top-up</text>
+  <text x="292" y="743" font-family="Arial" font-size="14" fill="#2F241F">$1,500</text>
+  <rect x="28" y="780" width="334" height="56" rx="22" fill="#2F241F"/>
+  <text x="140" y="814" font-family="Arial" font-size="16" font-weight="700" fill="white">Add Record</text>
+</svg>

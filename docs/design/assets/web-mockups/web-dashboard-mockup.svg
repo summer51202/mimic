@@ -1,0 +1,49 @@
+﻿<svg width="1440" height="960" viewBox="0 0 1440 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="webhero" x1="316" y1="164" x2="1076" y2="328" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EDC3AF"/>
+      <stop offset="1" stop-color="#D7795F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="960" fill="#F4ECE4"/>
+  <rect x="24" y="24" width="1392" height="912" rx="28" fill="#F7F1EA"/>
+  <rect x="48" y="48" width="232" height="864" rx="24" fill="#EFE4DB"/>
+  <text x="76" y="92" font-family="Arial" font-size="28" font-weight="700" fill="#2F241F">PairFund</text>
+  <text x="76" y="148" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Dashboard</text>
+  <text x="76" y="188" font-family="Arial" font-size="16" fill="#6F5B52">Funds</text>
+  <text x="76" y="228" font-family="Arial" font-size="16" fill="#6F5B52">Activity</text>
+  <text x="76" y="268" font-family="Arial" font-size="16" fill="#6F5B52">Tasks</text>
+  <text x="76" y="308" font-family="Arial" font-size="16" fill="#6F5B52">Settings</text>
+  <text x="316" y="94" font-family="Arial" font-size="16" fill="#8A7369">Good evening</text>
+  <text x="316" y="136" font-family="Arial" font-size="38" font-weight="700" fill="#2F241F">Shared balance overview</text>
+  <rect x="316" y="164" width="760" height="164" rx="28" fill="url(#webhero)"/>
+  <text x="348" y="208" font-family="Arial" font-size="13" fill="#FFF5F0">Total balance</text>
+  <text x="348" y="280" font-family="Arial" font-size="54" font-weight="700" fill="white">$18,420</text>
+  <text x="348" y="308" font-family="Arial" font-size="14" fill="#FFF5F0">2 active funds - warm summary across your shared life</text>
+  <rect x="316" y="352" width="370" height="196" rx="24" fill="#FFFFFF"/>
+  <rect x="706" y="352" width="370" height="196" rx="24" fill="#FFFFFF"/>
+  <circle cx="352" cy="392" r="10" fill="#F2D7C9"/>
+  <circle cx="742" cy="392" r="10" fill="#DCEAD9"/>
+  <text x="374" y="398" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Date fund</text>
+  <text x="344" y="458" font-family="Arial" font-size="36" font-weight="700" fill="#2F241F">$6,400</text>
+  <text x="344" y="486" font-family="Arial" font-size="13" fill="#8A7369">Everyday spending and small moments</text>
+  <text x="764" y="398" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Trip fund</text>
+  <text x="734" y="458" font-family="Arial" font-size="36" font-weight="700" fill="#2F241F">$12,020</text>
+  <text x="734" y="486" font-family="Arial" font-size="13" fill="#8A7369">Summer travel planning together</text>
+  <rect x="316" y="568" width="760" height="300" rx="24" fill="#FFFFFF"/>
+  <text x="344" y="610" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Recent activity</text>
+  <text x="344" y="660" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Dinner</text>
+  <text x="978" y="660" font-family="Arial" font-size="16" fill="#2F241F">$980</text>
+  <text x="344" y="688" font-family="Arial" font-size="12" fill="#8A7369">Date fund - split equally</text>
+  <text x="344" y="734" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">April contribution</text>
+  <text x="946" y="734" font-family="Arial" font-size="16" fill="#2F241F">$3,000</text>
+  <text x="344" y="762" font-family="Arial" font-size="12" fill="#8A7369">Date fund - you contributed</text>
+  <rect x="1100" y="48" width="284" height="864" rx="24" fill="#EFE4DB"/>
+  <text x="1128" y="92" font-family="Arial" font-size="22" font-weight="700" fill="#2F241F">Tasks</text>
+  <rect x="1128" y="122" width="228" height="112" rx="18" fill="#FFFFFF"/>
+  <rect x="1128" y="254" width="228" height="112" rx="18" fill="#FFFFFF"/>
+  <text x="1148" y="164" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">Settlement waiting</text>
+  <text x="1148" y="192" font-family="Arial" font-size="12" fill="#8A7369">Trip fund - Apr 1 to Apr 30</text>
+  <text x="1148" y="296" font-family="Arial" font-size="15" font-weight="700" fill="#2F241F">Correction review</text>
+  <text x="1148" y="324" font-family="Arial" font-size="12" fill="#8A7369">Movie night - settled period</text>
+</svg>

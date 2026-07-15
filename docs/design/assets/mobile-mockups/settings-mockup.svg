@@ -1,0 +1,24 @@
+﻿<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F4ECE4"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="#F7F1EA"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#7E6A61">9:41</text>
+  <text x="34" y="92" font-family="Arial" font-size="14" fill="#9A867B">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="30" font-weight="700" fill="#2F241F">Settings</text>
+  <rect x="28" y="146" width="334" height="102" rx="24" fill="#FFFFFF"/>
+  <circle cx="66" cy="197" r="24" fill="#F2D7C9"/>
+  <circle cx="76" cy="187" r="7" fill="#E8BDAA"/>
+  <text x="102" y="190" font-family="Arial" font-size="16" font-weight="700" fill="#2F241F">Edward Lee</text>
+  <text x="102" y="216" font-family="Arial" font-size="12" fill="#8A7369">zh-TW - Asia/Taipei</text>
+  <rect x="28" y="266" width="334" height="390" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="308" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Account</text>
+  <text x="46" y="334" font-family="Arial" font-size="12" fill="#9A867B">Profile, password, and identity</text>
+  <text x="46" y="388" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Group &amp; fund settings</text>
+  <text x="46" y="414" font-family="Arial" font-size="12" fill="#9A867B">Manage shared spaces and funds</text>
+  <text x="46" y="468" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Notifications</text>
+  <text x="46" y="494" font-family="Arial" font-size="12" fill="#9A867B">Top-up reminders and updates</text>
+  <text x="46" y="548" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Language and region</text>
+  <text x="46" y="574" font-family="Arial" font-size="12" fill="#9A867B">Traditional Chinese - Taipei timezone</text>
+  <text x="46" y="628" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Help</text>
+  <rect x="28" y="706" width="334" height="56" rx="22" fill="#2F241F"/>
+  <text x="160" y="740" font-family="Arial" font-size="16" font-weight="700" fill="white">Sign Out</text>
+</svg>

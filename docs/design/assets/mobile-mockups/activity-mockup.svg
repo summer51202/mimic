@@ -1,0 +1,36 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F4ECE4"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="#F7F1EA"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#7E6A61">9:41</text>
+  <text x="34" y="92" font-family="Arial" font-size="14" fill="#9A867B">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="30" font-weight="700" fill="#2F241F">Activity</text>
+  <rect x="28" y="146" width="334" height="58" rx="22" fill="#FFFFFF"/>
+  <rect x="42" y="160" width="58" height="28" rx="14" fill="#D7795F"/>
+  <rect x="108" y="160" width="76" height="28" rx="14" fill="#F2D7C9"/>
+  <rect x="192" y="160" width="110" height="28" rx="14" fill="#F2D7C9"/>
+  <text x="60" y="178" font-family="Arial" font-size="12" font-weight="700" fill="white">All</text>
+  <text x="126" y="178" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Expense</text>
+  <text x="208" y="178" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Correction</text>
+  <rect x="28" y="224" width="334" height="508" rx="24" fill="#FFFFFF"/>
+  <text x="46" y="258" font-family="Arial" font-size="12" fill="#9A867B">Today</text>
+  <circle cx="58" cy="292" r="10" fill="#F2D7C9"/>
+  <circle cx="58" cy="346" r="10" fill="#DCEAD9"/>
+  <text x="76" y="297" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Dinner</text>
+  <text x="296" y="297" font-family="Arial" font-size="14" fill="#2F241F">$980</text>
+  <text x="76" y="321" font-family="Arial" font-size="12" fill="#9A867B">Date fund • equal split</text>
+  <text x="76" y="351" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">April top-up</text>
+  <text x="284" y="351" font-family="Arial" font-size="14" fill="#2F241F">$1,500</text>
+  <text x="76" y="375" font-family="Arial" font-size="12" fill="#9A867B">Date fund • you contributed</text>
+  <text x="46" y="426" font-family="Arial" font-size="12" fill="#9A867B">Settled period</text>
+  <rect x="46" y="444" width="298" height="98" rx="18" fill="#FFF6EF"/>
+  <text x="62" y="476" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Movie night</text>
+  <text x="266" y="476" font-family="Arial" font-size="14" fill="#2F241F">$460</text>
+  <text x="62" y="502" font-family="Arial" font-size="12" fill="#8A7369">Locked after settlement</text>
+  <rect x="62" y="514" width="122" height="24" rx="12" fill="#FBE9DE"/>
+  <text x="92" y="529" font-family="Arial" font-size="11" font-weight="700" fill="#8E5B47">Locked</text>
+  <rect x="62" y="566" width="190" height="34" rx="17" fill="#F6E4C8"/>
+  <text x="99" y="587" font-family="Arial" font-size="12" font-weight="700" fill="#6A4D42">Create Correction</text>
+  <circle cx="58" cy="650" r="10" fill="#F6E4C8"/>
+  <text x="76" y="655" font-family="Arial" font-size="14" font-weight="700" fill="#2F241F">Correction: taxi missed</text>
+  <text x="286" y="655" font-family="Arial" font-size="14" fill="#2F241F">$120</text>
+</svg>

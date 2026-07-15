@@ -1,0 +1,20 @@
+<svg width="390" height="844" viewBox="0 0 390 844" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="390" height="844" rx="32" fill="#F5F5F5"/>
+  <rect x="16" y="16" width="358" height="812" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <text x="34" y="54" font-family="Arial" font-size="16" fill="#333">9:41</text>
+  <text x="34" y="94" font-family="Arial" font-size="14" fill="#666">Back</text>
+  <text x="34" y="126" font-family="Arial" font-size="28" font-weight="700" fill="#111">Settings</text>
+  <rect x="28" y="146" width="334" height="90" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <text x="46" y="182" font-family="Arial" font-size="14" fill="#111">Edward Lee</text>
+  <text x="46" y="210" font-family="Arial" font-size="13" fill="#666">zh-TW • Asia/Taipei</text>
+  <rect x="28" y="256" width="334" height="330" rx="18" fill="#FAFAFA" stroke="#333" stroke-width="1.5"/>
+  <line x1="44" y1="332" x2="346" y2="332" stroke="#C9C9C9"/>
+  <line x1="44" y1="408" x2="346" y2="408" stroke="#C9C9C9"/>
+  <line x1="44" y1="484" x2="346" y2="484" stroke="#C9C9C9"/>
+  <text x="44" y="304" font-family="Arial" font-size="14" fill="#111">Account</text>
+  <text x="44" y="380" font-family="Arial" font-size="14" fill="#111">Group &amp; fund settings</text>
+  <text x="44" y="456" font-family="Arial" font-size="14" fill="#111">Notifications</text>
+  <text x="44" y="532" font-family="Arial" font-size="14" fill="#111">Help</text>
+  <rect x="28" y="618" width="334" height="58" rx="20" fill="#111"/>
+  <text x="160" y="654" font-family="Arial" font-size="16" font-weight="700" fill="white">Sign Out</text>
+</svg>

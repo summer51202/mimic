@@ -1,0 +1,28 @@
+# Local secrets
+**/.env
+**/.env.*
+!**/.env.example
+
+# Dependencies and generated output
+**/node_modules/
+**/.dart_tool/
+**/.pub/
+**/build/
+**/dist/
+**/coverage/
+**/.flutter-plugins-dependencies
+
+# Local runtime files
+**/.session/
+*.log
+
+# Editors and operating systems
+**/.idea/
+**/*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Agent worktrees
+.worktrees/
+worktrees/

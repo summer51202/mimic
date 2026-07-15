@@ -1,0 +1,29 @@
+<svg width="1440" height="960" viewBox="0 0 1440 960" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1440" height="960" fill="#F5F5F5"/>
+  <rect x="24" y="24" width="1392" height="912" rx="28" fill="white" stroke="#222" stroke-width="2"/>
+  <rect x="48" y="48" width="232" height="864" rx="24" fill="#FAFAFA" stroke="#333"/>
+  <text x="316" y="94" font-family="Arial" font-size="16" fill="#666">Records</text>
+  <text x="316" y="136" font-family="Arial" font-size="36" font-weight="700" fill="#111">Activity</text>
+  <rect x="316" y="164" width="1068" height="64" rx="20" fill="#FAFAFA" stroke="#333"/>
+  <text x="344" y="204" font-family="Arial" font-size="16" fill="#111">All  Expenses  Contributions  Corrections  Locked only</text>
+  <rect x="316" y="252" width="1068" height="616" rx="24" fill="#FAFAFA" stroke="#333"/>
+  <line x1="344" y1="336" x2="1356" y2="336" stroke="#C9C9C9"/>
+  <line x1="344" y1="416" x2="1356" y2="416" stroke="#C9C9C9"/>
+  <line x1="344" y1="496" x2="1356" y2="496" stroke="#C9C9C9"/>
+  <line x1="344" y1="576" x2="1356" y2="576" stroke="#C9C9C9"/>
+  <text x="344" y="304" font-family="Arial" font-size="14" fill="#666">Date</text>
+  <text x="476" y="304" font-family="Arial" font-size="14" fill="#666">Title</text>
+  <text x="872" y="304" font-family="Arial" font-size="14" fill="#666">Type</text>
+  <text x="1038" y="304" font-family="Arial" font-size="14" fill="#666">Status</text>
+  <text x="1208" y="304" font-family="Arial" font-size="14" fill="#666">Amount</text>
+  <text x="344" y="384" font-family="Arial" font-size="16" fill="#111">2026-04-06</text>
+  <text x="476" y="384" font-family="Arial" font-size="16" fill="#111">Dinner</text>
+  <text x="872" y="384" font-family="Arial" font-size="16" fill="#111">Expense</text>
+  <text x="1038" y="384" font-family="Arial" font-size="16" fill="#111">Active</text>
+  <text x="1208" y="384" font-family="Arial" font-size="16" fill="#111">$980</text>
+  <text x="344" y="464" font-family="Arial" font-size="16" fill="#111">2026-03-28</text>
+  <text x="476" y="464" font-family="Arial" font-size="16" fill="#111">Movie night</text>
+  <text x="872" y="464" font-family="Arial" font-size="16" fill="#111">Expense</text>
+  <text x="1038" y="464" font-family="Arial" font-size="16" fill="#111">Locked</text>
+  <text x="1208" y="464" font-family="Arial" font-size="16" fill="#111">$460</text>
+</svg>

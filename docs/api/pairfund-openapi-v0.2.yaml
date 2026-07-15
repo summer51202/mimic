@@ -1,0 +1,962 @@
+openapi: 3.1.0
+info:
+  title: PairFund API
+  version: 0.2.0
+  summary: Shared virtual fund API for couples and small groups
+servers:
+  - url: /api/v1
+security:
+  - bearerAuth: []
+tags:
+  - name: Auth
+  - name: Groups
+  - name: Funds
+  - name: Contributions
+  - name: Expenses
+  - name: Settlements
+  - name: Audit
+paths:
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register account
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /me:
+    get:
+      tags: [Auth]
+      summary: Get current user
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeResponse'
+  /groups:
+    get:
+      tags: [Groups]
+      summary: List groups
+      responses:
+        '200':
+          description: Group list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupListResponse'
+    post:
+      tags: [Groups]
+      summary: Create group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupRequest'
+      responses:
+        '200':
+          description: Group created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+  /groups/{groupId}/members/{memberId}:
+    patch:
+      tags: [Groups]
+      summary: Update member role or status
+      parameters:
+        - $ref: '#/components/parameters/GroupId'
+        - $ref: '#/components/parameters/MemberId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGroupMemberRequest'
+      responses:
+        '200':
+          description: Member updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupMemberResponse'
+  /groups/{groupId}/funds:
+    post:
+      tags: [Funds]
+      summary: Create fund
+      parameters:
+        - $ref: '#/components/parameters/GroupId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFundRequest'
+      responses:
+        '200':
+          description: Fund created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FundResponse'
+    get:
+      tags: [Funds]
+      summary: List funds
+      parameters:
+        - $ref: '#/components/parameters/GroupId'
+      responses:
+        '200':
+          description: Fund list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FundListResponse'
+  /funds/{fundId}/contributions:
+    post:
+      tags: [Contributions]
+      summary: Create contribution
+      parameters:
+        - $ref: '#/components/parameters/FundId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateContributionRequest'
+      responses:
+        '200':
+          description: Contribution created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionResponse'
+    get:
+      tags: [Contributions]
+      summary: List contributions
+      parameters:
+        - $ref: '#/components/parameters/FundId'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Contribution list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContributionListResponse'
+  /funds/{fundId}/expenses:
+    post:
+      tags: [Expenses]
+      summary: Create expense
+      parameters:
+        - $ref: '#/components/parameters/FundId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExpenseRequest'
+      responses:
+        '200':
+          description: Expense created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseResponse'
+    get:
+      tags: [Expenses]
+      summary: List expenses
+      parameters:
+        - $ref: '#/components/parameters/FundId'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Expense list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseListResponse'
+  /expenses/{expenseId}:
+    patch:
+      tags: [Expenses]
+      summary: Update expense
+      parameters:
+        - $ref: '#/components/parameters/ExpenseId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateExpenseRequest'
+      responses:
+        '200':
+          description: Expense updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpenseResponse'
+        '409':
+          description: Locked
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /funds/{fundId}/settlement-suggestion:
+    get:
+      tags: [Settlements]
+      summary: Get settlement suggestions
+      parameters:
+        - $ref: '#/components/parameters/FundId'
+        - $ref: '#/components/parameters/StartDate'
+        - $ref: '#/components/parameters/EndDate'
+      responses:
+        '200':
+          description: Suggestions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettlementSuggestionResponse'
+  /funds/{fundId}/settlements:
+    post:
+      tags: [Settlements]
+      summary: Create settlement
+      parameters:
+        - $ref: '#/components/parameters/FundId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSettlementRequest'
+      responses:
+        '200':
+          description: Settlement created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettlementResponse'
+    get:
+      tags: [Settlements]
+      summary: List settlements
+      parameters:
+        - $ref: '#/components/parameters/FundId'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Settlement list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettlementListResponse'
+  /settlements/{settlementId}/complete:
+    post:
+      tags: [Settlements]
+      summary: Complete settlement
+      parameters:
+        - $ref: '#/components/parameters/SettlementId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [completed_at]
+              properties:
+                completed_at:
+                  type: string
+                  format: date-time
+      responses:
+        '200':
+          description: Settlement completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SettlementResponse'
+  /audit-logs:
+    get:
+      tags: [Audit]
+      summary: List audit logs
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          description: Audit log list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLogListResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    GroupId:
+      in: path
+      name: groupId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    MemberId:
+      in: path
+      name: memberId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    FundId:
+      in: path
+      name: fundId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ContributionId:
+      in: path
+      name: contributionId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ExpenseId:
+      in: path
+      name: expenseId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    SettlementId:
+      in: path
+      name: settlementId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    LogId:
+      in: path
+      name: logId
+      required: true
+      schema:
+        type: string
+        format: uuid
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PageSize:
+      in: query
+      name: page_size
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    StartDate:
+      in: query
+      name: start_date
+      schema:
+        type: string
+        format: date
+    EndDate:
+      in: query
+      name: end_date
+      schema:
+        type: string
+        format: date
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+    MetaPage:
+      type: object
+      properties:
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total:
+          type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        display_name:
+          type: string
+        locale:
+          type: string
+        timezone:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            access_token:
+              type: string
+            refresh_token:
+              type: string
+    OkResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+    StatusResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            status:
+              type: string
+    MeResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/User'
+    RegisterRequest:
+      type: object
+      required: [email, password, display_name]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        display_name:
+          type: string
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    UpdateMeRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        locale:
+          type: string
+        timezone:
+          type: string
+    CreateGroupRequest:
+      type: object
+      required: [name, group_type, default_currency]
+      properties:
+        name:
+          type: string
+        group_type:
+          type: string
+          enum: [couple, group]
+        default_currency:
+          type: string
+          minLength: 3
+          maxLength: 3
+    UpdateGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        group_type:
+          type: string
+        default_currency:
+          type: string
+        status:
+          type: string
+    GroupResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Group'
+    GroupListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    GroupMember:
+      type: object
+      properties:
+        member_id:
+          type: string
+          format: uuid
+        user_id:
+          type: string
+          format: uuid
+        display_name:
+          type: string
+        role:
+          type: string
+          enum: [owner, member]
+        status:
+          type: string
+    GroupMemberResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/GroupMember'
+    GroupMemberListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupMember'
+    UpdateGroupMemberRequest:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [owner, member]
+        status:
+          type: string
+          enum: [active, left, removed]
+    CreateInviteRequest:
+      type: object
+      properties:
+        invited_email:
+          type: string
+          format: email
+    InviteResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            invite_id:
+              type: string
+              format: uuid
+            invite_code:
+              type: string
+            expires_at:
+              type: string
+              format: date-time
+            status:
+              type: string
+    CreateFundRequest:
+      type: object
+      required: [name, currency]
+      properties:
+        name:
+          type: string
+        currency:
+          type: string
+    UpdateFundRequest:
+      type: object
+      properties:
+        name:
+          type: string
+    Fund:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        currency:
+          type: string
+        status:
+          type: string
+        balance_minor:
+          type: integer
+    FundResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Fund'
+    FundListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fund'
+    FundDetailResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            fund:
+              $ref: '#/components/schemas/Fund'
+            summary:
+              type: object
+              additionalProperties: true
+    CreateContributionRequest:
+      type: object
+      required: [contributor_user_id, amount_minor, contribution_type, occurred_on]
+      properties:
+        contributor_user_id:
+          type: string
+          format: uuid
+        amount_minor:
+          type: integer
+        contribution_type:
+          type: string
+          enum: [regular, one_time, adjustment, correction]
+        occurred_on:
+          type: string
+          format: date
+        note:
+          type: string
+    UpdateContributionRequest:
+      allOf:
+        - $ref: '#/components/schemas/CreateContributionRequest'
+    Contribution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fund_id:
+          type: string
+          format: uuid
+        contributor_user_id:
+          type: string
+          format: uuid
+        amount_minor:
+          type: integer
+        contribution_type:
+          type: string
+        occurred_on:
+          type: string
+          format: date
+        note:
+          type: string
+        status:
+          type: string
+    ContributionResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Contribution'
+    ContributionListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Contribution'
+        meta:
+          $ref: '#/components/schemas/MetaPage'
+    ExpensePayerInput:
+      type: object
+      required: [payer_user_id, amount_minor]
+      properties:
+        payer_user_id:
+          type: string
+          format: uuid
+        amount_minor:
+          type: integer
+    ExpenseSplitInput:
+      type: object
+      required: [user_id, split_type, sort_order]
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        split_type:
+          type: string
+          enum: [equal, ratio, fixed]
+        ratio_value:
+          type: number
+        fixed_amount_minor:
+          type: integer
+        sort_order:
+          type: integer
+    CreateExpenseRequest:
+      type: object
+      required:
+        - title
+        - amount_minor
+        - split_mode
+        - expense_type
+        - occurred_on
+        - payers
+        - splits
+      properties:
+        title:
+          type: string
+        category_id:
+          type: string
+          format: uuid
+        note:
+          type: string
+        amount_minor:
+          type: integer
+        split_mode:
+          type: string
+          enum: [equal, ratio, fixed, hybrid]
+        expense_type:
+          type: string
+          enum: [fund_expense, refund, adjustment, correction]
+        occurred_on:
+          type: string
+          format: date
+        payers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpensePayerInput'
+        splits:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpenseSplitInput'
+    UpdateExpenseRequest:
+      allOf:
+        - $ref: '#/components/schemas/CreateExpenseRequest'
+    Expense:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fund_id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        category_id:
+          type: string
+          format: uuid
+        note:
+          type: string
+        amount_minor:
+          type: integer
+        split_mode:
+          type: string
+        expense_type:
+          type: string
+        occurred_on:
+          type: string
+          format: date
+        status:
+          type: string
+        is_locked:
+          type: boolean
+    ExpenseResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Expense'
+    ExpenseListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expense'
+        meta:
+          $ref: '#/components/schemas/MetaPage'
+    CreateSettlementRequest:
+      type: object
+      required:
+        - from_user_id
+        - to_user_id
+        - amount_minor
+        - period_start
+        - period_end
+        - settlement_type
+      properties:
+        from_user_id:
+          type: string
+          format: uuid
+        to_user_id:
+          type: string
+          format: uuid
+        amount_minor:
+          type: integer
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        settlement_type:
+          type: string
+          enum: [scheduled, manual]
+        note:
+          type: string
+    Settlement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fund_id:
+          type: string
+          format: uuid
+        from_user_id:
+          type: string
+          format: uuid
+        to_user_id:
+          type: string
+          format: uuid
+        amount_minor:
+          type: integer
+        period_start:
+          type: string
+          format: date
+        period_end:
+          type: string
+          format: date
+        settlement_type:
+          type: string
+        status:
+          type: string
+    SettlementResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Settlement'
+    SettlementListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Settlement'
+        meta:
+          $ref: '#/components/schemas/MetaPage'
+    SettlementSuggestionResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            fund_id:
+              type: string
+              format: uuid
+            currency:
+              type: string
+            period_start:
+              type: string
+              format: date
+            period_end:
+              type: string
+              format: date
+            suggestions:
+              type: array
+              items:
+                type: object
+                properties:
+                  from_user_id:
+                    type: string
+                    format: uuid
+                  to_user_id:
+                    type: string
+                    format: uuid
+                  amount_minor:
+                    type: integer
+    AuditLog:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        entity_type:
+          type: string
+        entity_id:
+          type: string
+          format: uuid
+        action:
+          type: string
+        before_snapshot:
+          type: object
+          additionalProperties: true
+        after_snapshot:
+          type: object
+          additionalProperties: true
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+    AuditLogResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/AuditLog'
+    AuditLogListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLog'
+        meta:
+          $ref: '#/components/schemas/MetaPage'
