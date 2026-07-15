@@ -1,7 +1,18 @@
-import { ForbiddenException } from '@nestjs/common';
-import { GroupStatus, MemberRole, MemberStatus } from '@prisma/client';
+import {
+  ConflictException,
+  ForbiddenException,
+  GoneException,
+  NotFoundException,
+} from '@nestjs/common';
+import {
+  GroupStatus,
+  InviteStatus,
+  MemberRole,
+  MemberStatus,
+} from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
+import { AcceptGroupInviteDto } from './dto/accept-group-invite.dto';
 import { CreateGroupInviteDto } from './dto/create-group-invite.dto';
 import { GroupsService } from './groups.service';
 
@@ -116,5 +127,151 @@ describe('CreateGroupInviteDto', () => {
     });
 
     await expect(validate(dto)).resolves.toHaveLength(1);
+  });
+});
+
+describe('GroupsService.acceptInvite', () => {
+  const group = { id: 'group-1', name: 'Shared' };
+  const user = { id: 'user-1', email: 'partner@example.com' };
+  const pendingInvite = {
+    id: 'invite-1',
+    groupId: group.id,
+    inviteCode: 'invite-code',
+    invitedEmail: 'Partner@Example.com',
+    status: InviteStatus.PENDING,
+    expiresAt: new Date('2026-07-17T00:00:00.000Z'),
+    group,
+  };
+
+  afterEach(() => jest.useRealTimers());
+
+  function setup(overrides: Record<string, unknown> = {}) {
+    const tx = {
+      groupInvite: {
+        findUnique: jest.fn().mockResolvedValue(pendingInvite),
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+      },
+      user: { findUnique: jest.fn().mockResolvedValue(user) },
+      groupMember: {
+        findUnique: jest.fn().mockResolvedValue(null),
+        create: jest.fn().mockResolvedValue({ id: 'membership-1' }),
+      },
+      ...overrides,
+    };
+    const prisma = {
+      $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) =>
+        callback(tx),
+      ),
+    };
+    return { service: new GroupsService(prisma as never), prisma, tx };
+  }
+
+  it('atomically consumes a pending invite and creates an active member', async () => {
+    const acceptedAt = new Date('2026-07-16T00:00:00.000Z');
+    jest.useFakeTimers().setSystemTime(acceptedAt);
+    const { service, prisma, tx } = setup();
+
+    await expect(service.acceptInvite(user.id, 'invite-code')).resolves.toEqual({
+      invite: pendingInvite,
+      group,
+      membership: { id: 'membership-1' },
+    });
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(tx.groupInvite.findUnique).toHaveBeenCalledWith({
+      where: { inviteCode: 'invite-code' },
+      include: { group: true },
+    });
+    expect(tx.user.findUnique).toHaveBeenCalledWith({ where: { id: user.id } });
+    expect(tx.groupInvite.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: pendingInvite.id,
+        status: InviteStatus.PENDING,
+        expiresAt: { gt: acceptedAt },
+      },
+      data: {
+        status: InviteStatus.ACCEPTED,
+        acceptedById: user.id,
+        acceptedAt,
+      },
+    });
+    expect(tx.groupMember.create).toHaveBeenCalledWith({
+      data: {
+        groupId: group.id,
+        userId: user.id,
+        role: MemberRole.MEMBER,
+        status: MemberStatus.ACTIVE,
+      },
+    });
+  });
+
+  it.each([
+    ['missing invite', null, user],
+    ['missing user', pendingInvite, null],
+  ])('returns INVITE_NOT_FOUND for %s', async (_case, invite, foundUser) => {
+    const { service, tx } = setup();
+    tx.groupInvite.findUnique.mockResolvedValue(invite);
+    tx.user.findUnique.mockResolvedValue(foundUser);
+    await expect(service.acceptInvite(user.id, 'invite-code')).rejects.toEqual(
+      new NotFoundException('INVITE_NOT_FOUND'),
+    );
+  });
+
+  it('returns INVITE_ALREADY_USED for a non-pending invite', async () => {
+    const { service, tx } = setup();
+    tx.groupInvite.findUnique.mockResolvedValue({
+      ...pendingInvite,
+      status: InviteStatus.ACCEPTED,
+    });
+    await expect(service.acceptInvite(user.id, 'invite-code')).rejects.toEqual(
+      new ConflictException('INVITE_ALREADY_USED'),
+    );
+  });
+
+  it('returns INVITE_EXPIRED when expiresAt is now', async () => {
+    jest.useFakeTimers().setSystemTime(pendingInvite.expiresAt);
+    const { service } = setup();
+    await expect(service.acceptInvite(user.id, 'invite-code')).rejects.toEqual(
+      new GoneException('INVITE_EXPIRED'),
+    );
+  });
+
+  it('returns INVITE_EMAIL_MISMATCH for a different user email', async () => {
+    const { service, tx } = setup();
+    tx.user.findUnique.mockResolvedValue({ ...user, email: 'other@example.com' });
+    await expect(service.acceptInvite(user.id, 'invite-code')).rejects.toEqual(
+      new ForbiddenException('INVITE_EMAIL_MISMATCH'),
+    );
+  });
+
+  it('returns ALREADY_GROUP_MEMBER when membership exists', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.findUnique.mockResolvedValue({ id: 'existing-membership' });
+    await expect(service.acceptInvite(user.id, 'invite-code')).rejects.toEqual(
+      new ConflictException('ALREADY_GROUP_MEMBER'),
+    );
+  });
+
+  it('returns INVITE_ALREADY_USED and does not create membership when consumption loses a race', async () => {
+    const { service, tx } = setup();
+    tx.groupInvite.updateMany.mockResolvedValue({ count: 0 });
+    await expect(service.acceptInvite(user.id, 'invite-code')).rejects.toEqual(
+      new ConflictException('INVITE_ALREADY_USED'),
+    );
+    expect(tx.groupMember.create).not.toHaveBeenCalled();
+  });
+});
+
+describe('AcceptGroupInviteDto', () => {
+  it('trims invite_code', async () => {
+    const dto = plainToInstance(AcceptGroupInviteDto, {
+      invite_code: '  invite-code  ',
+    });
+    await expect(validate(dto)).resolves.toEqual([]);
+    expect(dto.invite_code).toBe('invite-code');
+  });
+
+  it.each([{}, { invite_code: '   ' }])('rejects missing or empty invite_code', async (input) => {
+    const dto = plainToInstance(AcceptGroupInviteDto, input);
+    await expect(validate(dto)).resolves.not.toEqual([]);
   });
 });
