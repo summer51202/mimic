@@ -33,3 +33,13 @@
 - Built the Web bundle and launched Chrome on `http://localhost:8080` against the API on port 3001.
 **Decisions:** Use fixed development origins and ports (`8080` web, `3001` API) because Grafana owns port 3000. Keep CORS disabled unless `CORS_ORIGIN` is explicitly configured.  
 **Known gaps / follow-ups:** Dependency upgrades and WebAssembly compatibility are deferred; package versions remain pinned for MVP stabilization.
+## 2026-07-15 — Group owner invite creation
+
+**Task:** Implement owner-only group invite creation rules.  
+**Scope:** `backend/src/modules/groups/dto/create-group-invite.dto.ts`, `backend/src/modules/groups/groups.service.ts`, `backend/src/modules/groups/groups.service.spec.ts`  
+**What changed:**
+- Added optional `invited_email` normalization and validation.
+- Restricted invite creation to active owners of active groups with stable `GROUP_OWNER_REQUIRED` errors.
+- Added secure 72-bit invite codes, seven-day expiry, and focused service/DTO tests.
+**Decisions:** Keep inactive-group and non-owner failures indistinguishable through the same stable error code.
+**Known gaps / follow-ups:** Invite acceptance, HTTP endpoints, code-collision retry, and mobile UI remain for later tasks.
