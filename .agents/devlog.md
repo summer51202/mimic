@@ -238,3 +238,15 @@
 - Fixed rename dialog controller disposal during its closing animation.
 **Decisions:** Authorization remains server-authoritative; role-based hiding improves UX but does not replace Backend enforcement.
 **Known gaps / follow-ups:** Browser acceptance for Owner and Member accounts remains. Full Flutter tests pass 153/153, changed-file analysis is clean, and the remote Web build succeeds.
+
+## 2026-07-17 — Finalize Phase 1 local handoff
+
+**Task:** Record the accepted Phase 1 state and make the WSL-based local stack reproducible.
+**Scope:** `.agents/features.md`, `backend/README.md`, final Backend, Flutter, Web, and runtime verification
+**What changed:**
+- Updated the feature map to mark group creation, invitations, group detail, rename, and member listing as implemented.
+- Replaced the obsolete Docker Desktop and blocked-database notes with the working WSL2 Docker Engine workflow.
+- Documented Backend rebuild/restart, health readiness, remote Web build/serve commands, ports, and cache-busting.
+- Reverified the complete test suites and exercised login, group list, group detail, members, and Web delivery against the running local stack.
+**Decisions:** Keep WSL containers and the D-drive checkout as the local development baseline; require health readiness after container restarts before acceptance requests.
+**Known gaps / follow-ups:** Member role management and the aggregated group dashboard remain planned; dependency upgrades remain deferred.

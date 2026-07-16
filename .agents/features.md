@@ -1,14 +1,14 @@
 # PairFund Feature Map
-_Last updated: 2026-06-05. Refresh with `/feature-map`._
+_Last updated: 2026-07-17. Refresh with `/feature-map`._
 
 ## MVP Core Path
 Minimal ordered sequence for end-to-end usability. Each step must be `done` for the product to ship.
 
 1. [done] **user-register** — User can sign up with email + password · `login_screen.dart` · `auth.controller.ts`
 2. [done] **user-login** — User can log in and receive JWT · `auth_controller.dart` · `auth.service.ts`
-3. [done] **create-group** — User can create a shared group · `create_fund_screen.dart` · `groups.service.ts`
-4. [todo] **invite-member** — Owner can invite a partner/member via invite code · — · missing endpoint
-5. [todo] **accept-invite** — Invitee can join the group via invite code · — · missing endpoint
+3. [done] **create-group** — User can create a shared group · `create_group_screen.dart` · `groups.service.ts`
+4. [done] **invite-member** — Owner can invite a partner/member via invite code · `create_invite_screen.dart` · `POST /groups/:id/invites`
+5. [done] **accept-invite** — Invitee can join the group via invite code · `accept_invite_screen.dart` · `POST /group-invites/accept`
 6. [done] **create-fund** — Owner can create a fund within the group · `create_fund_screen.dart` · `funds.service.ts`
 7. [done] **create-contribution** — Member can add a contribution to a fund · `create_contribution_screen.dart` · `contributions.service.ts`
 8. [done] **create-expense** — Member can record a fund expense with payers and splits · `create_expense_screen.dart` · `expenses.service.ts`
@@ -36,14 +36,14 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 
 | status | slug | description | frontend entry | backend entry |
 |--------|------|-------------|----------------|---------------|
-| done | create-group | Create a new group (COUPLE or GROUP type) | `fund_creation_repository.dart` | `groups.service.ts createGroup()` |
+| done | create-group | Create a new group (COUPLE or GROUP type) | `create_group_screen.dart` | `groups.service.ts createGroup()` |
 | done | list-groups | List groups the current user belongs to | `home_repository.dart` | `groups.controller.ts GET /groups` |
-| in-progress | view-group-detail | View group name, type, settings | — | missing `GET /groups/:id` |
-| todo | update-group | Edit group name or settings | — | missing `PATCH /groups/:id` |
-| in-progress | list-members | View all members and their roles | `home_dashboard_screen.dart` | `groups.service.ts listMembers()` |
+| done | view-group-detail | View group name, type, members, and funds | `group_detail_screen.dart` | `groups.controller.ts GET /groups/:id` |
+| done | update-group | Owner can rename a group | `group_detail_screen.dart` | `groups.controller.ts PATCH /groups/:id` |
+| done | list-members | View all active members and their roles | `group_detail_screen.dart` | `groups.service.ts listMembers()` |
 | todo | update-member-role | Owner promotes/demotes a member | — | missing `PATCH /groups/:id/members/:memberId` |
-| todo | invite-member | Owner generates an invite code | — | missing `POST /groups/:id/invites` |
-| todo | accept-invite | User joins group via invite code | — | missing `POST /group-invites/accept` |
+| done | invite-member | Owner generates an invite code | `create_invite_screen.dart` | `groups.controller.ts POST /groups/:id/invites` |
+| done | accept-invite | User joins group via invite code | `accept_invite_screen.dart` | `group-invites.controller.ts POST /group-invites/accept` |
 
 ### Funds
 
@@ -123,11 +123,7 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 - [ ] Verify token-refresh is wired in mobile Dio interceptor (auto-retry on 401)
 
 ### Groups & Membership
-- [ ] `GET /groups/:id` — individual group detail endpoint
-- [ ] `PATCH /groups/:id` — update group name/settings
 - [ ] `PATCH /groups/:id/members/:memberId` — role promotion/demotion
-- [ ] `POST /groups/:id/invites` — create invite code
-- [ ] `POST /group-invites/accept` — accept invite
 
 ### Funds
 - [ ] `PATCH /funds/:id` — update fund name/description
@@ -164,10 +160,10 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 - [ ] [out-of-scope] Recurring contribution rules — post-MVP per PRD
 
 ### Database
-- [ ] Run `npx prisma migrate dev --name init` — migrations directory does not exist yet; database cannot start without this
+- [x] Initial Prisma migration exists and has been applied to the local PostgreSQL development database
 
 ### Stabilization
 - [ ] Backend: lock check not yet applied in PATCH/DELETE handlers (currently only in create)
 - [ ] Mobile tasks screen calls `/confirmations` endpoint — not defined in spec; needs resolution
-- [ ] Backend: no integration tests beyond health endpoint e2e test
+- [x] Backend: authenticated group and invite integration tests cover route wiring, validation, and authorization
 - [ ] Settlement suggestion algorithm: verify normalization logic against PRD position formula

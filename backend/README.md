@@ -1,6 +1,6 @@
 # PairFund Backend
 
-Phase A backend for PairFund mobile remote-mode integration.
+NestJS API for PairFund mobile and Web clients.
 
 ## Current Local Readiness
 
@@ -15,14 +15,9 @@ npx prisma validate
 npx prisma generate
 ```
 
-Current blocker for full remote trial:
-
-```text
-localhost:5432 is not accepting PostgreSQL connections.
-```
-
-The backend code compiles and tests pass, but `prisma migrate dev` and `prisma:seed`
-need a running PostgreSQL database that matches `DATABASE_URL` in `.env`.
+The local remote-mode stack is operational with Docker Engine inside WSL2 (Docker
+Desktop is not required): PostgreSQL is exposed on port `5432`, the API on `3001`,
+and Flutter Web on `8080`.
 
 ## Setup
 
@@ -57,16 +52,34 @@ npm run prisma:seed
 npm run start:dev
 ```
 
-Option B, use Docker Desktop:
+Option B, use Docker Engine inside WSL2:
 
 ```powershell
-docker run --name pairfund-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=pairfund -p 5432:5432 -d postgres:16
+wsl --exec docker start pairfund-postgres pairfund-backend
+wsl --exec docker ps
+Invoke-RestMethod http://localhost:3001/api/v1/health
 ```
 
-Then run the same Prisma commands above.
+After a start or restart, wait until the health endpoint returns
+`{"data":{"ok":true}}` before opening the app; Nest may need several seconds to
+initialize its routes.
 
-If Docker is not installed and local PostgreSQL is not running, backend unit/build/e2e
-verification can still pass, but mobile remote mode cannot persist data yet.
+The development backend container bind-mounts the active checkout's `backend`
+directory and runs `node dist/src/main.js`. Rebuild before restarting after code
+changes:
+
+```powershell
+cd D:\Project\mimic\backend
+npm run build
+wsl --exec docker restart pairfund-backend
+```
+
+If WSL stops immediately while background containers are needed, keep one hidden
+WSL process alive from PowerShell:
+
+```powershell
+Start-Process wsl -ArgumentList '--exec','sleep','infinity' -WindowStyle Hidden
+```
 
 Demo credentials:
 
@@ -75,12 +88,16 @@ email: demo@pairfund.local
 password: password
 ```
 
-Mobile remote command:
+Build and serve Flutter Web against the local API:
 
 ```powershell
 cd D:\Project\mimic\mobile
-flutter run -d chrome --dart-define=PAIRFUND_API_MODE=remote --dart-define=PAIRFUND_API_BASE_URL=http://localhost:3000/api/v1
+flutter build web --no-wasm-dry-run --dart-define=PAIRFUND_API_MODE=remote --dart-define=PAIRFUND_API_BASE_URL=http://localhost:3001/api/v1
+python -m http.server 8080 --directory build/web
 ```
+
+Open `http://localhost:8080/#/login`. After rebuilding, add a query such as
+`?v=10` before the hash if the browser still shows a cached bundle.
 
 ## Phase A Endpoints
 
@@ -93,7 +110,11 @@ flutter run -d chrome --dart-define=PAIRFUND_API_MODE=remote --dart-define=PAIRF
 * `POST /api/v1/me`
 * `GET /api/v1/groups`
 * `POST /api/v1/groups`
+* `GET /api/v1/groups/{groupId}`
+* `PATCH /api/v1/groups/{groupId}`
 * `GET /api/v1/groups/{groupId}/members`
+* `POST /api/v1/groups/{groupId}/invites`
+* `POST /api/v1/group-invites/accept`
 * `GET /api/v1/groups/{groupId}/funds`
 * `POST /api/v1/groups/{groupId}/funds`
 * `GET /api/v1/funds/{fundId}`
