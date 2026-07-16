@@ -213,3 +213,15 @@
 - Made the rename write re-check active Owner access atomically to close a permission race.
 **Decisions:** Archived groups return not found; active-group outsiders receive access denied. Member lists include active memberships only.
 **Known gaps / follow-ups:** Mobile repository/controller and Group detail UI are next. Backend unit tests pass 40/40, e2e tests pass 16/16, production build succeeds, and runtime detail/member smoke passes.
+
+## 2026-07-17 — Add mobile group detail data flow
+
+**Task:** Connect Mobile to the authorized group detail, members, funds, and rename APIs.
+**Scope:** `mobile/lib/features/groups/data/group_repository.dart`, group detail providers, shared API PATCH support, and focused tests
+**What changed:**
+- Added Group detail models and remote aggregation across detail, members, and funds endpoints.
+- Added a dedicated PATCH capability to the Dio API client without breaking existing GET/POST test clients.
+- Added Owner rename state, validation, friendly errors, and Home/detail invalidation.
+- Kept Demo rename state consistent across subsequent detail reads.
+**Decisions:** The repository owns the three-request aggregation so the upcoming screen consumes one coherent Group detail model.
+**Known gaps / follow-ups:** Group detail screen and routing are next. Full Flutter tests pass 149/149, changed-file analysis is clean, and the remote Web build succeeds.
