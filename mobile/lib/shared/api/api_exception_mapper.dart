@@ -14,6 +14,15 @@ ApiException mapDioExceptionToApiException(DioException error) {
         statusCode: error.response?.statusCode,
       );
     }
+
+    final message = responseData['message'];
+    if (message is String && message.isNotEmpty) {
+      return ApiException(
+        code: message,
+        message: message,
+        statusCode: error.response?.statusCode,
+      );
+    }
   }
 
   return ApiException(
