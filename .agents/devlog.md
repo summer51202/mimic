@@ -63,3 +63,13 @@
 - Added AppModule-based e2e tests covering module wiring, authentication, validation, and service arguments.
 **Decisions:** E2E tests inject and restore a dedicated JWT secret instead of relying on the production fallback.
 **Known gaps / follow-ups:** Production JWT fallback-secret validation remains an existing security backlog; mobile invite integration is next.
+## 2026-07-16 — Preserve mobile API error semantics
+
+**Task:** Map NestJS invite and validation failures into reliable Flutter API exceptions.  
+**Scope:** `mobile/lib/shared/api/api_exception_mapper.dart`, `mobile/test/shared/api/api_exception_mapper_test.dart`  
+**What changed:**
+- Added top-level NestJS domain-code parsing and validation-message list handling.
+- Distinguished HTTP `API_ERROR` responses from true no-response `NETWORK_ERROR` failures.
+- Hardened nested error precedence and added edge-case mapper tests.
+**Decisions:** Nested errors take precedence only when they contain a non-empty string code.
+**Known gaps / follow-ups:** Focused mapper tests pass 12/12; the full Flutter suite produced no output for five minutes on Windows and was terminated.
