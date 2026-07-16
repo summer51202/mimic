@@ -128,3 +128,15 @@
 - Added repository, controller, and widget coverage for registration behavior.
 **Decisions:** Reused the login route, session payload mapper, and centralized persistence path instead of adding a separate registration route.
 **Known gaps / follow-ups:** Email verification and password recovery remain out of scope. Full Flutter tests pass 127/127 and the remote-mode Web build succeeds.
+
+## 2026-07-16 — Improve authentication guidance and errors
+
+**Task:** Make login and registration inputs self-explanatory and replace technical failures with actionable user copy.
+**Scope:** `mobile/lib/features/auth/providers/auth_controller.dart`, `mobile/lib/features/auth/presentation/`, `mobile/test/features/auth/`
+**What changed:**
+- Added safe mappings for duplicate-email, invalid-credential, and connectivity failures.
+- Changed Email and Password to empty initial fields with disappearing placeholders.
+- Added explicit Demo credential fill and field-local registration validation.
+- Cleared stale local and remote errors when users edit fields or switch modes.
+**Decisions:** Only known domain codes receive specialized copy; all other API failures use a safe retry message and never expose raw technical details.
+**Known gaps / follow-ups:** Group-aware Home remains in Batch 2. Auth focused tests pass 14/14, full Flutter tests pass 133/133, and the remote-mode Web build succeeds.

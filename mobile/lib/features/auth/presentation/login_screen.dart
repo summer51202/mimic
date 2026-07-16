@@ -19,12 +19,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   late final TextEditingController _passwordController;
   late final TextEditingController _displayNameController;
   bool _isRegistering = false;
+  String? _displayNameError;
+  String? _emailError;
+  String? _passwordError;
 
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController(text: 'you@example.com');
-    _passwordController = TextEditingController(text: 'pairfund-demo');
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
     _displayNameController = TextEditingController();
   }
 
@@ -39,9 +42,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _handleSubmit() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
-    if (email.isEmpty ||
-        password.isEmpty ||
-        (_isRegistering && _displayNameController.text.trim().isEmpty)) {
+    if (!_validateForm(email: email, password: password)) {
       return;
     }
     final controller = ref.read(authControllerProvider.notifier);
@@ -58,6 +59,41 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
 
     context.go(AppRoutes.home);
+  }
+
+  bool _validateForm({required String email, required String password}) {
+    final displayName = _displayNameController.text.trim();
+    final emailIsValid = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email);
+    setState(() {
+      _displayNameError = _isRegistering && displayName.isEmpty
+          ? 'Display name is required.'
+          : null;
+      _emailError = email.isEmpty
+          ? 'Email is required.'
+          : (!emailIsValid ? 'Enter a valid email address.' : null);
+      _passwordError = password.isEmpty
+          ? 'Password is required.'
+          : (password.length < 6
+              ? 'Password must be at least 6 characters.'
+              : null);
+    });
+    return _displayNameError == null &&
+        _emailError == null &&
+        _passwordError == null;
+  }
+
+  void _clearRemoteError() {
+    ref.read(authControllerProvider.notifier).clearError();
+  }
+
+  void _fillDemoAccount() {
+    setState(() {
+      _emailController.text = 'demo@pairfund.local';
+      _passwordController.text = 'password';
+      _emailError = null;
+      _passwordError = null;
+    });
+    _clearRemoteError();
   }
 
   @override
@@ -102,10 +138,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         emailController: _emailController,
                         passwordController: _passwordController,
                         isRegistering: _isRegistering,
+                        displayNameError: _displayNameError,
+                        emailError: _emailError,
+                        passwordError: _passwordError,
+                        onDisplayNameChanged: (_) {
+                          setState(() => _displayNameError = null);
+                          _clearRemoteError();
+                        },
+                        onEmailChanged: (_) {
+                          setState(() => _emailError = null);
+                          _clearRemoteError();
+                        },
+                        onPasswordChanged: (_) {
+                          setState(() => _passwordError = null);
+                          _clearRemoteError();
+                        },
                         isSubmitting: authState.isSubmitting,
                         errorMessage: authState.errorMessage,
                         onSubmit: _handleSubmit,
                       ),
+                      if (!_isRegistering) ...<Widget>[
+                        const SizedBox(height: PfSpacing.xs),
+                        Align(
+                          alignment: Alignment.center,
+                          child: TextButton(
+                            onPressed: authState.isSubmitting
+                                ? null
+                                : _fillDemoAccount,
+                            child: const Text('Use demo account'),
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: PfSpacing.sm),
                       SizedBox(
                         width: double.infinity,
@@ -115,7 +178,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               : () {
                                   setState(() {
                                     _isRegistering = !_isRegistering;
+                                    _displayNameError = null;
+                                    _emailError = null;
+                                    _passwordError = null;
                                   });
+                                  _clearRemoteError();
                                 },
                           child: Text(
                             _isRegistering

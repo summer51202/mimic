@@ -7,6 +7,12 @@ class LoginForm extends StatelessWidget {
     required this.passwordController,
     this.displayNameController,
     this.isRegistering = false,
+    this.displayNameError,
+    this.emailError,
+    this.passwordError,
+    required this.onDisplayNameChanged,
+    required this.onEmailChanged,
+    required this.onPasswordChanged,
     required this.isSubmitting,
     required this.errorMessage,
     required this.onSubmit,
@@ -16,6 +22,12 @@ class LoginForm extends StatelessWidget {
   final TextEditingController passwordController;
   final TextEditingController? displayNameController;
   final bool isRegistering;
+  final String? displayNameError;
+  final String? emailError;
+  final String? passwordError;
+  final ValueChanged<String> onDisplayNameChanged;
+  final ValueChanged<String> onEmailChanged;
+  final ValueChanged<String> onPasswordChanged;
   final bool isSubmitting;
   final String? errorMessage;
   final VoidCallback onSubmit;
@@ -27,27 +39,38 @@ class LoginForm extends StatelessWidget {
       children: <Widget>[
         if (isRegistering) ...<Widget>[
           TextField(
+            key: const Key('auth-display-name'),
             controller: displayNameController,
-            decoration: const InputDecoration(labelText: 'Display name'),
+            onChanged: onDisplayNameChanged,
+            decoration: InputDecoration(
+              labelText: 'Display name',
+              errorText: displayNameError,
+            ),
           ),
           const SizedBox(height: 16),
         ],
         TextField(
+          key: const Key('auth-email'),
           controller: emailController,
+          onChanged: onEmailChanged,
           keyboardType: TextInputType.emailAddress,
           autocorrect: false,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: 'Email',
             hintText: 'you@example.com',
+            errorText: emailError,
           ),
         ),
         const SizedBox(height: 16),
         TextField(
+          key: const Key('auth-password'),
           controller: passwordController,
+          onChanged: onPasswordChanged,
           obscureText: true,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: 'Password',
-            hintText: 'Enter your password',
+            hintText: 'At least 6 characters',
+            errorText: passwordError,
           ),
         ),
         if (errorMessage != null) ...<Widget>[

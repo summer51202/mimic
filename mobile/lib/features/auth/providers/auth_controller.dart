@@ -31,6 +31,12 @@ class AuthController extends StateNotifier<AuthState> {
 
   final Ref _ref;
 
+  void clearError() {
+    if (state.errorMessage != null) {
+      state = state.copyWith(clearError: true);
+    }
+  }
+
   Future<bool> register({
     required String displayName,
     required String email,
