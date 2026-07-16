@@ -1,7 +1,7 @@
 # PairFund Group Governance Design
 
 **Date:** 2026-07-17  
-**Status:** Approved design, pending written-spec review  
+**Status:** Approved
 **Scope:** The first delivery slice of the seven-gap product backlog: member role management, member removal, and self-service group exit.
 
 ## Goal
@@ -119,7 +119,7 @@ The existing Groups module remains the owner of membership lifecycle operations.
 - Re-read active memberships inside the transaction; UI visibility and preflight reads are never treated as authorization.
 - Serialize mutations through a shared PostgreSQL transaction-scoped advisory lock derived from the group ID. Membership changes, contribution creation, expense creation, and pending-settlement creation acquire the same lock before their authorization and mutation checks.
 - Count active Owners only after acquiring the group mutation lock. The role/status update occurs in that same transaction.
-- Use the existing accounting formula per fund: member contributions minus expense splits allocated to that member.
+- Use the same derived position currently shown by settlement suggestions: contributions plus payer amounts minus allocated expense splits, then apply completed settlement transfers. Refund expenses reverse the payer/split sign.
 - Check every fund regardless of fund status. Each computed position must equal zero.
 - Reject removal or exit when a pending settlement has the target as `fromUserId` or `toUserId`.
 - Preserve contributions, expenses, payers, splits, settlements, and prior audit entries.
