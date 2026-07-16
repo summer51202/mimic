@@ -43,6 +43,10 @@ Let a group govern its active membership without breaking accounting history, lo
 
 All routes are JWT protected and use the existing `/api/v1` prefix.
 
+The existing `GET /groups/:groupId` detail response adds
+`current_user_id`. Mobile uses this server-authenticated identity to distinguish
+the current user's member row when multiple users share the same role.
+
 ### Change role
 
 `PATCH /groups/:groupId/members/:userId`
@@ -109,6 +113,7 @@ Any active member may leave when the accounting and last-Owner invariants pass.
 The existing Groups module remains the owner of membership lifecycle operations. No schema migration is required.
 
 - Add a DTO for the role body and controller routes for the three operations.
+- Include the authenticated user ID as `current_user_id` in group detail responses.
 - Add focused service methods for role change, removal, and exit.
 - Keep authorization, invariant checks, membership mutation, and audit creation in one Prisma transaction per request.
 - Re-read active memberships inside the transaction; UI visibility and preflight reads are never treated as authorization.
@@ -169,6 +174,7 @@ Extend the existing group repository and group-detail controller rather than int
 ## Mobile Interaction Design
 
 - Member rows show avatar, display name, and a non-interactive Owner/Member tag.
+- The current member row is identified by `current_user_id`, never by role or display name.
 - An Owner sees a three-dot menu only for other active members.
 - The menu opens a bottom sheet:
   - Member target: `Make Owner`, `Remove from group`.
