@@ -7,6 +7,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
+  AuditAction,
+  AuditEntityType,
   GroupStatus,
   GroupType,
   InviteStatus,
@@ -15,9 +17,11 @@ import {
   Prisma,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { lockGroupMutation } from '../prisma/group-mutation-lock';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { CreateGroupInviteDto } from './dto/create-group-invite.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { UpdateGroupMemberDto } from './dto/update-group-member.dto';
 
 @Injectable()
 export class GroupsService {
@@ -107,6 +111,101 @@ export class GroupsService {
       throw new ForbiddenException('OWNER_REQUIRED');
     }
     return this.prisma.group.findUniqueOrThrow({ where: { id: groupId } });
+  }
+
+  async updateMemberRole(
+    groupId: string,
+    actorUserId: string,
+    targetUserId: string,
+    dto: UpdateGroupMemberDto,
+  ) {
+    return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, groupId);
+
+      const group = await tx.group.findFirst({
+        where: { id: groupId, status: GroupStatus.ACTIVE },
+      });
+      if (!group) {
+        throw new NotFoundException('GROUP_NOT_FOUND');
+      }
+
+      const actor = await tx.groupMember.findFirst({
+        where: {
+          groupId,
+          userId: actorUserId,
+          status: MemberStatus.ACTIVE,
+        },
+      });
+      if (!actor) {
+        throw new ForbiddenException('GROUP_ACCESS_DENIED');
+      }
+      if (actor.role !== MemberRole.OWNER) {
+        throw new ForbiddenException('OWNER_REQUIRED');
+      }
+
+      const target = await tx.groupMember.findFirst({
+        where: {
+          groupId,
+          userId: targetUserId,
+          status: MemberStatus.ACTIVE,
+        },
+      });
+      if (!target) {
+        throw new NotFoundException('MEMBER_NOT_FOUND');
+      }
+
+      const requestedRole =
+        dto.role === 'owner' ? MemberRole.OWNER : MemberRole.MEMBER;
+      if (target.role === requestedRole) {
+        throw new ConflictException('ROLE_UNCHANGED');
+      }
+
+      if (target.role === MemberRole.OWNER) {
+        const activeOwnerCount = await tx.groupMember.count({
+          where: {
+            groupId,
+            role: MemberRole.OWNER,
+            status: MemberStatus.ACTIVE,
+          },
+        });
+        if (activeOwnerCount <= 1) {
+          throw new ConflictException('LAST_OWNER_REQUIRED');
+        }
+      }
+
+      const updatedTarget = await tx.groupMember.update({
+        where: { id: target.id },
+        data: { role: requestedRole },
+        include: { user: true },
+      });
+
+      await tx.auditLog.create({
+        data: {
+          groupId,
+          actorUserId,
+          entityType: AuditEntityType.GROUP,
+          entityId: groupId,
+          action: AuditAction.ROLE_CHANGE,
+          beforeSnapshot: {
+            role: target.role.toLowerCase(),
+            status: target.status.toLowerCase(),
+          },
+          afterSnapshot: {
+            role: requestedRole.toLowerCase(),
+            status: target.status.toLowerCase(),
+          },
+          metadata: {
+            operation:
+              requestedRole === MemberRole.OWNER
+                ? 'promote_member'
+                : 'demote_owner',
+            target_user_id: targetUserId,
+          },
+        },
+      });
+
+      return updatedTarget;
+    });
   }
 
   async createInvite(

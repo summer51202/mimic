@@ -5,6 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
+  AuditAction,
+  AuditEntityType,
   GroupStatus,
   InviteStatus,
   MemberRole,
@@ -16,6 +18,210 @@ import { validate } from 'class-validator';
 import { AcceptGroupInviteDto } from './dto/accept-group-invite.dto';
 import { CreateGroupInviteDto } from './dto/create-group-invite.dto';
 import { GroupsService } from './groups.service';
+import { UpdateGroupMemberDto } from './dto/update-group-member.dto';
+
+describe('UpdateGroupMemberDto', () => {
+  it('trims and lowercases OWNER', async () => {
+    const dto = plainToInstance(UpdateGroupMemberDto, { role: ' OWNER ' });
+
+    await expect(validate(dto)).resolves.toEqual([]);
+    expect(dto.role).toBe('owner');
+  });
+
+  it('rejects a role other than owner or member', async () => {
+    const dto = plainToInstance(UpdateGroupMemberDto, { role: 'admin' });
+
+    await expect(validate(dto)).resolves.toHaveLength(1);
+  });
+});
+
+describe('GroupsService.updateMemberRole', () => {
+  const group = { id: 'group-1', status: GroupStatus.ACTIVE };
+  const actor = {
+    id: 'actor-membership',
+    userId: 'owner-1',
+    role: MemberRole.OWNER,
+    status: MemberStatus.ACTIVE,
+  };
+  const target = {
+    id: 'target-membership',
+    userId: 'member-1',
+    role: MemberRole.MEMBER,
+    status: MemberStatus.ACTIVE,
+  };
+  const updatedTarget = {
+    ...target,
+    role: MemberRole.OWNER,
+    user: { id: 'member-1', displayName: 'Partner' },
+  };
+
+  function setup() {
+    const tx = {
+      $executeRaw: jest.fn().mockResolvedValue(0),
+      group: { findFirst: jest.fn().mockResolvedValue(group) },
+      groupMember: {
+        findFirst: jest
+          .fn()
+          .mockResolvedValueOnce(actor)
+          .mockResolvedValueOnce(target),
+        count: jest.fn().mockResolvedValue(2),
+        update: jest.fn().mockResolvedValue(updatedTarget),
+      },
+      auditLog: { create: jest.fn().mockResolvedValue({ id: 'audit-1' }) },
+    };
+    const prisma = {
+      $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) =>
+        callback(tx),
+      ),
+    };
+    return { service: new GroupsService(prisma as never), prisma, tx };
+  }
+
+  it('promotes an active member and records the role change audit in one transaction', async () => {
+    const { service, prisma, tx } = setup();
+
+    await expect(
+      service.updateMemberRole('group-1', 'owner-1', 'member-1', {
+        role: 'owner',
+      }),
+    ).resolves.toBe(updatedTarget);
+
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(tx.groupMember.update).toHaveBeenCalledWith({
+      where: { id: target.id },
+      data: { role: MemberRole.OWNER },
+      include: { user: true },
+    });
+    expect(tx.auditLog.create).toHaveBeenCalledWith({
+      data: {
+        groupId: 'group-1',
+        actorUserId: 'owner-1',
+        entityType: AuditEntityType.GROUP,
+        entityId: 'group-1',
+        action: AuditAction.ROLE_CHANGE,
+        beforeSnapshot: { role: 'member', status: 'active' },
+        afterSnapshot: { role: 'owner', status: 'active' },
+        metadata: {
+          operation: 'promote_member',
+          target_user_id: 'member-1',
+        },
+      },
+    });
+  });
+
+  it('demotes another owner when another active owner remains', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.findFirst
+      .mockReset()
+      .mockResolvedValueOnce(actor)
+      .mockResolvedValueOnce({ ...target, role: MemberRole.OWNER });
+    tx.groupMember.update.mockResolvedValue({
+      ...updatedTarget,
+      role: MemberRole.MEMBER,
+    });
+
+    await service.updateMemberRole('group-1', 'owner-1', 'owner-2', {
+      role: 'member',
+    });
+
+    expect(tx.groupMember.count).toHaveBeenCalledWith({
+      where: {
+        groupId: 'group-1',
+        role: MemberRole.OWNER,
+        status: MemberStatus.ACTIVE,
+      },
+    });
+    expect(tx.auditLog.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        beforeSnapshot: { role: 'owner', status: 'active' },
+        afterSnapshot: { role: 'member', status: 'active' },
+        metadata: {
+          operation: 'demote_owner',
+          target_user_id: 'owner-2',
+        },
+      }),
+    });
+  });
+
+  it.each([
+    ['GROUP_NOT_FOUND', null, actor, target, NotFoundException],
+    ['GROUP_ACCESS_DENIED', group, null, target, ForbiddenException],
+    [
+      'OWNER_REQUIRED',
+      group,
+      { ...actor, role: MemberRole.MEMBER },
+      target,
+      ForbiddenException,
+    ],
+    ['MEMBER_NOT_FOUND', group, actor, null, NotFoundException],
+  ])('returns %s for invalid group or membership state', async (
+    message,
+    foundGroup,
+    foundActor,
+    foundTarget,
+    ExceptionType,
+  ) => {
+    const { service, tx } = setup();
+    tx.group.findFirst.mockResolvedValue(foundGroup);
+    tx.groupMember.findFirst
+      .mockReset()
+      .mockResolvedValueOnce(foundActor)
+      .mockResolvedValueOnce(foundTarget);
+
+    await expect(
+      service.updateMemberRole('group-1', 'owner-1', 'member-1', {
+        role: 'owner',
+      }),
+    ).rejects.toEqual(new ExceptionType(message));
+    expect(tx.groupMember.update).not.toHaveBeenCalled();
+    expect(tx.auditLog.create).not.toHaveBeenCalled();
+  });
+
+  it('returns ROLE_UNCHANGED when the target already has the requested role', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.findFirst
+      .mockReset()
+      .mockResolvedValueOnce(actor)
+      .mockResolvedValueOnce({ ...target, role: MemberRole.OWNER });
+
+    await expect(
+      service.updateMemberRole('group-1', 'owner-1', 'member-1', {
+        role: 'owner',
+      }),
+    ).rejects.toEqual(new ConflictException('ROLE_UNCHANGED'));
+  });
+
+  it('returns LAST_OWNER_REQUIRED when demoting the final active owner', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.findFirst
+      .mockReset()
+      .mockResolvedValueOnce(actor)
+      .mockResolvedValueOnce({ ...target, role: MemberRole.OWNER });
+    tx.groupMember.count.mockResolvedValue(1);
+
+    await expect(
+      service.updateMemberRole('group-1', 'owner-1', 'owner-1', {
+        role: 'member',
+      }),
+    ).rejects.toEqual(new ConflictException('LAST_OWNER_REQUIRED'));
+    expect(tx.groupMember.count).toHaveBeenCalledTimes(1);
+    expect(tx.groupMember.update).not.toHaveBeenCalled();
+  });
+
+  it('acquires the mutation lock before group or membership reads', async () => {
+    const { service, tx } = setup();
+
+    await service.updateMemberRole('group-1', 'owner-1', 'member-1', {
+      role: 'owner',
+    });
+
+    const lockOrder = tx.$executeRaw.mock.invocationCallOrder[0];
+    expect(lockOrder).toBeLessThan(tx.group.findFirst.mock.invocationCallOrder[0]);
+    expect(lockOrder).toBeLessThan(
+      tx.groupMember.findFirst.mock.invocationCallOrder[0],
+    );
+  });
+});
 
 describe('GroupsService.createInvite', () => {
   afterEach(() => {
