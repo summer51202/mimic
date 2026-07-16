@@ -1,4 +1,4 @@
-﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/api/api_json.dart';
 import '../../../shared/api/api_mode_provider.dart';
@@ -31,6 +31,7 @@ class ActivityPreview {
 
 class HomeSummary {
   const HomeSummary({
+    this.groupId,
     required this.displayName,
     required this.totalBalanceLabel,
     required this.activeFunds,
@@ -38,6 +39,7 @@ class HomeSummary {
     required this.pendingTasksCount,
   });
 
+  final String? groupId;
   final String displayName;
   final String totalBalanceLabel;
   final List<FundSummary> activeFunds;
@@ -55,6 +57,7 @@ class DemoHomeRepository implements HomeRepository {
     await Future<void>.delayed(const Duration(milliseconds: 250));
 
     return const HomeSummary(
+      groupId: 'group-demo',
       displayName: 'Edward',
       totalBalanceLabel: 'TWD 12,800',
       activeFunds: <FundSummary>[
@@ -101,13 +104,15 @@ class RemoteHomeRepository implements HomeRepository {
 
     if (groups.isEmpty) {
       return mapRemoteHomeSummary(
+        groupId: null,
         user: userDto,
         totalBalanceLabel: formatMinorCurrency(0),
         activeFunds: const <FundSummary>[],
       );
     }
 
-    final fundsResponse = await _apiClient.get('/groups/${groups.first.id}/funds');
+    final fundsResponse =
+        await _apiClient.get('/groups/${groups.first.id}/funds');
     final fundDtos = readDataListEnvelope(fundsResponse)
         .map(FundListItemDto.fromJson)
         .toList();
@@ -130,6 +135,7 @@ class RemoteHomeRepository implements HomeRepository {
     );
 
     return mapRemoteHomeSummary(
+      groupId: groups.first.id,
       user: userDto,
       totalBalanceLabel: formatMinorCurrency(totalBalanceMinor),
       activeFunds: activeFunds,
@@ -146,4 +152,3 @@ final homeRepositoryProvider = Provider<HomeRepository>((Ref ref) {
 
   return DemoHomeRepository();
 });
-

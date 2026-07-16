@@ -30,6 +30,33 @@ class HomeDashboardScreen extends ConsumerWidget {
                   'Shared funds, clear balances, and gentle bookkeeping.',
                   style: textTheme.bodyMedium,
                 ),
+                const SizedBox(height: PfSpacing.sm),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => context.push(AppRoutes.acceptInvite),
+                        child: const Text('Join with code'),
+                      ),
+                    ),
+                    const SizedBox(width: PfSpacing.sm),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: summary.groupId == null
+                            ? null
+                            : () {
+                                context.pushNamed(
+                                  'create-invite',
+                                  pathParameters: <String, String>{
+                                    'groupId': summary.groupId!,
+                                  },
+                                );
+                              },
+                        child: const Text('Invite member'),
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: PfSpacing.lg),
                 BalanceHeroCard(
                   displayName: summary.displayName,

@@ -63,11 +63,13 @@ FundSummary mapFundSummary(
 }
 
 HomeSummary mapRemoteHomeSummary({
+  required String? groupId,
   required MeDto user,
   required String totalBalanceLabel,
   required List<FundSummary> activeFunds,
 }) {
   return HomeSummary(
+    groupId: groupId,
     displayName: user.displayName,
     totalBalanceLabel: totalBalanceLabel,
     activeFunds: activeFunds,

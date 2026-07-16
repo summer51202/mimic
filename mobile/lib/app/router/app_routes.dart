@@ -2,6 +2,8 @@ abstract final class AppRoutes {
   static const String login = '/login';
   static const String home = '/home';
   static const String createFund = '/funds/new';
+  static const String createInvite = '/groups/:groupId/invites/new';
+  static const String acceptInvite = '/invites/accept';
   static const String fundDetail = '/funds/:fundId';
   static const String fundActivity = '/funds/:fundId/activity';
   static const String createContribution = '/funds/:fundId/contributions/new';
@@ -12,6 +14,8 @@ abstract final class AppRoutes {
   static const String settings = '/settings';
 
   static String fundDetailPath(String fundId) => '/funds/$fundId';
+  static String createInvitePath(String groupId) =>
+      '/groups/${Uri.encodeComponent(groupId)}/invites/new';
   static String fundActivityPath(String fundId) => '/funds/$fundId/activity';
   static String createContributionPath(String fundId) =>
       '/funds/$fundId/contributions/new';

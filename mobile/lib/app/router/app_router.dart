@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,6 +10,8 @@ import '../../features/expenses/presentation/create_expense_screen.dart';
 import '../../features/funds/presentation/create_fund_screen.dart';
 import '../../features/funds/presentation/fund_detail_screen.dart';
 import '../../features/home/presentation/home_dashboard_screen.dart';
+import '../../features/invites/presentation/accept_invite_screen.dart';
+import '../../features/invites/presentation/create_invite_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/settlements/presentation/settlement_screen.dart';
 import '../../features/tasks/presentation/tasks_screen.dart';
@@ -54,6 +56,22 @@ final appRouterProvider = Provider<GoRouter>((Ref ref) {
         name: 'create-fund',
         builder: (BuildContext context, GoRouterState state) {
           return const CreateFundScreen();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.createInvite,
+        name: 'create-invite',
+        builder: (BuildContext context, GoRouterState state) {
+          return CreateInviteScreen(
+            groupId: state.pathParameters['groupId']!,
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.acceptInvite,
+        name: 'accept-invite',
+        builder: (BuildContext context, GoRouterState state) {
+          return const AcceptInviteScreen();
         },
       ),
       GoRoute(

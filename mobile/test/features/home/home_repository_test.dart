@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pairfund_mobile/features/home/data/home_repository.dart';
+import 'package:pairfund_mobile/features/home/data/remote/home_remote_mapper.dart';
 import 'package:pairfund_mobile/shared/api/pairfund_api_client.dart';
 
 class FakeApiClient implements PairFundApiClient {
@@ -34,7 +35,47 @@ class FakeApiClient implements PairFundApiClient {
 }
 
 void main() {
-  test('remote home repository combines me groups and funds into summary', () async {
+  test('HomeSummary exposes nullable groupId', () {
+    const summary = HomeSummary(
+      groupId: 'group-1',
+      displayName: 'Edward',
+      totalBalanceLabel: 'TWD 0',
+      activeFunds: <FundSummary>[],
+      recentActivities: <ActivityPreview>[],
+      pendingTasksCount: 0,
+    );
+
+    expect(summary.groupId, 'group-1');
+  });
+
+  test('demo home repository uses the demo group id', () async {
+    final summary = await DemoHomeRepository().fetchSummary();
+
+    expect(summary.groupId, 'group-demo');
+  });
+
+  test('remote home repository returns null groupId when there are no groups',
+      () async {
+    final repository = RemoteHomeRepository(
+      FakeApiClient(
+        <String, Map<String, dynamic>>{
+          '/me': <String, dynamic>{
+            'data': <String, dynamic>{'display_name': 'Edward'},
+          },
+          '/groups': <String, dynamic>{
+            'data': <Map<String, dynamic>>[],
+          },
+        },
+      ),
+    );
+
+    final summary = await repository.fetchSummary();
+
+    expect(summary.groupId, isNull);
+  });
+
+  test('remote home repository combines me groups and funds into summary',
+      () async {
     final repository = RemoteHomeRepository(
       FakeApiClient(
         <String, Map<String, dynamic>>{
@@ -75,8 +116,52 @@ void main() {
     final summary = await repository.fetchSummary();
 
     expect(summary.displayName, 'Edward');
+    expect(summary.groupId, 'group-1');
     expect(summary.totalBalanceLabel, 'TWD 10,000');
     expect(summary.activeFunds.length, 2);
     expect(summary.activeFunds.first.name, 'Date Fund');
+  });
+
+  test('remote home repository selects the first group id', () async {
+    final repository = RemoteHomeRepository(
+      FakeApiClient(
+        <String, Map<String, dynamic>>{
+          '/me': <String, dynamic>{
+            'data': <String, dynamic>{'display_name': 'Edward'},
+          },
+          '/groups': <String, dynamic>{
+            'data': <Map<String, dynamic>>[
+              <String, dynamic>{'id': 'first/group'},
+              <String, dynamic>{'id': 'second-group'},
+            ],
+          },
+          '/groups/first/group/funds': <String, dynamic>{
+            'data': <Map<String, dynamic>>[],
+          },
+        },
+      ),
+    );
+
+    final summary = await repository.fetchSummary();
+
+    expect(summary.groupId, 'first/group');
+  });
+
+  test('remote mapper requires nullable groupId and maps it through', () {
+    final withGroup = mapRemoteHomeSummary(
+      groupId: 'group-1',
+      user: const MeDto(displayName: 'Edward'),
+      totalBalanceLabel: 'TWD 0',
+      activeFunds: const <FundSummary>[],
+    );
+    final withoutGroup = mapRemoteHomeSummary(
+      groupId: null,
+      user: const MeDto(displayName: 'Edward'),
+      totalBalanceLabel: 'TWD 0',
+      activeFunds: const <FundSummary>[],
+    );
+
+    expect(withGroup.groupId, 'group-1');
+    expect(withoutGroup.groupId, isNull);
   });
 }
