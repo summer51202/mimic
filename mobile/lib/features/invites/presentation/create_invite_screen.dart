@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../shared/constants/design_tokens.dart';
 import '../data/invite_repository.dart';
@@ -148,20 +149,5 @@ class _CreateInviteScreenState extends ConsumerState<CreateInviteScreen> {
 }
 
 String _formatExpiry(DateTime value) {
-  final local = value.toLocal();
-  const months = <String>[
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-  return '${months[local.month - 1]} ${local.day}, ${local.year}';
+  return DateFormat.yMMMd().add_jm().format(value.toLocal());
 }

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:pairfund_mobile/app/router/app_routes.dart';
 import 'package:pairfund_mobile/features/invites/data/invite_repository.dart';
 import 'package:pairfund_mobile/features/invites/presentation/create_invite_screen.dart';
@@ -72,7 +73,9 @@ void main() {
     expect(repository.email, 'partner@example.com');
     expect(find.text('ABC123456789'), findsOneWidget);
     expect(find.text('Copy code'), findsOneWidget);
-    expect(find.textContaining('Jul 23, 2026'), findsOneWidget);
+    final expectedExpiry =
+        DateFormat.yMMMd().add_jm().format(_invite.expiresAt.toLocal());
+    expect(find.text('Expires $expectedExpiry'), findsOneWidget);
     expect(find.byType(SelectableText), findsWidgets);
   });
 
