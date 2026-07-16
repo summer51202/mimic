@@ -114,11 +114,15 @@ void main() {
           'data': <Map<String, dynamic>>[
             <String, dynamic>{
               'user_id': 'user-1',
+              'display_name': 'Edward',
               'role': 'member',
+              'status': 'active',
             },
             <String, dynamic>{
               'user_id': 'user-2',
+              'display_name': 'Alice',
               'role': 'owner',
+              'status': 'active',
             },
           ],
         },
@@ -159,11 +163,25 @@ void main() {
           groupType: 'group',
           memberCount: 2,
           role: 'member',
+          members: <GroupMemberSummary>[
+            GroupMemberSummary(
+              id: 'user-1',
+              displayName: 'Edward',
+              role: 'member',
+            ),
+            GroupMemberSummary(
+              id: 'user-2',
+              displayName: 'Alice',
+              role: 'owner',
+            ),
+          ],
         ),
       ),
     );
     expect(apiClient.getPaths, contains('/groups/group-2/funds'));
     expect(apiClient.getPaths, isNot(contains('/groups/group-1/funds')));
+    expect(groups.last.members.map((member) => member.displayName),
+        <String>['Edward', 'Alice']);
   });
 
   test('remote home repository loads an explicitly selected group id',

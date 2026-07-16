@@ -164,3 +164,15 @@
 - Updated router tests to isolate the new group providers.
 **Decisions:** Full group management actions remain in Batch 3 so they ship together with server-enforced Owner/Member authorization.
 **Known gaps / follow-ups:** A dedicated create-group entry and group management screen remain. Full Flutter tests pass 139/139 and the remote Web build succeeds.
+
+## 2026-07-16 — Show current group members
+
+**Task:** Make multi-group switching directly testable and show who belongs to the current group.
+**Scope:** `mobile/lib/features/groups/data/group_summary.dart`, Home remote mapping and repository, Current group card, and focused tests
+**What changed:**
+- Added member identity and role data to each group summary.
+- Filtered inactive memberships out of the displayed member count and list.
+- Added a Members section with names, initials, and Owner/Member roles to the Home group card.
+- Added a local `Switch Test Group` for `test@gmail.com` with two members for acceptance testing.
+**Decisions:** The local acceptance group uses fixed IDs and a clearly marked name so setup is repeatable and distinguishable from user-created data.
+**Known gaps / follow-ups:** Member management actions remain part of Batch 3. Full Flutter tests pass 139/139 and the remote Web build succeeds.

@@ -64,6 +64,18 @@ class DemoHomeRepository implements HomeRepository {
         groupType: 'couple',
         memberCount: 2,
         role: 'owner',
+        members: <GroupMemberSummary>[
+          GroupMemberSummary(
+            id: 'demo-owner',
+            displayName: 'Edward',
+            role: 'owner',
+          ),
+          GroupMemberSummary(
+            id: 'demo-member',
+            displayName: 'Alex',
+            role: 'member',
+          ),
+        ],
       ),
     ];
   }
@@ -124,15 +136,27 @@ class RemoteHomeRepository implements HomeRepository {
         final members = readDataListEnvelope(membersResponse)
             .map(GroupMemberDto.fromJson)
             .toList();
-        final currentMember = members.where(
+        final activeMembers = members
+            .where((member) => member.status.toLowerCase() == 'active')
+            .toList();
+        final currentMember = activeMembers.where(
           (member) => member.userId == userDto.id,
         );
         return GroupSummary(
           id: group.id,
           name: group.name,
           groupType: group.groupType,
-          memberCount: members.length,
+          memberCount: activeMembers.length,
           role: currentMember.isEmpty ? 'member' : currentMember.first.role,
+          members: activeMembers
+              .map(
+                (member) => GroupMemberSummary(
+                  id: member.userId,
+                  displayName: member.displayName,
+                  role: member.role,
+                ),
+              )
+              .toList(),
         );
       }),
     );

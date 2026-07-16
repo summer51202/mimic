@@ -38,15 +38,24 @@ class GroupDto {
 }
 
 class GroupMemberDto {
-  const GroupMemberDto({required this.userId, required this.role});
+  const GroupMemberDto({
+    required this.userId,
+    required this.displayName,
+    required this.role,
+    required this.status,
+  });
 
   final String userId;
+  final String displayName;
   final String role;
+  final String status;
 
   factory GroupMemberDto.fromJson(Map<String, dynamic> data) {
     return GroupMemberDto(
       userId: '${data['user_id'] ?? ''}',
+      displayName: '${data['display_name'] ?? 'Unknown member'}',
       role: '${data['role'] ?? 'member'}',
+      status: '${data['status'] ?? 'active'}',
     );
   }
 }

@@ -27,6 +27,10 @@ const _groups = <GroupSummary>[
     groupType: 'COUPLE',
     memberCount: 2,
     role: 'OWNER',
+    members: <GroupMemberSummary>[
+      GroupMemberSummary(id: 'user-1', displayName: 'Edward', role: 'OWNER'),
+      GroupMemberSummary(id: 'user-2', displayName: 'Alice', role: 'MEMBER'),
+    ],
   ),
   GroupSummary(
     id: 'group-2',
@@ -135,8 +139,10 @@ void main() {
 
     expect(find.text('Current group'), findsOneWidget);
     expect(find.text('Our Home'), findsOneWidget);
-    expect(find.text('Owner'), findsOneWidget);
+    expect(find.text('Owner'), findsWidgets);
     expect(find.text('2 members'), findsOneWidget);
+    expect(find.text('Edward'), findsOneWidget);
+    expect(find.text('Alice'), findsOneWidget);
 
     await tester.tap(find.text('Switch'));
     await tester.pumpAndSettle();

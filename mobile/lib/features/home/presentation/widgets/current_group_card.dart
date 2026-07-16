@@ -47,6 +47,27 @@ class CurrentGroupCard extends StatelessWidget {
                 Chip(label: Text(_typeLabel(group.groupType))),
               ],
             ),
+            if (group.members.isNotEmpty) ...<Widget>[
+              const SizedBox(height: PfSpacing.sm),
+              const Divider(),
+              const SizedBox(height: PfSpacing.xs),
+              Text('Members', style: textTheme.titleMedium),
+              const SizedBox(height: PfSpacing.xs),
+              for (final member in group.members)
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  dense: true,
+                  leading: CircleAvatar(
+                    child: Text(
+                      member.displayName.isEmpty
+                          ? '?'
+                          : member.displayName.characters.first.toUpperCase(),
+                    ),
+                  ),
+                  title: Text(member.displayName),
+                  trailing: Text(_roleLabel(member.role)),
+                ),
+            ],
           ],
         ),
       ),
