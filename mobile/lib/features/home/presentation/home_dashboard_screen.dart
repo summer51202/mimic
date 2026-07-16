@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router/app_routes.dart';
+import '../../groups/providers/selected_group_provider.dart';
 import '../../../shared/constants/design_tokens.dart';
 import '../providers/home_summary_provider.dart';
 import 'widgets/balance_hero_card.dart';
 import 'widgets/fund_card_list.dart';
+import 'widgets/current_group_card.dart';
 
 class HomeDashboardScreen extends ConsumerWidget {
   const HomeDashboardScreen({super.key});
@@ -15,6 +17,7 @@ class HomeDashboardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final homeSummaryAsync = ref.watch(homeSummaryProvider);
+    final groupsAsync = ref.watch(homeGroupsProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -43,6 +46,52 @@ class HomeDashboardScreen extends ConsumerWidget {
                 Text(
                   'Shared funds, clear balances, and gentle bookkeeping.',
                   style: textTheme.bodyMedium,
+                ),
+                const SizedBox(height: PfSpacing.sm),
+                groupsAsync.when(
+                  data: (groups) {
+                    if (groups.isEmpty) {
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(PfSpacing.md),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text('You are not in a group yet',
+                                  style: textTheme.titleLarge),
+                              const SizedBox(height: PfSpacing.xs),
+                              Text(
+                                'Join with an invite code to start sharing funds with your partner or group.',
+                                style: textTheme.bodyMedium,
+                              ),
+                              const SizedBox(height: PfSpacing.md),
+                              ElevatedButton(
+                                onPressed: () =>
+                                    context.push(AppRoutes.acceptInvite),
+                                child: const Text('Join with code'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    final selectedId = ref.watch(selectedGroupProvider);
+                    final current = groups.firstWhere(
+                      (group) => group.id == (selectedId ?? summary.groupId),
+                      orElse: () => groups.first,
+                    );
+                    return CurrentGroupCard(
+                      group: current,
+                      groups: groups,
+                      onSelect: (group) {
+                        ref
+                            .read(selectedGroupProvider.notifier)
+                            .select(group.id);
+                      },
+                    );
+                  },
+                  loading: () => const LinearProgressIndicator(),
+                  error: (_, __) => const SizedBox.shrink(),
                 ),
                 const SizedBox(height: PfSpacing.sm),
                 Row(

@@ -6,6 +6,9 @@ import 'package:pairfund_mobile/app/router/app_router.dart';
 import 'package:pairfund_mobile/app/router/app_routes.dart';
 import 'package:pairfund_mobile/features/home/data/home_repository.dart';
 import 'package:pairfund_mobile/features/home/providers/home_summary_provider.dart';
+import 'package:pairfund_mobile/features/groups/data/group_summary.dart';
+import 'package:pairfund_mobile/features/groups/data/selected_group_persistence.dart';
+import 'package:pairfund_mobile/features/groups/providers/selected_group_provider.dart';
 import 'package:pairfund_mobile/features/invites/data/invite_repository.dart';
 import 'package:pairfund_mobile/shared/providers/session_provider.dart';
 import 'package:pairfund_mobile/shared/storage/session_persistence.dart';
@@ -31,6 +34,17 @@ class FakeSessionPersistence implements SessionPersistence {
 
   @override
   Future<void> saveSession(SessionState session) async {}
+}
+
+class FakeSelectedGroupPersistence implements SelectedGroupPersistence {
+  @override
+  Future<void> clear() async {}
+
+  @override
+  Future<String?> read() async => 'group-1';
+
+  @override
+  Future<void> write(String groupId) async {}
 }
 
 const _authenticatedSession = SessionState(
@@ -79,6 +93,20 @@ ProviderContainer _authenticatedContainer({
         (ref) => FakeSessionNotifier(_authenticatedSession),
       ),
       homeSummaryProvider.overrideWith((_) async => _homeSummary),
+      homeGroupsProvider.overrideWith(
+        (_) async => const <GroupSummary>[
+          GroupSummary(
+            id: 'group-1',
+            name: 'Our Home',
+            groupType: 'COUPLE',
+            memberCount: 2,
+            role: 'OWNER',
+          ),
+        ],
+      ),
+      selectedGroupProvider.overrideWith(
+        (_) => SelectedGroupNotifier(FakeSelectedGroupPersistence()),
+      ),
       if (inviteRepository != null)
         inviteRepositoryProvider.overrideWithValue(inviteRepository),
     ],
@@ -142,6 +170,10 @@ void main() {
               ),
             ),
           ),
+          homeGroupsProvider.overrideWith((_) async => const <GroupSummary>[]),
+          selectedGroupProvider.overrideWith(
+            (_) => SelectedGroupNotifier(FakeSelectedGroupPersistence()),
+          ),
         ],
         child: const PairFundApp(),
       ),
@@ -166,6 +198,10 @@ void main() {
                 userId: 'user-1',
               ),
             ),
+          ),
+          homeGroupsProvider.overrideWith((_) async => const <GroupSummary>[]),
+          selectedGroupProvider.overrideWith(
+            (_) => SelectedGroupNotifier(FakeSelectedGroupPersistence()),
           ),
         ],
         child: const PairFundApp(),

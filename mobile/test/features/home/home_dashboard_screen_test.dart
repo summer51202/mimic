@@ -6,6 +6,36 @@ import 'package:pairfund_mobile/app/router/app_routes.dart';
 import 'package:pairfund_mobile/features/home/data/home_repository.dart';
 import 'package:pairfund_mobile/features/home/presentation/home_dashboard_screen.dart';
 import 'package:pairfund_mobile/features/home/providers/home_summary_provider.dart';
+import 'package:pairfund_mobile/features/groups/data/group_summary.dart';
+import 'package:pairfund_mobile/features/groups/data/selected_group_persistence.dart';
+import 'package:pairfund_mobile/features/groups/providers/selected_group_provider.dart';
+
+class _MemorySelection implements SelectedGroupPersistence {
+  String? value;
+  @override
+  Future<void> clear() async => value = null;
+  @override
+  Future<String?> read() async => value;
+  @override
+  Future<void> write(String groupId) async => value = groupId;
+}
+
+const _groups = <GroupSummary>[
+  GroupSummary(
+    id: 'group-1',
+    name: 'Our Home',
+    groupType: 'COUPLE',
+    memberCount: 2,
+    role: 'OWNER',
+  ),
+  GroupSummary(
+    id: 'group-2',
+    name: 'Summer Trip',
+    groupType: 'GROUP',
+    memberCount: 4,
+    role: 'MEMBER',
+  ),
+];
 
 const _fund = FundSummary(
   id: 'fund-1',
@@ -25,6 +55,7 @@ HomeSummary _summary({String? groupId = 'group-1'}) => HomeSummary(
 Future<GoRouter> _pumpDashboard(
   WidgetTester tester, {
   required HomeSummary summary,
+  List<GroupSummary> groups = _groups,
   Size size = const Size(800, 900),
 }) async {
   await tester.binding.setSurfaceSize(size);
@@ -71,6 +102,10 @@ Future<GoRouter> _pumpDashboard(
     ProviderScope(
       overrides: <Override>[
         homeSummaryProvider.overrideWith((_) async => summary),
+        homeGroupsProvider.overrideWith((_) async => groups),
+        selectedGroupProvider.overrideWith(
+          (_) => SelectedGroupNotifier(_MemorySelection()),
+        ),
       ],
       child: MaterialApp.router(routerConfig: router),
     ),
@@ -92,6 +127,38 @@ void main() {
     expect(find.text('Settle'), findsOneWidget);
     expect(find.text('Pending tasks'), findsOneWidget);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('shows current group context and switches groups',
+      (WidgetTester tester) async {
+    await _pumpDashboard(tester, summary: _summary());
+
+    expect(find.text('Current group'), findsOneWidget);
+    expect(find.text('Our Home'), findsOneWidget);
+    expect(find.text('Owner'), findsOneWidget);
+    expect(find.text('2 members'), findsOneWidget);
+
+    await tester.tap(find.text('Switch'));
+    await tester.pumpAndSettle();
+    expect(find.text('Summer Trip'), findsOneWidget);
+    await tester.tap(find.text('Summer Trip'));
+    await tester.pumpAndSettle();
+    expect(find.text('Summer Trip'), findsOneWidget);
+    expect(find.text('Member'), findsOneWidget);
+    expect(find.text('4 members'), findsOneWidget);
+  });
+
+  testWidgets('shows onboarding when the user has no groups',
+      (WidgetTester tester) async {
+    await _pumpDashboard(
+      tester,
+      summary: _summary(groupId: null),
+      groups: const <GroupSummary>[],
+    );
+
+    expect(find.text('You are not in a group yet'), findsOneWidget);
+    expect(find.text('Join with code'), findsNWidgets(2));
+    expect(find.text('Current group'), findsNothing);
   });
 
   testWidgets('Join with code is always enabled and navigates to accept route',

@@ -152,3 +152,15 @@
 - Refreshed both group choices and Home data after accepting an invitation.
 **Decisions:** A stale or missing selection falls back to the first available group; an empty group list clears the persisted selection.
 **Known gaps / follow-ups:** The visible current-group card and group selector are the next Batch 2 task. Focused repository, selection, and invite tests pass 36/36.
+
+## 2026-07-16 — Add current-group context to Home
+
+**Task:** Make Home clearly show group membership and support switching between available groups.
+**Scope:** `mobile/lib/features/home/presentation/`, Home widget tests, and production router smoke tests
+**What changed:**
+- Added a Current group card with group name, role, member count, and group type.
+- Added a bottom-sheet selector when the user belongs to multiple groups.
+- Added an explicit no-group onboarding card that directs users to join with an invite code.
+- Updated router tests to isolate the new group providers.
+**Decisions:** Full group management actions remain in Batch 3 so they ship together with server-enforced Owner/Member authorization.
+**Known gaps / follow-ups:** A dedicated create-group entry and group management screen remain. Full Flutter tests pass 139/139 and the remote Web build succeeds.
