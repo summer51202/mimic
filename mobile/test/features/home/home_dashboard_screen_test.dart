@@ -76,6 +76,10 @@ Future<GoRouter> _pumpDashboard(
         builder: (_, __) => const Scaffold(body: Text('accept marker')),
       ),
       GoRoute(
+        path: AppRoutes.createGroup,
+        builder: (_, __) => const Scaffold(body: Text('create group marker')),
+      ),
+      GoRoute(
         path: AppRoutes.createInvite,
         name: 'create-invite',
         builder: (_, state) => Scaffold(
@@ -171,7 +175,12 @@ void main() {
 
     expect(find.text('You are not in a group yet'), findsOneWidget);
     expect(find.text('Join with code'), findsNWidgets(2));
+    expect(find.text('Create group'), findsOneWidget);
     expect(find.text('Current group'), findsNothing);
+
+    await tester.tap(find.text('Create group'));
+    await tester.pumpAndSettle();
+    expect(find.text('create group marker'), findsOneWidget);
   });
 
   testWidgets('Join with code is always enabled and navigates to accept route',

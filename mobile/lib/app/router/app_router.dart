@@ -10,6 +10,7 @@ import '../../features/expenses/presentation/create_expense_screen.dart';
 import '../../features/funds/presentation/create_fund_screen.dart';
 import '../../features/funds/presentation/fund_detail_screen.dart';
 import '../../features/home/presentation/home_dashboard_screen.dart';
+import '../../features/groups/presentation/create_group_screen.dart';
 import '../../features/invites/presentation/accept_invite_screen.dart';
 import '../../features/invites/presentation/create_invite_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
@@ -49,6 +50,13 @@ final appRouterProvider = Provider<GoRouter>((Ref ref) {
         name: 'home',
         builder: (BuildContext context, GoRouterState state) {
           return const HomeDashboardScreen();
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.createGroup,
+        name: 'create-group',
+        builder: (BuildContext context, GoRouterState state) {
+          return const CreateGroupScreen();
         },
       ),
       GoRoute(

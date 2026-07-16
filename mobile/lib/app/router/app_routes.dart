@@ -1,6 +1,7 @@
 abstract final class AppRoutes {
   static const String login = '/login';
   static const String home = '/home';
+  static const String createGroup = '/groups/new';
   static const String createFund = '/funds/new';
   static const String createInvite = '/groups/:groupId/invites/new';
   static const String acceptInvite = '/invites/accept';

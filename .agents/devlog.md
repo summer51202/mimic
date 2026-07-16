@@ -187,3 +187,16 @@
 - Kept Switch as the visually distinct group action.
 **Decisions:** Members are collapsed by default to keep the Home summary compact while preserving full access to names and roles.
 **Known gaps / follow-ups:** None for this interaction refinement. Full Flutter tests pass 139/139 and the remote Web build succeeds.
+
+## 2026-07-17 — Add standalone group creation
+
+**Task:** Continue Batch 2 by making group creation available from Home and the no-group onboarding state.
+**Scope:** `mobile/lib/features/groups/`, Home entry points, app routing, and focused tests
+**What changed:**
+- Added demo and remote group creation repositories for `POST /groups`.
+- Added validated group creation state with name, type, and default currency.
+- Added a dedicated Create group screen and production route.
+- Added Create group actions for both existing-group and no-group Home states.
+- Automatically selects the newly created group and refreshes Home data.
+**Decisions:** Group creation is independent from fund creation; creating a group does not silently create a fund.
+**Known gaps / follow-ups:** View group and full group management remain next. Full Flutter tests pass 143/143 and the remote Web build succeeds.

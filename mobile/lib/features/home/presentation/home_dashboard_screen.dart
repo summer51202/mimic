@@ -65,10 +65,24 @@ class HomeDashboardScreen extends ConsumerWidget {
                                 style: textTheme.bodyMedium,
                               ),
                               const SizedBox(height: PfSpacing.md),
-                              ElevatedButton(
-                                onPressed: () =>
-                                    context.push(AppRoutes.acceptInvite),
-                                child: const Text('Join with code'),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: ElevatedButton(
+                                      onPressed: () =>
+                                          context.push(AppRoutes.createGroup),
+                                      child: const Text('Create group'),
+                                    ),
+                                  ),
+                                  const SizedBox(width: PfSpacing.sm),
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      onPressed: () =>
+                                          context.push(AppRoutes.acceptInvite),
+                                      child: const Text('Join with code'),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -88,6 +102,7 @@ class HomeDashboardScreen extends ConsumerWidget {
                             .read(selectedGroupProvider.notifier)
                             .select(group.id);
                       },
+                      onCreateGroup: () => context.push(AppRoutes.createGroup),
                     );
                   },
                   loading: () => const LinearProgressIndicator(),
