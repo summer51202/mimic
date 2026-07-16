@@ -43,6 +43,11 @@ abstract class InviteRepository {
 }
 
 class DemoInviteRepository implements InviteRepository {
+  DemoInviteRepository({DateTime Function()? clock})
+      : _clock = clock ?? _utcNow;
+
+  final DateTime Function() _clock;
+
   @override
   Future<CreatedInvite> createInvite(
     String groupId, {
@@ -51,7 +56,7 @@ class DemoInviteRepository implements InviteRepository {
     return CreatedInvite(
       id: 'invite-demo',
       code: 'DEMO-INVITE1',
-      expiresAt: DateTime.now().add(const Duration(days: 7)),
+      expiresAt: _clock().toUtc().add(const Duration(days: 7)),
       invitedEmail: _normalizeOptional(invitedEmail),
     );
   }
@@ -62,7 +67,7 @@ class DemoInviteRepository implements InviteRepository {
       groupId: 'group-demo',
       groupName: 'Demo Group',
       role: 'member',
-      joinedAt: DateTime.now(),
+      joinedAt: _clock().toUtc(),
     );
   }
 }
@@ -87,10 +92,10 @@ class RemoteInviteRepository implements InviteRepository {
     final data = readDataEnvelope(response);
 
     return CreatedInvite(
-      id: _requiredString(data, 'id'),
-      code: _requiredString(data, 'code'),
+      id: _requiredString(data, 'invite_id'),
+      code: _requiredString(data, 'invite_code'),
       expiresAt: DateTime.parse(_requiredString(data, 'expires_at')),
-      invitedEmail: _normalizeOptional(data['invited_email'] as String?),
+      invitedEmail: _optionalString(data, 'invited_email'),
     );
   }
 
@@ -124,6 +129,18 @@ String? _normalizeOptional(String? value) {
   return normalized == null || normalized.isEmpty ? null : normalized;
 }
 
+String? _optionalString(Map<String, dynamic> data, String key) {
+  final value = data[key];
+  if (value == null) {
+    return null;
+  }
+  if (value is String) {
+    return _normalizeOptional(value);
+  }
+
+  throw FormatException('Invalid optional field: $key');
+}
+
 String _requiredString(Map<String, dynamic> data, String key) {
   final value = data[key];
   if (value is String && value.isNotEmpty) {
@@ -132,3 +149,5 @@ String _requiredString(Map<String, dynamic> data, String key) {
 
   throw FormatException('Missing or invalid required field: $key');
 }
+
+DateTime _utcNow() => DateTime.now().toUtc();

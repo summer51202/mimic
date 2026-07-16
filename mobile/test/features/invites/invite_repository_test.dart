@@ -39,8 +39,8 @@ void main() {
       final apiClient = RecordingApiClient(<String, Map<String, dynamic>>{
         '/groups/group-1/invites': <String, dynamic>{
           'data': <String, dynamic>{
-            'id': 'invite-1',
-            'code': 'PAIR-1234',
+            'invite_id': 'invite-1',
+            'invite_code': 'PAIR-1234',
             'expires_at': '2026-07-23T10:30:00.000Z',
             'invited_email': 'partner@example.com',
           },
@@ -71,8 +71,8 @@ void main() {
         final apiClient = RecordingApiClient(<String, Map<String, dynamic>>{
           '/groups/group-1/invites': <String, dynamic>{
             'data': <String, dynamic>{
-              'id': 'invite-1',
-              'code': 'PAIR-1234',
+              'invite_id': 'invite-1',
+              'invite_code': 'PAIR-1234',
               'expires_at': '2026-07-23T10:30:00.000Z',
             },
           },
@@ -125,34 +125,70 @@ void main() {
         throwsA(isA<FormatException>()),
       );
     });
+
+    for (final missingField in <String>['invite_id', 'invite_code']) {
+      test('create throws FormatException when $missingField is missing', () {
+        final data = <String, dynamic>{
+          'invite_id': 'invite-1',
+          'invite_code': 'PAIR-1234',
+          'expires_at': '2026-07-23T10:30:00.000Z',
+        }..remove(missingField);
+        final apiClient = RecordingApiClient(<String, Map<String, dynamic>>{
+          '/groups/group-1/invites': <String, dynamic>{'data': data},
+        });
+
+        expect(
+          () => RemoteInviteRepository(apiClient).createInvite('group-1'),
+          throwsA(isA<FormatException>()),
+        );
+      });
+    }
+
+    test('create throws FormatException for non-string invited_email', () {
+      final apiClient = RecordingApiClient(<String, Map<String, dynamic>>{
+        '/groups/group-1/invites': <String, dynamic>{
+          'data': <String, dynamic>{
+            'invite_id': 'invite-1',
+            'invite_code': 'PAIR-1234',
+            'expires_at': '2026-07-23T10:30:00.000Z',
+            'invited_email': 42,
+          },
+        },
+      });
+
+      expect(
+        () => RemoteInviteRepository(apiClient).createInvite('group-1'),
+        throwsA(isA<FormatException>()),
+      );
+    });
   });
 
   group('DemoInviteRepository', () {
     test('returns deterministic create values and normalized email', () async {
-      final before = DateTime.now().add(const Duration(days: 7));
-      final result = await DemoInviteRepository().createInvite(
+      final now = DateTime.utc(2026, 7, 16, 12, 30);
+      final result = await DemoInviteRepository(clock: () => now).createInvite(
         'group-any',
         invitedEmail: '  demo@example.com ',
       );
-      final after = DateTime.now().add(const Duration(days: 7));
 
       expect(result.id, 'invite-demo');
       expect(result.code, 'DEMO-INVITE1');
       expect(result.invitedEmail, 'demo@example.com');
-      expect(result.expiresAt.isBefore(before), isFalse);
-      expect(result.expiresAt.isAfter(after), isFalse);
+      expect(result.expiresAt, DateTime.utc(2026, 7, 23, 12, 30));
+      expect(result.expiresAt.isUtc, isTrue);
     });
 
     test('returns deterministic accepted group values', () async {
-      final before = DateTime.now();
-      final result = await DemoInviteRepository().acceptInvite('anything');
-      final after = DateTime.now();
+      final now = DateTime.utc(2026, 7, 16, 12, 30);
+      final result = await DemoInviteRepository(
+        clock: () => now,
+      ).acceptInvite('anything');
 
       expect(result.groupId, 'group-demo');
       expect(result.groupName, 'Demo Group');
       expect(result.role, 'member');
-      expect(result.joinedAt.isBefore(before), isFalse);
-      expect(result.joinedAt.isAfter(after), isFalse);
+      expect(result.joinedAt, now);
+      expect(result.joinedAt.isUtc, isTrue);
     });
   });
 
