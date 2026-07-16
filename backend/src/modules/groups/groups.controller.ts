@@ -1,8 +1,17 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { CreateGroupInviteDto } from './dto/create-group-invite.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
 import { GroupsService } from './groups.service';
 
 @UseGuards(JwtAuthGuard)
@@ -26,8 +35,11 @@ export class GroupsController {
   }
 
   @Get(':groupId/members')
-  async listMembers(@Param('groupId') groupId: string) {
-    const members = await this.groupsService.listMembers(groupId);
+  async listMembers(
+    @Param('groupId') groupId: string,
+    @CurrentUser() user: RequestUser,
+  ) {
+    const members = await this.groupsService.listMembers(groupId, user.userId);
     return {
       data: members.map((member) => ({
         user_id: member.userId,
@@ -36,6 +48,37 @@ export class GroupsController {
         status: member.status.toLowerCase(),
       })),
     };
+  }
+
+  @Get(':groupId')
+  async getGroupDetail(
+    @Param('groupId') groupId: string,
+    @CurrentUser() user: RequestUser,
+  ) {
+    const result = await this.groupsService.getGroupDetail(
+      groupId,
+      user.userId,
+    );
+    return {
+      data: {
+        ...this.mapGroup(result.group),
+        role: result.role.toLowerCase(),
+      },
+    };
+  }
+
+  @Patch(':groupId')
+  async updateGroup(
+    @Param('groupId') groupId: string,
+    @CurrentUser() user: RequestUser,
+    @Body() dto: UpdateGroupDto,
+  ) {
+    const group = await this.groupsService.updateGroup(
+      groupId,
+      user.userId,
+      dto,
+    );
+    return { data: this.mapGroup(group) };
   }
 
   @Post(':groupId/invites')

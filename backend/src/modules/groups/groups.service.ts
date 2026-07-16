@@ -17,6 +17,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { CreateGroupInviteDto } from './dto/create-group-invite.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Injectable()
 export class GroupsService {
@@ -60,16 +61,52 @@ export class GroupsService {
     });
   }
 
-  listMembers(groupId: string) {
+  async getGroupDetail(groupId: string, userId: string) {
+    const access = await this.requireGroupAccess(groupId, userId);
+    return { group: access.group, role: access.membership.role };
+  }
+
+  async listMembers(groupId: string, userId: string) {
+    await this.requireGroupAccess(groupId, userId);
     return this.prisma.groupMember.findMany({
       where: {
         groupId,
+        status: MemberStatus.ACTIVE,
       },
       include: {
         user: true,
       },
       orderBy: { joinedAt: 'asc' },
     });
+  }
+
+  async updateGroup(
+    groupId: string,
+    userId: string,
+    dto: UpdateGroupDto,
+  ) {
+    const access = await this.requireGroupAccess(groupId, userId);
+    if (access.membership.role !== MemberRole.OWNER) {
+      throw new ForbiddenException('OWNER_REQUIRED');
+    }
+    const updated = await this.prisma.group.updateMany({
+      where: {
+        id: groupId,
+        status: GroupStatus.ACTIVE,
+        members: {
+          some: {
+            userId,
+            role: MemberRole.OWNER,
+            status: MemberStatus.ACTIVE,
+          },
+        },
+      },
+      data: { name: dto.name },
+    });
+    if (updated.count !== 1) {
+      throw new ForbiddenException('OWNER_REQUIRED');
+    }
+    return this.prisma.group.findUniqueOrThrow({ where: { id: groupId } });
   }
 
   async createInvite(
@@ -224,6 +261,26 @@ export class GroupsService {
       }
       throw error;
     }
+  }
+
+  private async requireGroupAccess(groupId: string, userId: string) {
+    const group = await this.prisma.group.findFirst({
+      where: { id: groupId, status: GroupStatus.ACTIVE },
+    });
+    if (!group) {
+      throw new NotFoundException('GROUP_NOT_FOUND');
+    }
+    const membership = await this.prisma.groupMember.findFirst({
+      where: {
+        groupId,
+        userId,
+        status: MemberStatus.ACTIVE,
+      },
+    });
+    if (!membership) {
+      throw new ForbiddenException('GROUP_ACCESS_DENIED');
+    }
+    return { group, membership };
   }
 }
 

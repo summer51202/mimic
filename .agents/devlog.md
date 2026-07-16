@@ -200,3 +200,16 @@
 - Automatically selects the newly created group and refreshes Home data.
 **Decisions:** Group creation is independent from fund creation; creating a group does not silently create a fund.
 **Known gaps / follow-ups:** View group and full group management remain next. Full Flutter tests pass 143/143 and the remote Web build succeeds.
+
+## 2026-07-17 — Secure group detail and rename API
+
+**Task:** Add the authorized Backend contracts required by the upcoming View group screen.
+**Scope:** `backend/src/modules/groups/`, `backend/test/groups.e2e-spec.ts`, and group service tests
+**What changed:**
+- Added authenticated group detail with the requester's Owner/Member role.
+- Required active group membership before listing members.
+- Added validated group rename and restricted it to active Owners.
+- Added stable `GROUP_NOT_FOUND`, `GROUP_ACCESS_DENIED`, and `OWNER_REQUIRED` failures.
+- Made the rename write re-check active Owner access atomically to close a permission race.
+**Decisions:** Archived groups return not found; active-group outsiders receive access denied. Member lists include active memberships only.
+**Known gaps / follow-ups:** Mobile repository/controller and Group detail UI are next. Backend unit tests pass 40/40, e2e tests pass 16/16, production build succeeds, and runtime detail/member smoke passes.

@@ -131,6 +131,115 @@ describe('CreateGroupInviteDto', () => {
   });
 });
 
+describe('GroupsService group access and management', () => {
+  const activeGroup = {
+    id: 'group-1',
+    name: 'Our Home',
+    status: GroupStatus.ACTIVE,
+  };
+
+  function setup(role: MemberRole | null = MemberRole.MEMBER) {
+    const prisma = {
+      group: {
+        findFirst: jest.fn().mockResolvedValue(activeGroup),
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+        findUniqueOrThrow: jest.fn().mockResolvedValue({
+          ...activeGroup,
+          name: 'Renamed Home',
+        }),
+      },
+      groupMember: {
+        findFirst: jest.fn().mockResolvedValue(
+          role ? { id: 'membership-1', role } : null,
+        ),
+        findMany: jest.fn().mockResolvedValue([
+          { id: 'membership-1', user: { displayName: 'Edward' } },
+        ]),
+      },
+    };
+    return { service: new GroupsService(prisma as never), prisma };
+  }
+
+  it('returns group detail and the active member role', async () => {
+    const { service } = setup(MemberRole.MEMBER);
+
+    await expect(
+      service.getGroupDetail('group-1', 'user-1'),
+    ).resolves.toEqual({ group: activeGroup, role: MemberRole.MEMBER });
+  });
+
+  it('denies group detail to a non-member', async () => {
+    const { service } = setup(null);
+
+    await expect(
+      service.getGroupDetail('group-1', 'outsider-1'),
+    ).rejects.toEqual(new ForbiddenException('GROUP_ACCESS_DENIED'));
+  });
+
+  it('returns GROUP_NOT_FOUND for an archived or missing group', async () => {
+    const { service, prisma } = setup();
+    prisma.group.findFirst.mockResolvedValue(null);
+
+    await expect(
+      service.getGroupDetail('group-1', 'user-1'),
+    ).rejects.toEqual(new NotFoundException('GROUP_NOT_FOUND'));
+    expect(prisma.groupMember.findFirst).not.toHaveBeenCalled();
+  });
+
+  it('authorizes members before listing active memberships', async () => {
+    const { service, prisma } = setup(MemberRole.MEMBER);
+
+    await service.listMembers('group-1', 'user-1');
+
+    expect(prisma.groupMember.findMany).toHaveBeenCalledWith({
+      where: { groupId: 'group-1', status: MemberStatus.ACTIVE },
+      include: { user: true },
+      orderBy: { joinedAt: 'asc' },
+    });
+  });
+
+  it('allows an owner to rename the group', async () => {
+    const { service, prisma } = setup(MemberRole.OWNER);
+
+    await expect(
+      service.updateGroup('group-1', 'owner-1', { name: 'Renamed Home' }),
+    ).resolves.toMatchObject({ name: 'Renamed Home' });
+    expect(prisma.group.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: 'group-1',
+        status: GroupStatus.ACTIVE,
+        members: {
+          some: {
+            userId: 'owner-1',
+            role: MemberRole.OWNER,
+            status: MemberStatus.ACTIVE,
+          },
+        },
+      },
+      data: { name: 'Renamed Home' },
+    });
+  });
+
+  it('denies rename to a regular member', async () => {
+    const { service, prisma } = setup(MemberRole.MEMBER);
+
+    await expect(
+      service.updateGroup('group-1', 'member-1', { name: 'Nope' }),
+    ).rejects.toEqual(new ForbiddenException('OWNER_REQUIRED'));
+    expect(prisma.group.updateMany).not.toHaveBeenCalled();
+  });
+
+  it('denies rename when owner access changes before the write', async () => {
+    const { service, prisma } = setup(MemberRole.OWNER);
+    prisma.group.updateMany.mockResolvedValue({ count: 0 });
+
+    await expect(
+      service.updateGroup('group-1', 'owner-1', { name: 'Nope' }),
+    ).rejects.toEqual(new ForbiddenException('OWNER_REQUIRED'));
+    expect(prisma.group.findUniqueOrThrow).not.toHaveBeenCalled();
+  });
+});
+
 describe('GroupsService.acceptInvite', () => {
   const group = { id: 'group-1', name: 'Shared', status: GroupStatus.ACTIVE };
   const user = { id: 'user-1', email: 'partner@example.com' };
