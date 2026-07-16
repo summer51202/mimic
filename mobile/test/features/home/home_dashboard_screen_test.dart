@@ -139,8 +139,15 @@ void main() {
 
     expect(find.text('Current group'), findsOneWidget);
     expect(find.text('Our Home'), findsOneWidget);
-    expect(find.text('Owner'), findsWidgets);
+    expect(find.byType(Chip), findsNothing);
+    expect(find.text('Owner'), findsOneWidget);
     expect(find.text('2 members'), findsOneWidget);
+    expect(find.text('Members (2)'), findsOneWidget);
+    expect(find.text('Edward'), findsNothing);
+    expect(find.text('Alice'), findsNothing);
+
+    await tester.tap(find.text('Members (2)'));
+    await tester.pumpAndSettle();
     expect(find.text('Edward'), findsOneWidget);
     expect(find.text('Alice'), findsOneWidget);
 

@@ -42,31 +42,43 @@ class CurrentGroupCard extends StatelessWidget {
               spacing: PfSpacing.xs,
               runSpacing: PfSpacing.xs,
               children: <Widget>[
-                Chip(label: Text(_roleLabel(group.role))),
-                Chip(label: Text('${group.memberCount} members')),
-                Chip(label: Text(_typeLabel(group.groupType))),
+                _InfoTag(label: _roleLabel(group.role)),
+                _InfoTag(label: '${group.memberCount} members'),
+                _InfoTag(label: _typeLabel(group.groupType)),
               ],
             ),
             if (group.members.isNotEmpty) ...<Widget>[
               const SizedBox(height: PfSpacing.sm),
               const Divider(),
-              const SizedBox(height: PfSpacing.xs),
-              Text('Members', style: textTheme.titleMedium),
-              const SizedBox(height: PfSpacing.xs),
-              for (final member in group.members)
-                ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  dense: true,
-                  leading: CircleAvatar(
-                    child: Text(
-                      member.displayName.isEmpty
-                          ? '?'
-                          : member.displayName.characters.first.toUpperCase(),
-                    ),
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.zero,
+                  childrenPadding: EdgeInsets.zero,
+                  title: Text(
+                    'Members (${group.memberCount})',
+                    style: textTheme.titleMedium,
                   ),
-                  title: Text(member.displayName),
-                  trailing: Text(_roleLabel(member.role)),
+                  children: <Widget>[
+                    for (final member in group.members)
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        dense: true,
+                        leading: CircleAvatar(
+                          child: Text(
+                            member.displayName.isEmpty
+                                ? '?'
+                                : member.displayName.characters.first
+                                    .toUpperCase(),
+                          ),
+                        ),
+                        title: Text(member.displayName),
+                        trailing: Text(_roleLabel(member.role)),
+                      ),
+                  ],
                 ),
+              ),
             ],
           ],
         ),
@@ -114,4 +126,32 @@ class CurrentGroupCard extends StatelessWidget {
 
   static String _typeLabel(String type) =>
       type.toUpperCase() == 'COUPLE' ? 'Couple' : 'Group';
+}
+
+class _InfoTag extends StatelessWidget {
+  const _InfoTag({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: PfSpacing.sm,
+        vertical: PfSpacing.xs,
+      ),
+      decoration: BoxDecoration(
+        color: PfColors.accentSoft,
+        borderRadius: BorderRadius.circular(PfRadii.chip),
+        border: Border.all(color: PfColors.lineSoft),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: PfColors.inkPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+      ),
+    );
+  }
 }

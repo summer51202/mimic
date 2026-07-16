@@ -176,3 +176,14 @@
 - Added a local `Switch Test Group` for `test@gmail.com` with two members for acceptance testing.
 **Decisions:** The local acceptance group uses fixed IDs and a clearly marked name so setup is repeatable and distinguishable from user-created data.
 **Known gaps / follow-ups:** Member management actions remain part of Batch 3. Full Flutter tests pass 139/139 and the remote Web build succeeds.
+
+## 2026-07-16 — Clarify group metadata and member disclosure
+
+**Task:** Reduce Home card clutter and make informational metadata visually distinct from actions.
+**Scope:** `mobile/lib/features/home/presentation/widgets/current_group_card.dart` and Home widget tests
+**What changed:**
+- Replaced button-like Chips with non-interactive metadata tags.
+- Changed the member list to a collapsed Members section that expands on demand.
+- Kept Switch as the visually distinct group action.
+**Decisions:** Members are collapsed by default to keep the Home summary compact while preserving full access to names and roles.
+**Known gaps / follow-ups:** None for this interaction refinement. Full Flutter tests pass 139/139 and the remote Web build succeeds.
