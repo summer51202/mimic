@@ -59,6 +59,7 @@ class AcceptInviteController extends StateNotifier<AcceptInviteState> {
       return false;
     }
 
+    final link = _ref.keepAlive();
     state = state.copyWith(
       isSubmitting: true,
       clearAcceptedInvite: true,
@@ -87,6 +88,8 @@ class AcceptInviteController extends StateNotifier<AcceptInviteState> {
         errorMessage: _genericAcceptError,
       );
       return false;
+    } finally {
+      link.close();
     }
   }
 }

@@ -61,6 +61,7 @@ class CreateInviteController extends StateNotifier<CreateInviteState> {
       return false;
     }
 
+    final link = _ref.keepAlive();
     state = state.copyWith(
       isSubmitting: true,
       clearInvite: true,
@@ -90,6 +91,8 @@ class CreateInviteController extends StateNotifier<CreateInviteState> {
         errorMessage: _genericCreateError,
       );
       return false;
+    } finally {
+      link.close();
     }
   }
 }

@@ -253,6 +253,50 @@ void main() {
       completer.complete(_createdInvite);
       expect(await first, isTrue);
     });
+
+    test('pending success completes safely after provider is auto-disposed',
+        () async {
+      final completer = Completer<CreatedInvite>();
+      final repository = FakeInviteRepository()
+        ..onCreate = (_, __) => completer.future;
+      final container = _container(repository);
+      addTearDown(container.dispose);
+      final provider = createInviteControllerProvider('group-1');
+      final subscription = container.listen<CreateInviteState>(
+        provider,
+        (_, __) {},
+        fireImmediately: true,
+      );
+      final submitFuture = container.read(provider.notifier).submit();
+
+      subscription.close();
+      await container.pump();
+      completer.complete(_createdInvite);
+
+      await expectLater(submitFuture, completion(isTrue));
+    });
+
+    test('pending failure completes safely after provider is auto-disposed',
+        () async {
+      final completer = Completer<CreatedInvite>();
+      final repository = FakeInviteRepository()
+        ..onCreate = (_, __) => completer.future;
+      final container = _container(repository);
+      addTearDown(container.dispose);
+      final provider = createInviteControllerProvider('group-1');
+      final subscription = container.listen<CreateInviteState>(
+        provider,
+        (_, __) {},
+        fireImmediately: true,
+      );
+      final submitFuture = container.read(provider.notifier).submit();
+
+      subscription.close();
+      await container.pump();
+      completer.completeError(StateError('offline'));
+
+      await expectLater(submitFuture, completion(isFalse));
+    });
   });
 
   group('AcceptInviteState', () {
@@ -432,6 +476,67 @@ void main() {
 
       completer.complete(_acceptedInvite);
       expect(await first, isTrue);
+    });
+
+    test(
+        'pending success completes safely and invalidates home after auto-dispose',
+        () async {
+      final completer = Completer<AcceptedInvite>();
+      final repository = FakeInviteRepository()
+        ..onAccept = (_) => completer.future;
+      final homeRepository = CountingHomeRepository();
+      final container = _container(
+        repository,
+        homeRepository: homeRepository,
+      );
+      addTearDown(container.dispose);
+      final homeSubscription = container.listen<AsyncValue<HomeSummary>>(
+        homeSummaryProvider,
+        (_, __) {},
+        fireImmediately: true,
+      );
+      addTearDown(homeSubscription.close);
+      await container.read(homeSummaryProvider.future);
+      expect(homeRepository.fetchCalls, 1);
+      final subscription = container.listen<AcceptInviteState>(
+        acceptInviteControllerProvider,
+        (_, __) {},
+        fireImmediately: true,
+      );
+      final notifier = container.read(acceptInviteControllerProvider.notifier);
+      notifier.updateCode('PAIR-1234');
+      final submitFuture = notifier.submit();
+
+      subscription.close();
+      await container.pump();
+      completer.complete(_acceptedInvite);
+
+      await expectLater(submitFuture, completion(isTrue));
+      await container.read(homeSummaryProvider.future);
+      expect(homeRepository.fetchCalls, 2);
+    });
+
+    test('pending failure completes safely after provider is auto-disposed',
+        () async {
+      final completer = Completer<AcceptedInvite>();
+      final repository = FakeInviteRepository()
+        ..onAccept = (_) => completer.future;
+      final container = _container(repository);
+      addTearDown(container.dispose);
+      final subscription = container.listen<AcceptInviteState>(
+        acceptInviteControllerProvider,
+        (_, __) {},
+        fireImmediately: true,
+      );
+      final notifier = container.read(acceptInviteControllerProvider.notifier);
+      notifier.updateCode('PAIR-1234');
+      final submitFuture = notifier.submit();
+
+      subscription.close();
+      await container.pump();
+      completer.completeError(StateError('offline'));
+
+      await expectLater(submitFuture, completion(isFalse));
     });
   });
 }
