@@ -105,3 +105,14 @@
 - Added clipboard copying and a localized invite expiry date and time.
 **Decisions:** The current group is the first group returned by the API; invite ownership remains server-authoritative. External deep-link preservation is outside the approved Task 7 scope.  
 **Known gaps / follow-ups:** Runtime deployment and two-account acceptance remain for Task 8. Full Flutter tests pass 122/122, and the remote-mode Web build succeeds.
+
+## 2026-07-16 — Expose Settings and sign out from home
+
+**Task:** Make the existing sign-out action reachable during two-account invite acceptance.  
+**Scope:** `mobile/lib/features/home/presentation/home_dashboard_screen.dart`, `mobile/test/features/home/home_dashboard_screen_test.dart`  
+**What changed:**
+- Added an accessible Settings icon to the home heading.
+- Reused the existing Settings route and Sign out action.
+- Added a widget navigation test using the real home screen.
+**Decisions:** Kept logout behavior centralized in `SettingsScreen`; no duplicate home logout action or new navigation shell was added.  
+**Known gaps / follow-ups:** User visual acceptance of the invite flow remains in Task 8. Full Flutter tests pass 123/123 and the running Web endpoint returns HTTP 200.

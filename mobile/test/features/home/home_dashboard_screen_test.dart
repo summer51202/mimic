@@ -59,6 +59,10 @@ Future<GoRouter> _pumpDashboard(
         path: AppRoutes.confirmations,
         builder: (_, __) => const Scaffold(body: Text('tasks marker')),
       ),
+      GoRoute(
+        path: AppRoutes.settings,
+        builder: (_, __) => const Scaffold(body: Text('Settings destination')),
+      ),
     ],
   );
   addTearDown(router.dispose);
@@ -101,6 +105,16 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('accept marker'), findsOneWidget);
+  });
+
+  testWidgets('Settings button opens the settings route',
+      (WidgetTester tester) async {
+    await _pumpDashboard(tester, summary: _summary());
+
+    await tester.tap(find.byTooltip('Settings'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Settings destination'), findsOneWidget);
   });
 
   testWidgets('Invite member is disabled without a group id',

@@ -24,7 +24,21 @@ class HomeDashboardScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('PairFund', style: textTheme.headlineMedium),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        'PairFund',
+                        style: textTheme.headlineMedium,
+                      ),
+                    ),
+                    IconButton(
+                      tooltip: 'Settings',
+                      onPressed: () => context.push(AppRoutes.settings),
+                      icon: const Icon(Icons.settings_outlined),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: PfSpacing.xs),
                 Text(
                   'Shared funds, clear balances, and gentle bookkeeping.',
