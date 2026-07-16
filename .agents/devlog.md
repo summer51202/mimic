@@ -225,3 +225,16 @@
 - Kept Demo rename state consistent across subsequent detail reads.
 **Decisions:** The repository owns the three-request aggregation so the upcoming screen consumes one coherent Group detail model.
 **Known gaps / follow-ups:** Group detail screen and routing are next. Full Flutter tests pass 149/149, changed-file analysis is clean, and the remote Web build succeeds.
+
+## 2026-07-17 — Add Group detail screen and Home entry
+
+**Task:** Make the selected group viewable and manageable from Home with role-based controls.
+**Scope:** Group detail presentation, app routes, Home current-group actions, and widget/router tests
+**What changed:**
+- Added a Group detail screen with identity tags, active members, and group funds.
+- Added Owner-only Rename and Invite controls; Member views omit management actions.
+- Added View group to the Home current-group card and production routing with exact group IDs.
+- Added friendly loading failure and retry UI plus fund navigation.
+- Fixed rename dialog controller disposal during its closing animation.
+**Decisions:** Authorization remains server-authoritative; role-based hiding improves UX but does not replace Backend enforcement.
+**Known gaps / follow-ups:** Browser acceptance for Owner and Member accounts remains. Full Flutter tests pass 153/153, changed-file analysis is clean, and the remote Web build succeeds.

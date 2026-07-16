@@ -9,6 +9,7 @@ class CurrentGroupCard extends StatelessWidget {
     required this.groups,
     required this.onSelect,
     required this.onCreateGroup,
+    required this.onViewGroup,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class CurrentGroupCard extends StatelessWidget {
   final List<GroupSummary> groups;
   final ValueChanged<GroupSummary> onSelect;
   final VoidCallback onCreateGroup;
+  final VoidCallback onViewGroup;
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +86,19 @@ class CurrentGroupCard extends StatelessWidget {
             ],
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                onPressed: onCreateGroup,
-                icon: const Icon(Icons.add),
-                label: const Text('Create another group'),
+              child: Wrap(
+                spacing: PfSpacing.xs,
+                children: <Widget>[
+                  TextButton(
+                    onPressed: onViewGroup,
+                    child: const Text('View group'),
+                  ),
+                  TextButton.icon(
+                    onPressed: onCreateGroup,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Create another group'),
+                  ),
+                ],
               ),
             ),
           ],

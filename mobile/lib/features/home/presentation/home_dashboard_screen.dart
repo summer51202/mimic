@@ -103,6 +103,8 @@ class HomeDashboardScreen extends ConsumerWidget {
                             .select(group.id);
                       },
                       onCreateGroup: () => context.push(AppRoutes.createGroup),
+                      onViewGroup: () =>
+                          context.push(AppRoutes.groupDetailPath(current.id)),
                     );
                   },
                   loading: () => const LinearProgressIndicator(),

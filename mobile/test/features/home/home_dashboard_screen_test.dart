@@ -80,6 +80,12 @@ Future<GoRouter> _pumpDashboard(
         builder: (_, __) => const Scaffold(body: Text('create group marker')),
       ),
       GoRoute(
+        path: AppRoutes.groupDetail,
+        builder: (_, state) => Scaffold(
+          body: Text('group detail marker ${state.pathParameters['groupId']}'),
+        ),
+      ),
+      GoRoute(
         path: AppRoutes.createInvite,
         name: 'create-invite',
         builder: (_, state) => Scaffold(
@@ -139,13 +145,14 @@ void main() {
 
   testWidgets('shows current group context and switches groups',
       (WidgetTester tester) async {
-    await _pumpDashboard(tester, summary: _summary());
+    final router = await _pumpDashboard(tester, summary: _summary());
 
     expect(find.text('Current group'), findsOneWidget);
     expect(find.text('Our Home'), findsOneWidget);
     expect(find.byType(Chip), findsNothing);
     expect(find.text('Owner'), findsOneWidget);
     expect(find.text('2 members'), findsOneWidget);
+    expect(find.text('View group'), findsOneWidget);
     expect(find.text('Members (2)'), findsOneWidget);
     expect(find.text('Edward'), findsNothing);
     expect(find.text('Alice'), findsNothing);
@@ -154,6 +161,12 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Edward'), findsOneWidget);
     expect(find.text('Alice'), findsOneWidget);
+
+    await tester.tap(find.text('View group'));
+    await tester.pumpAndSettle();
+    expect(find.text('group detail marker group-1'), findsOneWidget);
+    router.pop();
+    await tester.pumpAndSettle();
 
     await tester.tap(find.text('Switch'));
     await tester.pumpAndSettle();
