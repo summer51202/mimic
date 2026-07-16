@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pairfund_mobile/features/home/data/home_repository.dart';
 import 'package:pairfund_mobile/features/home/providers/home_summary_provider.dart';
+import 'package:pairfund_mobile/features/groups/data/group_summary.dart';
+import 'package:pairfund_mobile/features/groups/data/selected_group_persistence.dart';
 import 'package:pairfund_mobile/features/invites/data/invite_repository.dart';
 import 'package:pairfund_mobile/features/invites/providers/accept_invite_controller.dart';
 import 'package:pairfund_mobile/features/invites/providers/create_invite_controller.dart';
@@ -68,12 +70,40 @@ class FakeInviteRepository implements InviteRepository {
 
 class CountingHomeRepository implements HomeRepository {
   int fetchCalls = 0;
+  int fetchGroupCalls = 0;
 
   @override
-  Future<HomeSummary> fetchSummary() async {
+  Future<List<GroupSummary>> fetchGroups() async {
+    fetchGroupCalls += 1;
+    return const <GroupSummary>[
+      GroupSummary(
+        id: 'group-1',
+        name: 'Our Home',
+        groupType: 'couple',
+        memberCount: 2,
+        role: 'member',
+      ),
+    ];
+  }
+
+  @override
+  Future<HomeSummary> fetchSummary({required String? groupId}) async {
     fetchCalls += 1;
     return _homeSummary;
   }
+}
+
+class MemorySelectedGroupPersistence implements SelectedGroupPersistence {
+  String? value;
+
+  @override
+  Future<void> clear() async => value = null;
+
+  @override
+  Future<String?> read() async => value;
+
+  @override
+  Future<void> write(String groupId) async => value = groupId;
 }
 
 ProviderContainer _container(
@@ -85,6 +115,9 @@ ProviderContainer _container(
       inviteRepositoryProvider.overrideWithValue(repository),
       if (homeRepository != null)
         homeRepositoryProvider.overrideWithValue(homeRepository),
+      selectedGroupPersistenceProvider.overrideWithValue(
+        MemorySelectedGroupPersistence(),
+      ),
     ],
   );
 }

@@ -75,6 +75,7 @@ class AcceptInviteController extends StateNotifier<AcceptInviteState> {
         clearError: true,
       );
       _ref.invalidate(homeSummaryProvider);
+      _ref.invalidate(homeGroupsProvider);
       return true;
     } on ApiException catch (error) {
       state = state.copyWith(

@@ -140,3 +140,15 @@
 - Cleared stale local and remote errors when users edit fields or switch modes.
 **Decisions:** Only known domain codes receive specialized copy; all other API failures use a safe retry message and never expose raw technical details.
 **Known gaps / follow-ups:** Group-aware Home remains in Batch 2. Auth focused tests pass 14/14, full Flutter tests pass 133/133, and the remote-mode Web build succeeds.
+
+## 2026-07-16 — Scope Home data to the selected group
+
+**Task:** Make Home load and retain an explicit current group instead of silently using the first API result.
+**Scope:** `mobile/lib/features/groups/`, `mobile/lib/features/home/`, `mobile/lib/features/invites/providers/accept_invite_controller.dart`, and focused tests
+**What changed:**
+- Added a persisted selected-group ID with reconciliation when available groups change.
+- Split group-list loading from Home summary loading and scoped fund requests to the selected group.
+- Derived the current user's role and member count for each group from remote API data.
+- Refreshed both group choices and Home data after accepting an invitation.
+**Decisions:** A stale or missing selection falls back to the first available group; an empty group list clears the persisted selection.
+**Known gaps / follow-ups:** The visible current-group card and group selector are the next Batch 2 task. Focused repository, selection, and invite tests pass 36/36.

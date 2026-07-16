@@ -2,13 +2,16 @@ import '../home_repository.dart';
 
 class MeDto {
   const MeDto({
+    this.id = '',
     required this.displayName,
   });
 
+  final String id;
   final String displayName;
 
   factory MeDto.fromJson(Map<String, dynamic> data) {
     return MeDto(
+      id: '${data['id'] ?? ''}',
       displayName: '${data['display_name'] ?? 'PairFund'}',
     );
   }
@@ -17,13 +20,33 @@ class MeDto {
 class GroupDto {
   const GroupDto({
     required this.id,
+    required this.name,
+    required this.groupType,
   });
 
   final String id;
+  final String name;
+  final String groupType;
 
   factory GroupDto.fromJson(Map<String, dynamic> data) {
     return GroupDto(
       id: '${data['id'] ?? ''}',
+      name: '${data['name'] ?? 'Unnamed group'}',
+      groupType: '${data['group_type'] ?? 'group'}',
+    );
+  }
+}
+
+class GroupMemberDto {
+  const GroupMemberDto({required this.userId, required this.role});
+
+  final String userId;
+  final String role;
+
+  factory GroupMemberDto.fromJson(Map<String, dynamic> data) {
+    return GroupMemberDto(
+      userId: '${data['user_id'] ?? ''}',
+      role: '${data['role'] ?? 'member'}',
     );
   }
 }

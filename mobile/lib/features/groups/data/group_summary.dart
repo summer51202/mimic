@@ -12,4 +12,17 @@ class GroupSummary {
   final String groupType;
   final int memberCount;
   final String role;
+
+  @override
+  bool operator ==(Object other) {
+    return other is GroupSummary &&
+        other.id == id &&
+        other.name == name &&
+        other.groupType == groupType &&
+        other.memberCount == memberCount &&
+        other.role == role;
+  }
+
+  @override
+  int get hashCode => Object.hash(id, name, groupType, memberCount, role);
 }

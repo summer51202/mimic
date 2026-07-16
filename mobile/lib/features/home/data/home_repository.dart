@@ -5,6 +5,7 @@ import '../../../shared/api/api_mode_provider.dart';
 import '../../../shared/api/pairfund_api_client.dart';
 import '../../../shared/config/app_config.dart';
 import '../../../shared/utils/currency_formatter.dart';
+import '../../groups/data/group_summary.dart';
 import 'remote/home_remote_mapper.dart';
 
 class FundSummary {
@@ -48,19 +49,34 @@ class HomeSummary {
 }
 
 abstract class HomeRepository {
-  Future<HomeSummary> fetchSummary();
+  Future<List<GroupSummary>> fetchGroups();
+
+  Future<HomeSummary> fetchSummary({required String? groupId});
 }
 
 class DemoHomeRepository implements HomeRepository {
   @override
-  Future<HomeSummary> fetchSummary() async {
+  Future<List<GroupSummary>> fetchGroups() async {
+    return const <GroupSummary>[
+      GroupSummary(
+        id: 'group-demo',
+        name: 'Demo group',
+        groupType: 'couple',
+        memberCount: 2,
+        role: 'owner',
+      ),
+    ];
+  }
+
+  @override
+  Future<HomeSummary> fetchSummary({required String? groupId}) async {
     await Future<void>.delayed(const Duration(milliseconds: 250));
 
-    return const HomeSummary(
-      groupId: 'group-demo',
+    return HomeSummary(
+      groupId: groupId,
       displayName: 'Edward',
       totalBalanceLabel: 'TWD 12,800',
-      activeFunds: <FundSummary>[
+      activeFunds: const <FundSummary>[
         FundSummary(
           id: 'fund-date',
           name: 'Date Fund',
@@ -72,7 +88,7 @@ class DemoHomeRepository implements HomeRepository {
           balanceLabel: 'TWD 6,400',
         ),
       ],
-      recentActivities: <ActivityPreview>[
+      recentActivities: const <ActivityPreview>[
         ActivityPreview(
           title: 'Dinner expense added',
           subtitle: 'Date Fund - 2 hours ago',
@@ -93,16 +109,41 @@ class RemoteHomeRepository implements HomeRepository {
   final PairFundApiClient _apiClient;
 
   @override
-  Future<HomeSummary> fetchSummary() async {
+  Future<List<GroupSummary>> fetchGroups() async {
     final meResponse = await _apiClient.get('/me');
     final groupsResponse = await _apiClient.get('/groups');
-
     final userJson = readDataEnvelope(meResponse);
     final groupsJson = readDataListEnvelope(groupsResponse);
     final userDto = MeDto.fromJson(userJson);
     final groups = groupsJson.map(GroupDto.fromJson).toList();
 
-    if (groups.isEmpty) {
+    return Future.wait(
+      groups.map((group) async {
+        final membersResponse =
+            await _apiClient.get('/groups/${group.id}/members');
+        final members = readDataListEnvelope(membersResponse)
+            .map(GroupMemberDto.fromJson)
+            .toList();
+        final currentMember = members.where(
+          (member) => member.userId == userDto.id,
+        );
+        return GroupSummary(
+          id: group.id,
+          name: group.name,
+          groupType: group.groupType,
+          memberCount: members.length,
+          role: currentMember.isEmpty ? 'member' : currentMember.first.role,
+        );
+      }),
+    );
+  }
+
+  @override
+  Future<HomeSummary> fetchSummary({required String? groupId}) async {
+    final meResponse = await _apiClient.get('/me');
+    final userDto = MeDto.fromJson(readDataEnvelope(meResponse));
+
+    if (groupId == null) {
       return mapRemoteHomeSummary(
         groupId: null,
         user: userDto,
@@ -111,8 +152,7 @@ class RemoteHomeRepository implements HomeRepository {
       );
     }
 
-    final fundsResponse =
-        await _apiClient.get('/groups/${groups.first.id}/funds');
+    final fundsResponse = await _apiClient.get('/groups/$groupId/funds');
     final fundDtos = readDataListEnvelope(fundsResponse)
         .map(FundListItemDto.fromJson)
         .toList();
@@ -135,7 +175,7 @@ class RemoteHomeRepository implements HomeRepository {
     );
 
     return mapRemoteHomeSummary(
-      groupId: groups.first.id,
+      groupId: groupId,
       user: userDto,
       totalBalanceLabel: formatMinorCurrency(totalBalanceMinor),
       activeFunds: activeFunds,
