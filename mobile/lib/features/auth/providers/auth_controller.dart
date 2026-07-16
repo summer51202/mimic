@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../shared/api/api_exception.dart';
 import '../../../shared/providers/session_provider.dart';
 import '../../../shared/storage/session_persistence.dart';
 import '../data/auth_repository.dart';
@@ -45,10 +46,10 @@ class AuthController extends StateNotifier<AuthState> {
       await _persistSession(payload);
       state = state.copyWith(isSubmitting: false, clearError: true);
       return true;
-    } catch (_) {
+    } catch (error) {
       state = state.copyWith(
         isSubmitting: false,
-        errorMessage: 'Unable to create your account right now.',
+        errorMessage: _registrationErrorMessage(error),
       );
       return false;
     }
@@ -71,10 +72,10 @@ class AuthController extends StateNotifier<AuthState> {
 
       state = state.copyWith(isSubmitting: false, clearError: true);
       return true;
-    } catch (_) {
+    } catch (error) {
       state = state.copyWith(
         isSubmitting: false,
-        errorMessage: 'Unable to sign in right now.',
+        errorMessage: _loginErrorMessage(error),
       );
       return false;
     }
@@ -107,6 +108,27 @@ class AuthController extends StateNotifier<AuthState> {
       state = state.copyWith(isSubmitting: false, clearError: true);
     }
   }
+}
+
+String _registrationErrorMessage(Object error) {
+  if (error is! ApiException) {
+    return 'Unable to create your account right now.';
+  }
+  return switch (error.code) {
+    'EMAIL_ALREADY_REGISTERED' =>
+      'This email already has an account. Sign in instead.',
+    _ => "We couldn't connect. Please try again.",
+  };
+}
+
+String _loginErrorMessage(Object error) {
+  if (error is! ApiException) {
+    return 'Unable to sign in right now.';
+  }
+  return switch (error.code) {
+    'INVALID_CREDENTIALS' => 'Email or password is incorrect.',
+    _ => "We couldn't connect. Please try again.",
+  };
 }
 
 final authControllerProvider =
