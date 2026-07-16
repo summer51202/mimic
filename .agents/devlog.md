@@ -93,3 +93,15 @@
 - Added request-scoped keep-alive handling so navigation during an in-flight request cannot update a disposed notifier.
 **Decisions:** Invite submissions remain alive only until their current request settles, then auto-dispose normally.
 **Known gaps / follow-ups:** Screens and routes remain for Task 7; focused controller tests pass 26/26 and the full Flutter suite passes 103/103.
+
+## 2026-07-16 — Mobile invite screens and navigation
+
+**Task:** Connect the invite workflow to production Flutter screens, routes, and home entry points.  
+**Scope:** `mobile/lib/features/invites/presentation/`, `mobile/lib/features/home/`, `mobile/lib/shared/app/`, and their widget/router tests  
+**What changed:**
+- Added create-invite and accept-invite screens with pending, validation, error, and success states.
+- Added authenticated invite routes and production-router integration coverage.
+- Added home actions for inviting a member and joining with a code, plus the active group ID in the home summary.
+- Added clipboard copying and a localized invite expiry date and time.
+**Decisions:** The current group is the first group returned by the API; invite ownership remains server-authoritative. External deep-link preservation is outside the approved Task 7 scope.  
+**Known gaps / follow-ups:** Runtime deployment and two-account acceptance remain for Task 8. Full Flutter tests pass 122/122, and the remote-mode Web build succeeds.
