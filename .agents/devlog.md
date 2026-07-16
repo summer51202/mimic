@@ -83,3 +83,13 @@
 - Added provider mode selection, email/code normalization, UTC clock injection, and malformed-response tests.
 **Decisions:** Demo time remains relative to the current time but uses an injectable UTC clock for deterministic tests.
 **Known gaps / follow-ups:** Controllers and screens are not connected yet; repository focused tests pass 13/13 and the full Flutter suite passes 77/77.
+## 2026-07-16 — Mobile invite form controllers
+
+**Task:** Manage create-invite and accept-invite form state with Riverpod.  
+**Scope:** `mobile/lib/features/invites/providers/create_invite_controller.dart`, `mobile/lib/features/invites/providers/accept_invite_controller.dart`, `mobile/test/features/invites/invite_controller_test.dart`  
+**What changed:**
+- Added immutable create/accept form states, validation, submission, success results, and stable error messages.
+- Added home-summary invalidation after joining and duplicate-submit protection.
+- Added request-scoped keep-alive handling so navigation during an in-flight request cannot update a disposed notifier.
+**Decisions:** Invite submissions remain alive only until their current request settles, then auto-dispose normally.
+**Known gaps / follow-ups:** Screens and routes remain for Task 7; focused controller tests pass 26/26 and the full Flutter suite passes 103/103.
