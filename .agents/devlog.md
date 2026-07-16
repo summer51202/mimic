@@ -73,3 +73,13 @@
 - Hardened nested error precedence and added edge-case mapper tests.
 **Decisions:** Nested errors take precedence only when they contain a non-empty string code.
 **Known gaps / follow-ups:** Focused mapper tests pass 12/12; the full Flutter suite produced no output for five minutes on Windows and was terminated.
+## 2026-07-16 — Mobile invite data repository
+
+**Task:** Add demo and remote Flutter repositories for creating and accepting group invites.  
+**Scope:** `mobile/lib/features/invites/data/invite_repository.dart`, `mobile/test/features/invites/invite_repository_test.dart`  
+**What changed:**
+- Added invite result models, repository interface, and demo/remote implementations.
+- Added exact API paths and snake_case contract parsing for create and accept operations.
+- Added provider mode selection, email/code normalization, UTC clock injection, and malformed-response tests.
+**Decisions:** Demo time remains relative to the current time but uses an injectable UTC clock for deterministic tests.
+**Known gaps / follow-ups:** Controllers and screens are not connected yet; repository focused tests pass 13/13 and the full Flutter suite passes 77/77.
