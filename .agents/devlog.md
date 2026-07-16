@@ -116,3 +116,15 @@
 - Added a widget navigation test using the real home screen.
 **Decisions:** Kept logout behavior centralized in `SettingsScreen`; no duplicate home logout action or new navigation shell was added.
 **Known gaps / follow-ups:** User visual acceptance of the invite flow remains in Task 8. Full Flutter tests pass 123/123 and the running Web endpoint returns HTTP 200.
+
+## 2026-07-16 — Add account creation to mobile auth
+
+**Task:** Let users register a second account in the app for invite-flow acceptance.
+**Scope:** `mobile/lib/features/auth/`, `mobile/test/features/auth/`
+**What changed:**
+- Added demo and remote registration repository methods using `/auth/register`.
+- Added registration session persistence and a registration-specific controller error state.
+- Added Sign in/Create account modes with a Display name field on the authentication screen.
+- Added repository, controller, and widget coverage for registration behavior.
+**Decisions:** Reused the login route, session payload mapper, and centralized persistence path instead of adding a separate registration route.
+**Known gaps / follow-ups:** Email verification and password recovery remain out of scope. Full Flutter tests pass 127/127 and the remote-mode Web build succeeds.

@@ -6,6 +6,26 @@ import 'package:pairfund_mobile/shared/providers/session_provider.dart';
 import 'package:pairfund_mobile/shared/storage/session_persistence.dart';
 
 class FakeAuthRepository implements AuthRepository {
+  FakeAuthRepository({this.throwOnRegister = false});
+
+  final bool throwOnRegister;
+
+  @override
+  Future<AuthSessionPayload> register({
+    required String displayName,
+    required String email,
+    required String password,
+  }) async {
+    if (throwOnRegister) {
+      throw StateError('registration failed');
+    }
+    return const AuthSessionPayload(
+      accessToken: 'register-access-token',
+      refreshToken: 'register-refresh-token',
+      userId: 'user-2',
+    );
+  }
+
   @override
   Future<AuthSessionPayload> login({
     required String email,
@@ -42,6 +62,56 @@ class InMemorySessionPersistence implements SessionPersistence {
 }
 
 void main() {
+  test('auth controller persists session after successful registration',
+      () async {
+    final persistence = InMemorySessionPersistence();
+    final container = ProviderContainer(
+      overrides: <Override>[
+        authRepositoryProvider.overrideWithValue(FakeAuthRepository()),
+        sessionPersistenceProvider.overrideWithValue(persistence),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    final didRegister =
+        await container.read(authControllerProvider.notifier).register(
+              displayName: 'Taylor',
+              email: 'taylor@example.com',
+              password: 'secret1',
+            );
+
+    expect(didRegister, isTrue);
+    expect(container.read(sessionProvider).userId, 'user-2');
+    expect(persistence.persisted?.accessToken, 'register-access-token');
+  });
+
+  test('auth controller exposes a registration-specific error', () async {
+    final container = ProviderContainer(
+      overrides: <Override>[
+        authRepositoryProvider.overrideWithValue(
+          FakeAuthRepository(throwOnRegister: true),
+        ),
+        sessionPersistenceProvider.overrideWithValue(
+          InMemorySessionPersistence(),
+        ),
+      ],
+    );
+    addTearDown(container.dispose);
+
+    final didRegister =
+        await container.read(authControllerProvider.notifier).register(
+              displayName: 'Taylor',
+              email: 'taylor@example.com',
+              password: 'secret1',
+            );
+
+    expect(didRegister, isFalse);
+    expect(
+      container.read(authControllerProvider).errorMessage,
+      'Unable to create your account right now.',
+    );
+  });
+
   test('auth controller persists session after successful login', () async {
     final persistence = InMemorySessionPersistence();
     final container = ProviderContainer(

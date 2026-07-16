@@ -1,4 +1,4 @@
-﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/api/api_json.dart';
 import '../../../shared/api/api_mode_provider.dart';
@@ -19,6 +19,12 @@ class AuthSessionPayload {
 }
 
 abstract class AuthRepository {
+  Future<AuthSessionPayload> register({
+    required String displayName,
+    required String email,
+    required String password,
+  });
+
   Future<AuthSessionPayload> login({
     required String email,
     required String password,
@@ -28,6 +34,20 @@ abstract class AuthRepository {
 }
 
 class DemoAuthRepository implements AuthRepository {
+  @override
+  Future<AuthSessionPayload> register({
+    required String displayName,
+    required String email,
+    required String password,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 250));
+    return const AuthSessionPayload(
+      accessToken: 'demo-access-token',
+      refreshToken: 'demo-refresh-token',
+      userId: 'demo-user',
+    );
+  }
+
   @override
   Future<AuthSessionPayload> login({
     required String email,
@@ -52,6 +72,24 @@ class RemoteAuthRepository implements AuthRepository {
   RemoteAuthRepository(this._apiClient);
 
   final PairFundApiClient _apiClient;
+
+  @override
+  Future<AuthSessionPayload> register({
+    required String displayName,
+    required String email,
+    required String password,
+  }) async {
+    final response = await _apiClient.post(
+      '/auth/register',
+      data: <String, dynamic>{
+        'display_name': displayName,
+        'email': email,
+        'password': password,
+      },
+    );
+    final dto = AuthLoginDto.fromJson(readDataEnvelope(response));
+    return mapAuthSessionPayload(dto);
+  }
 
   @override
   Future<AuthSessionPayload> login({
@@ -86,4 +124,3 @@ final authRepositoryProvider = Provider<AuthRepository>((Ref ref) {
 
   return DemoAuthRepository();
 });
-

@@ -30,6 +30,30 @@ class AuthController extends StateNotifier<AuthState> {
 
   final Ref _ref;
 
+  Future<bool> register({
+    required String displayName,
+    required String email,
+    required String password,
+  }) async {
+    state = state.copyWith(isSubmitting: true, clearError: true);
+    try {
+      final payload = await _ref.read(authRepositoryProvider).register(
+            displayName: displayName,
+            email: email,
+            password: password,
+          );
+      await _persistSession(payload);
+      state = state.copyWith(isSubmitting: false, clearError: true);
+      return true;
+    } catch (_) {
+      state = state.copyWith(
+        isSubmitting: false,
+        errorMessage: 'Unable to create your account right now.',
+      );
+      return false;
+    }
+  }
+
   Future<bool> login({
     required String email,
     required String password,
@@ -43,18 +67,7 @@ class AuthController extends StateNotifier<AuthState> {
                 password: password,
               );
 
-      _ref.read(sessionProvider.notifier).setSession(
-            accessToken: payload.accessToken,
-            refreshToken: payload.refreshToken,
-            userId: payload.userId,
-          );
-      await _ref.read(sessionPersistenceProvider).saveSession(
-            SessionState(
-              accessToken: payload.accessToken,
-              refreshToken: payload.refreshToken,
-              userId: payload.userId,
-            ),
-          );
+      await _persistSession(payload);
 
       state = state.copyWith(isSubmitting: false, clearError: true);
       return true;
@@ -65,6 +78,20 @@ class AuthController extends StateNotifier<AuthState> {
       );
       return false;
     }
+  }
+
+  Future<void> _persistSession(AuthSessionPayload payload) async {
+    final session = SessionState(
+      accessToken: payload.accessToken,
+      refreshToken: payload.refreshToken,
+      userId: payload.userId,
+    );
+    _ref.read(sessionProvider.notifier).setSession(
+          accessToken: session.accessToken!,
+          refreshToken: session.refreshToken!,
+          userId: session.userId!,
+        );
+    await _ref.read(sessionPersistenceProvider).saveSession(session);
   }
 
   Future<void> logout() async {

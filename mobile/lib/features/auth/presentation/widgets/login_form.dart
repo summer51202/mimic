@@ -5,6 +5,8 @@ class LoginForm extends StatelessWidget {
     super.key,
     required this.emailController,
     required this.passwordController,
+    this.displayNameController,
+    this.isRegistering = false,
     required this.isSubmitting,
     required this.errorMessage,
     required this.onSubmit,
@@ -12,6 +14,8 @@ class LoginForm extends StatelessWidget {
 
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final TextEditingController? displayNameController;
+  final bool isRegistering;
   final bool isSubmitting;
   final String? errorMessage;
   final VoidCallback onSubmit;
@@ -21,6 +25,13 @@ class LoginForm extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        if (isRegistering) ...<Widget>[
+          TextField(
+            controller: displayNameController,
+            decoration: const InputDecoration(labelText: 'Display name'),
+          ),
+          const SizedBox(height: 16),
+        ],
         TextField(
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
@@ -54,7 +65,11 @@ class LoginForm extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: isSubmitting ? null : onSubmit,
-            child: Text(isSubmitting ? 'Signing in...' : 'Continue'),
+            child: Text(
+              isSubmitting
+                  ? (isRegistering ? 'Creating account...' : 'Signing in...')
+                  : (isRegistering ? 'Create account' : 'Continue'),
+            ),
           ),
         ),
       ],
