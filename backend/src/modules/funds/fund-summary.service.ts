@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import {
@@ -22,18 +23,59 @@ import {
   PeriodTotals,
 } from './fund-summary.types';
 
-const summaryInclude = Prisma.validator<Prisma.FundInclude>()({
+const summarySelect = Prisma.validator<Prisma.FundSelect>()({
+  id: true,
+  groupId: true,
+  name: true,
+  currency: true,
+  status: true,
   group: {
-    include: {
-      members: { include: { user: { select: { displayName: true } } } },
+    select: {
+      members: {
+        select: {
+          userId: true,
+          status: true,
+          user: { select: { displayName: true } },
+        },
+      },
     },
   },
-  contributions: true,
-  expenses: { include: { payers: true, splits: true } },
-  settlements: true,
+  contributions: {
+    where: { status: RecordStatus.ACTIVE },
+    select: {
+      contributorUserId: true,
+      amountMinor: true,
+      occurredOn: true,
+      status: true,
+    },
+  },
+  expenses: {
+    where: { status: RecordStatus.ACTIVE },
+    select: {
+      expenseType: true,
+      amountMinor: true,
+      occurredOn: true,
+      status: true,
+      payers: { select: { payerUserId: true, amountMinor: true } },
+      splits: { select: { userId: true, allocatedAmountMinor: true } },
+    },
+  },
+  settlements: {
+    where: { status: SettlementStatus.COMPLETED },
+    select: {
+      id: true,
+      fromUserId: true,
+      toUserId: true,
+      amountMinor: true,
+      status: true,
+      periodEnd: true,
+      completedAt: true,
+      createdAt: true,
+    },
+  },
 });
 
-type SummaryFund = Prisma.FundGetPayload<{ include: typeof summaryInclude }>;
+type SummaryFund = Prisma.FundGetPayload<{ select: typeof summarySelect }>;
 
 @Injectable()
 export class FundSummaryService {
@@ -56,7 +98,7 @@ export class FundSummaryService {
   ): Promise<FundSummaryReadModel> {
     const fund = await tx.fund.findFirst({
       where: { id: fundId, status: FundStatus.ACTIVE },
-      include: summaryInclude,
+      select: summarySelect,
     });
     if (!fund) {
       throw new NotFoundException('FUND_NOT_FOUND');
@@ -81,10 +123,7 @@ export class FundSummaryService {
           settlement.status === SettlementStatus.COMPLETED &&
           settlement.periodEnd !== null,
       )
-      .sort(
-        (left, right) =>
-          right.periodEnd!.getTime() - left.periodEnd!.getTime(),
-      );
+      .sort(compareCompletedSettlementsLatestFirst);
     const latestCompleted = completedWithPeriod[0] ?? null;
     const firstTransaction = earliestDate([
       ...fund.contributions
@@ -132,7 +171,9 @@ export class FundSummaryService {
       fund,
       activeContributions,
       activeExpenses,
-      fund.settlements,
+      fund.settlements.filter(
+        (item) => item.status === SettlementStatus.COMPLETED,
+      ),
       false,
     );
     const current = this.buildTotals(
@@ -170,15 +211,22 @@ export class FundSummaryService {
     settlements: SummaryFund['settlements'],
     activeMembersOnly: boolean,
   ): PeriodTotals {
+    assertAccountingAmountsAreSafe(
+      fund,
+      contributions,
+      expenses,
+      settlements,
+    );
     const contributionMinor = contributions.reduce(
-      (sum, item) => sum + Number(item.amountMinor),
+      (sum, item) => safeAdd(sum, safeBigIntToNumber(item.amountMinor)),
       0,
     );
-    const expenseMinor = expenses.reduce(
-      (sum, item) =>
-        sum + Number(item.amountMinor) * expenseDirection(item.expenseType),
-      0,
-    );
+    const expenseMinor = expenses.reduce((sum, item) => {
+      const signedAmount =
+        safeBigIntToNumber(item.amountMinor) *
+        expenseDirection(item.expenseType);
+      return safeAdd(sum, signedAmount);
+    }, 0);
     const input: AccountingCalculatorInput = {
       memberIds: fund.group.members.map((member) => member.userId),
       contributions,
@@ -201,12 +249,101 @@ export class FundSummaryService {
       }));
 
     return {
-      netChangeMinor: contributionMinor - expenseMinor,
+      netChangeMinor: safeAdd(contributionMinor, -expenseMinor),
       contributionMinor,
       expenseMinor,
       memberPositions,
     };
   }
+}
+
+function assertAccountingAmountsAreSafe(
+  fund: SummaryFund,
+  contributions: SummaryFund['contributions'],
+  expenses: SummaryFund['expenses'],
+  settlements: SummaryFund['settlements'],
+): void {
+  const positionByUser = new Map<string, number>();
+  fund.group.members.forEach((member) => positionByUser.set(member.userId, 0));
+  const addPosition = (userId: string, amount: number) => {
+    positionByUser.set(
+      userId,
+      safeAdd(positionByUser.get(userId) ?? 0, amount),
+    );
+  };
+
+  contributions
+    .filter((item) => item.status === RecordStatus.ACTIVE)
+    .forEach((item) => {
+      addPosition(item.contributorUserId, safeBigIntToNumber(item.amountMinor));
+    });
+  expenses
+    .filter((item) => item.status === RecordStatus.ACTIVE)
+    .forEach((item) => {
+      safeBigIntToNumber(item.amountMinor);
+      const direction = expenseDirection(item.expenseType);
+      item.payers.forEach((payer) => {
+        addPosition(
+          payer.payerUserId,
+          safeBigIntToNumber(payer.amountMinor) * direction,
+        );
+      });
+      item.splits.forEach((split) => {
+        addPosition(
+          split.userId,
+          -safeBigIntToNumber(split.allocatedAmountMinor) * direction,
+        );
+      });
+    });
+  settlements
+    .filter((item) => item.status === SettlementStatus.COMPLETED)
+    .forEach((item) => {
+      const amount = safeBigIntToNumber(item.amountMinor);
+      addPosition(item.fromUserId, -amount);
+      addPosition(item.toUserId, amount);
+    });
+}
+
+function safeBigIntToNumber(value: bigint): number {
+  const converted = Number(value);
+  if (!Number.isSafeInteger(converted)) {
+    throw new InternalServerErrorException('MONEY_AMOUNT_OUT_OF_RANGE');
+  }
+  return converted;
+}
+
+function safeAdd(left: number, right: number): number {
+  const result = left + right;
+  if (
+    !Number.isSafeInteger(left) ||
+    !Number.isSafeInteger(right) ||
+    !Number.isSafeInteger(result)
+  ) {
+    throw new InternalServerErrorException('MONEY_AMOUNT_OUT_OF_RANGE');
+  }
+  return result;
+}
+
+function compareCompletedSettlementsLatestFirst(
+  left: SummaryFund['settlements'][number],
+  right: SummaryFund['settlements'][number],
+): number {
+  return (
+    compareNullableDatesDescending(left.periodEnd, right.periodEnd) ||
+    compareNullableDatesDescending(left.completedAt, right.completedAt) ||
+    compareNullableDatesDescending(left.createdAt, right.createdAt) ||
+    right.id.localeCompare(left.id)
+  );
+}
+
+function compareNullableDatesDescending(
+  left: Date | null,
+  right: Date | null,
+): number {
+  return (
+    (right?.getTime() ?? Number.NEGATIVE_INFINITY) -
+    (left?.getTime() ?? Number.NEGATIVE_INFINITY)
+  );
 }
 
 function startOfUtcDay(value: Date): Date {
