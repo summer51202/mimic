@@ -86,21 +86,24 @@ class CurrencyDashboardSection extends StatelessWidget {
             ? 'Payable'
             : 'Balanced';
     final former = isFormer ? ' (Former member)' : '';
-    return Chip(
-      key: ValueKey<String>(
-          'member-position-${dashboard.currency}-${member.userId}'),
-      backgroundColor: member.positionMinor > 0
-          ? PfColors.successSoft
-          : member.positionMinor < 0
-              ? PfColors.warningSoft
-              : PfColors.accentSoft,
-      label: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('${member.displayName}$former'),
-          Text('$semantic ${_positionMoney(member.positionMinor)}'),
-        ],
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 280),
+      child: Chip(
+        key: ValueKey<String>(
+            'member-position-${dashboard.currency}-${member.userId}'),
+        backgroundColor: member.positionMinor > 0
+            ? PfColors.successSoft
+            : member.positionMinor < 0
+                ? PfColors.warningSoft
+                : PfColors.accentSoft,
+        label: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text('${member.displayName}$former'),
+            Text('$semantic ${_positionMoney(member.positionMinor)}'),
+          ],
+        ),
       ),
     );
   }
@@ -113,15 +116,20 @@ class CurrencyDashboardSection extends StatelessWidget {
   }
 
   Widget _fundCard(DashboardFundCard fund) {
+    void openFund() => onFundTap(fund.fundId);
     return Padding(
       padding: const EdgeInsets.only(top: PfSpacing.xs),
       child: Semantics(
         button: true,
-        label: 'Open ${fund.name}',
+        excludeSemantics: true,
+        onTap: openFund,
+        label: 'Open ${fund.name}. Cash ${_money(fund.cashBalanceMinor)}. '
+            'Current net change ${_money(fund.currentNetChangeMinor)}. '
+            '${_periodLabel(fund)}',
         child: InkWell(
           key: ValueKey<String>('dashboard-fund-${fund.fundId}'),
           borderRadius: BorderRadius.circular(PfRadii.card),
-          onTap: () => onFundTap(fund.fundId),
+          onTap: openFund,
           child: Container(
             width: double.infinity,
             padding: const EdgeInsets.all(PfSpacing.sm),
@@ -174,7 +182,7 @@ class _Metric extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 120),
+      constraints: const BoxConstraints(minWidth: 120, maxWidth: 280),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

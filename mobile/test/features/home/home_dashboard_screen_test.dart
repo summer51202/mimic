@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show SemanticsAction;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -163,15 +164,25 @@ class _DashboardHomeRepository implements HomeRepository {
     required this.groups,
     required this.summaries,
     this.pendingSummary,
+    this.groupsFailuresRemaining = 0,
   });
 
   final List<GroupSummary> groups;
   final Map<String, HomeSummary> summaries;
   final Completer<HomeSummary>? pendingSummary;
+  int groupsFailuresRemaining;
+  int groupsRequests = 0;
   final List<String?> requestedGroupIds = <String?>[];
 
   @override
-  Future<List<GroupSummary>> fetchGroups() async => groups;
+  Future<List<GroupSummary>> fetchGroups() async {
+    groupsRequests += 1;
+    if (groupsFailuresRemaining > 0) {
+      groupsFailuresRemaining -= 1;
+      throw StateError('groups failed');
+    }
+    return groups;
+  }
 
   @override
   Future<HomeSummary> fetchSummary({required String? groupId}) {
@@ -218,6 +229,7 @@ Future<GoRouter> _pumpDashboard(
   List<GroupSummary> groups = _groups,
   Size size = const Size(800, 900),
   Future<HomeSummary> Function()? summaryLoader,
+  double textScale = 1,
 }) async {
   await tester.binding.setSurfaceSize(size);
   addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -290,7 +302,15 @@ Future<GoRouter> _pumpDashboard(
           (_) => SelectedGroupNotifier(_MemorySelection()),
         ),
       ],
-      child: MaterialApp.router(routerConfig: router),
+      child: MaterialApp.router(
+        routerConfig: router,
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaler: TextScaler.linear(textScale),
+          ),
+          child: child!,
+        ),
+      ),
     ),
   );
   await tester.pumpAndSettle();
@@ -355,8 +375,7 @@ void main() {
     await tester.tap(find.text('Summer Trip'));
     await tester.pumpAndSettle();
 
-    expect(repository.requestedGroupIds,
-        containsAllInOrder(<String?>['group-1', 'group-2']));
+    expect(repository.requestedGroupIds, <String?>['group-1', 'group-2']);
     expect(find.text('JPY 500'), findsOneWidget);
     expect(find.text('JPY 9,000'), findsNothing);
     expect(find.text('Japan Fund'), findsOneWidget);
@@ -385,6 +404,28 @@ void main() {
 
     pending.complete(_dashboardSummary());
     await tester.pumpAndSettle();
+  });
+
+  testWidgets('retry recovers when the initial groups request fails',
+      (WidgetTester tester) async {
+    final repository = _DashboardHomeRepository(
+      groups: _groups,
+      summaries: <String, HomeSummary>{'group-1': _dashboardSummary()},
+      groupsFailuresRemaining: 1,
+    );
+    await _pumpRepositoryDashboard(tester, repository: repository);
+
+    expect(
+        find.text('Unable to load your dashboard right now.'), findsOneWidget);
+    expect(repository.groupsRequests, 1);
+    expect(repository.requestedGroupIds, isEmpty);
+
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Retry'));
+    await tester.pumpAndSettle();
+
+    expect(repository.groupsRequests, 2);
+    expect(repository.requestedGroupIds, <String?>['group-1']);
+    expect(find.text('Present cash'), findsNWidgets(2));
   });
 
   testWidgets('currency with no funds or members shows explicit empty states',
@@ -469,6 +510,12 @@ void main() {
     final router = await _pumpDashboard(tester, summary: _dashboardSummary());
 
     await tester.ensureVisible(find.text('Household'));
+    final semantics = tester.getSemantics(
+      find.byKey(const Key('dashboard-fund-fund-dashboard')),
+    );
+    expect(semantics.label, contains('Open Household'));
+    expect(semantics.label, contains('Cash TWD 120,000'));
+    expect(semantics.getSemanticsData().hasAction(SemanticsAction.tap), isTrue);
     await tester.tap(find.text('Household'));
     await tester.pumpAndSettle();
 
@@ -510,28 +557,28 @@ void main() {
     expect(find.text('Present cash'), findsNWidgets(2));
   });
 
-  testWidgets('long dashboard content has no overflow at 360 pixels',
+  testWidgets('large text dashboard wraps at 360 pixels and remains operable',
       (WidgetTester tester) async {
     final longCurrency = CurrencyDashboard(
       currency: 'LONG-CURRENCY-CODE',
-      cashBalanceMinor: 123,
+      cashBalanceMinor: 9007199254740000,
       current: DashboardPeriodTotals(
-        netChangeMinor: 123,
-        contributionMinor: 123,
-        expenseMinor: 0,
+        netChangeMinor: 123456789012345,
+        contributionMinor: 9007199254740000,
+        expenseMinor: 8883742465727655,
         memberPositions: const <DashboardMemberPosition>[
           DashboardMemberPosition(
             userId: 'long-user',
             displayName:
                 'A very long member display name that must remain readable',
             membershipStatus: 'active',
-            positionMinor: 123,
+            positionMinor: 123456789012345,
           ),
         ],
       ),
       allTime: DashboardPeriodTotals(
-        netChangeMinor: 123,
-        contributionMinor: 123,
+        netChangeMinor: 9007199254740000,
+        contributionMinor: 9007199254740000,
         expenseMinor: 0,
         memberPositions: const <DashboardMemberPosition>[],
       ),
@@ -540,8 +587,8 @@ void main() {
           fundId: 'long-fund',
           name:
               'A very long fund name that should wrap or use an understandable ellipsis',
-          cashBalanceMinor: 123,
-          currentNetChangeMinor: 123,
+          cashBalanceMinor: 9007199254740000,
+          currentNetChangeMinor: 123456789012345,
           periodStart: null,
           periodEnd: null,
         ),
@@ -557,9 +604,21 @@ void main() {
         ),
       ),
       size: const Size(360, 900),
+      textScale: 2,
     );
 
     expect(find.text('LONG-CURRENCY-CODE'), findsWidgets);
+    expect(tester.takeException(), isNull);
+    await tester.ensureVisible(
+      find.byKey(const Key('dashboard-scope-all-time')),
+    );
+    await tester.tap(find.byKey(const Key('dashboard-scope-all-time')));
+    await tester.pump();
+    expect(find.text('LONG-CURRENCY-CODE 9,007,199,254,740,000'), findsWidgets);
+    expect(
+      find.text('LONG-CURRENCY-CODE 8,883,742,465,727,655'),
+      findsNothing,
+    );
     expect(tester.takeException(), isNull);
   });
 

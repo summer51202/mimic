@@ -144,13 +144,14 @@ class HomeDashboardScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: PfSpacing.lg),
                   if (summary.dashboard != null) ...<Widget>[
-                    Row(
+                    Wrap(
+                      spacing: PfSpacing.md,
+                      runSpacing: PfSpacing.sm,
+                      crossAxisAlignment: WrapCrossAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            'Fund overview',
-                            style: textTheme.titleLarge,
-                          ),
+                        Text(
+                          'Fund overview',
+                          style: textTheme.titleLarge,
                         ),
                         PeriodScopeControl(
                           scope: scope,
@@ -295,8 +296,11 @@ class HomeDashboardScreen extends ConsumerWidget {
                       color: PfColors.warningSoft,
                       child: Padding(
                         padding: const EdgeInsets.all(PfSpacing.md),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Wrap(
+                          spacing: PfSpacing.md,
+                          runSpacing: PfSpacing.xs,
+                          alignment: WrapAlignment.spaceBetween,
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: <Widget>[
                             Text('Pending tasks', style: textTheme.titleMedium),
                             Text(
@@ -326,7 +330,10 @@ class HomeDashboardScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: PfSpacing.md),
                   ElevatedButton(
-                    onPressed: () => ref.invalidate(homeSummaryProvider),
+                    onPressed: () {
+                      ref.invalidate(homeGroupsProvider);
+                      ref.invalidate(homeSummaryProvider);
+                    },
                     child: const Text('Retry'),
                   ),
                 ],
