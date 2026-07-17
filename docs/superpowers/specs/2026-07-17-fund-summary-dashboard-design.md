@@ -217,8 +217,8 @@ Dashboard and fund summary have separate Riverpod providers. Provider keys inclu
 
 - A group with no funds shows a create-fund call to action.
 - A fund with no transactions shows zero values and guidance to record the first contribution or expense.
-- A failed currency or fund section does not replace the whole home screen when other data is available.
-- A complete dashboard failure shows a friendly message and Retry action while retaining the group selector.
+- A currency with no funds or no activity renders its own empty section without hiding populated currencies.
+- Because the dashboard is one consistent API read, a request failure shows a friendly dashboard-level message and Retry action while retaining the group selector.
 - Raw Backend error codes are mapped to user-facing copy.
 - If the selected group is no longer available, reconcile selection to the first accessible group.
 - Unauthorized responses continue through the existing token refresh flow; refresh failure clears the session and routes to login.
@@ -245,7 +245,7 @@ Dashboard and fund summary have separate Riverpod providers. Provider keys inclu
 - Current / All time switching uses one loaded response.
 - Receivable, payable, and balanced member states use clear text and distinct accessible styling.
 - Fund cards navigate to the correct fund summary.
-- Empty group, empty fund, partial failure, full failure, and Retry states render correctly.
+- Empty group, empty fund, empty currency section, dashboard failure, and Retry states render correctly.
 - A stale request cannot replace data after group switching.
 - Narrow viewport widget tests detect overflow and unreadable layouts.
 
