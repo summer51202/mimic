@@ -305,16 +305,38 @@ describe('GroupsService member departure', () => {
         deleteMany: jest.fn(),
       },
       fund: { findMany: jest.fn().mockResolvedValue(funds) },
-      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
+      settlement: {
+        findFirst: jest.fn().mockResolvedValue(null),
+        create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn(),
+      },
       auditLog: { create: jest.fn().mockResolvedValue({ id: 'audit-1' }) },
-      contribution: { update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
-      expense: { update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
+      contribution: { create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
+      expense: { create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
+      expensePayer: { create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
+      expenseSplit: { create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
     };
     const prisma = {
       $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) => callback(tx)),
     };
     return { service: new GroupsService(prisma as never), prisma, tx, removed };
   }
+
+  const operations = [
+    {
+      name: 'remove',
+      arrange: (tx: ReturnType<typeof setup>['tx']) => tx,
+      act: (service: GroupsService) => service.removeMember('group-1', 'owner-1', 'member-1'),
+    },
+    {
+      name: 'leave',
+      arrange: (tx: ReturnType<typeof setup>['tx']) => {
+        tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(member);
+        tx.groupMember.update.mockResolvedValue({ ...member, status: MemberStatus.LEFT });
+        return tx;
+      },
+      act: (service: GroupsService) => service.leaveGroup('group-1', 'member-1'),
+    },
+  ];
 
   it('removes an eligible member and audits the status-only change', async () => {
     const { service, prisma, tx, removed } = setup();
@@ -341,12 +363,13 @@ describe('GroupsService member departure', () => {
   });
 
   it('allows an eligible member to leave and audits the status-only change', async () => {
-    const { service, tx } = setup();
+    const { service, prisma, tx } = setup();
     tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(member);
     const left = { ...member, status: MemberStatus.LEFT };
     tx.groupMember.update.mockResolvedValue(left);
 
     await expect(service.leaveGroup('group-1', 'member-1')).resolves.toBe(left);
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
     expect(tx.groupMember.update).toHaveBeenCalledWith({
       where: { id: member.id }, data: { status: MemberStatus.LEFT },
     });
@@ -356,6 +379,24 @@ describe('GroupsService member departure', () => {
       afterSnapshot: { role: 'member', status: 'left' },
       metadata: { operation: 'leave_group', target_user_id: 'member-1' },
     })});
+  });
+
+  it.each([
+    ['inactive group', null, member, NotFoundException, 'GROUP_NOT_FOUND'],
+    ['outsider or inactive actor', group, null, ForbiddenException, 'GROUP_ACCESS_DENIED'],
+  ])('leaveGroup rejects an %s without exposing financial state', async (
+    _case, foundGroup, foundActor, ExceptionType, message,
+  ) => {
+    const { service, tx } = setup();
+    tx.group.findFirst.mockResolvedValue(foundGroup);
+    tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(foundActor);
+
+    await expect(service.leaveGroup('group-1', 'member-1'))
+      .rejects.toEqual(new ExceptionType(message));
+    expect(tx.fund.findMany).not.toHaveBeenCalled();
+    expect(tx.settlement.findFirst).not.toHaveBeenCalled();
+    expect(tx.groupMember.update).not.toHaveBeenCalled();
+    expect(tx.auditLog.create).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -398,52 +439,83 @@ describe('GroupsService member departure', () => {
     expect(tx.fund.findMany).not.toHaveBeenCalled();
   });
 
-  it.each([
-    ['active contribution', { contributions: [{ amountMinor: 1n }] }],
-    ['archived contribution', { status: FundStatus.ARCHIVED, contributions: [{ amountMinor: 1n }] }],
-    ['payer only', { expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, payers: [{ amountMinor: 1n }], splits: [] }] }],
-    ['split only', { expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, payers: [], splits: [{ allocatedAmountMinor: 1n }] }] }],
-    ['refund payer sign', { expenses: [{ expenseType: ExpenseType.REFUND, payers: [{ amountMinor: 1n }], splits: [] }] }],
-    ['refund split sign', { expenses: [{ expenseType: ExpenseType.REFUND, payers: [], splits: [{ allocatedAmountMinor: 1n }] }] }],
-    ['completed settlement from', { settlements: [{ fromUserId: 'member-1', toUserId: 'other', amountMinor: 1n }] }],
-    ['completed settlement to', { settlements: [{ fromUserId: 'other', toUserId: 'member-1', amountMinor: 1n }] }],
-  ])('blocks a nonzero %s position', async (_case, data) => {
-    const { service } = setup([{ ...emptyFund(), ...data } as ReturnType<typeof emptyFund>]);
-    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
+  it.each(operations.flatMap((operation) => [
+    [`${operation.name}: active contribution`, operation, { contributions: [{ amountMinor: 1n }] }],
+    [`${operation.name}: archived contribution`, operation, { status: FundStatus.ARCHIVED, contributions: [{ amountMinor: 1n }] }],
+    [`${operation.name}: payer only`, operation, { expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, payers: [{ amountMinor: 1n }], splits: [] }] }],
+    [`${operation.name}: split only`, operation, { expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, payers: [], splits: [{ allocatedAmountMinor: 1n }] }] }],
+    [`${operation.name}: refund payer sign`, operation, { expenses: [{ expenseType: ExpenseType.REFUND, payers: [{ amountMinor: 1n }], splits: [] }] }],
+    [`${operation.name}: refund split sign`, operation, { expenses: [{ expenseType: ExpenseType.REFUND, payers: [], splits: [{ allocatedAmountMinor: 1n }] }] }],
+    [`${operation.name}: completed settlement from`, operation, { settlements: [{ fromUserId: 'member-1', toUserId: 'other', amountMinor: 1n }] }],
+    [`${operation.name}: completed settlement to`, operation, { settlements: [{ fromUserId: 'other', toUserId: 'member-1', amountMinor: 1n }] }],
+  ]))('blocks a nonzero %s position', async (_case, operation, data) => {
+    const { service, tx } = setup([{ ...emptyFund(), ...data } as ReturnType<typeof emptyFund>]);
+    operation.arrange(tx);
+    await expect(operation.act(service))
       .rejects.toEqual(new ConflictException('MEMBER_HAS_OPEN_BALANCE'));
   });
 
-  it('does not net opposite positions across funds', async () => {
-    const { service } = setup([
+  it.each(operations)('does not net opposite positions across funds for $name', async (operation) => {
+    const { service, tx } = setup([
       { ...emptyFund('fund-1'), contributions: [{ amountMinor: 100n }] },
       { ...emptyFund('fund-2'), expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, payers: [], splits: [{ allocatedAmountMinor: 100n }] }] },
     ] as ReturnType<typeof emptyFund>[]);
-    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
+    operation.arrange(tx);
+    await expect(operation.act(service))
       .rejects.toEqual(new ConflictException('MEMBER_HAS_OPEN_BALANCE'));
   });
 
-  it('allows an exact bigint zero position after all adjustments', async () => {
+  it.each(operations)('allows an exact bigint zero position for $name', async (operation) => {
     const { service, tx } = setup([{ ...emptyFund(),
       contributions: [{ amountMinor: 100n }],
       expenses: [{ expenseType: ExpenseType.REFUND, payers: [{ amountMinor: 40n }], splits: [{ allocatedAmountMinor: 10n }] }],
       settlements: [{ fromUserId: 'member-1', toUserId: 'other', amountMinor: 70n }],
     }] as ReturnType<typeof emptyFund>[]);
-    await expect(service.removeMember('group-1', 'owner-1', 'member-1')).resolves.toBeDefined();
+    operation.arrange(tx);
+    await expect(operation.act(service)).resolves.toBeDefined();
     expect(tx.settlement.findFirst).toHaveBeenCalledWith({ where: {
       fund: { groupId: 'group-1' }, status: SettlementStatus.PENDING,
       OR: [{ fromUserId: 'member-1' }, { toUserId: 'member-1' }],
     }});
   });
 
-  it('blocks any pending settlement after a zero position', async () => {
+  it.each(operations)('blocks any pending settlement for $name', async (operation) => {
     const { service, tx } = setup();
+    operation.arrange(tx);
     tx.settlement.findFirst.mockResolvedValue({ id: 'pending-1' });
-    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
+    await expect(operation.act(service))
       .rejects.toEqual(new ConflictException('MEMBER_HAS_PENDING_SETTLEMENT'));
+    expect(tx.settlement.findFirst).toHaveBeenCalledWith({ where: {
+      fund: { groupId: 'group-1' }, status: SettlementStatus.PENDING,
+      OR: [{ fromUserId: 'member-1' }, { toUserId: 'member-1' }],
+    }});
     expect(tx.groupMember.update).not.toHaveBeenCalled();
   });
 
-  it('queries active records in every fund and locks before reads, then updates before audit', async () => {
+  it.each(operations)('preserves all financial history for $name', async (operation) => {
+    const { service, tx } = setup();
+    operation.arrange(tx);
+
+    await operation.act(service);
+
+    for (const model of [
+      tx.contribution,
+      tx.expense,
+      tx.expensePayer,
+      tx.expenseSplit,
+    ]) {
+      expect(model.create).not.toHaveBeenCalled();
+      expect(model.update).not.toHaveBeenCalled();
+      expect(model.delete).not.toHaveBeenCalled();
+      expect(model.deleteMany).not.toHaveBeenCalled();
+    }
+    expect(tx.settlement.create).not.toHaveBeenCalled();
+    expect(tx.settlement.update).not.toHaveBeenCalled();
+    expect(tx.settlement.delete).not.toHaveBeenCalled();
+    expect(tx.settlement.deleteMany).not.toHaveBeenCalled();
+  });
+
+  it('queries active records in every fund', async () => {
     const { service, tx } = setup();
     await service.removeMember('group-1', 'owner-1', 'member-1');
     expect(tx.fund.findMany).toHaveBeenCalledWith({
@@ -463,11 +535,54 @@ describe('GroupsService member departure', () => {
         ] }, select: { fromUserId: true, toUserId: true, amountMinor: true } },
       },
     });
+  });
+
+  it.each([
+    {
+      name: 'remove',
+      arrange: (tx: ReturnType<typeof setup>['tx']) => {
+        tx.groupMember.findFirst.mockReset()
+          .mockResolvedValueOnce(owner)
+          .mockResolvedValueOnce({ ...member, role: MemberRole.OWNER });
+      },
+      act: (service: GroupsService) => service.removeMember('group-1', 'owner-1', 'member-1'),
+      membershipReads: 2,
+    },
+    {
+      name: 'leave',
+      arrange: (tx: ReturnType<typeof setup>['tx']) => {
+        tx.groupMember.findFirst.mockReset()
+          .mockResolvedValueOnce({ ...member, role: MemberRole.OWNER });
+        tx.groupMember.update.mockResolvedValue({ ...member, role: MemberRole.OWNER, status: MemberStatus.LEFT });
+      },
+      act: (service: GroupsService) => service.leaveGroup('group-1', 'member-1'),
+      membershipReads: 1,
+    },
+  ])('orders every locked $name step before the next applicable step', async (operation) => {
+    const { service, tx } = setup();
+    operation.arrange(tx);
+
+    await operation.act(service);
+
     const lock = tx.$executeRaw.mock.invocationCallOrder[0];
     const groupRead = tx.group.findFirst.mock.invocationCallOrder[0];
+    const membershipReads = tx.groupMember.findFirst.mock.invocationCallOrder;
+    const ownerCount = tx.groupMember.count.mock.invocationCallOrder[0];
+    const financialRead = tx.fund.findMany.mock.invocationCallOrder[0];
+    const pendingRead = tx.settlement.findFirst.mock.invocationCallOrder[0];
     const update = tx.groupMember.update.mock.invocationCallOrder[0];
     const audit = tx.auditLog.create.mock.invocationCallOrder[0];
+
+    expect(membershipReads).toHaveLength(operation.membershipReads);
     expect(lock).toBeLessThan(groupRead);
+    expect(groupRead).toBeLessThan(membershipReads[0]);
+    if (operation.membershipReads === 2) {
+      expect(membershipReads[0]).toBeLessThan(membershipReads[1]);
+    }
+    expect(membershipReads.at(-1)).toBeLessThan(ownerCount);
+    expect(ownerCount).toBeLessThan(financialRead);
+    expect(financialRead).toBeLessThan(pendingRead);
+    expect(pendingRead).toBeLessThan(update);
     expect(update).toBeLessThan(audit);
   });
 });
