@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -58,13 +60,15 @@ HomeSummary _summary({String? groupId = 'group-1'}) => HomeSummary(
     );
 
 GroupDashboard _dashboard({
+  String groupId = 'group-1',
   String groupName = 'Our Home',
+  String defaultCurrency = 'TWD',
   List<CurrencyDashboard>? currencies,
 }) =>
     GroupDashboard(
-      groupId: 'group-1',
+      groupId: groupId,
       groupName: groupName,
-      defaultCurrency: 'TWD',
+      defaultCurrency: defaultCurrency,
       currencies: currencies ??
           <CurrencyDashboard>[
             CurrencyDashboard(
@@ -139,9 +143,12 @@ GroupDashboard _dashboard({
           ],
     );
 
-HomeSummary _dashboardSummary({GroupDashboard? dashboard}) {
+HomeSummary _dashboardSummary({
+  String groupId = 'group-1',
+  GroupDashboard? dashboard,
+}) {
   return HomeSummary(
-    groupId: 'group-1',
+    groupId: groupId,
     displayName: 'Edward',
     totalBalanceLabel: 'TWD 120,000',
     activeFunds: const <FundSummary>[_fund],
@@ -149,6 +156,60 @@ HomeSummary _dashboardSummary({GroupDashboard? dashboard}) {
     pendingTasksCount: 2,
     dashboard: dashboard ?? _dashboard(),
   );
+}
+
+class _DashboardHomeRepository implements HomeRepository {
+  _DashboardHomeRepository({
+    required this.groups,
+    required this.summaries,
+    this.pendingSummary,
+  });
+
+  final List<GroupSummary> groups;
+  final Map<String, HomeSummary> summaries;
+  final Completer<HomeSummary>? pendingSummary;
+  final List<String?> requestedGroupIds = <String?>[];
+
+  @override
+  Future<List<GroupSummary>> fetchGroups() async => groups;
+
+  @override
+  Future<HomeSummary> fetchSummary({required String? groupId}) {
+    requestedGroupIds.add(groupId);
+    if (pendingSummary != null) return pendingSummary!.future;
+    return Future<HomeSummary>.value(summaries[groupId]);
+  }
+}
+
+Future<GoRouter> _pumpRepositoryDashboard(
+  WidgetTester tester, {
+  required _DashboardHomeRepository repository,
+  bool settle = true,
+}) async {
+  final router = GoRouter(
+    initialLocation: AppRoutes.home,
+    routes: <RouteBase>[
+      GoRoute(
+        path: AppRoutes.home,
+        builder: (_, __) => const HomeDashboardScreen(),
+      ),
+    ],
+  );
+  addTearDown(router.dispose);
+
+  await tester.pumpWidget(
+    ProviderScope(
+      overrides: <Override>[
+        homeRepositoryProvider.overrideWithValue(repository),
+        selectedGroupProvider.overrideWith(
+          (_) => SelectedGroupNotifier(_MemorySelection()),
+        ),
+      ],
+      child: MaterialApp.router(routerConfig: router),
+    ),
+  );
+  if (settle) await tester.pumpAndSettle();
+  return router;
 }
 
 Future<GoRouter> _pumpDashboard(
@@ -237,6 +298,127 @@ Future<GoRouter> _pumpDashboard(
 }
 
 void main() {
+  testWidgets(
+      'group switch refreshes dashboard and resets all-time scope to current',
+      (WidgetTester tester) async {
+    final groupTwoDashboard = _dashboard(
+      groupId: 'group-2',
+      groupName: 'Summer Trip',
+      defaultCurrency: 'JPY',
+      currencies: <CurrencyDashboard>[
+        CurrencyDashboard(
+          currency: 'JPY',
+          cashBalanceMinor: 7000,
+          current: DashboardPeriodTotals(
+            netChangeMinor: 300,
+            contributionMinor: 500,
+            expenseMinor: 200,
+            memberPositions: const <DashboardMemberPosition>[],
+          ),
+          allTime: DashboardPeriodTotals(
+            netChangeMinor: 7000,
+            contributionMinor: 9000,
+            expenseMinor: 2000,
+            memberPositions: const <DashboardMemberPosition>[],
+          ),
+          funds: const <DashboardFundCard>[
+            DashboardFundCard(
+              fundId: 'japan-fund',
+              name: 'Japan Fund',
+              cashBalanceMinor: 7000,
+              currentNetChangeMinor: 300,
+              periodStart: null,
+              periodEnd: null,
+            ),
+          ],
+        ),
+      ],
+    );
+    final repository = _DashboardHomeRepository(
+      groups: _groups,
+      summaries: <String, HomeSummary>{
+        'group-1': _dashboardSummary(),
+        'group-2': _dashboardSummary(
+          groupId: 'group-2',
+          dashboard: groupTwoDashboard,
+        ),
+      },
+    );
+    await _pumpRepositoryDashboard(tester, repository: repository);
+
+    await tester.tap(find.byKey(const Key('dashboard-scope-all-time')));
+    await tester.pump();
+    expect(find.text('TWD 180,000'), findsOneWidget);
+
+    await tester.tap(find.text('Switch'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Summer Trip'));
+    await tester.pumpAndSettle();
+
+    expect(repository.requestedGroupIds,
+        containsAllInOrder(<String?>['group-1', 'group-2']));
+    expect(find.text('JPY 500'), findsOneWidget);
+    expect(find.text('JPY 9,000'), findsNothing);
+    expect(find.text('Japan Fund'), findsOneWidget);
+    expect(find.text('Household'), findsNothing);
+  });
+
+  testWidgets('selected group dashboard shows loading without stale data',
+      (WidgetTester tester) async {
+    final pending = Completer<HomeSummary>();
+    final repository = _DashboardHomeRepository(
+      groups: _groups,
+      summaries: const <String, HomeSummary>{},
+      pendingSummary: pending,
+    );
+    await _pumpRepositoryDashboard(
+      tester,
+      repository: repository,
+      settle: false,
+    );
+    await tester.pump();
+    await tester.pump();
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.text('Household'), findsNothing);
+    expect(find.text('TWD 120,000'), findsNothing);
+
+    pending.complete(_dashboardSummary());
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('currency with no funds or members shows explicit empty states',
+      (WidgetTester tester) async {
+    final emptyCurrency = CurrencyDashboard(
+      currency: 'EUR',
+      cashBalanceMinor: 0,
+      current: DashboardPeriodTotals(
+        netChangeMinor: 0,
+        contributionMinor: 0,
+        expenseMinor: 0,
+        memberPositions: const <DashboardMemberPosition>[],
+      ),
+      allTime: DashboardPeriodTotals(
+        netChangeMinor: 0,
+        contributionMinor: 0,
+        expenseMinor: 0,
+        memberPositions: const <DashboardMemberPosition>[],
+      ),
+      funds: const <DashboardFundCard>[],
+    );
+    await _pumpDashboard(
+      tester,
+      summary: _dashboardSummary(
+        dashboard: _dashboard(currencies: <CurrencyDashboard>[emptyCurrency]),
+      ),
+      size: const Size(360, 800),
+    );
+
+    expect(find.text('No member positions for this period.'), findsOneWidget);
+    expect(find.text('No funds in this currency.'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('renders independent currency totals and present cash',
       (WidgetTester tester) async {
     await _pumpDashboard(tester, summary: _dashboardSummary());
@@ -395,7 +577,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('shows current group context and switches groups',
+  testWidgets('shows current group context and member details',
       (WidgetTester tester) async {
     final router = await _pumpDashboard(tester, summary: _summary());
 
@@ -419,15 +601,6 @@ void main() {
     expect(find.text('group detail marker group-1'), findsOneWidget);
     router.pop();
     await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Switch'));
-    await tester.pumpAndSettle();
-    expect(find.text('Summer Trip'), findsOneWidget);
-    await tester.tap(find.text('Summer Trip'));
-    await tester.pumpAndSettle();
-    expect(find.text('Summer Trip'), findsOneWidget);
-    expect(find.text('Member'), findsOneWidget);
-    expect(find.text('4 members'), findsOneWidget);
   });
 
   testWidgets('shows onboarding when the user has no groups',
