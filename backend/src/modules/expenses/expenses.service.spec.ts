@@ -9,6 +9,14 @@ import { FundStatus, MemberStatus } from '@prisma/client';
 import { ExpensesService } from './expenses.service';
 
 describe('ExpensesService', () => {
+  it('bounds and stably sorts expense previews', async () => {
+    const prisma = { expense: { findMany: jest.fn().mockResolvedValue([]) } };
+    const service = new ExpensesService(prisma as never);
+    await service.listExpenses('fund-1', { page: 2, page_size: 3, sort: 'occurred_on_desc' });
+    expect(prisma.expense.findMany).toHaveBeenCalledWith(expect.objectContaining({
+      skip: 3, take: 3, orderBy: [{ occurredOn: 'desc' }, { id: 'desc' }],
+    }));
+  });
   it('locks the fund group and validates every unique participant before expense writes', async () => {
     const order: string[] = [];
     const tx = {

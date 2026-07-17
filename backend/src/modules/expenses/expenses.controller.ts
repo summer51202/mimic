@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { ActivityQueryDto } from '../../common/dto/activity-query.dto';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
 import { CreateExpenseDto } from './dto/create-expense.dto';
@@ -25,8 +26,8 @@ export class ExpensesController {
   }
 
   @Get('funds/:fundId/expenses')
-  async listExpenses(@Param('fundId') fundId: string) {
-    const expenses = await this.expensesService.listExpenses(fundId);
+  async listExpenses(@Param('fundId') fundId: string, @Query() query: ActivityQueryDto) {
+    const expenses = await this.expensesService.listExpenses(fundId, query);
 
     return {
       data: expenses.map((expense) => ({

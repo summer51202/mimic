@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { ActivityQueryDto } from '../../common/dto/activity-query.dto';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
 import { ContributionsService } from './contributions.service';
@@ -25,9 +26,9 @@ export class ContributionsController {
   }
 
   @Get('funds/:fundId/contributions')
-  async listContributions(@Param('fundId') fundId: string) {
+  async listContributions(@Param('fundId') fundId: string, @Query() query: ActivityQueryDto) {
     const contributions =
-      await this.contributionsService.listContributions(fundId);
+      await this.contributionsService.listContributions(fundId, query);
 
     return { data: contributions.map((item) => this.mapContribution(item)) };
   }

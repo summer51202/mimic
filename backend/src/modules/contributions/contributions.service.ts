@@ -3,6 +3,7 @@ import { ContributionType, FundStatus, MemberStatus, Prisma, RecordStatus } from
 import { PrismaService } from '../prisma/prisma.service';
 import { lockGroupMutation } from '../prisma/group-mutation-lock';
 import { CreateContributionDto } from './dto/create-contribution.dto';
+import { ActivityQueryDto } from '../../common/dto/activity-query.dto';
 
 @Injectable()
 export class ContributionsService {
@@ -59,13 +60,16 @@ export class ContributionsService {
     if (participantIds.some((userId) => !activeIds.has(userId))) throw new NotFoundException('MEMBER_NOT_FOUND');
   }
 
-  listContributions(fundId: string) {
+  listContributions(fundId: string, query: ActivityQueryDto = new ActivityQueryDto()) {
+    const direction = query.sort === 'occurred_on_asc' ? 'asc' : 'desc';
     return this.prisma.contribution.findMany({
       where: {
         fundId,
         status: RecordStatus.ACTIVE,
       },
-      orderBy: [{ occurredOn: 'desc' }, { createdAt: 'desc' }],
+      orderBy: [{ occurredOn: direction }, { id: direction }],
+      skip: (query.page - 1) * query.page_size,
+      take: query.page_size,
     });
   }
 

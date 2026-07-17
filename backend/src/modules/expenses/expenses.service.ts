@@ -11,6 +11,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { lockGroupMutation } from '../prisma/group-mutation-lock';
 import { CreateExpenseDto, ExpenseSplitInput } from './dto/create-expense.dto';
+import { ActivityQueryDto } from '../../common/dto/activity-query.dto';
 
 interface AllocatedSplit {
   userId: string;
@@ -94,7 +95,8 @@ export class ExpensesService {
     if (participantIds.some((userId) => !activeIds.has(userId))) throw new NotFoundException('MEMBER_NOT_FOUND');
   }
 
-  listExpenses(fundId: string) {
+  listExpenses(fundId: string, query: ActivityQueryDto = new ActivityQueryDto()) {
+    const direction = query.sort === 'occurred_on_asc' ? 'asc' : 'desc';
     return this.prisma.expense.findMany({
       where: {
         fundId,
@@ -104,7 +106,9 @@ export class ExpensesService {
         payers: true,
         splits: true,
       },
-      orderBy: [{ occurredOn: 'desc' }, { createdAt: 'desc' }],
+      orderBy: [{ occurredOn: direction }, { id: direction }],
+      skip: (query.page - 1) * query.page_size,
+      take: query.page_size,
     });
   }
 

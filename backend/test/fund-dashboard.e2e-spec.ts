@@ -10,6 +10,8 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { FundSummaryService } from '../src/modules/funds/fund-summary.service';
 import { PrismaService } from '../src/modules/prisma/prisma.service';
+import { ExpensesService } from '../src/modules/expenses/expenses.service';
+import { ContributionsService } from '../src/modules/contributions/contributions.service';
 
 const JWT_SECRET =
   'pairfund-dashboard-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
@@ -22,12 +24,18 @@ describe('Fund dashboard endpoints', () => {
     getFundSummary: jest.fn(),
     getGroupDashboard: jest.fn(),
   };
+  const expensesService = { listExpenses: jest.fn().mockResolvedValue([]) };
+  const contributionsService = { listContributions: jest.fn().mockResolvedValue([]) };
 
   beforeAll(async () => {
     process.env.JWT_ACCESS_SECRET = JWT_SECRET;
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
       .overrideProvider(FundSummaryService)
       .useValue(fundSummaryService)
+      .overrideProvider(ExpensesService)
+      .useValue(expensesService)
+      .overrideProvider(ContributionsService)
+      .useValue(contributionsService)
       .overrideProvider(PrismaService)
       .useValue({ $connect: jest.fn(), $disconnect: jest.fn() })
       .compile();
@@ -43,7 +51,7 @@ describe('Fund dashboard endpoints', () => {
     );
   });
 
-  beforeEach(() => jest.resetAllMocks());
+  beforeEach(() => jest.clearAllMocks());
 
   afterAll(async () => {
     if (app) await app.close();
@@ -235,6 +243,44 @@ describe('Fund dashboard endpoints', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(status)
       .expect({ message, error: status === 404 ? 'Not Found' : 'Forbidden', statusCode: status });
+  });
+
+  it.each([
+    ['/api/v1/funds/fund-1/expenses', expensesService, 'listExpenses'],
+    ['/api/v1/funds/fund-1/contributions', contributionsService, 'listContributions'],
+  ])('validates and forwards bounded activity query for %s', async (path, service, method) => {
+    await request(app.getHttpServer())
+      .get(`${path}?page=2&page_size=3&sort=occurred_on_asc`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({ data: [] });
+    expect(service[method as keyof typeof service]).toHaveBeenCalledWith(
+      'fund-1',
+      { page: 2, page_size: 3, sort: 'occurred_on_asc' },
+    );
+  });
+
+  it('applies explicit default activity query', async () => {
+    await request(app.getHttpServer())
+      .get('/api/v1/funds/fund-1/contributions')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+    expect(contributionsService.listContributions).toHaveBeenCalledWith(
+      'fund-1',
+      { page: 1, page_size: 50, sort: 'occurred_on_desc' },
+    );
+  });
+
+  it.each([
+    'page=0',
+    'page_size=0',
+    'page_size=101',
+    'sort=occurred_on:desc',
+  ])('rejects invalid activity query %s', async (query) => {
+    await request(app.getHttpServer())
+      .get(`/api/v1/funds/fund-1/expenses?${query}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(400);
   });
 });
 

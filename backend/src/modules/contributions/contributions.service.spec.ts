@@ -120,14 +120,16 @@ describe('ContributionsService', () => {
     };
     const service = new ContributionsService(prisma as never);
 
-    await service.listContributions('fund-1');
+    await service.listContributions('fund-1', { page: 2, page_size: 3, sort: 'occurred_on_asc' });
 
     expect(prisma.contribution.findMany).toHaveBeenCalledWith({
       where: {
         fundId: 'fund-1',
         status: RecordStatus.ACTIVE,
       },
-      orderBy: [{ occurredOn: 'desc' }, { createdAt: 'desc' }],
+      orderBy: [{ occurredOn: 'asc' }, { id: 'asc' }],
+      skip: 3,
+      take: 3,
     });
   });
 });
