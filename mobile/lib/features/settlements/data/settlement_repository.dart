@@ -1,4 +1,4 @@
-﻿import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../shared/api/api_json.dart';
 import '../../../shared/api/api_mode_provider.dart';
@@ -51,6 +51,8 @@ abstract class SettlementRepository {
   Future<SettlementSummary> fetchSettlementSummary(String fundId);
 
   Future<void> completeSettlement(String settlementId);
+
+  Future<void> cancelSettlement(String settlementId);
 }
 
 class DemoSettlementRepository implements SettlementRepository {
@@ -83,6 +85,11 @@ class DemoSettlementRepository implements SettlementRepository {
   Future<void> completeSettlement(String settlementId) async {
     await Future<void>.delayed(const Duration(milliseconds: 250));
   }
+
+  @override
+  Future<void> cancelSettlement(String settlementId) async {
+    await Future<void>.delayed(const Duration(milliseconds: 250));
+  }
 }
 
 class RemoteSettlementRepository implements SettlementRepository {
@@ -108,11 +115,16 @@ class RemoteSettlementRepository implements SettlementRepository {
     final historyDtos = readDataListEnvelope(settlementsResponse)
         .map(SettlementHistoryDto.fromJson)
         .toList();
+    String? pendingSettlementId;
+    for (final dto in historyDtos) {
+      if (dto.status.toLowerCase() == 'pending' && dto.id.isNotEmpty) {
+        pendingSettlementId = dto.id;
+        break;
+      }
+    }
 
     return SettlementSummary(
-      currentSettlementId: historyDtos.isNotEmpty && historyDtos.first.id.isNotEmpty
-          ? historyDtos.first.id
-          : null,
+      currentSettlementId: pendingSettlementId,
       periodLabel:
           'Coverage: ${suggestionDto.periodStart} to ${suggestionDto.periodEnd}',
       lockMessage: 'This period becomes locked after completion',
@@ -147,6 +159,14 @@ class RemoteSettlementRepository implements SettlementRepository {
       },
     );
   }
+
+  @override
+  Future<void> cancelSettlement(String settlementId) async {
+    await _apiClient.post(
+      '/settlements/$settlementId/cancel',
+      data: <String, dynamic>{},
+    );
+  }
 }
 
 final settlementRepositoryProvider = Provider<SettlementRepository>((Ref ref) {
@@ -158,4 +178,3 @@ final settlementRepositoryProvider = Provider<SettlementRepository>((Ref ref) {
 
   return DemoSettlementRepository();
 });
-

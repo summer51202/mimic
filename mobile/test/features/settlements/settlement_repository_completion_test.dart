@@ -38,7 +38,8 @@ class RecordingApiClient implements PairFundApiClient {
 }
 
 void main() {
-  test('remote settlement repository completes settlement with completed_at', () async {
+  test('remote settlement repository completes settlement with completed_at',
+      () async {
     final apiClient = RecordingApiClient(
       <String, Map<String, dynamic>>{
         '/settlements/settlement-1/complete': <String, dynamic>{
@@ -55,5 +56,24 @@ void main() {
 
     expect(apiClient.lastPostPath, '/settlements/settlement-1/complete');
     expect(apiClient.lastPostData?['completed_at'], isA<String>());
+  });
+
+  test('remote settlement repository cancels settlement', () async {
+    final apiClient = RecordingApiClient(
+      <String, Map<String, dynamic>>{
+        '/settlements/settlement-1/cancel': <String, dynamic>{
+          'data': <String, dynamic>{
+            'id': 'settlement-1',
+            'status': 'canceled',
+          },
+        },
+      },
+    );
+    final repository = RemoteSettlementRepository(apiClient);
+
+    await repository.cancelSettlement('settlement-1');
+
+    expect(apiClient.lastPostPath, '/settlements/settlement-1/cancel');
+    expect(apiClient.lastPostData, isEmpty);
   });
 }

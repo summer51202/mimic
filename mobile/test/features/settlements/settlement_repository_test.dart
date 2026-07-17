@@ -71,7 +71,7 @@ void main() {
     final summary = await repository.fetchSettlementSummary('fund-1');
 
     expect(summary.periodLabel, 'Coverage: 2026-03-01 to 2026-03-31');
-    expect(summary.currentSettlementId, 'settlement-previous');
+    expect(summary.currentSettlementId, isNull);
     expect(summary.lockMessage, 'This period becomes locked after completion');
     expect(summary.suggestions.length, 1);
     expect(summary.suggestions.first.fromUser, 'partner-user');
@@ -80,5 +80,45 @@ void main() {
     expect(summary.history.length, 1);
     expect(summary.history.first.title, 'completed - TWD 8.00');
     expect(summary.history.first.subtitle, '2026-02-01 to 2026-02-28');
+  });
+
+  test('remote settlement repository selects the first pending settlement',
+      () async {
+    final repository = RemoteSettlementRepository(
+      FakeApiClient(
+        <String, Map<String, dynamic>>{
+          '/funds/fund-1/settlement-suggestion': <String, dynamic>{
+            'data': <String, dynamic>{
+              'currency': 'TWD',
+              'period_start': '2026-03-01',
+              'period_end': '2026-03-31',
+              'suggestions': <Map<String, dynamic>>[],
+            },
+          },
+          '/funds/fund-1/settlements': <String, dynamic>{
+            'data': <Map<String, dynamic>>[
+              <String, dynamic>{
+                'id': 'settlement-completed',
+                'status': 'completed',
+                'amount_minor': 800,
+                'period_start': '2026-02-01',
+                'period_end': '2026-02-28',
+              },
+              <String, dynamic>{
+                'id': 'settlement-pending',
+                'status': 'pending',
+                'amount_minor': 800,
+                'period_start': '2026-03-01',
+                'period_end': '2026-03-31',
+              },
+            ],
+          },
+        },
+      ),
+    );
+
+    final summary = await repository.fetchSettlementSummary('fund-1');
+
+    expect(summary.currentSettlementId, 'settlement-pending');
   });
 }
