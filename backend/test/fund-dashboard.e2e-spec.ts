@@ -1,0 +1,277 @@
+import {
+  ForbiddenException,
+  INestApplication,
+  NotFoundException,
+  ValidationPipe,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { Test } from '@nestjs/testing';
+import * as request from 'supertest';
+import { AppModule } from '../src/app.module';
+import { FundSummaryService } from '../src/modules/funds/fund-summary.service';
+import { PrismaService } from '../src/modules/prisma/prisma.service';
+
+const JWT_SECRET =
+  'pairfund-dashboard-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
+
+describe('Fund dashboard endpoints', () => {
+  let app: INestApplication;
+  let token: string;
+  const originalSecret = process.env.JWT_ACCESS_SECRET;
+  const fundSummaryService = {
+    getFundSummary: jest.fn(),
+    getGroupDashboard: jest.fn(),
+  };
+
+  beforeAll(async () => {
+    process.env.JWT_ACCESS_SECRET = JWT_SECRET;
+    const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
+      .overrideProvider(FundSummaryService)
+      .useValue(fundSummaryService)
+      .overrideProvider(PrismaService)
+      .useValue({ $connect: jest.fn(), $disconnect: jest.fn() })
+      .compile();
+    app = moduleRef.createNestApplication();
+    app.setGlobalPrefix('api/v1');
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, transform: true }),
+    );
+    await app.init();
+    token = moduleRef.get(JwtService).sign(
+      { sub: 'user-1', email: 'user@example.com' },
+      { secret: JWT_SECRET },
+    );
+  });
+
+  beforeEach(() => jest.resetAllMocks());
+
+  afterAll(async () => {
+    if (app) await app.close();
+    if (originalSecret === undefined) delete process.env.JWT_ACCESS_SECRET;
+    else process.env.JWT_ACCESS_SECRET = originalSecret;
+  });
+
+  it('returns the exact snake_case fund summary and forwards identity', async () => {
+    fundSummaryService.getFundSummary.mockResolvedValue({
+      fund: {
+        id: 'fund-1',
+        groupId: 'group-1',
+        name: 'Daily Fund',
+        currency: 'TWD',
+        status: 'active',
+        cashBalanceMinor: 12500,
+      },
+      currentPeriod: {
+        periodStart: '2026-07-01',
+        periodEnd: '2026-07-17',
+        lastCompletedSettlementId: 'settlement-1',
+        lastCompletedPeriodEnd: '2026-06-30',
+      },
+      current: {
+        netChangeMinor: 2500,
+        contributionMinor: 5000,
+        expenseMinor: 2500,
+        memberPositions: [
+          {
+            userId: 'user-1',
+            displayName: 'Alex',
+            membershipStatus: 'active',
+            positionMinor: 1500,
+          },
+        ],
+      },
+      allTime: {
+        netChangeMinor: 12500,
+        contributionMinor: 20000,
+        expenseMinor: 7500,
+        memberPositions: [],
+      },
+    });
+
+    await request(app.getHttpServer())
+      .get('/api/v1/funds/fund-1/summary')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({
+        data: {
+          fund: {
+            id: 'fund-1',
+            group_id: 'group-1',
+            name: 'Daily Fund',
+            currency: 'TWD',
+            status: 'active',
+            cash_balance_minor: 12500,
+          },
+          current_period: {
+            period_start: '2026-07-01',
+            period_end: '2026-07-17',
+            last_completed_settlement_id: 'settlement-1',
+            last_completed_period_end: '2026-06-30',
+          },
+          current: {
+            net_change_minor: 2500,
+            contribution_minor: 5000,
+            expense_minor: 2500,
+            member_positions: [
+              {
+                user_id: 'user-1',
+                display_name: 'Alex',
+                membership_status: 'active',
+                position_minor: 1500,
+              },
+            ],
+          },
+          all_time: {
+            net_change_minor: 12500,
+            contribution_minor: 20000,
+            expense_minor: 7500,
+            member_positions: [],
+          },
+        },
+      });
+    expect(fundSummaryService.getFundSummary).toHaveBeenCalledWith(
+      'fund-1',
+      'user-1',
+    );
+  });
+
+  it('preserves null period fields in a fund summary', async () => {
+    fundSummaryService.getFundSummary.mockResolvedValue({
+      fund: {
+        id: 'fund-empty',
+        groupId: 'group-1',
+        name: 'Empty Fund',
+        currency: 'TWD',
+        status: 'active',
+        cashBalanceMinor: 0,
+      },
+      currentPeriod: {
+        periodStart: null,
+        periodEnd: null,
+        lastCompletedSettlementId: null,
+        lastCompletedPeriodEnd: null,
+      },
+      current: emptyTotals(),
+      allTime: emptyTotals(),
+    });
+
+    await request(app.getHttpServer())
+      .get('/api/v1/funds/fund-empty/summary')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({
+        data: {
+          fund: {
+            id: 'fund-empty',
+            group_id: 'group-1',
+            name: 'Empty Fund',
+            currency: 'TWD',
+            status: 'active',
+            cash_balance_minor: 0,
+          },
+          current_period: {
+            period_start: null,
+            period_end: null,
+            last_completed_settlement_id: null,
+            last_completed_period_end: null,
+          },
+          current: mappedEmptyTotals(),
+          all_time: mappedEmptyTotals(),
+        },
+      });
+  });
+
+  it('returns currencies unchanged in the exact group dashboard envelope', async () => {
+    fundSummaryService.getGroupDashboard.mockResolvedValue({
+      group: {
+        id: 'group-1',
+        name: 'Our Home',
+        defaultCurrency: 'TWD',
+      },
+      currencies: [
+        currency('TWD', 10000, 'fund-twd', 'Daily TWD'),
+        currency('USD', 5000, 'fund-usd', 'Travel USD'),
+      ],
+    });
+
+    await request(app.getHttpServer())
+      .get('/api/v1/groups/group-1/dashboard')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({
+        data: {
+          group: {
+            id: 'group-1',
+            name: 'Our Home',
+            default_currency: 'TWD',
+          },
+          currencies: [
+            mappedCurrency('TWD', 10000, 'fund-twd', 'Daily TWD'),
+            mappedCurrency('USD', 5000, 'fund-usd', 'Travel USD'),
+          ],
+        },
+      });
+    expect(fundSummaryService.getGroupDashboard).toHaveBeenCalledWith(
+      'group-1',
+      'user-1',
+    );
+  });
+
+  it.each([
+    ['/api/v1/funds/fund-1/summary', 'getFundSummary'],
+    ['/api/v1/groups/group-1/dashboard', 'getGroupDashboard'],
+  ])('rejects unauthenticated GET %s without calling service', async (path, method) => {
+    await request(app.getHttpServer()).get(path).expect(401);
+    expect(fundSummaryService[method as keyof typeof fundSummaryService]).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    [new NotFoundException('FUND_NOT_FOUND'), 404, 'FUND_NOT_FOUND'],
+    [new ForbiddenException('GROUP_ACCESS_DENIED'), 403, 'GROUP_ACCESS_DENIED'],
+  ])('preserves domain error envelope', async (error, status, message) => {
+    fundSummaryService.getFundSummary.mockRejectedValue(error);
+    await request(app.getHttpServer())
+      .get('/api/v1/funds/fund-1/summary')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(status)
+      .expect({ message, error: status === 404 ? 'Not Found' : 'Forbidden', statusCode: status });
+  });
+});
+
+function emptyTotals() {
+  return {
+    netChangeMinor: 0,
+    contributionMinor: 0,
+    expenseMinor: 0,
+    memberPositions: [],
+  };
+}
+
+function mappedEmptyTotals() {
+  return {
+    net_change_minor: 0,
+    contribution_minor: 0,
+    expense_minor: 0,
+    member_positions: [],
+  };
+}
+
+function currency(currencyCode: string, cash: number, fundId: string, name: string) {
+  return {
+    currency: currencyCode,
+    cashBalanceMinor: cash,
+    current: emptyTotals(),
+    allTime: emptyTotals(),
+    funds: [{ fundId, name, cashBalanceMinor: cash, currentNetChangeMinor: 0, periodStart: null, periodEnd: null }],
+  };
+}
+
+function mappedCurrency(currencyCode: string, cash: number, fundId: string, name: string) {
+  return {
+    currency: currencyCode,
+    cash_balance_minor: cash,
+    current: mappedEmptyTotals(),
+    all_time: mappedEmptyTotals(),
+    funds: [{ fund_id: fundId, name, cash_balance_minor: cash, current_net_change_minor: 0, period_start: null, period_end: null }],
+  };
+}

@@ -120,7 +120,11 @@ Open `http://localhost:8080/#/login`. After rebuilding, add a query such as
 * `POST /api/v1/group-invites/accept`
 * `GET /api/v1/groups/{groupId}/funds`
 * `POST /api/v1/groups/{groupId}/funds`
+* `GET /api/v1/groups/{groupId}/dashboard` — authenticated group dashboard,
+  grouped by currency with current-period and all-time totals
 * `GET /api/v1/funds/{fundId}`
+* `GET /api/v1/funds/{fundId}/summary` — authenticated fund cash balance,
+  settlement period, totals, and member positions
 * `POST /api/v1/funds/{fundId}/contributions`
 * `GET /api/v1/funds/{fundId}/contributions`
 * `POST /api/v1/funds/{fundId}/expenses`
