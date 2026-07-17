@@ -76,10 +76,14 @@ class _FundContent extends ConsumerWidget {
                             style: theme.textTheme.labelLarge),
                         const SizedBox(height: PfSpacing.md),
                         Text('Present cash', style: theme.textTheme.bodyMedium),
-                        Text(
-                            formatMinorCurrency(summary.cashBalanceMinor,
-                                currency: summary.currency),
-                            style: theme.textTheme.headlineMedium),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                              formatMinorCurrency(summary.cashBalanceMinor,
+                                  currency: summary.currency),
+                              style: theme.textTheme.headlineMedium),
+                        ),
                         const SizedBox(height: PfSpacing.sm),
                         Text(_periodLabel(summary)),
                         Text(_settlementLabel(summary)),
@@ -92,11 +96,14 @@ class _FundContent extends ConsumerWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
                   Text('Fund overview', style: theme.textTheme.titleMedium),
-                  PeriodScopeControl(
-                      scope: scope,
-                      onChanged: (value) => ref
-                          .read(fundDetailScopeProvider(fundId).notifier)
-                          .state = value),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: PeriodScopeControl(
+                        scope: scope,
+                        onChanged: (value) => ref
+                            .read(fundDetailScopeProvider(fundId).notifier)
+                            .state = value),
+                  ),
                 ]),
             const SizedBox(height: PfSpacing.sm),
             Wrap(
@@ -154,8 +161,10 @@ class _FundContent extends ConsumerWidget {
                   'Add a contribution or record an expense to start this fund.'),
             ],
             const SizedBox(height: PfSpacing.lg),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
+                spacing: PfSpacing.sm,
+                runSpacing: PfSpacing.xs,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
                   Text('Recent activity', style: theme.textTheme.titleMedium),
                   TextButton(
@@ -174,7 +183,8 @@ class _FundContent extends ConsumerWidget {
                       children: summary.recentActivity
                           .map((item) => ListTile(
                               title: Text(item.title),
-                              subtitle: Text(item.subtitle)))
+                              subtitle: Text(
+                                  '${DateFormat('yyyy-MM-dd').format(item.occurredOn)} • ${formatMinorCurrency(item.amountMinor, currency: summary.currency)}')))
                           .toList())),
             const SizedBox(height: PfSpacing.lg),
             Wrap(

@@ -25,20 +25,18 @@ FundDetailSummary mapFundSummaryResponse(Map<String, dynamic> response) {
 
 DashboardPeriodTotals _totals(Map<String, dynamic> json) =>
     DashboardPeriodTotals(
-      netChangeMinor: _integer(json, 'net_change_minor', missingAsZero: true),
-      contributionMinor:
-          _integer(json, 'contribution_minor', missingAsZero: true),
-      expenseMinor: _integer(json, 'expense_minor', missingAsZero: true),
-      memberPositions: json['member_positions'] == null
-          ? const <DashboardMemberPosition>[]
-          : _list(json['member_positions'], 'member_positions').map((item) {
-              final value = _map(item, 'member_position');
-              return DashboardMemberPosition(
-                  userId: _string(value, 'user_id'),
-                  displayName: _string(value, 'display_name'),
-                  membershipStatus: _string(value, 'membership_status'),
-                  positionMinor: _integer(value, 'position_minor'));
-            }).toList(),
+      netChangeMinor: _integer(json, 'net_change_minor'),
+      contributionMinor: _integer(json, 'contribution_minor'),
+      expenseMinor: _integer(json, 'expense_minor'),
+      memberPositions:
+          _list(json['member_positions'], 'member_positions').map((item) {
+        final value = _map(item, 'member_position');
+        return DashboardMemberPosition(
+            userId: _string(value, 'user_id'),
+            displayName: _string(value, 'display_name'),
+            membershipStatus: _string(value, 'membership_status'),
+            positionMinor: _integer(value, 'position_minor'));
+      }).toList(),
     );
 
 FundActivityItem mapFundActivity(Map<String, dynamic> json,
@@ -46,10 +44,15 @@ FundActivityItem mapFundActivity(Map<String, dynamic> json,
   final title = contribution
       ? 'Contribution'
       : (json['title'] is String ? json['title'] as String : 'Expense');
-  final occurredOn =
-      json['occurred_on'] is String ? json['occurred_on'] as String : '';
-  final amount = _integer(json, 'amount_minor', missingAsZero: true);
-  return FundActivityItem(title: title, subtitle: '$occurredOn - $amount');
+  final occurredOn = _requiredDate(json['occurred_on'], 'occurred_on');
+  final amount = _integer(json, 'amount_minor');
+  return FundActivityItem(
+      type: contribution
+          ? FundActivityType.contribution
+          : FundActivityType.expense,
+      title: title,
+      occurredOn: occurredOn,
+      amountMinor: amount);
 }
 
 extension FundDetailSummaryCopy on FundDetailSummary {
@@ -103,7 +106,18 @@ DateTime? _date(Object? value, String field) {
   if (value is! String) {
     throw FormatException('$field must be a date string or null');
   }
-  final parsed = DateTime.tryParse(value);
+  final dateOnly = RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value);
+  final zoned = RegExp(r'(Z|[+-]\d{2}:\d{2})$').hasMatch(value);
+  if (!dateOnly && !zoned) {
+    throw FormatException('$field must include a timezone');
+  }
+  final parsed = DateTime.tryParse(dateOnly ? '${value}T00:00:00Z' : value);
   if (parsed == null) throw FormatException('$field must be a valid date');
   return parsed.toUtc();
+}
+
+DateTime _requiredDate(Object? value, String field) {
+  final parsed = _date(value, field);
+  if (parsed == null) throw FormatException('$field must be a date');
+  return parsed;
 }

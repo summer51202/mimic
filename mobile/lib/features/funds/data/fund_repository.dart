@@ -7,10 +7,18 @@ import '../../../shared/config/app_config.dart';
 import '../../home/data/group_dashboard.dart';
 import 'remote/fund_remote_mapper.dart';
 
+enum FundActivityType { expense, contribution }
+
 class FundActivityItem {
-  const FundActivityItem({required this.title, required this.subtitle});
+  const FundActivityItem(
+      {required this.type,
+      required this.title,
+      required this.occurredOn,
+      required this.amountMinor});
+  final FundActivityType type;
   final String title;
-  final String subtitle;
+  final DateTime occurredOn;
+  final int amountMinor;
 }
 
 class FundDetailSummary {
@@ -91,10 +99,17 @@ class RemoteFundRepository implements FundRepository {
   Future<FundDetailSummary> fetchFundDetail(String fundId) async {
     final summaryResponse = await _apiClient.get('/funds/$fundId/summary');
     final expenseResponse = await _apiClient.get('/funds/$fundId/expenses',
-        queryParameters: <String, dynamic>{'page': 1, 'page_size': 3});
-    final contributionResponse = await _apiClient.get(
-        '/funds/$fundId/contributions',
-        queryParameters: <String, dynamic>{'page': 1, 'page_size': 3});
+        queryParameters: <String, dynamic>{
+          'page': 1,
+          'page_size': 3,
+          'sort': 'occurred_on:desc'
+        });
+    final contributionResponse = await _apiClient
+        .get('/funds/$fundId/contributions', queryParameters: <String, dynamic>{
+      'page': 1,
+      'page_size': 3,
+      'sort': 'occurred_on:desc'
+    });
     final summary = mapFundSummaryResponse(summaryResponse);
     final activities = <FundActivityItem>[
       ...readDataListEnvelope(expenseResponse)
