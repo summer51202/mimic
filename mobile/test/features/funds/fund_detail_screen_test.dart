@@ -16,6 +16,9 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    expect(find.text('Present cash'), findsOneWidget);
+    expect(find.text('Current'), findsOneWidget);
+    expect(find.text('All time'), findsOneWidget);
     expect(find.text('Member positions'), findsOneWidget);
     expect(find.text('View activity'), findsOneWidget);
   });

@@ -1,114 +1,109 @@
+import '../../../../shared/api/api_json.dart';
+import '../../../home/data/group_dashboard.dart';
 import '../fund_repository.dart';
 
-class FundDetailDto {
-  const FundDetailDto({
-    required this.id,
-    required this.name,
-    required this.currency,
-    required this.balanceMinor,
-    required this.monthExpenseMinor,
-    required this.monthContributionMinor,
-    required this.memberPositions,
-    required this.lockedPeriodLabel,
-  });
-
-  final String id;
-  final String name;
-  final String currency;
-  final int balanceMinor;
-  final int monthExpenseMinor;
-  final int monthContributionMinor;
-  final List<MemberPositionDto> memberPositions;
-  final String lockedPeriodLabel;
-
-  factory FundDetailDto.fromJson(Map<String, dynamic> data, {required String fallbackFundId}) {
-    final fund = data['fund'] as Map<String, dynamic>? ?? data;
-    final summary = data['summary'] as Map<String, dynamic>? ?? <String, dynamic>{};
-    final memberPositionsJson =
-        (summary['member_positions'] as List?)?.whereType<Map<String, dynamic>>().toList() ??
-            <Map<String, dynamic>>[];
-
-    return FundDetailDto(
-      id: '${fund['id'] ?? fallbackFundId}',
-      name: '${fund['name'] ?? 'Fund'}',
-      currency: '${fund['currency'] ?? 'TWD'}',
-      balanceMinor:
-          (summary['balance_minor'] as num?)?.toInt() ??
-              (fund['balance_minor'] as num?)?.toInt() ??
-              0,
-      monthExpenseMinor: (summary['month_expense_minor'] as num?)?.toInt() ?? 0,
-      monthContributionMinor:
-          (summary['month_contribution_minor'] as num?)?.toInt() ?? 0,
-      memberPositions: memberPositionsJson
-          .map(MemberPositionDto.fromJson)
-          .toList(),
-      lockedPeriodLabel:
-          '${summary['locked_period_label'] ?? 'Locked period not available yet'}',
-    );
-  }
-}
-
-class MemberPositionDto {
-  const MemberPositionDto({
-    required this.displayName,
-    required this.positionMinor,
-  });
-
-  final String displayName;
-  final int positionMinor;
-
-  factory MemberPositionDto.fromJson(Map<String, dynamic> data) {
-    return MemberPositionDto(
-      displayName: '${data['display_name'] ?? data['user_id'] ?? 'Member'}',
-      positionMinor: (data['position_minor'] as num?)?.toInt() ?? 0,
-    );
-  }
-}
-
-class FundActivityDto {
-  const FundActivityDto({
-    required this.title,
-    required this.occurredOn,
-    required this.amountMinor,
-  });
-
-  final String title;
-  final String occurredOn;
-  final int amountMinor;
-
-  factory FundActivityDto.fromExpenseJson(Map<String, dynamic> data) {
-    return FundActivityDto(
-      title: '${data['title'] ?? 'Expense'}',
-      occurredOn: '${data['occurred_on'] ?? ''}',
-      amountMinor: (data['amount_minor'] as num?)?.toInt() ?? 0,
-    );
-  }
-
-  factory FundActivityDto.fromContributionJson(Map<String, dynamic> data) {
-    return FundActivityDto(
-      title: 'Contribution',
-      occurredOn: '${data['occurred_on'] ?? ''}',
-      amountMinor: (data['amount_minor'] as num?)?.toInt() ?? 0,
-    );
-  }
-}
-
-MemberPositionSummary mapMemberPositionSummary(
-  MemberPositionDto dto, {
-  required String positionLabel,
-}) {
-  return MemberPositionSummary(
-    name: dto.displayName,
-    positionLabel: positionLabel,
+FundDetailSummary mapFundSummaryResponse(Map<String, dynamic> response) {
+  final data = readDataEnvelope(response);
+  final fund = _map(data['fund'], 'fund');
+  final period = _map(data['current_period'], 'current_period');
+  return FundDetailSummary(
+    fundId: _string(fund, 'id'),
+    fundName: _string(fund, 'name'),
+    currency: _string(fund, 'currency'),
+    cashBalanceMinor: _integer(fund, 'cash_balance_minor'),
+    periodStart: _date(period['period_start'], 'period_start'),
+    periodEnd: _date(period['period_end'], 'period_end'),
+    lastCompletedSettlementId: _nullableString(
+        period['last_completed_settlement_id'], 'last_completed_settlement_id'),
+    lastCompletedPeriodEnd:
+        _date(period['last_completed_period_end'], 'last_completed_period_end'),
+    current: _totals(_map(data['current'], 'current')),
+    allTime: _totals(_map(data['all_time'], 'all_time')),
+    recentActivity: const <FundActivityItem>[],
   );
 }
 
-FundActivityItem mapFundActivityItem(
-  FundActivityDto dto, {
-  required String subtitle,
-}) {
-  return FundActivityItem(
-    title: dto.title,
-    subtitle: subtitle,
-  );
+DashboardPeriodTotals _totals(Map<String, dynamic> json) =>
+    DashboardPeriodTotals(
+      netChangeMinor: _integer(json, 'net_change_minor', missingAsZero: true),
+      contributionMinor:
+          _integer(json, 'contribution_minor', missingAsZero: true),
+      expenseMinor: _integer(json, 'expense_minor', missingAsZero: true),
+      memberPositions: json['member_positions'] == null
+          ? const <DashboardMemberPosition>[]
+          : _list(json['member_positions'], 'member_positions').map((item) {
+              final value = _map(item, 'member_position');
+              return DashboardMemberPosition(
+                  userId: _string(value, 'user_id'),
+                  displayName: _string(value, 'display_name'),
+                  membershipStatus: _string(value, 'membership_status'),
+                  positionMinor: _integer(value, 'position_minor'));
+            }).toList(),
+    );
+
+FundActivityItem mapFundActivity(Map<String, dynamic> json,
+    {required bool contribution}) {
+  final title = contribution
+      ? 'Contribution'
+      : (json['title'] is String ? json['title'] as String : 'Expense');
+  final occurredOn =
+      json['occurred_on'] is String ? json['occurred_on'] as String : '';
+  final amount = _integer(json, 'amount_minor', missingAsZero: true);
+  return FundActivityItem(title: title, subtitle: '$occurredOn - $amount');
+}
+
+extension FundDetailSummaryCopy on FundDetailSummary {
+  FundDetailSummary withRecentActivity(List<FundActivityItem> value) =>
+      FundDetailSummary(
+          fundId: fundId,
+          fundName: fundName,
+          currency: currency,
+          cashBalanceMinor: cashBalanceMinor,
+          periodStart: periodStart,
+          periodEnd: periodEnd,
+          lastCompletedSettlementId: lastCompletedSettlementId,
+          lastCompletedPeriodEnd: lastCompletedPeriodEnd,
+          current: current,
+          allTime: allTime,
+          recentActivity: value);
+}
+
+Map<String, dynamic> _map(Object? value, String field) {
+  if (value is Map<String, dynamic>) return value;
+  throw FormatException('$field must be an object');
+}
+
+List<dynamic> _list(Object? value, String field) {
+  if (value is List) return value;
+  throw FormatException('$field must be a list');
+}
+
+String _string(Map<String, dynamic> json, String field) {
+  final value = json[field];
+  if (value is String && value.trim().isNotEmpty) return value;
+  throw FormatException('$field must be a non-empty string');
+}
+
+String? _nullableString(Object? value, String field) {
+  if (value == null) return null;
+  if (value is String && value.trim().isNotEmpty) return value;
+  throw FormatException('$field must be a non-empty string or null');
+}
+
+int _integer(Map<String, dynamic> json, String field,
+    {bool missingAsZero = false}) {
+  if (!json.containsKey(field) && missingAsZero) return 0;
+  final value = json[field];
+  if (value is int) return value;
+  throw FormatException('$field must be an integer');
+}
+
+DateTime? _date(Object? value, String field) {
+  if (value == null) return null;
+  if (value is! String) {
+    throw FormatException('$field must be a date string or null');
+  }
+  final parsed = DateTime.tryParse(value);
+  if (parsed == null) throw FormatException('$field must be a valid date');
+  return parsed.toUtc();
 }
