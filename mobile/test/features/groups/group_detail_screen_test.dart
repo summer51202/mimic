@@ -14,6 +14,7 @@ const _ownerDetail = GroupDetail(
   groupType: 'couple',
   defaultCurrency: 'TWD',
   role: 'owner',
+  currentUserId: 'user-1',
   members: [
     GroupMemberSummary(id: 'user-1', displayName: 'Edward', role: 'owner'),
     GroupMemberSummary(id: 'user-2', displayName: 'Alice', role: 'member'),
@@ -156,5 +157,62 @@ void main() {
 
     expect(repository.renamedTo, 'Renamed Home');
     expect(find.byType(AlertDialog), findsNothing);
+  });
+
+  testWidgets('owner manages another member but never the current user',
+      (tester) async {
+    await _pump(tester, _ownerDetail);
+
+    expect(find.byKey(const Key('member-actions-user-1')), findsNothing);
+    expect(find.byKey(const Key('member-actions-user-2')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('member-actions-user-2')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Make Owner'), findsOneWidget);
+    expect(find.text('Remove member'), findsOneWidget);
+  });
+
+  testWidgets('member has no member menus and sees leave danger zone',
+      (tester) async {
+    await _pump(
+      tester,
+      const GroupDetail(
+        id: 'group-1',
+        name: 'Our Home',
+        groupType: 'couple',
+        defaultCurrency: 'TWD',
+        role: 'member',
+        currentUserId: 'user-2',
+        members: [
+          GroupMemberSummary(
+              id: 'user-1', displayName: 'Edward', role: 'owner'),
+          GroupMemberSummary(
+              id: 'user-2', displayName: 'Alice', role: 'member'),
+        ],
+        funds: [],
+      ),
+    );
+
+    expect(find.byIcon(Icons.more_vert), findsNothing);
+    expect(find.text('Danger zone'), findsOneWidget);
+    expect(find.text('Leave group'), findsOneWidget);
+  });
+
+  testWidgets('member action asks for confirmation with target name',
+      (tester) async {
+    await _pump(tester, _ownerDetail);
+    await tester.tap(find.byKey(const Key('member-actions-user-2')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Remove member'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.textContaining('Alice'), findsWidgets);
+    expect(find.widgetWithText(FilledButton, 'Remove'), findsOneWidget);
+  });
+
+  testWidgets('compact group details render without overflow', (tester) async {
+    await _pump(tester, _ownerDetail, size: const Size(320, 700));
+    expect(tester.takeException(), isNull);
   });
 }
