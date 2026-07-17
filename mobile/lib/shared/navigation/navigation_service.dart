@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../app/router/app_router.dart';
 
 final navigationServiceProvider = Provider<NavigationService>((Ref ref) {
-  return NavigationService(appRouter);
+  return NavigationService(ref.watch(appRouterProvider));
 });
 
 class NavigationService {

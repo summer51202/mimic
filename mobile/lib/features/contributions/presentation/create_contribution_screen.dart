@@ -58,7 +58,7 @@ class CreateContributionScreen extends ConsumerWidget {
               ),
               const SizedBox(height: PfSpacing.md),
               DropdownButtonFormField<String>(
-                value: formState.contributionType,
+                initialValue: formState.contributionType,
                 items: const <DropdownMenuItem<String>>[
                   DropdownMenuItem(
                     value: 'one_time',
@@ -134,9 +134,7 @@ class CreateContributionScreen extends ConsumerWidget {
                           );
                         },
                   child: Text(
-                    formState.isSubmitting
-                        ? 'Saving...'
-                        : 'Save contribution',
+                    formState.isSubmitting ? 'Saving...' : 'Save contribution',
                   ),
                 ),
               ),

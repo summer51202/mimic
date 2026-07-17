@@ -64,6 +64,7 @@ Future<GoRouter> _pumpScreen(
     ProviderScope(
       overrides: <Override>[
         inviteRepositoryProvider.overrideWithValue(repository),
+        homeGroupsProvider.overrideWith((_) async => const []),
         homeSummaryProvider.overrideWith((_) async => _homeSummary),
       ],
       child: MaterialApp.router(routerConfig: router),

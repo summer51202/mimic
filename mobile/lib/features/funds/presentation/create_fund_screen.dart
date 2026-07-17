@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -49,7 +49,7 @@ class CreateFundScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: PfSpacing.md),
                   DropdownButtonFormField<String>(
-                    value: formState.currency,
+                    initialValue: formState.currency,
                     items: const <DropdownMenuItem<String>>[
                       DropdownMenuItem(value: 'TWD', child: Text('TWD')),
                       DropdownMenuItem(value: 'USD', child: Text('USD')),

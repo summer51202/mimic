@@ -104,14 +104,19 @@ class SettlementScreen extends ConsumerWidget {
                         : () async {
                             await ref
                                 .read(settlementRepositoryProvider)
-                                .completeSettlement(summary.currentSettlementId!);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Settlement marked as completed.',
-                          ),
-                        ),
-                      );
+                                .completeSettlement(
+                                  summary.currentSettlementId!,
+                                );
+                            if (!context.mounted) {
+                              return;
+                            }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Settlement marked as completed.',
+                                ),
+                              ),
+                            );
                           },
                     child: const Text('Complete settlement'),
                   ),

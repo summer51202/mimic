@@ -25,7 +25,7 @@ class _AcceptInviteScreenState extends ConsumerState<AcceptInviteScreen> {
   Future<void> _submit() async {
     final succeeded =
         await ref.read(acceptInviteControllerProvider.notifier).submit();
-    if (!context.mounted || !succeeded) {
+    if (!mounted || !succeeded) {
       return;
     }
 
@@ -38,9 +38,6 @@ class _AcceptInviteScreenState extends ConsumerState<AcceptInviteScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Joined ${acceptedInvite.groupName}')),
     );
-    if (!context.mounted) {
-      return;
-    }
     context.go(AppRoutes.home);
   }
 

@@ -32,14 +32,11 @@ class _CreateInviteScreenState extends ConsumerState<CreateInviteScreen> {
     await ref
         .read(createInviteControllerProvider(widget.groupId).notifier)
         .submit();
-    if (!context.mounted) {
-      return;
-    }
   }
 
   Future<void> _copyCode(String code) async {
     await Clipboard.setData(ClipboardData(text: code));
-    if (!context.mounted) {
+    if (!mounted) {
       return;
     }
     ScaffoldMessenger.of(context).showSnackBar(

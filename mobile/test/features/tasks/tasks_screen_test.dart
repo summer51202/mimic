@@ -9,7 +9,8 @@ class FakeTasksRepository implements TasksRepository {
   final List<String> rejectedIds = <String>[];
 
   @override
-  Future<void> approveConfirmation(String confirmationId, {String? comment}) async {
+  Future<void> approveConfirmation(String confirmationId,
+      {String? comment}) async {
     approvedIds.add(confirmationId);
   }
 
@@ -29,7 +30,8 @@ class FakeTasksRepository implements TasksRepository {
   }
 
   @override
-  Future<void> rejectConfirmation(String confirmationId, {String? comment}) async {
+  Future<void> rejectConfirmation(String confirmationId,
+      {String? comment}) async {
     rejectedIds.add(confirmationId);
   }
 }
@@ -41,7 +43,7 @@ void main() {
         overrides: <Override>[
           tasksRepositoryProvider.overrideWithValue(FakeTasksRepository()),
         ],
-        child: MaterialApp(
+        child: const MaterialApp(
           home: TasksScreen(),
         ),
       ),
