@@ -147,12 +147,25 @@ void main() {
     expect(detail.lastCompletedPeriodEnd, DateTime.utc(2026, 3, 31));
     expect((
       detail.recentActivity.first.type,
+      detail.recentActivity.first.title,
       detail.recentActivity.first.amountMinor,
       detail.recentActivity.first.occurredOn
     ), (
       FundActivityType.expense,
+      'Dinner',
       880,
       DateTime.utc(2026, 4, 1)
+    ));
+    expect((
+      detail.recentActivity.last.type,
+      detail.recentActivity.last.title,
+      detail.recentActivity.last.amountMinor,
+      detail.recentActivity.last.occurredOn
+    ), (
+      FundActivityType.contribution,
+      'Contribution',
+      1000,
+      DateTime.utc(2026, 4, 2, 10)
     ));
     expect(api.calls.map((e) => e.path), [
       '/funds/fund-1/summary',
@@ -186,6 +199,68 @@ void main() {
     ]);
     expect(d.recentActivity, isEmpty);
   });
+  final malformedObjects = <String, void Function(Map<String, dynamic>)>{
+    'envelope data missing': (value) => value.remove('data'),
+    'envelope data not object': (value) => value['data'] = 'bad',
+    'fund missing': (value) => data(value).remove('fund'),
+    'fund not object': (value) => replaceDataField(value, 'fund', 'bad'),
+    'current_period missing': (value) => data(value).remove('current_period'),
+    'current_period not object': (value) =>
+        replaceDataField(value, 'current_period', 'bad'),
+    'current missing': (value) => data(value).remove('current'),
+    'current not object': (value) => replaceDataField(value, 'current', 'bad'),
+    'all_time missing': (value) => data(value).remove('all_time'),
+    'all_time not object': (value) =>
+        replaceDataField(value, 'all_time', 'bad'),
+    'current member_positions missing': (value) =>
+        (data(value)['current'] as Map).remove('member_positions'),
+    'current member_positions not list': (value) =>
+        (data(value)['current'] as Map)['member_positions'] = 'bad',
+    'all_time member_positions missing': (value) =>
+        (data(value)['all_time'] as Map).remove('member_positions'),
+    'all_time member_positions not list': (value) =>
+        (data(value)['all_time'] as Map)['member_positions'] = 'bad',
+    'current member item not object': (value) =>
+        (data(value)['current'] as Map)['member_positions'] = [7],
+    'current member position wrong type': (value) =>
+        ((data(value)['current'] as Map)['member_positions'] as List)
+            .first['position_minor'] = '800',
+    'all_time member position wrong type': (value) =>
+        ((data(value)['all_time'] as Map)['member_positions'] as List)
+            .first['position_minor'] = '-800',
+  };
+  for (final entry in malformedObjects.entries) {
+    test('rejects ${entry.key}', () async {
+      final value = summary();
+      entry.value(value);
+      expect(
+          () => RemoteFundRepository(client(value: value))
+              .fetchFundDetail('fund-1'),
+          throwsFormatException);
+    });
+  }
+  test('accepts null and non-empty settlement id', () async {
+    expect(
+        (await RemoteFundRepository(client(value: summary(settled: null)))
+                .fetchFundDetail('fund-1'))
+            .lastCompletedSettlementId,
+        isNull);
+    expect(
+        (await RemoteFundRepository(client()).fetchFundDetail('fund-1'))
+            .lastCompletedSettlementId,
+        'settlement-1');
+  });
+  for (final invalid in <Object>[7, '']) {
+    test('rejects invalid settlement id $invalid', () async {
+      final value = summary();
+      (data(value)['current_period'] as Map)['last_completed_settlement_id'] =
+          invalid;
+      expect(
+          () => RemoteFundRepository(client(value: value))
+              .fetchFundDetail('fund-1'),
+          throwsFormatException);
+    });
+  }
   for (final path in [
     'fund.id',
     'fund.name',
@@ -302,6 +377,12 @@ void main() {
 
 Map<String, dynamic> data(Map<String, dynamic> root) =>
     root['data'] as Map<String, dynamic>;
+void replaceDataField(Map<String, dynamic> root, String field, Object value) {
+  final loose = Map<String, dynamic>.from(data(root));
+  loose[field] = value;
+  root['data'] = loose;
+}
+
 void removePath(Map<String, dynamic> root, String path) {
   final p = path.split('.');
   dynamic target = data(root);

@@ -201,6 +201,7 @@ void main() {
     });
     await pump(t, r);
     await t.pumpAndSettle();
+    expect(find.text('Unable to load this fund right now.'), findsOneWidget);
     expect(find.text('Retry'), findsOneWidget);
     await t.tap(find.text('Retry'));
     await t.pumpAndSettle();
