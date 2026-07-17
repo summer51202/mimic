@@ -318,3 +318,16 @@
 - Promoted `view-fund-summary`, `fund-summary`, and `group-dashboard` to done in the feature map.
 **Decisions:** Dashboard aggregation remains currency-separated with no FX conversion. Runtime data uses unique local acceptance identities and remains in the development database for repeatable visual inspection.
 **Known gaps / follow-ups:** User browser visual acceptance passed on 2026-07-18. Dependency upgrades and WebAssembly compatibility remain deferred.
+
+## 2026-07-18 — Complete pending settlement cancellation on Mobile
+
+**Task:** Complete the smallest post-Phase 3 batch by wiring the existing Backend cancel-settlement flow into Mobile.
+**Scope:** Mobile settlement repository, pending-settlement mapping, settlement mutation UI and tests; `.agents/features.md`; design and implementation plan.
+**What changed:**
+- Added the Mobile cancel-settlement repository contract and remote `POST /settlements/:id/cancel` call.
+- Restricted actionable settlement IDs to non-empty pending history records, preventing completed records from enabling mutation controls.
+- Added confirmed cancellation, shared Complete/Cancel mutation locking, stable feedback, and successful provider refresh.
+- Added repository and widget coverage for endpoint mapping, pending selection, dismissal, success, failure, refresh, and duplicate-submission protection.
+- Verified Flutter analyzer with no issues, focused settlement tests 11/11, and the complete Flutter suite 280/280.
+**Decisions:** Kept mutation state screen-local for this small batch; the Backend remains authoritative for settlement state and authorization.
+**Known gaps / follow-ups:** Backend authorization behavior was not changed. Dependency upgrades remain deferred.

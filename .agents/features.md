@@ -94,7 +94,7 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 | done | list-settlements | List settlements for a fund | `settlement_screen.dart` | `settlements.controller.ts GET /funds/:id/settlements` |
 | done | view-settlement | View a single settlement's details | `settlement_screen.dart` | `settlements.controller.ts GET /settlements/:id` |
 | done | complete-settlement | Mark settlement as completed, locking the period | `settlement_screen.dart` | `settlements.service.ts completeSettlement()` |
-| in-progress | cancel-settlement | Cancel a pending settlement | — | `settlements.service.ts cancelSettlement()` (backend done, no mobile UI) |
+| done | cancel-settlement | Cancel a pending settlement | `settlement_screen.dart` | `settlements.service.ts cancelSettlement()` |
 
 ### Dashboard & Read Models
 
@@ -148,7 +148,7 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 - [ ] Lock check validation in PATCH/DELETE handlers
 
 ### Settlements
-- [ ] Mobile UI for cancel-settlement action
+- [x] Mobile UI for cancel-settlement action
 
 ### Dashboard & Read Models
 - [x] `GET /funds/:id/summary` — dedicated current/all-time summary with balance, period, and positions
