@@ -95,6 +95,11 @@ class GroupMemberMutationController
 
   Future<bool> changeRole(String userId, String role) {
     final normalizedRole = role.toLowerCase();
+    if (normalizedRole != 'owner' && normalizedRole != 'member') {
+      return Future<bool>.error(
+        ArgumentError.value(role, 'role', 'Must be owner or member.'),
+      );
+    }
     return _submit(
       normalizedRole == 'owner'
           ? GroupMemberOperation.promote
@@ -129,27 +134,35 @@ class GroupMemberMutationController
     );
     try {
       await mutation();
-      _ref.invalidate(groupDetailProvider(_groupId));
-      _ref.invalidate(homeGroupsProvider);
-      if (awaitHomeReconciliation) {
-        await _ref.read(homeGroupsProvider.future);
-      }
-      state = const GroupMemberMutationState();
-      return true;
     } on ApiException catch (error) {
       state = GroupMemberMutationState(
         errorCode: error.code,
         errorMessage: _memberMutationMessage(error.code),
       );
+      keepAlive.close();
       return false;
     } catch (_) {
       state = const GroupMemberMutationState(
         errorMessage: 'Unable to update group membership right now.',
       );
+      keepAlive.close();
       return false;
+    }
+
+    try {
+      _ref.invalidate(groupDetailProvider(_groupId));
+      _ref.invalidate(homeGroupsProvider);
+      if (awaitHomeReconciliation) {
+        await _ref.read(homeGroupsProvider.future);
+      }
+    } catch (_) {
+      // The server mutation already succeeded. A later provider refresh can
+      // recover local Home/selection state without retrying the mutation.
     } finally {
+      state = const GroupMemberMutationState();
       keepAlive.close();
     }
+    return true;
   }
 }
 

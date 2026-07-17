@@ -141,13 +141,20 @@ void main() {
       _FakeRepository repository, {
       _MemoryPersistence? persistence,
       bool leaveFinalGroup = false,
+      bool failHomeAfterLeave = false,
     }) {
+      var shouldFailHomeAfterLeave = failHomeAfterLeave;
       return ProviderContainer(overrides: [
         groupRepositoryProvider.overrideWithValue(repository),
         selectedGroupPersistenceProvider
             .overrideWithValue(persistence ?? _MemoryPersistence()),
         homeGroupsProvider.overrideWith((ref) async {
           homeLoadCount++;
+          if (shouldFailHomeAfterLeave &&
+              repository.mutations.contains('leave')) {
+            shouldFailHomeAfterLeave = false;
+            throw StateError('refresh failed');
+          }
           final groups =
               leaveFinalGroup && repository.mutations.contains('leave')
                   ? const <GroupSummary>[]
@@ -226,6 +233,16 @@ void main() {
         final repository = _FakeRepository();
         final container = makeContainer(repository);
         addTearDown(container.dispose);
+        final detailSubscription = container.listen(
+          groupDetailProvider('group-1'),
+          (_, __) {},
+        );
+        final homeSubscription = container.listen(
+          homeGroupsProvider,
+          (_, __) {},
+        );
+        addTearDown(detailSubscription.close);
+        addTearDown(homeSubscription.close);
         await container.read(groupDetailProvider('group-1').future);
         await container.read(homeGroupsProvider.future);
         expect(repository.fetchCount, 1);
@@ -239,8 +256,8 @@ void main() {
         expect(success, isTrue);
         await container.read(groupDetailProvider('group-1').future);
         await container.read(homeGroupsProvider.future);
-        expect(repository.fetchCount, greaterThan(1));
-        expect(homeLoadCount, greaterThan(1));
+        expect(repository.fetchCount, 2);
+        expect(homeLoadCount, 2);
       });
     }
 
@@ -321,6 +338,41 @@ void main() {
           isTrue);
       expect(container.read(selectedGroupProvider), isNull);
       expect(persistence.value, isNull);
+    });
+
+    test('successful leave stays successful when Home synchronization fails',
+        () async {
+      final repository = _FakeRepository();
+      final container = makeContainer(repository, failHomeAfterLeave: true);
+      addTearDown(container.dispose);
+      final success = await container
+          .read(groupMemberMutationControllerProvider('group-1').notifier)
+          .leave();
+      expect(success, isTrue);
+      expect(repository.mutations, ['leave']);
+      expect(
+        container
+            .read(groupMemberMutationControllerProvider('group-1'))
+            .errorMessage,
+        isNull,
+      );
+      container.invalidate(homeGroupsProvider);
+      await container.read(homeGroupsProvider.future);
+      expect(container.read(selectedGroupProvider), 'group-2');
+      expect(repository.mutations, ['leave']);
+    });
+
+    test('rejects unsupported role before calling repository', () async {
+      final repository = _FakeRepository();
+      final container = makeContainer(repository);
+      addTearDown(container.dispose);
+      final notifier = container
+          .read(groupMemberMutationControllerProvider('group-1').notifier);
+      await expectLater(
+        notifier.changeRole('user-2', 'administrator'),
+        throwsArgumentError,
+      );
+      expect(repository.mutations, isEmpty);
     });
 
     const messages = <String, String>{

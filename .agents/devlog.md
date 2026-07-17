@@ -280,3 +280,13 @@
 - Released the request and verified successful Home refresh and selected-group reconciliation.
 **Decisions:** Extended the existing reconciliation test to keep one end-to-end controlled scenario.
 **Known gaps / follow-ups:** None for Task 7 controller behavior.
+## 2026-07-17 — Make group synchronization ordering-safe
+
+**Task:** Fix post-leave synchronization semantics and overlapping Home reconciliation races.
+**Scope:** Group mutation controller, Home groups provider, and focused provider/controller tests.
+**What changed:**
+- Preserved successful leave semantics when the subsequent Home refresh fails, while allowing later refresh recovery.
+- Added a generation-based reconciliation coordinator so stale or disposed Home loads cannot update selected group state.
+- Rejected unsupported member roles before repository calls and made stable refresh-count assertions exact.
+**Decisions:** Server mutation success is authoritative; local synchronization is a recoverable post-success phase. Reconciliation is committed only by the latest active load generation.
+**Known gaps / follow-ups:** The full parallel Flutter suite retains one pre-existing intermittent failure; all 33 focused tests and analyzer checks pass.

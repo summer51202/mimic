@@ -4,12 +4,39 @@ import '../../groups/data/group_summary.dart';
 import '../../groups/providers/selected_group_provider.dart';
 import '../data/home_repository.dart';
 
+class HomeGroupsReconciliationCoordinator {
+  int _latestGeneration = 0;
+
+  Future<List<GroupSummary>> run(
+    Future<List<GroupSummary>> groupsFuture,
+    Future<void> Function(List<GroupSummary>) reconcile, {
+    bool Function()? isActive,
+  }) async {
+    final generation = ++_latestGeneration;
+    final groups = await groupsFuture;
+    await Future<void>(() {});
+    if (generation == _latestGeneration && (isActive?.call() ?? true)) {
+      await reconcile(groups);
+    }
+    return groups;
+  }
+}
+
+final homeGroupsReconciliationCoordinatorProvider =
+    Provider<HomeGroupsReconciliationCoordinator>(
+  (Ref ref) => HomeGroupsReconciliationCoordinator(),
+);
+
 final homeGroupsProvider = FutureProvider.autoDispose<List<GroupSummary>>(
   (Ref ref) async {
-    final groups = await ref.watch(homeRepositoryProvider).fetchGroups();
-    await Future<void>.delayed(Duration.zero);
-    await ref.read(selectedGroupProvider.notifier).reconcile(groups);
-    return groups;
+    var active = true;
+    ref.onDispose(() => active = false);
+    return ref.watch(homeGroupsReconciliationCoordinatorProvider).run(
+          ref.watch(homeRepositoryProvider).fetchGroups(),
+          (groups) =>
+              ref.read(selectedGroupProvider.notifier).reconcile(groups),
+          isActive: () => active,
+        );
   },
 );
 
