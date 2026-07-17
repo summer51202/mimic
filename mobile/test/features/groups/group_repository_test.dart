@@ -2,11 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pairfund_mobile/features/groups/data/group_repository.dart';
 import 'package:pairfund_mobile/shared/api/pairfund_api_client.dart';
 
-class _RecordingApiClient
-    implements
-        PairFundApiClient,
-        PairFundPatchApiClient,
-        PairFundDeleteApiClient {
+class _RecordingApiClient implements PairFundGroupApiClient {
   final getPaths = <String>[];
   String? patchPath;
   Map<String, dynamic>? patchData;
@@ -131,6 +127,11 @@ void main() {
 
     expect(detail.members.single.id, 'demo-member');
     expect(detail.members.single.role, 'member');
+    expect(detail.role, isNot('owner'));
+    expect(
+      detail.members.where((member) => member.id == detail.currentUserId),
+      isEmpty,
+    );
   });
 
   test('fetches and maps detail members and funds for the exact group',

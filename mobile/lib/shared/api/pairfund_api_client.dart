@@ -32,11 +32,13 @@ abstract class PairFundDeleteApiClient {
   });
 }
 
-class DioPairFundApiClient
+abstract class PairFundGroupApiClient
     implements
         PairFundApiClient,
         PairFundPatchApiClient,
-        PairFundDeleteApiClient {
+        PairFundDeleteApiClient {}
+
+class DioPairFundApiClient implements PairFundGroupApiClient {
   DioPairFundApiClient(this._dio);
 
   final Dio _dio;
@@ -112,6 +114,11 @@ class DioPairFundApiClient
   }
 }
 
-final pairFundApiClientProvider = Provider<PairFundApiClient>((Ref ref) {
+final pairFundGroupApiClientProvider =
+    Provider<PairFundGroupApiClient>((Ref ref) {
   return DioPairFundApiClient(ref.watch(dioProvider));
+});
+
+final pairFundApiClientProvider = Provider<PairFundApiClient>((Ref ref) {
+  return ref.watch(pairFundGroupApiClientProvider);
 });

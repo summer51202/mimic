@@ -79,16 +79,20 @@ class DemoGroupRepository implements GroupRepository {
 
   @override
   Future<GroupDetail> fetchGroup(String groupId) async {
+    final activeMembers = _members
+        .where((member) => !_inactiveMemberIds.contains(member.id))
+        .toList(growable: false);
+    final currentMember = activeMembers
+        .where((member) => member.id == _currentUserId)
+        .firstOrNull;
     return GroupDetail(
       id: groupId,
       name: _name,
       groupType: 'couple',
       defaultCurrency: 'TWD',
-      role: 'owner',
+      role: currentMember?.role ?? 'member',
       currentUserId: _currentUserId,
-      members: _members
-          .where((member) => !_inactiveMemberIds.contains(member.id))
-          .toList(growable: false),
+      members: activeMembers,
       funds: const <GroupFundSummary>[],
     );
   }
@@ -131,7 +135,7 @@ class DemoGroupRepository implements GroupRepository {
 class RemoteGroupRepository implements GroupRepository {
   RemoteGroupRepository(this._apiClient);
 
-  final PairFundApiClient _apiClient;
+  final PairFundGroupApiClient _apiClient;
 
   @override
   Future<GroupDetail> fetchGroup(String groupId) async {
@@ -175,8 +179,7 @@ class RemoteGroupRepository implements GroupRepository {
 
   @override
   Future<RenamedGroup> renameGroup(String groupId, String name) async {
-    final patchClient = _apiClient as PairFundPatchApiClient;
-    final response = await patchClient.patch(
+    final response = await _apiClient.patch(
       '/groups/$groupId',
       data: <String, dynamic>{'name': name},
     );
@@ -193,8 +196,7 @@ class RemoteGroupRepository implements GroupRepository {
     String userId,
     String role,
   ) async {
-    final patchClient = _apiClient as PairFundPatchApiClient;
-    await patchClient.patch(
+    await _apiClient.patch(
       '/groups/$groupId/members/$userId',
       data: <String, dynamic>{'role': role.toLowerCase()},
     );
@@ -202,8 +204,7 @@ class RemoteGroupRepository implements GroupRepository {
 
   @override
   Future<void> removeMember(String groupId, String userId) async {
-    final deleteClient = _apiClient as PairFundDeleteApiClient;
-    await deleteClient.delete('/groups/$groupId/members/$userId');
+    await _apiClient.delete('/groups/$groupId/members/$userId');
   }
 
   @override
@@ -214,7 +215,7 @@ class RemoteGroupRepository implements GroupRepository {
 
 final groupRepositoryProvider = Provider<GroupRepository>((Ref ref) {
   if (ref.watch(apiModeProvider) == AppApiMode.remote) {
-    return RemoteGroupRepository(ref.watch(pairFundApiClientProvider));
+    return RemoteGroupRepository(ref.watch(pairFundGroupApiClientProvider));
   }
   return DemoGroupRepository();
 });
