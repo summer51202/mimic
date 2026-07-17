@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import {
   FundStatus,
+  GroupStatus,
   MemberStatus,
   Prisma,
   RecordStatus,
@@ -19,6 +20,7 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import {
   FundSummaryReadModel,
+  GroupDashboardReadModel,
   MemberPositionReadModel,
   PeriodTotals,
 } from './fund-summary.types';
@@ -77,6 +79,31 @@ const summarySelect = Prisma.validator<Prisma.FundSelect>()({
 
 type SummaryFund = Prisma.FundGetPayload<{ select: typeof summarySelect }>;
 
+const groupDashboardSelect = Prisma.validator<Prisma.GroupSelect>()({
+  id: true,
+  name: true,
+  defaultCurrency: true,
+  status: true,
+  members: summarySelect.group.select.members,
+  funds: {
+    where: { status: FundStatus.ACTIVE },
+    select: {
+      id: true,
+      groupId: true,
+      name: true,
+      currency: true,
+      status: true,
+      contributions: summarySelect.contributions,
+      expenses: summarySelect.expenses,
+      settlements: summarySelect.settlements,
+    },
+  },
+});
+
+type DashboardGroup = Prisma.GroupGetPayload<{
+  select: typeof groupDashboardSelect;
+}>;
+
 @Injectable()
 export class FundSummaryService {
   constructor(private readonly prisma: PrismaService) {}
@@ -87,6 +114,32 @@ export class FundSummaryService {
   ): Promise<FundSummaryReadModel> {
     return this.prisma.$transaction(
       (tx) => this.getFundSummaryInTransaction(tx, fundId, actorUserId),
+      { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead },
+    );
+  }
+
+  getGroupDashboard(
+    groupId: string,
+    actorUserId: string,
+  ): Promise<GroupDashboardReadModel> {
+    return this.prisma.$transaction(
+      async (tx) => {
+        const group = await tx.group.findFirst({
+          where: { id: groupId, status: GroupStatus.ACTIVE },
+          select: groupDashboardSelect,
+        });
+        if (!group) throw new NotFoundException('GROUP_NOT_FOUND');
+        if (
+          !group.members.some(
+            (member) =>
+              member.userId === actorUserId &&
+              member.status === MemberStatus.ACTIVE,
+          )
+        ) {
+          throw new ForbiddenException('GROUP_ACCESS_DENIED');
+        }
+        return this.mapGroupDashboard(group);
+      },
       { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead },
     );
   }
@@ -201,6 +254,54 @@ export class FundSummaryService {
       },
       current,
       allTime,
+    };
+  }
+
+  private mapGroupDashboard(group: DashboardGroup): GroupDashboardReadModel {
+    const summaries = group.funds.map((fund) =>
+      this.mapSummary({ ...fund, group: { members: group.members } }),
+    );
+    const byCurrency = new Map<string, FundSummaryReadModel[]>();
+    summaries.forEach((summary) => {
+      const items = byCurrency.get(summary.fund.currency) ?? [];
+      items.push(summary);
+      byCurrency.set(summary.fund.currency, items);
+    });
+
+    const currencies = [...byCurrency.entries()]
+      .sort(([left], [right]) => {
+        if (left === group.defaultCurrency) return -1;
+        if (right === group.defaultCurrency) return 1;
+        return left.localeCompare(right);
+      })
+      .map(([currency, items]) => ({
+        currency,
+        cashBalanceMinor: sumSafe(items.map((item) => item.fund.cashBalanceMinor)),
+        current: aggregatePeriodTotals(items.map((item) => item.current)),
+        allTime: aggregatePeriodTotals(items.map((item) => item.allTime)),
+        funds: items
+          .map((item) => ({
+            fundId: item.fund.id,
+            name: item.fund.name,
+            cashBalanceMinor: item.fund.cashBalanceMinor,
+            currentNetChangeMinor: item.current.netChangeMinor,
+            periodStart: item.currentPeriod.periodStart,
+            periodEnd: item.currentPeriod.periodEnd,
+          }))
+          .sort(
+            (left, right) =>
+              left.name.localeCompare(right.name) ||
+              left.fundId.localeCompare(right.fundId),
+          ),
+      }));
+
+    return {
+      group: {
+        id: group.id,
+        name: group.name,
+        defaultCurrency: group.defaultCurrency,
+      },
+      currencies,
     };
   }
 
@@ -322,6 +423,36 @@ function safeAdd(left: number, right: number): number {
     throw new InternalServerErrorException('MONEY_AMOUNT_OUT_OF_RANGE');
   }
   return result;
+}
+
+function sumSafe(values: number[]): number {
+  return values.reduce((sum, value) => safeAdd(sum, value), 0);
+}
+
+function aggregatePeriodTotals(totals: PeriodTotals[]): PeriodTotals {
+  const positions = new Map<string, MemberPositionReadModel>();
+  totals.forEach((item) => {
+    item.memberPositions.forEach((position) => {
+      const existing = positions.get(position.userId);
+      positions.set(position.userId, {
+        ...position,
+        positionMinor: safeAdd(
+          existing?.positionMinor ?? 0,
+          position.positionMinor,
+        ),
+      });
+    });
+  });
+  return {
+    netChangeMinor: sumSafe(totals.map((item) => item.netChangeMinor)),
+    contributionMinor: sumSafe(totals.map((item) => item.contributionMinor)),
+    expenseMinor: sumSafe(totals.map((item) => item.expenseMinor)),
+    memberPositions: [...positions.values()].sort(
+      (left, right) =>
+        left.displayName.localeCompare(right.displayName) ||
+        left.userId.localeCompare(right.userId),
+    ),
+  };
 }
 
 function compareCompletedSettlementsLatestFirst(

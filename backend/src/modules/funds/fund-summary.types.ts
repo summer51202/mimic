@@ -30,3 +30,27 @@ export interface FundSummaryReadModel {
   current: PeriodTotals;
   allTime: PeriodTotals;
 }
+
+export interface CurrencyDashboardReadModel {
+  currency: string;
+  cashBalanceMinor: number;
+  current: PeriodTotals;
+  allTime: PeriodTotals;
+  funds: Array<{
+    fundId: string;
+    name: string;
+    cashBalanceMinor: number;
+    currentNetChangeMinor: number;
+    periodStart: string | null;
+    periodEnd: string | null;
+  }>;
+}
+
+export interface GroupDashboardReadModel {
+  group: {
+    id: string;
+    name: string;
+    defaultCurrency: string;
+  };
+  currencies: CurrencyDashboardReadModel[];
+}
