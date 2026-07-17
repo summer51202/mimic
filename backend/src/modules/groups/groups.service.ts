@@ -9,14 +9,12 @@ import {
 import {
   AuditAction,
   AuditEntityType,
-  ExpenseType,
   GroupStatus,
   GroupType,
   InviteStatus,
   MemberRole,
   MemberStatus,
   Prisma,
-  RecordStatus,
   SettlementStatus,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
@@ -317,65 +315,63 @@ export class GroupsService {
     groupId: string,
     userId: string,
   ) {
-    const funds = await tx.fund.findMany({
-      where: { groupId },
-      select: {
-        id: true,
-        contributions: {
-          where: { contributorUserId: userId, status: RecordStatus.ACTIVE },
-          select: { amountMinor: true },
-        },
-        expenses: {
-          where: {
-            status: RecordStatus.ACTIVE,
-            OR: [
-              { payers: { some: { payerUserId: userId } } },
-              { splits: { some: { userId } } },
-            ],
-          },
-          select: {
-            expenseType: true,
-            payers: {
-              where: { payerUserId: userId },
-              select: { amountMinor: true },
-            },
-            splits: {
-              where: { userId },
-              select: { allocatedAmountMinor: true },
-            },
-          },
-        },
-        settlements: {
-          where: {
-            status: SettlementStatus.COMPLETED,
-            OR: [{ fromUserId: userId }, { toUserId: userId }],
-          },
-          select: { fromUserId: true, toUserId: true, amountMinor: true },
-        },
-      },
-    });
+    const openPositions = await tx.$queryRaw<
+      Array<{ fund_id: string; position_minor: bigint }>
+    >(Prisma.sql`
+      WITH input AS (
+        SELECT ${groupId}::uuid AS group_id, ${userId}::uuid AS user_id
+      ),
+      entries AS (
+        SELECT c.fund_id, c.amount_minor
+        FROM contributions c
+        JOIN input i ON c.contributor_user_id = i.user_id
+        WHERE c.status = 'ACTIVE'
 
-    for (const fund of funds) {
-      let position = 0n;
-      for (const contribution of fund.contributions) {
-        position += contribution.amountMinor;
-      }
-      for (const expense of fund.expenses) {
-        const sign = expense.expenseType === ExpenseType.REFUND ? -1n : 1n;
-        for (const payer of expense.payers) {
-          position += payer.amountMinor * sign;
-        }
-        for (const split of expense.splits) {
-          position -= split.allocatedAmountMinor * sign;
-        }
-      }
-      for (const settlement of fund.settlements) {
-        if (settlement.fromUserId === userId) position -= settlement.amountMinor;
-        if (settlement.toUserId === userId) position += settlement.amountMinor;
-      }
-      if (position !== 0n) {
-        throw new ConflictException('MEMBER_HAS_OPEN_BALANCE');
-      }
+        UNION ALL
+
+        SELECT e.fund_id,
+          CASE WHEN e.expense_type = 'REFUND'
+            THEN -p.amount_minor ELSE p.amount_minor END AS amount_minor
+        FROM expense_payers p
+        JOIN expenses e ON e.id = p.expense_id
+        JOIN input i ON p.payer_user_id = i.user_id
+        WHERE e.status = 'ACTIVE'
+
+        UNION ALL
+
+        SELECT e.fund_id,
+          CASE WHEN e.expense_type = 'REFUND'
+            THEN s.allocated_amount_minor ELSE -s.allocated_amount_minor END AS amount_minor
+        FROM expense_splits s
+        JOIN expenses e ON e.id = s.expense_id
+        JOIN input i ON s.user_id = i.user_id
+        WHERE e.status = 'ACTIVE'
+
+        UNION ALL
+
+        SELECT st.fund_id, -st.amount_minor AS amount_minor
+        FROM settlements st
+        JOIN input i ON st.from_user_id = i.user_id
+        WHERE st.status = 'COMPLETED' AND st.from_user_id = i.user_id
+
+        UNION ALL
+
+        SELECT st.fund_id, st.amount_minor
+        FROM settlements st
+        JOIN input i ON st.to_user_id = i.user_id
+        WHERE st.status = 'COMPLETED' AND st.to_user_id = i.user_id
+      )
+      SELECT f.id AS fund_id,
+        SUM(entries.amount_minor)::bigint AS position_minor
+      FROM funds f
+      JOIN input i ON f.group_id = i.group_id
+      LEFT JOIN entries ON entries.fund_id = f.id
+      GROUP BY f.id
+      HAVING SUM(entries.amount_minor) <> 0::bigint
+    `);
+
+    if (openPositions.length > 0) {
+      throw new ConflictException('MEMBER_HAS_OPEN_BALANCE');
     }
 
     const pendingSettlement = await tx.settlement.findFirst({
@@ -384,6 +380,7 @@ export class GroupsService {
         status: SettlementStatus.PENDING,
         OR: [{ fromUserId: userId }, { toUserId: userId }],
       },
+      select: { id: true },
     });
     if (pendingSettlement) {
       throw new ConflictException('MEMBER_HAS_PENDING_SETTLEMENT');
