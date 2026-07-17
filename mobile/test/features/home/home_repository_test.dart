@@ -318,7 +318,7 @@ void main() {
 
     expect(summary.displayName, 'Edward');
     expect(summary.groupId, 'group-2');
-    expect(summary.totalBalanceLabel, 'TWD 10,000');
+    expect(summary.totalBalanceLabel, 'TWD 100.00');
     expect(summary.activeFunds.length, 2);
     expect(summary.activeFunds.first.name, 'Date Fund');
     expect(summary.dashboard!.currencies, hasLength(2));

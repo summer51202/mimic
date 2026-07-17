@@ -34,7 +34,8 @@ class FakeApiClient implements PairFundApiClient {
 }
 
 void main() {
-  test('remote settlement repository maps suggestion summary and history', () async {
+  test('remote settlement repository maps suggestion summary and history',
+      () async {
     final repository = RemoteSettlementRepository(
       FakeApiClient(
         <String, Map<String, dynamic>>{
@@ -75,9 +76,9 @@ void main() {
     expect(summary.suggestions.length, 1);
     expect(summary.suggestions.first.fromUser, 'partner-user');
     expect(summary.suggestions.first.toUser, 'edward-user');
-    expect(summary.suggestions.first.amountLabel, 'TWD 800');
+    expect(summary.suggestions.first.amountLabel, 'TWD 8.00');
     expect(summary.history.length, 1);
-    expect(summary.history.first.title, 'completed - TWD 800');
+    expect(summary.history.first.title, 'completed - TWD 8.00');
     expect(summary.history.first.subtitle, '2026-02-01 to 2026-02-28');
   });
 }

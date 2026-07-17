@@ -135,12 +135,12 @@ void main() {
     final r = FakeRepository((_) async => detail());
     await pump(t, r);
     await t.pumpAndSettle();
-    expect(find.text('TWD 2,000'), findsOneWidget);
-    expect(find.text('TWD 6,400'), findsOneWidget);
+    expect(find.text('TWD 20.00'), findsOneWidget);
+    expect(find.text('TWD 64.00'), findsOneWidget);
     await t.tap(find.byKey(const Key('dashboard-scope-all-time')));
     await t.pump();
-    expect(find.text('TWD 10,000'), findsOneWidget);
-    expect(find.text('TWD 6,400'), findsWidgets);
+    expect(find.text('TWD 100.00'), findsOneWidget);
+    expect(find.text('TWD 64.00'), findsWidgets);
     expect(r.calls, 1);
   });
   testWidgets('shows period settlement positions former and formatted activity',
@@ -154,7 +154,7 @@ void main() {
     expect(find.text('Receivable'), findsOneWidget);
     expect(find.text('Payable'), findsOneWidget);
     expect(find.text('Balanced'), findsOneWidget);
-    expect(find.textContaining('TWD 880'), findsOneWidget);
+    expect(find.textContaining('TWD 8.80'), findsOneWidget);
     await t.tap(find.byKey(const Key('dashboard-scope-all-time')));
     await t.pump();
     expect(find.textContaining('Former member'), findsOneWidget);
@@ -232,7 +232,7 @@ void main() {
     await t.pumpAndSettle();
     expect(find.text('Travel Fund'), findsOneWidget);
     expect(find.text('Date Fund'), findsNothing);
-    expect(find.text('TWD 2,000'), findsOneWidget);
+    expect(find.text('TWD 20.00'), findsOneWidget);
     expect(r.ids, ['fund-1', 'fund-2']);
   });
 }

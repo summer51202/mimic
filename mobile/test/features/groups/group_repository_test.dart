@@ -149,7 +149,7 @@ void main() {
     expect(detail.currentUserId, 'user-1');
     expect(detail.members.single.displayName, 'Edward');
     expect(detail.funds.single.name, 'Date Fund');
-    expect(detail.funds.single.balanceLabel, 'TWD 6,400');
+    expect(detail.funds.single.balanceLabel, 'TWD 64.00');
   });
 
   test('updates the exact member role with lower-case PATCH data', () async {

@@ -368,7 +368,7 @@ void main() {
 
     await tester.tap(find.byKey(const Key('dashboard-scope-all-time')));
     await tester.pump();
-    expect(find.text('TWD 180,000'), findsOneWidget);
+    expect(find.text('TWD 1,800.00'), findsOneWidget);
 
     await tester.tap(find.text('Switch'));
     await tester.pumpAndSettle();
@@ -400,7 +400,7 @@ void main() {
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
     expect(find.text('Household'), findsNothing);
-    expect(find.text('TWD 120,000'), findsNothing);
+    expect(find.text('TWD 1,200.00'), findsNothing);
 
     pending.complete(_dashboardSummary());
     await tester.pumpAndSettle();
@@ -467,10 +467,10 @@ void main() {
     expect(find.text('TWD'), findsWidgets);
     expect(find.text('USD'), findsWidgets);
     expect(find.text('Present cash'), findsNWidgets(2));
-    expect(find.text('TWD 120,000'), findsWidgets);
-    expect(find.text('USD 9,900'), findsOneWidget);
-    expect(find.text('TWD 50,000'), findsOneWidget);
-    expect(find.text('USD 2,000'), findsOneWidget);
+    expect(find.text('TWD 1,200.00'), findsWidgets);
+    expect(find.text('USD 99.00'), findsOneWidget);
+    expect(find.text('TWD 500.00'), findsOneWidget);
+    expect(find.text('USD 20.00'), findsOneWidget);
   });
 
   testWidgets('switches scope locally without refetch or loading flash',
@@ -486,13 +486,13 @@ void main() {
     );
 
     expect(loads, 1);
-    expect(find.text('TWD 50,000'), findsOneWidget);
+    expect(find.text('TWD 500.00'), findsOneWidget);
     await tester.tap(find.byKey(const Key('dashboard-scope-all-time')));
     await tester.pump();
 
     expect(loads, 1);
     expect(find.byType(CircularProgressIndicator), findsNothing);
-    expect(find.text('TWD 180,000'), findsOneWidget);
+    expect(find.text('TWD 1,800.00'), findsOneWidget);
     expect(find.text('Former partner (Former member)'), findsOneWidget);
   });
 
@@ -500,9 +500,9 @@ void main() {
       (WidgetTester tester) async {
     await _pumpDashboard(tester, summary: _dashboardSummary());
 
-    expect(find.textContaining('Receivable +TWD 15,000'), findsOneWidget);
-    expect(find.textContaining('Payable -TWD 15,000'), findsOneWidget);
-    expect(find.textContaining('Balanced TWD 0'), findsOneWidget);
+    expect(find.textContaining('Receivable +TWD 150.00'), findsOneWidget);
+    expect(find.textContaining('Payable -TWD 150.00'), findsOneWidget);
+    expect(find.textContaining('Balanced TWD 0.00'), findsOneWidget);
   });
 
   testWidgets('fund card navigates to the exact fund detail path',
@@ -514,7 +514,7 @@ void main() {
       find.byKey(const Key('dashboard-fund-fund-dashboard')),
     );
     expect(semantics.label, contains('Open Household'));
-    expect(semantics.label, contains('Cash TWD 120,000'));
+    expect(semantics.label, contains('Cash TWD 1,200.00'));
     expect(semantics.getSemanticsData().hasAction(SemanticsAction.tap), isTrue);
     await tester.tap(find.text('Household'));
     await tester.pumpAndSettle();
@@ -614,9 +614,9 @@ void main() {
     );
     await tester.tap(find.byKey(const Key('dashboard-scope-all-time')));
     await tester.pump();
-    expect(find.text('LONG-CURRENCY-CODE 9,007,199,254,740,000'), findsWidgets);
+    expect(find.text('LONG-CURRENCY-CODE 90,071,992,547,400.00'), findsWidgets);
     expect(
-      find.text('LONG-CURRENCY-CODE 8,883,742,465,727,655'),
+      find.text('LONG-CURRENCY-CODE 88,837,424,657,276.55'),
       findsNothing,
     );
     expect(tester.takeException(), isNull);

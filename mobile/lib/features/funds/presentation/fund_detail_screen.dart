@@ -76,14 +76,11 @@ class _FundContent extends ConsumerWidget {
                             style: theme.textTheme.labelLarge),
                         const SizedBox(height: PfSpacing.md),
                         Text('Present cash', style: theme.textTheme.bodyMedium),
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                              formatMinorCurrency(summary.cashBalanceMinor,
-                                  currency: summary.currency),
-                              style: theme.textTheme.headlineMedium),
-                        ),
+                        Text(
+                            formatMinorCurrency(summary.cashBalanceMinor,
+                                currency: summary.currency),
+                            softWrap: true,
+                            style: theme.textTheme.headlineMedium),
                         const SizedBox(height: PfSpacing.sm),
                         Text(_periodLabel(summary)),
                         Text(_settlementLabel(summary)),
@@ -96,8 +93,8 @@ class _FundContent extends ConsumerWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: <Widget>[
                   Text('Fund overview', style: theme.textTheme.titleMedium),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     child: PeriodScopeControl(
                         scope: scope,
                         onChanged: (value) => ref
@@ -240,11 +237,9 @@ class _Metric extends StatelessWidget {
             children: <Widget>[
               Text(label),
               const SizedBox(height: PfSpacing.xs),
-              FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
-                  child: Text(formatMinorCurrency(value, currency: currency),
-                      style: Theme.of(context).textTheme.titleMedium))
+              Text(formatMinorCurrency(value, currency: currency),
+                  softWrap: true,
+                  style: Theme.of(context).textTheme.titleMedium)
             ]),
       )));
 }
