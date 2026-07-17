@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:pairfund_mobile/features/home/data/home_repository.dart';
+import 'package:pairfund_mobile/features/home/data/remote/group_dashboard_remote_mapper.dart';
 import 'package:pairfund_mobile/features/home/data/remote/home_remote_mapper.dart';
 import 'package:pairfund_mobile/features/groups/data/group_summary.dart';
 import 'package:pairfund_mobile/shared/api/pairfund_api_client.dart';
@@ -38,6 +39,80 @@ class FakeApiClient implements PairFundApiClient {
 }
 
 void main() {
+  group('group dashboard mapper', () {
+    test('maps currencies, nullable periods, former members, and zero defaults',
+        () {
+      final dashboard = mapGroupDashboardResponse(<String, dynamic>{
+        'data': <String, dynamic>{
+          'group': <String, dynamic>{
+            'id': 'group-1',
+            'name': 'Pair',
+            'default_currency': 'TWD',
+          },
+          'currencies': <dynamic>[
+            _currencyJson('TWD', memberStatus: 'removed'),
+            _currencyJson('USD', periodStart: '2026-07-01T00:00:00.000Z'),
+          ],
+        },
+      });
+
+      expect(dashboard.groupId, 'group-1');
+      expect(dashboard.currencies.map((item) => item.currency), ['TWD', 'USD']);
+      expect(dashboard.currencies.first.current.netChangeMinor, 0);
+      expect(dashboard.currencies.first.funds.single.periodStart, isNull);
+      expect(dashboard.currencies.last.funds.single.periodStart?.isUtc, isTrue);
+      expect(
+          dashboard
+              .currencies.first.current.memberPositions.single.membershipStatus,
+          'removed');
+      expect(() => dashboard.currencies.add(dashboard.currencies.first),
+          throwsUnsupportedError);
+      expect(() => dashboard.currencies.first.funds.clear(),
+          throwsUnsupportedError);
+    });
+
+    test('rejects missing or empty required values and wrong numeric types',
+        () {
+      for (final mutation in <void Function(Map<String, dynamic>)>[
+        (data) => (data['group'] as Map<String, dynamic>).remove('id'),
+        (data) => (data['group'] as Map<String, dynamic>)['id'] = '',
+        (data) => ((data['currencies'] as List).first
+            as Map<String, dynamic>)['currency'] = '',
+        (data) => ((data['currencies'] as List).first
+            as Map<String, dynamic>)['cash_balance_minor'] = '10',
+      ]) {
+        final data = <String, dynamic>{
+          'group': <String, dynamic>{
+            'id': 'g',
+            'name': 'Pair',
+            'default_currency': 'TWD'
+          },
+          'currencies': <dynamic>[_currencyJson('TWD')],
+        };
+        mutation(data);
+        expect(() => mapGroupDashboardResponse(<String, dynamic>{'data': data}),
+            throwsFormatException);
+      }
+    });
+
+    test('rejects invalid dates', () {
+      expect(
+        () => mapGroupDashboardResponse(<String, dynamic>{
+          'data': <String, dynamic>{
+            'group': <String, dynamic>{
+              'id': 'g',
+              'name': 'Pair',
+              'default_currency': 'TWD'
+            },
+            'currencies': <dynamic>[
+              _currencyJson('TWD', periodStart: 'not-a-date')
+            ],
+          },
+        }),
+        throwsFormatException,
+      );
+    });
+  });
   test('HomeSummary exposes nullable groupId', () {
     const summary = HomeSummary(
       groupId: 'group-1',
@@ -78,7 +153,7 @@ void main() {
     expect(summary.groupId, isNull);
   });
 
-  test('remote home repository combines me groups and funds into summary',
+  test('remote home repository combines me groups and dashboard into summary',
       () async {
     final apiClient = FakeApiClient(
       <String, Map<String, dynamic>>{
@@ -126,21 +201,18 @@ void main() {
             },
           ],
         },
-        '/groups/group-2/funds': <String, dynamic>{
-          'data': <Map<String, dynamic>>[
-            <String, dynamic>{
-              'id': 'fund-1',
-              'name': 'Date Fund',
-              'currency': 'TWD',
-              'balance_minor': 6400,
+        '/groups/group-2/dashboard': <String, dynamic>{
+          'data': <String, dynamic>{
+            'group': <String, dynamic>{
+              'id': 'group-2',
+              'name': 'Trip',
+              'default_currency': 'TWD'
             },
-            <String, dynamic>{
-              'id': 'fund-2',
-              'name': 'Trip Fund',
-              'currency': 'TWD',
-              'balance_minor': 3600,
-            },
-          ],
+            'currencies': <dynamic>[
+              _currencyJson('TWD',
+                  cashBalanceMinor: 10000, includeSecondFund: true)
+            ],
+          }
         },
       },
     );
@@ -178,8 +250,13 @@ void main() {
         ),
       ),
     );
-    expect(apiClient.getPaths, contains('/groups/group-2/funds'));
-    expect(apiClient.getPaths, isNot(contains('/groups/group-1/funds')));
+    expect(apiClient.getPaths.where((path) => path == '/me'), hasLength(2));
+    expect(
+        apiClient.getPaths.where((path) => path == '/groups/group-2/dashboard'),
+        hasLength(1));
+    expect(apiClient.getPaths, isNot(contains('/groups/group-2/funds')));
+    expect(
+        apiClient.getPaths.where((path) => path.contains('/summary')), isEmpty);
     expect(groups.last.members.map((member) => member.displayName),
         <String>['Edward', 'Alice']);
   });
@@ -191,8 +268,15 @@ void main() {
         '/me': <String, dynamic>{
           'data': <String, dynamic>{'display_name': 'Edward'},
         },
-        '/groups/second-group/funds': <String, dynamic>{
-          'data': <Map<String, dynamic>>[],
+        '/groups/second-group/dashboard': <String, dynamic>{
+          'data': <String, dynamic>{
+            'group': <String, dynamic>{
+              'id': 'second-group',
+              'name': 'Second',
+              'default_currency': 'TWD'
+            },
+            'currencies': <dynamic>[],
+          }
         },
       },
     );
@@ -203,7 +287,17 @@ void main() {
     final summary = await repository.fetchSummary(groupId: 'second-group');
 
     expect(summary.groupId, 'second-group');
-    expect(apiClient.getPaths, contains('/groups/second-group/funds'));
+    expect(apiClient.getPaths, contains('/groups/second-group/dashboard'));
+  });
+
+  test('remote home repository forwards API errors', () async {
+    final repository =
+        RemoteHomeRepository(FakeApiClient(<String, Map<String, dynamic>>{
+      '/me': <String, dynamic>{
+        'data': <String, dynamic>{'id': 'u', 'display_name': 'Edward'}
+      },
+    }));
+    expect(() => repository.fetchSummary(groupId: 'missing'), throwsStateError);
   });
 
   test('remote mapper requires nullable groupId and maps it through', () {
@@ -223,4 +317,47 @@ void main() {
     expect(withGroup.groupId, 'group-1');
     expect(withoutGroup.groupId, isNull);
   });
+}
+
+Map<String, dynamic> _currencyJson(
+  String currency, {
+  int cashBalanceMinor = 0,
+  String? periodStart,
+  String memberStatus = 'active',
+  bool includeSecondFund = false,
+}) {
+  return <String, dynamic>{
+    'currency': currency,
+    'cash_balance_minor': cashBalanceMinor,
+    'current': <String, dynamic>{
+      'member_positions': <dynamic>[
+        <String, dynamic>{
+          'user_id': 'user-1',
+          'display_name': 'Edward',
+          'membership_status': memberStatus,
+          'position_minor': 0,
+        },
+      ],
+    },
+    'all_time': <String, dynamic>{},
+    'funds': <dynamic>[
+      <String, dynamic>{
+        'fund_id': 'fund-$currency',
+        'name': currency == 'TWD' ? 'Date Fund' : '$currency Fund',
+        'cash_balance_minor': cashBalanceMinor,
+        'current_net_change_minor': 0,
+        'period_start': periodStart,
+        'period_end': null,
+      },
+      if (includeSecondFund)
+        <String, dynamic>{
+          'fund_id': 'fund-2',
+          'name': 'Trip Fund',
+          'cash_balance_minor': 3600,
+          'current_net_change_minor': 0,
+          'period_start': null,
+          'period_end': null,
+        },
+    ],
+  };
 }

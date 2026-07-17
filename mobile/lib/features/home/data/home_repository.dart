@@ -7,6 +7,8 @@ import '../../../shared/config/app_config.dart';
 import '../../../shared/utils/currency_formatter.dart';
 import '../../groups/data/group_summary.dart';
 import 'remote/home_remote_mapper.dart';
+import 'group_dashboard.dart';
+import 'remote/group_dashboard_remote_mapper.dart';
 
 class FundSummary {
   const FundSummary({
@@ -38,6 +40,7 @@ class HomeSummary {
     required this.activeFunds,
     required this.recentActivities,
     required this.pendingTasksCount,
+    this.dashboard,
   });
 
   final String? groupId;
@@ -46,6 +49,7 @@ class HomeSummary {
   final List<FundSummary> activeFunds;
   final List<ActivityPreview> recentActivities;
   final int pendingTasksCount;
+  final GroupDashboard? dashboard;
 }
 
 abstract class HomeRepository {
@@ -176,33 +180,44 @@ class RemoteHomeRepository implements HomeRepository {
       );
     }
 
-    final fundsResponse = await _apiClient.get('/groups/$groupId/funds');
-    final fundDtos = readDataListEnvelope(fundsResponse)
-        .map(FundListItemDto.fromJson)
-        .toList();
-
-    final activeFunds = fundDtos
+    final dashboardResponse = await _apiClient.get('/groups/$groupId/dashboard');
+    final dashboard = mapGroupDashboardResponse(dashboardResponse);
+    final primaryCurrency = dashboard.currencies.where(
+      (item) => item.currency == dashboard.defaultCurrency,
+    );
+    final selectedCurrency = primaryCurrency.isNotEmpty
+        ? primaryCurrency.first
+        : (dashboard.currencies.isEmpty ? null : dashboard.currencies.first);
+    final activeFunds = (selectedCurrency?.funds ?? const <DashboardFundCard>[])
         .map(
-          (dto) => mapFundSummary(
-            dto,
+          (fund) => FundSummary(
+            id: fund.fundId,
+            name: fund.name,
             balanceLabel: formatMinorCurrency(
-              dto.balanceMinor,
-              currency: dto.currency,
+              fund.cashBalanceMinor,
+              currency: selectedCurrency!.currency,
             ),
           ),
         )
         .toList();
 
-    final totalBalanceMinor = fundDtos.fold<int>(
-      0,
-      (sum, dto) => sum + dto.balanceMinor,
-    );
-
-    return mapRemoteHomeSummary(
+    final summary = mapRemoteHomeSummary(
       groupId: groupId,
       user: userDto,
-      totalBalanceLabel: formatMinorCurrency(totalBalanceMinor),
+      totalBalanceLabel: formatMinorCurrency(
+        selectedCurrency?.cashBalanceMinor ?? 0,
+        currency: selectedCurrency?.currency ?? dashboard.defaultCurrency,
+      ),
       activeFunds: activeFunds,
+    );
+    return HomeSummary(
+      groupId: summary.groupId,
+      displayName: summary.displayName,
+      totalBalanceLabel: summary.totalBalanceLabel,
+      activeFunds: summary.activeFunds,
+      recentActivities: summary.recentActivities,
+      pendingTasksCount: summary.pendingTasksCount,
+      dashboard: dashboard,
     );
   }
 }
