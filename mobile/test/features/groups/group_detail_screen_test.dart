@@ -261,7 +261,15 @@ void main() {
 
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.textContaining('Alice'), findsWidgets);
-    expect(find.widgetWithText(FilledButton, 'Remove'), findsOneWidget);
+    final remove = tester.widget<FilledButton>(
+      find.widgetWithText(FilledButton, 'Remove'),
+    );
+    final removeColors =
+        Theme.of(tester.element(find.byType(AlertDialog))).colorScheme;
+    expect(remove.style!.backgroundColor!.resolve(<WidgetState>{}),
+        removeColors.error);
+    expect(remove.style!.foregroundColor!.resolve(<WidgetState>{}),
+        removeColors.onError);
   });
 
   testWidgets('owner can demote another owner with consequence copy',
@@ -356,7 +364,12 @@ void main() {
     expect(find.text('Leave group?'), findsOneWidget);
     final leave = tester
         .widget<FilledButton>(find.widgetWithText(FilledButton, 'Leave group'));
-    expect(leave.style, isNotNull);
+    final leaveColors =
+        Theme.of(tester.element(find.byType(AlertDialog))).colorScheme;
+    expect(leave.style!.backgroundColor!.resolve(<WidgetState>{}),
+        leaveColors.error);
+    expect(leave.style!.foregroundColor!.resolve(<WidgetState>{}),
+        leaveColors.onError);
     await tester.tap(find.widgetWithText(FilledButton, 'Leave group'));
     await tester.pumpAndSettle();
     expect(repository.leaveCalls, 1);

@@ -195,6 +195,7 @@ class _GroupDetailBody extends ConsumerWidget {
             style: action == _MemberAction.remove
                 ? FilledButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.error,
+                    foregroundColor: Theme.of(context).colorScheme.onError,
                   )
                 : null,
             onPressed: () => Navigator.pop(dialogContext, true),
@@ -236,7 +237,9 @@ class _GroupDetailBody extends ConsumerWidget {
               child: const Text('Cancel')),
           FilledButton(
             style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error),
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
             onPressed: () => Navigator.pop(dialogContext, true),
             child: const Text('Leave group'),
           ),
