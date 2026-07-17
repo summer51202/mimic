@@ -70,6 +70,7 @@ export function calculateMemberPositions(
 export function buildSettlementSuggestions(positions: MemberPosition[]) {
   const creditors = positions
     .filter((position) => position.positionMinor > 0)
+    .map((position) => ({ ...position }))
     .sort((a, b) => b.positionMinor - a.positionMinor);
   const debtors = positions
     .filter((position) => position.positionMinor < 0)

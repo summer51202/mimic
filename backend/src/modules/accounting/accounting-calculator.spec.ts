@@ -141,4 +141,43 @@ describe('accounting calculator', () => {
       { from_user_id: 'user-b', to_user_id: 'user-a', amount_minor: 800 },
     ]);
   });
+
+  it('does not mutate member positions while building suggestions', () => {
+    const positions = [
+      { userId: 'creditor', positionMinor: 800 },
+      { userId: 'debtor', positionMinor: -800 },
+    ];
+    const originalPositions = positions.map((position) => ({ ...position }));
+
+    buildSettlementSuggestions(positions);
+
+    expect(positions).toEqual(originalPositions);
+  });
+
+  it('matches multiple debtors to multiple creditors in balance order', () => {
+    expect(
+      buildSettlementSuggestions([
+        { userId: 'creditor-a', positionMinor: 700 },
+        { userId: 'creditor-b', positionMinor: 300 },
+        { userId: 'debtor-c', positionMinor: -600 },
+        { userId: 'debtor-d', positionMinor: -400 },
+      ]),
+    ).toEqual([
+      {
+        from_user_id: 'debtor-c',
+        to_user_id: 'creditor-a',
+        amount_minor: 600,
+      },
+      {
+        from_user_id: 'debtor-d',
+        to_user_id: 'creditor-a',
+        amount_minor: 100,
+      },
+      {
+        from_user_id: 'debtor-d',
+        to_user_id: 'creditor-b',
+        amount_minor: 300,
+      },
+    ]);
+  });
 });
