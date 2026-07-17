@@ -143,6 +143,47 @@ describe('GroupsService.updateMemberRole', () => {
     });
   });
 
+  it('allows an owner to demote themselves when another active owner remains', async () => {
+    const { service, tx } = setup();
+    const selfOwner = { ...actor };
+    tx.groupMember.findFirst
+      .mockReset()
+      .mockResolvedValueOnce(selfOwner)
+      .mockResolvedValueOnce(selfOwner);
+    tx.groupMember.count.mockResolvedValue(2);
+    tx.groupMember.update.mockResolvedValue({
+      ...selfOwner,
+      role: MemberRole.MEMBER,
+      user: { id: 'owner-1', displayName: 'Owner' },
+    });
+
+    await service.updateMemberRole('group-1', 'owner-1', 'owner-1', {
+      role: 'member',
+    });
+
+    expect(tx.groupMember.count).toHaveBeenCalledWith({
+      where: {
+        groupId: 'group-1',
+        role: MemberRole.OWNER,
+        status: MemberStatus.ACTIVE,
+      },
+    });
+    expect(tx.groupMember.update).toHaveBeenCalledWith({
+      where: { id: 'actor-membership' },
+      data: { role: MemberRole.MEMBER },
+      include: { user: true },
+    });
+    expect(tx.auditLog.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        actorUserId: 'owner-1',
+        metadata: {
+          operation: 'demote_owner',
+          target_user_id: 'owner-1',
+        },
+      }),
+    });
+  });
+
   it.each([
     ['GROUP_NOT_FOUND', null, actor, target, NotFoundException],
     ['GROUP_ACCESS_DENIED', group, null, target, ForbiddenException],
@@ -208,7 +249,7 @@ describe('GroupsService.updateMemberRole', () => {
     expect(tx.groupMember.update).not.toHaveBeenCalled();
   });
 
-  it('acquires the mutation lock before group or membership reads', async () => {
+  it('locks before ordered authorization reads, update, and audit creation', async () => {
     const { service, tx } = setup();
 
     await service.updateMemberRole('group-1', 'owner-1', 'member-1', {
@@ -216,10 +257,17 @@ describe('GroupsService.updateMemberRole', () => {
     });
 
     const lockOrder = tx.$executeRaw.mock.invocationCallOrder[0];
-    expect(lockOrder).toBeLessThan(tx.group.findFirst.mock.invocationCallOrder[0]);
-    expect(lockOrder).toBeLessThan(
-      tx.groupMember.findFirst.mock.invocationCallOrder[0],
-    );
+    const groupReadOrder = tx.group.findFirst.mock.invocationCallOrder[0];
+    const [actorReadOrder, targetReadOrder] =
+      tx.groupMember.findFirst.mock.invocationCallOrder;
+    const updateOrder = tx.groupMember.update.mock.invocationCallOrder[0];
+    const auditOrder = tx.auditLog.create.mock.invocationCallOrder[0];
+
+    expect(lockOrder).toBeLessThan(groupReadOrder);
+    expect(groupReadOrder).toBeLessThan(actorReadOrder);
+    expect(actorReadOrder).toBeLessThan(targetReadOrder);
+    expect(targetReadOrder).toBeLessThan(updateOrder);
+    expect(updateOrder).toBeLessThan(auditOrder);
   });
 });
 
@@ -447,6 +495,7 @@ describe('GroupsService group access and management', () => {
 });
 
 describe('GroupsService.acceptInvite', () => {
+  const activeInviteTime = new Date('2026-07-16T00:00:00.000Z');
   const group = { id: 'group-1', name: 'Shared', status: GroupStatus.ACTIVE };
   const user = { id: 'user-1', email: 'partner@example.com' };
   const pendingInvite = {
@@ -459,6 +508,7 @@ describe('GroupsService.acceptInvite', () => {
     group,
   };
 
+  beforeEach(() => jest.useFakeTimers().setSystemTime(activeInviteTime));
   afterEach(() => jest.useRealTimers());
 
   function setup(overrides: Record<string, unknown> = {}) {
@@ -485,8 +535,7 @@ describe('GroupsService.acceptInvite', () => {
   }
 
   it('atomically consumes a pending invite and creates an active member', async () => {
-    const acceptedAt = new Date('2026-07-16T00:00:00.000Z');
-    jest.useFakeTimers().setSystemTime(acceptedAt);
+    const acceptedAt = activeInviteTime;
     const { service, prisma, tx } = setup();
 
     await expect(service.acceptInvite(user.id, 'invite-code')).resolves.toEqual({
