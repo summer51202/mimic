@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pairfund_mobile/app/router/app_routes.dart';
+import 'package:pairfund_mobile/features/home/data/group_dashboard.dart';
 import 'package:pairfund_mobile/features/home/data/home_repository.dart';
 import 'package:pairfund_mobile/features/home/presentation/home_dashboard_screen.dart';
 import 'package:pairfund_mobile/features/home/providers/home_summary_provider.dart';
@@ -56,11 +57,106 @@ HomeSummary _summary({String? groupId = 'group-1'}) => HomeSummary(
       pendingTasksCount: 2,
     );
 
+GroupDashboard _dashboard({
+  String groupName = 'Our Home',
+  List<CurrencyDashboard>? currencies,
+}) =>
+    GroupDashboard(
+      groupId: 'group-1',
+      groupName: groupName,
+      defaultCurrency: 'TWD',
+      currencies: currencies ??
+          <CurrencyDashboard>[
+            CurrencyDashboard(
+              currency: 'TWD',
+              cashBalanceMinor: 120000,
+              current: DashboardPeriodTotals(
+                netChangeMinor: 20000,
+                contributionMinor: 50000,
+                expenseMinor: 30000,
+                memberPositions: const <DashboardMemberPosition>[
+                  DashboardMemberPosition(
+                    userId: 'user-1',
+                    displayName: 'Edward',
+                    membershipStatus: 'active',
+                    positionMinor: 15000,
+                  ),
+                  DashboardMemberPosition(
+                    userId: 'user-2',
+                    displayName: 'Alice',
+                    membershipStatus: 'active',
+                    positionMinor: -15000,
+                  ),
+                  DashboardMemberPosition(
+                    userId: 'user-3',
+                    displayName: 'Sam',
+                    membershipStatus: 'active',
+                    positionMinor: 0,
+                  ),
+                ],
+              ),
+              allTime: DashboardPeriodTotals(
+                netChangeMinor: 120000,
+                contributionMinor: 180000,
+                expenseMinor: 60000,
+                memberPositions: const <DashboardMemberPosition>[
+                  DashboardMemberPosition(
+                    userId: 'former',
+                    displayName: 'Former partner',
+                    membershipStatus: 'removed',
+                    positionMinor: 5000,
+                  ),
+                ],
+              ),
+              funds: <DashboardFundCard>[
+                DashboardFundCard(
+                  fundId: 'fund-dashboard',
+                  name: 'Household',
+                  cashBalanceMinor: 120000,
+                  currentNetChangeMinor: 20000,
+                  periodStart: DateTime.utc(2026, 7, 1),
+                  periodEnd: DateTime.utc(2026, 7, 17),
+                ),
+              ],
+            ),
+            CurrencyDashboard(
+              currency: 'USD',
+              cashBalanceMinor: 9900,
+              current: DashboardPeriodTotals(
+                netChangeMinor: -100,
+                contributionMinor: 2000,
+                expenseMinor: 2100,
+                memberPositions: const <DashboardMemberPosition>[],
+              ),
+              allTime: DashboardPeriodTotals(
+                netChangeMinor: 9900,
+                contributionMinor: 12000,
+                expenseMinor: 2100,
+                memberPositions: const <DashboardMemberPosition>[],
+              ),
+              funds: const <DashboardFundCard>[],
+            ),
+          ],
+    );
+
+HomeSummary _dashboardSummary({GroupDashboard? dashboard}) {
+  return HomeSummary(
+    groupId: 'group-1',
+    displayName: 'Edward',
+    totalBalanceLabel: 'TWD 120,000',
+    activeFunds: const <FundSummary>[_fund],
+    recentActivities: const <ActivityPreview>[],
+    pendingTasksCount: 2,
+    dashboard: dashboard ?? _dashboard(),
+  );
+}
+
 Future<GoRouter> _pumpDashboard(
   WidgetTester tester, {
   required HomeSummary summary,
   List<GroupSummary> groups = _groups,
   Size size = const Size(800, 900),
+  Future<HomeSummary> Function()? summaryLoader,
 }) async {
   await tester.binding.setSurfaceSize(size);
   addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -108,6 +204,16 @@ Future<GoRouter> _pumpDashboard(
         path: AppRoutes.settings,
         builder: (_, __) => const Scaffold(body: Text('Settings destination')),
       ),
+      GoRoute(
+        path: AppRoutes.fundDetail,
+        builder: (_, state) => Scaffold(
+          body: Text('fund marker ${state.pathParameters['fundId']}'),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.createFund,
+        builder: (_, __) => const Scaffold(body: Text('create fund marker')),
+      ),
     ],
   );
   addTearDown(router.dispose);
@@ -115,7 +221,9 @@ Future<GoRouter> _pumpDashboard(
   await tester.pumpWidget(
     ProviderScope(
       overrides: <Override>[
-        homeSummaryProvider.overrideWith((_) async => summary),
+        homeSummaryProvider.overrideWith(
+          (_) => summaryLoader?.call() ?? Future<HomeSummary>.value(summary),
+        ),
         homeGroupsProvider.overrideWith((_) async => groups),
         selectedGroupProvider.overrideWith(
           (_) => SelectedGroupNotifier(_MemorySelection()),
@@ -129,6 +237,150 @@ Future<GoRouter> _pumpDashboard(
 }
 
 void main() {
+  testWidgets('renders independent currency totals and present cash',
+      (WidgetTester tester) async {
+    await _pumpDashboard(tester, summary: _dashboardSummary());
+
+    expect(find.text('TWD'), findsWidgets);
+    expect(find.text('USD'), findsWidgets);
+    expect(find.text('Present cash'), findsNWidgets(2));
+    expect(find.text('TWD 120,000'), findsWidgets);
+    expect(find.text('USD 9,900'), findsOneWidget);
+    expect(find.text('TWD 50,000'), findsOneWidget);
+    expect(find.text('USD 2,000'), findsOneWidget);
+  });
+
+  testWidgets('switches scope locally without refetch or loading flash',
+      (WidgetTester tester) async {
+    var loads = 0;
+    await _pumpDashboard(
+      tester,
+      summary: _dashboardSummary(),
+      summaryLoader: () async {
+        loads += 1;
+        return _dashboardSummary();
+      },
+    );
+
+    expect(loads, 1);
+    expect(find.text('TWD 50,000'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('dashboard-scope-all-time')));
+    await tester.pump();
+
+    expect(loads, 1);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.text('TWD 180,000'), findsOneWidget);
+    expect(find.text('Former partner (Former member)'), findsOneWidget);
+  });
+
+  testWidgets('labels receivable payable and balanced positions',
+      (WidgetTester tester) async {
+    await _pumpDashboard(tester, summary: _dashboardSummary());
+
+    expect(find.textContaining('Receivable +TWD 15,000'), findsOneWidget);
+    expect(find.textContaining('Payable -TWD 15,000'), findsOneWidget);
+    expect(find.textContaining('Balanced TWD 0'), findsOneWidget);
+  });
+
+  testWidgets('fund card navigates to the exact fund detail path',
+      (WidgetTester tester) async {
+    final router = await _pumpDashboard(tester, summary: _dashboardSummary());
+
+    await tester.ensureVisible(find.text('Household'));
+    await tester.tap(find.text('Household'));
+    await tester.pumpAndSettle();
+
+    expect(router.state.uri.path, AppRoutes.fundDetailPath('fund-dashboard'));
+    expect(find.text('fund marker fund-dashboard'), findsOneWidget);
+  });
+
+  testWidgets('shows no-funds action when dashboard currencies are empty',
+      (WidgetTester tester) async {
+    await _pumpDashboard(
+      tester,
+      summary: _dashboardSummary(
+        dashboard: _dashboard(currencies: const <CurrencyDashboard>[]),
+      ),
+    );
+
+    expect(find.text('No funds yet'), findsOneWidget);
+    expect(find.widgetWithText(ElevatedButton, 'Create fund'), findsOneWidget);
+  });
+
+  testWidgets('dashboard error keeps retry action and reloads provider',
+      (WidgetTester tester) async {
+    var attempts = 0;
+    await _pumpDashboard(
+      tester,
+      summary: _dashboardSummary(),
+      summaryLoader: () async {
+        attempts += 1;
+        if (attempts == 1) throw StateError('dashboard failed');
+        return _dashboardSummary();
+      },
+    );
+
+    expect(
+        find.text('Unable to load your dashboard right now.'), findsOneWidget);
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Retry'));
+    await tester.pumpAndSettle();
+    expect(attempts, 2);
+    expect(find.text('Present cash'), findsNWidgets(2));
+  });
+
+  testWidgets('long dashboard content has no overflow at 360 pixels',
+      (WidgetTester tester) async {
+    final longCurrency = CurrencyDashboard(
+      currency: 'LONG-CURRENCY-CODE',
+      cashBalanceMinor: 123,
+      current: DashboardPeriodTotals(
+        netChangeMinor: 123,
+        contributionMinor: 123,
+        expenseMinor: 0,
+        memberPositions: const <DashboardMemberPosition>[
+          DashboardMemberPosition(
+            userId: 'long-user',
+            displayName:
+                'A very long member display name that must remain readable',
+            membershipStatus: 'active',
+            positionMinor: 123,
+          ),
+        ],
+      ),
+      allTime: DashboardPeriodTotals(
+        netChangeMinor: 123,
+        contributionMinor: 123,
+        expenseMinor: 0,
+        memberPositions: const <DashboardMemberPosition>[],
+      ),
+      funds: const <DashboardFundCard>[
+        DashboardFundCard(
+          fundId: 'long-fund',
+          name:
+              'A very long fund name that should wrap or use an understandable ellipsis',
+          cashBalanceMinor: 123,
+          currentNetChangeMinor: 123,
+          periodStart: null,
+          periodEnd: null,
+        ),
+      ],
+    );
+    await _pumpDashboard(
+      tester,
+      summary: _dashboardSummary(
+        dashboard: _dashboard(
+          groupName:
+              'A very long group name that should not overflow the viewport',
+          currencies: <CurrencyDashboard>[longCurrency],
+        ),
+      ),
+      size: const Size(360, 900),
+    );
+
+    expect(find.text('LONG-CURRENCY-CODE'), findsWidgets);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('keeps existing quick actions and renders at narrow width',
       (WidgetTester tester) async {
     await _pumpDashboard(

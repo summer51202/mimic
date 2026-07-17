@@ -3,6 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../groups/data/group_summary.dart';
 import '../../groups/providers/selected_group_provider.dart';
 import '../data/home_repository.dart';
+import '../data/group_dashboard.dart';
+
+final dashboardScopeProvider = StateProvider.autoDispose
+    .family<DashboardScope, String?>((Ref ref, String? groupId) {
+  return DashboardScope.current;
+});
 
 class HomeGroupsReconciliationCoordinator {
   int _latestGeneration = 0;
