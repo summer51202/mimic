@@ -1,10 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import {
   ExpenseType,
+  FundStatus,
+  MemberStatus,
+  Prisma,
   SettlementStatus,
   SettlementType,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { lockGroupMutation } from '../prisma/group-mutation-lock';
 import { CompleteSettlementDto } from './dto/complete-settlement.dto';
 import { CreateSettlementDto } from './dto/create-settlement.dto';
 
@@ -76,20 +80,46 @@ export class SettlementsService {
     if (dto.from_user_id === dto.to_user_id) {
       throw new BadRequestException('INVALID_SETTLEMENT_USERS');
     }
+    const fund = await this.requireActiveFund(fundId);
 
-    return this.prisma.settlement.create({
-      data: {
-        fundId,
-        fromUserId: dto.from_user_id,
-        toUserId: dto.to_user_id,
-        amountMinor: BigInt(dto.amount_minor),
-        periodStart: dto.period_start ? this.toUtcDate(dto.period_start) : null,
-        periodEnd: dto.period_end ? this.toUtcDate(dto.period_end) : null,
-        settlementType: this.mapSettlementType(dto.settlement_type ?? 'manual'),
-        note: dto.note,
-        createdById: actorUserId,
-      },
+    return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, fund.groupId);
+      await this.requireActiveMembers(tx, fund.groupId, actorUserId, [dto.from_user_id, dto.to_user_id]);
+      return tx.settlement.create({
+        data: {
+          fundId,
+          fromUserId: dto.from_user_id,
+          toUserId: dto.to_user_id,
+          amountMinor: BigInt(dto.amount_minor),
+          periodStart: dto.period_start ? this.toUtcDate(dto.period_start) : null,
+          periodEnd: dto.period_end ? this.toUtcDate(dto.period_end) : null,
+          status: SettlementStatus.PENDING,
+          settlementType: this.mapSettlementType(dto.settlement_type ?? 'manual'),
+          note: dto.note,
+          createdById: actorUserId,
+        },
+      });
     });
+  }
+
+  private async requireActiveFund(fundId: string) {
+    const fund = await this.prisma.fund.findFirst({
+      where: { id: fundId, status: FundStatus.ACTIVE },
+      select: { id: true, groupId: true },
+    });
+    if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
+    return fund;
+  }
+
+  private async requireActiveMembers(tx: Prisma.TransactionClient, groupId: string, actorUserId: string, participantIds: string[]) {
+    const userIds = [...new Set([actorUserId, ...participantIds])];
+    const members = await tx.groupMember.findMany({
+      where: { groupId, userId: { in: userIds }, status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
+    const activeIds = new Set(members.map((member) => member.userId));
+    if (!activeIds.has(actorUserId)) throw new ForbiddenException('GROUP_ACCESS_DENIED');
+    if (participantIds.some((userId) => !activeIds.has(userId))) throw new NotFoundException('MEMBER_NOT_FOUND');
   }
 
   listSettlements(fundId: string, take = 20) {

@@ -1,29 +1,62 @@
-import { Injectable } from '@nestjs/common';
-import { ContributionType, RecordStatus } from '@prisma/client';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { ContributionType, FundStatus, MemberStatus, Prisma, RecordStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { lockGroupMutation } from '../prisma/group-mutation-lock';
 import { CreateContributionDto } from './dto/create-contribution.dto';
 
 @Injectable()
 export class ContributionsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  createContribution(
+  async createContribution(
     fundId: string,
     actorUserId: string,
     dto: CreateContributionDto,
   ) {
-    return this.prisma.contribution.create({
-      data: {
-        fundId,
-        contributorUserId: dto.contributor_user_id,
-        amountMinor: BigInt(dto.amount_minor),
-        contributionType: this.mapContributionType(dto.contribution_type),
-        occurredOn: this.toUtcDate(dto.occurred_on),
-        note: dto.note,
-        createdById: actorUserId,
-        updatedById: actorUserId,
-      },
+    const fund = await this.requireActiveFund(fundId);
+
+    return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, fund.groupId);
+      await this.requireActiveMembers(
+        tx,
+        fund.groupId,
+        actorUserId,
+        [dto.contributor_user_id],
+      );
+
+      return tx.contribution.create({
+        data: {
+          fundId,
+          contributorUserId: dto.contributor_user_id,
+          amountMinor: BigInt(dto.amount_minor),
+          contributionType: this.mapContributionType(dto.contribution_type),
+          occurredOn: this.toUtcDate(dto.occurred_on),
+          note: dto.note,
+          createdById: actorUserId,
+          updatedById: actorUserId,
+        },
+      });
     });
+  }
+
+  private async requireActiveFund(fundId: string) {
+    const fund = await this.prisma.fund.findFirst({
+      where: { id: fundId, status: FundStatus.ACTIVE },
+      select: { id: true, groupId: true },
+    });
+    if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
+    return fund;
+  }
+
+  private async requireActiveMembers(tx: Prisma.TransactionClient, groupId: string, actorUserId: string, participantIds: string[]) {
+    const userIds = [...new Set([actorUserId, ...participantIds])];
+    const members = await tx.groupMember.findMany({
+      where: { groupId, userId: { in: userIds }, status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
+    const activeIds = new Set(members.map((member: { userId: string }) => member.userId));
+    if (!activeIds.has(actorUserId)) throw new ForbiddenException('GROUP_ACCESS_DENIED');
+    if (participantIds.some((userId) => !activeIds.has(userId))) throw new NotFoundException('MEMBER_NOT_FOUND');
   }
 
   listContributions(fundId: string) {

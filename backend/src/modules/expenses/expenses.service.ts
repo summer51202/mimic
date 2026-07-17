@@ -1,12 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import {
   ExpenseSplitMode,
   ExpenseType,
+  FundStatus,
+  MemberStatus,
   Prisma,
   RecordStatus,
   SplitType,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { lockGroupMutation } from '../prisma/group-mutation-lock';
 import { CreateExpenseDto, ExpenseSplitInput } from './dto/create-expense.dto';
 
 interface AllocatedSplit {
@@ -25,8 +28,14 @@ export class ExpensesService {
   async createExpense(fundId: string, actorUserId: string, dto: CreateExpenseDto) {
     this.validatePayerTotal(dto);
     const allocatedSplits = this.allocateSplits(dto);
+    const fund = await this.requireActiveFund(fundId);
 
     return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, fund.groupId);
+      await this.requireActiveMembers(tx, fund.groupId, actorUserId, [
+        ...dto.payers.map((payer) => payer.payer_user_id),
+        ...dto.splits.map((split) => split.user_id),
+      ]);
       const expense = await tx.expense.create({
         data: {
           fundId,
@@ -63,6 +72,26 @@ export class ExpensesService {
 
       return expense;
     });
+  }
+
+  private async requireActiveFund(fundId: string) {
+    const fund = await this.prisma.fund.findFirst({
+      where: { id: fundId, status: FundStatus.ACTIVE },
+      select: { id: true, groupId: true },
+    });
+    if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
+    return fund;
+  }
+
+  private async requireActiveMembers(tx: Prisma.TransactionClient, groupId: string, actorUserId: string, participantIds: string[]) {
+    const userIds = [...new Set([actorUserId, ...participantIds])];
+    const members = await tx.groupMember.findMany({
+      where: { groupId, userId: { in: userIds }, status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
+    const activeIds = new Set(members.map((member) => member.userId));
+    if (!activeIds.has(actorUserId)) throw new ForbiddenException('GROUP_ACCESS_DENIED');
+    if (participantIds.some((userId) => !activeIds.has(userId))) throw new NotFoundException('MEMBER_NOT_FOUND');
   }
 
   listExpenses(fundId: string) {

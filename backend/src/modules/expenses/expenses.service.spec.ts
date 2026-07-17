@@ -4,12 +4,65 @@ import {
   RecordStatus,
   SplitType,
 } from '@prisma/client';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { FundStatus, MemberStatus } from '@prisma/client';
 import { ExpensesService } from './expenses.service';
 
 describe('ExpensesService', () => {
+  it('locks the fund group and validates every unique participant before expense writes', async () => {
+    const order: string[] = [];
+    const tx = {
+      $executeRaw: jest.fn().mockImplementation(() => { order.push('lock'); }),
+      groupMember: { findMany: jest.fn().mockImplementation(() => {
+        order.push('members');
+        return ['actor', 'payer', 'split'].map((userId) => ({ userId }));
+      }) },
+      expense: { create: jest.fn().mockImplementation(() => { order.push('write'); return { id: 'expense-1' }; }) },
+      expensePayer: { createMany: jest.fn() }, expenseSplit: { createMany: jest.fn() },
+    };
+    const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) },
+      $transaction: jest.fn((callback) => callback(tx)),
+    };
+    const service = new ExpensesService(prisma as never);
+    await service.createExpense('fund-1', 'actor', {
+      title: 'Dinner', amount_minor: 1000, split_mode: 'equal', expense_type: 'fund_expense', occurred_on: '2026-04-13',
+      payers: [{ payer_user_id: 'payer', amount_minor: 1000 }],
+      splits: [{ user_id: 'split', split_type: 'equal', sort_order: 1 }],
+    });
+    expect(prisma.fund.findFirst).toHaveBeenCalledWith({ where: { id: 'fund-1', status: FundStatus.ACTIVE }, select: { id: true, groupId: true } });
+    expect(tx.groupMember.findMany).toHaveBeenCalledWith({ where: { groupId: 'group-1', userId: { in: ['actor', 'payer', 'split'] }, status: MemberStatus.ACTIVE }, select: { userId: true } });
+    expect(order).toEqual(['lock', 'members', 'write']);
+  });
+
+  it('rejects any inactive non-actor participant before all expense writes', async () => {
+    const tx = { $executeRaw: jest.fn(), groupMember: { findMany: jest.fn().mockResolvedValue([{ userId: 'actor' }, { userId: 'payer' }]) },
+      expense: { create: jest.fn() }, expensePayer: { createMany: jest.fn() }, expenseSplit: { createMany: jest.fn() } };
+    const prisma = { fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) }, $transaction: jest.fn((callback) => callback(tx)) };
+    const service = new ExpensesService(prisma as never);
+    await expect(service.createExpense('fund-1', 'actor', {
+      title: 'Dinner', amount_minor: 1000, split_mode: 'equal', expense_type: 'fund_expense', occurred_on: '2026-04-13',
+      payers: [{ payer_user_id: 'payer', amount_minor: 1000 }], splits: [{ user_id: 'missing', split_type: 'equal', sort_order: 1 }],
+    })).rejects.toEqual(new NotFoundException('MEMBER_NOT_FOUND'));
+    expect(tx.expense.create).not.toHaveBeenCalled();
+    expect(tx.expensePayer.createMany).not.toHaveBeenCalled();
+    expect(tx.expenseSplit.createMany).not.toHaveBeenCalled();
+  });
+
+  it('maps an inactive expense actor to GROUP_ACCESS_DENIED', async () => {
+    const tx = { $executeRaw: jest.fn(), groupMember: { findMany: jest.fn().mockResolvedValue([]) }, expense: { create: jest.fn() } };
+    const prisma = { fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) }, $transaction: jest.fn((callback) => callback(tx)) };
+    const service = new ExpensesService(prisma as never);
+    await expect(service.createExpense('fund-1', 'actor', {
+      title: 'Dinner', amount_minor: 1000, split_mode: 'equal', expense_type: 'fund_expense', occurred_on: '2026-04-13',
+      payers: [{ payer_user_id: 'actor', amount_minor: 1000 }], splits: [{ user_id: 'actor', split_type: 'equal', sort_order: 1 }],
+    })).rejects.toEqual(new ForbiddenException('GROUP_ACCESS_DENIED'));
+    expect(tx.expense.create).not.toHaveBeenCalled();
+  });
   it('creates an expense with payers and allocated equal splits in one transaction', async () => {
     const tx = {
+      $executeRaw: jest.fn(),
+      groupMember: { findMany: jest.fn().mockResolvedValue([{ userId: 'user-1' }, { userId: 'user-2' }]) },
       expense: {
         create: jest.fn().mockResolvedValue({
           id: 'expense-1',
@@ -31,6 +84,7 @@ describe('ExpensesService', () => {
       },
     };
     const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) },
       $transaction: jest.fn((callback) => callback(tx)),
     };
     const service = new ExpensesService(prisma as never);
@@ -114,6 +168,8 @@ describe('ExpensesService', () => {
 
   it('allocates hybrid fixed first and ratios over the remaining amount', async () => {
     const tx = {
+      $executeRaw: jest.fn(),
+      groupMember: { findMany: jest.fn().mockResolvedValue([{ userId: 'user-1' }, { userId: 'user-2' }, { userId: 'user-3' }]) },
       expense: {
         create: jest.fn().mockResolvedValue({
           id: 'expense-2',
@@ -135,6 +191,7 @@ describe('ExpensesService', () => {
       },
     };
     const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) },
       $transaction: jest.fn((callback) => callback(tx)),
     };
     const service = new ExpensesService(prisma as never);
