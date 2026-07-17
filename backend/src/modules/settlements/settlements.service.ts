@@ -1,4 +1,10 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   ExpenseType,
   FundStatus,
@@ -137,22 +143,68 @@ export class SettlementsService {
   }
 
   completeSettlement(settlementId: string, dto: CompleteSettlementDto) {
-    return this.prisma.settlement.update({
-      where: { id: settlementId },
-      data: {
-        status: SettlementStatus.COMPLETED,
-        completedAt: dto.completed_at ? new Date(dto.completed_at) : new Date(),
-      },
+    return this.prisma.$transaction(async (tx) => {
+      const settlement = await tx.settlement.findUnique({
+        where: { id: settlementId },
+        select: { fund: { select: { groupId: true } } },
+      });
+      if (!settlement) {
+        throw new NotFoundException('SETTLEMENT_NOT_FOUND');
+      }
+
+      await lockGroupMutation(tx, settlement.fund.groupId);
+
+      const lockedSettlement = await tx.settlement.findUnique({
+        where: { id: settlementId },
+        select: { status: true },
+      });
+      if (!lockedSettlement) {
+        throw new NotFoundException('SETTLEMENT_NOT_FOUND');
+      }
+      if (lockedSettlement.status !== SettlementStatus.PENDING) {
+        throw new ConflictException('SETTLEMENT_NOT_PENDING');
+      }
+
+      return tx.settlement.update({
+        where: { id: settlementId },
+        data: {
+          status: SettlementStatus.COMPLETED,
+          completedAt: dto.completed_at ? new Date(dto.completed_at) : new Date(),
+        },
+      });
     });
   }
 
   cancelSettlement(settlementId: string) {
-    return this.prisma.settlement.update({
-      where: { id: settlementId },
-      data: {
-        status: SettlementStatus.CANCELED,
-        canceledAt: new Date(),
-      },
+    return this.prisma.$transaction(async (tx) => {
+      const settlement = await tx.settlement.findUnique({
+        where: { id: settlementId },
+        select: { fund: { select: { groupId: true } } },
+      });
+      if (!settlement) {
+        throw new NotFoundException('SETTLEMENT_NOT_FOUND');
+      }
+
+      await lockGroupMutation(tx, settlement.fund.groupId);
+
+      const lockedSettlement = await tx.settlement.findUnique({
+        where: { id: settlementId },
+        select: { status: true },
+      });
+      if (!lockedSettlement) {
+        throw new NotFoundException('SETTLEMENT_NOT_FOUND');
+      }
+      if (lockedSettlement.status !== SettlementStatus.PENDING) {
+        throw new ConflictException('SETTLEMENT_NOT_PENDING');
+      }
+
+      return tx.settlement.update({
+        where: { id: settlementId },
+        data: {
+          status: SettlementStatus.CANCELED,
+          canceledAt: new Date(),
+        },
+      });
     });
   }
 

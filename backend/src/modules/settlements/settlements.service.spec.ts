@@ -149,14 +149,34 @@ describe('SettlementsService', () => {
   });
 
   it('marks pending settlements as completed with completed_at', async () => {
-    const prisma = {
+    const order: string[] = [];
+    const tx = {
+      $executeRaw: jest.fn().mockImplementation(() => {
+        order.push('lock');
+      }),
       settlement: {
-        update: jest.fn().mockResolvedValue({
-          id: 'settlement-1',
-          status: SettlementStatus.COMPLETED,
-          completedAt: new Date('2026-04-13T12:00:00.000Z'),
+        findUnique: jest
+          .fn()
+          .mockImplementationOnce(() => {
+            order.push('resolve-group');
+            return { fund: { groupId: 'group-1' } };
+          })
+          .mockImplementationOnce(() => {
+            order.push('read-status');
+            return { status: SettlementStatus.PENDING };
+          }),
+        update: jest.fn().mockImplementation(() => {
+          order.push('write');
+          return {
+            id: 'settlement-1',
+            status: SettlementStatus.COMPLETED,
+            completedAt: new Date('2026-04-13T12:00:00.000Z'),
+          };
         }),
       },
+    };
+    const prisma = {
+      $transaction: jest.fn((callback) => callback(tx)),
     };
     const service = new SettlementsService(prisma as never);
 
@@ -164,14 +184,101 @@ describe('SettlementsService', () => {
       completed_at: '2026-04-13T12:00:00.000Z',
     });
 
-    expect(prisma.settlement.update).toHaveBeenCalledWith({
+    expect(tx.settlement.findUnique).toHaveBeenCalledWith({
+      where: { id: 'settlement-1' },
+      select: { fund: { select: { groupId: true } } },
+    });
+    expect(tx.settlement.findUnique).toHaveBeenCalledWith({
+      where: { id: 'settlement-1' },
+      select: { status: true },
+    });
+    expect(tx.settlement.update).toHaveBeenCalledWith({
       where: { id: 'settlement-1' },
       data: {
         status: SettlementStatus.COMPLETED,
         completedAt: new Date('2026-04-13T12:00:00.000Z'),
       },
     });
+    expect(order).toEqual(['resolve-group', 'lock', 'read-status', 'write']);
   });
+
+  it.each([SettlementStatus.CANCELED, SettlementStatus.COMPLETED])(
+    'does not complete a %s settlement',
+    async (status) => {
+      const tx = {
+        $executeRaw: jest.fn(),
+        settlement: {
+          findUnique: jest
+            .fn()
+            .mockResolvedValueOnce({ fund: { groupId: 'group-1' } })
+            .mockResolvedValueOnce({ status }),
+          update: jest.fn(),
+        },
+      };
+      const service = new SettlementsService({
+        $transaction: jest.fn((callback) => callback(tx)),
+      } as never);
+
+      await expect(
+        service.completeSettlement('settlement-1', {}),
+      ).rejects.toThrow('SETTLEMENT_NOT_PENDING');
+      expect(tx.settlement.update).not.toHaveBeenCalled();
+    },
+  );
+
+  it('locks the group and rechecks pending status before canceling', async () => {
+    const order: string[] = [];
+    const tx = {
+      $executeRaw: jest.fn().mockImplementation(() => order.push('lock')),
+      settlement: {
+        findUnique: jest
+          .fn()
+          .mockImplementationOnce(() => {
+            order.push('resolve-group');
+            return { fund: { groupId: 'group-1' } };
+          })
+          .mockImplementationOnce(() => {
+            order.push('read-status');
+            return { status: SettlementStatus.PENDING };
+          }),
+        update: jest.fn().mockImplementation(() => {
+          order.push('write');
+          return { id: 'settlement-1', status: SettlementStatus.CANCELED };
+        }),
+      },
+    };
+    const service = new SettlementsService({
+      $transaction: jest.fn((callback) => callback(tx)),
+    } as never);
+
+    await service.cancelSettlement('settlement-1');
+
+    expect(order).toEqual(['resolve-group', 'lock', 'read-status', 'write']);
+  });
+
+  it.each([SettlementStatus.CANCELED, SettlementStatus.COMPLETED])(
+    'does not cancel a %s settlement',
+    async (status) => {
+      const tx = {
+        $executeRaw: jest.fn(),
+        settlement: {
+          findUnique: jest
+            .fn()
+            .mockResolvedValueOnce({ fund: { groupId: 'group-1' } })
+            .mockResolvedValueOnce({ status }),
+          update: jest.fn(),
+        },
+      };
+      const service = new SettlementsService({
+        $transaction: jest.fn((callback) => callback(tx)),
+      } as never);
+
+      await expect(service.cancelSettlement('settlement-1')).rejects.toThrow(
+        'SETTLEMENT_NOT_PENDING',
+      );
+      expect(tx.settlement.update).not.toHaveBeenCalled();
+    },
+  );
 
   it('lists fund settlements newest first', async () => {
     const prisma = {
