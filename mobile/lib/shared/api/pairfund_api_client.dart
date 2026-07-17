@@ -25,8 +25,18 @@ abstract class PairFundPatchApiClient {
   });
 }
 
+abstract class PairFundDeleteApiClient {
+  Future<Map<String, dynamic>> delete(
+    String path, {
+    Map<String, dynamic>? data,
+  });
+}
+
 class DioPairFundApiClient
-    implements PairFundApiClient, PairFundPatchApiClient {
+    implements
+        PairFundApiClient,
+        PairFundPatchApiClient,
+        PairFundDeleteApiClient {
   DioPairFundApiClient(this._dio);
 
   final Dio _dio;
@@ -78,6 +88,22 @@ class DioPairFundApiClient
         path,
         data: data,
         queryParameters: queryParameters,
+      );
+      return response.data ?? <String, dynamic>{};
+    } on DioException catch (error) {
+      throw mapDioExceptionToApiException(error);
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> delete(
+    String path, {
+    Map<String, dynamic>? data,
+  }) async {
+    try {
+      final response = await _dio.delete<Map<String, dynamic>>(
+        path,
+        data: data,
       );
       return response.data ?? <String, dynamic>{};
     } on DioException catch (error) {

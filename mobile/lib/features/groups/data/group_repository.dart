@@ -26,6 +26,7 @@ class GroupDetail {
     required this.groupType,
     required this.defaultCurrency,
     required this.role,
+    this.currentUserId = '',
     required this.members,
     required this.funds,
   });
@@ -35,6 +36,7 @@ class GroupDetail {
   final String groupType;
   final String defaultCurrency;
   final String role;
+  final String currentUserId;
   final List<GroupMemberSummary> members;
   final List<GroupFundSummary> funds;
 }
@@ -52,8 +54,44 @@ abstract class GroupRepository {
   Future<RenamedGroup> renameGroup(String groupId, String name);
 }
 
-class DemoGroupRepository implements GroupRepository {
+abstract class GroupGovernanceRepository {
+  Future<void> updateMemberRole(String groupId, String userId, String role);
+
+  Future<void> removeMember(String groupId, String userId);
+
+  Future<void> leaveGroup(String groupId);
+}
+
+extension GroupGovernanceOperations on GroupRepository {
+  GroupGovernanceRepository get _governance =>
+      this as GroupGovernanceRepository;
+
+  Future<void> updateMemberRole(String groupId, String userId, String role) =>
+      _governance.updateMemberRole(groupId, userId, role);
+
+  Future<void> removeMember(String groupId, String userId) =>
+      _governance.removeMember(groupId, userId);
+
+  Future<void> leaveGroup(String groupId) => _governance.leaveGroup(groupId);
+}
+
+class DemoGroupRepository
+    implements GroupRepository, GroupGovernanceRepository {
   String _name = 'Demo group';
+  static const _currentUserId = 'demo-owner';
+  final List<GroupMemberSummary> _members = const <GroupMemberSummary>[
+    GroupMemberSummary(
+      id: 'demo-owner',
+      displayName: 'Edward',
+      role: 'owner',
+    ),
+    GroupMemberSummary(
+      id: 'demo-member',
+      displayName: 'Alex',
+      role: 'member',
+    ),
+  ].toList();
+  final Set<String> _inactiveMemberIds = <String>{};
 
   @override
   Future<GroupDetail> fetchGroup(String groupId) async {
@@ -63,12 +101,10 @@ class DemoGroupRepository implements GroupRepository {
       groupType: 'couple',
       defaultCurrency: 'TWD',
       role: 'owner',
-      members: const <GroupMemberSummary>[
-        GroupMemberSummary(
-            id: 'demo-owner', displayName: 'Edward', role: 'owner'),
-        GroupMemberSummary(
-            id: 'demo-member', displayName: 'Alex', role: 'member'),
-      ],
+      currentUserId: _currentUserId,
+      members: _members
+          .where((member) => !_inactiveMemberIds.contains(member.id))
+          .toList(growable: false),
       funds: const <GroupFundSummary>[],
     );
   }
@@ -78,9 +114,38 @@ class DemoGroupRepository implements GroupRepository {
     _name = name;
     return RenamedGroup(id: groupId, name: name);
   }
+
+  @override
+  Future<void> updateMemberRole(
+    String groupId,
+    String userId,
+    String role,
+  ) async {
+    final index = _members.indexWhere(
+      (member) => member.id == userId && !_inactiveMemberIds.contains(userId),
+    );
+    if (index == -1) return;
+    final member = _members[index];
+    _members[index] = GroupMemberSummary(
+      id: member.id,
+      displayName: member.displayName,
+      role: role.toLowerCase(),
+    );
+  }
+
+  @override
+  Future<void> removeMember(String groupId, String userId) async {
+    _inactiveMemberIds.add(userId);
+  }
+
+  @override
+  Future<void> leaveGroup(String groupId) async {
+    _inactiveMemberIds.add(_currentUserId);
+  }
 }
 
-class RemoteGroupRepository implements GroupRepository {
+class RemoteGroupRepository
+    implements GroupRepository, GroupGovernanceRepository {
   RemoteGroupRepository(this._apiClient);
 
   final PairFundApiClient _apiClient;
@@ -100,6 +165,7 @@ class RemoteGroupRepository implements GroupRepository {
       groupType: '${detail['group_type'] ?? 'group'}',
       defaultCurrency: '${detail['default_currency'] ?? 'TWD'}',
       role: '${detail['role'] ?? 'member'}',
+      currentUserId: '${detail['current_user_id'] ?? ''}',
       members: members
           .map(
             (member) => GroupMemberSummary(
@@ -136,6 +202,30 @@ class RemoteGroupRepository implements GroupRepository {
       id: '${data['id'] ?? groupId}',
       name: '${data['name'] ?? name}',
     );
+  }
+
+  @override
+  Future<void> updateMemberRole(
+    String groupId,
+    String userId,
+    String role,
+  ) async {
+    final patchClient = _apiClient as PairFundPatchApiClient;
+    await patchClient.patch(
+      '/groups/$groupId/members/$userId',
+      data: <String, dynamic>{'role': role.toLowerCase()},
+    );
+  }
+
+  @override
+  Future<void> removeMember(String groupId, String userId) async {
+    final deleteClient = _apiClient as PairFundDeleteApiClient;
+    await deleteClient.delete('/groups/$groupId/members/$userId');
+  }
+
+  @override
+  Future<void> leaveGroup(String groupId) async {
+    await _apiClient.post('/groups/$groupId/leave');
   }
 }
 
