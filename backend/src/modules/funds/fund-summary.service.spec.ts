@@ -52,7 +52,13 @@ const makeGroup = (overrides: Record<string, unknown> = {}) => ({
 });
 
 const makeGroupService = (group: ReturnType<typeof makeGroup> | null) => {
-  const tx = { group: { findFirst: jest.fn().mockResolvedValue(group) } };
+  const authorization = group
+    ? { id: group.id, members: group.members }
+    : null;
+  const tx = { group: {
+    findFirst: jest.fn().mockResolvedValue(authorization),
+    findUnique: jest.fn().mockResolvedValue(group),
+  } };
   const prisma = { $transaction: jest.fn((callback) => callback(tx)) };
   return { service: new FundSummaryService(prisma as never), prisma, tx };
 };
@@ -281,8 +287,20 @@ describe('FundSummaryService', () => {
     expect(tx.group.findFirst).toHaveBeenCalledWith(expect.objectContaining({
       where: { id: 'group-1', status: GroupStatus.ACTIVE },
       select: expect.objectContaining({
-        members: expect.any(Object),
-        funds: expect.objectContaining({ where: { status: FundStatus.ACTIVE } }),
+        members: expect.objectContaining({
+          where: { status: MemberStatus.ACTIVE, userId: 'actor' },
+          select: { userId: true },
+        }),
+      }),
+    }));
+    expect(tx.group.findUnique).toHaveBeenCalledTimes(1);
+    expect(tx.group.findUnique).toHaveBeenCalledWith(expect.objectContaining({
+      where: { id: 'group-1' },
+      select: expect.objectContaining({
+        funds: expect.objectContaining({
+          where: { status: FundStatus.ACTIVE },
+          orderBy: [{ name: 'asc' }, { id: 'asc' }],
+        }),
       }),
     }));
   });
@@ -294,12 +312,12 @@ describe('FundSummaryService', () => {
       makeFund({ id: 'z-1', name: 'Same', currency: 'ZAR' }),
       makeFund({ id: 'usd', name: 'Dollar', currency: 'USD' }),
     ];
-    const { service } = makeGroupService(makeGroup({ defaultCurrency: 'USD', funds }));
-
-    const result = await service.getGroupDashboard('group-1', 'actor');
-
-    expect(result.currencies.map((item) => item.currency)).toEqual(['USD', 'EUR', 'ZAR']);
-    expect(result.currencies[2].funds.map((item) => item.fundId)).toEqual(['z-1', 'z-2']);
+    for (const input of [funds, [...funds].reverse()]) {
+      const { service } = makeGroupService(makeGroup({ defaultCurrency: 'USD', funds: input }));
+      const result = await service.getGroupDashboard('group-1', 'actor');
+      expect(result.currencies.map((item) => item.currency)).toEqual(['USD', 'EUR', 'ZAR']);
+      expect(result.currencies[2].funds.map((item) => item.fundId)).toEqual(['z-1', 'z-2']);
+    }
   });
 
   it('returns group context with no currency sections when there are no active funds', async () => {
@@ -320,6 +338,49 @@ describe('FundSummaryService', () => {
     await expect(denied.service.getGroupDashboard('group-1', 'actor')).rejects.toEqual(
       new ForbiddenException('GROUP_ACCESS_DENIED'),
     );
+    expect(missing.tx.group.findUnique).not.toHaveBeenCalled();
+    expect(denied.tx.group.findUnique).not.toHaveBeenCalled();
+  });
+
+  it('keeps a fixed two-query transaction regardless of the fund count', async () => {
+    const { service, tx } = makeGroupService(makeGroup({ funds: [
+      makeFund({ id: 'one' }), makeFund({ id: 'two' }), makeFund({ id: 'three' }),
+    ] }));
+    await service.getGroupDashboard('group-1', 'actor');
+    expect(tx.group.findFirst).toHaveBeenCalledTimes(1);
+    expect(tx.group.findUnique).toHaveBeenCalledTimes(1);
+  });
+
+  it('uses order-independent bigint aggregation when intermediate sums exceed safe range but the final sum does not', async () => {
+    const max = makeFund({ id: 'max', contributions: [{ contributorUserId: 'actor', amountMinor: BigInt(Number.MAX_SAFE_INTEGER), occurredOn: day('2026-07-01'), status: RecordStatus.ACTIVE }] });
+    const plusOne = makeFund({ id: 'plus', expenses: [{ expenseType: ExpenseType.REFUND, amountMinor: 1n, occurredOn: day('2026-07-01'), status: RecordStatus.ACTIVE, payers: [], splits: [{ userId: 'actor', allocatedAmountMinor: 1n }] }] });
+    const minusOne = makeFund({ id: 'minus', expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, amountMinor: 1n, occurredOn: day('2026-07-01'), status: RecordStatus.ACTIVE, payers: [], splits: [{ userId: 'actor', allocatedAmountMinor: 1n }] }] });
+
+    for (const funds of [[max, plusOne, minusOne], [minusOne, plusOne, max]]) {
+      const { service } = makeGroupService(makeGroup({ funds }));
+      const result = await service.getGroupDashboard('group-1', 'actor');
+      expect(result.currencies[0].cashBalanceMinor).toBe(Number.MAX_SAFE_INTEGER);
+      expect(result.currencies[0].allTime.netChangeMinor).toBe(Number.MAX_SAFE_INTEGER);
+    }
+  });
+
+  it('removes a former member whose final same-currency all-time position cancels to zero', async () => {
+    const credit = makeFund({
+      id: 'credit',
+      contributions: [{ contributorUserId: 'former', amountMinor: 50n, occurredOn: day('2026-07-01'), status: RecordStatus.ACTIVE }],
+    });
+    const debit = makeFund({
+      id: 'debit',
+      expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, amountMinor: 50n, occurredOn: day('2026-07-01'), status: RecordStatus.ACTIVE, payers: [{ payerUserId: 'actor', amountMinor: 50n }], splits: [{ userId: 'former', allocatedAmountMinor: 50n }] }],
+    });
+    const { service } = makeGroupService(makeGroup({ funds: [credit, debit] }));
+    const result = await service.getGroupDashboard('group-1', 'actor');
+    expect(result.currencies[0].allTime.memberPositions).not.toEqual(expect.arrayContaining([
+      expect.objectContaining({ userId: 'former' }),
+    ]));
+    expect(result.currencies[0].allTime.memberPositions).toEqual(expect.arrayContaining([
+      expect.objectContaining({ userId: 'actor', membershipStatus: 'active' }),
+    ]));
   });
 
   it('fails explicitly when same-currency aggregation exceeds the safe integer range', async () => {

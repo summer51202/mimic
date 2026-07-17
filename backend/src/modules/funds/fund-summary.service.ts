@@ -87,6 +87,7 @@ const groupDashboardSelect = Prisma.validator<Prisma.GroupSelect>()({
   members: summarySelect.group.select.members,
   funds: {
     where: { status: FundStatus.ACTIVE },
+    orderBy: [{ name: 'asc' }, { id: 'asc' }],
     select: {
       id: true,
       groupId: true,
@@ -97,6 +98,14 @@ const groupDashboardSelect = Prisma.validator<Prisma.GroupSelect>()({
       expenses: summarySelect.expenses,
       settlements: summarySelect.settlements,
     },
+  },
+});
+
+const groupAuthorizationSelect = Prisma.validator<Prisma.GroupSelect>()({
+  id: true,
+  members: {
+    where: { status: MemberStatus.ACTIVE },
+    select: { userId: true },
   },
 });
 
@@ -124,20 +133,32 @@ export class FundSummaryService {
   ): Promise<GroupDashboardReadModel> {
     return this.prisma.$transaction(
       async (tx) => {
-        const group = await tx.group.findFirst({
+        const authorization = await tx.group.findFirst({
           where: { id: groupId, status: GroupStatus.ACTIVE },
-          select: groupDashboardSelect,
+          select: {
+            ...groupAuthorizationSelect,
+            members: {
+              ...groupAuthorizationSelect.members,
+              where: {
+                status: MemberStatus.ACTIVE,
+                userId: actorUserId,
+              },
+            },
+          },
         });
-        if (!group) throw new NotFoundException('GROUP_NOT_FOUND');
+        if (!authorization) throw new NotFoundException('GROUP_NOT_FOUND');
         if (
-          !group.members.some(
-            (member) =>
-              member.userId === actorUserId &&
-              member.status === MemberStatus.ACTIVE,
+          !authorization.members.some(
+            (member) => member.userId === actorUserId,
           )
         ) {
           throw new ForbiddenException('GROUP_ACCESS_DENIED');
         }
+        const group = await tx.group.findUnique({
+          where: { id: groupId },
+          select: groupDashboardSelect,
+        });
+        if (!group) throw new NotFoundException('GROUP_NOT_FOUND');
         return this.mapGroupDashboard(group);
       },
       { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead },
@@ -272,13 +293,19 @@ export class FundSummaryService {
       .sort(([left], [right]) => {
         if (left === group.defaultCurrency) return -1;
         if (right === group.defaultCurrency) return 1;
-        return left.localeCompare(right);
+        return compareCodePoint(left, right);
       })
       .map(([currency, items]) => ({
         currency,
-        cashBalanceMinor: sumSafe(items.map((item) => item.fund.cashBalanceMinor)),
-        current: aggregatePeriodTotals(items.map((item) => item.current)),
-        allTime: aggregatePeriodTotals(items.map((item) => item.allTime)),
+        cashBalanceMinor: sumWithBigInt(items.map((item) => item.fund.cashBalanceMinor)),
+        current: aggregatePeriodTotals(
+          items.map((item) => item.current),
+          group.members,
+        ),
+        allTime: aggregatePeriodTotals(
+          items.map((item) => item.allTime),
+          group.members,
+        ),
         funds: items
           .map((item) => ({
             fundId: item.fund.id,
@@ -290,8 +317,8 @@ export class FundSummaryService {
           }))
           .sort(
             (left, right) =>
-              left.name.localeCompare(right.name) ||
-              left.fundId.localeCompare(right.fundId),
+              compareCodePoint(left.name, right.name) ||
+              compareCodePoint(left.fundId, right.fundId),
           ),
       }));
 
@@ -425,34 +452,64 @@ function safeAdd(left: number, right: number): number {
   return result;
 }
 
-function sumSafe(values: number[]): number {
-  return values.reduce((sum, value) => safeAdd(sum, value), 0);
+function sumWithBigInt(values: number[]): number {
+  const result = values.reduce((sum, value) => sum + BigInt(value), 0n);
+  return safeBigIntToNumber(result);
 }
 
-function aggregatePeriodTotals(totals: PeriodTotals[]): PeriodTotals {
-  const positions = new Map<string, MemberPositionReadModel>();
+function aggregatePeriodTotals(
+  totals: PeriodTotals[],
+  members: SummaryFund['group']['members'],
+): PeriodTotals {
+  const positionTotals = new Map<string, bigint>();
+  const positionDetails = new Map<string, MemberPositionReadModel>();
   totals.forEach((item) => {
     item.memberPositions.forEach((position) => {
-      const existing = positions.get(position.userId);
-      positions.set(position.userId, {
-        ...position,
-        positionMinor: safeAdd(
-          existing?.positionMinor ?? 0,
-          position.positionMinor,
-        ),
-      });
+      positionDetails.set(position.userId, position);
+      positionTotals.set(
+        position.userId,
+        (positionTotals.get(position.userId) ?? 0n) +
+          BigInt(position.positionMinor),
+      );
     });
   });
-  return {
-    netChangeMinor: sumSafe(totals.map((item) => item.netChangeMinor)),
-    contributionMinor: sumSafe(totals.map((item) => item.contributionMinor)),
-    expenseMinor: sumSafe(totals.map((item) => item.expenseMinor)),
-    memberPositions: [...positions.values()].sort(
+  members
+    .filter((member) => member.status === MemberStatus.ACTIVE)
+    .forEach((member) => {
+      positionDetails.set(member.userId, {
+        userId: member.userId,
+        displayName: member.user.displayName,
+        membershipStatus: member.status.toLowerCase(),
+        positionMinor: 0,
+      });
+      if (!positionTotals.has(member.userId)) positionTotals.set(member.userId, 0n);
+    });
+  const memberPositions = [...positionTotals.entries()]
+    .filter(([userId, position]) => {
+      const member = members.find((item) => item.userId === userId);
+      return member?.status === MemberStatus.ACTIVE || position !== 0n;
+    })
+    .map(([userId, position]) => ({
+      ...positionDetails.get(userId)!,
+      positionMinor: safeBigIntToNumber(position),
+    }))
+    .sort(
       (left, right) =>
-        left.displayName.localeCompare(right.displayName) ||
-        left.userId.localeCompare(right.userId),
-    ),
+        compareCodePoint(left.displayName, right.displayName) ||
+        compareCodePoint(left.userId, right.userId),
+    );
+  return {
+    netChangeMinor: sumWithBigInt(totals.map((item) => item.netChangeMinor)),
+    contributionMinor: sumWithBigInt(totals.map((item) => item.contributionMinor)),
+    expenseMinor: sumWithBigInt(totals.map((item) => item.expenseMinor)),
+    memberPositions,
   };
+}
+
+function compareCodePoint(left: string, right: string): number {
+  if (left < right) return -1;
+  if (left > right) return 1;
+  return 0;
 }
 
 function compareCompletedSettlementsLatestFirst(
