@@ -7,11 +7,15 @@ import {
 import {
   AuditAction,
   AuditEntityType,
+  ExpenseType,
+  FundStatus,
   GroupStatus,
   InviteStatus,
   MemberRole,
   MemberStatus,
   Prisma,
+  RecordStatus,
+  SettlementStatus,
 } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
@@ -268,6 +272,203 @@ describe('GroupsService.updateMemberRole', () => {
     expect(actorReadOrder).toBeLessThan(targetReadOrder);
     expect(targetReadOrder).toBeLessThan(updateOrder);
     expect(updateOrder).toBeLessThan(auditOrder);
+  });
+});
+
+describe('GroupsService member departure', () => {
+  const group = { id: 'group-1', status: GroupStatus.ACTIVE };
+  const owner = {
+    id: 'owner-membership', userId: 'owner-1', role: MemberRole.OWNER,
+    status: MemberStatus.ACTIVE,
+  };
+  const member = {
+    id: 'member-membership', userId: 'member-1', role: MemberRole.MEMBER,
+    status: MemberStatus.ACTIVE,
+  };
+
+  const emptyFund = (id = 'fund-1', status = FundStatus.ACTIVE) => ({
+    id, status, contributions: [], expenses: [], settlements: [],
+  });
+
+  function setup(funds: ReturnType<typeof emptyFund>[] = [emptyFund()]) {
+    const removed = { ...member, status: MemberStatus.REMOVED };
+    const tx = {
+      $executeRaw: jest.fn().mockResolvedValue(0),
+      group: { findFirst: jest.fn().mockResolvedValue(group) },
+      groupMember: {
+        findFirst: jest.fn()
+          .mockResolvedValueOnce(owner)
+          .mockResolvedValueOnce(member),
+        count: jest.fn().mockResolvedValue(2),
+        update: jest.fn().mockResolvedValue(removed),
+        delete: jest.fn(),
+        deleteMany: jest.fn(),
+      },
+      fund: { findMany: jest.fn().mockResolvedValue(funds) },
+      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
+      auditLog: { create: jest.fn().mockResolvedValue({ id: 'audit-1' }) },
+      contribution: { update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
+      expense: { update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
+    };
+    const prisma = {
+      $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) => callback(tx)),
+    };
+    return { service: new GroupsService(prisma as never), prisma, tx, removed };
+  }
+
+  it('removes an eligible member and audits the status-only change', async () => {
+    const { service, prisma, tx, removed } = setup();
+
+    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
+      .resolves.toBe(removed);
+
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(tx.groupMember.update).toHaveBeenCalledWith({
+      where: { id: member.id }, data: { status: MemberStatus.REMOVED },
+    });
+    expect(tx.auditLog.create).toHaveBeenCalledWith({ data: {
+      groupId: 'group-1', actorUserId: 'owner-1',
+      entityType: AuditEntityType.GROUP, entityId: 'group-1',
+      action: AuditAction.DELETE,
+      beforeSnapshot: { role: 'member', status: 'active' },
+      afterSnapshot: { role: 'member', status: 'removed' },
+      metadata: { operation: 'remove_member', target_user_id: 'member-1' },
+    }});
+    expect(tx.groupMember.delete).not.toHaveBeenCalled();
+    expect(tx.groupMember.deleteMany).not.toHaveBeenCalled();
+    expect(tx.contribution.delete).not.toHaveBeenCalled();
+    expect(tx.expense.delete).not.toHaveBeenCalled();
+  });
+
+  it('allows an eligible member to leave and audits the status-only change', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(member);
+    const left = { ...member, status: MemberStatus.LEFT };
+    tx.groupMember.update.mockResolvedValue(left);
+
+    await expect(service.leaveGroup('group-1', 'member-1')).resolves.toBe(left);
+    expect(tx.groupMember.update).toHaveBeenCalledWith({
+      where: { id: member.id }, data: { status: MemberStatus.LEFT },
+    });
+    expect(tx.auditLog.create).toHaveBeenCalledWith({ data: expect.objectContaining({
+      actorUserId: 'member-1', action: AuditAction.DELETE,
+      beforeSnapshot: { role: 'member', status: 'active' },
+      afterSnapshot: { role: 'member', status: 'left' },
+      metadata: { operation: 'leave_group', target_user_id: 'member-1' },
+    })});
+  });
+
+  it.each([
+    ['GROUP_NOT_FOUND', null, owner, member, NotFoundException],
+    ['GROUP_ACCESS_DENIED', group, null, member, ForbiddenException],
+    ['OWNER_REQUIRED', group, { ...owner, role: MemberRole.MEMBER }, member, ForbiddenException],
+    ['MEMBER_NOT_FOUND', group, owner, null, NotFoundException],
+  ])('removeMember returns %s before financial reads', async (
+    message, foundGroup, foundActor, foundTarget, ExceptionType,
+  ) => {
+    const { service, tx } = setup();
+    tx.group.findFirst.mockResolvedValue(foundGroup);
+    tx.groupMember.findFirst.mockReset()
+      .mockResolvedValueOnce(foundActor).mockResolvedValueOnce(foundTarget);
+    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
+      .rejects.toEqual(new ExceptionType(message));
+    expect(tx.fund.findMany).not.toHaveBeenCalled();
+    expect(tx.settlement.findFirst).not.toHaveBeenCalled();
+  });
+
+  it('rejects self-removal before financial reads', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(owner).mockResolvedValueOnce(owner);
+    await expect(service.removeMember('group-1', 'owner-1', 'owner-1'))
+      .rejects.toEqual(new ConflictException('CANNOT_REMOVE_SELF'));
+    expect(tx.fund.findMany).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['remove', (service: GroupsService) => service.removeMember('group-1', 'owner-1', 'owner-2')],
+    ['leave', (service: GroupsService) => service.leaveGroup('group-1', 'owner-1')],
+  ])('blocks the final active owner from %s', async (_case, act) => {
+    const { service, tx } = setup();
+    const otherOwner = { ...member, userId: 'owner-2', role: MemberRole.OWNER };
+    tx.groupMember.findFirst.mockReset();
+    if (_case === 'remove') tx.groupMember.findFirst.mockResolvedValueOnce(owner).mockResolvedValueOnce(otherOwner);
+    else tx.groupMember.findFirst.mockResolvedValueOnce(owner);
+    tx.groupMember.count.mockResolvedValue(1);
+    await expect(act(service)).rejects.toEqual(new ConflictException('LAST_OWNER_REQUIRED'));
+    expect(tx.fund.findMany).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['active contribution', { contributions: [{ amountMinor: 1n }] }],
+    ['archived contribution', { status: FundStatus.ARCHIVED, contributions: [{ amountMinor: 1n }] }],
+    ['payer only', { expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, payers: [{ amountMinor: 1n }], splits: [] }] }],
+    ['split only', { expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, payers: [], splits: [{ allocatedAmountMinor: 1n }] }] }],
+    ['refund payer sign', { expenses: [{ expenseType: ExpenseType.REFUND, payers: [{ amountMinor: 1n }], splits: [] }] }],
+    ['refund split sign', { expenses: [{ expenseType: ExpenseType.REFUND, payers: [], splits: [{ allocatedAmountMinor: 1n }] }] }],
+    ['completed settlement from', { settlements: [{ fromUserId: 'member-1', toUserId: 'other', amountMinor: 1n }] }],
+    ['completed settlement to', { settlements: [{ fromUserId: 'other', toUserId: 'member-1', amountMinor: 1n }] }],
+  ])('blocks a nonzero %s position', async (_case, data) => {
+    const { service } = setup([{ ...emptyFund(), ...data } as ReturnType<typeof emptyFund>]);
+    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
+      .rejects.toEqual(new ConflictException('MEMBER_HAS_OPEN_BALANCE'));
+  });
+
+  it('does not net opposite positions across funds', async () => {
+    const { service } = setup([
+      { ...emptyFund('fund-1'), contributions: [{ amountMinor: 100n }] },
+      { ...emptyFund('fund-2'), expenses: [{ expenseType: ExpenseType.FUND_EXPENSE, payers: [], splits: [{ allocatedAmountMinor: 100n }] }] },
+    ] as ReturnType<typeof emptyFund>[]);
+    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
+      .rejects.toEqual(new ConflictException('MEMBER_HAS_OPEN_BALANCE'));
+  });
+
+  it('allows an exact bigint zero position after all adjustments', async () => {
+    const { service, tx } = setup([{ ...emptyFund(),
+      contributions: [{ amountMinor: 100n }],
+      expenses: [{ expenseType: ExpenseType.REFUND, payers: [{ amountMinor: 40n }], splits: [{ allocatedAmountMinor: 10n }] }],
+      settlements: [{ fromUserId: 'member-1', toUserId: 'other', amountMinor: 70n }],
+    }] as ReturnType<typeof emptyFund>[]);
+    await expect(service.removeMember('group-1', 'owner-1', 'member-1')).resolves.toBeDefined();
+    expect(tx.settlement.findFirst).toHaveBeenCalledWith({ where: {
+      fund: { groupId: 'group-1' }, status: SettlementStatus.PENDING,
+      OR: [{ fromUserId: 'member-1' }, { toUserId: 'member-1' }],
+    }});
+  });
+
+  it('blocks any pending settlement after a zero position', async () => {
+    const { service, tx } = setup();
+    tx.settlement.findFirst.mockResolvedValue({ id: 'pending-1' });
+    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
+      .rejects.toEqual(new ConflictException('MEMBER_HAS_PENDING_SETTLEMENT'));
+    expect(tx.groupMember.update).not.toHaveBeenCalled();
+  });
+
+  it('queries active records in every fund and locks before reads, then updates before audit', async () => {
+    const { service, tx } = setup();
+    await service.removeMember('group-1', 'owner-1', 'member-1');
+    expect(tx.fund.findMany).toHaveBeenCalledWith({
+      where: { groupId: 'group-1' },
+      select: {
+        id: true,
+        contributions: { where: { contributorUserId: 'member-1', status: RecordStatus.ACTIVE }, select: { amountMinor: true } },
+        expenses: { where: { status: RecordStatus.ACTIVE, OR: [
+          { payers: { some: { payerUserId: 'member-1' } } }, { splits: { some: { userId: 'member-1' } } },
+        ] }, select: {
+          expenseType: true,
+          payers: { where: { payerUserId: 'member-1' }, select: { amountMinor: true } },
+          splits: { where: { userId: 'member-1' }, select: { allocatedAmountMinor: true } },
+        } },
+        settlements: { where: { status: SettlementStatus.COMPLETED, OR: [
+          { fromUserId: 'member-1' }, { toUserId: 'member-1' },
+        ] }, select: { fromUserId: true, toUserId: true, amountMinor: true } },
+      },
+    });
+    const lock = tx.$executeRaw.mock.invocationCallOrder[0];
+    const groupRead = tx.group.findFirst.mock.invocationCallOrder[0];
+    const update = tx.groupMember.update.mock.invocationCallOrder[0];
+    const audit = tx.auditLog.create.mock.invocationCallOrder[0];
+    expect(lock).toBeLessThan(groupRead);
+    expect(update).toBeLessThan(audit);
   });
 });
 

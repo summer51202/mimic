@@ -9,12 +9,15 @@ import {
 import {
   AuditAction,
   AuditEntityType,
+  ExpenseType,
   GroupStatus,
   GroupType,
   InviteStatus,
   MemberRole,
   MemberStatus,
   Prisma,
+  RecordStatus,
+  SettlementStatus,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { lockGroupMutation } from '../prisma/group-mutation-lock';
@@ -205,6 +208,208 @@ export class GroupsService {
       });
 
       return updatedTarget;
+    });
+  }
+
+  async removeMember(
+    groupId: string,
+    actorUserId: string,
+    targetUserId: string,
+  ) {
+    return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, groupId);
+      await this.requireActiveGroup(tx, groupId);
+
+      const actor = await this.findActiveMembership(tx, groupId, actorUserId);
+      if (!actor) {
+        throw new ForbiddenException('GROUP_ACCESS_DENIED');
+      }
+      if (actor.role !== MemberRole.OWNER) {
+        throw new ForbiddenException('OWNER_REQUIRED');
+      }
+
+      const target = await this.findActiveMembership(tx, groupId, targetUserId);
+      if (!target) {
+        throw new NotFoundException('MEMBER_NOT_FOUND');
+      }
+      if (actorUserId === targetUserId) {
+        throw new ConflictException('CANNOT_REMOVE_SELF');
+      }
+
+      await this.requireOwnerCanDepart(tx, groupId, target.role);
+      await this.requireFinancialEligibility(tx, groupId, targetUserId);
+
+      const updated = await tx.groupMember.update({
+        where: { id: target.id },
+        data: { status: MemberStatus.REMOVED },
+      });
+      await this.auditMemberDeparture(
+        tx, groupId, actorUserId, targetUserId, target.role,
+        MemberStatus.REMOVED, 'remove_member',
+      );
+      return updated;
+    });
+  }
+
+  async leaveGroup(groupId: string, actorUserId: string) {
+    return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, groupId);
+      await this.requireActiveGroup(tx, groupId);
+
+      const actor = await this.findActiveMembership(tx, groupId, actorUserId);
+      if (!actor) {
+        throw new ForbiddenException('GROUP_ACCESS_DENIED');
+      }
+
+      await this.requireOwnerCanDepart(tx, groupId, actor.role);
+      await this.requireFinancialEligibility(tx, groupId, actorUserId);
+
+      const updated = await tx.groupMember.update({
+        where: { id: actor.id },
+        data: { status: MemberStatus.LEFT },
+      });
+      await this.auditMemberDeparture(
+        tx, groupId, actorUserId, actorUserId, actor.role,
+        MemberStatus.LEFT, 'leave_group',
+      );
+      return updated;
+    });
+  }
+
+  private async requireActiveGroup(
+    tx: Prisma.TransactionClient,
+    groupId: string,
+  ) {
+    const group = await tx.group.findFirst({
+      where: { id: groupId, status: GroupStatus.ACTIVE },
+    });
+    if (!group) {
+      throw new NotFoundException('GROUP_NOT_FOUND');
+    }
+  }
+
+  private findActiveMembership(
+    tx: Prisma.TransactionClient,
+    groupId: string,
+    userId: string,
+  ) {
+    return tx.groupMember.findFirst({
+      where: { groupId, userId, status: MemberStatus.ACTIVE },
+    });
+  }
+
+  private async requireOwnerCanDepart(
+    tx: Prisma.TransactionClient,
+    groupId: string,
+    role: MemberRole,
+  ) {
+    if (role !== MemberRole.OWNER) return;
+    const ownerCount = await tx.groupMember.count({
+      where: { groupId, role: MemberRole.OWNER, status: MemberStatus.ACTIVE },
+    });
+    if (ownerCount <= 1) {
+      throw new ConflictException('LAST_OWNER_REQUIRED');
+    }
+  }
+
+  private async requireFinancialEligibility(
+    tx: Prisma.TransactionClient,
+    groupId: string,
+    userId: string,
+  ) {
+    const funds = await tx.fund.findMany({
+      where: { groupId },
+      select: {
+        id: true,
+        contributions: {
+          where: { contributorUserId: userId, status: RecordStatus.ACTIVE },
+          select: { amountMinor: true },
+        },
+        expenses: {
+          where: {
+            status: RecordStatus.ACTIVE,
+            OR: [
+              { payers: { some: { payerUserId: userId } } },
+              { splits: { some: { userId } } },
+            ],
+          },
+          select: {
+            expenseType: true,
+            payers: {
+              where: { payerUserId: userId },
+              select: { amountMinor: true },
+            },
+            splits: {
+              where: { userId },
+              select: { allocatedAmountMinor: true },
+            },
+          },
+        },
+        settlements: {
+          where: {
+            status: SettlementStatus.COMPLETED,
+            OR: [{ fromUserId: userId }, { toUserId: userId }],
+          },
+          select: { fromUserId: true, toUserId: true, amountMinor: true },
+        },
+      },
+    });
+
+    for (const fund of funds) {
+      let position = 0n;
+      for (const contribution of fund.contributions) {
+        position += contribution.amountMinor;
+      }
+      for (const expense of fund.expenses) {
+        const sign = expense.expenseType === ExpenseType.REFUND ? -1n : 1n;
+        for (const payer of expense.payers) {
+          position += payer.amountMinor * sign;
+        }
+        for (const split of expense.splits) {
+          position -= split.allocatedAmountMinor * sign;
+        }
+      }
+      for (const settlement of fund.settlements) {
+        if (settlement.fromUserId === userId) position -= settlement.amountMinor;
+        if (settlement.toUserId === userId) position += settlement.amountMinor;
+      }
+      if (position !== 0n) {
+        throw new ConflictException('MEMBER_HAS_OPEN_BALANCE');
+      }
+    }
+
+    const pendingSettlement = await tx.settlement.findFirst({
+      where: {
+        fund: { groupId },
+        status: SettlementStatus.PENDING,
+        OR: [{ fromUserId: userId }, { toUserId: userId }],
+      },
+    });
+    if (pendingSettlement) {
+      throw new ConflictException('MEMBER_HAS_PENDING_SETTLEMENT');
+    }
+  }
+
+  private auditMemberDeparture(
+    tx: Prisma.TransactionClient,
+    groupId: string,
+    actorUserId: string,
+    targetUserId: string,
+    role: MemberRole,
+    status: MemberStatus,
+    operation: 'remove_member' | 'leave_group',
+  ) {
+    return tx.auditLog.create({
+      data: {
+        groupId,
+        actorUserId,
+        entityType: AuditEntityType.GROUP,
+        entityId: groupId,
+        action: AuditAction.DELETE,
+        beforeSnapshot: { role: role.toLowerCase(), status: 'active' },
+        afterSnapshot: { role: role.toLowerCase(), status: status.toLowerCase() },
+        metadata: { operation, target_user_id: targetUserId },
+      },
     });
   }
 
