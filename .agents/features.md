@@ -41,7 +41,9 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 | done | view-group-detail | View group name, type, members, and funds | `group_detail_screen.dart` | `groups.controller.ts GET /groups/:id` |
 | done | update-group | Owner can rename a group | `group_detail_screen.dart` | `groups.controller.ts PATCH /groups/:id` |
 | done | list-members | View all active members and their roles | `group_detail_screen.dart` | `groups.service.ts listMembers()` |
-| todo | update-member-role | Owner promotes/demotes a member | — | missing `PATCH /groups/:id/members/:memberId` |
+| done | update-member-role | Owner promotes/demotes another active member | `group_detail_screen.dart` | `groups.controller.ts PATCH /groups/:id/members/:memberId` |
+| done | remove-member | Owner removes a settled member while preserving history | `group_detail_screen.dart` | `groups.controller.ts DELETE /groups/:id/members/:memberId` |
+| done | leave-group | Active member leaves a group and reconciles the selected group | `group_detail_screen.dart` | `groups.controller.ts POST /groups/:id/leave` |
 | done | invite-member | Owner generates an invite code | `create_invite_screen.dart` | `groups.controller.ts POST /groups/:id/invites` |
 | done | accept-invite | User joins group via invite code | `accept_invite_screen.dart` | `group-invites.controller.ts POST /group-invites/accept` |
 
@@ -123,7 +125,7 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 - [ ] Verify token-refresh is wired in mobile Dio interceptor (auto-retry on 401)
 
 ### Groups & Membership
-- [ ] `PATCH /groups/:id/members/:memberId` — role promotion/demotion
+- [x] Role promotion/demotion, settled-member removal, and self-leave governance flows
 
 ### Funds
 - [ ] `PATCH /funds/:id` — update fund name/description

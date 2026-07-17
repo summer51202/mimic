@@ -113,6 +113,9 @@ Open `http://localhost:8080/#/login`. After rebuilding, add a query such as
 * `GET /api/v1/groups/{groupId}`
 * `PATCH /api/v1/groups/{groupId}`
 * `GET /api/v1/groups/{groupId}/members`
+* `PATCH /api/v1/groups/{groupId}/members/{userId}`
+* `DELETE /api/v1/groups/{groupId}/members/{userId}`
+* `POST /api/v1/groups/{groupId}/leave`
 * `POST /api/v1/groups/{groupId}/invites`
 * `POST /api/v1/group-invites/accept`
 * `GET /api/v1/groups/{groupId}/funds`

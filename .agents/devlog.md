@@ -290,3 +290,17 @@
 - Rejected unsupported member roles before repository calls and made stable refresh-count assertions exact.
 **Decisions:** Server mutation success is authoritative; local synchronization is a recoverable post-success phase. Reconciliation is committed only by the latest active load generation.
 **Known gaps / follow-ups:** The full parallel Flutter suite retains one pre-existing intermittent failure; all 33 focused tests and analyzer checks pass.
+
+## 2026-07-17 — Deliver group governance
+
+**Task:** Complete Owner role management, safe member removal, self-leave, Mobile controls, and final runtime verification.
+**Scope:** Backend group/accounting services and HTTP contracts; Mobile group repository, controller, detail UI, router stabilization; `.agents/features.md`; `backend/README.md`; local WSL Docker acceptance stack.
+**What changed:**
+- Added serialized role changes, removal, and leave operations with last-Owner, open-balance, and pending-settlement protection.
+- Coordinated contribution/expense creation and settlement create/complete/cancel transitions with the same group advisory lock.
+- Added Mobile governance API data flow, operation-aware state, friendly domain errors, reconciliation-safe leave behavior, member action sheets, confirmations, and Danger zone UI.
+- Fixed the stale navigation service router reference and cleared all Flutter analyzer findings encountered during final verification.
+- Verified Backend 91/91 unit tests, 23/23 HTTP E2E tests, Flutter analyzer with no issues, Flutter 190/190 tests, and the remote Web build.
+- Exercised the worktree build against real PostgreSQL: promote/demote, pending-settlement block, open-balance block, completed-settlement removal, rejoin as Member, Member denial, self-leave, final-Owner protection, audit metadata, and concurrent Owner reduction.
+**Decisions:** Server mutation success remains authoritative when post-leave Mobile synchronization fails; navigation waits for successful reconciliation. Group-level advisory locking serializes membership-reducing operations and the relevant accounting and settlement transitions. Local WSL acceptance overrides container `PORT` and the database host without changing the Windows `.env`.
+**Known gaps / follow-ups:** Browser visual acceptance remains a user checkpoint. Dependency upgrades are deferred; the local Task 9 smoke records remain in the development database.
