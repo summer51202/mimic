@@ -261,3 +261,13 @@
 - Deferred selection mutation until Home provider initialization completes.
 **Decisions:** Used request-scoped Riverpod keep-alive so an in-flight mutation survives temporary listener disposal.
 **Known gaps / follow-ups:** The full Flutter suite showed one intermittent failure while focused Group/Home suites passed; Task 8 and final Task 9 verification must rerun the full suite.
+## 2026-07-17 — Close Task 7 governance review gaps
+
+**Task:** Address blocking review gaps in Mobile group membership mutation coverage.
+**Scope:** Group detail mutation controller and controller tests.
+**What changed:**
+- Added safe `CANNOT_REMOVE_SELF` copy.
+- Verified in-flight promote/demote state, duplicate protection, request keep-alive, and real provider refreshes.
+- Verified leaving the final group clears both selected state and persisted selection.
+**Decisions:** Provider refresh assertions require load counts to increase without coupling tests to Riverpod's exact scheduling count.
+**Known gaps / follow-ups:** The full parallel Flutter suite still reports one intermittent unrelated failure while all focused Group/Home tests pass; rerun during final integration.

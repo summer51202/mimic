@@ -16,6 +16,7 @@ class _FakeRepository implements GroupRepository {
   Object? renameError;
   Object? mutationError;
   final List<String> mutations = [];
+  Completer<void>? mutationGate;
 
   @override
   Future<GroupDetail> fetchGroup(String groupId) async {
@@ -44,18 +45,21 @@ class _FakeRepository implements GroupRepository {
     String userId,
     String role,
   ) async {
+    if (mutationGate != null) await mutationGate!.future;
     if (mutationError != null) throw mutationError!;
     mutations.add('role:$userId:$role');
   }
 
   @override
   Future<void> removeMember(String groupId, String userId) async {
+    if (mutationGate != null) await mutationGate!.future;
     if (mutationError != null) throw mutationError!;
     mutations.add('remove:$userId');
   }
 
   @override
   Future<void> leaveGroup(String groupId) async {
+    if (mutationGate != null) await mutationGate!.future;
     if (mutationError != null) throw mutationError!;
     mutations.add('leave');
   }
@@ -132,29 +136,38 @@ void main() {
   });
 
   group('member mutations', () {
-    ProviderContainer makeContainer(_FakeRepository repository) {
+    var homeLoadCount = 0;
+    ProviderContainer makeContainer(
+      _FakeRepository repository, {
+      _MemoryPersistence? persistence,
+      bool leaveFinalGroup = false,
+    }) {
       return ProviderContainer(overrides: [
         groupRepositoryProvider.overrideWithValue(repository),
         selectedGroupPersistenceProvider
-            .overrideWithValue(_MemoryPersistence()),
+            .overrideWithValue(persistence ?? _MemoryPersistence()),
         homeGroupsProvider.overrideWith((ref) async {
-          final groups = repository.mutations.contains('leave')
-              ? const [
-                  GroupSummary(
-                      id: 'group-2',
-                      name: 'Other',
-                      groupType: 'group',
-                      memberCount: 1,
-                      role: 'member')
-                ]
-              : const [
-                  GroupSummary(
-                      id: 'group-1',
-                      name: 'Home',
-                      groupType: 'couple',
-                      memberCount: 2,
-                      role: 'owner')
-                ];
+          homeLoadCount++;
+          final groups =
+              leaveFinalGroup && repository.mutations.contains('leave')
+                  ? const <GroupSummary>[]
+                  : repository.mutations.contains('leave')
+                      ? const [
+                          GroupSummary(
+                              id: 'group-2',
+                              name: 'Other',
+                              groupType: 'group',
+                              memberCount: 1,
+                              role: 'member')
+                        ]
+                      : const [
+                          GroupSummary(
+                              id: 'group-1',
+                              name: 'Home',
+                              groupType: 'couple',
+                              memberCount: 2,
+                              role: 'owner')
+                        ];
           await Future<void>.delayed(Duration.zero);
           await ref.read(selectedGroupProvider.notifier).reconcile(groups);
           return groups;
@@ -163,14 +176,42 @@ void main() {
     }
 
     test('promotes and demotes with operation-aware state', () async {
-      final repository = _FakeRepository();
+      final repository = _FakeRepository()..mutationGate = Completer<void>();
       final container = makeContainer(repository);
       addTearDown(container.dispose);
       final notifier = container
           .read(groupMemberMutationControllerProvider('group-1').notifier);
 
-      expect(await notifier.changeRole('user-2', 'owner'), isTrue);
-      expect(await notifier.changeRole('user-2', 'member'), isTrue);
+      final promote = notifier.changeRole('user-2', 'owner');
+      await Future<void>.delayed(Duration.zero);
+      expect(
+          container
+              .read(groupMemberMutationControllerProvider('group-1'))
+              .isSubmitting,
+          isTrue);
+      expect(
+          container
+              .read(groupMemberMutationControllerProvider('group-1'))
+              .operation,
+          GroupMemberOperation.promote);
+      repository.mutationGate!.complete();
+      expect(await promote, isTrue);
+
+      repository.mutationGate = Completer<void>();
+      final demote = notifier.changeRole('user-2', 'member');
+      await Future<void>.delayed(Duration.zero);
+      expect(
+          container
+              .read(groupMemberMutationControllerProvider('group-1'))
+              .isSubmitting,
+          isTrue);
+      expect(
+          container
+              .read(groupMemberMutationControllerProvider('group-1'))
+              .operation,
+          GroupMemberOperation.demote);
+      repository.mutationGate!.complete();
+      expect(await demote, isTrue);
       expect(repository.mutations, ['role:user-2:owner', 'role:user-2:member']);
       expect(
           container
@@ -178,6 +219,30 @@ void main() {
               .operation,
           isNull);
     });
+
+    for (final operation in ['promote', 'demote', 'remove']) {
+      test('$operation refreshes group detail and Home groups', () async {
+        homeLoadCount = 0;
+        final repository = _FakeRepository();
+        final container = makeContainer(repository);
+        addTearDown(container.dispose);
+        await container.read(groupDetailProvider('group-1').future);
+        await container.read(homeGroupsProvider.future);
+        expect(repository.fetchCount, 1);
+        expect(homeLoadCount, 1);
+        final notifier = container
+            .read(groupMemberMutationControllerProvider('group-1').notifier);
+        final success = operation == 'remove'
+            ? await notifier.remove('user-2')
+            : await notifier.changeRole(
+                'user-2', operation == 'promote' ? 'owner' : 'member');
+        expect(success, isTrue);
+        await container.read(groupDetailProvider('group-1').future);
+        await container.read(homeGroupsProvider.future);
+        expect(repository.fetchCount, greaterThan(1));
+        expect(homeLoadCount, greaterThan(1));
+      });
+    }
 
     test('removes a member', () async {
       final repository = _FakeRepository();
@@ -211,6 +276,22 @@ void main() {
       expect(await first, isTrue);
     });
 
+    test('in-flight mutation survives listener removal and auto-dispose',
+        () async {
+      final repository = _FakeRepository()..mutationGate = Completer<void>();
+      final container = makeContainer(repository);
+      addTearDown(container.dispose);
+      final provider = groupMemberMutationControllerProvider('group-1');
+      final subscription = container.listen(provider, (_, __) {});
+      final mutation = container.read(provider.notifier).remove('user-2');
+      await Future<void>.delayed(Duration.zero);
+      subscription.close();
+      await Future<void>.delayed(Duration.zero);
+      repository.mutationGate!.complete();
+      expect(await mutation, isTrue);
+      expect(repository.mutations, ['remove:user-2']);
+    });
+
     test('leave awaits home refresh and selection reconciliation', () async {
       final repository = _FakeRepository();
       final container = makeContainer(repository);
@@ -224,6 +305,22 @@ void main() {
       expect(container.read(selectedGroupProvider), 'group-2');
     });
 
+    test('leaving final group clears selected and persisted group', () async {
+      final repository = _FakeRepository();
+      final persistence = _MemoryPersistence();
+      final container = makeContainer(repository,
+          persistence: persistence, leaveFinalGroup: true);
+      addTearDown(container.dispose);
+      await container.read(homeGroupsProvider.future);
+      expect(
+          await container
+              .read(groupMemberMutationControllerProvider('group-1').notifier)
+              .leave(),
+          isTrue);
+      expect(container.read(selectedGroupProvider), isNull);
+      expect(persistence.value, isNull);
+    });
+
     const messages = <String, String>{
       'OWNER_REQUIRED': 'Only an Owner can manage members.',
       'MEMBER_NOT_FOUND':
@@ -235,6 +332,7 @@ void main() {
           'Complete or cancel the pending settlement first.',
       'GROUP_ACCESS_DENIED': 'You no longer have access to this group.',
       'ROLE_UNCHANGED': 'The member already has this role.',
+      'CANNOT_REMOVE_SELF': 'Use Leave group instead.',
     };
     for (final entry in messages.entries) {
       test('maps ${entry.key} without exposing raw backend copy', () async {

@@ -164,6 +164,7 @@ String _memberMutationMessage(String code) => switch (code) {
         'Complete or cancel the pending settlement first.',
       'GROUP_ACCESS_DENIED' => 'You no longer have access to this group.',
       'ROLE_UNCHANGED' => 'The member already has this role.',
+      'CANNOT_REMOVE_SELF' => 'Use Leave group instead.',
       _ => 'Unable to update group membership right now.',
     };
 
