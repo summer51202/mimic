@@ -38,14 +38,16 @@ class FakeSessionPersistence implements SessionPersistence {
 }
 
 class FakeSelectedGroupPersistence implements SelectedGroupPersistence {
+  FakeSelectedGroupPersistence({this.value = 'group-1'});
+  String? value;
   @override
-  Future<void> clear() async {}
+  Future<void> clear() async => value = null;
 
   @override
-  Future<String?> read() async => 'group-1';
+  Future<String?> read() async => value;
 
   @override
-  Future<void> write(String groupId) async {}
+  Future<void> write(String groupId) async => value = groupId;
 }
 
 const _authenticatedSession = SessionState(
@@ -115,9 +117,35 @@ class FakeGovernanceRepository implements GroupRepository {
       String groupId, String userId, String role) async {}
 }
 
+class FakeGovernanceHomeRepository implements HomeRepository {
+  FakeGovernanceHomeRepository(this.governance);
+  final FakeGovernanceRepository governance;
+
+  @override
+  Future<List<GroupSummary>> fetchGroups() async {
+    if (governance.leaveCalls > 0) return const <GroupSummary>[];
+    return const <GroupSummary>[
+      GroupSummary(
+        id: 'group-1',
+        name: 'Our Home',
+        groupType: 'COUPLE',
+        memberCount: 2,
+        role: 'OWNER',
+      ),
+    ];
+  }
+
+  @override
+  Future<HomeSummary> fetchSummary({required String? groupId}) async =>
+      _homeSummary;
+}
+
 ProviderContainer _authenticatedContainer({
   InviteRepository? inviteRepository,
   GroupRepository? groupRepository,
+  HomeRepository? homeRepository,
+  SelectedGroupPersistence? selectedGroupPersistence,
+  bool useFormalHomeGroups = false,
 }) {
   return ProviderContainer(
     overrides: <Override>[
@@ -125,24 +153,29 @@ ProviderContainer _authenticatedContainer({
         (ref) => FakeSessionNotifier(_authenticatedSession),
       ),
       homeSummaryProvider.overrideWith((_) async => _homeSummary),
-      homeGroupsProvider.overrideWith(
-        (_) async => const <GroupSummary>[
-          GroupSummary(
-            id: 'group-1',
-            name: 'Our Home',
-            groupType: 'COUPLE',
-            memberCount: 2,
-            role: 'OWNER',
-          ),
-        ],
-      ),
+      if (!useFormalHomeGroups)
+        homeGroupsProvider.overrideWith(
+          (_) async => const <GroupSummary>[
+            GroupSummary(
+              id: 'group-1',
+              name: 'Our Home',
+              groupType: 'COUPLE',
+              memberCount: 2,
+              role: 'OWNER',
+            ),
+          ],
+        ),
       selectedGroupProvider.overrideWith(
-        (_) => SelectedGroupNotifier(FakeSelectedGroupPersistence()),
+        (_) => SelectedGroupNotifier(
+          selectedGroupPersistence ?? FakeSelectedGroupPersistence(),
+        ),
       ),
       if (inviteRepository != null)
         inviteRepositoryProvider.overrideWithValue(inviteRepository),
       if (groupRepository != null)
         groupRepositoryProvider.overrideWithValue(groupRepository),
+      if (homeRepository != null)
+        homeRepositoryProvider.overrideWithValue(homeRepository),
     ],
   );
 }
@@ -284,9 +317,18 @@ void main() {
       'production governance leave waits for reconciliation then goes home',
       (WidgetTester tester) async {
     final repository = FakeGovernanceRepository();
-    final container = _authenticatedContainer(groupRepository: repository);
+    final persistence = FakeSelectedGroupPersistence();
+    final container = _authenticatedContainer(
+      groupRepository: repository,
+      homeRepository: FakeGovernanceHomeRepository(repository),
+      selectedGroupPersistence: persistence,
+      useFormalHomeGroups: true,
+    );
     await _pumpProductionRouter(tester, container);
     final router = container.read(appRouterProvider);
+    await container.read(homeGroupsProvider.future);
+    expect(container.read(selectedGroupProvider), 'group-1');
+    expect(persistence.value, 'group-1');
     router.go(AppRoutes.groupDetailPath('group-1'));
     await tester.pumpAndSettle();
     final leaveButton = find.byKey(const Key('leave-group-button'));
@@ -297,6 +339,8 @@ void main() {
     await tester.tap(find.widgetWithText(FilledButton, 'Leave group'));
     await tester.pumpAndSettle();
     expect(repository.leaveCalls, 1);
+    expect(container.read(selectedGroupProvider), isNull);
+    expect(persistence.value, isNull);
     expect(router.state.uri.path, AppRoutes.home);
   });
 }

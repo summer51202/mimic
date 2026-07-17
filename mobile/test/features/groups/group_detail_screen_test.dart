@@ -38,6 +38,7 @@ class _RenameRepository implements GroupRepository {
   Object? mutationError;
   Completer<void>? mutationGate;
   int leaveCalls = 0;
+  int removeCalls = 0;
 
   @override
   Future<GroupDetail> fetchGroup(String groupId) async => detail;
@@ -78,6 +79,7 @@ class _RenameRepository implements GroupRepository {
 
   @override
   Future<void> removeMember(String groupId, String userId) async {
+    removeCalls++;
     if (mutationGate != null) await mutationGate!.future;
     if (mutationError != null) throw mutationError!;
     detail = GroupDetail(
@@ -249,6 +251,12 @@ void main() {
     expect(find.byIcon(Icons.more_vert), findsNothing);
     expect(find.text('Danger zone'), findsOneWidget);
     expect(find.text('Leave group'), findsOneWidget);
+    final dangerText = tester.widget<Text>(find.text('Danger zone'));
+    final colors =
+        Theme.of(tester.element(find.text('Danger zone'))).colorScheme;
+    expect(dangerText.style?.color, colors.error);
+    final semantics = tester.getSemantics(find.text('Danger zone'));
+    expect(semantics.flagsCollection.isHeader, isTrue);
   });
 
   testWidgets('member action asks for confirmation with target name',
@@ -320,12 +328,21 @@ void main() {
       (tester) async {
     final repository = _RenameRepository()..mutationGate = Completer<void>();
     await _pump(tester, _ownerDetail, repository: repository);
+    final container = ProviderScope.containerOf(
+      tester.element(find.byType(GroupDetailScreen)),
+    );
+    final notifier = container.read(
+      groupMemberMutationControllerProvider('group-1').notifier,
+    );
     await tester.tap(find.byKey(const Key('member-actions-user-2')));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Remove member'));
     await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(FilledButton, 'Remove'));
+    final duplicate = notifier.remove('user-2');
     await tester.pump();
+    expect(await duplicate, isFalse);
+    expect(repository.removeCalls, 1);
     expect(find.byKey(const Key('member-actions-user-2')), findsNothing);
     repository.mutationGate!.complete();
     await tester.pumpAndSettle();

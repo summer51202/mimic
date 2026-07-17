@@ -395,7 +395,15 @@ class _GroupDangerZone extends StatelessWidget {
             border: Border.all(color: Theme.of(context).colorScheme.error),
             borderRadius: BorderRadius.circular(PfRadii.card)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Danger zone', style: Theme.of(context).textTheme.titleMedium),
+          Semantics(
+            header: true,
+            child: Text(
+              'Danger zone',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+            ),
+          ),
           const SizedBox(height: PfSpacing.xs),
           const Text('Leave this group while keeping its accounting history.'),
           const SizedBox(height: PfSpacing.sm),
