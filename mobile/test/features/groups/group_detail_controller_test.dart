@@ -29,6 +29,19 @@ class _FakeRepository implements GroupRepository {
     renamedTo = name;
     return RenamedGroup(id: groupId, name: name);
   }
+
+  @override
+  Future<void> updateMemberRole(
+    String groupId,
+    String userId,
+    String role,
+  ) async {}
+
+  @override
+  Future<void> removeMember(String groupId, String userId) async {}
+
+  @override
+  Future<void> leaveGroup(String groupId) async {}
 }
 
 void main() {

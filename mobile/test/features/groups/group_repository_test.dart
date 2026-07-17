@@ -153,9 +153,9 @@ void main() {
 
   test('updates the exact member role with lower-case PATCH data', () async {
     final api = _RecordingApiClient();
+    final GroupRepository repository = RemoteGroupRepository(api);
 
-    await RemoteGroupRepository(api)
-        .updateMemberRole('group-1', 'user-2', 'OWNER');
+    await repository.updateMemberRole('group-1', 'user-2', 'OWNER');
 
     expect(api.patchPath, '/groups/group-1/members/user-2');
     expect(api.patchData, {'role': 'owner'});
@@ -163,16 +163,18 @@ void main() {
 
   test('removes the exact member with DELETE', () async {
     final api = _RecordingApiClient();
+    final GroupRepository repository = RemoteGroupRepository(api);
 
-    await RemoteGroupRepository(api).removeMember('group-1', 'user-2');
+    await repository.removeMember('group-1', 'user-2');
 
     expect(api.deletePath, '/groups/group-1/members/user-2');
   });
 
   test('leaves the exact group with POST', () async {
     final api = _RecordingApiClient();
+    final GroupRepository repository = RemoteGroupRepository(api);
 
-    await RemoteGroupRepository(api).leaveGroup('group-1');
+    await repository.leaveGroup('group-1');
 
     expect(api.postPath, '/groups/group-1/leave');
   });

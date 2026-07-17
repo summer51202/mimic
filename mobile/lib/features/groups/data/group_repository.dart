@@ -52,9 +52,7 @@ abstract class GroupRepository {
   Future<GroupDetail> fetchGroup(String groupId);
 
   Future<RenamedGroup> renameGroup(String groupId, String name);
-}
 
-abstract class GroupGovernanceRepository {
   Future<void> updateMemberRole(String groupId, String userId, String role);
 
   Future<void> removeMember(String groupId, String userId);
@@ -62,21 +60,7 @@ abstract class GroupGovernanceRepository {
   Future<void> leaveGroup(String groupId);
 }
 
-extension GroupGovernanceOperations on GroupRepository {
-  GroupGovernanceRepository get _governance =>
-      this as GroupGovernanceRepository;
-
-  Future<void> updateMemberRole(String groupId, String userId, String role) =>
-      _governance.updateMemberRole(groupId, userId, role);
-
-  Future<void> removeMember(String groupId, String userId) =>
-      _governance.removeMember(groupId, userId);
-
-  Future<void> leaveGroup(String groupId) => _governance.leaveGroup(groupId);
-}
-
-class DemoGroupRepository
-    implements GroupRepository, GroupGovernanceRepository {
+class DemoGroupRepository implements GroupRepository {
   String _name = 'Demo group';
   static const _currentUserId = 'demo-owner';
   final List<GroupMemberSummary> _members = const <GroupMemberSummary>[
@@ -144,8 +128,7 @@ class DemoGroupRepository
   }
 }
 
-class RemoteGroupRepository
-    implements GroupRepository, GroupGovernanceRepository {
+class RemoteGroupRepository implements GroupRepository {
   RemoteGroupRepository(this._apiClient);
 
   final PairFundApiClient _apiClient;
