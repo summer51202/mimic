@@ -20,6 +20,9 @@ describe('Group detail and management', () => {
     listMembers: jest.fn(),
     updateGroup: jest.fn(),
     createInvite: jest.fn(),
+    updateMemberRole: jest.fn(),
+    removeMember: jest.fn(),
+    leaveGroup: jest.fn(),
   };
 
   beforeAll(async () => {
@@ -74,6 +77,7 @@ describe('Group detail and management', () => {
           default_currency: 'TWD',
           status: 'active',
           role: 'owner',
+          current_user_id: 'user-1',
         },
       });
     expect(groupsService.getGroupDetail).toHaveBeenCalledWith(
@@ -124,13 +128,87 @@ describe('Group detail and management', () => {
     expect(groupsService.updateGroup).not.toHaveBeenCalled();
   });
 
+  it('updates a member role with an exact snake_case response', async () => {
+    groupsService.updateMemberRole.mockResolvedValue({
+      userId: 'user-2',
+      user: { displayName: 'Partner' },
+      role: 'OWNER',
+      status: 'ACTIVE',
+    });
+
+    await request(app.getHttpServer())
+      .patch('/api/v1/groups/group-1/members/user-2')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ role: ' OWNER ' })
+      .expect(200)
+      .expect({
+        data: {
+          user_id: 'user-2',
+          display_name: 'Partner',
+          role: 'owner',
+          status: 'active',
+        },
+      });
+    expect(groupsService.updateMemberRole).toHaveBeenCalledWith(
+      'group-1',
+      'user-1',
+      'user-2',
+      { role: 'owner' },
+    );
+  });
+
+  it('rejects an invalid member role before calling the service', async () => {
+    await request(app.getHttpServer())
+      .patch('/api/v1/groups/group-1/members/user-2')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ role: 'admin' })
+      .expect(400);
+    expect(groupsService.updateMemberRole).not.toHaveBeenCalled();
+  });
+
+  it('removes a member with an exact snake_case response', async () => {
+    groupsService.removeMember.mockResolvedValue({
+      userId: 'user-2',
+      status: 'REMOVED',
+    });
+    await request(app.getHttpServer())
+      .delete('/api/v1/groups/group-1/members/user-2')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({ data: { user_id: 'user-2', status: 'removed' } });
+    expect(groupsService.removeMember).toHaveBeenCalledWith(
+      'group-1',
+      'user-1',
+      'user-2',
+    );
+  });
+
+  it('leaves a group with an exact snake_case response', async () => {
+    groupsService.leaveGroup.mockResolvedValue({
+      groupId: 'group-1',
+      status: 'LEFT',
+    });
+    await request(app.getHttpServer())
+      .post('/api/v1/groups/group-1/leave')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(201)
+      .expect({ data: { group_id: 'group-1', status: 'left' } });
+    expect(groupsService.leaveGroup).toHaveBeenCalledWith(
+      'group-1',
+      'user-1',
+    );
+  });
+
   it.each([
     ['get', '/api/v1/groups/group-1'],
     ['get', '/api/v1/groups/group-1/members'],
     ['patch', '/api/v1/groups/group-1'],
+    ['patch', '/api/v1/groups/group-1/members/user-2'],
+    ['delete', '/api/v1/groups/group-1/members/user-2'],
+    ['post', '/api/v1/groups/group-1/leave'],
   ])('rejects unauthenticated %s %s', async (method, path) => {
-    await request(app.getHttpServer())[method as 'get' | 'patch'](path).expect(
-      401,
-    );
+    await request(app.getHttpServer())[
+      method as 'get' | 'patch' | 'delete' | 'post'
+    ](path).expect(401);
   });
 });
