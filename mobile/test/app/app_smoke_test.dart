@@ -7,6 +7,7 @@ import 'package:pairfund_mobile/app/router/app_routes.dart';
 import 'package:pairfund_mobile/features/home/data/home_repository.dart';
 import 'package:pairfund_mobile/features/home/providers/home_summary_provider.dart';
 import 'package:pairfund_mobile/features/groups/data/group_summary.dart';
+import 'package:pairfund_mobile/features/groups/data/group_repository.dart';
 import 'package:pairfund_mobile/features/groups/data/selected_group_persistence.dart';
 import 'package:pairfund_mobile/features/groups/providers/selected_group_provider.dart';
 import 'package:pairfund_mobile/features/invites/data/invite_repository.dart';
@@ -84,8 +85,39 @@ class FakeInviteRepository implements InviteRepository {
       throw UnimplementedError();
 }
 
+class FakeGovernanceRepository implements GroupRepository {
+  int leaveCalls = 0;
+  @override
+  Future<GroupDetail> fetchGroup(String groupId) async => const GroupDetail(
+        id: 'group-1',
+        name: 'Our Home',
+        groupType: 'couple',
+        defaultCurrency: 'TWD',
+        role: 'owner',
+        currentUserId: 'user-1',
+        members: [
+          GroupMemberSummary(
+              id: 'user-1', displayName: 'Edward', role: 'owner'),
+          GroupMemberSummary(
+              id: 'user-2', displayName: 'Alice', role: 'member'),
+        ],
+        funds: [],
+      );
+  @override
+  Future<void> leaveGroup(String groupId) async => leaveCalls++;
+  @override
+  Future<void> removeMember(String groupId, String userId) async {}
+  @override
+  Future<RenamedGroup> renameGroup(String groupId, String name) async =>
+      RenamedGroup(id: groupId, name: name);
+  @override
+  Future<void> updateMemberRole(
+      String groupId, String userId, String role) async {}
+}
+
 ProviderContainer _authenticatedContainer({
   InviteRepository? inviteRepository,
+  GroupRepository? groupRepository,
 }) {
   return ProviderContainer(
     overrides: <Override>[
@@ -109,6 +141,8 @@ ProviderContainer _authenticatedContainer({
       ),
       if (inviteRepository != null)
         inviteRepositoryProvider.overrideWithValue(inviteRepository),
+      if (groupRepository != null)
+        groupRepositoryProvider.overrideWithValue(groupRepository),
     ],
   );
 }
@@ -244,5 +278,25 @@ void main() {
 
     expect(repository.receivedGroupId, 'group-1');
     expect(find.text('ABC123456789'), findsOneWidget);
+  });
+
+  testWidgets(
+      'production governance leave waits for reconciliation then goes home',
+      (WidgetTester tester) async {
+    final repository = FakeGovernanceRepository();
+    final container = _authenticatedContainer(groupRepository: repository);
+    await _pumpProductionRouter(tester, container);
+    final router = container.read(appRouterProvider);
+    router.go(AppRoutes.groupDetailPath('group-1'));
+    await tester.pumpAndSettle();
+    final leaveButton = find.byKey(const Key('leave-group-button'));
+    await tester.drag(find.byType(ListView), const Offset(0, -300));
+    await tester.pumpAndSettle();
+    await tester.tap(leaveButton);
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Leave group'));
+    await tester.pumpAndSettle();
+    expect(repository.leaveCalls, 1);
+    expect(router.state.uri.path, AppRoutes.home);
   });
 }

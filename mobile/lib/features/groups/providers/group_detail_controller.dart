@@ -71,18 +71,22 @@ final groupRenameControllerProvider = StateNotifierProvider.autoDispose
 
 enum GroupMemberOperation { promote, demote, remove, leave }
 
+enum GroupReconciliationStatus { idle, succeeded, pending }
+
 class GroupMemberMutationState {
   const GroupMemberMutationState({
     this.isSubmitting = false,
     this.operation,
     this.errorCode,
     this.errorMessage,
+    this.reconciliationStatus = GroupReconciliationStatus.idle,
   });
 
   final bool isSubmitting;
   final GroupMemberOperation? operation;
   final String? errorCode;
   final String? errorMessage;
+  final GroupReconciliationStatus reconciliationStatus;
 }
 
 class GroupMemberMutationController
@@ -149,17 +153,29 @@ class GroupMemberMutationController
       return false;
     }
 
+    var reconciliationStatus = GroupReconciliationStatus.idle;
+    String? reconciliationMessage;
     try {
       _ref.invalidate(groupDetailProvider(_groupId));
       _ref.invalidate(homeGroupsProvider);
       if (awaitHomeReconciliation) {
         await _ref.read(homeGroupsProvider.future);
+        reconciliationStatus = GroupReconciliationStatus.succeeded;
       }
     } catch (_) {
       // The server mutation already succeeded. A later provider refresh can
       // recover local Home/selection state without retrying the mutation.
+      if (awaitHomeReconciliation) {
+        reconciliationStatus = GroupReconciliationStatus.pending;
+        reconciliationMessage =
+            'You left the group, but your group list could not refresh. '
+            'Return Home and refresh to continue.';
+      }
     } finally {
-      state = const GroupMemberMutationState();
+      state = GroupMemberMutationState(
+        errorMessage: reconciliationMessage,
+        reconciliationStatus: reconciliationStatus,
+      );
       keepAlive.close();
     }
     return true;

@@ -248,12 +248,13 @@ class _GroupDetailBody extends ConsumerWidget {
         .read(groupMemberMutationControllerProvider(detail.id).notifier)
         .leave();
     if (!context.mounted) return;
-    if (success) {
+    final state = ref.read(groupMemberMutationControllerProvider(detail.id));
+    if (success &&
+        state.reconciliationStatus == GroupReconciliationStatus.succeeded) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('You left the group.')));
       context.go(AppRoutes.home);
     } else {
-      final state = ref.read(groupMemberMutationControllerProvider(detail.id));
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(state.errorMessage ??
               'Unable to update group membership right now.')));
@@ -396,6 +397,7 @@ class _GroupDangerZone extends StatelessWidget {
           const Text('Leave this group while keeping its accounting history.'),
           const SizedBox(height: PfSpacing.sm),
           OutlinedButton.icon(
+            key: const Key('leave-group-button'),
             style: OutlinedButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.error),
             onPressed: isSubmitting ? null : onLeave,

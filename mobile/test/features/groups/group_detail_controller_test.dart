@@ -17,6 +17,7 @@ class _FakeRepository implements GroupRepository {
   Object? mutationError;
   final List<String> mutations = [];
   Completer<void>? mutationGate;
+  bool failHomeAfterLeave = false;
 
   @override
   Future<GroupDetail> fetchGroup(String groupId) async {
@@ -143,16 +144,15 @@ void main() {
       bool leaveFinalGroup = false,
       bool failHomeAfterLeave = false,
     }) {
-      var shouldFailHomeAfterLeave = failHomeAfterLeave;
+      repository.failHomeAfterLeave = failHomeAfterLeave;
       return ProviderContainer(overrides: [
         groupRepositoryProvider.overrideWithValue(repository),
         selectedGroupPersistenceProvider
             .overrideWithValue(persistence ?? _MemoryPersistence()),
         homeGroupsProvider.overrideWith((ref) async {
           homeLoadCount++;
-          if (shouldFailHomeAfterLeave &&
+          if (repository.failHomeAfterLeave &&
               repository.mutations.contains('leave')) {
-            shouldFailHomeAfterLeave = false;
             throw StateError('refresh failed');
           }
           final groups =
@@ -322,6 +322,8 @@ void main() {
       repository.mutationGate!.complete();
       expect(await leave, isTrue);
       expect(container.read(selectedGroupProvider), 'group-2');
+      expect(container.read(provider).reconciliationStatus,
+          GroupReconciliationStatus.succeeded);
     });
 
     test('leaving final group clears selected and persisted group', () async {
@@ -345,17 +347,21 @@ void main() {
       final repository = _FakeRepository();
       final container = makeContainer(repository, failHomeAfterLeave: true);
       addTearDown(container.dispose);
-      final success = await container
-          .read(groupMemberMutationControllerProvider('group-1').notifier)
-          .leave();
+      final provider = groupMemberMutationControllerProvider('group-1');
+      final subscription = container.listen(provider, (_, __) {});
+      addTearDown(subscription.close);
+      final success = await container.read(provider.notifier).leave();
       expect(success, isTrue);
       expect(repository.mutations, ['leave']);
       expect(
-        container
-            .read(groupMemberMutationControllerProvider('group-1'))
-            .errorMessage,
-        isNull,
+        container.read(provider).errorMessage,
+        'You left the group, but your group list could not refresh. Return Home and refresh to continue.',
       );
+      expect(
+        container.read(provider).reconciliationStatus,
+        GroupReconciliationStatus.pending,
+      );
+      repository.failHomeAfterLeave = false;
       container.invalidate(homeGroupsProvider);
       await container.read(homeGroupsProvider.future);
       expect(container.read(selectedGroupProvider), 'group-2');
