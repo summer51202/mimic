@@ -304,3 +304,17 @@
 - Exercised the worktree build against real PostgreSQL: promote/demote, pending-settlement block, open-balance block, completed-settlement removal, rejoin as Member, Member denial, self-leave, final-Owner protection, audit metadata, and concurrent Owner reduction.
 **Decisions:** Server mutation success remains authoritative when post-leave Mobile synchronization fails; navigation waits for successful reconciliation. Group-level advisory locking serializes membership-reducing operations and the relevant accounting and settlement transitions. Local WSL acceptance overrides container `PORT` and the database host without changing the Windows `.env`.
 **Known gaps / follow-ups:** Browser visual acceptance remains a user checkpoint. Dependency upgrades are deferred; the local Task 9 smoke records remain in the development database.
+
+## 2026-07-18 — Verify fund summary and group dashboard
+
+**Task:** Complete the agent-owned Phase 3 automated and runtime verification before user visual acceptance.
+**Scope:** Backend fund summary/dashboard services and HTTP contracts; Mobile dashboard and fund-detail data/UI; `.agents/features.md`; local WSL Docker acceptance stack.
+**What changed:**
+- Corrected the stale group repository test expectation so `6400` minor TWD units render as `TWD 64.00`.
+- Verified Backend unit tests 123/123, HTTP E2E tests 37/37, and the production Backend build.
+- Verified Flutter analyzer with no issues, Flutter tests 273/273, and the remote Web production build.
+- Exercised the worktree against real PostgreSQL with a populated group, a second empty group for switching, two TWD funds, one USD fund, a completed settlement, refund, correction, removed-member history, and outsider authorization.
+- Confirmed current-period boundaries, currency isolation, group/fund total equality, preserved historical records, and HTTP 403 for removed members and outsiders.
+- Promoted `view-fund-summary`, `fund-summary`, and `group-dashboard` to done in the feature map.
+**Decisions:** Dashboard aggregation remains currency-separated with no FX conversion. Runtime data uses unique local acceptance identities and remains in the development database for repeatable visual inspection.
+**Known gaps / follow-ups:** User browser visual acceptance passed on 2026-07-18. Dependency upgrades and WebAssembly compatibility remain deferred.

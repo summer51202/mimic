@@ -1,5 +1,5 @@
 # PairFund Feature Map
-_Last updated: 2026-07-17. Refresh with `/feature-map`._
+_Last updated: 2026-07-18. Refresh with `/feature-map`._
 
 ## MVP Core Path
 Minimal ordered sequence for end-to-end usability. Each step must be `done` for the product to ship.
@@ -12,7 +12,7 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 6. [done] **create-fund** — Owner can create a fund within the group · `create_fund_screen.dart` · `funds.service.ts`
 7. [done] **create-contribution** — Member can add a contribution to a fund · `create_contribution_screen.dart` · `contributions.service.ts`
 8. [done] **create-expense** — Member can record a fund expense with payers and splits · `create_expense_screen.dart` · `expenses.service.ts`
-9. [in-progress] **view-fund-summary** — Member can view current fund balance and member positions · `fund_detail_screen.dart` · missing `GET /funds/:id/summary`
+9. [done] **view-fund-summary** — Member can view current/all-time fund totals, period boundaries, and member positions · `fund_detail_screen.dart` · `GET /funds/:id/summary`
 10. [done] **get-settlement-suggestion** — System calculates minimum transfers to settle balances · `settlement_screen.dart` · `settlements.service.ts`
 11. [done] **complete-settlement** — Owner completes a settlement, locking the period · `settlement_screen.dart` · `settlements.service.ts`
 12. [done] **create-correction** — Member adds a correction transaction for a past error · `create_correction_screen.dart` · `expenses.service.ts` (expense_type=CORRECTION)
@@ -100,8 +100,8 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 
 | status | slug | description | frontend entry | backend entry |
 |--------|------|-------------|----------------|---------------|
-| in-progress | fund-summary | View fund balance + per-member position summary | `fund_detail_screen.dart` | missing `GET /funds/:id/summary` (balance reads exist in fund detail) |
-| todo | group-dashboard | Aggregated group-level view across funds | — | missing `GET /groups/:id/dashboard` |
+| done | fund-summary | View current/all-time fund totals, settlement period, and member positions | `fund_detail_screen.dart` | `funds.controller.ts GET /funds/:id/summary` |
+| done | group-dashboard | View cross-fund totals grouped by currency without FX conversion | `home_dashboard_screen.dart` | `funds.controller.ts GET /groups/:id/dashboard` |
 
 ### Audit Logs
 
@@ -151,8 +151,8 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 - [ ] Mobile UI for cancel-settlement action
 
 ### Dashboard & Read Models
-- [ ] `GET /funds/:id/summary` — dedicated summary endpoint with balance + positions
-- [ ] `GET /groups/:id/dashboard` — cross-fund aggregated view
+- [x] `GET /funds/:id/summary` — dedicated current/all-time summary with balance, period, and positions
+- [x] `GET /groups/:id/dashboard` — cross-fund totals grouped by currency
 
 ### Audit Logs
 - [ ] Entire audit module (NestJS module + controller)
