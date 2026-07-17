@@ -7,6 +7,7 @@ import '../data/home_repository.dart';
 final homeGroupsProvider = FutureProvider.autoDispose<List<GroupSummary>>(
   (Ref ref) async {
     final groups = await ref.watch(homeRepositoryProvider).fetchGroups();
+    await Future<void>.delayed(Duration.zero);
     await ref.read(selectedGroupProvider.notifier).reconcile(groups);
     return groups;
   },

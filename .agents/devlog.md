@@ -250,3 +250,14 @@
 - Reverified the complete test suites and exercised login, group list, group detail, members, and Web delivery against the running local stack.
 **Decisions:** Keep WSL containers and the D-drive checkout as the local development baseline; require health readiness after container restarts before acceptance requests.
 **Known gaps / follow-ups:** Member role management and the aggregated group dashboard remain planned; dependency upgrades remain deferred.
+## 2026-07-17 — Mobile group membership mutation state
+
+**Task:** Add operation-aware Mobile state for role changes, member removal, and leaving a group.
+**Scope:** Mobile group detail controller/tests and Home group-selection reconciliation timing.
+**What changed:**
+- Added promote, demote, remove, and leave mutation state with duplicate-submit prevention.
+- Added stable domain error codes and user-facing copy without exposing backend messages.
+- Invalidated group/Home data after mutations and awaited selection reconciliation after leave.
+- Deferred selection mutation until Home provider initialization completes.
+**Decisions:** Used request-scoped Riverpod keep-alive so an in-flight mutation survives temporary listener disposal.
+**Known gaps / follow-ups:** The full Flutter suite showed one intermittent failure while focused Group/Home suites passed; Task 8 and final Task 9 verification must rerun the full suite.
