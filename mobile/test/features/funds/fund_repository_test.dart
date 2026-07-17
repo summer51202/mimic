@@ -151,10 +151,10 @@ void main() {
       detail.recentActivity.first.amountMinor,
       detail.recentActivity.first.occurredOn
     ), (
-      FundActivityType.expense,
-      'Dinner',
-      880,
-      DateTime.utc(2026, 4, 1)
+      FundActivityType.contribution,
+      'Contribution',
+      1000,
+      DateTime.utc(2026, 4, 2, 10)
     ));
     expect((
       detail.recentActivity.last.type,
@@ -162,10 +162,10 @@ void main() {
       detail.recentActivity.last.amountMinor,
       detail.recentActivity.last.occurredOn
     ), (
-      FundActivityType.contribution,
-      'Contribution',
-      1000,
-      DateTime.utc(2026, 4, 2, 10)
+      FundActivityType.expense,
+      'Dinner',
+      880,
+      DateTime.utc(2026, 4, 1)
     ));
     expect(api.calls.map((e) => e.path), [
       '/funds/fund-1/summary',
@@ -173,9 +173,9 @@ void main() {
       '/funds/fund-1/contributions'
     ]);
     expect(api.calls[1].query,
-        {'page': 1, 'page_size': 3, 'sort': 'occurred_on:desc'});
+        {'page': 1, 'page_size': 3, 'sort': 'occurred_on_desc'});
     expect(api.calls[2].query,
-        {'page': 1, 'page_size': 3, 'sort': 'occurred_on:desc'});
+        {'page': 1, 'page_size': 3, 'sort': 'occurred_on_desc'});
     expect(api.calls.where((e) => e.path == '/funds/fund-1'), isEmpty);
   });
   test('maps null periods and empty positions/activity', () async {
@@ -198,6 +198,38 @@ void main() {
       null
     ]);
     expect(d.recentActivity, isEmpty);
+  });
+  test('merges newest activity across sources and keeps only three', () async {
+    final detail = await RemoteFundRepository(client(
+      expense: {
+        'data': [
+          {
+            'title': 'Old expense',
+            'occurred_on': '2026-04-01',
+            'amount_minor': 100
+          },
+          {
+            'title': 'Newest expense',
+            'occurred_on': '2026-04-05',
+            'amount_minor': 500
+          },
+          {
+            'title': 'Middle expense',
+            'occurred_on': '2026-04-03',
+            'amount_minor': 300
+          },
+        ]
+      },
+      contribution: {
+        'data': [
+          {'occurred_on': '2026-04-06', 'amount_minor': 600},
+          {'occurred_on': '2026-04-04', 'amount_minor': 400},
+          {'occurred_on': '2026-04-02', 'amount_minor': 200},
+        ]
+      },
+    )).fetchFundDetail('fund-1');
+    expect(
+        detail.recentActivity.map((item) => item.amountMinor), [600, 500, 400]);
   });
   final malformedObjects = <String, void Function(Map<String, dynamic>)>{
     'envelope data missing': (value) => value.remove('data'),
@@ -357,6 +389,19 @@ void main() {
       expect(
           () => RemoteFundRepository(client(expense: {
                 'data': [bad]
+              })).fetchFundDetail('fund-1'),
+          throwsFormatException);
+    }
+  });
+  test('requires a non-empty expense title', () async {
+    for (final expense in [
+      {'occurred_on': '2026-01-01', 'amount_minor': 1},
+      {'title': 7, 'occurred_on': '2026-01-01', 'amount_minor': 1},
+      {'title': '', 'occurred_on': '2026-01-01', 'amount_minor': 1},
+    ]) {
+      expect(
+          () => RemoteFundRepository(client(expense: {
+                'data': [expense]
               })).fetchFundDetail('fund-1'),
           throwsFormatException);
     }

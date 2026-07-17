@@ -41,9 +41,7 @@ DashboardPeriodTotals _totals(Map<String, dynamic> json) =>
 
 FundActivityItem mapFundActivity(Map<String, dynamic> json,
     {required bool contribution}) {
-  final title = contribution
-      ? 'Contribution'
-      : (json['title'] is String ? json['title'] as String : 'Expense');
+  final title = contribution ? 'Contribution' : _string(json, 'title');
   final occurredOn = _requiredDate(json['occurred_on'], 'occurred_on');
   final amount = _integer(json, 'amount_minor');
   return FundActivityItem(

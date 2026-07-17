@@ -102,13 +102,13 @@ class RemoteFundRepository implements FundRepository {
         queryParameters: <String, dynamic>{
           'page': 1,
           'page_size': 3,
-          'sort': 'occurred_on:desc'
+          'sort': 'occurred_on_desc'
         });
     final contributionResponse = await _apiClient
         .get('/funds/$fundId/contributions', queryParameters: <String, dynamic>{
       'page': 1,
       'page_size': 3,
-      'sort': 'occurred_on:desc'
+      'sort': 'occurred_on_desc'
     });
     final summary = mapFundSummaryResponse(summaryResponse);
     final activities = <FundActivityItem>[
@@ -116,8 +116,16 @@ class RemoteFundRepository implements FundRepository {
           .map((json) => mapFundActivity(json, contribution: false)),
       ...readDataListEnvelope(contributionResponse)
           .map((json) => mapFundActivity(json, contribution: true)),
-    ];
-    return summary.withRecentActivity(activities);
+    ]..sort((a, b) {
+        final byDate = b.occurredOn.compareTo(a.occurredOn);
+        if (byDate != 0) return byDate;
+        final byType = a.type.index.compareTo(b.type.index);
+        if (byType != 0) return byType;
+        final byTitle = a.title.compareTo(b.title);
+        if (byTitle != 0) return byTitle;
+        return b.amountMinor.compareTo(a.amountMinor);
+      });
+    return summary.withRecentActivity(activities.take(3).toList());
   }
 }
 
