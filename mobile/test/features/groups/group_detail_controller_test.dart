@@ -293,15 +293,17 @@ void main() {
     });
 
     test('leave awaits home refresh and selection reconciliation', () async {
-      final repository = _FakeRepository();
+      final repository = _FakeRepository()..mutationGate = Completer<void>();
       final container = makeContainer(repository);
       addTearDown(container.dispose);
       await container.read(homeGroupsProvider.future);
-      expect(
-          await container
-              .read(groupMemberMutationControllerProvider('group-1').notifier)
-              .leave(),
-          isTrue);
+      final provider = groupMemberMutationControllerProvider('group-1');
+      final leave = container.read(provider.notifier).leave();
+      await Future<void>.delayed(Duration.zero);
+      expect(container.read(provider).isSubmitting, isTrue);
+      expect(container.read(provider).operation, GroupMemberOperation.leave);
+      repository.mutationGate!.complete();
+      expect(await leave, isTrue);
       expect(container.read(selectedGroupProvider), 'group-2');
     });
 

@@ -271,3 +271,12 @@
 - Verified leaving the final group clears both selected state and persisted selection.
 **Decisions:** Provider refresh assertions require load counts to increase without coupling tests to Riverpod's exact scheduling count.
 **Known gaps / follow-ups:** The full parallel Flutter suite still reports one intermittent unrelated failure while all focused Group/Home tests pass; rerun during final integration.
+## 2026-07-17 — Verify in-flight leave state
+
+**Task:** Close the final Task 7 specification test gap for an in-flight leave request.
+**Scope:** Group detail mutation controller test.
+**What changed:**
+- Paused leave at the repository boundary and asserted submitting/leave operation state before completion.
+- Released the request and verified successful Home refresh and selected-group reconciliation.
+**Decisions:** Extended the existing reconciliation test to keep one end-to-end controlled scenario.
+**Known gaps / follow-ups:** None for Task 7 controller behavior.
