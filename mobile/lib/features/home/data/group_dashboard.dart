@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 enum DashboardScope { current, allTime }
 
 class GroupDashboard {
@@ -8,7 +6,7 @@ class GroupDashboard {
     required this.groupName,
     required this.defaultCurrency,
     required List<CurrencyDashboard> currencies,
-  }) : currencies = UnmodifiableListView(currencies);
+  }) : currencies = List.unmodifiable(currencies);
 
   final String groupId;
   final String groupName;
@@ -23,7 +21,7 @@ class CurrencyDashboard {
     required this.current,
     required this.allTime,
     required List<DashboardFundCard> funds,
-  }) : funds = UnmodifiableListView(funds);
+  }) : funds = List.unmodifiable(funds);
 
   final String currency;
   final int cashBalanceMinor;
@@ -38,7 +36,7 @@ class DashboardPeriodTotals {
     required this.contributionMinor,
     required this.expenseMinor,
     required List<DashboardMemberPosition> memberPositions,
-  }) : memberPositions = UnmodifiableListView(memberPositions);
+  }) : memberPositions = List.unmodifiable(memberPositions);
 
   final int netChangeMinor;
   final int contributionMinor;

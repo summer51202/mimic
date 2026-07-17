@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:pairfund_mobile/features/home/data/group_dashboard.dart';
 import 'package:pairfund_mobile/features/home/data/home_repository.dart';
 import 'package:pairfund_mobile/features/home/data/remote/group_dashboard_remote_mapper.dart';
 import 'package:pairfund_mobile/features/home/data/remote/home_remote_mapper.dart';
@@ -39,6 +40,60 @@ class FakeApiClient implements PairFundApiClient {
 }
 
 void main() {
+  test('dashboard models defensively copy every list', () {
+    final members = <DashboardMemberPosition>[
+      const DashboardMemberPosition(
+        userId: 'user-1',
+        displayName: 'Edward',
+        membershipStatus: 'active',
+        positionMinor: 100,
+      ),
+    ];
+    final totals = DashboardPeriodTotals(
+      netChangeMinor: 100,
+      contributionMinor: 100,
+      expenseMinor: 0,
+      memberPositions: members,
+    );
+    final funds = <DashboardFundCard>[
+      const DashboardFundCard(
+        fundId: 'fund-1',
+        name: 'Daily',
+        cashBalanceMinor: 100,
+        currentNetChangeMinor: 100,
+        periodStart: null,
+        periodEnd: null,
+      ),
+    ];
+    final currency = CurrencyDashboard(
+      currency: 'TWD',
+      cashBalanceMinor: 100,
+      current: totals,
+      allTime: totals,
+      funds: funds,
+    );
+    final currencies = <CurrencyDashboard>[currency];
+    final dashboard = GroupDashboard(
+      groupId: 'group-1',
+      groupName: 'Pair',
+      defaultCurrency: 'TWD',
+      currencies: currencies,
+    );
+
+    members.clear();
+    funds.clear();
+    currencies.clear();
+
+    expect(totals.memberPositions, hasLength(1));
+    expect(currency.funds, hasLength(1));
+    expect(dashboard.currencies, hasLength(1));
+    expect(() => totals.memberPositions.add(totals.memberPositions.single),
+        throwsUnsupportedError);
+    expect(() => currency.funds.add(currency.funds.single),
+        throwsUnsupportedError);
+    expect(() => dashboard.currencies.add(currency), throwsUnsupportedError);
+  });
+
   group('group dashboard mapper', () {
     test('maps currencies, nullable periods, former members, and zero defaults',
         () {
@@ -50,15 +105,46 @@ void main() {
             'default_currency': 'TWD',
           },
           'currencies': <dynamic>[
-            _currencyJson('TWD', memberStatus: 'removed'),
-            _currencyJson('USD', periodStart: '2026-07-01T00:00:00.000Z'),
+            _currencyJson('TWD',
+                cashBalanceMinor: 111,
+                currentNetChangeMinor: 11,
+                allTimeNetChangeMinor: 101,
+                memberStatus: 'removed',
+                positionMinor: 7),
+            _currencyJson('USD',
+                cashBalanceMinor: 222,
+                currentNetChangeMinor: 22,
+                allTimeNetChangeMinor: 202,
+                positionMinor: -9,
+                periodStart: '2026-07-01T00:00:00.000Z'),
           ],
         },
       });
 
       expect(dashboard.groupId, 'group-1');
       expect(dashboard.currencies.map((item) => item.currency), ['TWD', 'USD']);
-      expect(dashboard.currencies.first.current.netChangeMinor, 0);
+      expect(dashboard.currencies.first.cashBalanceMinor, 111);
+      expect(dashboard.currencies.first.current.netChangeMinor, 11);
+      expect(dashboard.currencies.first.current.contributionMinor, 11);
+      expect(dashboard.currencies.first.current.expenseMinor, 0);
+      expect(dashboard.currencies.first.allTime.netChangeMinor, 101);
+      expect(dashboard.currencies.first.allTime.contributionMinor, 101);
+      expect(dashboard.currencies.first.allTime.expenseMinor, 0);
+      expect(
+          dashboard
+              .currencies.first.current.memberPositions.single.positionMinor,
+          7);
+      expect(dashboard.currencies.last.cashBalanceMinor, 222);
+      expect(dashboard.currencies.last.current.netChangeMinor, 22);
+      expect(dashboard.currencies.last.current.contributionMinor, 22);
+      expect(dashboard.currencies.last.current.expenseMinor, 0);
+      expect(dashboard.currencies.last.allTime.netChangeMinor, 202);
+      expect(dashboard.currencies.last.allTime.contributionMinor, 202);
+      expect(dashboard.currencies.last.allTime.expenseMinor, 0);
+      expect(
+          dashboard
+              .currencies.last.current.memberPositions.single.positionMinor,
+          -9);
       expect(dashboard.currencies.first.funds.single.periodStart, isNull);
       expect(dashboard.currencies.last.funds.single.periodStart?.isUtc, isTrue);
       expect(
@@ -210,7 +296,16 @@ void main() {
             },
             'currencies': <dynamic>[
               _currencyJson('TWD',
-                  cashBalanceMinor: 10000, includeSecondFund: true)
+                  cashBalanceMinor: 10000,
+                  currentNetChangeMinor: 1200,
+                  allTimeNetChangeMinor: 9800,
+                  positionMinor: 600,
+                  includeSecondFund: true),
+              _currencyJson('USD',
+                  cashBalanceMinor: 2500,
+                  currentNetChangeMinor: -300,
+                  allTimeNetChangeMinor: 2200,
+                  positionMinor: -150),
             ],
           }
         },
@@ -226,6 +321,25 @@ void main() {
     expect(summary.totalBalanceLabel, 'TWD 10,000');
     expect(summary.activeFunds.length, 2);
     expect(summary.activeFunds.first.name, 'Date Fund');
+    expect(summary.dashboard!.currencies, hasLength(2));
+    expect(summary.dashboard!.currencies[0].cashBalanceMinor, 10000);
+    expect(summary.dashboard!.currencies[0].current.netChangeMinor, 1200);
+    expect(summary.dashboard!.currencies[0].current.contributionMinor, 1200);
+    expect(summary.dashboard!.currencies[0].current.expenseMinor, 0);
+    expect(summary.dashboard!.currencies[0].allTime.netChangeMinor, 9800);
+    expect(
+        summary.dashboard!.currencies[0].current.memberPositions.single
+            .positionMinor,
+        600);
+    expect(summary.dashboard!.currencies[1].cashBalanceMinor, 2500);
+    expect(summary.dashboard!.currencies[1].current.netChangeMinor, -300);
+    expect(summary.dashboard!.currencies[1].current.contributionMinor, 0);
+    expect(summary.dashboard!.currencies[1].current.expenseMinor, 300);
+    expect(summary.dashboard!.currencies[1].allTime.netChangeMinor, 2200);
+    expect(
+        summary.dashboard!.currencies[1].current.memberPositions.single
+            .positionMinor,
+        -150);
     expect(
       groups,
       contains(
@@ -322,6 +436,9 @@ void main() {
 Map<String, dynamic> _currencyJson(
   String currency, {
   int cashBalanceMinor = 0,
+  int currentNetChangeMinor = 0,
+  int allTimeNetChangeMinor = 0,
+  int positionMinor = 0,
   String? periodStart,
   String memberStatus = 'active',
   bool includeSecondFund = false,
@@ -330,16 +447,33 @@ Map<String, dynamic> _currencyJson(
     'currency': currency,
     'cash_balance_minor': cashBalanceMinor,
     'current': <String, dynamic>{
+      'net_change_minor': currentNetChangeMinor,
+      'contribution_minor':
+          currentNetChangeMinor > 0 ? currentNetChangeMinor : 0,
+      'expense_minor': currentNetChangeMinor < 0 ? -currentNetChangeMinor : 0,
       'member_positions': <dynamic>[
         <String, dynamic>{
           'user_id': 'user-1',
           'display_name': 'Edward',
           'membership_status': memberStatus,
-          'position_minor': 0,
+          'position_minor': positionMinor,
         },
       ],
     },
-    'all_time': <String, dynamic>{},
+    'all_time': <String, dynamic>{
+      'net_change_minor': allTimeNetChangeMinor,
+      'contribution_minor':
+          allTimeNetChangeMinor > 0 ? allTimeNetChangeMinor : 0,
+      'expense_minor': allTimeNetChangeMinor < 0 ? -allTimeNetChangeMinor : 0,
+      'member_positions': <dynamic>[
+        <String, dynamic>{
+          'user_id': 'user-1',
+          'display_name': 'Edward',
+          'membership_status': memberStatus,
+          'position_minor': positionMinor,
+        },
+      ],
+    },
     'funds': <dynamic>[
       <String, dynamic>{
         'fund_id': 'fund-$currency',
