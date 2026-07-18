@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
 import { UpdateMeDto } from './dto/update-me.dto';
@@ -15,8 +15,23 @@ export class UsersController {
     return { data: this.mapMe(currentUser) };
   }
 
-  @Post('me')
+  @Patch('me')
   async updateMe(@CurrentUser() user: RequestUser, @Body() dto: UpdateMeDto) {
+    return this.updateCurrentUser(user, dto);
+  }
+
+  @Post('me')
+  async updateMeCompatibility(
+    @CurrentUser() user: RequestUser,
+    @Body() dto: UpdateMeDto,
+  ) {
+    return this.updateCurrentUser(user, dto);
+  }
+
+  private async updateCurrentUser(
+    user: RequestUser,
+    dto: UpdateMeDto,
+  ) {
     const updatedUser = await this.usersService.updateProfile(user.userId, {
       displayName: dto.display_name,
       locale: dto.locale,
