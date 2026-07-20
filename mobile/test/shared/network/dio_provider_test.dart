@@ -7,7 +7,11 @@ import 'package:pairfund_mobile/shared/providers/session_provider.dart';
 import 'package:pairfund_mobile/shared/network/dio_provider.dart';
 
 class FakeHttpClientAdapter implements HttpClientAdapter {
+  FakeHttpClientAdapter({this.alwaysUnauthorized = false});
+
+  final bool alwaysUnauthorized;
   int protectedRequestCount = 0;
+  int refreshRequestCount = 0;
   String? retriedAuthorizationHeader;
 
   @override
@@ -19,10 +23,21 @@ class FakeHttpClientAdapter implements HttpClientAdapter {
     Stream<Uint8List>? requestStream,
     Future<void>? cancelFuture,
   ) async {
+    if (options.path == '/auth/refresh') {
+      refreshRequestCount += 1;
+      return ResponseBody.fromString(
+        '{"error":{"code":"INVALID_REFRESH_TOKEN"}}',
+        401,
+        headers: <String, List<String>>{
+          Headers.contentTypeHeader: <String>['application/json'],
+        },
+      );
+    }
+
     if (options.path == '/protected') {
       protectedRequestCount += 1;
 
-      if (protectedRequestCount == 1) {
+      if (protectedRequestCount == 1 || alwaysUnauthorized) {
         return ResponseBody.fromString(
           '{"error":{"code":"UNAUTHORIZED"}}',
           401,
@@ -132,5 +147,72 @@ void main() {
 
     expect(adapter.protectedRequestCount, 1);
     expect(refreshFailed, isTrue);
+  });
+
+  test('does not try to refresh the refresh request itself', () async {
+    final adapter = FakeHttpClientAdapter();
+    bool refreshFailed = false;
+    final dio = buildDioClient(
+      'http://localhost',
+      accessToken: 'old-token',
+      refreshToken: 'refresh-token',
+      refreshSession: (refreshToken) async {
+        final refreshDio = Dio(
+          BaseOptions(baseUrl: 'http://localhost'),
+        )..httpClientAdapter = adapter;
+        try {
+          await refreshDio.post<Map<String, dynamic>>(
+            '/auth/refresh',
+            data: <String, dynamic>{'refresh_token': refreshToken},
+          );
+        } on DioException {
+          // The fake refresh endpoint intentionally rejects this token.
+        }
+        return null;
+      },
+      onRefreshFailed: () async {
+        refreshFailed = true;
+      },
+    )..httpClientAdapter = adapter;
+
+    await expectLater(
+      dio.get<Map<String, dynamic>>('/protected'),
+      throwsA(isA<DioException>()),
+    );
+
+    expect(adapter.protectedRequestCount, 1);
+    expect(adapter.refreshRequestCount, 1);
+    expect(refreshFailed, isTrue);
+  });
+
+  test('does not refresh the same request more than once', () async {
+    final adapter = FakeHttpClientAdapter(alwaysUnauthorized: true);
+    int refreshCount = 0;
+    bool refreshFailed = false;
+    final dio = buildDioClient(
+      'http://localhost',
+      accessToken: 'old-token',
+      refreshToken: 'refresh-token',
+      refreshSession: (_) async {
+        refreshCount += 1;
+        return const SessionState(
+          accessToken: 'new-token',
+          refreshToken: 'new-refresh-token',
+          userId: 'user-1',
+        );
+      },
+      onRefreshFailed: () async {
+        refreshFailed = true;
+      },
+    )..httpClientAdapter = adapter;
+
+    await expectLater(
+      dio.get<Map<String, dynamic>>('/protected'),
+      throwsA(isA<DioException>()),
+    );
+
+    expect(adapter.protectedRequestCount, 2);
+    expect(refreshCount, 1);
+    expect(refreshFailed, isFalse);
   });
 }
