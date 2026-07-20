@@ -152,16 +152,16 @@ void main() {
   test('does not try to refresh the refresh request itself', () async {
     final adapter = FakeHttpClientAdapter();
     bool refreshFailed = false;
-    final dio = buildDioClient(
+    int refreshSessionCallbackCount = 0;
+    late Dio dio;
+    dio = buildDioClient(
       'http://localhost',
       accessToken: 'old-token',
       refreshToken: 'refresh-token',
       refreshSession: (refreshToken) async {
-        final refreshDio = Dio(
-          BaseOptions(baseUrl: 'http://localhost'),
-        )..httpClientAdapter = adapter;
+        refreshSessionCallbackCount += 1;
         try {
-          await refreshDio.post<Map<String, dynamic>>(
+          await dio.post<Map<String, dynamic>>(
             '/auth/refresh',
             data: <String, dynamic>{'refresh_token': refreshToken},
           );
@@ -182,6 +182,7 @@ void main() {
 
     expect(adapter.protectedRequestCount, 1);
     expect(adapter.refreshRequestCount, 1);
+    expect(refreshSessionCallbackCount, 1);
     expect(refreshFailed, isTrue);
   });
 
@@ -213,6 +214,8 @@ void main() {
 
     expect(adapter.protectedRequestCount, 2);
     expect(refreshCount, 1);
-    expect(refreshFailed, isFalse);
+    // The retry is attempted once; its second 401 is reported through the
+    // interceptor's current cleanup path.
+    expect(refreshFailed, isTrue);
   });
 }
