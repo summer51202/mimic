@@ -331,3 +331,15 @@
 - Verified Flutter analyzer with no issues, focused settlement tests 11/11, and the complete Flutter suite 280/280.
 **Decisions:** Kept mutation state screen-local for this small batch; the Backend remains authoritative for settlement state and authorization.
 **Known gaps / follow-ups:** Backend authorization behavior was not changed. Dependency upgrades remain deferred.
+
+## 2026-07-18 - Cross-platform alpha readiness foundation
+
+**Task:** Prepare shared auth/profile/session behavior and alpha guidance for the first iOS and Android tester cohort.
+**Scope:** Backend current-user profile route, Mobile settings profile repository, Mobile Dio refresh tests, alpha readiness documentation, `.agents/features.md`
+**What changed:**
+- Added canonical `PATCH /me` profile update coverage and route while preserving temporary `POST /me` compatibility.
+- Updated Mobile settings profile updates to call `PATCH /me`.
+- Added token refresh regression coverage for successful retry, refresh failure cleanup, non-recursive refresh handling, and single retry behavior.
+- Added Android/iOS alpha install guidance and a cross-platform acceptance checklist.
+**Decisions:** Keep first alpha readiness work focused on shared foundation and checklist documentation; packaging and TestFlight execution remain a follow-up batch.
+**Known gaps / follow-ups:** Flutter verification in this worktree is still blocked by dependency/runtime setup timeouts; transaction edit/delete, categories, audit log browsing, and actual Android/iOS build distribution remain outside this batch.

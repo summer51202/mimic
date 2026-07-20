@@ -28,9 +28,9 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 | done | user-register | Register with email + password | `login_screen.dart` | `auth.controller.ts POST /auth/register` |
 | done | user-login | Log in and receive access + refresh tokens | `auth_controller.dart` | `auth.service.ts login()` |
 | done | user-logout | Sign out and invalidate session | `session_provider.dart` | `auth.controller.ts POST /auth/logout` |
-| in-progress | token-refresh | Auto-refresh access token on expiry | `pairfund_api_client.dart` | `auth.controller.ts POST /auth/refresh` |
+| done | token-refresh | Auto-refresh access token on expiry | `dio_provider.dart` | `auth.controller.ts POST /auth/refresh` |
 | done | user-profile-view | View own display name, locale, timezone | `settings_screen.dart` | `users.controller.ts GET /me` |
-| in-progress | user-profile-update | Update own profile | `settings_profile_controller.dart` | `users.controller.ts` (POST instead of PATCH — method mismatch) |
+| done | user-profile-update | Update own profile | `settings_profile_controller.dart` | `users.controller.ts PATCH /me` |
 
 ### Groups & Membership
 
@@ -121,8 +121,8 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 ## TODO Backlog
 
 ### Auth & Identity
-- [ ] Fix PATCH /me — currently implemented as POST in users.controller.ts (method mismatch with spec and mobile)
-- [ ] Verify token-refresh is wired in mobile Dio interceptor (auto-retry on 401)
+- [x] Fix PATCH /me - Mobile uses canonical PATCH and Backend keeps temporary POST compatibility
+- [x] Verify token-refresh is wired in mobile Dio interceptor (auto-retry on 401)
 
 ### Groups & Membership
 - [x] Role promotion/demotion, settled-member removal, and self-leave governance flows
