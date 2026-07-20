@@ -88,7 +88,7 @@ class DemoSettingsRepository implements SettingsRepository {
 class RemoteSettingsRepository implements SettingsRepository {
   RemoteSettingsRepository(this._apiClient);
 
-  final PairFundApiClient _apiClient;
+  final PairFundGroupApiClient _apiClient;
 
   @override
   Future<SettingsProfile> fetchProfile() async {
@@ -98,7 +98,7 @@ class RemoteSettingsRepository implements SettingsRepository {
 
   @override
   Future<SettingsProfile> updateProfile(SettingsProfilePatch patch) async {
-    final response = await _apiClient.post('/me', data: patch.toJson());
+    final response = await _apiClient.patch('/me', data: patch.toJson());
     return SettingsProfile.fromJson(readDataEnvelope(response));
   }
 }
@@ -107,7 +107,7 @@ final settingsRepositoryProvider = Provider<SettingsRepository>((Ref ref) {
   final apiMode = ref.watch(apiModeProvider);
 
   if (apiMode == AppApiMode.remote) {
-    return RemoteSettingsRepository(ref.watch(pairFundApiClientProvider));
+    return RemoteSettingsRepository(ref.watch(pairFundGroupApiClientProvider));
   }
 
   return DemoSettingsRepository();

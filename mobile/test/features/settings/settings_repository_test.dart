@@ -2,12 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pairfund_mobile/features/settings/data/settings_repository.dart';
 import 'package:pairfund_mobile/shared/api/pairfund_api_client.dart';
 
-class FakeApiClient implements PairFundApiClient {
+class FakeApiClient implements PairFundGroupApiClient {
   FakeApiClient(this._responses);
 
   final Map<String, Map<String, dynamic>> _responses;
-  String? lastPostPath;
-  Map<String, dynamic>? lastPostData;
+  String? lastPatchPath;
+  Map<String, dynamic>? lastPatchData;
 
   @override
   Future<Map<String, dynamic>> get(
@@ -27,13 +27,30 @@ class FakeApiClient implements PairFundApiClient {
     Map<String, dynamic>? data,
     Map<String, dynamic>? queryParameters,
   }) async {
-    lastPostPath = path;
-    lastPostData = data;
+    throw StateError('POST should not be used by settings profile update');
+  }
+
+  @override
+  Future<Map<String, dynamic>> patch(
+    String path, {
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    lastPatchPath = path;
+    lastPatchData = data;
     final response = _responses[path];
     if (response == null) {
-      throw StateError('Missing fake response for POST $path');
+      throw StateError('Missing fake response for PATCH $path');
     }
     return response;
+  }
+
+  @override
+  Future<Map<String, dynamic>> delete(
+    String path, {
+    Map<String, dynamic>? data,
+  }) async {
+    throw StateError('DELETE should not be used by settings profile update');
   }
 }
 
@@ -88,8 +105,8 @@ void main() {
       ),
     );
 
-    expect(apiClient.lastPostPath, '/me');
-    expect(apiClient.lastPostData?['display_name'], 'Edward Lee');
+    expect(apiClient.lastPatchPath, '/me');
+    expect(apiClient.lastPatchData?['display_name'], 'Edward Lee');
     expect(profile.displayName, 'Edward Lee');
   });
 }
