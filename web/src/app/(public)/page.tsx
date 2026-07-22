@@ -3,16 +3,16 @@ import styles from "@/shared/brand/hero.module.css";
 
 const signals = [
   {
-    title: "共享基金",
-    text: "把旅行、約會、家用和夢想清單放在同一個冒險背包裡，誰存了多少一眼看清楚。",
+    title: "共同基金",
+    text: "為共同目標建立基金，讓每筆出資與支出都回到同一個清楚的帳務脈絡。",
   },
   {
-    title: "一起記帳",
-    text: "支出、分攤和補款都保留脈絡，不靠猜測回想上一次是誰先墊。",
+    title: "彈性分帳",
+    text: "支援等分、比例、固定金額與混合分帳，也能保留多人付款的真實金流。",
   },
   {
-    title: "安心結算",
-    text: "每段旅程結束後鎖定紀錄，後續修正用新交易補上，帳本不倒帶。",
+    title: "結算鎖定",
+    text: "完成結算後鎖定期間，修正用新交易補上，讓共同帳務不被回頭改寫。",
   },
 ];
 
@@ -23,7 +23,7 @@ export default function PublicHome() {
       <section
         id="features"
         className={styles.nextBand}
-        aria-label="mimic 冒險功能概覽"
+        aria-label="mimic 功能摘要"
       >
         <div className={styles.nextBandInner}>
           {signals.map((signal) => (

@@ -22,7 +22,7 @@ export function Hero() {
         <Image
           className={`${styles.heroImage} pixel-art`}
           src="/brand/mimiku-hero.png"
-          alt={`${brand.characterNameZh} ${brand.characterNameEn} 在異世界村莊守著共享基金寶箱`}
+          alt={`${brand.characterNameZh} ${brand.characterNameEn} 守著共同基金寶箱`}
           width={1672}
           height={941}
           priority

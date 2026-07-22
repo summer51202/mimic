@@ -10,7 +10,7 @@ export function SiteHeader() {
           <Wordmark as="span" />
         </Link>
         <div className={styles.navActions}>
-          <Link className={styles.navLink} href="#features">
+          <Link className={styles.navLink} href="/features">
             功能
           </Link>
           <Link className={styles.navLink} href="/login">
