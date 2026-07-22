@@ -1,0 +1,243 @@
+.publicShell {
+  min-height: 100svh;
+  color: var(--mimic-color-ink);
+  background: var(--mimic-color-surface);
+}
+
+.siteHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 2px solid color-mix(in srgb, var(--mimic-color-line) 70%, transparent);
+  background: color-mix(in srgb, var(--mimic-color-surface) 94%, white);
+}
+
+.siteNav {
+  display: flex;
+  min-height: 4.25rem;
+  width: min(100% - 2rem, 72rem);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mimic-space-4);
+  margin: 0 auto;
+}
+
+.brandLink {
+  display: inline-flex;
+  align-items: center;
+}
+
+.navActions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mimic-space-3);
+}
+
+.navLink,
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--mimic-radius-2);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.navLink {
+  min-height: 2.5rem;
+  padding: 0 var(--mimic-space-3);
+  color: var(--mimic-color-ink-soft);
+}
+
+.primaryAction {
+  border: 2px solid var(--mimic-color-ink);
+  box-shadow: var(--mimic-shadow-pixel);
+  background: var(--mimic-color-coin);
+  color: var(--mimic-color-ink);
+}
+
+.main {
+  display: block;
+}
+
+.hero {
+  display: grid;
+  min-height: max(31rem, calc(100svh - 9.5rem));
+  width: min(100% - 2rem, 76rem);
+  grid-template-columns: minmax(0, 0.92fr) minmax(18rem, 1.18fr);
+  align-items: center;
+  gap: var(--mimic-space-6);
+  margin: 0 auto;
+  padding: var(--mimic-space-5) 0 var(--mimic-space-4);
+}
+
+.heroCopy {
+  display: grid;
+  max-width: 35rem;
+  gap: var(--mimic-space-4);
+  justify-items: start;
+}
+
+.kicker {
+  color: var(--mimic-color-wood);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.title {
+  color: var(--mimic-color-ink);
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0.95;
+}
+
+.tagline {
+  max-width: 29rem;
+  color: var(--mimic-color-ink-soft);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.primaryAction {
+  min-height: 3rem;
+  padding: 0 var(--mimic-space-5);
+}
+
+.heroVisual {
+  justify-self: end;
+  width: min(100%, 58rem);
+  aspect-ratio: 1672 / 941;
+}
+
+.heroImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1672 / 941;
+  object-fit: cover;
+  object-position: center;
+}
+
+.nextBand {
+  border-top: 2px solid color-mix(in srgb, var(--mimic-color-line) 72%, transparent);
+  background: var(--mimic-color-surface-raised);
+}
+
+.nextBandInner {
+  display: grid;
+  width: min(100% - 2rem, 72rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mimic-space-4);
+  margin: 0 auto;
+  padding: var(--mimic-space-5) 0;
+}
+
+.signal {
+  min-height: 5.25rem;
+  border-left: 4px solid var(--mimic-color-grass);
+  padding-left: var(--mimic-space-4);
+}
+
+.signalTitle {
+  margin-bottom: var(--mimic-space-2);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.signalText {
+  color: var(--mimic-color-ink-soft);
+  line-height: 1.5;
+}
+
+.siteFooter {
+  border-top: 2px solid color-mix(in srgb, var(--mimic-color-line) 70%, transparent);
+  color: var(--mimic-color-ink-soft);
+  background: var(--mimic-color-surface);
+}
+
+.footerInner {
+  display: flex;
+  width: min(100% - 2rem, 72rem);
+  min-height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mimic-space-4);
+  margin: 0 auto;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 760px) {
+  .siteNav {
+    min-height: 4rem;
+  }
+
+  .navActions {
+    gap: var(--mimic-space-2);
+  }
+
+  .hero {
+    min-height: max(30rem, calc(100svh - 9rem));
+    grid-template-columns: 1fr;
+    gap: var(--mimic-space-4);
+    padding-top: var(--mimic-space-4);
+  }
+
+  .heroCopy {
+    max-width: 100%;
+    gap: var(--mimic-space-3);
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .tagline {
+    font-size: 1.12rem;
+  }
+
+  .heroVisual {
+    justify-self: center;
+    width: min(100%, 34rem);
+  }
+
+  .nextBandInner {
+    grid-template-columns: 1fr;
+  }
+
+  .footerInner {
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--mimic-space-4) 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .brandLink :global(.mimic-wordmark__character) {
+    display: none;
+  }
+
+  .siteNav {
+    gap: var(--mimic-space-2);
+  }
+
+  .navActions {
+    gap: 0.25rem;
+  }
+
+  .navLink {
+    min-height: 2.25rem;
+    padding: 0 0.45rem;
+    font-size: 0.9rem;
+  }
+
+  .title {
+    font-size: 2.6rem;
+  }
+
+  .primaryAction {
+    width: 100%;
+  }
+}
