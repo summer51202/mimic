@@ -1,0 +1,31 @@
+:root {
+  --mimic-color-ink: #17213a;
+  --mimic-color-ink-soft: #31405f;
+  --mimic-color-coin: #f4b83f;
+  --mimic-color-coin-deep: #b87918;
+  --mimic-color-wood: #8a5a35;
+  --mimic-color-heart: #d74f4f;
+  --mimic-color-grass: #4f9d5d;
+  --mimic-color-sky: #6fb7df;
+  --mimic-color-surface: #fffaf0;
+  --mimic-color-surface-raised: #ffffff;
+  --mimic-color-line: #d9c7a8;
+  --mimic-color-focus: #2f82d6;
+
+  --mimic-space-1: 0.25rem;
+  --mimic-space-2: 0.5rem;
+  --mimic-space-3: 0.75rem;
+  --mimic-space-4: 1rem;
+  --mimic-space-5: 1.5rem;
+  --mimic-space-6: 2rem;
+
+  --mimic-radius-1: 2px;
+  --mimic-radius-2: 4px;
+  --mimic-radius-panel: 8px;
+
+  --mimic-shadow-pixel: 0 3px 0 var(--mimic-color-ink);
+  --mimic-shadow-pixel-soft: 0 3px 0 color-mix(in srgb, var(--mimic-color-ink) 55%, transparent);
+
+  --background: var(--mimic-color-surface);
+  --foreground: var(--mimic-color-ink);
+}

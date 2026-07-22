@@ -1,14 +1,4 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@import "../styles/tokens.css";
 
 html {
   height: 100%;
@@ -42,8 +32,92 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.pixel-art {
+  image-rendering: pixelated;
+}
+
+.pixel-button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mimic-space-2);
+  border: 2px solid var(--mimic-color-ink);
+  border-radius: var(--mimic-radius-2);
+  box-shadow: var(--mimic-shadow-pixel);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 var(--mimic-space-4);
+  text-align: center;
+  transition:
+    box-shadow 120ms ease,
+    transform 120ms ease,
+    background-color 120ms ease;
+}
+
+.pixel-button[data-emphasis="primary"] {
+  background: var(--mimic-color-coin);
+  color: var(--mimic-color-ink);
+}
+
+.pixel-button[data-emphasis="secondary"] {
+  background: var(--mimic-color-sky);
+  color: var(--mimic-color-ink);
+}
+
+.pixel-button[data-emphasis="danger"] {
+  background: var(--mimic-color-heart);
+  color: var(--mimic-color-surface-raised);
+}
+
+.pixel-button[data-emphasis="ghost"] {
+  background: var(--mimic-color-surface-raised);
+  color: var(--mimic-color-ink);
+}
+
+.pixel-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.pixel-button:active:not(:disabled) {
+  box-shadow: 0 1px 0 var(--mimic-color-ink);
+  transform: translateY(2px);
+}
+
+.pixel-button:focus-visible {
+  outline: 3px solid var(--mimic-color-focus);
+  outline-offset: 3px;
+}
+
+.pixel-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.pixel-panel {
+  border: 2px solid var(--mimic-color-line);
+  border-radius: var(--mimic-radius-panel);
+  background: var(--mimic-color-surface-raised);
+  color: var(--mimic-color-ink);
+  padding: var(--mimic-space-5);
+}
+
+.mimic-wordmark {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--mimic-space-2);
+  color: var(--mimic-color-ink);
+  font-weight: 800;
+}
+
+.mimic-wordmark__product {
+  font-size: 1.25em;
+}
+
+.mimic-wordmark__character {
+  color: var(--mimic-color-wood);
+  font-size: 0.85em;
 }
