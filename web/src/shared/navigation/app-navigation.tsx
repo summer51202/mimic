@@ -1,0 +1,85 @@
+import Link from "next/link";
+
+import { Wordmark } from "@/shared/brand/wordmark";
+
+import styles from "./app-navigation.module.css";
+
+type AppNavigationVariant = "mobile" | "desktop";
+
+type AppNavigationProps = {
+  currentPath: string;
+  variant: AppNavigationVariant;
+};
+
+const navigationItems = [
+  {
+    icon: "O",
+    href: "/app",
+    label: "Overview",
+    status: "available",
+  },
+  {
+    icon: "G",
+    label: "Groups",
+    status: "soon",
+  },
+  {
+    icon: "A",
+    label: "Activity",
+    status: "soon",
+  },
+  {
+    icon: "S",
+    label: "Settings",
+    status: "soon",
+  },
+] as const;
+
+export function AppNavigation({ currentPath, variant }: AppNavigationProps) {
+  return (
+    <nav
+      aria-label="Primary app sections"
+      className={styles.navigation}
+      data-variant={variant}
+    >
+      {variant === "desktop" ? (
+        <div className={styles.brand}>
+          <Wordmark as="div" />
+        </div>
+      ) : null}
+
+      <ul className={styles.list}>
+        {navigationItems.map((item) => (
+          <li className={styles.item} key={item.label}>
+            {item.status === "available" ? (
+              <Link
+                aria-current={currentPath === item.href ? "page" : undefined}
+                className={styles.link}
+                data-current={currentPath === item.href ? "true" : undefined}
+                href={item.href}
+              >
+                <span aria-hidden="true" className={styles.icon}>
+                  {item.icon}
+                </span>
+                <span className={styles.label}>{item.label}</span>
+              </Link>
+            ) : (
+              <button
+                aria-label={`${item.label} (coming soon)`}
+                className={styles.link}
+                data-disabled="true"
+                disabled
+                type="button"
+              >
+                <span aria-hidden="true" className={styles.icon}>
+                  {item.icon}
+                </span>
+                <span className={styles.label}>{item.label}</span>
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
