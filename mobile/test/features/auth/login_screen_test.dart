@@ -13,6 +13,12 @@ void main() {
       ),
     );
 
+    expect(find.text('mimic'), findsOneWidget);
+    expect(
+      find.text('一起存，一起花，一起在異世界探險吧!'),
+      findsOneWidget,
+    );
+    expect(find.text('PairFund'), findsNothing);
     expect(find.text('Sign in'), findsOneWidget);
     expect(find.text('Email'), findsOneWidget);
     expect(find.text('Password'), findsOneWidget);

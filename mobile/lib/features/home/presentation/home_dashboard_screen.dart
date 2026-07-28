@@ -35,7 +35,7 @@ class HomeDashboardScreen extends ConsumerWidget {
                     children: <Widget>[
                       Expanded(
                         child: Text(
-                          'PairFund',
+                          'mimic',
                           style: textTheme.headlineMedium,
                         ),
                       ),
@@ -48,7 +48,7 @@ class HomeDashboardScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: PfSpacing.xs),
                   Text(
-                    'Shared funds, clear balances, and gentle bookkeeping.',
+                    'Shared funds for everyday spending and adventures together.',
                     style: textTheme.bodyMedium,
                   ),
                   const SizedBox(height: PfSpacing.sm),

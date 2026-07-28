@@ -1,11 +1,11 @@
 {
-    "name": "PairFund",
-    "short_name": "PairFund",
+    "name": "mimic",
+    "short_name": "mimic",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#F7F1EA",
     "theme_color": "#D7795F",
-    "description": "Shared funds and fair settlements with PairFund.",
+    "description": "mimic turns shared funds, spending, and settlements into a cooperative adventure.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

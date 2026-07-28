@@ -15,7 +15,7 @@ class PairFundApp extends ConsumerWidget {
 
     if (sessionBootstrap.isLoading) {
       return MaterialApp(
-        title: 'PairFund',
+        title: 'mimic',
         debugShowCheckedModeBanner: false,
         theme: buildAppTheme(),
         home: const Scaffold(
@@ -27,7 +27,7 @@ class PairFundApp extends ConsumerWidget {
     }
 
     return MaterialApp.router(
-      title: 'PairFund',
+      title: 'mimic',
       debugShowCheckedModeBanner: false,
       theme: buildAppTheme(),
       routerConfig: router,

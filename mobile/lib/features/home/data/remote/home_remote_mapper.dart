@@ -12,7 +12,7 @@ class MeDto {
   factory MeDto.fromJson(Map<String, dynamic> data) {
     return MeDto(
       id: '${data['id'] ?? ''}',
-      displayName: '${data['display_name'] ?? 'PairFund'}',
+      displayName: '${data['display_name'] ?? 'mimic'}',
     );
   }
 }

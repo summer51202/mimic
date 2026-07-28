@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# mimic Web PWA
 
-## Getting Started
+Next.js PWA foundation for the user-facing **mimic** product and the Mimiku
+shared-adventure brand system.
 
-First, run the development server:
+## Local Commands
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run test:e2e
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The Playwright server command uses webpack because the Serwist service-worker
+plugin config is webpack-based and Next.js 16 defaults `next dev` to Turbopack.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Verification Results
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Task 11 verification run on 2026-07-28:
 
-## Learn More
+- `npm run lint` passed.
+- `npm run typecheck` passed.
+- `npm test` passed: 15 test files, 83 tests.
+- `npm run build` passed.
+- `npm run test:e2e` passed: 6 Playwright tests.
+- Production visual/PWA verification passed at 320x720, 390x844, and
+  1440x900.
+- Flutter verification was blocked by the local Flutter runtime timing out
+  before runner output; the focused mobile brand-copy test command timed out
+  after 120 seconds.
+- Lighthouse was not run because it is unavailable locally and network access is
+  restricted.
 
-To learn more about Next.js, take a look at the following resources:
+## Acceptance Coverage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`e2e/public-and-auth.spec.ts` verifies:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/` exposes the `mimic` heading, the exact tagline
+  `一起存，一起花，一起在異世界探險吧!`, and a registration CTA.
+- 320x720, 390x844, and 1440x900 viewports have no horizontal overflow.
+- The next home section is partially visible in the first viewport.
+- `/app` redirects anonymous users to `/login?returnTo=%2Fapp`.
+- Cache Storage does not retain `/api` or `/app` responses after private probes.
 
-## Deploy on Vercel
+Production visual/PWA verification on 2026-07-28 captured:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `web/.session/visual-pwa/home-320x720.png`
+- `web/.session/visual-pwa/home-390x844.png`
+- `web/.session/visual-pwa/home-1440x900.png`
+- `web/.session/visual-pwa/visual-pwa-report.json`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Findings: Mimiku artwork rendered with `image-rendering: pixelated` and loaded
+successfully; no text overlap or clipped controls were visible in the captured
+viewports; keyboard focus was visible; reduced-motion mode kept the public page
+usable; install metadata reported `name` and `short_name` as `mimic`,
+`display: standalone`, `start_url: /`, and 192/512 any plus maskable icons;
+private cache URL list was empty.
+
+## Lighthouse
+
+Lighthouse was not run in this environment. The package is not installed locally
+(`npm ls lighthouse --depth=0` returned empty), and network access is restricted,
+so no score is recorded here.

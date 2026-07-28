@@ -1,5 +1,13 @@
 # PairFund PWA Core Product Design
 
+> 2026-07-28 note: the user-facing product name is now **mimic**. The character
+> may appear as **咪咪庫** in Chinese UI/brand surfaces and **Mimiku** in English
+> interface or brand documentation. Current brand rules, tagline, and asset
+> guidance live in `docs/superpowers/specs/2026-07-22-mimic-brand-visual-design.md`
+> and `web/public/brand/README.md`; this historical PWA core spec keeps existing
+> internal PairFund references where they describe API, data, or migration
+> continuity.
+
 ## Objective
 
 Make a mobile-first Progressive Web App the long-term primary PairFund product. The PWA will replace the Flutter app as the main user experience while preserving the existing NestJS API, PostgreSQL data model, accounting rules, audit trail, and settlement locking invariant.

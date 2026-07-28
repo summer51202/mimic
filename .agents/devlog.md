@@ -343,3 +343,16 @@
 - Added Android/iOS alpha install guidance and a cross-platform acceptance checklist.
 **Decisions:** Keep first alpha readiness work focused on shared foundation and checklist documentation; packaging and TestFlight execution remain a follow-up batch.
 **Known gaps / follow-ups:** Flutter verification in this worktree is still blocked by dependency/runtime setup timeouts; transaction edit/delete, categories, audit log browsing, and actual Android/iOS build distribution remain outside this batch.
+
+## 2026-07-28 - Establish mimic PWA foundation
+
+**Task:** Apply the visible mimic rebrand, add end-to-end PWA/auth acceptance coverage, document verification, and finish the PWA foundation branch.
+**Scope:** `mobile/lib/app/app.dart`, `mobile/lib/features/auth/presentation/login_screen.dart`, `mobile/lib/features/home/presentation/home_dashboard_screen.dart`, `mobile/lib/features/home/data/remote/home_remote_mapper.dart`, `mobile/web/index.html`, `mobile/web/manifest.json`, mobile app/auth/home tests, `web/e2e/public-and-auth.spec.ts`, `web/e2e/scaffold.spec.ts`, `web/playwright.config.ts`, `web/eslint.config.mjs`, `web/.gitignore`, `web/public/sw.js`, `web/README.md`, `docs/superpowers/specs/2026-07-22-pwa-core-product-design.md`, `.agents/devlog.md`
+**What changed:**
+- Changed the Flutter application title, login/dashboard visible brand copy, remote user fallback, and Flutter web install metadata from PairFund to `mimic` while preserving internal PairFund identifiers.
+- Added Playwright acceptance coverage for public brand identity, registration entry, responsive overflow, first-viewport section visibility, anonymous `/app` redirect, and private Cache Storage exclusion.
+- Updated Playwright dev-server config to use webpack, matching the production Serwist build path, and excluded generated `public/sw.js` from lint.
+- Rebuilt the web PWA shell and recorded production screenshots plus PWA metadata/cache findings in `web/README.md`.
+- Ran `npm run lint` (passed), `npm run typecheck` (passed), `npm test` (passed: 15 test files / 83 tests), `npm run build` (passed), `npm run test:e2e` (passed: 6 tests), and production visual/PWA checks at 320x720, 390x844, and 1440x900 (passed).
+**Decisions:** Kept historical PairFund references in architecture and API contexts, with a top-note pointing current user-facing naming to the mimic brand spec and assets.
+**Known gaps / follow-ups:** `flutter test`, focused mobile brand-copy Flutter tests, and `flutter --version` timed out locally before producing output; Lighthouse is not installed and was not run because network access is restricted; Safari/Edge device-specific install behavior remains a browser checkpoint.

@@ -215,7 +215,8 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('PairFund'), findsOneWidget);
+    expect(find.text('mimic'), findsOneWidget);
+    expect(find.text('PairFund'), findsNothing);
     expect(find.text('Sign in'), findsOneWidget);
   });
 

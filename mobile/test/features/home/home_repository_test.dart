@@ -431,6 +431,12 @@ void main() {
     expect(withGroup.groupId, 'group-1');
     expect(withoutGroup.groupId, isNull);
   });
+
+  test('remote user fallback uses visible mimic brand copy', () {
+    final user = MeDto.fromJson(const <String, dynamic>{});
+
+    expect(user.displayName, 'mimic');
+  });
 }
 
 Map<String, dynamic> _currencyJson(

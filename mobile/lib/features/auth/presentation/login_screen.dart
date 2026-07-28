@@ -108,10 +108,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('PairFund', style: textTheme.headlineMedium),
+              Text('mimic', style: textTheme.headlineMedium),
               const SizedBox(height: PfSpacing.sm),
               Text(
-                'A warm shared-fund app for everyday couple bookkeeping.',
+                '一起存，一起花，一起在異世界探險吧!',
                 style: textTheme.bodyMedium,
               ),
               const SizedBox(height: 40),

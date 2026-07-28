@@ -630,6 +630,12 @@ void main() {
       size: const Size(360, 800),
     );
 
+    expect(find.text('mimic'), findsOneWidget);
+    expect(
+      find.text('Shared funds for everyday spending and adventures together.'),
+      findsOneWidget,
+    );
+    expect(find.text('PairFund'), findsNothing);
     expect(find.text('Add expense'), findsOneWidget);
     expect(find.text('Settle'), findsOneWidget);
     expect(find.text('Pending tasks'), findsOneWidget);
