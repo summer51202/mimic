@@ -8,6 +8,7 @@ import { ZodError } from "zod";
 
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelPanel } from "@/shared/ui/pixel-panel";
+import { safeReturnTo } from "@/shared/navigation/safe-return-to";
 
 import {
   type LoginFormValues,
@@ -397,32 +398,7 @@ function messageForError(error: unknown): string {
 }
 
 function validatedReturnTo(returnTo: string | null | undefined): string {
-  if (!returnTo || hasUnsafePathCharacters(returnTo)) {
-    return fallbackPath;
-  }
-
-  try {
-    const origin = currentOrigin();
-    const url = new URL(returnTo, origin);
-
-    if (
-      url.origin !== origin ||
-      !returnTo.startsWith("/") ||
-      returnTo.startsWith("//")
-    ) {
-      return fallbackPath;
-    }
-
-    const pathOnly = `${url.pathname}${url.search}${url.hash}`;
-
-    if (hasUnsafePathCharacters(pathOnly)) {
-      return fallbackPath;
-    }
-
-    return pathOnly;
-  } catch {
-    return fallbackPath;
-  }
+  return safeReturnTo(returnTo, fallbackPath);
 }
 
 function buildSwitchHref(baseHref: string, returnTo: string | null | undefined) {
@@ -433,22 +409,6 @@ function buildSwitchHref(baseHref: string, returnTo: string | null | undefined) 
   }
 
   return `${baseHref}?returnTo=${encodeURIComponent(validated)}`;
-}
-
-function hasUnsafePathCharacters(value: string): boolean {
-  if (/[\u0000-\u001F\u007F\\]/.test(value)) {
-    return true;
-  }
-
-  try {
-    return /[\u0000-\u001F\u007F\\]/.test(decodeURIComponent(value));
-  } catch {
-    return true;
-  }
-}
-
-function currentOrigin(): string {
-  return globalThis.location?.origin ?? "http://localhost";
 }
 
 class AuthSubmissionError extends Error {

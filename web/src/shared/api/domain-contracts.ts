@@ -4,6 +4,7 @@ export const idSchema = z.string().trim().min(1).max(128);
 export const currencySchema = z.string().regex(/^[A-Z]{3}$/);
 export const minorUnitSchema = z.string().regex(/^-?(0|[1-9]\d*)$/);
 export const isoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+export const inviteCodeSchema = z.string().regex(/^[A-Za-z0-9_-]{12}$/);
 
 const labelSchema = z.string().trim().min(1).max(255);
 const statusSchema = z.string().trim().min(1).max(32);
@@ -32,7 +33,7 @@ export const memberSchema = z.object({
 
 export const inviteCreatedSchema = z.object({
   invite_id: idSchema,
-  invite_code: idSchema,
+  invite_code: inviteCodeSchema,
   invited_email: z.string().email().nullable().optional(),
   expires_at: isoDateTimeSchema,
   status: statusSchema,

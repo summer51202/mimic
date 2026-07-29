@@ -23,7 +23,8 @@ describe("GET /api/auth/refresh", () => {
   it.each([
     ["/app", "http://localhost/app"],
     ["/app/settings", "http://localhost/app/settings"],
-  ])("redirects to accepted app returnTo value %s", async (returnTo, location) => {
+    ["/invite/abcDEF123_-4", "http://localhost/invite/abcDEF123_-4"],
+  ])("redirects to accepted returnTo value %s", async (returnTo, location) => {
     postToApiMock.mockResolvedValueOnce(authPayload());
 
     const response = await GET(refreshRequest(returnTo));

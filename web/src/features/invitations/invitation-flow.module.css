@@ -1,0 +1,52 @@
+.panel {
+  display: grid;
+  gap: var(--mimic-space-4);
+}
+
+.hero {
+  align-items: center;
+  display: grid;
+  gap: var(--mimic-space-4);
+}
+
+.hero img {
+  image-rendering: pixelated;
+  justify-self: center;
+  max-width: min(12rem, 60vw);
+}
+
+.actions,
+.shareActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mimic-space-3);
+}
+
+.meta {
+  color: var(--mimic-color-ink-soft);
+  font-weight: 800;
+}
+
+.code {
+  border: 3px solid var(--mimic-color-hud-dark);
+  background: var(--mimic-color-paper);
+  color: var(--mimic-color-hud-dark);
+  font-family: var(--mimic-font-pixel);
+  font-size: 1.1rem;
+  padding: var(--mimic-space-3);
+  text-align: center;
+}
+
+.urlField {
+  inline-size: 100%;
+}
+
+.urlField input {
+  font-family: var(--mimic-font-pixel);
+}
+
+@media (min-width: 42rem) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+}

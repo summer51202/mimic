@@ -8,6 +8,7 @@ import {
   setAuthSessionCookies,
 } from "@/shared/auth/session";
 import { authCookies } from "@/shared/auth/cookies";
+import { safeReturnTo } from "@/shared/navigation/safe-return-to";
 
 const fallbackReturnTo = "/app";
 
@@ -51,19 +52,5 @@ function readReturnTo(request: Request): string {
   const requestUrl = new URL(request.url);
   const returnTo = requestUrl.searchParams.get("returnTo");
 
-  if (!returnTo || /[\u0000-\u001F\u007F\\]/.test(returnTo)) {
-    return fallbackReturnTo;
-  }
-
-  const normalizedReturnTo = new URL(returnTo, requestUrl);
-
-  if (
-    normalizedReturnTo.origin !== requestUrl.origin ||
-    (normalizedReturnTo.pathname !== fallbackReturnTo &&
-      !normalizedReturnTo.pathname.startsWith(`${fallbackReturnTo}/`))
-  ) {
-    return fallbackReturnTo;
-  }
-
-  return `${normalizedReturnTo.pathname}${normalizedReturnTo.search}${normalizedReturnTo.hash}`;
+  return safeReturnTo(returnTo, fallbackReturnTo);
 }

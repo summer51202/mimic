@@ -369,3 +369,17 @@
 - Added `/app/groups`, `/app/groups/new`, and `/app/groups/[groupId]` pages.
 **Decisions:** Kept Task 6 focused on group management; invitation sharing and fund CRUD remain separate planned tasks. Used small client components with `fetch` instead of adding a form dependency.
 **Known gaps / follow-ups:** Routes rely on the existing backend/BFF contracts; visual browser QA for the new pages remains a follow-up checkpoint before handoff.
+
+## 2026-07-29 - Complete mimic PWA invitation loop
+
+**Task:** Deliver Task 7 by wiring invite creation, sharing, public entry, auth return, and signed-in acceptance for the mimic PWA.
+**Scope:** `web/src/features/invitations`, `web/src/app/(public)/invite/[code]/page.tsx`, `web/src/app/app/groups/[groupId]/invite/page.tsx`, `web/src/app/api/auth/refresh/route.ts`, `web/src/features/auth/auth-form.tsx`, `web/src/features/groups/group-detail.tsx`, `web/src/shared/api/domain-contracts.ts`, invitation/auth/public/contract tests, `.agents/devlog.md`
+**What changed:**
+- Added invitation schema/error modules enforcing twelve-character URL-safe invite codes and exact terminal invite error copy.
+- Added group invite creation UI with optional normalized invited email, duplicate-submit locking, and CSRF-protected BFF posting.
+- Added share UI that builds `/invite/{code}` from the current origin, supports clipboard copy, manual selected-text fallback, and Web Share only after explicit click.
+- Replaced the public invite placeholder with a no-data invite entry and login/register return links, plus an authenticated accept panel that posts `{ invite_code }` only after explicit user action.
+- Centralized auth return validation through `safeReturnTo` for auth form and refresh redirects, preserving `/invite/...` while rejecting external or unsafe paths.
+- Added the group detail invite entry and the authenticated `/app/groups/[groupId]/invite` page.
+**Decisions:** Kept invite creation and acceptance as small client panels reusing the existing group `appFetch` CSRF helper. Public invite pages intentionally show the invite code but no group, member, balance, fund, or transaction data.
+**Known gaps / follow-ups:** Invite role/permission checks remain backend-authoritative. Visual browser QA for the invite pages and actual backend acceptance with seeded users remain follow-up checkpoints.

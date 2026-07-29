@@ -25,7 +25,7 @@ describe("public route metadata", () => {
       "功能 | mimic",
       "隱私權 | mimic",
       "服務條款 | mimic",
-      "邀請 | mimic",
+      "Invite | mimic",
     ]);
     expect(new Set(titles).size).toBe(titles.length);
     expect(titles.every((title) => title.includes("mimic"))).toBe(true);
@@ -53,21 +53,20 @@ describe("public pages", () => {
     expect(screen.getAllByText("2026-07-23")).toHaveLength(2);
   });
 
-  it("masks invitation codes and does not expose financial or membership data", async () => {
-    const page = await InvitePage({ params: Promise.resolve({ code: "ABCD1234XYZ" }) });
+  it("renders invitation entry without financial or membership data", async () => {
+    const page = await InvitePage({ params: Promise.resolve({ code: "ABCD1234XYZ_" }) });
 
     render(page);
 
-    expect(screen.getByRole("heading", { name: "接受 mimic 邀請" })).toBeInTheDocument();
-    expect(screen.getByText("ABCD••••")).toBeInTheDocument();
-    expect(screen.queryByText("ABCD1234XYZ")).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "登入後接受邀請" })).toHaveAttribute(
+    expect(screen.getByRole("heading", { name: "Join this shared money quest." })).toBeInTheDocument();
+    expect(screen.getByText("ABCD1234XYZ_")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Log in to accept" })).toHaveAttribute(
       "href",
-      "/login?returnTo=%2Finvite%2FABCD1234XYZ",
+      "/login?returnTo=%2Finvite%2FABCD1234XYZ_",
     );
-    expect(screen.getByRole("link", { name: "註冊新帳號" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Create account" })).toHaveAttribute(
       "href",
-      "/register?returnTo=%2Finvite%2FABCD1234XYZ",
+      "/register?returnTo=%2Finvite%2FABCD1234XYZ_",
     );
 
     const sensitiveDataLabels = [
@@ -89,8 +88,9 @@ describe("public pages", () => {
 
     render(page);
 
-    expect(screen.getByRole("heading", { name: "邀請連結無效" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Join this shared money quest." })).toBeInTheDocument();
+    expect(screen.getByText("這個邀請不存在或已失效。")).toBeInTheDocument();
     expect(screen.queryByText("bad code!")).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "登入後接受邀請" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Log in to accept" })).not.toBeInTheDocument();
   });
 });

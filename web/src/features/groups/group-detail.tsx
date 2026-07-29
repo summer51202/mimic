@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import type { GroupDetail, Member } from "@/shared/api/domain-contracts";
@@ -47,6 +48,9 @@ export function GroupDetailView({
       </header>
 
       <div className={styles.actions}>
+        <Link className="pixel-button" href={`/app/groups/${group.id}/invite`}>
+          Invite members
+        </Link>
         <PixelButton onClick={() => setRenaming((value) => !value)} type="button">
           Rename group
         </PixelButton>

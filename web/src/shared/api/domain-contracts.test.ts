@@ -4,6 +4,7 @@ import {
   groupDashboardSchema,
   groupSchema,
   inviteAcceptResultSchema,
+  inviteCreatedSchema,
 } from "./domain-contracts";
 
 const periodTotals = {
@@ -89,5 +90,23 @@ describe("domain contracts", () => {
         joined_at: "2026-07-29T00:00:00.000Z",
       }).group_id,
     ).toBe("g1");
+  });
+
+  it("enforces twelve URL-safe invite codes in invite creation responses", () => {
+    const invite = {
+      expires_at: "2026-07-30T00:00:00.000Z",
+      invite_code: "abcDEF123_-4",
+      invite_id: "invite_1",
+      invited_email: null,
+      status: "ACTIVE",
+    };
+
+    expect(inviteCreatedSchema.parse(invite).invite_code).toBe("abcDEF123_-4");
+    expect(() =>
+      inviteCreatedSchema.parse({ ...invite, invite_code: "bad code!" }),
+    ).toThrow();
+    expect(() =>
+      inviteCreatedSchema.parse({ ...invite, invite_code: "ABCD1234XYZ" }),
+    ).toThrow();
   });
 });
