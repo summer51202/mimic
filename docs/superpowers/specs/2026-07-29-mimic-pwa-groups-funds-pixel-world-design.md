@@ -182,6 +182,14 @@ NestJS remains authoritative for:
 
 PostgreSQL remains the system of record. This phase should require no accounting-schema migration. Backend changes are limited to contract gaps proven necessary by the PWA, such as a safe authenticated invitation preview; no public endpoint may expose private group data before authentication.
 
+The contract audit must correct three existing fund-route gaps before the PWA consumes them:
+
+- fund creation must verify that the actor is an active member of the target group
+- fund listing must verify that the actor is an active member of the target group
+- the legacy fund-detail route must verify active membership or be retired from new PWA use in favor of the already-authorized summary route
+
+All minor-unit response fields become base-10 integer strings at the API boundary. This prevents Prisma `bigint` values from passing through JavaScript `number`. Existing Flutter remote mappers are updated in the same compatibility slice to accept canonical integer strings before the backend switches the affected fields.
+
 ## Frontend Module Boundaries
 
 ### Shared Application Shell
@@ -230,7 +238,7 @@ These components know navigation and layout state, not group or fund business ru
 
 - `MoneyAmount` formats backend minor-unit values without floating-point arithmetic
 - currency metadata supplies fraction digits and display symbols
-- values remain strings or safe integer representations according to the stabilized contract
+- minor-unit values remain signed base-10 integer strings from NestJS through the BFF and are converted to `bigint` only inside formatting and comparison helpers
 
 ## Pixel Asset System
 
@@ -398,4 +406,3 @@ This phase is complete when:
 - deferred transaction and settlement controls are not falsely enabled
 - private financial responses remain outside persistent service-worker caches
 - supported viewport, accessibility, unit, component, integration, and end-to-end checks pass
-
