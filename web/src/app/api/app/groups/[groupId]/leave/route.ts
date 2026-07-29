@@ -1,4 +1,5 @@
 import { forwardAppRoute, readRouteIdParam } from "@/shared/api/app-route";
+import { isCookieSecure } from "@/shared/auth/cookies";
 
 interface GroupLeaveRouteContext {
   params: Promise<{ groupId: string }>;
@@ -14,7 +15,23 @@ export async function POST(
     return groupId.response;
   }
 
-  return forwardAppRoute(request, `/groups/${groupId.value}/leave`, {
+  const response = await forwardAppRoute(request, `/groups/${groupId.value}/leave`, {
     body: "none",
   });
+
+  if (response.ok) {
+    response.headers.append("Set-Cookie", clearGroupPreferenceCookie());
+  }
+
+  return response;
+}
+
+function clearGroupPreferenceCookie(): string {
+  return [
+    "mimic_group=",
+    "Max-Age=0",
+    "Path=/",
+    "SameSite=Lax",
+    ...(isCookieSecure() ? ["Secure"] : []),
+  ].join("; ");
 }

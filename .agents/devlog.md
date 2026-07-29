@@ -356,3 +356,16 @@
 - Ran `npm run lint` (passed), `npm run typecheck` (passed), `npm test` (passed: 15 test files / 83 tests), `npm run build` (passed), `npm run test:e2e` (passed: 6 tests), and production visual/PWA checks at 320x720, 390x844, and 1440x900 (passed).
 **Decisions:** Kept historical PairFund references in architecture and API contexts, with a top-note pointing current user-facing naming to the mimic brand spec and assets.
 **Known gaps / follow-ups:** `flutter test`, focused mobile brand-copy Flutter tests, and `flutter --version` timed out locally before producing output; Lighthouse is not installed and was not run because network access is restricted; Safari/Edge device-specific install behavior remains a browser checkpoint.
+
+## 2026-07-29 - Add mimic PWA group management journeys
+
+**Task:** Deliver PWA group creation, group list/detail, rename, member roster, and leave-group flows for Task 6.
+**Scope:** `web/src/app/app/groups`, `web/src/app/api/app/groups/[groupId]/leave/route.ts`, `web/src/features/groups/*group*`, `web/src/features/groups/member-roster.tsx`, `web/src/features/groups/leave-group-dialog.tsx`, `.agents/devlog.md`
+**What changed:**
+- Added group validation schemas for create and rename, including trimmed names and uppercase three-letter currency normalization.
+- Added client group forms with CSRF-protected BFF calls, duplicate-submit locking, backend error preservation, and success routing.
+- Added group list, group detail, deterministic member avatars, literal Owner/Member role labels, rename UI, and leave confirmation dialog.
+- Updated the leave BFF route to clear the `mimic_group` preference cookie after successful departure.
+- Added `/app/groups`, `/app/groups/new`, and `/app/groups/[groupId]` pages.
+**Decisions:** Kept Task 6 focused on group management; invitation sharing and fund CRUD remain separate planned tasks. Used small client components with `fetch` instead of adding a form dependency.
+**Known gaps / follow-ups:** Routes rely on the existing backend/BFF contracts; visual browser QA for the new pages remains a follow-up checkpoint before handoff.
