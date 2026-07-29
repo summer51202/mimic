@@ -3,6 +3,9 @@ import 'package:pairfund_mobile/features/groups/data/group_repository.dart';
 import 'package:pairfund_mobile/shared/api/pairfund_api_client.dart';
 
 class _RecordingApiClient implements PairFundGroupApiClient {
+  _RecordingApiClient({this.fundBalanceMinor = '6400'});
+
+  final Object fundBalanceMinor;
   final getPaths = <String>[];
   String? patchPath;
   Map<String, dynamic>? patchData;
@@ -42,7 +45,7 @@ class _RecordingApiClient implements PairFundGroupApiClient {
             'id': 'fund-1',
             'name': 'Date Fund',
             'currency': 'TWD',
-            'balance_minor': 6400,
+            'balance_minor': fundBalanceMinor,
           },
         ],
       },
@@ -150,6 +153,20 @@ void main() {
     expect(detail.members.single.displayName, 'Edward');
     expect(detail.funds.single.name, 'Date Fund');
     expect(detail.funds.single.balanceLabel, 'TWD 64.00');
+  });
+
+  test('maps legacy numeric and decimal string fund balances identically',
+      () async {
+    final stringDetail = await RemoteGroupRepository(
+      _RecordingApiClient(fundBalanceMinor: '6400'),
+    ).fetchGroup('group-1');
+    final numericDetail = await RemoteGroupRepository(
+      _RecordingApiClient(fundBalanceMinor: 6400),
+    ).fetchGroup('group-1');
+
+    expect(stringDetail.funds.single.balanceLabel, 'TWD 64.00');
+    expect(numericDetail.funds.single.balanceLabel,
+        stringDetail.funds.single.balanceLabel);
   });
 
   test('updates the exact member role with lower-case PATCH data', () async {

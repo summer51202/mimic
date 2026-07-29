@@ -39,7 +39,7 @@ Map<String, dynamic> summary(
           'id': 'fund-1',
           'name': 'Date Fund',
           'currency': 'TWD',
-          'cash_balance_minor': 6400
+          'cash_balance_minor': '6400'
         },
         'current_period': {
           'period_start': start,
@@ -49,34 +49,34 @@ Map<String, dynamic> summary(
           'last_completed_period_end': settled
         },
         'current': {
-          'net_change_minor': 720,
-          'contribution_minor': 2000,
-          'expense_minor': 1280,
+          'net_change_minor': '720',
+          'contribution_minor': '2000',
+          'expense_minor': '1280',
           'member_positions': [
             {
               'user_id': 'u1',
               'display_name': 'Edward',
               'membership_status': 'active',
-              'position_minor': 800
+              'position_minor': '800'
             },
             {
               'user_id': 'u3',
               'display_name': 'Sam',
               'membership_status': 'active',
-              'position_minor': 0
+              'position_minor': '0'
             }
           ]
         },
         'all_time': {
-          'net_change_minor': 6400,
-          'contribution_minor': 10000,
-          'expense_minor': 3600,
+          'net_change_minor': '6400',
+          'contribution_minor': '10000',
+          'expense_minor': '3600',
           'member_positions': [
             {
               'user_id': 'u2',
               'display_name': 'Partner',
               'membership_status': 'removed',
-              'position_minor': -800
+              'position_minor': '-800'
             }
           ]
         },
@@ -89,7 +89,7 @@ Map<String, dynamic> expenses() => {
     };
 Map<String, dynamic> contributions() => {
       'data': [
-        {'occurred_on': '2026-04-02T10:00:00Z', 'amount_minor': 1000}
+        {'occurred_on': '2026-04-02T10:00:00Z', 'amount_minor': '1000'}
       ]
     };
 FakeApiClient client(
@@ -199,6 +199,31 @@ void main() {
     ]);
     expect(d.recentActivity, isEmpty);
   });
+  test('maps numeric and decimal string fund summaries identically', () async {
+    final stringDetail =
+        await RemoteFundRepository(client()).fetchFundDetail('fund-1');
+    final numeric = summary();
+    setPath(numeric, 'fund.cash_balance_minor', 6400);
+    setPath(numeric, 'current.net_change_minor', 720);
+    setPath(numeric, 'current.contribution_minor', 2000);
+    setPath(numeric, 'current.expense_minor', 1280);
+    setPathDeep(numeric, 'current.member.position_minor', 800);
+    setPath(numeric, 'all_time.net_change_minor', 6400);
+    setPath(numeric, 'all_time.contribution_minor', 10000);
+    setPath(numeric, 'all_time.expense_minor', 3600);
+    setPathDeep(numeric, 'all_time.member.position_minor', -800);
+
+    final numericDetail = await RemoteFundRepository(client(value: numeric))
+        .fetchFundDetail('fund-1');
+
+    expect(numericDetail.cashBalanceMinor, stringDetail.cashBalanceMinor);
+    expect(numericDetail.current.netChangeMinor,
+        stringDetail.current.netChangeMinor);
+    expect(numericDetail.current.memberPositions.first.positionMinor,
+        stringDetail.current.memberPositions.first.positionMinor);
+    expect(numericDetail.allTime.memberPositions.single.positionMinor,
+        stringDetail.allTime.memberPositions.single.positionMinor);
+  });
   test('merges newest activity across sources and keeps only three', () async {
     final detail = await RemoteFundRepository(client(
       expense: {
@@ -256,10 +281,10 @@ void main() {
         (data(value)['current'] as Map)['member_positions'] = [7],
     'current member position wrong type': (value) =>
         ((data(value)['current'] as Map)['member_positions'] as List)
-            .first['position_minor'] = '800',
+            .first['position_minor'] = '8.5',
     'all_time member position wrong type': (value) =>
         ((data(value)['all_time'] as Map)['member_positions'] as List)
-            .first['position_minor'] = '-800',
+            .first['position_minor'] = '-8.5',
   };
   for (final entry in malformedObjects.entries) {
     test('rejects ${entry.key}', () async {
@@ -354,7 +379,7 @@ void main() {
               .fetchFundDetail('fund-1'),
           throwsFormatException);
       final wrong = summary();
-      setPath(wrong, path, '10');
+      setPath(wrong, path, '10.5');
       expect(
           () => RemoteFundRepository(client(value: wrong))
               .fetchFundDetail('fund-1'),
@@ -383,7 +408,7 @@ void main() {
     for (final bad in [
       {'title': 'x', 'amount_minor': 1},
       {'title': 'x', 'occurred_on': '2026-01-01'},
-      {'title': 'x', 'occurred_on': '2026-01-01', 'amount_minor': '1'},
+      {'title': 'x', 'occurred_on': '2026-01-01', 'amount_minor': '1.5'},
       {'title': 'x', 'occurred_on': 'naive', 'amount_minor': 1}
     ]) {
       expect(

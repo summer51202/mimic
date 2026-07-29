@@ -9,6 +9,7 @@ import { Test } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { FundSummaryService } from '../src/modules/funds/fund-summary.service';
+import { FundsService } from '../src/modules/funds/funds.service';
 import { PrismaService } from '../src/modules/prisma/prisma.service';
 import { ExpensesService } from '../src/modules/expenses/expenses.service';
 import { ContributionsService } from '../src/modules/contributions/contributions.service';
@@ -24,6 +25,11 @@ describe('Fund dashboard endpoints', () => {
     getFundSummary: jest.fn(),
     getGroupDashboard: jest.fn(),
   };
+  const fundsService = {
+    createFund: jest.fn(),
+    listFunds: jest.fn(),
+    getFundDetail: jest.fn(),
+  };
   const expensesService = { listExpenses: jest.fn().mockResolvedValue([]) };
   const contributionsService = { listContributions: jest.fn().mockResolvedValue([]) };
 
@@ -32,6 +38,8 @@ describe('Fund dashboard endpoints', () => {
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
       .overrideProvider(FundSummaryService)
       .useValue(fundSummaryService)
+      .overrideProvider(FundsService)
+      .useValue(fundsService)
       .overrideProvider(ExpensesService)
       .useValue(expensesService)
       .overrideProvider(ContributionsService)
@@ -51,7 +59,11 @@ describe('Fund dashboard endpoints', () => {
     );
   });
 
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    expensesService.listExpenses.mockResolvedValue([]);
+    contributionsService.listContributions.mockResolvedValue([]);
+  });
 
   afterAll(async () => {
     if (app) await app.close();
@@ -108,7 +120,7 @@ describe('Fund dashboard endpoints', () => {
             name: 'Daily Fund',
             currency: 'TWD',
             status: 'active',
-            cash_balance_minor: 12500,
+            cash_balance_minor: '12500',
           },
           current_period: {
             period_start: '2026-07-01',
@@ -117,22 +129,22 @@ describe('Fund dashboard endpoints', () => {
             last_completed_period_end: '2026-06-30',
           },
           current: {
-            net_change_minor: 2500,
-            contribution_minor: 5000,
-            expense_minor: 2500,
+            net_change_minor: '2500',
+            contribution_minor: '5000',
+            expense_minor: '2500',
             member_positions: [
               {
                 user_id: 'user-1',
                 display_name: 'Alex',
                 membership_status: 'active',
-                position_minor: 1500,
+                position_minor: '1500',
               },
             ],
           },
           all_time: {
-            net_change_minor: 12500,
-            contribution_minor: 20000,
-            expense_minor: 7500,
+            net_change_minor: '12500',
+            contribution_minor: '20000',
+            expense_minor: '7500',
             member_positions: [],
           },
         },
@@ -175,7 +187,7 @@ describe('Fund dashboard endpoints', () => {
             name: 'Empty Fund',
             currency: 'TWD',
             status: 'active',
-            cash_balance_minor: 0,
+            cash_balance_minor: '0',
           },
           current_period: {
             period_start: null,
@@ -197,7 +209,22 @@ describe('Fund dashboard endpoints', () => {
         defaultCurrency: 'TWD',
       },
       currencies: [
-        currency('TWD', 10000, 'fund-twd', 'Daily TWD'),
+        currency('TWD', 10000, 'fund-twd', 'Daily TWD', {
+          currentMemberPositions: [
+            {
+              userId: 'user-1',
+              displayName: 'Alex',
+              membershipStatus: 'active',
+              positionMinor: 1250,
+            },
+            {
+              userId: 'user-2',
+              displayName: 'Blair',
+              membershipStatus: 'active',
+              positionMinor: -1250,
+            },
+          ],
+        }),
         currency('USD', 5000, 'fund-usd', 'Travel USD'),
       ],
     });
@@ -214,7 +241,22 @@ describe('Fund dashboard endpoints', () => {
             default_currency: 'TWD',
           },
           currencies: [
-            mappedCurrency('TWD', 10000, 'fund-twd', 'Daily TWD'),
+            mappedCurrency('TWD', 10000, 'fund-twd', 'Daily TWD', {
+              currentMemberPositions: [
+                {
+                  user_id: 'user-1',
+                  display_name: 'Alex',
+                  membership_status: 'active',
+                  position_minor: '1250',
+                },
+                {
+                  user_id: 'user-2',
+                  display_name: 'Blair',
+                  membership_status: 'active',
+                  position_minor: '-1250',
+                },
+              ],
+            }),
             mappedCurrency('USD', 5000, 'fund-usd', 'Travel USD'),
           ],
         },
@@ -223,6 +265,52 @@ describe('Fund dashboard endpoints', () => {
       'group-1',
       'user-1',
     );
+  });
+
+  it('returns fund list balances as decimal strings and forwards identity', async () => {
+    fundsService.listFunds.mockResolvedValue([
+      {
+        id: 'fund-positive',
+        name: 'Daily',
+        currency: 'TWD',
+        status: 'ACTIVE',
+        contributions: [{ amountMinor: 7200n }],
+        expenses: [{ amountMinor: 800n }],
+      },
+      {
+        id: 'fund-negative',
+        name: 'Trip',
+        currency: 'USD',
+        status: 'ACTIVE',
+        contributions: [{ amountMinor: 0n }],
+        expenses: [{ amountMinor: 800n }],
+      },
+    ]);
+
+    await request(app.getHttpServer())
+      .get('/api/v1/groups/group-1/funds')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({
+        data: [
+          {
+            id: 'fund-positive',
+            name: 'Daily',
+            currency: 'TWD',
+            status: 'active',
+            balance_minor: '6400',
+          },
+          {
+            id: 'fund-negative',
+            name: 'Trip',
+            currency: 'USD',
+            status: 'active',
+            balance_minor: '-800',
+          },
+        ],
+      });
+
+    expect(fundsService.listFunds).toHaveBeenCalledWith('group-1', 'user-1');
   });
 
   it.each([
@@ -295,29 +383,70 @@ function emptyTotals() {
 
 function mappedEmptyTotals() {
   return {
-    net_change_minor: 0,
-    contribution_minor: 0,
-    expense_minor: 0,
+    net_change_minor: '0',
+    contribution_minor: '0',
+    expense_minor: '0',
     member_positions: [],
   };
 }
 
-function currency(currencyCode: string, cash: number, fundId: string, name: string) {
+function currency(
+  currencyCode: string,
+  cash: number,
+  fundId: string,
+  name: string,
+  options: {
+    currentMemberPositions?: Array<{
+      userId: string;
+      displayName: string;
+      membershipStatus: string;
+      positionMinor: number;
+    }>;
+  } = {},
+) {
   return {
     currency: currencyCode,
     cashBalanceMinor: cash,
-    current: emptyTotals(),
+    current: {
+      ...emptyTotals(),
+      memberPositions: options.currentMemberPositions ?? [],
+    },
     allTime: emptyTotals(),
     funds: [{ fundId, name, cashBalanceMinor: cash, currentNetChangeMinor: 0, periodStart: null, periodEnd: null }],
   };
 }
 
-function mappedCurrency(currencyCode: string, cash: number, fundId: string, name: string) {
+function mappedCurrency(
+  currencyCode: string,
+  cash: number,
+  fundId: string,
+  name: string,
+  options: {
+    currentMemberPositions?: Array<{
+      user_id: string;
+      display_name: string;
+      membership_status: string;
+      position_minor: string;
+    }>;
+  } = {},
+) {
   return {
     currency: currencyCode,
-    cash_balance_minor: cash,
-    current: mappedEmptyTotals(),
+    cash_balance_minor: `${cash}`,
+    current: {
+      ...mappedEmptyTotals(),
+      member_positions: options.currentMemberPositions ?? [],
+    },
     all_time: mappedEmptyTotals(),
-    funds: [{ fund_id: fundId, name, cash_balance_minor: cash, current_net_change_minor: 0, period_start: null, period_end: null }],
+    funds: [
+      {
+        fund_id: fundId,
+        name,
+        cash_balance_minor: `${cash}`,
+        current_net_change_minor: '0',
+        period_start: null,
+        period_end: null,
+      },
+    ],
   };
 }

@@ -29,8 +29,11 @@ export class FundsController {
   }
 
   @Get('groups/:groupId/funds')
-  async listFunds(@Param('groupId') groupId: string) {
-    const funds = await this.fundsService.listFunds(groupId);
+  async listFunds(
+    @Param('groupId') groupId: string,
+    @CurrentUser() user: RequestUser,
+  ) {
+    const funds = await this.fundsService.listFunds(groupId, user.userId);
     return {
       data: funds.map((fund) =>
         this.mapFund(
@@ -42,8 +45,11 @@ export class FundsController {
   }
 
   @Get('funds/:fundId')
-  async getFundDetail(@Param('fundId') fundId: string) {
-    const fund = await this.fundsService.getFundDetail(fundId);
+  async getFundDetail(
+    @Param('fundId') fundId: string,
+    @CurrentUser() user: RequestUser,
+  ) {
+    const fund = await this.fundsService.getFundDetail(fundId, user.userId);
     if (!fund) {
       return { data: {} };
     }
@@ -57,14 +63,14 @@ export class FundsController {
       data: {
         fund: this.mapFund(fund, balanceMinor),
         summary: {
-          balance_minor: balanceMinor,
-          month_expense_minor: monthExpenseMinor,
-          month_contribution_minor: monthContributionMinor,
+          balance_minor: minorUnit(balanceMinor),
+          month_expense_minor: minorUnit(monthExpenseMinor),
+          month_contribution_minor: minorUnit(monthContributionMinor),
           locked_period_label: 'No locked period yet',
           member_positions: fund.group.members.map((member) => ({
             user_id: member.userId,
             display_name: member.user.displayName,
-            position_minor: 0,
+            position_minor: minorUnit(0),
           })),
         },
       },
@@ -102,19 +108,19 @@ export class FundsController {
       currency: string;
       status: string;
     },
-    balanceMinor: number,
+    balanceMinor: number | bigint,
   ) {
     return {
       id: fund.id,
       name: fund.name,
       currency: fund.currency,
       status: fund.status.toLowerCase(),
-      balance_minor: balanceMinor,
+      balance_minor: minorUnit(balanceMinor),
     };
   }
 
   private sumMinor(records: Array<{ amountMinor: bigint }>) {
-    return records.reduce((sum, record) => sum + Number(record.amountMinor), 0);
+    return records.reduce((sum, record) => sum + record.amountMinor, 0n);
   }
 
   private mapFundSummary(summary: FundSummaryReadModel) {
@@ -125,7 +131,7 @@ export class FundsController {
         name: summary.fund.name,
         currency: summary.fund.currency,
         status: summary.fund.status,
-        cash_balance_minor: summary.fund.cashBalanceMinor,
+        cash_balance_minor: minorUnit(summary.fund.cashBalanceMinor),
       },
       current_period: {
         period_start: summary.currentPeriod.periodStart,
@@ -149,14 +155,14 @@ export class FundsController {
       },
       currencies: dashboard.currencies.map((currency) => ({
         currency: currency.currency,
-        cash_balance_minor: currency.cashBalanceMinor,
+        cash_balance_minor: minorUnit(currency.cashBalanceMinor),
         current: this.mapPeriodTotals(currency.current),
         all_time: this.mapPeriodTotals(currency.allTime),
         funds: currency.funds.map((fund) => ({
           fund_id: fund.fundId,
           name: fund.name,
-          cash_balance_minor: fund.cashBalanceMinor,
-          current_net_change_minor: fund.currentNetChangeMinor,
+          cash_balance_minor: minorUnit(fund.cashBalanceMinor),
+          current_net_change_minor: minorUnit(fund.currentNetChangeMinor),
           period_start: fund.periodStart,
           period_end: fund.periodEnd,
         })),
@@ -166,15 +172,19 @@ export class FundsController {
 
   private mapPeriodTotals(totals: PeriodTotals) {
     return {
-      net_change_minor: totals.netChangeMinor,
-      contribution_minor: totals.contributionMinor,
-      expense_minor: totals.expenseMinor,
+      net_change_minor: minorUnit(totals.netChangeMinor),
+      contribution_minor: minorUnit(totals.contributionMinor),
+      expense_minor: minorUnit(totals.expenseMinor),
       member_positions: totals.memberPositions.map((position) => ({
         user_id: position.userId,
         display_name: position.displayName,
         membership_status: position.membershipStatus,
-        position_minor: position.positionMinor,
+        position_minor: minorUnit(position.positionMinor),
       })),
     };
   }
+}
+
+function minorUnit(value: number | bigint): string {
+  return BigInt(value).toString(10);
 }

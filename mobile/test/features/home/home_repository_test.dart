@@ -106,11 +106,11 @@ void main() {
           },
           'currencies': <dynamic>[
             _currencyJson('TWD',
-                cashBalanceMinor: 111,
-                currentNetChangeMinor: 11,
-                allTimeNetChangeMinor: 101,
+                cashBalanceMinor: '111',
+                currentNetChangeMinor: '11',
+                allTimeNetChangeMinor: '101',
                 memberStatus: 'removed',
-                positionMinor: 7),
+                positionMinor: '7'),
             _currencyJson('USD',
                 cashBalanceMinor: 222,
                 currentNetChangeMinor: 22,
@@ -157,6 +157,47 @@ void main() {
           throwsUnsupportedError);
     });
 
+    test('maps decimal-string and legacy numeric payloads to the same model',
+        () {
+      final stringDashboard = mapGroupDashboardResponse(<String, dynamic>{
+        'data': <String, dynamic>{
+          'group': <String, dynamic>{
+            'id': 'group-1',
+            'name': 'Pair',
+            'default_currency': 'TWD',
+          },
+          'currencies': <dynamic>[
+            _currencyJson('TWD',
+                cashBalanceMinor: '12345',
+                currentNetChangeMinor: '-250',
+                allTimeNetChangeMinor: '12095',
+                positionMinor: '-125',
+                periodStart: '2026-07-01T00:00:00.000Z'),
+          ],
+        },
+      });
+      final numericDashboard = mapGroupDashboardResponse(<String, dynamic>{
+        'data': <String, dynamic>{
+          'group': <String, dynamic>{
+            'id': 'group-1',
+            'name': 'Pair',
+            'default_currency': 'TWD',
+          },
+          'currencies': <dynamic>[
+            _currencyJson('TWD',
+                cashBalanceMinor: 12345,
+                currentNetChangeMinor: -250,
+                allTimeNetChangeMinor: 12095,
+                positionMinor: -125,
+                periodStart: '2026-07-01T00:00:00.000Z'),
+          ],
+        },
+      });
+
+      expect(_dashboardSnapshot(stringDashboard),
+          _dashboardSnapshot(numericDashboard));
+    });
+
     test('rejects missing or empty required values and wrong numeric types',
         () {
       for (final mutation in <void Function(Map<String, dynamic>)>[
@@ -165,7 +206,7 @@ void main() {
         (data) => ((data['currencies'] as List).first
             as Map<String, dynamic>)['currency'] = '',
         (data) => ((data['currencies'] as List).first
-            as Map<String, dynamic>)['cash_balance_minor'] = '10',
+            as Map<String, dynamic>)['cash_balance_minor'] = '10.5',
       ]) {
         final data = <String, dynamic>{
           'group': <String, dynamic>{
@@ -296,10 +337,10 @@ void main() {
             },
             'currencies': <dynamic>[
               _currencyJson('TWD',
-                  cashBalanceMinor: 10000,
-                  currentNetChangeMinor: 1200,
-                  allTimeNetChangeMinor: 9800,
-                  positionMinor: 600,
+                  cashBalanceMinor: '10000',
+                  currentNetChangeMinor: '1200',
+                  allTimeNetChangeMinor: '9800',
+                  positionMinor: '600',
                   includeSecondFund: true),
               _currencyJson('USD',
                   cashBalanceMinor: 2500,
@@ -437,26 +478,49 @@ void main() {
 
     expect(user.displayName, 'mimic');
   });
+
+  test('home fund list mapper accepts numeric and decimal string balances', () {
+    final stringFund = FundListItemDto.fromJson(const <String, dynamic>{
+      'id': 'fund-1',
+      'name': 'Date Fund',
+      'currency': 'TWD',
+      'balance_minor': '6400',
+    });
+    final numericFund = FundListItemDto.fromJson(const <String, dynamic>{
+      'id': 'fund-1',
+      'name': 'Date Fund',
+      'currency': 'TWD',
+      'balance_minor': 6400,
+    });
+
+    expect(stringFund.balanceMinor, 6400);
+    expect(numericFund.balanceMinor, stringFund.balanceMinor);
+  });
 }
 
 Map<String, dynamic> _currencyJson(
   String currency, {
-  int cashBalanceMinor = 0,
-  int currentNetChangeMinor = 0,
-  int allTimeNetChangeMinor = 0,
-  int positionMinor = 0,
+  Object cashBalanceMinor = 0,
+  Object currentNetChangeMinor = 0,
+  Object allTimeNetChangeMinor = 0,
+  Object positionMinor = 0,
   String? periodStart,
   String memberStatus = 'active',
   bool includeSecondFund = false,
 }) {
+  final currentValue = _minorAsInt(currentNetChangeMinor);
+  final allTimeValue = _minorAsInt(allTimeNetChangeMinor);
   return <String, dynamic>{
     'currency': currency,
     'cash_balance_minor': cashBalanceMinor,
     'current': <String, dynamic>{
       'net_change_minor': currentNetChangeMinor,
-      'contribution_minor':
-          currentNetChangeMinor > 0 ? currentNetChangeMinor : 0,
-      'expense_minor': currentNetChangeMinor < 0 ? -currentNetChangeMinor : 0,
+      'contribution_minor': currentValue > 0
+          ? currentNetChangeMinor
+          : _zeroLike(currentNetChangeMinor),
+      'expense_minor': currentValue < 0
+          ? '${-currentValue}'
+          : _zeroLike(currentNetChangeMinor),
       'member_positions': <dynamic>[
         <String, dynamic>{
           'user_id': 'user-1',
@@ -468,9 +532,12 @@ Map<String, dynamic> _currencyJson(
     },
     'all_time': <String, dynamic>{
       'net_change_minor': allTimeNetChangeMinor,
-      'contribution_minor':
-          allTimeNetChangeMinor > 0 ? allTimeNetChangeMinor : 0,
-      'expense_minor': allTimeNetChangeMinor < 0 ? -allTimeNetChangeMinor : 0,
+      'contribution_minor': allTimeValue > 0
+          ? allTimeNetChangeMinor
+          : _zeroLike(allTimeNetChangeMinor),
+      'expense_minor': allTimeValue < 0
+          ? '${-allTimeValue}'
+          : _zeroLike(allTimeNetChangeMinor),
       'member_positions': <dynamic>[
         <String, dynamic>{
           'user_id': 'user-1',
@@ -501,3 +568,50 @@ Map<String, dynamic> _currencyJson(
     ],
   };
 }
+
+int _minorAsInt(Object value) {
+  if (value is int) return value;
+  return int.parse(value as String);
+}
+
+Object _zeroLike(Object value) => value is String ? '0' : 0;
+
+Map<String, Object?> _dashboardSnapshot(GroupDashboard dashboard) =>
+    <String, Object?>{
+      'groupId': dashboard.groupId,
+      'groupName': dashboard.groupName,
+      'defaultCurrency': dashboard.defaultCurrency,
+      'currencies': dashboard.currencies
+          .map((currency) => <String, Object?>{
+                'currency': currency.currency,
+                'cashBalanceMinor': currency.cashBalanceMinor,
+                'current': _totalsSnapshot(currency.current),
+                'allTime': _totalsSnapshot(currency.allTime),
+                'funds': currency.funds
+                    .map((fund) => <String, Object?>{
+                          'fundId': fund.fundId,
+                          'name': fund.name,
+                          'cashBalanceMinor': fund.cashBalanceMinor,
+                          'currentNetChangeMinor': fund.currentNetChangeMinor,
+                          'periodStart': fund.periodStart?.toIso8601String(),
+                          'periodEnd': fund.periodEnd?.toIso8601String(),
+                        })
+                    .toList(),
+              })
+          .toList(),
+    };
+
+Map<String, Object?> _totalsSnapshot(DashboardPeriodTotals totals) =>
+    <String, Object?>{
+      'netChangeMinor': totals.netChangeMinor,
+      'contributionMinor': totals.contributionMinor,
+      'expenseMinor': totals.expenseMinor,
+      'memberPositions': totals.memberPositions
+          .map((member) => <String, Object?>{
+                'userId': member.userId,
+                'displayName': member.displayName,
+                'membershipStatus': member.membershipStatus,
+                'positionMinor': member.positionMinor,
+              })
+          .toList(),
+    };

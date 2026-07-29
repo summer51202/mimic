@@ -1,14 +1,16 @@
+export type MinorUnit = number;
+
 export interface MemberPositionReadModel {
   userId: string;
   displayName: string;
   membershipStatus: string;
-  positionMinor: number;
+  positionMinor: MinorUnit;
 }
 
 export interface PeriodTotals {
-  netChangeMinor: number;
-  contributionMinor: number;
-  expenseMinor: number;
+  netChangeMinor: MinorUnit;
+  contributionMinor: MinorUnit;
+  expenseMinor: MinorUnit;
   memberPositions: MemberPositionReadModel[];
 }
 
@@ -19,7 +21,7 @@ export interface FundSummaryReadModel {
     name: string;
     currency: string;
     status: string;
-    cashBalanceMinor: number;
+    cashBalanceMinor: MinorUnit;
   };
   currentPeriod: {
     periodStart: string | null;
@@ -33,14 +35,14 @@ export interface FundSummaryReadModel {
 
 export interface CurrencyDashboardReadModel {
   currency: string;
-  cashBalanceMinor: number;
+  cashBalanceMinor: MinorUnit;
   current: PeriodTotals;
   allTime: PeriodTotals;
   funds: Array<{
     fundId: string;
     name: string;
-    cashBalanceMinor: number;
-    currentNetChangeMinor: number;
+    cashBalanceMinor: MinorUnit;
+    currentNetChangeMinor: MinorUnit;
     periodStart: string | null;
     periodEnd: string | null;
   }>;

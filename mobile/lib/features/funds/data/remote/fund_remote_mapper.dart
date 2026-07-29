@@ -10,7 +10,7 @@ FundDetailSummary mapFundSummaryResponse(Map<String, dynamic> response) {
     fundId: _string(fund, 'id'),
     fundName: _string(fund, 'name'),
     currency: _string(fund, 'currency'),
-    cashBalanceMinor: _integer(fund, 'cash_balance_minor'),
+    cashBalanceMinor: _minorUnit(fund, 'cash_balance_minor'),
     periodStart: _date(period['period_start'], 'period_start'),
     periodEnd: _date(period['period_end'], 'period_end'),
     lastCompletedSettlementId: _nullableString(
@@ -25,9 +25,9 @@ FundDetailSummary mapFundSummaryResponse(Map<String, dynamic> response) {
 
 DashboardPeriodTotals _totals(Map<String, dynamic> json) =>
     DashboardPeriodTotals(
-      netChangeMinor: _integer(json, 'net_change_minor'),
-      contributionMinor: _integer(json, 'contribution_minor'),
-      expenseMinor: _integer(json, 'expense_minor'),
+      netChangeMinor: _minorUnit(json, 'net_change_minor'),
+      contributionMinor: _minorUnit(json, 'contribution_minor'),
+      expenseMinor: _minorUnit(json, 'expense_minor'),
       memberPositions:
           _list(json['member_positions'], 'member_positions').map((item) {
         final value = _map(item, 'member_position');
@@ -35,7 +35,7 @@ DashboardPeriodTotals _totals(Map<String, dynamic> json) =>
             userId: _string(value, 'user_id'),
             displayName: _string(value, 'display_name'),
             membershipStatus: _string(value, 'membership_status'),
-            positionMinor: _integer(value, 'position_minor'));
+            positionMinor: _minorUnit(value, 'position_minor'));
       }).toList(),
     );
 
@@ -43,7 +43,7 @@ FundActivityItem mapFundActivity(Map<String, dynamic> json,
     {required bool contribution}) {
   final title = contribution ? 'Contribution' : _string(json, 'title');
   final occurredOn = _requiredDate(json['occurred_on'], 'occurred_on');
-  final amount = _integer(json, 'amount_minor');
+  final amount = _minorUnit(json, 'amount_minor');
   return FundActivityItem(
       type: contribution
           ? FundActivityType.contribution
@@ -91,12 +91,17 @@ String? _nullableString(Object? value, String field) {
   throw FormatException('$field must be a non-empty string or null');
 }
 
-int _integer(Map<String, dynamic> json, String field,
+int _minorUnit(Map<String, dynamic> json, String field,
     {bool missingAsZero = false}) {
   if (!json.containsKey(field) && missingAsZero) return 0;
   final value = json[field];
   if (value is int) return value;
-  throw FormatException('$field must be an integer');
+  if (value is num && value.isFinite && value % 1 == 0) return value.toInt();
+  if (value is String) {
+    final parsed = int.tryParse(value);
+    if (parsed != null) return parsed;
+  }
+  throw FormatException('$field must be a base-10 integer minor-unit value');
 }
 
 DateTime? _date(Object? value, String field) {

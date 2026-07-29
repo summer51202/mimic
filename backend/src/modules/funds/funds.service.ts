@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { FundStatus } from '@prisma/client';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { FundStatus, GroupStatus, MemberStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateFundDto } from './dto/create-fund.dto';
 
@@ -7,7 +11,8 @@ import { CreateFundDto } from './dto/create-fund.dto';
 export class FundsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  createFund(groupId: string, userId: string, dto: CreateFundDto) {
+  async createFund(groupId: string, userId: string, dto: CreateFundDto) {
+    await this.assertActiveGroupMember(groupId, userId);
     return this.prisma.fund.create({
       data: {
         groupId,
@@ -18,7 +23,8 @@ export class FundsService {
     });
   }
 
-  listFunds(groupId: string) {
+  async listFunds(groupId: string, userId: string) {
+    await this.assertActiveGroupMember(groupId, userId);
     return this.prisma.fund.findMany({
       where: {
         groupId,
@@ -32,7 +38,18 @@ export class FundsService {
     });
   }
 
-  async getFundDetail(fundId: string) {
+  async getFundDetail(fundId: string, userId: string) {
+    const fundAccess = await this.prisma.fund.findFirst({
+      where: { id: fundId, status: FundStatus.ACTIVE },
+      select: { groupId: true },
+    });
+
+    if (!fundAccess) {
+      return null;
+    }
+
+    await this.assertActiveGroupMember(fundAccess.groupId, userId);
+
     const fund = await this.prisma.fund.findUnique({
       where: { id: fundId },
       include: {
@@ -55,5 +72,25 @@ export class FundsService {
     }
 
     return fund;
+  }
+
+  private async assertActiveGroupMember(groupId: string, userId: string) {
+    const group = await this.prisma.group.findFirst({
+      where: { id: groupId, status: GroupStatus.ACTIVE },
+      select: { id: true },
+    });
+
+    if (!group) {
+      throw new NotFoundException('GROUP_NOT_FOUND');
+    }
+
+    const member = await this.prisma.groupMember.findFirst({
+      where: { groupId, userId, status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
+
+    if (!member) {
+      throw new ForbiddenException('GROUP_ACCESS_DENIED');
+    }
   }
 }

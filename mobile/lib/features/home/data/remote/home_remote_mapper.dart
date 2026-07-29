@@ -78,7 +78,7 @@ class FundListItemDto {
       id: '${data['id'] ?? ''}',
       name: '${data['name'] ?? 'Unnamed fund'}',
       currency: '${data['currency'] ?? 'TWD'}',
-      balanceMinor: (data['balance_minor'] as num?)?.toInt() ?? 0,
+      balanceMinor: _minorUnit(data, 'balance_minor', missingAsZero: true),
     );
   }
 }
@@ -92,6 +92,19 @@ FundSummary mapFundSummary(
     name: dto.name,
     balanceLabel: balanceLabel,
   );
+}
+
+int _minorUnit(Map<String, dynamic> json, String key,
+    {bool missingAsZero = false}) {
+  if (!json.containsKey(key) && missingAsZero) return 0;
+  final value = json[key];
+  if (value is int) return value;
+  if (value is num && value.isFinite && value % 1 == 0) return value.toInt();
+  if (value is String) {
+    final parsed = int.tryParse(value);
+    if (parsed != null) return parsed;
+  }
+  throw FormatException('$key must be a base-10 integer minor-unit value');
 }
 
 HomeSummary mapRemoteHomeSummary({

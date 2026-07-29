@@ -168,7 +168,7 @@ class RemoteGroupRepository implements GroupRepository {
               id: '${fund['id'] ?? ''}',
               name: '${fund['name'] ?? 'Unnamed fund'}',
               balanceLabel: formatMinorCurrency(
-                (fund['balance_minor'] as num?)?.toInt() ?? 0,
+                _minorUnit(fund, 'balance_minor', missingAsZero: true),
                 currency: '${fund['currency'] ?? 'TWD'}',
               ),
             ),
@@ -211,6 +211,19 @@ class RemoteGroupRepository implements GroupRepository {
   Future<void> leaveGroup(String groupId) async {
     await _apiClient.post('/groups/$groupId/leave');
   }
+}
+
+int _minorUnit(Map<String, dynamic> json, String key,
+    {bool missingAsZero = false}) {
+  if (!json.containsKey(key) && missingAsZero) return 0;
+  final value = json[key];
+  if (value is int) return value;
+  if (value is num && value.isFinite && value % 1 == 0) return value.toInt();
+  if (value is String) {
+    final parsed = int.tryParse(value);
+    if (parsed != null) return parsed;
+  }
+  throw FormatException('$key must be a base-10 integer minor-unit value');
 }
 
 final groupRepositoryProvider = Provider<GroupRepository>((Ref ref) {
