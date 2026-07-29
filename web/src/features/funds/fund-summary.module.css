@@ -1,0 +1,89 @@
+.page,
+.panel,
+.totals,
+.memberList,
+.fundList {
+  display: grid;
+  gap: var(--mimic-space-4);
+}
+
+.header {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mimic-space-3);
+  justify-content: space-between;
+}
+
+.kicker,
+.muted {
+  color: var(--mimic-color-ink-soft);
+  font-weight: 800;
+}
+
+.title {
+  color: var(--mimic-color-hud-dark);
+  font-size: clamp(2rem, 7vw, 3rem);
+  line-height: 1;
+}
+
+.currency {
+  border: 2px solid var(--mimic-color-hud-dark);
+  background: var(--mimic-color-coin-action);
+  color: var(--mimic-color-hud-dark);
+  font-weight: 900;
+  padding: var(--mimic-space-1) var(--mimic-space-2);
+}
+
+.balance {
+  color: var(--mimic-color-hud-dark);
+  font-family: var(--mimic-font-pixel);
+  font-size: clamp(2rem, 10vw, 4rem);
+}
+
+.totals {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}
+
+.total {
+  border-top: 1px solid var(--mimic-color-line);
+  padding-top: var(--mimic-space-3);
+}
+
+.total strong,
+.memberAmount {
+  color: var(--mimic-color-hud-dark);
+  display: block;
+  font-size: 1.2rem;
+}
+
+.memberList,
+.fundList {
+  list-style: none;
+}
+
+.member,
+.fundLink {
+  align-items: center;
+  display: flex;
+  gap: var(--mimic-space-3);
+  justify-content: space-between;
+}
+
+.fundLink {
+  border-top: 1px solid var(--mimic-color-line);
+  color: var(--mimic-color-hud-dark);
+  padding: var(--mimic-space-3) 0;
+}
+
+.notice {
+  border-top: 1px solid var(--mimic-color-line);
+  color: var(--mimic-color-ink-soft);
+  font-weight: 800;
+  padding-top: var(--mimic-space-3);
+}
+
+.summaryDisclosure {
+  border-top: 1px solid var(--mimic-color-line);
+  padding-top: var(--mimic-space-3);
+}

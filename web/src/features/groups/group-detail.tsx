@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import type { GroupDetail, Member } from "@/shared/api/domain-contracts";
+import { FundList } from "@/features/funds/fund-list";
+import type { Fund, GroupDetail, Member } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelFrame } from "@/shared/ui/pixel-frame";
 
@@ -13,12 +14,14 @@ import { MemberRoster } from "./member-roster";
 import styles from "./group-management.module.css";
 
 interface GroupDetailViewProps {
+  funds?: Fund[];
   group: GroupDetail;
   members: Member[];
   onRefresh?: () => void;
 }
 
 export function GroupDetailView({
+  funds = [],
   group,
   members,
   onRefresh,
@@ -68,6 +71,7 @@ export function GroupDetailView({
           <h2>Members</h2>
           <MemberRoster members={members} />
         </PixelFrame>
+        <FundList funds={funds} groupId={group.id} />
         {renaming ? (
           <PixelFrame>
             <h2>Rename</h2>

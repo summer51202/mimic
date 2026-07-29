@@ -383,3 +383,17 @@
 - Added the group detail invite entry and the authenticated `/app/groups/[groupId]/invite` page.
 **Decisions:** Kept invite creation and acceptance as small client panels reusing the existing group `appFetch` CSRF helper. Public invite pages intentionally show the invite code but no group, member, balance, fund, or transaction data.
 **Known gaps / follow-ups:** Invite role/permission checks remain backend-authoritative. Visual browser QA for the invite pages and actual backend acceptance with seeded users remain follow-up checkpoints.
+
+## 2026-07-29 - Add mimic PWA fund creation and summaries
+
+**Task:** Deliver Task 8 by adding PWA fund creation, group fund listing, dashboard fund cards, and fund summaries.
+**Scope:** `web/src/features/funds`, `web/src/app/app/groups/[groupId]/funds/new/page.tsx`, `web/src/app/app/funds/[fundId]/page.tsx`, `web/src/app/app/groups/[groupId]/page.tsx`, `web/src/features/groups/group-detail.tsx`, `web/src/features/groups/treasury-dashboard.tsx`, focused fund/dashboard tests, `.agents/devlog.md`
+**What changed:**
+- Added fund form validation with trimmed names and uppercase three-letter currency normalization.
+- Added CSRF-protected fund creation through the existing app BFF and routed successful creation to `/app/funds/{id}`.
+- Added authenticated fund queries for group fund lists and fund summaries, parsing minor-unit money fields through existing domain contracts.
+- Added fund list/cards to group detail and dashboard views, preserving per-currency fund amounts without cross-currency aggregation.
+- Added fund summary UI with cash balance, current period state, current totals, signed member positions, all-time totals, and a non-actionable next-phase activity boundary.
+- Added `/app/groups/[groupId]/funds/new` and `/app/funds/[fundId]` pages.
+**Decisions:** Kept contributions, expenses, and activity actions visibly out of scope for this task instead of adding disabled transaction buttons. Reused the existing group `appFetch` helper for fund mutations.
+**Known gaps / follow-ups:** Fund update/archive and transaction creation remain later PWA tasks. Visual browser QA and backend runtime acceptance with seeded funds remain follow-up checkpoints.

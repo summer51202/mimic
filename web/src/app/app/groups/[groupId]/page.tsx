@@ -1,3 +1,4 @@
+import { listFunds } from "@/features/funds/fund-queries";
 import { getGroup, listMembers } from "@/features/groups/group-queries";
 import { GroupDetailView } from "@/features/groups/group-detail";
 
@@ -9,10 +10,11 @@ export default async function GroupDetailPage({
   params,
 }: GroupDetailPageProps) {
   const { groupId } = await params;
-  const [group, members] = await Promise.all([
+  const [group, members, funds] = await Promise.all([
     getGroup(groupId),
     listMembers(groupId),
+    listFunds(groupId),
   ]);
 
-  return <GroupDetailView group={group} members={members} />;
+  return <GroupDetailView funds={funds} group={group} members={members} />;
 }

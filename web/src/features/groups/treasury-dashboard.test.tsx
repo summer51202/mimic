@@ -57,6 +57,32 @@ const dashboard: GroupDashboard = {
         },
       ],
     },
+    {
+      currency: "USD",
+      cash_balance_minor: "5000",
+      current: {
+        net_change_minor: "5000",
+        contribution_minor: "5000",
+        expense_minor: "0",
+        member_positions: [],
+      },
+      all_time: {
+        net_change_minor: "5000",
+        contribution_minor: "5000",
+        expense_minor: "0",
+        member_positions: [],
+      },
+      funds: [
+        {
+          fund_id: "f2",
+          name: "Travel USD",
+          cash_balance_minor: "5000",
+          current_net_change_minor: "5000",
+          period_start: null,
+          period_end: null,
+        },
+      ],
+    },
   ],
 };
 
@@ -95,7 +121,13 @@ describe("TreasuryDashboard", () => {
         (link) => link.getAttribute("href") === "/app/funds/f1",
       ),
     ).toHaveAccessibleName(/生活基金/);
+    expect(screen.getByRole("link", { name: "新增" })).toHaveAttribute(
+      "href",
+      "/app/groups/g1/funds/new",
+    );
     expect(screen.getByText("小明")).toBeVisible();
+    expect(screen.getByText("Travel USD")).toBeVisible();
+    expect(screen.getByText("$50.00")).toBeVisible();
     expect(screen.queryByText(/Private app preview/i)).not.toBeInTheDocument();
     expect(screen.queryByText("近期支出")).not.toBeInTheDocument();
   });

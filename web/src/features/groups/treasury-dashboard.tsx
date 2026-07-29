@@ -120,23 +120,25 @@ export function TreasuryDashboard({
         <PixelFrame className={styles.panel}>
           <div className={styles.panelHeader}>
             <h2>Funds</h2>
-            <Link href="/app/funds/new">新增</Link>
+            <Link href={`/app/groups/${dashboard.group.id}/funds/new`}>新增</Link>
           </div>
           <ul className={styles.fundList}>
-            {(primaryCurrency?.funds ?? []).map((fund) => (
-              <li key={fund.fund_id}>
-                <Link className={styles.fundLink} href={`/app/funds/${fund.fund_id}`}>
-                  <span>{fund.name}</span>
-                  <strong>
-                    {formatMinorUnit(
-                      fund.cash_balance_minor,
-                      primaryCurrency?.currency ?? "TWD",
-                      "en-US",
-                    )}
-                  </strong>
-                </Link>
-              </li>
-            ))}
+            {dashboard.currencies.flatMap((currency) =>
+              currency.funds.map((fund) => (
+                <li key={fund.fund_id}>
+                  <Link className={styles.fundLink} href={`/app/funds/${fund.fund_id}`}>
+                    <span>{fund.name}</span>
+                    <strong>
+                      {formatMinorUnit(
+                        fund.cash_balance_minor,
+                        currency.currency,
+                        "en-US",
+                      )}
+                    </strong>
+                  </Link>
+                </li>
+              )),
+            )}
           </ul>
         </PixelFrame>
       </div>
