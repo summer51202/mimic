@@ -38,8 +38,11 @@ describe("PWA cache policy", () => {
   it("keeps private routes out of service-worker caching policy", () => {
     const nextConfig = readProjectFile("next.config.ts");
     const serviceWorker = readProjectFile("src/app/sw.ts");
+    const privateTopLevelRoutePattern = /^\/(?:api|app)(?:\/|$)/;
 
     expect(nextConfig).toContain('!/^\\/(?:api|app)(?:\\/|$)/.test(url)');
+    expect(privateTopLevelRoutePattern.test("/api/app/groups")).toBe(true);
+    expect(privateTopLevelRoutePattern.test("/app/groups")).toBe(true);
     expect(nextConfig).toContain("!/\\/chunks\\/app\\/(?:api|app)\\//.test(url)");
     expect(serviceWorker).toContain(
       "^\\/(?:api|app|account|accounts|group|groups|fund|funds|transaction|transactions|settlement|settlements)(?:\\/|$)",
