@@ -32,7 +32,7 @@
 
 .list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--mimic-space-2);
   list-style: none;
 }
@@ -95,142 +95,8 @@
   font-size: 0.95rem;
 }
 
-.appShell {
-  min-height: 100dvh;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--mimic-color-sky) 18%, transparent),
-      transparent 18rem
-    ),
-    var(--mimic-color-surface);
-}
-
-.mobileOnly {
-  display: block;
-}
-
-.desktopOnly {
-  display: none;
-}
-
-.main {
-  width: min(100%, 68rem);
-  margin: 0 auto;
-  padding: var(--mimic-space-5) var(--mimic-space-4) 6.5rem;
-}
-
-.pageHeader {
-  display: grid;
-  gap: var(--mimic-space-2);
-  margin-bottom: var(--mimic-space-5);
-}
-
-.eyebrow {
-  color: var(--mimic-color-wood);
-  font-size: 0.82rem;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.title {
-  max-width: 44rem;
-  font-size: clamp(2rem, 5vw, 3rem);
-  line-height: 1;
-}
-
-.intro {
-  max-width: 40rem;
-  color: var(--mimic-color-ink-soft);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
-.panelGrid {
-  display: grid;
-  gap: var(--mimic-space-4);
-}
-
-.notice,
-.statusPanel {
-  border: 2px solid var(--mimic-color-line);
-  border-radius: var(--mimic-radius-panel);
-  background: var(--mimic-color-surface-raised);
-  padding: var(--mimic-space-5);
-}
-
-.notice {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--mimic-space-4);
-}
-
-.mimikuBadge {
-  display: grid;
-  width: 3rem;
-  height: 3rem;
-  place-items: center;
-  border: 2px solid var(--mimic-color-ink);
-  border-radius: var(--mimic-radius-2);
-  background: var(--mimic-color-grass);
-  color: var(--mimic-color-surface-raised);
-  font-weight: 900;
-}
-
-.panelTitle {
-  margin-bottom: var(--mimic-space-2);
-  font-size: 1.1rem;
-}
-
-.panelText {
-  color: var(--mimic-color-ink-soft);
-  line-height: 1.6;
-}
-
-.statusList {
-  display: grid;
-  gap: var(--mimic-space-3);
-  list-style: none;
-}
-
-.statusItem {
-  display: flex;
-  align-items: center;
-  gap: var(--mimic-space-3);
-  color: var(--mimic-color-ink-soft);
-}
-
-.statusMarker {
-  display: inline-block;
-  width: 0.75rem;
-  height: 0.75rem;
-  flex: 0 0 0.75rem;
-  border: 2px solid var(--mimic-color-ink);
-  background: var(--mimic-color-coin);
-}
-
 @media (min-width: 48rem) {
-  .appShell {
-    display: flex;
-  }
-
-  .mobileOnly {
-    display: none;
-  }
-
-  .desktopOnly {
-    display: block;
-  }
-
   .navigation[data-variant="desktop"] {
     display: block;
-  }
-
-  .main {
-    padding: var(--mimic-space-6);
-  }
-
-  .panelGrid {
-    grid-template-columns: 1.25fr 0.75fr;
   }
 }

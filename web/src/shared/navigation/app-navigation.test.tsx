@@ -34,16 +34,18 @@ describe("AppNavigation", () => {
     expect(screen.getByText("mimic")).toBeInTheDocument();
   });
 
-  it("indicates the current route without linking to unavailable future screens", () => {
+  it("indicates the current route while linking to primary sections", () => {
     render(<AppNavigation currentPath="/app" variant="desktop" />);
 
     const overview = screen.getByRole("link", { name: /Overview/ });
-    const groups = screen.getByRole("button", { name: /Groups/ });
+    const groups = screen.getByRole("link", { name: /Groups/ });
+    const funds = screen.getByRole("link", { name: /Funds/ });
     const activity = screen.getByRole("button", { name: /Activity/ });
     const settings = screen.getByRole("button", { name: /Settings/ });
 
     expect(overview).toHaveAttribute("aria-current", "page");
-    expect(groups).toBeDisabled();
+    expect(groups).toHaveAttribute("href", "/app/groups");
+    expect(funds).toHaveAttribute("href", "/app/funds");
     expect(activity).toBeDisabled();
     expect(settings).toBeDisabled();
   });
@@ -63,9 +65,6 @@ describe("AppNavigation", () => {
   it("announces disabled future sections as coming soon", () => {
     render(<AppNavigation currentPath="/app" variant="desktop" />);
 
-    expect(
-      screen.getByRole("button", { name: "Groups (coming soon)" }),
-    ).toBeDisabled();
     expect(
       screen.getByRole("button", { name: "Activity (coming soon)" }),
     ).toBeDisabled();

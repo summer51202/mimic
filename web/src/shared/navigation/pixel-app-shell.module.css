@@ -1,0 +1,72 @@
+.shell {
+  min-height: 100dvh;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mimic-color-hud-dark) 10%, transparent),
+      transparent 18rem
+    ),
+    var(--mimic-color-surface);
+}
+
+.topBar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  min-height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--mimic-color-coin-deep);
+  background: var(--mimic-color-hud-dark);
+  color: var(--mimic-color-surface);
+  padding: 0 var(--mimic-space-4);
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.mimiku {
+  color: var(--mimic-color-coin-action);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.body {
+  display: block;
+}
+
+.main {
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  padding: var(--mimic-space-5) var(--mimic-space-4) 6.5rem;
+}
+
+.mobileOnly {
+  display: block;
+}
+
+.desktopOnly {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .body {
+    display: flex;
+  }
+
+  .mobileOnly {
+    display: none;
+  }
+
+  .desktopOnly {
+    display: block;
+  }
+
+  .main {
+    padding: var(--mimic-space-6);
+  }
+}

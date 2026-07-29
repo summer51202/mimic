@@ -20,8 +20,15 @@ const navigationItems = [
   },
   {
     icon: "G",
+    href: "/app/groups",
     label: "Groups",
-    status: "soon",
+    status: "available",
+  },
+  {
+    icon: "F",
+    href: "/app/funds",
+    label: "Funds",
+    status: "available",
   },
   {
     icon: "A",
