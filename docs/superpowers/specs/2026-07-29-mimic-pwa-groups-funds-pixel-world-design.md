@@ -103,7 +103,7 @@ If access disappears, clear the invalid preference and repeat the fallback seque
 
 ### Navigation
 
-The active navigation destinations in this phase are Overview, Groups, and Settings. Activity remains visibly unavailable until the Financial Activity phase supplies real data. Unavailable destinations are not styled as actionable links.
+The active navigation destinations in this phase are Overview and Groups. Activity remains unavailable until the Financial Activity phase supplies real data, and Settings remains unavailable until the profile/settings PWA phase. Unavailable destinations are not styled as actionable links.
 
 ## Primary Journeys
 
