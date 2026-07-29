@@ -12,6 +12,16 @@
   --mimic-color-line: #d9c7a8;
   --mimic-color-focus: #2f82d6;
 
+  --mimic-color-hud-dark: #17213a;
+  --mimic-color-coin-action: #f4b83f;
+  --mimic-color-wood-accent: #8a5a35;
+  --mimic-color-heart-critical: #d74f4f;
+  --mimic-color-grass-success: #4f9d5d;
+  --mimic-color-sky-info: #6fb7df;
+  --mimic-color-warm-surface: #fff7df;
+  --mimic-color-frame-highlight: #fff0b8;
+  --mimic-color-frame-line: #8a5a35;
+
   --mimic-space-1: 0.25rem;
   --mimic-space-2: 0.5rem;
   --mimic-space-3: 0.75rem;
@@ -25,6 +35,9 @@
 
   --mimic-shadow-pixel: 0 3px 0 var(--mimic-color-ink);
   --mimic-shadow-pixel-soft: 0 3px 0 color-mix(in srgb, var(--mimic-color-ink) 55%, transparent);
+  --mimic-shadow-stepped:
+    0 3px 0 var(--mimic-color-hud-dark),
+    3px 6px 0 color-mix(in srgb, var(--mimic-color-wood-accent) 55%, transparent);
 
   --background: var(--mimic-color-surface);
   --foreground: var(--mimic-color-ink);
