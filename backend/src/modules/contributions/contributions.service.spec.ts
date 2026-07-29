@@ -114,13 +114,28 @@ describe('ContributionsService', () => {
 
   it('lists active fund contributions newest first', async () => {
     const prisma = {
+      fund: {
+        findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }),
+      },
+      groupMember: {
+        findFirst: jest.fn().mockResolvedValue({ userId: 'user-1' }),
+      },
       contribution: {
         findMany: jest.fn().mockResolvedValue([]),
       },
     };
     const service = new ContributionsService(prisma as never);
 
-    await service.listContributions('fund-1', { page: 2, page_size: 3, sort: 'occurred_on_asc' });
+    await service.listContributions('fund-1', 'user-1', { page: 2, page_size: 3, sort: 'occurred_on_asc' });
+
+    expect(prisma.fund.findFirst).toHaveBeenCalledWith({
+      where: { id: 'fund-1', status: FundStatus.ACTIVE },
+      select: { id: true, groupId: true },
+    });
+    expect(prisma.groupMember.findFirst).toHaveBeenCalledWith({
+      where: { groupId: 'group-1', userId: 'user-1', status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
 
     expect(prisma.contribution.findMany).toHaveBeenCalledWith({
       where: {
@@ -131,5 +146,46 @@ describe('ContributionsService', () => {
       skip: 3,
       take: 3,
     });
+  });
+
+  it('rejects contribution list reads when the actor is not an active group member', async () => {
+    const prisma = {
+      fund: {
+        findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }),
+      },
+      groupMember: {
+        findFirst: jest.fn().mockResolvedValue(null),
+      },
+      contribution: {
+        findMany: jest.fn(),
+      },
+    };
+    const service = new ContributionsService(prisma as never);
+
+    await expect(
+      service.listContributions('fund-1', 'outsider', { page: 1, page_size: 50, sort: 'occurred_on_desc' }),
+    ).rejects.toEqual(new ForbiddenException('GROUP_ACCESS_DENIED'));
+    expect(prisma.contribution.findMany).not.toHaveBeenCalled();
+  });
+
+  it('returns FUND_NOT_FOUND before checking membership for missing contribution funds', async () => {
+    const prisma = {
+      fund: {
+        findFirst: jest.fn().mockResolvedValue(null),
+      },
+      groupMember: {
+        findFirst: jest.fn(),
+      },
+      contribution: {
+        findMany: jest.fn(),
+      },
+    };
+    const service = new ContributionsService(prisma as never);
+
+    await expect(
+      service.listContributions('missing-fund', 'user-1'),
+    ).rejects.toEqual(new NotFoundException('FUND_NOT_FOUND'));
+    expect(prisma.groupMember.findFirst).not.toHaveBeenCalled();
+    expect(prisma.contribution.findMany).not.toHaveBeenCalled();
   });
 });

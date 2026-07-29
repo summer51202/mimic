@@ -26,15 +26,19 @@ export class ExpensesController {
   }
 
   @Get('funds/:fundId/expenses')
-  async listExpenses(@Param('fundId') fundId: string, @Query() query: ActivityQueryDto) {
-    const expenses = await this.expensesService.listExpenses(fundId, query);
+  async listExpenses(
+    @Param('fundId') fundId: string,
+    @CurrentUser() user: RequestUser,
+    @Query() query: ActivityQueryDto,
+  ) {
+    const expenses = await this.expensesService.listExpenses(fundId, user.userId, query);
 
     return {
       data: expenses.map((expense) => ({
         ...this.mapExpense(expense),
         payers: expense.payers.map((payer) => ({
           payer_user_id: payer.payerUserId,
-          amount_minor: Number(payer.amountMinor),
+          amount_minor: payer.amountMinor.toString(),
         })),
         splits: expense.splits.map((split) => ({
           user_id: split.userId,
@@ -43,8 +47,8 @@ export class ExpensesController {
           fixed_amount_minor:
             split.fixedAmountMinor === null
               ? null
-              : Number(split.fixedAmountMinor),
-          allocated_amount_minor: Number(split.allocatedAmountMinor),
+              : split.fixedAmountMinor.toString(),
+          allocated_amount_minor: split.allocatedAmountMinor.toString(),
           sort_order: split.sortOrder,
         })),
       })),
@@ -67,7 +71,7 @@ export class ExpensesController {
       fund_id: expense.fundId,
       title: expense.title,
       note: expense.note,
-      amount_minor: Number(expense.amountMinor),
+      amount_minor: expense.amountMinor.toString(),
       split_mode: expense.splitMode.toLowerCase(),
       expense_type: expense.expenseType.toLowerCase(),
       occurred_on: expense.occurredOn.toISOString().slice(0, 10),

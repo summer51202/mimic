@@ -26,7 +26,7 @@ import { CreateSettlementDto } from './dto/create-settlement.dto';
 export class SettlementsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getSettlementSuggestion(fundId: string) {
+  async getSettlementSuggestion(fundId: string, actorUserId: string) {
     const fund = await this.prisma.fund.findUnique({
       where: { id: fundId },
       include: {
@@ -60,6 +60,8 @@ export class SettlementsService {
       };
     }
 
+    await this.requireActiveGroupMember(this.prisma, fund.group.id, actorUserId);
+
     const positions = calculateMemberPositions({
       memberIds: fund.group.members.map((member) => member.userId),
       contributions: fund.contributions,
@@ -73,7 +75,10 @@ export class SettlementsService {
       currency: fund.currency,
       period_start: this.currentMonthStart(),
       period_end: this.currentMonthEnd(),
-      suggestions: buildSettlementSuggestions(normalizedPositions),
+      suggestions: buildSettlementSuggestions(normalizedPositions).map((suggestion) => ({
+        ...suggestion,
+        amount_minor: suggestion.amount_minor.toString(),
+      })),
     };
   }
 
@@ -127,7 +132,22 @@ export class SettlementsService {
     if (participantIds.some((userId) => !activeIds.has(userId))) throw new NotFoundException('MEMBER_NOT_FOUND');
   }
 
-  listSettlements(fundId: string, take = 20) {
+  private async requireActiveGroupMember(
+    client: Prisma.TransactionClient | PrismaService,
+    groupId: string,
+    actorUserId: string,
+  ) {
+    const member = await client.groupMember.findFirst({
+      where: { groupId, userId: actorUserId, status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
+    if (!member) throw new ForbiddenException('GROUP_ACCESS_DENIED');
+  }
+
+  async listSettlements(fundId: string, actorUserId: string, take = 20) {
+    const fund = await this.requireActiveFund(fundId);
+    await this.requireActiveGroupMember(this.prisma, fund.groupId, actorUserId);
+
     return this.prisma.settlement.findMany({
       where: { fundId },
       orderBy: [{ createdAt: 'desc' }],
@@ -135,13 +155,19 @@ export class SettlementsService {
     });
   }
 
-  getSettlement(settlementId: string) {
-    return this.prisma.settlement.findUnique({
+  async getSettlement(settlementId: string, actorUserId: string) {
+    const settlement = await this.prisma.settlement.findUnique({
       where: { id: settlementId },
+      include: { fund: { select: { groupId: true } } },
     });
+    if (!settlement) {
+      throw new NotFoundException('SETTLEMENT_NOT_FOUND');
+    }
+    await this.requireActiveGroupMember(this.prisma, settlement.fund.groupId, actorUserId);
+    return settlement;
   }
 
-  completeSettlement(settlementId: string, dto: CompleteSettlementDto) {
+  completeSettlement(settlementId: string, actorUserId: string, dto: CompleteSettlementDto) {
     return this.prisma.$transaction(async (tx) => {
       const settlement = await tx.settlement.findUnique({
         where: { id: settlementId },
@@ -152,6 +178,7 @@ export class SettlementsService {
       }
 
       await lockGroupMutation(tx, settlement.fund.groupId);
+      await this.requireActiveGroupMember(tx, settlement.fund.groupId, actorUserId);
 
       const lockedSettlement = await tx.settlement.findUnique({
         where: { id: settlementId },
@@ -174,7 +201,7 @@ export class SettlementsService {
     });
   }
 
-  cancelSettlement(settlementId: string) {
+  cancelSettlement(settlementId: string, actorUserId: string) {
     return this.prisma.$transaction(async (tx) => {
       const settlement = await tx.settlement.findUnique({
         where: { id: settlementId },
@@ -185,6 +212,7 @@ export class SettlementsService {
       }
 
       await lockGroupMutation(tx, settlement.fund.groupId);
+      await this.requireActiveGroupMember(tx, settlement.fund.groupId, actorUserId);
 
       const lockedSettlement = await tx.settlement.findUnique({
         where: { id: settlementId },

@@ -60,7 +60,14 @@ export class ContributionsService {
     if (participantIds.some((userId) => !activeIds.has(userId))) throw new NotFoundException('MEMBER_NOT_FOUND');
   }
 
-  listContributions(fundId: string, query: ActivityQueryDto = new ActivityQueryDto()) {
+  async listContributions(
+    fundId: string,
+    actorUserId: string,
+    query: ActivityQueryDto = new ActivityQueryDto(),
+  ) {
+    const fund = await this.requireActiveFund(fundId);
+    await this.requireActiveGroupMember(this.prisma, fund.groupId, actorUserId);
+
     const direction = query.sort === 'occurred_on_asc' ? 'asc' : 'desc';
     return this.prisma.contribution.findMany({
       where: {
@@ -71,6 +78,18 @@ export class ContributionsService {
       skip: (query.page - 1) * query.page_size,
       take: query.page_size,
     });
+  }
+
+  private async requireActiveGroupMember(
+    client: Prisma.TransactionClient | PrismaService,
+    groupId: string,
+    actorUserId: string,
+  ) {
+    const member = await client.groupMember.findFirst({
+      where: { groupId, userId: actorUserId, status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
+    if (!member) throw new ForbiddenException('GROUP_ACCESS_DENIED');
   }
 
   private mapContributionType(type: CreateContributionDto['contribution_type']) {

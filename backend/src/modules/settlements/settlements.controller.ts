@@ -12,9 +12,12 @@ export class SettlementsController {
   constructor(private readonly settlementsService: SettlementsService) {}
 
   @Get('funds/:fundId/settlement-suggestion')
-  async getSettlementSuggestion(@Param('fundId') fundId: string) {
+  async getSettlementSuggestion(
+    @Param('fundId') fundId: string,
+    @CurrentUser() user: RequestUser,
+  ) {
     const suggestion =
-      await this.settlementsService.getSettlementSuggestion(fundId);
+      await this.settlementsService.getSettlementSuggestion(fundId, user.userId);
 
     return { data: suggestion };
   }
@@ -37,11 +40,13 @@ export class SettlementsController {
   @Get('funds/:fundId/settlements')
   async listSettlements(
     @Param('fundId') fundId: string,
+    @CurrentUser() user: RequestUser,
     @Query('page_size') pageSize?: string,
   ) {
     const parsedPageSize = Number(pageSize);
     const settlements = await this.settlementsService.listSettlements(
       fundId,
+      user.userId,
       Number.isFinite(parsedPageSize) && parsedPageSize > 0
         ? parsedPageSize
         : 20,
@@ -51,20 +56,25 @@ export class SettlementsController {
   }
 
   @Get('settlements/:settlementId')
-  async getSettlement(@Param('settlementId') settlementId: string) {
+  async getSettlement(
+    @Param('settlementId') settlementId: string,
+    @CurrentUser() user: RequestUser,
+  ) {
     const settlement =
-      await this.settlementsService.getSettlement(settlementId);
+      await this.settlementsService.getSettlement(settlementId, user.userId);
 
-    return { data: settlement ? this.mapSettlement(settlement) : {} };
+    return { data: this.mapSettlement(settlement) };
   }
 
   @Post('settlements/:settlementId/complete')
   async completeSettlement(
     @Param('settlementId') settlementId: string,
+    @CurrentUser() user: RequestUser,
     @Body() dto: CompleteSettlementDto,
   ) {
     const settlement = await this.settlementsService.completeSettlement(
       settlementId,
+      user.userId,
       dto,
     );
 
@@ -74,10 +84,11 @@ export class SettlementsController {
   @Post('settlements/:settlementId/cancel')
   async cancelSettlement(
     @Param('settlementId') settlementId: string,
+    @CurrentUser() user: RequestUser,
     @Body() _dto: CancelSettlementDto,
   ) {
     const settlement =
-      await this.settlementsService.cancelSettlement(settlementId);
+      await this.settlementsService.cancelSettlement(settlementId, user.userId);
 
     return { data: this.mapSettlement(settlement) };
   }
@@ -104,7 +115,7 @@ export class SettlementsController {
       amount_minor:
         settlement.amountMinor === undefined
           ? undefined
-          : Number(settlement.amountMinor),
+          : settlement.amountMinor.toString(),
       period_start: settlement.periodStart?.toISOString().slice(0, 10) ?? null,
       period_end: settlement.periodEnd?.toISOString().slice(0, 10) ?? null,
       status: settlement.status?.toLowerCase(),

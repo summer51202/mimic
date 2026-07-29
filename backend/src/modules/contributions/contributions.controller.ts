@@ -26,9 +26,13 @@ export class ContributionsController {
   }
 
   @Get('funds/:fundId/contributions')
-  async listContributions(@Param('fundId') fundId: string, @Query() query: ActivityQueryDto) {
+  async listContributions(
+    @Param('fundId') fundId: string,
+    @CurrentUser() user: RequestUser,
+    @Query() query: ActivityQueryDto,
+  ) {
     const contributions =
-      await this.contributionsService.listContributions(fundId, query);
+      await this.contributionsService.listContributions(fundId, user.userId, query);
 
     return { data: contributions.map((item) => this.mapContribution(item)) };
   }
@@ -47,7 +51,7 @@ export class ContributionsController {
       id: contribution.id,
       fund_id: contribution.fundId,
       contributor_user_id: contribution.contributorUserId,
-      amount_minor: Number(contribution.amountMinor),
+      amount_minor: contribution.amountMinor.toString(),
       contribution_type: contribution.contributionType.toLowerCase(),
       occurred_on: contribution.occurredOn.toISOString().slice(0, 10),
       note: contribution.note,

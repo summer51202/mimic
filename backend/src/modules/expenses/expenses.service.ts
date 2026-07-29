@@ -95,7 +95,14 @@ export class ExpensesService {
     if (participantIds.some((userId) => !activeIds.has(userId))) throw new NotFoundException('MEMBER_NOT_FOUND');
   }
 
-  listExpenses(fundId: string, query: ActivityQueryDto = new ActivityQueryDto()) {
+  async listExpenses(
+    fundId: string,
+    actorUserId: string,
+    query: ActivityQueryDto = new ActivityQueryDto(),
+  ) {
+    const fund = await this.requireActiveFund(fundId);
+    await this.requireActiveGroupMember(this.prisma, fund.groupId, actorUserId);
+
     const direction = query.sort === 'occurred_on_asc' ? 'asc' : 'desc';
     return this.prisma.expense.findMany({
       where: {
@@ -110,6 +117,18 @@ export class ExpensesService {
       skip: (query.page - 1) * query.page_size,
       take: query.page_size,
     });
+  }
+
+  private async requireActiveGroupMember(
+    client: Prisma.TransactionClient | PrismaService,
+    groupId: string,
+    actorUserId: string,
+  ) {
+    const member = await client.groupMember.findFirst({
+      where: { groupId, userId: actorUserId, status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
+    if (!member) throw new ForbiddenException('GROUP_ACCESS_DENIED');
   }
 
   private validatePayerTotal(dto: CreateExpenseDto) {

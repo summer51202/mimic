@@ -13,6 +13,7 @@ import { FundsService } from '../src/modules/funds/funds.service';
 import { PrismaService } from '../src/modules/prisma/prisma.service';
 import { ExpensesService } from '../src/modules/expenses/expenses.service';
 import { ContributionsService } from '../src/modules/contributions/contributions.service';
+import { SettlementsService } from '../src/modules/settlements/settlements.service';
 
 const JWT_SECRET =
   'pairfund-dashboard-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
@@ -32,6 +33,19 @@ describe('Fund dashboard endpoints', () => {
   };
   const expensesService = { listExpenses: jest.fn().mockResolvedValue([]) };
   const contributionsService = { listContributions: jest.fn().mockResolvedValue([]) };
+  const settlementsService = {
+    getSettlementSuggestion: jest.fn().mockResolvedValue({
+      fund_id: 'fund-1',
+      currency: 'TWD',
+      period_start: '2026-07-01',
+      period_end: '2026-07-31',
+      suggestions: [],
+    }),
+    listSettlements: jest.fn().mockResolvedValue([]),
+    getSettlement: jest.fn(),
+    completeSettlement: jest.fn(),
+    cancelSettlement: jest.fn(),
+  };
 
   beforeAll(async () => {
     process.env.JWT_ACCESS_SECRET = JWT_SECRET;
@@ -44,6 +58,8 @@ describe('Fund dashboard endpoints', () => {
       .useValue(expensesService)
       .overrideProvider(ContributionsService)
       .useValue(contributionsService)
+      .overrideProvider(SettlementsService)
+      .useValue(settlementsService)
       .overrideProvider(PrismaService)
       .useValue({ $connect: jest.fn(), $disconnect: jest.fn() })
       .compile();
@@ -63,6 +79,17 @@ describe('Fund dashboard endpoints', () => {
     jest.clearAllMocks();
     expensesService.listExpenses.mockResolvedValue([]);
     contributionsService.listContributions.mockResolvedValue([]);
+    settlementsService.getSettlementSuggestion.mockResolvedValue({
+      fund_id: 'fund-1',
+      currency: 'TWD',
+      period_start: '2026-07-01',
+      period_end: '2026-07-31',
+      suggestions: [],
+    });
+    settlementsService.listSettlements.mockResolvedValue([]);
+    settlementsService.getSettlement.mockReset();
+    settlementsService.completeSettlement.mockReset();
+    settlementsService.cancelSettlement.mockReset();
   });
 
   afterAll(async () => {
@@ -344,6 +371,7 @@ describe('Fund dashboard endpoints', () => {
       .expect({ data: [] });
     expect(service[method as keyof typeof service]).toHaveBeenCalledWith(
       'fund-1',
+      'user-1',
       { page: 2, page_size: 3, sort: 'occurred_on_asc' },
     );
   });
@@ -355,8 +383,225 @@ describe('Fund dashboard endpoints', () => {
       .expect(200);
     expect(contributionsService.listContributions).toHaveBeenCalledWith(
       'fund-1',
+      'user-1',
       { page: 1, page_size: 50, sort: 'occurred_on_desc' },
     );
+  });
+
+  it('serializes contribution activity money as decimal strings', async () => {
+    contributionsService.listContributions.mockResolvedValue([
+      {
+        id: 'contribution-1',
+        fundId: 'fund-1',
+        contributorUserId: 'user-1',
+        amountMinor: 9007199254740993n,
+        contributionType: 'ONE_TIME',
+        occurredOn: new Date('2026-07-10T00:00:00.000Z'),
+        note: null,
+        status: 'ACTIVE',
+      },
+    ]);
+
+    await request(app.getHttpServer())
+      .get('/api/v1/funds/fund-1/contributions')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({
+        data: [
+          {
+            id: 'contribution-1',
+            fund_id: 'fund-1',
+            contributor_user_id: 'user-1',
+            amount_minor: '9007199254740993',
+            contribution_type: 'one_time',
+            occurred_on: '2026-07-10',
+            note: null,
+            status: 'active',
+          },
+        ],
+      });
+  });
+
+  it('serializes expense activity money as decimal strings', async () => {
+    expensesService.listExpenses.mockResolvedValue([
+      {
+        id: 'expense-1',
+        fundId: 'fund-1',
+        title: 'Rent',
+        note: null,
+        amountMinor: 9007199254740993n,
+        splitMode: 'FIXED',
+        expenseType: 'FUND_EXPENSE',
+        occurredOn: new Date('2026-07-10T00:00:00.000Z'),
+        status: 'ACTIVE',
+        payers: [{ payerUserId: 'user-1', amountMinor: 9007199254740993n }],
+        splits: [
+          {
+            userId: 'user-2',
+            splitType: 'FIXED',
+            ratioValue: null,
+            fixedAmountMinor: 9007199254740993n,
+            allocatedAmountMinor: 9007199254740993n,
+            sortOrder: 1,
+          },
+        ],
+      },
+    ]);
+
+    await request(app.getHttpServer())
+      .get('/api/v1/funds/fund-1/expenses')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({
+        data: [
+          {
+            id: 'expense-1',
+            fund_id: 'fund-1',
+            title: 'Rent',
+            note: null,
+            amount_minor: '9007199254740993',
+            split_mode: 'fixed',
+            expense_type: 'fund_expense',
+            occurred_on: '2026-07-10',
+            status: 'active',
+            payers: [
+              {
+                payer_user_id: 'user-1',
+                amount_minor: '9007199254740993',
+              },
+            ],
+            splits: [
+              {
+                user_id: 'user-2',
+                split_type: 'fixed',
+                ratio_value: null,
+                fixed_amount_minor: '9007199254740993',
+                allocated_amount_minor: '9007199254740993',
+                sort_order: 1,
+              },
+            ],
+          },
+        ],
+      });
+  });
+
+  it('forwards identity for settlement suggestion reads', async () => {
+    settlementsService.getSettlementSuggestion.mockResolvedValue({
+      fund_id: 'fund-1',
+      currency: 'TWD',
+      period_start: '2026-07-01',
+      period_end: '2026-07-31',
+      suggestions: [
+        { from_user_id: 'user-2', to_user_id: 'user-1', amount_minor: '9007199254740993' },
+      ],
+    });
+
+    await request(app.getHttpServer())
+      .get('/api/v1/funds/fund-1/settlement-suggestion')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({
+        data: {
+          fund_id: 'fund-1',
+          currency: 'TWD',
+          period_start: '2026-07-01',
+          period_end: '2026-07-31',
+          suggestions: [
+            { from_user_id: 'user-2', to_user_id: 'user-1', amount_minor: '9007199254740993' },
+          ],
+        },
+      });
+    expect(settlementsService.getSettlementSuggestion).toHaveBeenCalledWith('fund-1', 'user-1');
+  });
+
+  it('serializes settlement money as decimal strings and forwards identity', async () => {
+    const settlement = {
+      id: 'settlement-1',
+      fundId: 'fund-1',
+      fromUserId: 'user-2',
+      toUserId: 'user-1',
+      amountMinor: 9007199254740993n,
+      periodStart: new Date('2026-07-01T00:00:00.000Z'),
+      periodEnd: new Date('2026-07-31T00:00:00.000Z'),
+      status: 'PENDING',
+      settlementType: 'MANUAL',
+      note: null,
+      completedAt: null,
+      canceledAt: null,
+    };
+    settlementsService.listSettlements.mockResolvedValue([settlement]);
+    settlementsService.getSettlement.mockResolvedValue(settlement);
+    settlementsService.completeSettlement.mockResolvedValue({
+      ...settlement,
+      status: 'COMPLETED',
+      completedAt: new Date('2026-08-01T12:00:00.000Z'),
+    });
+    settlementsService.cancelSettlement.mockResolvedValue({
+      ...settlement,
+      status: 'CANCELED',
+      canceledAt: new Date('2026-08-02T12:00:00.000Z'),
+    });
+
+    const expectedPending = {
+      id: 'settlement-1',
+      fund_id: 'fund-1',
+      from_user_id: 'user-2',
+      to_user_id: 'user-1',
+      amount_minor: '9007199254740993',
+      period_start: '2026-07-01',
+      period_end: '2026-07-31',
+      status: 'pending',
+      settlement_type: 'manual',
+      note: null,
+      completed_at: null,
+      canceled_at: null,
+    };
+
+    await request(app.getHttpServer())
+      .get('/api/v1/funds/fund-1/settlements?page_size=1')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({ data: [expectedPending] });
+    expect(settlementsService.listSettlements).toHaveBeenCalledWith('fund-1', 'user-1', 1);
+
+    await request(app.getHttpServer())
+      .get('/api/v1/settlements/settlement-1')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect({ data: expectedPending });
+    expect(settlementsService.getSettlement).toHaveBeenCalledWith('settlement-1', 'user-1');
+
+    await request(app.getHttpServer())
+      .post('/api/v1/settlements/settlement-1/complete')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ completed_at: '2026-08-01T12:00:00.000Z' })
+      .expect(201)
+      .expect({
+        data: {
+          ...expectedPending,
+          status: 'completed',
+          completed_at: '2026-08-01T12:00:00.000Z',
+        },
+      });
+    expect(settlementsService.completeSettlement).toHaveBeenCalledWith(
+      'settlement-1',
+      'user-1',
+      { completed_at: '2026-08-01T12:00:00.000Z' },
+    );
+
+    await request(app.getHttpServer())
+      .post('/api/v1/settlements/settlement-1/cancel')
+      .set('Authorization', `Bearer ${token}`)
+      .send({})
+      .expect(201)
+      .expect({
+        data: {
+          ...expectedPending,
+          status: 'canceled',
+          canceled_at: '2026-08-02T12:00:00.000Z',
+        },
+      });
+    expect(settlementsService.cancelSettlement).toHaveBeenCalledWith('settlement-1', 'user-1');
   });
 
   it.each([

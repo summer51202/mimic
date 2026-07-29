@@ -10,12 +10,53 @@ import { ExpensesService } from './expenses.service';
 
 describe('ExpensesService', () => {
   it('bounds and stably sorts expense previews', async () => {
-    const prisma = { expense: { findMany: jest.fn().mockResolvedValue([]) } };
+    const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) },
+      groupMember: { findFirst: jest.fn().mockResolvedValue({ userId: 'actor' }) },
+      expense: { findMany: jest.fn().mockResolvedValue([]) },
+    };
     const service = new ExpensesService(prisma as never);
-    await service.listExpenses('fund-1', { page: 2, page_size: 3, sort: 'occurred_on_desc' });
+    await service.listExpenses('fund-1', 'actor', { page: 2, page_size: 3, sort: 'occurred_on_desc' });
+    expect(prisma.fund.findFirst).toHaveBeenCalledWith({
+      where: { id: 'fund-1', status: FundStatus.ACTIVE },
+      select: { id: true, groupId: true },
+    });
+    expect(prisma.groupMember.findFirst).toHaveBeenCalledWith({
+      where: { groupId: 'group-1', userId: 'actor', status: MemberStatus.ACTIVE },
+      select: { userId: true },
+    });
     expect(prisma.expense.findMany).toHaveBeenCalledWith(expect.objectContaining({
       skip: 3, take: 3, orderBy: [{ occurredOn: 'desc' }, { id: 'desc' }],
     }));
+  });
+
+  it('rejects expense list reads when the actor is not an active group member', async () => {
+    const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) },
+      groupMember: { findFirst: jest.fn().mockResolvedValue(null) },
+      expense: { findMany: jest.fn() },
+    };
+    const service = new ExpensesService(prisma as never);
+
+    await expect(
+      service.listExpenses('fund-1', 'outsider', { page: 1, page_size: 50, sort: 'occurred_on_desc' }),
+    ).rejects.toEqual(new ForbiddenException('GROUP_ACCESS_DENIED'));
+    expect(prisma.expense.findMany).not.toHaveBeenCalled();
+  });
+
+  it('returns FUND_NOT_FOUND before checking membership for missing expense funds', async () => {
+    const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue(null) },
+      groupMember: { findFirst: jest.fn() },
+      expense: { findMany: jest.fn() },
+    };
+    const service = new ExpensesService(prisma as never);
+
+    await expect(service.listExpenses('missing-fund', 'actor')).rejects.toEqual(
+      new NotFoundException('FUND_NOT_FOUND'),
+    );
+    expect(prisma.groupMember.findFirst).not.toHaveBeenCalled();
+    expect(prisma.expense.findMany).not.toHaveBeenCalled();
   });
   it('locks the fund group and validates every unique participant before expense writes', async () => {
     const order: string[] = [];
