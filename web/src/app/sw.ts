@@ -22,7 +22,7 @@ declare global {
 declare const self: ServiceWorkerGlobalScope & WorkerGlobalScope;
 
 const privatePathPattern =
-  /^\/(?:api|app|account|accounts|group|groups|fund|funds|transaction|transactions|settlement|settlements)(?:\/|$)/;
+  /^\/(?:api|app|account|accounts|group|groups|invite|invites|fund|funds|transaction|transactions|settlement|settlements)(?:\/|$)/;
 const privateStaticChunkPattern = /^\/_next\/static\/chunks\/app\/(?:api|app)\//;
 const publicPagePattern = /^\/(?:$|features\/?$|privacy\/?$|terms\/?$|offline\/?$)/;
 

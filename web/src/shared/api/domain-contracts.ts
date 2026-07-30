@@ -2,7 +2,10 @@ import { z } from "zod";
 
 export const idSchema = z.string().trim().min(1).max(128);
 export const currencySchema = z.string().regex(/^[A-Z]{3}$/);
-export const minorUnitSchema = z.string().regex(/^-?(0|[1-9]\d*)$/);
+export const minorUnitSchema = z
+  .union([z.string(), z.number().int().safe()])
+  .transform((value) => String(value))
+  .pipe(z.string().regex(/^-?(0|[1-9]\d*)$/));
 export const isoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 export const inviteCodeSchema = z.string().regex(/^[A-Za-z0-9_-]{12}$/);
 

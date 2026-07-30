@@ -45,7 +45,7 @@ describe("PWA cache policy", () => {
     expect(privateTopLevelRoutePattern.test("/app/groups")).toBe(true);
     expect(nextConfig).toContain("!/\\/chunks\\/app\\/(?:api|app)\\//.test(url)");
     expect(serviceWorker).toContain(
-      "^\\/(?:api|app|account|accounts|group|groups|fund|funds|transaction|transactions|settlement|settlements)(?:\\/|$)",
+      "^\\/(?:api|app|account|accounts|group|groups|invite|invites|fund|funds|transaction|transactions|settlement|settlements)(?:\\/|$)",
     );
     expect(serviceWorker).toContain(
       "^\\/_next\\/static\\/chunks\\/app\\/(?:api|app)\\/",
@@ -58,5 +58,14 @@ describe("PWA cache policy", () => {
     expect(serviceWorker).not.toContain('url: "/offline"');
     expect(serviceWorker).toContain("serwist.setCatchHandler");
     expect(serviceWorker).toContain('request.mode === "navigate"');
+  });
+
+  it("treats invitation codes as private cache material", () => {
+    const serviceWorker = readProjectFile("src/app/sw.ts");
+    const privateRoutePattern =
+      /^\/(?:api|app|account|accounts|group|groups|invite|invites|fund|funds|transaction|transactions|settlement|settlements)(?:\/|$)/;
+
+    expect(privateRoutePattern.test("/invite/abcDEF123_-4")).toBe(true);
+    expect(serviceWorker).toContain("invite|invites");
   });
 });

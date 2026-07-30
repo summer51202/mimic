@@ -4,6 +4,7 @@ const tagline = "一起存，一起花，一起在異世界探險吧!";
 const viewports = [
   { name: "phone-320", width: 320, height: 720 },
   { name: "phone-390", width: 390, height: 844 },
+  { name: "tablet-768", width: 768, height: 1024 },
   { name: "desktop-1440", width: 1440, height: 900 },
 ] as const;
 
@@ -88,7 +89,7 @@ test.describe("public identity and auth entry", () => {
     });
 
     expect(cachedRequests).not.toContainEqual(
-      expect.stringMatching(/\/(?:api|app)(?:\/|$)/),
+      expect.stringMatching(/\/(?:api|app|invite)(?:\/|$)/),
     );
   });
 });

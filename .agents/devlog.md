@@ -397,3 +397,18 @@
 - Added `/app/groups/[groupId]/funds/new` and `/app/funds/[fundId]` pages.
 **Decisions:** Kept contributions, expenses, and activity actions visibly out of scope for this task instead of adding disabled transaction buttons. Reused the existing group `appFetch` helper for fund mutations.
 **Known gaps / follow-ups:** Fund update/archive and transaction creation remain later PWA tasks. Visual browser QA and backend runtime acceptance with seeded funds remain follow-up checkpoints.
+
+## 2026-07-30 - Cover mimic PWA group, fund, invite, and pixel acceptance
+
+**Task:** Deliver Task 9 by adding responsive E2E acceptance coverage for the mimic PWA group/fund/invite journeys and cache privacy rules.
+**Scope:** `web/e2e`, `web/playwright.config.ts`, `web/src/app/sw.ts`, `web/public/sw.js`, `web/src/app/pwa-cache-policy.test.ts`, `web/src/shared/api/domain-contracts.ts`, `web/src/shared/api/domain-contracts.test.ts`, `.agents/devlog.md`
+**What changed:**
+- Added isolated Playwright account/session fixtures that create backend data through API setup while validating the authenticated PWA pages in browser contexts.
+- Added full-flow E2E coverage for two accounts joining a group through an invite, opening group pages, and viewing a fund summary.
+- Added invitation E2E coverage for invalid invite privacy, authenticated invite gate rendering, and email-mismatch rejection.
+- Added pixel responsive E2E checks for public shell overflow, pixel-art image rendering, focus visibility, screenshots, and invite auth return navigation.
+- Expanded Playwright projects to phone-small, phone, tablet, and desktop viewports with single-worker execution for backend-backed tests.
+- Treated `/invite/*` as private cache material in source service worker rules and rebuilt `public/sw.js`.
+- Normalized integer minor-unit API serializer values to strings in web domain contracts, preserving strict rejection of decimals/exponential values.
+**Decisions:** Used API setup for long E2E preconditions to avoid testing hydration-sensitive form submits repeatedly; component tests continue to cover duplicate-submit form behavior. Kept invitation pages private for cache policy even though the entry page is public, because invite codes are sensitive bearer-like material.
+**Known gaps / follow-ups:** Playwright logs still include expected unauthenticated `SESSION_REQUIRED` noise from redirect tests and Next Image LCP/aspect-ratio warnings for invite artwork; no functional failures remain in the Task 9 verification matrix.

@@ -48,6 +48,51 @@ describe("domain contracts", () => {
     );
   });
 
+  it("normalizes integer minor units from numeric API serializers", () => {
+    const parsed = groupDashboardSchema.parse({
+      group: { id: "g1", name: "Adventure Fund", default_currency: "TWD" },
+      currencies: [
+        {
+          currency: "TWD",
+          cash_balance_minor: 24680,
+          current: {
+            ...periodTotals,
+            net_change_minor: 0,
+            contribution_minor: 0,
+            expense_minor: 0,
+            member_positions: [
+              {
+                user_id: "u1",
+                display_name: "Mina",
+                membership_status: "active",
+                position_minor: 0,
+              },
+            ],
+          },
+          all_time: periodTotals,
+          funds: [
+            {
+              fund_id: "f1",
+              name: "Rent",
+              cash_balance_minor: 24680,
+              current_net_change_minor: -860,
+              period_start: "2026-07-01",
+              period_end: null,
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(parsed.currencies[0]?.cash_balance_minor).toBe("24680");
+    expect(parsed.currencies[0]?.current.member_positions[0]?.position_minor).toBe(
+      "0",
+    );
+    expect(parsed.currencies[0]?.funds[0]?.current_net_change_minor).toBe(
+      "-860",
+    );
+  });
+
   it("rejects decimal and exponential minor units", () => {
     const dashboard = {
       group: { id: "g1", name: "x", default_currency: "TWD" },
