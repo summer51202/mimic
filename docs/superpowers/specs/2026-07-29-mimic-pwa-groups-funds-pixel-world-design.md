@@ -406,3 +406,45 @@ This phase is complete when:
 - deferred transaction and settlement controls are not falsely enabled
 - private financial responses remain outside persistent service-worker caches
 - supported viewport, accessibility, unit, component, integration, and end-to-end checks pass
+
+## Delivery Record
+
+Status as of 2026-07-30: the PWA group, invitation, fund, and pixel shell slice
+has been implemented and verified on the `codex/mimic-pwa-foundation` branch.
+
+Delivered:
+
+- authenticated preview placeholder replaced by real group, dashboard, invite,
+  roster, fund, and summary routes
+- no-group onboarding, group creation, group selection fallback, group detail,
+  rename, member roster, leave confirmation, invite creation, invite acceptance,
+  fund creation, fund listing, and fund summary
+- phone, tablet, and desktop pixel-game shell using the Mimiku raster asset set
+- private service-worker policy covering `/app`, `/api`, and invite-code routes
+- web money contracts that normalize integer minor-unit serializers into
+  canonical decimal strings before formatting
+- E2E coverage for isolated owner/partner invitation setup, roster visibility,
+  backend-backed fund summary, responsive pixel rendering, keyboard invite
+  return navigation, and private Cache Storage exclusion
+
+Explicitly still deferred:
+
+- PWA contributions, expenses, corrections, activity timeline, settlement
+  workflows, role changes, member removal, and fund archive/edit flows
+- offline financial reads/writes and mutation queues
+- browser-vendor-specific standalone install acceptance outside the local
+  Chromium Playwright matrix
+
+Verification recorded for this slice:
+
+- `npm run lint`
+- `npm run typecheck`
+- `npm test`
+- `npm run build`
+- `npm run test:e2e` across 320 x 720, 390 x 844, 768 x 1024, and 1440 x 900
+
+Known verification noise:
+
+- redirect tests intentionally trigger unauthenticated `SESSION_REQUIRED` server
+  logs
+- Next Image emits LCP/aspect-ratio warnings for above-the-fold Mimiku invite art

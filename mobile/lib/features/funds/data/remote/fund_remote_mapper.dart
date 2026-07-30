@@ -71,6 +71,7 @@ extension FundDetailSummaryCopy on FundDetailSummary {
 
 Map<String, dynamic> _map(Object? value, String field) {
   if (value is Map<String, dynamic>) return value;
+  if (value is Map) return Map<String, dynamic>.from(value);
   throw FormatException('$field must be an object');
 }
 

@@ -445,10 +445,9 @@ void main() {
   });
 }
 
-Map<String, dynamic> data(Map<String, dynamic> root) =>
-    root['data'] as Map<String, dynamic>;
+Map data(Map<String, dynamic> root) => root['data'] as Map;
 void replaceDataField(Map<String, dynamic> root, String field, Object value) {
-  final loose = Map<String, dynamic>.from(data(root));
+  final loose = Map<dynamic, dynamic>.from(data(root));
   loose[field] = value;
   root['data'] = loose;
 }
@@ -471,19 +470,43 @@ void removePath(Map<String, dynamic> root, String path) {
 void setPath(Map<String, dynamic> root, String path, Object value) {
   final p = path.split('.');
   dynamic target = data(root);
+  dynamic parent = root;
+  dynamic parentKey = 'data';
   for (final key in p.take(p.length - 1)) {
-    target = target[key];
+    final loose = Map<dynamic, dynamic>.from(target as Map);
+    parent[parentKey] = loose;
+    parent = loose;
+    parentKey = key;
+    target = loose[key];
   }
-  target[p.last] = value;
+  final loose = Map<dynamic, dynamic>.from(target as Map);
+  loose[p.last] = value;
+  parent[parentKey] = loose;
 }
 
 void setPathDeep(Map<String, dynamic> root, String path, Object value) {
   final p = path.split('.');
   dynamic target = data(root);
+  dynamic parent = root;
+  dynamic parentKey = 'data';
   for (final key in p.take(p.length - 1)) {
-    target = key == 'member'
-        ? (target['member_positions'] as List).first
-        : target[key];
+    if (key == 'member') {
+      final members = List<dynamic>.from(target['member_positions'] as List);
+      final looseMember = Map<dynamic, dynamic>.from(members.first as Map);
+      members[0] = looseMember;
+      target['member_positions'] = members;
+      parent = members;
+      parentKey = 0;
+      target = looseMember;
+    } else {
+      final loose = Map<dynamic, dynamic>.from(target as Map);
+      parent[parentKey] = loose;
+      parent = loose;
+      parentKey = key;
+      target = loose[key];
+    }
   }
-  target[p.last] = value;
+  final loose = Map<dynamic, dynamic>.from(target as Map);
+  loose[p.last] = value;
+  parent[parentKey] = loose;
 }

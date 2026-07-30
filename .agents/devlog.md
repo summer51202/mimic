@@ -412,3 +412,17 @@
 - Normalized integer minor-unit API serializer values to strings in web domain contracts, preserving strict rejection of decimals/exponential values.
 **Decisions:** Used API setup for long E2E preconditions to avoid testing hydration-sensitive form submits repeatedly; component tests continue to cover duplicate-submit form behavior. Kept invitation pages private for cache policy even though the entry page is public, because invite codes are sensitive bearer-like material.
 **Known gaps / follow-ups:** Playwright logs still include expected unauthenticated `SESSION_REQUIRED` noise from redirect tests and Next Image LCP/aspect-ratio warnings for invite artwork; no functional failures remain in the Task 9 verification matrix.
+
+## 2026-07-30 - mimic PWA groups, funds, and pixel world
+
+**Task:** Replace the authenticated PWA preview with real group, invitation, fund, and dashboard workflows in the approved complete pixel-game visual system.
+**Scope:** NestJS fund authorization and money contracts; Flutter compatibility mappers; Next.js BFF, group, invitation, fund, pixel UI, responsive shell, tests, and operating docs.
+**What changed:**
+- Secured fund create/list/detail access and standardized minor-unit API fields as decimal strings.
+- Added real group selection, creation, detail, rename, roster, leave, invitation, fund creation, and summary workflows.
+- Added the complete pixel UI asset and component system for phone and expanded desktop HUD layouts.
+- Added unit, component, integration, E2E, responsive, accessibility, and PWA privacy coverage.
+- Updated operating documentation, PWA feature status, and the pixel-world design delivery record.
+- Fixed Mobile JSON envelope and fund summary mappers to accept JSON-like `Map` payloads while preserving required field validation.
+**Decisions:** NestJS remains authoritative; private data is never persisted by the service worker; transaction and settlement actions remain deferred.
+**Known gaps / follow-ups:** Contributions, expenses, activity, settlements, role changes, member removal, and fund archival remain in later plans. Final verification passed for Backend build/unit/e2e, Web lint/typecheck/unit/build/e2e, and Mobile tests; Web E2E still logs expected unauthenticated `SESSION_REQUIRED` redirect noise and Next Image invite-art warnings.

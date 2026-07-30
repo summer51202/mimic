@@ -103,6 +103,30 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 | done | fund-summary | View current/all-time fund totals, settlement period, and member positions | `fund_detail_screen.dart` | `funds.controller.ts GET /funds/:id/summary` |
 | done | group-dashboard | View cross-fund totals grouped by currency without FX conversion | `home_dashboard_screen.dart` | `funds.controller.ts GET /groups/:id/dashboard` |
 
+### Web / PWA
+
+| status | slug | description | frontend entry | backend entry |
+|--------|------|-------------|----------------|---------------|
+| done | pwa-auth-shell | Public mimic landing, login/register, protected app shell, and PWA cache boundary | `web/src/app` | `auth.controller.ts`, BFF auth routes |
+| done | pwa-group-list | List available groups and no-group onboarding | `web/src/app/app/page.tsx`, `web/src/app/app/groups/page.tsx` | `GET /groups`, `GET /groups/:id/dashboard` |
+| done | pwa-group-create | Create a group from the PWA | `web/src/app/app/groups/new/page.tsx` | `POST /groups` |
+| done | pwa-group-detail | View group detail and fund list | `web/src/app/app/groups/[groupId]/page.tsx` | `GET /groups/:id`, `GET /groups/:id/members`, `GET /groups/:id/funds` |
+| done | pwa-group-rename | Rename a group from the PWA | `web/src/features/groups/group-detail.tsx` | `PATCH /groups/:id` |
+| done | pwa-group-leave | Leave a group and reconcile selected-group preference | `web/src/features/groups/leave-group-dialog.tsx` | `POST /groups/:id/leave` |
+| done | pwa-member-roster | Display active members and role labels | `web/src/features/groups/member-roster.tsx` | `GET /groups/:id/members` |
+| done | pwa-invitation-loop | Create, share, open, authenticate for, and explicitly accept invites | `web/src/features/invitations` | `POST /groups/:id/invites`, `POST /group-invites/accept` |
+| done | pwa-fund-list | Display group funds and dashboard fund cards | `web/src/features/funds/fund-list.tsx`, `web/src/features/groups/treasury-dashboard.tsx` | `GET /groups/:id/funds`, `GET /groups/:id/dashboard` |
+| done | pwa-fund-create | Create a fund from the PWA | `web/src/app/app/groups/[groupId]/funds/new/page.tsx` | `POST /groups/:id/funds` |
+| done | pwa-fund-summary | View fund balance, current period, all-time totals, and member positions | `web/src/app/app/funds/[fundId]/page.tsx` | `GET /funds/:id/summary` |
+| done | pwa-pixel-responsive-shell | Complete pixel-game public/authenticated shell across phone, tablet, and desktop viewports | `web/src/shared/brand`, `web/src/shared/ui`, `web/src/app/app-shell.module.css` | n/a |
+| todo | pwa-contributions | Create and list real contribution activity in the PWA | missing PWA activity UI | `contributions.controller.ts` |
+| todo | pwa-expenses | Create and list real expense activity in the PWA | missing PWA activity UI | `expenses.controller.ts` |
+| todo | pwa-activity | Unified activity timeline for contributions, expenses, corrections, and settlements | missing PWA activity UI | `GET /funds/:id/contributions`, `GET /funds/:id/expenses`, settlement routes |
+| todo | pwa-settlements | Suggest, create, complete, cancel, and view settlements in the PWA | missing PWA settlement UI | `settlements.controller.ts` |
+| todo | pwa-role-changes | Promote or demote group members in the PWA | missing PWA governance UI | `PATCH /groups/:id/members/:memberId` |
+| todo | pwa-member-removal | Remove another member from a group in the PWA | missing PWA governance UI | `DELETE /groups/:id/members/:memberId` |
+| todo | pwa-fund-archive | Archive, restore, or edit funds in the PWA | missing PWA fund management UI | missing archive/update endpoints |
+
 ### Audit Logs
 
 | status | slug | description | frontend entry | backend entry |

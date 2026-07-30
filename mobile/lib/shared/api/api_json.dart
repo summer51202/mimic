@@ -3,6 +3,9 @@ Map<String, dynamic> readDataEnvelope(Map<String, dynamic> json) {
   if (data is Map<String, dynamic>) {
     return data;
   }
+  if (data is Map) {
+    return Map<String, dynamic>.from(data);
+  }
 
   return <String, dynamic>{};
 }
@@ -10,7 +13,10 @@ Map<String, dynamic> readDataEnvelope(Map<String, dynamic> json) {
 List<Map<String, dynamic>> readDataListEnvelope(Map<String, dynamic> json) {
   final data = json['data'];
   if (data is List) {
-    return data.whereType<Map<String, dynamic>>().toList();
+    return data
+        .whereType<Map>()
+        .map((item) => Map<String, dynamic>.from(item))
+        .toList();
   }
 
   return <Map<String, dynamic>>[];
