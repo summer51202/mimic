@@ -14,6 +14,8 @@ This stabilization phase precedes Financial Activity. It does not add contributi
 - The authenticated route tree has no product-level loading, error, or not-found recovery surfaces.
 - The 320 px bottom navigation gives five equal columns to horizontal icon-and-label layouts, making labels vulnerable to excessive wrapping and frame overflow.
 - Long group, fund, and member names and large signed amounts do not have a consistent wrapping and shrinking policy.
+- The panel-frame and avatar PNG exports contain opaque gray-and-white transparency-grid pixels, so the checker pattern is visible in the product instead of being truly transparent.
+- Avatar crops were non-uniformly reduced from 170 x 180 source rectangles to 128 x 128 and then rendered at 48 CSS px, while the frame uses stretched border-image edges; both paths soften or deform the intended pixel grid.
 - Global `overflow-x: hidden` can conceal clipping while the current E2E overflow assertion still passes.
 - Backend-backed E2E coverage skips when health checks fail and navigates directly to detail URLs instead of exercising the primary navigation.
 
@@ -27,6 +29,7 @@ This stabilization phase precedes Financial Activity. It does not add contributi
 - Standard upstream timeout and connectivity error mapping
 - Mimiku-branded loading, recoverable error, not-found, authorization, and unavailable-service states
 - Responsive hardening for long names, long unbroken text, negative values, and large monetary values
+- Clean-alpha, production-resolution avatar and panel-frame assets with deterministic pixel scaling
 - Backend runtime preflight and deterministic local verification guidance
 - Regression tests for every confirmed defect
 - Authenticated visual and geometry checks at 320 x 720, 390 x 844, 768 x 1024, and 1440 x 900
@@ -113,6 +116,28 @@ All flex and grid content tracks that contain user or API data must be shrinkabl
 
 The approved complete pixel-game direction remains. Group and Fund pages use the established frames, hierarchy, Mimiku states, and interaction tokens instead of introducing a second visual language.
 
+## Pixel Asset Remediation
+
+The stabilization phase replaces the defective runtime frame and avatar exports. Applying a matching background color beneath the checker pattern is not an acceptable fix because the grid pixels are opaque source content.
+
+### Alpha and Crop Rules
+
+- Runtime avatars contain only character pixels plus true transparent pixels outside the silhouette; no editor transparency grid, matte, halo, or rectangular background remains.
+- Avatar masters preserve aspect ratio. Cropping may add transparent padding to make a square canvas but must not stretch a non-square character crop into a square.
+- Runtime frame corners outside the ornament are truly transparent. The parchment center is intentionally opaque.
+- Pixel-art alpha is binary unless a reviewed source deliberately requires a limited antialiasing ramp; accidental semitransparent edge halos are rejected.
+- Asset generation or cleanup must not overwrite the repository-root `icon.png` or the canonical Mimiku master.
+
+### Resolution and Scaling Rules
+
+- Avatar runtime exports are produced for the actual UI slots. The member list uses a reviewed 48 x 48 source-grid export at 48 CSS px; optional 96 x 96 density variants use the same pixel geometry at exactly 2x.
+- Nearest-neighbor processing is mandatory for pixel-art resizing. Bilinear, bicubic, and unconstrained image-generation resampling are rejected.
+- The panel frame becomes a clean nine-slice asset with fixed-size corners and tileable horizontal and vertical edge segments.
+- `PixelFrame` uses repeated or rounded edge tiles rather than stretching the edge artwork. Corner and border widths use whole CSS pixels at each supported layout.
+- Next/Image or CSS rendering must not introduce fractional rendered widths, heights, transforms, or aspect-ratio distortion for avatars, icons, or frame corners.
+
+The source sheet may remain as provenance, but defective crops are not used at runtime. The pixel asset README records the replacement source, crop or generation method, alpha policy, native dimensions, intended CSS dimensions, and checksum-level protection for the root master.
+
 ## Test Strategy
 
 Every repair follows red-green-refactor discipline: add the smallest failing regression test, confirm the expected failure, implement the minimum correction, and run the focused test before broader verification.
@@ -127,6 +152,7 @@ Every repair follows red-green-refactor discipline: add the smallest failing reg
 - HTTP, JSON, and envelope errors retain distinct behavior
 - Retry invokes the framework reset callback exactly once
 - long names and large signed values render in dedicated shrinkable containers
+- avatar and frame manifests expose only approved clean runtime assets and their exact display dimensions
 
 ### BFF and Server API Tests
 
@@ -134,6 +160,16 @@ Every repair follows red-green-refactor discipline: add the smallest failing reg
 - connection failure does not leak a raw `TypeError`
 - successful reads retain `cache: "no-store"`, request IDs, and authorization headers
 - mutations are not automatically retried
+
+### Asset Integrity Tests
+
+- runtime avatar and frame files use RGBA and contain true transparent pixels in known exterior sample regions
+- known exterior regions contain no opaque near-neutral checkerboard runs
+- avatar silhouettes fit a square canvas without aspect-ratio distortion
+- frame corners match the approved fixed slice dimensions and edge strips are tileable
+- the root `icon.png` checksum remains unchanged
+- browser-computed avatar dimensions equal the declared slot and preserve a 1:1 aspect ratio
+- browser-computed frame border widths and positions resolve to whole CSS pixels
 
 ### End-to-End Tests
 
@@ -161,7 +197,7 @@ Authenticated Overview, Groups list, Group detail, Funds overview, and Fund deta
 
 Fixtures include a 255-character name, a long unbroken token, Traditional Chinese text, a large positive amount, and a large negative amount. Assertions inspect relevant element and containing-frame rectangles, not only document `scrollWidth`. A passing check requires each text rectangle to remain within its intended frame with a small pixel tolerance.
 
-Screenshots are captured for the authenticated route matrix and reviewed for hierarchy, clipping, overlap, focus visibility, and consistency with the approved pixel world.
+Screenshots are captured for the authenticated route matrix and reviewed for hierarchy, clipping, overlap, focus visibility, clean transparency, avatar detail, crisp frame corners, non-stretched frame edges, and consistency with the approved pixel world.
 
 ## Runtime Verification
 
@@ -175,10 +211,11 @@ The current local container mounts the main checkout backend while the PWA runs 
 2. Add authenticated loading, error, and not-found boundaries with component coverage.
 3. Centralize route matching and fix mobile and desktop navigation states.
 4. Add the real Funds overview and its data-state tests.
-5. Harden shared responsive containers and feature layouts with stress fixtures.
-6. Replace false-positive overflow assertions with frame geometry checks.
-7. Add click-driven authenticated navigation E2E and make backend preflight mandatory.
-8. Verify the full route and viewport matrix, update runtime documentation, and record results.
+5. Replace defective avatar and frame exports, document their provenance, and lock alpha and scaling behavior with asset integrity tests.
+6. Harden shared responsive containers and feature layouts with stress fixtures.
+7. Replace false-positive overflow assertions with frame geometry checks.
+8. Add click-driven authenticated navigation E2E and make backend preflight mandatory.
+9. Verify the full route and viewport matrix, update runtime documentation, and record results.
 
 ## Success Criteria
 
@@ -190,6 +227,8 @@ This stabilization phase is complete only when:
 - backend timeout or disconnection produces a recoverable mimic error surface instead of a Next.js runtime page
 - loading, not-found, authorization, and unavailable-service states are distinguishable
 - user and financial text remains inside its owning frame at every required viewport
+- no transparency checker, opaque matte, edge halo, blurred avatar, or stretched frame segment is visible in authenticated views
+- automated asset checks reject opaque checkerboard pixels, distorted avatar geometry, and non-integer frame placement
 - the regression suite clicks Groups and Funds through the visible navigation
 - backend unavailability fails required E2E instead of skipping it
 - lint, typecheck, unit/component tests, production build, Playwright, console checks, and manual screenshot review pass
