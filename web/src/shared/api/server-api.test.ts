@@ -190,6 +190,26 @@ describe("server API boundary", () => {
     });
   });
 
+  it("maps response body transport failures to ApiUnavailableError", async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      status: 200,
+      text: vi.fn().mockRejectedValueOnce(
+        new TypeError("body stream failed: private host"),
+      ),
+    } as unknown as Response);
+
+    const request = requestToApi("/auth/me", { method: "GET" });
+
+    await expect(request).rejects.toMatchObject({
+      code: "UPSTREAM_UNAVAILABLE",
+      message: "The API is unavailable.",
+      status: 503,
+    } satisfies Partial<ApiUnavailableError>);
+    await expect(request).rejects.toBeInstanceOf(ApiUnavailableError);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("passes the default timeout signal to fetch", async () => {
     const signal = new AbortController().signal;
     const timeoutSpy = vi.spyOn(AbortSignal, "timeout").mockReturnValue(signal);

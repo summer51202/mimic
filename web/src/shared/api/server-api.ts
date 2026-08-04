@@ -132,7 +132,13 @@ function buildHeaders(options: ApiRequestOptions): Headers {
 }
 
 async function readJson(response: Response): Promise<unknown> {
-  const text = await response.text();
+  let text: string;
+
+  try {
+    text = await response.text();
+  } catch {
+    throw new ApiUnavailableError();
+  }
 
   if (!text) {
     return {};
