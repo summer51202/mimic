@@ -83,7 +83,8 @@
 
 .fundList li,
 .fundList a,
-[data-contain-text] {
+.page [data-contain-text],
+.noGroups [data-contain-text] {
   min-width: 0;
   overflow-wrap: anywhere;
 }
