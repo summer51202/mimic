@@ -1,6 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ApiConfigurationError, ApiError } from "./errors";
+import {
+  ApiConfigurationError,
+  ApiError,
+  ApiUnavailableError,
+} from "./errors";
 import { ApiContractError } from "./read-envelope";
 import { authenticatedApi } from "./authenticated-api";
 import { forwardAppRoute } from "./app-route";
@@ -105,6 +109,7 @@ describe("app route BFF forwarding", () => {
     [new ApiError(404, "GROUP_NOT_FOUND"), 404, "GROUP_NOT_FOUND"],
     [new ApiConfigurationError("missing API URL"), 500, "API_CONFIGURATION_ERROR"],
     [new ApiContractError("bad envelope"), 502, "API_CONTRACT_ERROR"],
+    [new ApiUnavailableError(), 503, "UPSTREAM_UNAVAILABLE"],
     [new TypeError("fetch failed"), 502, "UPSTREAM_UNAVAILABLE"],
   ])("maps %s to a safe app error response", async (error, status, code) => {
     authenticatedApiMock.mockRejectedValueOnce(error);

@@ -5,7 +5,11 @@ import { NextResponse } from "next/server";
 import { hasValidCsrf } from "@/shared/auth/session";
 
 import { idSchema } from "./domain-contracts";
-import { ApiConfigurationError, ApiError } from "./errors";
+import {
+  ApiConfigurationError,
+  ApiError,
+  ApiUnavailableError,
+} from "./errors";
 import { ApiContractError } from "./read-envelope";
 import { authenticatedApi } from "./authenticated-api";
 
@@ -97,6 +101,10 @@ function appRouteErrorResponse(
   error: unknown,
   requestId: string | undefined,
 ): NextResponse {
+  if (error instanceof ApiUnavailableError) {
+    return appErrorResponse(error.code, 503, requestId);
+  }
+
   if (error instanceof ApiError) {
     return appErrorResponse(error.code, error.status, requestId);
   }

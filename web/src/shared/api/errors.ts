@@ -16,6 +16,12 @@ export class ApiConfigurationError extends Error {
   readonly name = "ApiConfigurationError";
 }
 
+export class ApiUnavailableError extends ApiError {
+  constructor() {
+    super(503, "UPSTREAM_UNAVAILABLE", "The API is unavailable.");
+  }
+}
+
 export function mapApiError(status: number, codeOrMessage?: unknown): ApiError {
   const code = readSafeErrorCode(status, codeOrMessage);
 

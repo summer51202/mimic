@@ -1,6 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ApiConfigurationError, ApiError } from "./errors";
+import {
+  ApiConfigurationError,
+  ApiError,
+  ApiUnavailableError,
+} from "./errors";
 import { ApiContractError } from "./read-envelope";
 import { postToApi, requestToApi } from "./server-api";
 
@@ -169,6 +173,72 @@ describe("server API boundary", () => {
       code: "VALIDATION_ERROR",
       status: 400,
     } satisfies Partial<ApiError>);
+  });
+
+  it("maps fetch failures to ApiUnavailableError without exposing transport details", async () => {
+    fetchMock.mockRejectedValueOnce(new TypeError("fetch failed: private host"));
+
+    const request = requestToApi("/auth/me", { method: "GET" });
+
+    await expect(request).rejects.toMatchObject({
+      code: "UPSTREAM_UNAVAILABLE",
+      status: 503,
+    } satisfies Partial<ApiUnavailableError>);
+    await expect(request).rejects.toBeInstanceOf(ApiUnavailableError);
+    await expect(request).rejects.not.toMatchObject({
+      message: expect.stringContaining("private host"),
+    });
+  });
+
+  it("passes the default timeout signal to fetch", async () => {
+    const signal = new AbortController().signal;
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout").mockReturnValue(signal);
+    fetchMock.mockResolvedValueOnce(jsonResponse({ data: { ok: true } }));
+
+    await requestToApi("/auth/me", { method: "GET" });
+
+    expect(timeoutSpy).toHaveBeenCalledWith(8000);
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({ signal }),
+    );
+  });
+
+  it("honors the test timeout override", async () => {
+    vi.stubEnv("NODE_ENV", "test");
+    vi.stubEnv("MIMIC_API_BASE_URL", "http://api.test/api/v1");
+    vi.stubEnv("MIMIC_API_TIMEOUT_MS", "25");
+    const signal = new AbortController().signal;
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout").mockReturnValue(signal);
+    fetchMock.mockResolvedValueOnce(jsonResponse({ data: { ok: true } }));
+
+    await requestToApi("/auth/me", { method: "GET" });
+
+    expect(timeoutSpy).toHaveBeenCalledWith(25);
+  });
+
+  it("uses the default timeout when the test override is blank", async () => {
+    vi.stubEnv("NODE_ENV", "test");
+    vi.stubEnv("MIMIC_API_BASE_URL", "http://api.test/api/v1");
+    vi.stubEnv("MIMIC_API_TIMEOUT_MS", "");
+    const timeoutSpy = vi
+      .spyOn(AbortSignal, "timeout")
+      .mockReturnValue(new AbortController().signal);
+    fetchMock.mockResolvedValueOnce(jsonResponse({ data: { ok: true } }));
+
+    await requestToApi("/auth/me", { method: "GET" });
+
+    expect(timeoutSpy).toHaveBeenCalledWith(8000);
+  });
+
+  it("attempts a failed write exactly once", async () => {
+    fetchMock.mockRejectedValueOnce(new TypeError("fetch failed"));
+
+    await expect(postToApi("/groups", { name: "House" })).rejects.toBeInstanceOf(
+      ApiUnavailableError,
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it("rejects GET requests with bodies before calling fetch", async () => {

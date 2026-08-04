@@ -1,6 +1,10 @@
 import "server-only";
 
-import { ApiConfigurationError, mapApiError } from "./errors";
+import {
+  ApiConfigurationError,
+  ApiUnavailableError,
+  mapApiError,
+} from "./errors";
 import { ApiContractError, readEnvelope } from "./read-envelope";
 
 interface ApiRequestOptions {
@@ -39,7 +43,8 @@ export async function requestToApi<T>(
     throw new ApiContractError("GET requests cannot include a body.");
   }
 
-  const response = await fetch(buildApiUrl(path), {
+  const url = buildApiUrl(path);
+  const init: RequestInit = {
     method: options.method,
     headers: buildHeaders(options),
     body:
@@ -47,7 +52,15 @@ export async function requestToApi<T>(
         ? undefined
         : JSON.stringify(options.body),
     cache: "no-store",
-  });
+    signal: AbortSignal.timeout(readApiTimeoutMs()),
+  };
+  let response: Response;
+
+  try {
+    response = await fetch(url, init);
+  } catch {
+    throw new ApiUnavailableError();
+  }
 
   const payload = await readJson(response);
 
@@ -56,6 +69,23 @@ export async function requestToApi<T>(
   }
 
   return readEnvelope<T>(payload);
+}
+
+function readApiTimeoutMs(): number {
+  if (process.env.NODE_ENV === "test") {
+    const configuredTimeout = process.env.MIMIC_API_TIMEOUT_MS;
+    const override = Number(configuredTimeout);
+
+    if (
+      configuredTimeout?.trim() &&
+      Number.isFinite(override) &&
+      override >= 0
+    ) {
+      return override;
+    }
+  }
+
+  return 8000;
 }
 
 function buildApiUrl(path: string): string {
