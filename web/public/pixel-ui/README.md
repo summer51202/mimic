@@ -58,16 +58,17 @@ Create mobile and desktop pixel-art shared treasury scenes for the authenticated
 - The source sheet is the checked-in 1536x1024 `icons-ui.png`; the exporter
   performs no network access and does not read or write the repository-root
   `icon.png`.
-- Avatar crops have only edge-connected near-neutral source background cleared.
+- Avatar crops have only 4-connected, edge-connected near-neutral source
+  background cleared, preventing diagonal paths through eye and garment whites.
   Character bounds are resized with nearest-neighbor sampling into at most
   88x88 pixels, preserving aspect ratio, then centered on a transparent 96x96
   canvas for a 48 CSS px slot at 2x density.
 - Interface icons are treated as 96x96 source cells and should be rendered at
   24, 32, or 48 CSS px.
-- Frame art has only edge-connected near-neutral source background cleared. The
-  240x150 crop is centered without resampling on a transparent 256x166 canvas
-  and consumed through `PixelFrame` with a whole-pixel 32px source slice, an
-  8px rendered border width, and `round` border repetition.
+- Frame art has only 4-connected, edge-connected near-neutral source background
+  cleared. The 240x166 crop is centered without resampling on a transparent
+  256x166 canvas and consumed through `PixelFrame` with a whole-pixel 32px
+  source slice, an 8px rendered border width, and `round` border repetition.
 - Use only integer display scales. Do not stretch character art with fractional
   transforms.
 
@@ -94,7 +95,7 @@ Coordinates are measured from the top-left corner of the source PNG.
 | `avatar-02.png` | `icons-ui.png` | x=255, y=360, w=170, h=180, contained in 88x88 then centered on 96x96 |
 | `avatar-03.png` | `icons-ui.png` | x=430, y=360, w=170, h=180, contained in 88x88 then centered on 96x96 |
 | `avatar-04.png` | `icons-ui.png` | x=610, y=360, w=170, h=180, contained in 88x88 then centered on 96x96 |
-| `frames-ui.png` | `icons-ui.png` | x=1280, y=575, w=240, h=150, centered without resampling on 256x166 |
+| `frames-ui.png` | `icons-ui.png` | x=1280, y=575, w=240, h=166, centered without resampling on 256x166 |
 | `treasury-mobile.png` | scene sheet | x=0, y=0, w=512, h=1024 |
 | `treasury-desktop.png` | scene sheet | x=512, y=190, w=1024, h=620 |
 
@@ -124,6 +125,12 @@ Regenerate the runtime assets from the checked-in source sheet with:
 ```bash
 cd web
 npm run assets:export
+```
+
+For isolated reproducibility checks, pass an existing output directory:
+
+```bash
+npm run assets:export -- --output-dir <directory>
 ```
 
 The exporter validates crop bounds and non-empty artwork before writing any

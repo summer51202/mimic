@@ -15,33 +15,39 @@ const avatarExports = [
   ["avatar-03.png", 430, 360, 170, 180],
   ["avatar-04.png", 610, 360, 170, 180],
 ];
-const frameExport = ["frames-ui.png", 1280, 575, 240, 150];
+const frameExport = ["frames-ui.png", 1280, 575, 240, 166];
 
-const source = PNG.sync.read(await readFile(sourcePath));
-const pendingWrites = [];
-
-for (const [filename, x, y, width, height] of avatarExports) {
-  const avatarCrop = crop(source, x, y, width, height);
-  clearConnectedNeutralBackground(avatarCrop);
-  const bounds = nonTransparentBounds(avatarCrop);
-  const contained = resizeContainNearest(avatarCrop, bounds, 88, 88);
-  pendingWrites.push([
-    path.join(assetDirectory, filename),
-    centerWithoutResampling(contained, 96, 96),
-  ]);
+if (isMainModule()) {
+  await exportRuntimeAssets(outputDirectoryFromArguments(process.argv.slice(2)));
 }
 
-const [frameFilename, frameX, frameY, frameWidth, frameHeight] = frameExport;
-const frameCrop = crop(source, frameX, frameY, frameWidth, frameHeight);
-clearConnectedNeutralBackground(frameCrop);
-nonTransparentBounds(frameCrop);
-pendingWrites.push([
-  path.join(assetDirectory, frameFilename),
-  centerWithoutResampling(frameCrop, 256, 166),
-]);
+export async function exportRuntimeAssets(outputDirectory = assetDirectory) {
+  const source = PNG.sync.read(await readFile(sourcePath));
+  const pendingWrites = [];
 
-for (const [filename, png] of pendingWrites) {
-  await writePngAtomic(filename, png);
+  for (const [filename, x, y, width, height] of avatarExports) {
+    const avatarCrop = crop(source, x, y, width, height);
+    clearConnectedNeutralBackground(avatarCrop);
+    const bounds = nonTransparentBounds(avatarCrop);
+    const contained = resizeContainNearest(avatarCrop, bounds, 88, 88);
+    pendingWrites.push([
+      path.join(outputDirectory, filename),
+      centerWithoutResampling(contained, 96, 96),
+    ]);
+  }
+
+  const [frameFilename, frameX, frameY, frameWidth, frameHeight] = frameExport;
+  const frameCrop = crop(source, frameX, frameY, frameWidth, frameHeight);
+  clearConnectedNeutralBackground(frameCrop);
+  nonTransparentBounds(frameCrop);
+  pendingWrites.push([
+    path.join(outputDirectory, frameFilename),
+    centerWithoutResampling(frameCrop, 256, 166),
+  ]);
+
+  for (const [filename, png] of pendingWrites) {
+    await writePngAtomic(filename, png);
+  }
 }
 
 export function crop(sourcePng, x, y, width, height) {
@@ -89,21 +95,10 @@ export function clearConnectedNeutralBackground(png) {
     png.data[offset + 3] = 0;
     const x = index % png.width;
     const y = Math.floor(index / png.width);
-    for (let dy = -1; dy <= 1; dy += 1) {
-      for (let dx = -1; dx <= 1; dx += 1) {
-        const nextX = x + dx;
-        const nextY = y + dy;
-        if (
-          (dx !== 0 || dy !== 0) &&
-          nextX >= 0 &&
-          nextX < png.width &&
-          nextY >= 0 &&
-          nextY < png.height
-        ) {
-          queue.push(nextY * png.width + nextX);
-        }
-      }
-    }
+    if (x > 0) queue.push(index - 1);
+    if (x + 1 < png.width) queue.push(index + 1);
+    if (y > 0) queue.push(index - png.width);
+    if (y + 1 < png.height) queue.push(index + png.width);
   }
 
   return png;
@@ -139,9 +134,9 @@ export function resizeContainNearest(sourcePng, bounds, maxWidth, maxHeight) {
   const output = transparentPng(width, height);
 
   for (let y = 0; y < height; y += 1) {
-    const sourceY = bounds.y + Math.min(bounds.height - 1, Math.floor(y / scale));
+    const sourceY = bounds.y + nearestSourceCoordinate(y, height, bounds.height);
     for (let x = 0; x < width; x += 1) {
-      const sourceX = bounds.x + Math.min(bounds.width - 1, Math.floor(x / scale));
+      const sourceX = bounds.x + nearestSourceCoordinate(x, width, bounds.width);
       const sourceOffset = (sourceY * sourcePng.width + sourceX) * 4;
       const outputOffset = (y * width + x) * 4;
       sourcePng.data.copy(output.data, outputOffset, sourceOffset, sourceOffset + 4);
@@ -179,7 +174,11 @@ export async function writePngAtomic(filename, png) {
     } catch {
       // Preserve the original write or rename failure.
     }
-    await rm(temporary, { force: true });
+    try {
+      await rm(temporary, { force: true });
+    } catch {
+      // Preserve the original write or rename failure.
+    }
     throw error;
   }
 }
@@ -191,4 +190,22 @@ function transparentPng(width, height) {
 function isNearNeutral(red, green, blue) {
   return Math.max(red, green, blue) - Math.min(red, green, blue) <= 12 &&
     Math.min(red, green, blue) >= 230;
+}
+
+function nearestSourceCoordinate(coordinate, destinationSize, sourceSize) {
+  if (destinationSize === 1) return Math.floor(sourceSize / 2);
+  return Math.round((coordinate * (sourceSize - 1)) / (destinationSize - 1));
+}
+
+function outputDirectoryFromArguments(arguments_) {
+  if (arguments_.length === 0) return assetDirectory;
+  if (arguments_.length === 2 && arguments_[0] === "--output-dir") {
+    return path.resolve(arguments_[1]);
+  }
+  throw new Error("Usage: npm run assets:export -- [--output-dir <directory>]");
+}
+
+function isMainModule() {
+  return process.argv[1] &&
+    path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 }

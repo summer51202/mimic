@@ -9,6 +9,8 @@ export interface PngInspection {
   hasTransparentPixel: boolean;
   exteriorCornerTransparent: boolean;
   connectedNeutralPixels: number;
+  nonTransparentBounds: { x: number; y: number; width: number; height: number };
+  opaqueNearNeutralPixels: number;
   opaqueNeutralCheckerPixels: number;
 }
 
@@ -16,12 +18,33 @@ export async function inspectPng(filename: string): Promise<PngInspection> {
   const png = PNG.sync.read(await readFile(filename));
   const connectedNeutral = connectedNeutralPixelIndexes(png);
   let hasTransparentPixel = false;
+  let left = png.width;
+  let top = png.height;
+  let right = -1;
+  let bottom = -1;
+  let opaqueNearNeutralPixels = 0;
   let opaqueNeutralCheckerPixels = 0;
 
   for (let index = 0; index < png.width * png.height; index += 1) {
     const offset = index * 4;
     const alpha = png.data[offset + 3];
     hasTransparentPixel ||= alpha === 0;
+
+    if (alpha > 0) {
+      const x = index % png.width;
+      const y = Math.floor(index / png.width);
+      left = Math.min(left, x);
+      top = Math.min(top, y);
+      right = Math.max(right, x);
+      bottom = Math.max(bottom, y);
+    }
+
+    if (
+      alpha === 255 &&
+      isNearNeutral(png.data[offset], png.data[offset + 1], png.data[offset + 2])
+    ) {
+      opaqueNearNeutralPixels += 1;
+    }
 
     if (alpha === 255 && isOpaqueNeutralCheckerPixel(png.data, offset)) {
       opaqueNeutralCheckerPixels += 1;
@@ -37,6 +60,13 @@ export async function inspectPng(filename: string): Promise<PngInspection> {
       (index) => png.data[index * 4 + 3] === 0,
     ),
     connectedNeutralPixels: connectedNeutral.size,
+    nonTransparentBounds: {
+      x: left,
+      y: top,
+      width: right - left + 1,
+      height: bottom - top + 1,
+    },
+    opaqueNearNeutralPixels,
     opaqueNeutralCheckerPixels,
   };
 }
