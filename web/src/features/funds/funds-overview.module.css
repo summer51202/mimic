@@ -1,0 +1,144 @@
+.page,
+.groupGrid,
+.groupFrame,
+.noGroups,
+.emptyCopy,
+.emptyGroup,
+.fundList {
+  display: grid;
+}
+
+.page,
+.noGroups {
+  gap: var(--mimic-space-5);
+}
+
+.pageHeader {
+  min-width: 0;
+}
+
+.pageHeader h1 {
+  color: var(--mimic-color-hud-dark);
+  font-size: clamp(2rem, 8vw, 3.25rem);
+  line-height: 1;
+}
+
+.kicker,
+.groupTitle p {
+  color: var(--mimic-color-coin-deep);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.groupGrid {
+  gap: var(--mimic-space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.groupFrame {
+  align-content: start;
+  gap: var(--mimic-space-4);
+  min-width: 0;
+}
+
+.groupHeader {
+  align-items: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mimic-space-3);
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.groupTitle {
+  min-width: 0;
+}
+
+.groupTitle h2 {
+  color: var(--mimic-color-hud-dark);
+  font-size: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mimic-space-2) var(--mimic-space-3);
+  min-width: 0;
+}
+
+.actions a {
+  color: var(--mimic-color-coin-deep);
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.fundList {
+  gap: var(--mimic-space-2);
+  list-style: none;
+  min-width: 0;
+}
+
+.fundList li,
+.fundList a,
+[data-contain-text] {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.fundList a {
+  flex-wrap: wrap;
+}
+
+.notice {
+  border-top: 1px solid var(--mimic-color-line);
+  color: var(--mimic-color-ink-soft);
+  font-weight: 800;
+  padding-top: var(--mimic-space-3);
+}
+
+.noGroups {
+  min-height: calc(100dvh - 8rem);
+  place-items: center;
+  text-align: center;
+}
+
+.emptyCopy,
+.emptyGroup {
+  justify-items: center;
+  gap: var(--mimic-space-3);
+}
+
+.emptyCopy {
+  max-width: 30rem;
+}
+
+.emptyCopy h1 {
+  color: var(--mimic-color-hud-dark);
+  font-size: clamp(2rem, 8vw, 3.25rem);
+  line-height: 1;
+}
+
+.emptyCopy p,
+.emptyGroup p {
+  color: var(--mimic-color-ink-soft);
+  line-height: 1.6;
+}
+
+.emptyGroup {
+  border-top: 1px solid var(--mimic-color-line);
+  padding-top: var(--mimic-space-3);
+  text-align: center;
+}
+
+.mimiku {
+  image-rendering: pixelated;
+}
+
+@media (min-width: 64rem) {
+  .groupGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { authenticatedServerApi } from "@/shared/api/authenticated-server-api";
+import { ApiError, ApiUnavailableError } from "@/shared/api/errors";
 
-import { getFundSummary, listFunds } from "./fund-queries";
+import { getFundSummary, listFunds, listFundsOverview } from "./fund-queries";
 
 vi.mock("@/shared/api/authenticated-server-api", () => ({
   authenticatedServerApi: vi.fn(),
@@ -59,7 +60,87 @@ describe("fund queries", () => {
 
     await expect(listFunds("g1")).rejects.toThrow();
   });
+
+  it("lists every group's funds concurrently in original group order", async () => {
+    api.mockResolvedValueOnce([
+      groupResponse("g1", "Home party", "TWD"),
+      groupResponse("g2", "Travel party", "USD"),
+    ]);
+    const first = deferred<unknown>();
+    const second = deferred<unknown>();
+    api.mockImplementationOnce(() => first.promise);
+    api.mockImplementationOnce(() => second.promise);
+
+    const overview = listFundsOverview();
+
+    await vi.waitFor(() => {
+      expect(api).toHaveBeenCalledWith("/groups/g1/funds", { method: "GET" });
+      expect(api).toHaveBeenCalledWith("/groups/g2/funds", { method: "GET" });
+    });
+    second.resolve([fundResponse("f2", "Trip USD", "USD")]);
+    first.resolve([fundResponse("f1", "Daily TWD", "TWD")]);
+
+    await expect(overview).resolves.toEqual([
+      expect.objectContaining({
+        group: expect.objectContaining({ id: "g1" }),
+        funds: [expect.objectContaining({ id: "f1" })],
+        state: "ready",
+      }),
+      expect.objectContaining({
+        group: expect.objectContaining({ id: "g2" }),
+        funds: [expect.objectContaining({ id: "f2" })],
+        state: "ready",
+      }),
+    ]);
+  });
+
+  it("returns a forbidden empty section without hiding fulfilled groups", async () => {
+    api.mockResolvedValueOnce([
+      groupResponse("g1", "Home party", "TWD"),
+      groupResponse("g2", "Travel party", "USD"),
+    ]);
+    api.mockResolvedValueOnce([fundResponse("f1", "Daily TWD", "TWD")]);
+    api.mockRejectedValueOnce(new ApiError(403, "FORBIDDEN"));
+
+    await expect(listFundsOverview()).resolves.toEqual([
+      expect.objectContaining({ state: "ready" }),
+      expect.objectContaining({ funds: [], state: "forbidden" }),
+    ]);
+  });
+
+  it.each([
+    ["unavailable", new ApiUnavailableError()],
+    ["not found", new ApiError(404, "NOT_FOUND")],
+    ["unknown", new Error("broken response")],
+  ])("rethrows a %s group funds failure", async (_label, error) => {
+    api.mockResolvedValueOnce([groupResponse("g1", "Home party", "TWD")]);
+    api.mockRejectedValueOnce(error);
+
+    await expect(listFundsOverview()).rejects.toBe(error);
+  });
 });
+
+function groupResponse(id: string, name: string, currency: string) {
+  return {
+    id,
+    name,
+    group_type: "group",
+    default_currency: currency,
+    status: "active",
+  };
+}
+
+function fundResponse(id: string, name: string, currency: string) {
+  return { id, name, currency, status: "active", balance_minor: "5000" };
+}
+
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((next) => {
+    resolve = next;
+  });
+  return { promise, resolve };
+}
 
 function summaryResponse() {
   return {
