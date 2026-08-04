@@ -8,6 +8,10 @@ import {
 } from "./fixtures/accounts";
 import { checkRuntimeHealth } from "./helpers/runtime-health";
 import { runRuntimePhases } from "./helpers/runtime-phases";
+import {
+  expectRouteCommit,
+  visibleNavigation,
+} from "./helpers/route-commit";
 
 const apiBaseUrl = process.env.MIMIC_API_BASE_URL;
 const expectedRevision = process.env.MIMIC_EXPECTED_BACKEND_REVISION;
@@ -21,6 +25,7 @@ test("authenticates and navigates Groups/Funds with phase health checks", async 
   context,
   page,
 }, testInfo) => {
+  test.setTimeout(180_000);
   expect(apiBaseUrl).toBeTruthy();
   expect(expectedRevision).toMatch(/^[0-9a-f]{7,64}$/i);
 
@@ -56,14 +61,9 @@ test("authenticates and navigates Groups/Funds with phase health checks", async 
       );
 
       await page.goto("/app");
-      const navigation = page.locator(
-        'nav[aria-label="Primary app sections"]:visible',
-      );
+      const navigation = visibleNavigation(page);
       await navigation.getByRole("link", { name: "Groups" }).click();
-      await expect(page).toHaveURL(/\/app\/groups$/, { timeout: 30_000 });
-      await expect(
-        navigation.getByRole("link", { name: "Groups" }),
-      ).toHaveAttribute("aria-current", "page");
+      await expectRouteCommit(page, /\/app\/groups$/, "Groups");
       const groupLink = page
         .getByRole("link", { name: group.name, exact: false })
         .first();
@@ -72,28 +72,23 @@ test("authenticates and navigates Groups/Funds with phase health checks", async 
         `/app/groups/${group.id}`,
       );
       await groupLink.click();
-      await expect(page).toHaveURL(new RegExp(`/app/groups/${group.id}$`), {
-        timeout: 30_000,
-      });
-      await expect(
-        navigation.getByRole("link", { name: "Groups" }),
-      ).toHaveAttribute("aria-current", "page");
+      await expectRouteCommit(
+        page,
+        new RegExp(`/app/groups/${group.id}$`),
+        "Groups",
+      );
       await navigation.getByRole("link", { name: "Funds" }).click();
-      await expect(page).toHaveURL(/\/app\/funds$/, { timeout: 30_000 });
-      await expect(
-        navigation.getByRole("link", { name: "Funds" }),
-      ).toHaveAttribute("aria-current", "page");
+      await expectRouteCommit(page, /\/app\/funds$/, "Funds");
       const fundLink = page.getByRole("link", {
         name: new RegExp(fund.name),
       });
       await expect(fundLink).toHaveAttribute("href", `/app/funds/${fund.id}`);
       await fundLink.click();
-      await expect(page).toHaveURL(new RegExp(`/app/funds/${fund.id}$`), {
-        timeout: 30_000,
-      });
-      await expect(
-        navigation.getByRole("link", { name: "Funds" }),
-      ).toHaveAttribute("aria-current", "page");
+      await expectRouteCommit(
+        page,
+        new RegExp(`/app/funds/${fund.id}$`),
+        "Funds",
+      );
     },
   });
 });

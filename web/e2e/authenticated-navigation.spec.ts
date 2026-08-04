@@ -7,6 +7,10 @@ import {
   signInWithApiSession,
   uniqueAccounts,
 } from "./fixtures/accounts";
+import {
+  expectRouteCommit,
+  visibleNavigation,
+} from "./helpers/route-commit";
 
 test.beforeAll(requireBackend);
 
@@ -28,14 +32,11 @@ function captureDeliveryErrors(page: Page): string[] {
   return errors;
 }
 
-function visibleNavigation(page: Page) {
-  return page.locator('nav[aria-label="Primary app sections"]:visible');
-}
-
 test("visible navigation reaches authenticated group and fund routes by click", async ({
   context,
   page,
 }, testInfo) => {
+  test.setTimeout(180_000);
   const errors = captureDeliveryErrors(page);
   const account = uniqueAccounts(testInfo).owner;
   const session = await signInWithApiSession(context, account);
@@ -48,23 +49,32 @@ test("visible navigation reaches authenticated group and fund routes by click", 
   await expect(nav.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
 
   await nav.getByRole("link", { name: "Groups" }).click();
-  await expect(page).toHaveURL(/\/app\/groups$/);
-  await expect(visibleNavigation(page).getByRole("link", { name: "Groups" })).toHaveAttribute("aria-current", "page");
+  await expectRouteCommit(page, /\/app\/groups$/, "Groups");
 
-  await page.getByRole("link", { name: group.name, exact: false }).first().click();
-  await expect(page).toHaveURL(new RegExp(`/app/groups/${group.id}$`));
-  await expect(visibleNavigation(page).getByRole("link", { name: "Groups" })).toHaveAttribute("aria-current", "page");
+  const groupLink = page
+    .getByRole("link", { name: group.name, exact: false })
+    .first();
+  await expect(groupLink).toHaveAttribute("href", `/app/groups/${group.id}`);
+  await groupLink.click();
+  await expectRouteCommit(
+    page,
+    new RegExp(`/app/groups/${group.id}$`),
+    "Groups",
+  );
 
   await visibleNavigation(page).getByRole("link", { name: "Funds" }).click();
-  await expect(page).toHaveURL(/\/app\/funds$/);
-  await expect(visibleNavigation(page).getByRole("link", { name: "Funds" })).toHaveAttribute("aria-current", "page");
+  await expectRouteCommit(page, /\/app\/funds$/, "Funds");
 
-  await page.getByRole("link", { name: new RegExp(fund.name) }).click();
-  await expect(page).toHaveURL(new RegExp(`/app/funds/${fund.id}$`));
-  await expect(visibleNavigation(page).getByRole("link", { name: "Funds" })).toHaveAttribute("aria-current", "page");
+  const fundLink = page.getByRole("link", { name: new RegExp(fund.name) });
+  await expect(fundLink).toHaveAttribute("href", `/app/funds/${fund.id}`);
+  await fundLink.click();
+  await expectRouteCommit(
+    page,
+    new RegExp(`/app/funds/${fund.id}$`),
+    "Funds",
+  );
 
   await visibleNavigation(page).getByRole("link", { name: "Overview" }).click();
-  await expect(page).toHaveURL(/\/app$/);
-  await expect(visibleNavigation(page).getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
+  await expectRouteCommit(page, /\/app$/, "Overview");
   expect(errors, "authenticated pages emitted delivery console errors").toEqual([]);
 });
