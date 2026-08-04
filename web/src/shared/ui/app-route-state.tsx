@@ -60,7 +60,6 @@ export function AppRouteState({
           alt="Mimiku standing guard"
           className={styles.mimiku}
           height={512}
-          priority
           src={pixelUiAssets.mimiku.serious}
           width={512}
         />

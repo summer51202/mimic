@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { classifyReadError } from "@/shared/api/read-state";
+import { AppReadRetry } from "@/shared/ui/app-read-retry";
 import { AppRouteState } from "@/shared/ui/app-route-state";
 
 interface AppReadFailureProps {
@@ -16,6 +17,10 @@ export function AppReadFailure({ error }: AppReadFailureProps) {
 
   if (state === "unknown") {
     throw error;
+  }
+
+  if (state === "unavailable") {
+    return <AppReadRetry />;
   }
 
   return <AppRouteState returnHref="/app" variant={state} />;
