@@ -2,12 +2,13 @@ import Link from "next/link";
 
 import { Wordmark } from "@/shared/brand/wordmark";
 
+import type { AppSection } from "./app-section";
 import styles from "./app-navigation.module.css";
 
 type AppNavigationVariant = "mobile" | "desktop";
 
 type AppNavigationProps = {
-  currentPath: string;
+  currentSection: AppSection | undefined;
   variant: AppNavigationVariant;
 };
 
@@ -42,7 +43,7 @@ const navigationItems = [
   },
 ] as const;
 
-export function AppNavigation({ currentPath, variant }: AppNavigationProps) {
+export function AppNavigation({ currentSection, variant }: AppNavigationProps) {
   return (
     <nav
       aria-label="Primary app sections"
@@ -60,9 +61,9 @@ export function AppNavigation({ currentPath, variant }: AppNavigationProps) {
           <li className={styles.item} key={item.label}>
             {item.status === "available" ? (
               <Link
-                aria-current={currentPath === item.href ? "page" : undefined}
+                aria-current={currentSection === item.href ? "page" : undefined}
                 className={styles.link}
-                data-current={currentPath === item.href ? "true" : undefined}
+                data-current={currentSection === item.href ? "true" : undefined}
                 href={item.href}
               >
                 <span aria-hidden="true" className={styles.icon}>

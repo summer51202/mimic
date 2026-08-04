@@ -61,6 +61,14 @@
   padding: 0 var(--mimic-space-3);
 }
 
+.navigation[data-variant="mobile"] .link {
+  min-width: 0;
+  min-height: 3.75rem;
+  flex-direction: column;
+  gap: var(--mimic-space-1);
+  padding: var(--mimic-space-1);
+}
+
 .link[data-current="true"] {
   border-color: var(--mimic-color-ink);
   background: var(--mimic-color-coin);
@@ -89,6 +97,15 @@
   overflow-wrap: anywhere;
   font-size: 0.78rem;
   line-height: 1.1;
+}
+
+.navigation[data-variant="mobile"] .label {
+  display: -webkit-box;
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .navigation[data-variant="desktop"] .label {

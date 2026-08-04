@@ -2,6 +2,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
 import { AppNavigation } from "./app-navigation";
+import { currentAppSection } from "./app-section";
 
 afterEach(() => {
   cleanup();
@@ -9,7 +10,7 @@ afterEach(() => {
 
 describe("AppNavigation", () => {
   it("renders bottom navigation semantics for phone layout", () => {
-    render(<AppNavigation currentPath="/app" variant="mobile" />);
+    render(<AppNavigation currentSection="/app" variant="mobile" />);
 
     const navigation = screen.getByRole("navigation", {
       name: "Primary app sections",
@@ -24,7 +25,7 @@ describe("AppNavigation", () => {
   });
 
   it("renders side rail landmark semantics for desktop layout", () => {
-    render(<AppNavigation currentPath="/app" variant="desktop" />);
+    render(<AppNavigation currentSection="/app" variant="desktop" />);
 
     const navigation = screen.getByRole("navigation", {
       name: "Primary app sections",
@@ -35,7 +36,7 @@ describe("AppNavigation", () => {
   });
 
   it("indicates the current route while linking to primary sections", () => {
-    render(<AppNavigation currentPath="/app" variant="desktop" />);
+    render(<AppNavigation currentSection="/app" variant="desktop" />);
 
     const overview = screen.getByRole("link", { name: /Overview/ });
     const groups = screen.getByRole("link", { name: /Groups/ });
@@ -50,8 +51,28 @@ describe("AppNavigation", () => {
     expect(settings).toBeDisabled();
   });
 
+  it.each([
+    ["/app/groups/g1", "Groups"],
+    ["/app/funds/f1", "Funds"],
+  ])("indicates %s as the %s section", (currentPath, currentLabel) => {
+    render(
+      <AppNavigation
+        currentSection={currentAppSection(currentPath)}
+        variant="desktop"
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: currentLabel })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    expect(screen.getByRole("link", { name: "Overview" })).not.toHaveAttribute(
+      "aria-current",
+    );
+  });
+
   it("does not expose inaccessible icon-only controls", () => {
-    render(<AppNavigation currentPath="/app" variant="mobile" />);
+    render(<AppNavigation currentSection="/app" variant="mobile" />);
 
     for (const item of screen.getAllByRole("link")) {
       expect(item).toHaveAccessibleName();
@@ -63,7 +84,7 @@ describe("AppNavigation", () => {
   });
 
   it("announces disabled future sections as coming soon", () => {
-    render(<AppNavigation currentPath="/app" variant="desktop" />);
+    render(<AppNavigation currentSection="/app" variant="desktop" />);
 
     expect(
       screen.getByRole("button", { name: "Activity (coming soon)" }),

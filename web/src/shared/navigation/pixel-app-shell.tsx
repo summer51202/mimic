@@ -1,6 +1,10 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { AppNavigation } from "./app-navigation";
+import { currentAppSection } from "./app-section";
 import styles from "./pixel-app-shell.module.css";
 
 interface PixelAppShellProps {
@@ -8,6 +12,8 @@ interface PixelAppShellProps {
 }
 
 export function PixelAppShell({ children }: PixelAppShellProps) {
+  const currentSection = currentAppSection(usePathname());
+
   return (
     <div className={styles.shell}>
       <header className={styles.topBar}>
@@ -16,12 +22,12 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
       </header>
       <div className={styles.body}>
         <div className={styles.desktopOnly}>
-          <AppNavigation currentPath="/app" variant="desktop" />
+          <AppNavigation currentSection={currentSection} variant="desktop" />
         </div>
         <main className={styles.main}>{children}</main>
       </div>
       <div className={styles.mobileOnly}>
-        <AppNavigation currentPath="/app" variant="mobile" />
+        <AppNavigation currentSection={currentSection} variant="mobile" />
       </div>
     </div>
   );
