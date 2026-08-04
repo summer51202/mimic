@@ -1,7 +1,7 @@
 export type ApiErrorCode = string;
 
 export class ApiError extends Error {
-  readonly name = "ApiError";
+  readonly name: string = "ApiError";
   readonly status: number;
   readonly code: ApiErrorCode;
 
@@ -17,6 +17,8 @@ export class ApiConfigurationError extends Error {
 }
 
 export class ApiUnavailableError extends ApiError {
+  readonly name = "ApiUnavailableError";
+
   constructor() {
     super(503, "UPSTREAM_UNAVAILABLE", "The API is unavailable.");
   }

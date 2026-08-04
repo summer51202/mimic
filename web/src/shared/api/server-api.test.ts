@@ -182,6 +182,7 @@ describe("server API boundary", () => {
 
     await expect(request).rejects.toMatchObject({
       code: "UPSTREAM_UNAVAILABLE",
+      name: "ApiUnavailableError",
       status: 503,
     } satisfies Partial<ApiUnavailableError>);
     await expect(request).rejects.toBeInstanceOf(ApiUnavailableError);
