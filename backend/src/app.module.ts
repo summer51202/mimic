@@ -12,7 +12,13 @@ import { UsersModule } from './modules/users/users.module';
 class HealthController {
   @Get('health')
   getHealth() {
-    return { data: { ok: true } };
+    const revision = process.env.MIMIC_BACKEND_REVISION;
+    return {
+      data: {
+        ok: true,
+        ...(/^[0-9a-f]{7,64}$/i.test(revision ?? '') ? { revision } : {}),
+      },
+    };
   }
 }
 

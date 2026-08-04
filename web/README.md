@@ -10,6 +10,7 @@ npm run dev
 npm run lint
 npm run typecheck
 npm test
+npm run test:runtime-verifier
 npm run build
 npm run test:e2e
 npm run verify:runtime -- --health-only
@@ -25,7 +26,7 @@ Acceptance must use the backend source from this worktree. The existing
 not `D:\Project\mimic\.worktrees\mimic-pwa-foundation\backend`. Do not use
 that drifting prebuilt container as the acceptance backend.
 
-Use four PowerShell terminals. From the worktree, start only PostgreSQL in
+Use three PowerShell terminals. From the worktree, start only PostgreSQL in
 WSL:
 
 ```powershell
@@ -45,33 +46,43 @@ $env:MIMIC_BACKEND_REVISION = (git -C .. rev-parse HEAD).Trim()
 npm run start:dev
 ```
 
-In a separate terminal, configure and start the web PWA on port 3010:
+In a separate terminal, configure the web PWA and run acceptance. The verifier
+starts this worktree's web server on port 3010 with existing-server reuse
+disabled, so port 3010 must be free:
 
 ```powershell
 Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
 'MIMIC_API_BASE_URL=http://localhost:3001/api/v1' | Out-File .env.local -Encoding utf8
-npm run dev -- --webpack --hostname localhost --port 3010
-```
-
-In a fourth PowerShell terminal, pin the declared backend revision to the
-revision expected by acceptance and run the deterministic workflow:
-
-```powershell
-Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
-$env:MIMIC_BACKEND_REVISION = (git -C .. rev-parse HEAD).Trim()
-$env:MIMIC_EXPECTED_BACKEND_REVISION = (git -C .. rev-parse HEAD).Trim()
 npm run verify:runtime
 ```
 
-`MIMIC_BACKEND_REVISION` is the revision declared when the backend process was
-started. When it is set, acceptance requires an expected revision from
-`--expected-revision <sha>` or `MIMIC_EXPECTED_BACKEND_REVISION` and fails if
-they differ. The verifier prints only the configured Web and API roots, never
-authentication tokens, cookies, or secrets. To check backend availability
+The backend health payload includes `data.revision` only when the backend was
+started with a valid hexadecimal `MIMIC_BACKEND_REVISION`. Acceptance derives
+its expected revision from this worktree's current `git rev-parse HEAD` and
+rejects a backend that omits or reports a different revision. Pin a different
+expected revision explicitly only when intentional:
+
+```powershell
+Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
+$expectedRevision = (git -C .. rev-parse HEAD).Trim()
+npm run verify:runtime -- --expected-revision $expectedRevision
+```
+
+`MIMIC_EXPECTED_BACKEND_REVISION` is the environment equivalent of
+`--expected-revision`. Runtime URLs must be exact HTTP(S) roots without
+credentials, query strings, or fragments. The verifier prints only validated
+Web/API paths and never authentication tokens, cookies, URL credentials, query
+values, or backend response bodies. To check backend identity and availability
 without authentication or Playwright, run:
 
 ```powershell
 npm run verify:runtime -- --health-only
+```
+
+For manual web development outside acceptance, start port 3010 separately:
+
+```powershell
+npm run dev -- --webpack --hostname localhost --port 3010
 ```
 
 The backend seed account is:

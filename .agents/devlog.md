@@ -439,3 +439,17 @@
 - Documented the PowerShell workflow that starts only PostgreSQL in WSL and runs backend/web processes from this worktree.
 **Decisions:** Split Playwright into navigation and remaining-suite batches so the third checkpoint follows the existing click-driven Groups/Funds test. Used an ephemeral API registration for the authentication setup milestone and discarded its token response.
 **Known gaps / follow-ups:** Full runtime acceptance is blocked while the user-owned `pairfund-backend` container occupies port 3001; it mounts `D:\Project\mimic\backend` and was not stopped or used for acceptance.
+
+## 2026-08-04 - Enforce runtime process identity and phase alignment
+
+**Task:** Correct Task 8 acceptance so it identifies the backend process, aligns health checks with the authenticated browser journey, and runs deterministically on Windows.
+**Scope:** Backend health contract/tests, runtime verifier/tests, dedicated Playwright runtime journey/helpers, Playwright config, web package scripts and README, `.agents/devlog.md`
+**What changed:**
+- Exposed a validated SHA-like backend process revision from health only when configured, omitting unset or secret-like values.
+- Compared the expected current/explicit revision with the health response and rejected missing, invalid, or stale process identity.
+- Added strict API/Web URL validation and redacted failure behavior.
+- Added a dedicated browser journey that authenticates, checks health, navigates Groups/Funds, and checks health again in tested order.
+- Launched Playwright through the Node executable and resolved CLI with single-settlement child cleanup.
+- Disabled existing web-server reuse during runtime acceptance and added an explicit verifier unit-test package script.
+**Decisions:** Kept developer server reuse for ordinary Playwright runs while forcing a current-worktree server for acceptance. Used the same browser session for authentication and navigation instead of a separate throwaway API account.
+**Known gaps / follow-ups:** The user-owned stale backend remains on port 3001 and is now rejected because its health response omits the expected process revision; same-worktree runtime verification requires a free port or alternate acceptance port.

@@ -5,6 +5,8 @@ const webBaseUrl =
   process.env.MIMIC_WEB_BASE_URL ??
   "http://localhost:3010";
 const webUrl = new URL(webBaseUrl);
+const reuseExistingServer =
+  !process.env.CI && process.env.MIMIC_RUNTIME_ACCEPTANCE !== "1";
 
 export default defineConfig({
   testDir: "./e2e",
@@ -14,7 +16,7 @@ export default defineConfig({
   webServer: {
     command: `npm run dev -- --webpack --hostname ${webUrl.hostname} --port ${webUrl.port || "3010"}`,
     url: webBaseUrl,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer,
     timeout: 120_000,
   },
   use: {

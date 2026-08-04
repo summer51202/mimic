@@ -8,6 +8,7 @@ import { PrismaService } from '../src/modules/prisma/prisma.service';
 describe('App bootstrap', () => {
   let app: INestApplication;
   const originalCorsOrigin = process.env.CORS_ORIGIN;
+  const originalBackendRevision = process.env.MIMIC_BACKEND_REVISION;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -36,9 +37,36 @@ describe('App bootstrap', () => {
     } else {
       process.env.CORS_ORIGIN = originalCorsOrigin;
     }
+
+    if (originalBackendRevision === undefined) {
+      delete process.env.MIMIC_BACKEND_REVISION;
+    } else {
+      process.env.MIMIC_BACKEND_REVISION = originalBackendRevision;
+    }
   });
 
-  it('responds on health route', async () => {
+  it('omits backend revision from health when it is unset', async () => {
+    delete process.env.MIMIC_BACKEND_REVISION;
+    await request(app.getHttpServer()).get('/health').expect(200).expect({
+      data: { ok: true },
+    });
+  });
+
+  it('exposes the backend process revision on health when it is a git SHA', async () => {
+    process.env.MIMIC_BACKEND_REVISION =
+      'd329f3cecada42155424a7ec8a5de23336d39111';
+
+    await request(app.getHttpServer()).get('/health').expect(200).expect({
+      data: {
+        ok: true,
+        revision: 'd329f3cecada42155424a7ec8a5de23336d39111',
+      },
+    });
+  });
+
+  it('does not reflect secret-like revision values on health', async () => {
+    process.env.MIMIC_BACKEND_REVISION = 'token=do-not-expose';
+
     await request(app.getHttpServer()).get('/health').expect(200).expect({
       data: { ok: true },
     });

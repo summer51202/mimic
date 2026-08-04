@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:runtime-verifier": "node --test --test-isolation=none scripts/verify-local-runtime.node-test.mjs",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "verify:runtime": "node scripts/verify-local-runtime.mjs --base-url http://localhost:3001/api/v1"
