@@ -53,7 +53,7 @@ export function FundsOverview({ sections }: FundsOverviewProps) {
           >
             <header className={styles.groupHeader} data-contain-text>
               <div className={styles.groupTitle}>
-                <p>{section.group.default_currency} treasury</p>
+                <p>shared fund group</p>
                 <h2>{section.group.name}</h2>
               </div>
               <nav aria-label={`${section.group.name} fund actions`} className={styles.actions}>

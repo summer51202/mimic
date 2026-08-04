@@ -88,6 +88,23 @@ describe("FundsOverview", () => {
     expect(sections[0].querySelector("[data-contain-text]")).not.toBeNull();
   });
 
+  it("uses a currency-neutral group label for same-group mixed currencies", () => {
+    render(
+      <FundsOverview
+        sections={[
+          { group: groups[0], funds, state: "ready" },
+        ]}
+      />,
+    );
+
+    const section = screen.getByTestId("funds-group");
+    expect(within(section).getByText("shared fund group")).toBeVisible();
+    expect(within(section).queryByText("TWD treasury")).not.toBeInTheDocument();
+    expect(within(section).getByText("NT$24,680.00")).toBeVisible();
+    expect(within(section).getByText("$50.00")).toBeVisible();
+    expect(within(section).queryByText(/total/i)).not.toBeInTheDocument();
+  });
+
   it("keeps ready groups visible when another group is forbidden", () => {
     render(
       <FundsOverview
