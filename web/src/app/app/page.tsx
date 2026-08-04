@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { selectGroupId } from "@/features/groups/group-selection";
 import { getGroupDashboard, listGroups } from "@/features/groups/group-queries";
 import { TreasuryDashboard } from "@/features/groups/treasury-dashboard";
+import { AppReadFailure } from "@/shared/ui/app-read-failure";
 
 interface AppPageProps {
   searchParams?: Promise<{ group?: string | string[] }>;
@@ -12,20 +13,32 @@ const groupPreferenceCookie = "mimic_group";
 
 export default async function AppPage({ searchParams }: AppPageProps) {
   const emptyParams: { group?: string | string[] } = {};
-  const [params, cookieStore, groups] = await Promise.all([
+  const [params, cookieStore] = await Promise.all([
     searchParams ?? Promise.resolve(emptyParams),
     cookies(),
-    listGroups(),
   ]);
+  let groups;
+
+  try {
+    groups = await listGroups();
+  } catch (error) {
+    return <AppReadFailure error={error} />;
+  }
   const urlGroup = Array.isArray(params.group) ? params.group[0] : params.group;
   const selectedGroupId = selectGroupId(
     urlGroup,
     cookieStore.get(groupPreferenceCookie)?.value,
     groups,
   );
-  const dashboard = selectedGroupId
-    ? await getGroupDashboard(selectedGroupId)
-    : null;
+  let dashboard = null;
+
+  if (selectedGroupId) {
+    try {
+      dashboard = await getGroupDashboard(selectedGroupId);
+    } catch (error) {
+      return <AppReadFailure error={error} />;
+    }
+  }
 
   return (
     <TreasuryDashboard

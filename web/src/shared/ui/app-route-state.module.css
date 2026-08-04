@@ -1,0 +1,68 @@
+.page {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: min(34rem, 70vh);
+  padding: var(--mimic-space-4) 0;
+  width: 100%;
+}
+
+.frame {
+  align-items: center;
+  display: grid;
+  gap: var(--mimic-space-5);
+  grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr);
+  max-width: 42rem;
+  width: 100%;
+}
+
+.mimiku {
+  height: auto;
+  image-rendering: pixelated;
+  max-width: 100%;
+}
+
+.copy {
+  min-width: 0;
+}
+
+.copy h1 {
+  font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.65rem);
+  margin: var(--mimic-space-2) 0;
+  overflow-wrap: anywhere;
+}
+
+.copy p {
+  line-height: 1.6;
+  margin: 0;
+}
+
+.kicker {
+  color: var(--mimic-color-ink-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mimic-space-3);
+  margin-top: var(--mimic-space-4);
+}
+
+@media (max-width: 32rem) {
+  .frame {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .mimiku {
+    justify-self: center;
+    width: 7rem;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+}

@@ -3,9 +3,16 @@ import Link from "next/link";
 import { GroupList } from "@/features/groups/group-list";
 import { listGroups } from "@/features/groups/group-queries";
 import styles from "@/features/groups/group-management.module.css";
+import { AppReadFailure } from "@/shared/ui/app-read-failure";
 
 export default async function GroupsPage() {
-  const groups = await listGroups();
+  let groups;
+
+  try {
+    groups = await listGroups();
+  } catch (error) {
+    return <AppReadFailure error={error} />;
+  }
 
   return (
     <section className={styles.page}>

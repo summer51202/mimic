@@ -1,5 +1,6 @@
 import { FundSummary } from "@/features/funds/fund-summary";
 import { getFundSummary } from "@/features/funds/fund-queries";
+import { AppReadFailure } from "@/shared/ui/app-read-failure";
 
 interface FundPageProps {
   params: Promise<{ fundId: string }>;
@@ -7,7 +8,13 @@ interface FundPageProps {
 
 export default async function FundPage({ params }: FundPageProps) {
   const { fundId } = await params;
-  const summary = await getFundSummary(fundId);
+  let summary;
+
+  try {
+    summary = await getFundSummary(fundId);
+  } catch (error) {
+    return <AppReadFailure error={error} />;
+  }
 
   return <FundSummary summary={summary} />;
 }
