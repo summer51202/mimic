@@ -88,17 +88,25 @@
 }
 
 .heroContent strong {
-  font-size: clamp(1.5rem, 8vw, 4rem);
   line-height: 1;
 }
 
 .heroAmount,
 .memberAmount,
 .fundAmount {
+  display: block;
+  font-size: clamp(1rem, 1.25rem, 2rem);
+  font-variant-numeric: tabular-nums;
   max-width: 100%;
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-x: auto;
+  overflow-y: hidden;
   text-align: end;
+  white-space: nowrap;
+}
+
+.heroAmount {
+  font-size: clamp(1.25rem, 2rem, 4rem);
 }
 
 .contentGrid {
@@ -173,10 +181,15 @@
     grid-template-columns: auto minmax(0, 1fr);
   }
 
+  .fundName {
+    grid-column: 1 / -1;
+  }
+
   .memberAmount,
   .fundAmount {
-    grid-column: 2;
+    grid-column: 1 / -1;
     justify-self: end;
+    width: 100%;
   }
 }
 
@@ -199,6 +212,15 @@
 }
 
 @media (min-width: 48rem) {
+  .heroAmount {
+    font-size: clamp(1.5rem, 2.5rem, 4rem);
+  }
+
+  .memberAmount,
+  .fundAmount {
+    font-size: clamp(1rem, 1.4rem, 2rem);
+  }
+
   .topBar {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;

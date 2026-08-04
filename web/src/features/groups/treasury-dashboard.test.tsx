@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
@@ -178,5 +181,21 @@ describe("TreasuryDashboard", () => {
     expect(title.closest("[data-frame]")).not.toBeNull();
     expect(memberName.closest("[data-frame]")).not.toBeNull();
     expect(fundName.closest("[data-frame]")).not.toBeNull();
+  });
+
+  it("owns narrow fund rows and readable financial amount containment in CSS", () => {
+    const css = readFileSync(
+      path.join(process.cwd(), "src", "features", "groups", "treasury-dashboard.module.css"),
+      "utf8",
+    );
+
+    expect(css).toMatch(/\.fundName\s*\{[^}]*grid-column:\s*1\s*\/\s*-1/);
+    expect(css).toMatch(/\.fundAmount\s*\{[^}]*grid-column:\s*1\s*\/\s*-1[^}]*width:\s*100%/);
+    expect(css).toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-variant-numeric:\s*tabular-nums/);
+    expect(css).toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*white-space:\s*nowrap/);
+    expect(css).toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-x:\s*auto/);
+    expect(css).toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-size:\s*clamp\([^)]*rem[^)]*rem[^)]*rem\)/);
+    expect(css).toMatch(/@media\s*\(min-width:\s*48rem\)[\s\S]*\.heroAmount\s*\{[^}]*font-size:\s*clamp\([^)]*rem[^)]*rem[^)]*rem\)/);
+    expect(css).not.toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-wrap:\s*anywhere/);
   });
 });

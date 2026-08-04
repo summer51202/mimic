@@ -52,7 +52,6 @@
 .balance {
   color: var(--mimic-color-hud-dark);
   font-family: var(--mimic-font-pixel);
-  font-size: clamp(1.5rem, 8vw, 4rem);
 }
 
 .totals {
@@ -68,17 +67,25 @@
 .memberAmount {
   color: var(--mimic-color-hud-dark);
   display: block;
-  font-size: clamp(1rem, 4vw, 1.2rem);
 }
 
 .balanceAmount,
 .totalAmount,
 .memberAmount,
 .fundAmount {
+  display: block;
+  font-size: clamp(1rem, 1.1rem, 1.2rem);
+  font-variant-numeric: tabular-nums;
   max-width: 100%;
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow-x: auto;
+  overflow-y: hidden;
   text-align: end;
+  white-space: nowrap;
+}
+
+.balanceAmount {
+  font-size: clamp(1.25rem, 2rem, 4rem);
 }
 
 .memberList,
@@ -132,7 +139,20 @@
 
   .memberAmount,
   .fundAmount {
-    grid-column: 2;
+    grid-column: 1 / -1;
     justify-self: end;
+    width: 100%;
+  }
+}
+
+@media (min-width: 48rem) {
+  .balanceAmount {
+    font-size: clamp(1.5rem, 2.5rem, 4rem);
+  }
+
+  .totalAmount,
+  .memberAmount,
+  .fundAmount {
+    font-size: clamp(1rem, 1.2rem, 1.4rem);
   }
 }

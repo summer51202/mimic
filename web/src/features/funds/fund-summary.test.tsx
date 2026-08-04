@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 
@@ -67,6 +70,21 @@ describe("FundSummary", () => {
     expect(memberAmount.className).toMatch(/memberAmount/);
     expect(fundName.closest("[data-frame]")).not.toBeNull();
     expect(memberName.closest("[data-frame]")).not.toBeNull();
+  });
+
+  it("owns narrow summary amount rows without splitting financial digits", () => {
+    const css = readFileSync(
+      path.join(process.cwd(), "src", "features", "funds", "fund-summary.module.css"),
+      "utf8",
+    );
+
+    expect(css).toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-variant-numeric:\s*tabular-nums/);
+    expect(css).toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*white-space:\s*nowrap/);
+    expect(css).toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-x:\s*auto/);
+    expect(css).toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-size:\s*clamp\([^)]*rem[^)]*rem[^)]*rem\)/);
+    expect(css).toMatch(/@media\s*\(min-width:\s*48rem\)[\s\S]*\.balanceAmount\s*\{[^}]*font-size:\s*clamp\([^)]*rem[^)]*rem[^)]*rem\)/);
+    expect(css).not.toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-wrap:\s*anywhere/);
+    expect(css).toMatch(/\.memberAmount,\s*\n\s*\.fundAmount\s*\{[^}]*grid-column:\s*1\s*\/\s*-1[^}]*width:\s*100%/);
   });
 });
 
