@@ -82,7 +82,7 @@ describe("FundSummary", () => {
     expect(css).toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*white-space:\s*nowrap/);
     expect(css).not.toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-x:\s*auto/);
     expect(css).toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-size:\s*clamp\([^)]*rem[^)]*rem[^)]*rem\)/);
-    expect(css).toMatch(/@media\s*\(min-width:\s*48rem\)[\s\S]*\.balanceAmount\s*\{[^}]*font-size:\s*clamp\([^)]*rem[^)]*rem[^)]*rem\)/);
+    expect(css).not.toMatch(/@media\s*\(min-width:\s*48rem\)[\s\S]*\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-size/);
     expect(css).not.toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-wrap:\s*anywhere/);
     expect(css).toMatch(/\.memberAmount,\s*\n\s*\.fundAmount\s*\{[^}]*grid-column:\s*1\s*\/\s*-1[^}]*width:\s*100%/);
   });

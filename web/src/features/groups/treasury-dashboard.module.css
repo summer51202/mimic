@@ -210,15 +210,6 @@
 }
 
 @media (min-width: 48rem) {
-  .heroAmount {
-    font-size: clamp(1.5rem, 2.5rem, 4rem);
-  }
-
-  .memberAmount,
-  .fundAmount {
-    font-size: clamp(1rem, 1.4rem, 2rem);
-  }
-
   .topBar {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;

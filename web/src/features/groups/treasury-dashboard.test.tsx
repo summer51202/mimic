@@ -195,7 +195,7 @@ describe("TreasuryDashboard", () => {
     expect(css).toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*white-space:\s*nowrap/);
     expect(css).not.toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-x:\s*auto/);
     expect(css).toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-size:\s*clamp\([^)]*rem[^)]*rem[^)]*rem\)/);
-    expect(css).toMatch(/@media\s*\(min-width:\s*48rem\)[\s\S]*\.heroAmount\s*\{[^}]*font-size:\s*clamp\([^)]*rem[^)]*rem[^)]*rem\)/);
+    expect(css).not.toMatch(/@media\s*\(min-width:\s*48rem\)[\s\S]*\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-size/);
     expect(css).not.toMatch(/\.(?:heroAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-wrap:\s*anywhere/);
   });
 });
