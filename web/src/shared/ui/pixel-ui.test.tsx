@@ -60,6 +60,10 @@ describe("pixel UI primitives", () => {
     expect(globals).toContain("outline: 3px solid var(--mimic-color-focus)");
     expect(frameCss).toContain('url("/pixel-ui/frames-ui.png")');
     expect(frameCss).toContain("border-image-source");
+    expect(frameCss).toContain("border-image-slice: 32 fill");
+    expect(frameCss).toContain("border-image-width: 8px");
+    expect(frameCss).toContain("border-image-repeat: round");
+    expect(frameCss).not.toContain("border-image-repeat: stretch");
   });
 
   it("wires PixelField labels, descriptions, and errors to its input", () => {

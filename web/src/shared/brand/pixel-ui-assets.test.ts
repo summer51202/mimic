@@ -1,8 +1,10 @@
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { pixelUiAssetPolicy, pixelUiAssets } from "./pixel-ui-assets";
+import { inspectPng } from "./png-inspection";
 
 const pngSignature = "89504e470d0a1a0a";
 
@@ -15,10 +17,10 @@ const expectedDimensions = new Map<string, readonly [number, number]>([
   ["mimiku-serious.png", [512, 512]],
   ["treasury-mobile.png", [512, 1024]],
   ["treasury-desktop.png", [1024, 620]],
-  ["avatar-01.png", [128, 128]],
-  ["avatar-02.png", [128, 128]],
-  ["avatar-03.png", [128, 128]],
-  ["avatar-04.png", [128, 128]],
+  ["avatar-01.png", [96, 96]],
+  ["avatar-02.png", [96, 96]],
+  ["avatar-03.png", [96, 96]],
+  ["avatar-04.png", [96, 96]],
   ["icons-ui.png", [1536, 1024]],
   ["frames-ui.png", [256, 166]],
 ]);
@@ -67,7 +69,48 @@ describe("pixelUiAssets", () => {
       expect(image.readUInt32BE(20)).toBe(dimensions?.[1]);
     },
   );
+
+  it.each(pixelUiAssets.avatars)(
+    "exports %s as clean transparent 2x avatar art",
+    async (publicPath) => {
+      const inspection = await inspectPng(publicFile(publicPath));
+
+      expect(inspection).toMatchObject({
+        width: 96,
+        height: 96,
+        channels: 4,
+        hasTransparentPixel: true,
+        connectedNeutralPixels: 0,
+        opaqueNeutralCheckerPixels: 0,
+      });
+    },
+  );
+
+  it("exports a clean transparent frame without resampling", async () => {
+    const inspection = await inspectPng(publicFile(pixelUiAssets.sheets.frames));
+
+    expect(inspection).toMatchObject({
+      width: 256,
+      height: 166,
+      channels: 4,
+      exteriorCornerTransparent: true,
+      connectedNeutralPixels: 0,
+      opaqueNeutralCheckerPixels: 0,
+    });
+  });
+
+  it("preserves the root icon byte-for-byte", async () => {
+    const icon = await readFile(path.join(process.cwd(), "..", "icon.png"));
+
+    expect(createHash("sha256").update(icon).digest("hex")).toBe(
+      "f69a20b714799566fbe21734419e7480655c37f6417cbd224c1e240b448c40ac",
+    );
+  });
 });
+
+function publicFile(publicPath: string): string {
+  return path.join(process.cwd(), "public", publicPath);
+}
 
 function* allPixelUiPaths(): Generator<string> {
   yield* Object.values(pixelUiAssets.mimiku);
