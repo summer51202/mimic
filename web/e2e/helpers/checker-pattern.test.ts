@@ -34,6 +34,33 @@ describe("findBakedTransparencyChecker", () => {
     const png = makePng(32, 32, (x) => x < 16 ? [238, 238, 238] : [204, 204, 204]);
     expect(findBakedTransparencyChecker(PNG.sync.write(png))).toBeNull();
   });
+
+  it("detects a checker with mild within-block channel variation", () => {
+    const blockSize = 8;
+    const png = makePng(24, 24, (x, y) => {
+      const light = (Math.floor(x / blockSize) + Math.floor(y / blockSize)) % 2 === 0;
+      const variation = (x + y) % 3;
+      const tone = (light ? 238 : 204) + variation;
+      return [tone, tone, tone];
+    });
+    expect(findBakedTransparencyChecker(PNG.sync.write(png))).toEqual({ blockSize, x: 0, y: 0 });
+  });
+
+  it("rejects a partial 2x3 checker", () => {
+    const png = makePng(24, 16, (x, y) => {
+      const light = (Math.floor(x / 8) + Math.floor(y / 8)) % 2 === 0;
+      return light ? [238, 238, 238] : [204, 204, 204];
+    });
+    expect(findBakedTransparencyChecker(PNG.sync.write(png))).toBeNull();
+  });
+
+  it("rejects an unsupported 12px rescale instead of matching incidental pixels", () => {
+    const png = makePng(36, 36, (x, y) => {
+      const light = (Math.floor(x / 12) + Math.floor(y / 12)) % 2 === 0;
+      return light ? [238, 238, 238] : [204, 204, 204];
+    });
+    expect(findBakedTransparencyChecker(PNG.sync.write(png))).toBeNull();
+  });
 });
 
 function makePng(

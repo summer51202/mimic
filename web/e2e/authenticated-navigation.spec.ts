@@ -15,7 +15,7 @@ function captureDeliveryErrors(page: Page): string[] {
   page.on("console", (message) => {
     if (
       message.type() === "error" &&
-      /fetch failed|Runtime TypeError|(?:react|next).*unexpected|unexpected.*(?:react|next)/i.test(
+      /fetch failed|failed to fetch|Runtime TypeError|(?:react|next).*(?:error|exception|hydration|unexpected)|(?:error|exception|hydration|unexpected).*(?:react|next)/i.test(
         message.text(),
       )
     ) {
@@ -23,9 +23,7 @@ function captureDeliveryErrors(page: Page): string[] {
     }
   });
   page.on("pageerror", (error) => {
-    if (/fetch failed|Runtime TypeError|react|next/i.test(error.message)) {
-      errors.push(error.message);
-    }
+    errors.push(error.message);
   });
   return errors;
 }

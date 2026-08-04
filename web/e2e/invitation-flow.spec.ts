@@ -11,8 +11,6 @@ import {
   uniqueAccounts,
 } from "./fixtures/accounts";
 
-test.beforeAll(requireBackend);
-
 test("keeps invalid invitation links terminal and private", async ({ page }) => {
   await page.goto("/invite/bad-code");
 
@@ -21,9 +19,12 @@ test("keeps invalid invitation links terminal and private", async ({ page }) => 
   await expect(page.getByRole("link", { name: "Log in to accept" })).toHaveCount(0);
 });
 
-test("renders the authenticated invite gate without leaking ids", async ({
-  browser,
-}, testInfo) => {
+test.describe("backend-backed invitation flows", () => {
+  test.beforeAll(requireBackend);
+
+  test("renders the authenticated invite gate without leaking ids", async ({
+    browser,
+  }, testInfo) => {
   const accounts = uniqueAccounts(testInfo);
   const { owner, ownerPage, partner } = await isolatedPages(browser);
 
@@ -42,11 +43,11 @@ test("renders the authenticated invite gate without leaking ids", async ({
     await owner.close();
     await partner.close();
   }
-});
+  });
 
-test("rejects email mismatch for invite acceptance", async ({
-  browser,
-}, testInfo) => {
+  test("rejects email mismatch for invite acceptance", async ({
+    browser,
+  }, testInfo) => {
   const accounts = uniqueAccounts(testInfo);
   const mismatch = {
     ...accounts.partner,
@@ -74,4 +75,5 @@ test("rejects email mismatch for invite acceptance", async ({
     await owner.close();
     await partner.close();
   }
+  });
 });
