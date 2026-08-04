@@ -106,6 +106,20 @@ describe("pixelUiAssets", () => {
       "f69a20b714799566fbe21734419e7480655c37f6417cbd224c1e240b448c40ac",
     );
   });
+
+  it("uses the exact destination temp path for atomic PNG exports", async () => {
+    const exporter = await readFile(
+      path.join(process.cwd(), "scripts", "export-pixel-runtime-assets.mjs"),
+      "utf8",
+    );
+
+    expect(exporter).toContain('const temporary = `${filename}.tmp`;');
+    expect(exporter).not.toContain("process.pid");
+    expect(exporter).not.toContain("Date.now()");
+    expect(exporter.indexOf('await rm(temporary, { force: true });')).toBeLessThan(
+      exporter.indexOf('handle = await open(temporary, "wx");'),
+    );
+  });
 });
 
 function publicFile(publicPath: string): string {

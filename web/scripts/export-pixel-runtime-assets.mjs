@@ -164,8 +164,9 @@ export function centerWithoutResampling(sourcePng, width, height) {
 }
 
 export async function writePngAtomic(filename, png) {
-  const temporary = `${filename}.${process.pid}.${Date.now()}.tmp`;
+  const temporary = `${filename}.tmp`;
   let handle;
+  await rm(temporary, { force: true });
   try {
     handle = await open(temporary, "wx");
     await handle.writeFile(PNG.sync.write(png));
@@ -173,7 +174,11 @@ export async function writePngAtomic(filename, png) {
     handle = undefined;
     await rename(temporary, filename);
   } catch (error) {
-    await handle?.close();
+    try {
+      await handle?.close();
+    } catch {
+      // Preserve the original write or rename failure.
+    }
     await rm(temporary, { force: true });
     throw error;
   }
