@@ -1,18 +1,24 @@
 import { defineConfig } from "@playwright/test";
 
+const webBaseUrl =
+  process.env.PLAYWRIGHT_BASE_URL ??
+  process.env.MIMIC_WEB_BASE_URL ??
+  "http://localhost:3010";
+const webUrl = new URL(webBaseUrl);
+
 export default defineConfig({
   testDir: "./e2e",
   testIgnore: "helpers/**/*.test.ts",
   timeout: 120_000,
   workers: 1,
   webServer: {
-    command: "npm run dev -- --webpack --hostname 127.0.0.1 --port 3100",
-    url: "http://127.0.0.1:3100",
+    command: `npm run dev -- --webpack --hostname ${webUrl.hostname} --port ${webUrl.port || "3010"}`,
+    url: webBaseUrl,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
   use: {
-    baseURL: "http://127.0.0.1:3100",
+    baseURL: webBaseUrl,
   },
   projects: [
     {

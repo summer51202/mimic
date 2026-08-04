@@ -426,3 +426,16 @@
 - Fixed Mobile JSON envelope and fund summary mappers to accept JSON-like `Map` payloads while preserving required field validation.
 **Decisions:** NestJS remains authoritative; private data is never persisted by the service worker; transaction and settlement actions remain deferred.
 **Known gaps / follow-ups:** Contributions, expenses, activity, settlements, role changes, member removal, and fund archival remain in later plans. Final verification passed for Backend build/unit/e2e, Web lint/typecheck/unit/build/e2e, and Mobile tests; Web E2E still logs expected unauthenticated `SESSION_REQUIRED` redirect noise and Next Image invite-art warnings.
+
+## 2026-08-04 - Make local runtime acceptance deterministic
+
+**Task:** Implement Task 8 deterministic local runtime acceptance for the same-worktree backend and PWA.
+**Scope:** `web/scripts/verify-local-runtime.mjs`, focused verifier tests, `web/package.json`, `web/playwright.config.ts`, `web/README.md`, `.agents/devlog.md`
+**What changed:**
+- Added health-only and full acceptance modes with configurable API/Web roots and exact health URL failures.
+- Added three ordered health checkpoints around preflight, authentication setup, and real Groups/Funds browser navigation.
+- Added a declared-versus-expected backend revision guard without logging authentication material.
+- Made Playwright's runtime root configurable while preserving all existing viewport projects and helper-test exclusion.
+- Documented the PowerShell workflow that starts only PostgreSQL in WSL and runs backend/web processes from this worktree.
+**Decisions:** Split Playwright into navigation and remaining-suite batches so the third checkpoint follows the existing click-driven Groups/Funds test. Used an ephemeral API registration for the authentication setup milestone and discarded its token response.
+**Known gaps / follow-ups:** Full runtime acceptance is blocked while the user-owned `pairfund-backend` container occupies port 3001; it mounts `D:\Project\mimic\backend` and was not stopped or used for acceptance.

@@ -12,6 +12,7 @@ npm run typecheck
 npm test
 npm run build
 npm run test:e2e
+npm run verify:runtime -- --health-only
 ```
 
 The Playwright server command uses webpack because the Serwist service-worker
@@ -19,13 +20,58 @@ plugin config is webpack-based and Next.js 16 defaults `next dev` to Turbopack.
 
 ## Local Runtime
 
-Run the backend on `http://localhost:3001/api/v1` and the web PWA on
-`http://localhost:3010` for manual checks:
+Acceptance must use the backend source from this worktree. The existing
+`pairfund-backend` container bind mount points to `D:\Project\mimic\backend`,
+not `D:\Project\mimic\.worktrees\mimic-pwa-foundation\backend`. Do not use
+that drifting prebuilt container as the acceptance backend.
+
+Use four PowerShell terminals. From the worktree, start only PostgreSQL in
+WSL:
+
+```powershell
+Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation
+wsl --exec docker start pairfund-postgres
+wsl --exec docker ps --filter name=pairfund-postgres
+```
+
+Build and start the backend from this same worktree on port 3001:
+
+```powershell
+Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\backend
+npm run build
+$env:DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/pairfund?schema=public'
+$env:PORT = '3001'
+$env:MIMIC_BACKEND_REVISION = (git -C .. rev-parse HEAD).Trim()
+npm run start:dev
+```
+
+In a separate terminal, configure and start the web PWA on port 3010:
 
 ```powershell
 Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
 'MIMIC_API_BASE_URL=http://localhost:3001/api/v1' | Out-File .env.local -Encoding utf8
-npm run dev -- --port 3010
+npm run dev -- --webpack --hostname localhost --port 3010
+```
+
+In a fourth PowerShell terminal, pin the declared backend revision to the
+revision expected by acceptance and run the deterministic workflow:
+
+```powershell
+Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
+$env:MIMIC_BACKEND_REVISION = (git -C .. rev-parse HEAD).Trim()
+$env:MIMIC_EXPECTED_BACKEND_REVISION = (git -C .. rev-parse HEAD).Trim()
+npm run verify:runtime
+```
+
+`MIMIC_BACKEND_REVISION` is the revision declared when the backend process was
+started. When it is set, acceptance requires an expected revision from
+`--expected-revision <sha>` or `MIMIC_EXPECTED_BACKEND_REVISION` and fails if
+they differ. The verifier prints only the configured Web and API roots, never
+authentication tokens, cookies, or secrets. To check backend availability
+without authentication or Playwright, run:
+
+```powershell
+npm run verify:runtime -- --health-only
 ```
 
 The backend seed account is:
