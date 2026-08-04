@@ -221,4 +221,15 @@ describe("authenticated route boundaries", () => {
     expect(screen.getByText("fund summary")).toBeInTheDocument();
     expect(getFundSummaryMock).toHaveBeenCalledWith("fund-1");
   });
+
+  it("wires a fund summary outage to recovery", async () => {
+    getFundSummaryMock.mockRejectedValue(new ApiUnavailableError());
+
+    render(await FundPage({ params: Promise.resolve({ fundId: "fund-1" }) }));
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Mimiku cannot reach the treasury right now.",
+    );
+    expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
+  });
 });
