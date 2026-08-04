@@ -95,18 +95,16 @@
 .memberAmount,
 .fundAmount {
   display: block;
-  font-size: clamp(1rem, 1.25rem, 2rem);
+  font-size: clamp(0.75rem, 0.875rem, 1rem);
   font-variant-numeric: tabular-nums;
   max-width: 100%;
   min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
   text-align: end;
   white-space: nowrap;
 }
 
 .heroAmount {
-  font-size: clamp(1.25rem, 2rem, 4rem);
+  font-size: clamp(0.75rem, 1rem, 1.125rem);
 }
 
 .contentGrid {
