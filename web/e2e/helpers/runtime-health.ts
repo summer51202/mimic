@@ -8,6 +8,10 @@ type RuntimeHealthOptions = {
 
 const revisionPattern = /^[0-9a-f]{7,64}$/i;
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 export async function checkRuntimeHealth({
   apiBaseUrl,
   expectedRevision,
@@ -33,11 +37,22 @@ export async function checkRuntimeHealth({
     );
   }
 
-  const body = (await response.json()) as {
-    data?: { revision?: string };
-  };
-  const revision = body.data?.revision;
-  if (!revision || !revisionPattern.test(revision)) {
+  let body: unknown;
+  try {
+    body = await response.json();
+  } catch {
+    throw new Error(
+      `Health checkpoint failed (${phase}): ${healthUrl}: invalid health response`,
+    );
+  }
+  if (!isRecord(body) || !isRecord(body.data)) {
+    throw new Error(
+      `Health checkpoint failed (${phase}): ${healthUrl}: invalid health response`,
+    );
+  }
+
+  const revision = body.data.revision;
+  if (typeof revision !== "string" || !revisionPattern.test(revision)) {
     throw new Error(`Backend revision missing or invalid at ${healthUrl}`);
   }
   if (revision !== expectedRevision) {

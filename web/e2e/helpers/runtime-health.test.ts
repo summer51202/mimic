@@ -57,4 +57,42 @@ describe("checkRuntimeHealth", () => {
       }),
     ).rejects.not.toThrow(/token|secret/);
   });
+
+  it.each([
+    ["malformed JSON", "sensitive malformed body"],
+    ["empty JSON", ""],
+    ["null JSON", "null"],
+    ["array JSON", "[]"],
+    ["primitive JSON", '"sensitive primitive"'],
+  ])("redacts %s health responses", async (_case, responseBody) => {
+    const healthUrl = "http://localhost:3001/api/v1/health";
+
+    await expect(
+      checkRuntimeHealth({
+        apiBaseUrl: "http://localhost:3001/api/v1",
+        expectedRevision: "e40aba9",
+        fetchImpl: vi.fn().mockResolvedValue(
+          new Response(responseBody, { status: 200 }),
+        ),
+        log: vi.fn(),
+        phase: "after authentication setup",
+      }),
+    ).rejects.toThrow(
+      `Health checkpoint failed (after authentication setup): ${healthUrl}: invalid health response`,
+    );
+
+    try {
+      await checkRuntimeHealth({
+        apiBaseUrl: "http://localhost:3001/api/v1",
+        expectedRevision: "e40aba9",
+        fetchImpl: vi.fn().mockResolvedValue(
+          new Response(responseBody, { status: 200 }),
+        ),
+        log: vi.fn(),
+        phase: "after authentication setup",
+      });
+    } catch (error) {
+      expect((error as Error).message).not.toMatch(/sensitive|malformed body/);
+    }
+  });
 });

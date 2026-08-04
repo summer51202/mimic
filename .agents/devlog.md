@@ -453,3 +453,13 @@
 - Disabled existing web-server reuse during runtime acceptance and added an explicit verifier unit-test package script.
 **Decisions:** Kept developer server reuse for ordinary Playwright runs while forcing a current-worktree server for acceptance. Used the same browser session for authentication and navigation instead of a separate throwaway API account.
 **Known gaps / follow-ups:** The user-owned stale backend remains on port 3001 and is now rejected because its health response omits the expected process revision; same-worktree runtime verification requires a free port or alternate acceptance port.
+
+## 2026-08-04 - Redact invalid runtime health responses
+
+**Task:** Ensure browser-phase health checks safely handle malformed, empty, and non-object response bodies.
+**Scope:** `web/e2e/helpers/runtime-health.ts`, focused helper tests, `.agents/devlog.md`
+**What changed:**
+- Wrapped health JSON parsing and validated the response/data envelope before reading revision data.
+- Added malformed, empty, null, array, and primitive body coverage with phase and exact safe URL assertions.
+**Decisions:** Parser errors are not retained as causes because their messages can contain response-body fragments.
+**Known gaps / follow-ups:** Long runtime acceptance was intentionally not rerun for this focused error-handling fix.
