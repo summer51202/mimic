@@ -6,10 +6,14 @@ async function expectNoHorizontalOverflow(page: Page) {
     document:
       document.documentElement.scrollWidth -
       document.documentElement.clientWidth,
+    hiddenGlobally:
+      getComputedStyle(document.body).overflowX === "hidden" ||
+      getComputedStyle(document.documentElement).overflowX === "hidden",
   }));
 
   expect(overflow.body).toBeLessThanOrEqual(0);
   expect(overflow.document).toBeLessThanOrEqual(0);
+  expect(overflow.hiddenGlobally).toBeFalsy();
 }
 
 test("pixel public shell remains responsive and raster sharp", async ({

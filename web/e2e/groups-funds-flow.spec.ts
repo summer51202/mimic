@@ -2,21 +2,21 @@ import { expect, test } from "@playwright/test";
 
 import {
   acceptInviteByApi,
-  backendAvailable,
   cacheKeys,
   createFundByApi,
   createGroupByApi,
   createInviteByApi,
   isolatedPages,
+  requireBackend,
   signInWithApiSession,
   uniqueAccounts,
 } from "./fixtures/accounts";
 
+test.beforeAll(requireBackend);
+
 test("two users create a group, accept an invite, and open a fund summary", async ({
   browser,
 }, testInfo) => {
-  test.skip(!(await backendAvailable()), "Backend API is not available.");
-
   const accounts = uniqueAccounts(testInfo);
   const { owner, ownerPage, partner, partnerPage } = await isolatedPages(browser);
 

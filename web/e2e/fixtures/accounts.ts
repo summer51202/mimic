@@ -56,12 +56,25 @@ export function uniqueAccounts(testInfo: TestInfo) {
   } satisfies Record<string, TestAccount>;
 }
 
-export async function backendAvailable(): Promise<boolean> {
+export async function requireBackend(): Promise<void> {
+  const healthUrl = `${apiBaseUrl.replace(/\/+$/, "")}/health`;
+
   try {
-    const response = await fetch(`${apiBaseUrl.replace(/\/+$/, "")}/health`);
-    return response.ok;
-  } catch {
-    return false;
+    const response = await fetch(healthUrl, {
+      signal: AbortSignal.timeout(5_000),
+    });
+    expect(
+      response.ok,
+      `Required backend health check failed at ${healthUrl}: ${response.status} ${response.statusText}`,
+    ).toBeTruthy();
+  } catch (cause) {
+    if (cause instanceof Error && cause.name === "Error") {
+      throw cause;
+    }
+
+    throw new Error(`Required backend is unavailable at ${healthUrl}`, {
+      cause,
+    });
   }
 }
 
@@ -258,6 +271,69 @@ export async function createFundByApi(
   expect(body.data?.id).toBeTruthy();
 
   return { id: body.data!.id, name };
+}
+
+export async function createContributionByApi(
+  session: AuthPayload,
+  fundId: string,
+  contributorUserId: string,
+  amountMinor: number,
+): Promise<void> {
+  const response = await fetch(
+    `${apiBaseUrl.replace(/\/+$/, "")}/funds/${fundId}/contributions`,
+    {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${session.access_token}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        amount_minor: amountMinor,
+        contribution_type: "one_time",
+        contributor_user_id: contributorUserId,
+        occurred_on: new Date().toISOString().slice(0, 10),
+      }),
+    },
+  );
+
+  expect(response.ok).toBeTruthy();
+}
+
+export async function createExpenseByApi(
+  session: AuthPayload,
+  fundId: string,
+  payerUserId: string,
+  splitUserId: string,
+  amountMinor: number,
+): Promise<void> {
+  const response = await fetch(
+    `${apiBaseUrl.replace(/\/+$/, "")}/funds/${fundId}/expenses`,
+    {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${session.access_token}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        amount_minor: amountMinor,
+        expense_type: "fund_expense",
+        occurred_on: new Date().toISOString().slice(0, 10),
+        payers: [{ amount_minor: amountMinor, payer_user_id: payerUserId }],
+        split_mode: "fixed",
+        splits: [
+          {
+            fixed_amount_minor: amountMinor,
+            sort_order: 0,
+            split_type: "fixed",
+            user_id: splitUserId,
+          },
+        ],
+        title: "X".repeat(100),
+      }),
+    },
+  );
+
+  expect(response.ok).toBeTruthy();
 }
 
 export async function createGroup(

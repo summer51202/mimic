@@ -2,14 +2,16 @@ import { expect, test } from "@playwright/test";
 
 import { inviteMessages } from "../src/features/invitations/invite-errors";
 import {
-  backendAvailable,
   createGroupByApi,
   createInviteByApi,
   isolatedPages,
   rejectInviteByApi,
+  requireBackend,
   signInWithApiSession,
   uniqueAccounts,
 } from "./fixtures/accounts";
+
+test.beforeAll(requireBackend);
 
 test("keeps invalid invitation links terminal and private", async ({ page }) => {
   await page.goto("/invite/bad-code");
@@ -22,8 +24,6 @@ test("keeps invalid invitation links terminal and private", async ({ page }) => 
 test("renders the authenticated invite gate without leaking ids", async ({
   browser,
 }, testInfo) => {
-  test.skip(!(await backendAvailable()), "Backend API is not available.");
-
   const accounts = uniqueAccounts(testInfo);
   const { owner, ownerPage, partner } = await isolatedPages(browser);
 
@@ -47,8 +47,6 @@ test("renders the authenticated invite gate without leaking ids", async ({
 test("rejects email mismatch for invite acceptance", async ({
   browser,
 }, testInfo) => {
-  test.skip(!(await backendAvailable()), "Backend API is not available.");
-
   const accounts = uniqueAccounts(testInfo);
   const mismatch = {
     ...accounts.partner,
