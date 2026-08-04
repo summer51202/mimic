@@ -13,8 +13,10 @@ export function FundLedgerCard({ fund }: FundLedgerCardProps) {
   return (
     <li>
       <Link className={styles.fundLink} href={`/app/funds/${fund.id}`}>
-        <span>{fund.name}</span>
-        <strong>{formatMinorUnit(fund.balance_minor, fund.currency, "en-US")}</strong>
+        <span className={styles.fundName} data-contain-text>{fund.name}</span>
+        <strong className={styles.fundAmount} data-contain-text>
+          {formatMinorUnit(fund.balance_minor, fund.currency, "en-US")}
+        </strong>
       </Link>
     </li>
   );

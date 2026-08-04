@@ -2,11 +2,14 @@
 .emptyState {
   display: grid;
   gap: var(--mimic-space-5);
+  min-width: 0;
 }
 
 .topBar {
   display: grid;
   gap: var(--mimic-space-4);
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
 }
 
 .kicker {
@@ -21,6 +24,13 @@
   color: var(--mimic-color-hud-dark);
   font-size: clamp(2rem, 8vw, 3.25rem);
   line-height: 1;
+}
+
+.groupName,
+.memberName,
+.fundName {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .groupSwitcher {
@@ -69,6 +79,7 @@
   box-shadow: var(--mimic-shadow-pixel);
   color: var(--mimic-color-hud-dark);
   padding: var(--mimic-space-4);
+  min-width: 0;
 }
 
 .heroContent p {
@@ -77,23 +88,37 @@
 }
 
 .heroContent strong {
-  font-size: clamp(2rem, 12vw, 4rem);
+  font-size: clamp(1.5rem, 8vw, 4rem);
   line-height: 1;
+}
+
+.heroAmount,
+.memberAmount,
+.fundAmount {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: end;
 }
 
 .contentGrid {
   display: grid;
   gap: var(--mimic-space-4);
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
 }
 
 .panel {
+  align-content: start;
   display: grid;
   gap: var(--mimic-space-3);
+  min-width: 0;
 }
 
 .panelHeader,
 .memberItem,
 .fundLink {
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -137,6 +162,22 @@
 .fundLink span {
   flex: 1;
   font-weight: 800;
+  min-width: 0;
+}
+
+@media (max-width: 24rem) {
+  .memberItem,
+  .fundLink {
+    align-items: start;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .memberAmount,
+  .fundAmount {
+    grid-column: 2;
+    justify-self: end;
+  }
 }
 
 .emptyState {
@@ -176,6 +217,6 @@
   }
 
   .contentGrid {
-    grid-template-columns: 0.95fr 1.05fr;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   }
 }

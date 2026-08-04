@@ -1,11 +1,28 @@
 .page {
   display: grid;
   gap: var(--mimic-space-5);
+  min-width: 0;
 }
 
 .header {
   display: grid;
   gap: var(--mimic-space-2);
+}
+
+.header,
+.header > *,
+.groupIdentity,
+.groupName,
+.memberName,
+.memberMeta {
+  min-width: 0;
+}
+
+.groupName,
+.memberName,
+.memberMeta,
+.memberMeta span {
+  overflow-wrap: anywhere;
 }
 
 .header h1 {
@@ -22,6 +39,8 @@
 .grid {
   display: grid;
   gap: var(--mimic-space-4);
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
 }
 
 .form {
@@ -63,11 +82,16 @@
   justify-content: space-between;
   gap: var(--mimic-space-3);
   color: var(--mimic-color-hud-dark);
+  min-width: 0;
 }
 
 .groupCard {
   border-top: 1px solid var(--mimic-color-line);
   padding: var(--mimic-space-3) 0;
+}
+
+.groupIdentity {
+  flex: 1 1 auto;
 }
 
 .groupCard strong,
@@ -112,5 +136,26 @@
 @media (min-width: 48rem) {
   .grid {
     grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.7fr);
+  }
+}
+
+@media (max-width: 24rem) {
+  .groupCard,
+  .member {
+    align-items: start;
+  }
+
+  .groupCard {
+    flex-wrap: wrap;
+  }
+
+  .member {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .role {
+    grid-column: 2;
+    justify-self: start;
   }
 }

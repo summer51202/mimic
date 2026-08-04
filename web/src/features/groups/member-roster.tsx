@@ -11,7 +11,7 @@ interface MemberRosterProps {
 
 export function MemberRoster({ members }: MemberRosterProps) {
   return (
-    <ul className={styles.roster}>
+    <ul className={styles.roster} data-frame="member-roster">
       {members.map((member, index) => (
         <li className={styles.member} key={member.user_id}>
           <Image
@@ -21,8 +21,8 @@ export function MemberRoster({ members }: MemberRosterProps) {
             width={48}
           />
           <div className={styles.memberMeta}>
-            <strong>{member.display_name}</strong>
-            <span>{member.status}</span>
+            <strong className={styles.memberName} data-contain-text>{member.display_name}</strong>
+            <span data-contain-text>{member.status}</span>
           </div>
           <span className={styles.role}>{roleLabel(member.role)}</span>
         </li>

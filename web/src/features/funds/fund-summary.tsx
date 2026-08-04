@@ -13,24 +13,24 @@ export function FundSummary({ summary }: FundSummaryProps) {
 
   return (
     <section className={styles.page} aria-labelledby="fund-summary-title">
-      <PixelFrame className={styles.panel} variant="treasury">
+      <PixelFrame className={styles.panel} data-frame="fund-balance" variant="treasury">
         <div className={styles.header}>
           <div>
             <p className={styles.kicker}>fund ledger</p>
-            <h1 className={styles.title} id="fund-summary-title">
+            <h1 className={`${styles.title} ${styles.fundName}`} data-contain-text id="fund-summary-title">
               {summary.fund.name}
             </h1>
           </div>
           <span className={styles.currency}>{currency}</span>
         </div>
         <p className={styles.muted}>目前餘額</p>
-        <strong className={styles.balance}>
+        <strong className={`${styles.balance} ${styles.balanceAmount}`} data-contain-text>
           <MoneyAmount currency={currency} value={summary.fund.cash_balance_minor} />
         </strong>
         <p className={styles.notice}>活動功能將在下一階段開放</p>
       </PixelFrame>
 
-      <PixelFrame className={styles.panel}>
+      <PixelFrame className={styles.panel} data-frame="current-period">
         <h2>Current period</h2>
         <p className={styles.muted}>{periodLabel(summary.current_period)}</p>
         <div className={styles.totals}>
@@ -42,8 +42,8 @@ export function FundSummary({ summary }: FundSummaryProps) {
         <ul className={styles.memberList}>
           {summary.current.member_positions.map((member) => (
             <li className={styles.member} key={member.user_id}>
-              <span>{member.display_name}</span>
-              <strong className={styles.memberAmount}>
+              <span className={styles.memberName} data-contain-text>{member.display_name}</span>
+              <strong className={styles.memberAmount} data-contain-text>
                 <MoneyAmount currency={currency} value={member.position_minor} />
               </strong>
             </li>
@@ -51,7 +51,7 @@ export function FundSummary({ summary }: FundSummaryProps) {
         </ul>
       </PixelFrame>
 
-      <PixelFrame className={styles.panel}>
+      <PixelFrame className={styles.panel} data-frame="all-time-totals">
         <details className={styles.summaryDisclosure} open>
           <summary>All-time totals</summary>
           <div className={styles.totals}>
@@ -77,7 +77,7 @@ function Total({
   return (
     <div className={styles.total}>
       <span>{label}</span>
-      <strong>
+      <strong className={styles.totalAmount} data-contain-text>
         <MoneyAmount currency={currency} value={value} />
       </strong>
     </div>

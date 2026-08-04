@@ -39,6 +39,35 @@ describe("FundSummary", () => {
     expect(screen.getByText("All-time totals")).toBeVisible();
     expect(screen.getByText("NT$30,000.00")).toBeVisible();
   });
+  it("assigns long names and extreme amounts to explicit summary owners", () => {
+    const longName = "N".repeat(255);
+    const unbrokenName = "UNBROKEN_".repeat(30);
+    const stressed = summary();
+    stressed.fund.name = longName;
+    stressed.fund.cash_balance_minor = "999999999999999";
+    stressed.current.member_positions = [{
+      ...stressed.current.member_positions[0],
+      display_name: unbrokenName,
+      position_minor: "-999999999999999",
+    }];
+
+    render(<FundSummary summary={stressed} />);
+
+    const fundName = screen.getByRole("heading", { name: longName });
+    const memberName = screen.getByText(unbrokenName);
+    const balance = screen.getByText("NT$9,999,999,999,999.99");
+    const memberAmount = screen.getByText("-NT$9,999,999,999,999.99");
+    expect(fundName).toHaveAttribute("data-contain-text");
+    expect(fundName.className).toMatch(/fundName/);
+    expect(memberName).toHaveAttribute("data-contain-text");
+    expect(memberName.className).toMatch(/memberName/);
+    expect(balance).toHaveAttribute("data-contain-text");
+    expect(balance.className).toMatch(/balanceAmount/);
+    expect(memberAmount).toHaveAttribute("data-contain-text");
+    expect(memberAmount.className).toMatch(/memberAmount/);
+    expect(fundName.closest("[data-frame]")).not.toBeNull();
+    expect(memberName.closest("[data-frame]")).not.toBeNull();
+  });
 });
 
 function summary(): FundSummaryData {

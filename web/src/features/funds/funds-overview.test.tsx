@@ -123,4 +123,27 @@ describe("FundsOverview", () => {
       within(forbidden).getByRole("link", { name: "View Travel party" }),
     ).toHaveAttribute("href", "/app/groups/travel");
   });
+  it("assigns long fund names and extreme amounts to the fund row owners", () => {
+    const unbrokenName = "UNBROKEN_".repeat(30);
+    render(<FundsOverview sections={[{
+      group: groups[0],
+      funds: [
+        { ...funds[0], name: unbrokenName, balance_minor: "-999999999999999" },
+        { ...funds[1], id: "large-positive", balance_minor: "999999999999999" },
+      ],
+      state: "ready",
+    }]} />);
+
+    const frame = screen.getByTestId("funds-group");
+    const fundName = within(frame).getByText(unbrokenName);
+    const negative = within(frame).getByText("-NT$9,999,999,999,999.99");
+    const positive = within(frame).getByText("$9,999,999,999,999.99");
+    expect(frame).toHaveAttribute("data-frame", "funds-group");
+    expect(fundName).toHaveAttribute("data-contain-text");
+    expect(fundName.className).toMatch(/fundName/);
+    expect(negative).toHaveAttribute("data-contain-text");
+    expect(negative.className).toMatch(/fundAmount/);
+    expect(positive).toHaveAttribute("data-contain-text");
+    expect(positive.className).toMatch(/fundAmount/);
+  });
 });

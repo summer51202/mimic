@@ -8,6 +8,8 @@
   border-radius: var(--mimic-radius-panel);
   color: var(--mimic-color-ink);
   image-rendering: pixelated;
+  max-width: 100%;
+  min-width: 0;
   position: relative;
 }
 

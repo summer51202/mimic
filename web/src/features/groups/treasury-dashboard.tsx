@@ -49,16 +49,18 @@ export function TreasuryDashboard({
     ) ?? dashboard.currencies[0];
 
   return (
-    <section className={styles.dashboard} aria-labelledby="treasury-title">
+    <section className={styles.dashboard} aria-labelledby="treasury-title" data-frame="treasury-dashboard">
       <div className={styles.topBar}>
         <div>
           <p className={styles.kicker}>shared treasury</p>
-          <h1 id="treasury-title">{dashboard.group.name}</h1>
+          <h1 className={styles.groupName} data-contain-text id="treasury-title">
+            {dashboard.group.name}
+          </h1>
         </div>
         <GroupSwitcher groups={groups} selectedGroupId={selectedGroupId} />
       </div>
 
-      <PixelFrame className={styles.hero} variant="treasury">
+      <PixelFrame className={styles.hero} data-frame="treasury-balance" variant="treasury">
         <picture>
           <source
             media="(min-width: 48rem)"
@@ -75,7 +77,7 @@ export function TreasuryDashboard({
         </picture>
         <div className={styles.heroContent}>
           <p>目前餘額</p>
-          <strong>
+          <strong className={styles.heroAmount} data-contain-text>
             {primaryCurrency
               ? formatMinorUnit(
                   primaryCurrency.cash_balance_minor,
@@ -88,7 +90,7 @@ export function TreasuryDashboard({
       </PixelFrame>
 
       <div className={styles.contentGrid}>
-        <PixelFrame className={styles.panel}>
+        <PixelFrame className={styles.panel} data-frame="member-positions">
           <div className={styles.panelHeader}>
             <h2>成員 ({primaryCurrency?.current.member_positions.length ?? 0})</h2>
           </div>
@@ -103,8 +105,8 @@ export function TreasuryDashboard({
                     src={pixelUiAssets.avatars[index % pixelUiAssets.avatars.length]}
                     width={48}
                   />
-                  <span>{member.display_name}</span>
-                  <strong>
+                  <span className={styles.memberName} data-contain-text>{member.display_name}</span>
+                  <strong className={styles.memberAmount} data-contain-text>
                     {formatMinorUnit(
                       member.position_minor,
                       primaryCurrency?.currency ?? "TWD",
@@ -117,7 +119,7 @@ export function TreasuryDashboard({
           </ul>
         </PixelFrame>
 
-        <PixelFrame className={styles.panel}>
+        <PixelFrame className={styles.panel} data-frame="fund-list">
           <div className={styles.panelHeader}>
             <h2>Funds</h2>
             <Link href={`/app/groups/${dashboard.group.id}/funds/new`}>新增</Link>
@@ -127,8 +129,8 @@ export function TreasuryDashboard({
               currency.funds.map((fund) => (
                 <li key={fund.fund_id}>
                   <Link className={styles.fundLink} href={`/app/funds/${fund.fund_id}`}>
-                    <span>{fund.name}</span>
-                    <strong>
+                    <span className={styles.fundName} data-contain-text>{fund.name}</span>
+                    <strong className={styles.fundAmount} data-contain-text>
                       {formatMinorUnit(
                         fund.cash_balance_minor,
                         currency.currency,

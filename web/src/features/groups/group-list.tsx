@@ -11,12 +11,12 @@ interface GroupListProps {
 
 export function GroupList({ groups }: GroupListProps) {
   return (
-    <PixelFrame>
+    <PixelFrame data-frame="group-list">
       <ul className={styles.groupList}>
         {groups.map((group) => (
           <li className={styles.groupCard} key={group.id}>
-            <Link href={`/app/groups/${group.id}`}>
-              <strong>{group.name}</strong>
+            <Link className={styles.groupIdentity} data-contain-text href={`/app/groups/${group.id}`}>
+              <strong className={styles.groupName} data-contain-text>{group.name}</strong>
               <span>
                 {group.group_type} · {group.default_currency}
               </span>

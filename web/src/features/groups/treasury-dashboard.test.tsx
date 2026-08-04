@@ -131,4 +131,52 @@ describe("TreasuryDashboard", () => {
     expect(screen.queryByText(/Private app preview/i)).not.toBeInTheDocument();
     expect(screen.queryByText("近期支出")).not.toBeInTheDocument();
   });
+  it("assigns long treasury names and extreme amounts to their owning containers", () => {
+    const longName = "N".repeat(255);
+    const unbrokenName = "UNBROKEN_".repeat(30);
+    const primary = dashboard.currencies[0];
+    const stressedDashboard: GroupDashboard = {
+      ...dashboard,
+      group: { ...dashboard.group, name: longName },
+      currencies: [{
+        ...primary,
+        cash_balance_minor: "999999999999999",
+        current: {
+          ...primary.current,
+          member_positions: [{
+            ...primary.current.member_positions[0],
+            display_name: unbrokenName,
+            position_minor: "-999999999999999",
+          }],
+        },
+        funds: [{
+          ...primary.funds[0],
+          name: unbrokenName,
+          cash_balance_minor: "999999999999999",
+        }],
+      }],
+    };
+
+    render(<TreasuryDashboard dashboard={stressedDashboard} groups={[{ ...group, name: longName }]} selectedGroupId="g1" />);
+
+    const title = screen.getByRole("heading", { name: longName });
+    const memberName = screen.getAllByText(unbrokenName)[0];
+    const fundName = screen.getAllByText(unbrokenName)[1];
+    const memberAmount = screen.getByText("-NT$9,999,999,999,999.99");
+    const fundAmount = screen.getAllByText("NT$9,999,999,999,999.99")[1];
+
+    expect(title).toHaveAttribute("data-contain-text");
+    expect(title.className).toMatch(/groupName/);
+    expect(memberName).toHaveAttribute("data-contain-text");
+    expect(memberName.className).toMatch(/memberName/);
+    expect(fundName).toHaveAttribute("data-contain-text");
+    expect(fundName.className).toMatch(/fundName/);
+    expect(memberAmount).toHaveAttribute("data-contain-text");
+    expect(memberAmount.className).toMatch(/memberAmount/);
+    expect(fundAmount).toHaveAttribute("data-contain-text");
+    expect(fundAmount.className).toMatch(/fundAmount/);
+    expect(title.closest("[data-frame]")).not.toBeNull();
+    expect(memberName.closest("[data-frame]")).not.toBeNull();
+    expect(fundName.closest("[data-frame]")).not.toBeNull();
+  });
 });

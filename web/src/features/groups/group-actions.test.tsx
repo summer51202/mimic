@@ -5,7 +5,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { GroupDetail, Member } from "@/shared/api/domain-contracts";
 
 import { GroupDetailView } from "./group-detail";
+import { GroupList } from "./group-list";
 import { LeaveGroupDialog } from "./leave-group-dialog";
+import { MemberRoster } from "./member-roster";
 
 const group: GroupDetail = {
   id: "g1",
@@ -64,6 +66,28 @@ describe("group detail actions", () => {
       "src",
       expect.stringContaining("avatar-01.png"),
     );
+  });
+
+  it("assigns long group and member names to explicit text owners", () => {
+    const longName = "N".repeat(255);
+    const unbrokenName = "UNBROKEN_".repeat(30);
+
+    render(
+      <>
+        <GroupList groups={[{ ...group, name: longName }]} />
+        <MemberRoster members={[{ ...members[0], display_name: unbrokenName }]} />
+      </>,
+    );
+
+    const groupName = screen.getByText(longName);
+    const memberName = screen.getByText(unbrokenName);
+    expect(groupName).toHaveAttribute("data-contain-text");
+    expect(groupName.className).toMatch(/groupName/);
+    expect(memberName).toHaveAttribute("data-contain-text");
+    expect(memberName.className).toMatch(/memberName/);
+    expect(memberName.parentElement?.className).toMatch(/memberMeta/);
+    expect(groupName.closest("[data-frame]")).toHaveAttribute("data-frame", "group-list");
+    expect(memberName.closest("[data-frame]")).not.toBeNull();
   });
 
   it("renames a group with a PATCH payload and refresh callback", async () => {

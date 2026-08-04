@@ -5,6 +5,11 @@
 .fundList {
   display: grid;
   gap: var(--mimic-space-4);
+  min-width: 0;
+}
+
+.panel {
+  align-content: start;
 }
 
 .header {
@@ -13,6 +18,15 @@
   flex-wrap: wrap;
   gap: var(--mimic-space-3);
   justify-content: space-between;
+  min-width: 0;
+}
+
+.header > div,
+.fundName,
+.memberName,
+.fundLink span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .kicker,
@@ -38,11 +52,11 @@
 .balance {
   color: var(--mimic-color-hud-dark);
   font-family: var(--mimic-font-pixel);
-  font-size: clamp(2rem, 10vw, 4rem);
+  font-size: clamp(1.5rem, 8vw, 4rem);
 }
 
 .totals {
-  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .total {
@@ -50,11 +64,21 @@
   padding-top: var(--mimic-space-3);
 }
 
-.total strong,
+.totalAmount,
 .memberAmount {
   color: var(--mimic-color-hud-dark);
   display: block;
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+}
+
+.balanceAmount,
+.totalAmount,
+.memberAmount,
+.fundAmount {
+  max-width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: end;
 }
 
 .memberList,
@@ -68,6 +92,7 @@
   display: flex;
   gap: var(--mimic-space-3);
   justify-content: space-between;
+  min-width: 0;
 }
 
 .fundLink {
@@ -86,4 +111,28 @@
 .summaryDisclosure {
   border-top: 1px solid var(--mimic-color-line);
   padding-top: var(--mimic-space-3);
+}
+
+@media (max-width: 24rem) {
+  .totals {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .member,
+  .fundLink {
+    align-items: start;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .memberName,
+  .fundName {
+    grid-column: 1 / -1;
+  }
+
+  .memberAmount,
+  .fundAmount {
+    grid-column: 2;
+    justify-self: end;
+  }
 }
