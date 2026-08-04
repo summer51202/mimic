@@ -19,7 +19,6 @@ describe("findBakedTransparencyChecker", () => {
 
   it("rejects a large uniform neutral surface", () => {
     const png = makePng(64, 64, () => [238, 238, 238]);
-
     expect(findBakedTransparencyChecker(PNG.sync.write(png))).toBeNull();
   });
 
@@ -28,13 +27,11 @@ describe("findBakedTransparencyChecker", () => {
       const first = (Math.floor(x / 8) + Math.floor(y / 8)) % 2 === 0;
       return first ? [36, 82, 140] : [244, 194, 62];
     });
-
     expect(findBakedTransparencyChecker(PNG.sync.write(png))).toBeNull();
   });
 
   it("rejects two adjacent neutral pixels without repeated square blocks", () => {
     const png = makePng(32, 32, (x) => x < 16 ? [238, 238, 238] : [204, 204, 204]);
-
     expect(findBakedTransparencyChecker(PNG.sync.write(png))).toBeNull();
   });
 });

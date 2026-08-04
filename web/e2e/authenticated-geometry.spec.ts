@@ -1,6 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 
-import { findBakedTransparencyChecker } from "../src/shared/brand/checker-pattern";
+import { findBakedTransparencyChecker } from "./helpers/checker-pattern";
 import {
   acceptInviteByApi,
   createContributionByApi,

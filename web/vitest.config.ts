@@ -10,7 +10,7 @@ export default defineConfig({
     },
   },
   test: {
-    exclude: [...configDefaults.exclude, "e2e/**"],
+    exclude: [...configDefaults.exclude, "e2e/*.spec.ts", "e2e/fixtures/**"],
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
   },
