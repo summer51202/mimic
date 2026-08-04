@@ -1,5 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { findBakedTransparencyChecker } from "../src/shared/brand/checker-pattern";
 import {
   acceptInviteByApi,
   createContributionByApi,
@@ -149,10 +150,14 @@ test("authenticated frames contain stress data at responsive boundaries", async 
       await page.goto(route);
       await expect(page.locator("main")).toBeVisible();
       await expectPageGeometry(page);
-      await page.screenshot({
+      const screenshot = await page.screenshot({
         path: testInfo.outputPath(`geometry-${testInfo.project.name}-${width}-${route.replace(/\W+/g, "-")}.png`),
         fullPage: true,
       });
+      expect(
+        findBakedTransparencyChecker(screenshot),
+        `rendered checker pattern at ${route}, ${width}px, ${testInfo.project.name}`,
+      ).toBeNull();
     }
   }
 });
