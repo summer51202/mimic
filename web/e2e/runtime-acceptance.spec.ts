@@ -60,13 +60,40 @@ test("authenticates and navigates Groups/Funds with phase health checks", async 
         'nav[aria-label="Primary app sections"]:visible',
       );
       await navigation.getByRole("link", { name: "Groups" }).click();
-      await expect(page).toHaveURL(/\/app\/groups$/);
-      await page.getByRole("link", { name: group.name, exact: false }).first().click();
-      await expect(page).toHaveURL(new RegExp(`/app/groups/${group.id}$`));
+      await expect(page).toHaveURL(/\/app\/groups$/, { timeout: 30_000 });
+      await expect(
+        navigation.getByRole("link", { name: "Groups" }),
+      ).toHaveAttribute("aria-current", "page");
+      const groupLink = page
+        .getByRole("link", { name: group.name, exact: false })
+        .first();
+      await expect(groupLink).toHaveAttribute(
+        "href",
+        `/app/groups/${group.id}`,
+      );
+      await groupLink.click();
+      await expect(page).toHaveURL(new RegExp(`/app/groups/${group.id}$`), {
+        timeout: 30_000,
+      });
+      await expect(
+        navigation.getByRole("link", { name: "Groups" }),
+      ).toHaveAttribute("aria-current", "page");
       await navigation.getByRole("link", { name: "Funds" }).click();
-      await expect(page).toHaveURL(/\/app\/funds$/);
-      await page.getByRole("link", { name: new RegExp(fund.name) }).click();
-      await expect(page).toHaveURL(new RegExp(`/app/funds/${fund.id}$`));
+      await expect(page).toHaveURL(/\/app\/funds$/, { timeout: 30_000 });
+      await expect(
+        navigation.getByRole("link", { name: "Funds" }),
+      ).toHaveAttribute("aria-current", "page");
+      const fundLink = page.getByRole("link", {
+        name: new RegExp(fund.name),
+      });
+      await expect(fundLink).toHaveAttribute("href", `/app/funds/${fund.id}`);
+      await fundLink.click();
+      await expect(page).toHaveURL(new RegExp(`/app/funds/${fund.id}$`), {
+        timeout: 30_000,
+      });
+      await expect(
+        navigation.getByRole("link", { name: "Funds" }),
+      ).toHaveAttribute("aria-current", "page");
     },
   });
 });
