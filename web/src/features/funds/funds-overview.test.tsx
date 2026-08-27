@@ -51,6 +51,10 @@ describe("FundsOverview", () => {
       "/app/groups/new",
     );
     expect(screen.queryByTestId("funds-group")).not.toBeInTheDocument();
+    expect(screen.getByText("fund quest").closest("[data-frame]")).toHaveAttribute(
+      "data-frame",
+      "funds-empty-state",
+    );
   });
 
   it("offers a group-scoped create action for an empty group", () => {
@@ -85,6 +89,10 @@ describe("FundsOverview", () => {
     expect(screen.getByText("$50.00")).toBeVisible();
     expect(screen.queryByText(/total/i)).not.toBeInTheDocument();
     expect(sections[0]).toHaveAttribute("data-frame", "funds-group");
+    expect(screen.getByRole("heading", { name: "Your funds" }).closest("[data-frame]")).toHaveAttribute(
+      "data-frame",
+      "funds-header",
+    );
     expect(sections[0].querySelector("[data-contain-text]")).not.toBeNull();
   });
 

@@ -4,6 +4,8 @@
 }
 
 .navigation[data-variant="mobile"] {
+  box-sizing: border-box;
+  overflow-x: clip;
   position: fixed;
   right: 0;
   bottom: 0;
@@ -33,7 +35,7 @@
 .list {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: var(--mimic-space-2);
+  gap: var(--mimic-space-1);
   list-style: none;
 }
 
@@ -66,7 +68,7 @@
   min-height: 3.75rem;
   flex-direction: column;
   gap: var(--mimic-space-1);
-  padding: var(--mimic-space-1);
+  padding: var(--mimic-space-1) 0;
 }
 
 .link[data-current="true"] {
@@ -100,12 +102,11 @@
 }
 
 .navigation[data-variant="mobile"] .label {
-  display: -webkit-box;
   min-width: 0;
   overflow: hidden;
-  overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  font-size: 0.68rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .navigation[data-variant="desktop"] .label {

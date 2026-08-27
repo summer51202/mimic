@@ -61,6 +61,7 @@ export function AppRouteState({
           className={styles.mimiku}
           height={512}
           src={pixelUiAssets.mimiku.serious}
+          unoptimized
           width={512}
         />
         <div className={styles.copy}>

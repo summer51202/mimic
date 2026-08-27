@@ -83,7 +83,9 @@ export function InviteCreatePanel({ groupId, onCreated }: InviteCreatePanelProps
             alt="Mimiku carrying a fresh invite"
             className="pixel-art"
             height={512}
+            priority
             src={pixelUiAssets.mimiku.invite}
+            unoptimized
             width={512}
           />
         </div>

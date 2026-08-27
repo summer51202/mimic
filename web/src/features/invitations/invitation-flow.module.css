@@ -10,9 +10,10 @@
 }
 
 .hero img {
+  width: min(12rem, 60vw);
+  height: auto;
   image-rendering: pixelated;
   justify-self: center;
-  max-width: min(12rem, 60vw);
 }
 
 .actions,

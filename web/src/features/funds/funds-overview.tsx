@@ -15,13 +15,14 @@ interface FundsOverviewProps {
 export function FundsOverview({ sections }: FundsOverviewProps) {
   if (sections.length === 0) {
     return (
-      <section className={styles.noGroups}>
+      <section className={styles.noGroups} data-frame="funds-empty-state">
         <Image
           alt="Mimiku waiting for a group"
           className={styles.mimiku}
           height={160}
           priority
           src={pixelUiAssets.mimiku.emptyGroup}
+          unoptimized
           width={160}
         />
         <div className={styles.emptyCopy} data-contain-text>
@@ -38,7 +39,7 @@ export function FundsOverview({ sections }: FundsOverviewProps) {
 
   return (
     <section className={styles.page} aria-labelledby="funds-title">
-      <header className={styles.pageHeader} data-contain-text>
+      <header className={styles.pageHeader} data-contain-text data-frame="funds-header">
         <p className={styles.kicker}>treasury ledgers</p>
         <h1 id="funds-title">Your funds</h1>
       </header>
@@ -77,6 +78,7 @@ export function FundsOverview({ sections }: FundsOverviewProps) {
                   className={styles.mimiku}
                   height={112}
                   src={pixelUiAssets.mimiku.emptyFund}
+                  unoptimized
                   width={112}
                 />
                 <p data-contain-text>No funds here yet.</p>

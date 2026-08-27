@@ -2,7 +2,7 @@
   --pixel-frame-image: url("/pixel-ui/frames-ui.png");
   border: 2px solid var(--mimic-color-frame-line);
   border-image-source: var(--pixel-frame-image);
-  border-image-slice: 32 fill;
+  border-image-slice: 32;
   border-image-width: 8px;
   border-image-repeat: round;
   border-radius: var(--mimic-radius-panel);

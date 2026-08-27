@@ -85,6 +85,9 @@ describe("FundSummary", () => {
     expect(css).not.toMatch(/@media\s*\(min-width:\s*48rem\)[\s\S]*\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*font-size/);
     expect(css).not.toMatch(/\.(?:balanceAmount|totalAmount|memberAmount|fundAmount)[^{]*\{[^}]*overflow-wrap:\s*anywhere/);
     expect(css).toMatch(/\.memberAmount,\s*\n\s*\.fundAmount\s*\{[^}]*grid-column:\s*1\s*\/\s*-1[^}]*width:\s*100%/);
+    expect(css).toMatch(
+      /@media\s*\(max-width:\s*30rem\)[\s\S]*?\.totals\s*\{[^}]*grid-template-columns:\s*minmax\(0,\s*1fr\)/,
+    );
   });
 });
 

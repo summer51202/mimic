@@ -16,8 +16,10 @@ export function MemberRoster({ members }: MemberRosterProps) {
         <li className={styles.member} key={member.user_id}>
           <Image
             alt={`Avatar for ${member.display_name}`}
+            data-pixel-avatar
             height={48}
             src={pixelUiAssets.avatars[index % pixelUiAssets.avatars.length]}
+            unoptimized
             width={48}
           />
           <div className={styles.memberMeta}>

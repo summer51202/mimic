@@ -32,10 +32,14 @@ test("two users create a group, accept an invite, and open a fund summary", asyn
 
     await acceptInviteByApi(partnerSession, invite.inviteCode);
     await partnerPage.goto(`/app/groups/${group.id}`);
-    await expect(partnerPage.getByText(accounts.partner.displayName)).toBeVisible();
+    await expect(
+      partnerPage.locator("main strong").filter({ hasText: accounts.partner.displayName }),
+    ).toBeVisible();
 
     await ownerPage.goto(`/app/groups/${group.id}`);
-    await expect(ownerPage.getByText(accounts.partner.displayName)).toBeVisible();
+    await expect(
+      ownerPage.locator("main strong").filter({ hasText: accounts.partner.displayName }),
+    ).toBeVisible();
 
     const fund = await createFundByApi(ownerSession, group.id, "Travel fund", "TWD");
     await ownerPage.goto(`/app/funds/${fund.id}`);

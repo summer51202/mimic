@@ -4,7 +4,9 @@ import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  devIndicators: {
+    position: "top-right",
+  },
 };
 
 const installIconUrls = [

@@ -1,4 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+
 import { afterEach, describe, expect, it } from "vitest";
 
 import { AppNavigation } from "./app-navigation";
@@ -9,6 +12,23 @@ afterEach(() => {
 });
 
 describe("AppNavigation", () => {
+  it("keeps mobile labels on one readable line", () => {
+    const css = readFileSync(
+      path.join(
+        process.cwd(),
+        "src",
+        "shared",
+        "navigation",
+        "app-navigation.module.css",
+      ),
+      "utf8",
+    );
+
+    expect(css).toMatch(
+      /\.navigation\[data-variant="mobile"\]\s+\.label\s*\{[^}]*white-space:\s*nowrap/,
+    );
+  });
+
   it("renders bottom navigation semantics for phone layout", () => {
     render(<AppNavigation currentSection="/app" variant="mobile" />);
 

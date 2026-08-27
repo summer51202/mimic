@@ -91,6 +91,19 @@ describe("pixelUiAssets", () => {
     },
   );
 
+  it.each(Object.values(pixelUiAssets.mimiku))(
+    "exports %s with a transparent exterior and no connected neutral matte",
+    async (publicPath) => {
+      const inspection = await inspectPng(publicFile(publicPath));
+
+      expect(inspection).toMatchObject({
+        exteriorCornerTransparent: true,
+        connectedNeutralPixels: 0,
+        hasTransparentPixel: true,
+      });
+    },
+  );
+
   it("exports a clean transparent frame without resampling", async () => {
     const inspection = await inspectPng(publicFile(pixelUiAssets.sheets.frames));
 

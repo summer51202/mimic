@@ -32,6 +32,22 @@ function captureDeliveryErrors(page: Page): string[] {
   return errors;
 }
 
+async function expectNoNextDevOverlay(page: Page, target: ReturnType<Page["locator"]>) {
+  const hitPath = await target.evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const path: string[] = [];
+    let hit: Element | null = document.elementFromPoint(x, y);
+    while (hit) {
+      path.push(`${hit.tagName.toLowerCase()}${hit.id ? `#${hit.id}` : ""}${hit.getAttribute("data-nextjs-dialog-overlay") !== null ? "[data-nextjs-dialog-overlay]" : ""}`);
+      hit = hit.shadowRoot?.elementFromPoint(x, y) ?? null;
+    }
+    return path;
+  });
+  expect(hitPath.some((entry) => entry.startsWith("nextjs-portal")), `click target hit path: ${hitPath.join(" > ")}`).toBeFalsy();
+}
+
 test("visible navigation reaches authenticated group and fund routes by click", async ({
   context,
   page,
@@ -74,7 +90,9 @@ test("visible navigation reaches authenticated group and fund routes by click", 
     "Funds",
   );
 
-  await visibleNavigation(page).getByRole("link", { name: "Overview" }).click();
+  const overviewLink = visibleNavigation(page).getByRole("link", { name: "Overview" });
+  await expectNoNextDevOverlay(page, overviewLink);
+  await overviewLink.click();
   await expectRouteCommit(page, /\/app$/, "Overview");
   expect(errors, "authenticated pages emitted delivery console errors").toEqual([]);
 });

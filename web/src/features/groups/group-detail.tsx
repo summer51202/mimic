@@ -42,9 +42,9 @@ export function GroupDetailView({
 
   return (
     <section className={styles.page}>
-      <header className={styles.header}>
+      <header className={styles.header} data-frame="group-detail-header">
         <p>group detail</p>
-        <h1>{group.name}</h1>
+        <h1 className={styles.groupName} data-contain-text>{group.name}</h1>
         <p>
           {group.group_type} · {group.default_currency}
         </p>

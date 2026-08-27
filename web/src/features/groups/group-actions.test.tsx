@@ -2,7 +2,8 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { GroupDetail, Member } from "@/shared/api/domain-contracts";
+import { FundList } from "@/features/funds/fund-list";
+import type { Fund, GroupDetail, Member } from "@/shared/api/domain-contracts";
 
 import { GroupDetailView } from "./group-detail";
 import { GroupList } from "./group-list";
@@ -62,10 +63,13 @@ describe("group detail actions", () => {
     expect(screen.getByText("Owner")).toBeVisible();
     expect(screen.getByText("Member")).toBeVisible();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(screen.getAllByRole("img", { hidden: true })[0]).toHaveAttribute(
+    const avatar = screen.getAllByRole("img", { hidden: true })[0];
+    expect(avatar).toHaveAttribute("data-pixel-avatar");
+    expect(avatar).toHaveAttribute(
       "src",
       expect.stringContaining("avatar-01.png"),
     );
+    expect(avatar).not.toHaveAttribute("src", expect.stringContaining("/_next/image"));
   });
 
   it("assigns long group and member names to explicit text owners", () => {
@@ -88,6 +92,42 @@ describe("group detail actions", () => {
     expect(memberName.parentElement?.className).toMatch(/memberMeta/);
     expect(groupName.closest("[data-frame]")).toHaveAttribute("data-frame", "group-list");
     expect(memberName.closest("[data-frame]")).not.toBeNull();
+  });
+
+  it("contains an unbroken group detail title in its header owner", () => {
+    const unbrokenName = "W".repeat(100);
+
+    render(
+      <GroupDetailView
+        group={{ ...group, name: unbrokenName }}
+        members={members}
+      />,
+    );
+
+    const title = screen.getByRole("heading", { name: unbrokenName });
+    expect(title).toHaveAttribute("data-contain-text");
+    expect(title.className).toMatch(/groupName/);
+    expect(title.closest("[data-frame]")).toHaveAttribute(
+      "data-frame",
+      "group-detail-header",
+    );
+  });
+
+  it("owns fund list text inside a named frame", () => {
+    const fund: Fund = {
+      balance_minor: "0",
+      currency: "TWD",
+      id: "f1",
+      name: "Shared fund",
+      status: "active",
+    };
+
+    render(<FundList funds={[fund]} groupId={group.id} />);
+
+    expect(screen.getByText(fund.name).closest("[data-frame]")).toHaveAttribute(
+      "data-frame",
+      "fund-list",
+    );
   });
 
   it("renames a group with a PATCH payload and refresh callback", async () => {

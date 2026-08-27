@@ -29,6 +29,7 @@ export default function OfflinePage() {
           height={128}
           priority
           src="/brand/mimiku-idle.png"
+          unoptimized
           width={128}
         />
         <h1 style={{ fontSize: "clamp(1.75rem, 6vw, 3rem)" }}>

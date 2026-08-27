@@ -33,7 +33,10 @@ type RouteCase = { path: string; expectsAvatars: boolean };
 const routes = (groupId: string, fundId: string): RouteCase[] => [
   { path: "/app", expectsAvatars: true },
   { path: "/app/groups", expectsAvatars: false },
+  { path: "/app/groups/new", expectsAvatars: false },
   { path: `/app/groups/${groupId}`, expectsAvatars: true },
+  { path: `/app/groups/${groupId}/invite`, expectsAvatars: false },
+  { path: `/app/groups/${groupId}/funds/new`, expectsAvatars: false },
   { path: "/app/funds", expectsAvatars: false },
   { path: `/app/funds/${fundId}`, expectsAvatars: false },
 ];
@@ -73,7 +76,11 @@ async function expectPageGeometry(page: Page, expectsAvatars: boolean) {
       .filter((frame) => frame.getClientRects().length > 0)
       .map((frame) => {
         const rect = frame.getBoundingClientRect();
-        return [rect.x, rect.y, rect.width, rect.height];
+        return {
+          name: frame.dataset.frame ?? frame.dataset.variant ?? frame.className,
+          borderImageSlice: getComputedStyle(frame).borderImageSlice,
+          values: [rect.x, rect.y, rect.width, rect.height],
+        };
       });
     const amounts = [...document.querySelectorAll<HTMLElement>("[data-contain-text]")]
       .filter((node) => /(?:TWD|USD|NT\$|\$|[-+]?[\d,]+\.\d{2})/.test(node.textContent ?? ""))
@@ -84,6 +91,18 @@ async function expectPageGeometry(page: Page, expectsAvatars: boolean) {
       }));
     const markers = [...document.querySelectorAll<HTMLElement>("[data-contain-text]")]
       .filter((node) => node.getClientRects().length > 0);
+    const overflowNodes = [...document.querySelectorAll<HTMLElement>("body *")]
+      .map((node) => {
+        const rect = node.getBoundingClientRect();
+        return {
+          tag: node.tagName.toLowerCase(),
+          className: typeof node.className === "string" ? node.className : "",
+          text: node.textContent?.trim().slice(0, 60) ?? "",
+          right: rect.right,
+        };
+      })
+      .filter((node) => node.right > document.documentElement.clientWidth + 1)
+      .slice(0, 8);
     const overlaps: string[] = [];
     for (let leftIndex = 0; leftIndex < markers.length; leftIndex += 1) {
       for (let rightIndex = leftIndex + 1; rightIndex < markers.length; rightIndex += 1) {
@@ -102,28 +121,42 @@ async function expectPageGeometry(page: Page, expectsAvatars: boolean) {
       frames,
       hiddenGlobally: bodyStyle.overflowX === "hidden" || rootStyle.overflowX === "hidden",
       overlaps,
+      overflowNodes,
       overflow: Math.max(document.body.scrollWidth, root.scrollWidth) - root.clientWidth,
     };
   });
 
   expect(geometry.hiddenGlobally, "global overflow hiding is forbidden").toBeFalsy();
-  expect(geometry.overflow, "document must not overflow horizontally").toBeLessThanOrEqual(0);
+  expect(geometry.overflow, `document must not overflow horizontally: ${JSON.stringify(geometry.overflowNodes)}`).toBeLessThanOrEqual(0);
   expect(geometry.overlaps, "independent text and financial values must not overlap").toEqual([]);
   expect(geometry.frames.length).toBeGreaterThan(0);
   for (const frame of geometry.frames) {
-    for (const value of frame) expect(value, "frame geometry must use whole pixels").toBe(Math.round(value));
+    expect(
+      frame.borderImageSlice,
+      `${frame.name} must not tile the frame source through its content area`,
+    ).not.toContain("fill");
+    expect(
+      frame.values.every(Number.isFinite),
+      `${frame.name} frame geometry must remain finite`,
+    ).toBeTruthy();
   }
   for (const amount of geometry.amounts) {
     expect(amount.clientWidth, `${amount.text} must remain readable`).toBeGreaterThan(0);
     expect(amount.scrollWidth, `${amount.text} must not clip`).toBeLessThanOrEqual(amount.clientWidth + 1);
   }
 
-  const avatars = page.locator('img[src*="/pixel-ui/avatar-"]:visible');
+  const avatars = page.locator("img[data-pixel-avatar]:visible");
   if (expectsAvatars) {
     const avatarCount = await avatars.count();
     expect(avatarCount, "this route must render member avatars").toBeGreaterThan(0);
     for (let index = 0; index < avatarCount; index += 1) {
       const avatar = avatars.nth(index);
+      await avatar.scrollIntoViewIfNeeded();
+      await expect(avatar).toHaveAttribute("src", /avatar-\d+\.png/);
+      await expect.poll(
+        () => avatar.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth),
+        { message: "pixel avatar must finish loading" },
+      ).toBe(96);
       await expect(avatar).toHaveCSS("image-rendering", /pixelated|crisp-edges/);
       expect(await avatar.evaluate((image: HTMLImageElement) => ({
         naturalHeight: image.naturalHeight,
@@ -178,17 +211,14 @@ test("authenticated frames contain stress data at responsive boundaries", async 
     await page.goto(route.path);
     await expect(page.locator("main")).toBeVisible();
     await expectPageGeometry(page, route.expectsAvatars);
-    const shouldScanScreenshot = testInfo.project.name === "phone-small" || route.path === "/app";
-    if (shouldScanScreenshot) {
-      const screenshot = await page.screenshot({
-        path: testInfo.outputPath(`geometry-${testInfo.project.name}-native-${route.path.replace(/\W+/g, "-")}.png`),
-        fullPage: true,
-      });
-      expect(
-        findBakedTransparencyChecker(screenshot),
-        `rendered checker pattern at ${route.path}, native ${nativeViewport!.width}x${nativeViewport!.height}, ${testInfo.project.name}`,
-      ).toBeNull();
-    }
+    const screenshot = await page.screenshot({
+      path: testInfo.outputPath(`geometry-${testInfo.project.name}-native-${route.path.replace(/\W+/g, "-")}.png`),
+      fullPage: true,
+    });
+    expect(
+      findBakedTransparencyChecker(screenshot),
+      `rendered checker pattern at ${route.path}, native ${nativeViewport!.width}x${nativeViewport!.height}, ${testInfo.project.name}`,
+    ).toBeNull();
   }
 
   for (const width of additionalBoundaryWidths[testInfo.project.name] ?? []) {

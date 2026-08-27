@@ -144,6 +144,7 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
             width={512}
             height={512}
             priority
+            unoptimized
           />
         </div>
 

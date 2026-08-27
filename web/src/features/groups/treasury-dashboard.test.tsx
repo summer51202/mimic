@@ -131,6 +131,7 @@ describe("TreasuryDashboard", () => {
     expect(screen.getByText("小明")).toBeVisible();
     expect(screen.getByText("Travel USD")).toBeVisible();
     expect(screen.getByText("$50.00")).toBeVisible();
+    expect(document.querySelector("img[data-pixel-avatar]")).not.toBeNull();
     expect(screen.queryByText(/Private app preview/i)).not.toBeInTheDocument();
     expect(screen.queryByText("近期支出")).not.toBeInTheDocument();
   });

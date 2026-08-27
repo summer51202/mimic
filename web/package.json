@@ -7,6 +7,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "assets:export": "node scripts/export-pixel-runtime-assets.mjs",
+    "assets:clean-mimiku": "node scripts/clean-mimiku-alpha.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

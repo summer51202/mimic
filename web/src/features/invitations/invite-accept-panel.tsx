@@ -76,7 +76,9 @@ export function InviteAcceptPanel({
           alt={error ? "Mimiku guarding a closed invite" : "Mimiku holding an invite"}
           className="pixel-art"
           height={512}
+          priority
           src={error ? pixelUiAssets.mimiku.serious : pixelUiAssets.mimiku.invite}
+          unoptimized
           width={512}
         />
       </div>

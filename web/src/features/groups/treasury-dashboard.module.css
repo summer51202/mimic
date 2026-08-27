@@ -171,7 +171,7 @@
   min-width: 0;
 }
 
-@media (max-width: 24rem) {
+@media (max-width: 30rem) {
   .memberItem,
   .fundLink {
     align-items: start;
@@ -206,7 +206,7 @@
 
 .emptyCopy p {
   color: var(--mimic-color-ink-soft);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 @media (min-width: 48rem) {

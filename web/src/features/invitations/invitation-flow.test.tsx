@@ -1,5 +1,7 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { GroupClientError } from "@/features/groups/group-client-api";
@@ -11,6 +13,22 @@ import { inviteCreateSchema, parseInviteCode } from "./invite-schema";
 import { InviteSharePanel } from "./invite-share-panel";
 
 describe("invite schema", () => {
+  it("preserves Mimiku's aspect ratio in invite layouts", () => {
+    const css = readFileSync(
+      path.join(
+        process.cwd(),
+        "src",
+        "features",
+        "invitations",
+        "invitation-flow.module.css",
+      ),
+      "utf8",
+    );
+
+    expect(css).toMatch(/\.hero img\s*\{[^}]*width:\s*min\(12rem,\s*60vw\)/);
+    expect(css).toMatch(/\.hero img\s*\{[^}]*height:\s*auto/);
+  });
+
   it("normalizes optional invited email values", () => {
     expect(
       inviteCreateSchema.parse({ invitedEmail: " USER@Example.COM " }),

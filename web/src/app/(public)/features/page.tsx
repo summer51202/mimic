@@ -28,6 +28,7 @@ export default function FeaturesPage() {
           width={512}
           height={512}
           sizes="(max-width: 760px) 9rem, 12rem"
+          unoptimized
         />
       </div>
 

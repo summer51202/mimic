@@ -29,6 +29,7 @@ export function TreasuryDashboard({
           height={160}
           priority
           src={pixelUiAssets.mimiku.emptyGroup}
+          unoptimized
           width={160}
         />
         <div className={styles.emptyCopy}>
@@ -101,8 +102,10 @@ export function TreasuryDashboard({
                   <Image
                     alt=""
                     className={styles.avatar}
+                    data-pixel-avatar
                     height={48}
                     src={pixelUiAssets.avatars[index % pixelUiAssets.avatars.length]}
+                    unoptimized
                     width={48}
                   />
                   <span className={styles.memberName} data-contain-text>{member.display_name}</span>

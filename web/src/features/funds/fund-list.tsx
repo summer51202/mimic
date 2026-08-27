@@ -13,7 +13,7 @@ type FundListProps = {
 
 export function FundList({ funds, groupId }: FundListProps) {
   return (
-    <PixelFrame className={styles.panel}>
+    <PixelFrame className={styles.panel} data-frame="fund-list">
       <div className={styles.header}>
         <h2>Funds</h2>
         <Link href={`/app/groups/${groupId}/funds/new`}>新增</Link>
