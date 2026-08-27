@@ -463,3 +463,28 @@
 - Added malformed, empty, null, array, and primitive body coverage with phase and exact safe URL assertions.
 **Decisions:** Parser errors are not retained as causes because their messages can contain response-body fragments.
 **Known gaps / follow-ups:** Long runtime acceptance was intentionally not rerun for this focused error-handling fix.
+
+## 2026-08-26 - Stabilize PWA routes and pixel presentation
+
+**Task:** Repair authenticated route failures, overflowing responsive content, frame artifacts, and low-quality Mimiku presentation, with regression coverage.
+**Scope:** `web/src/features`, `web/src/shared`, `web/e2e`, `web/public/brand`, `web/public/pixel-ui`, `web/scripts/clean-mimiku-alpha.mjs`, `web/package.json`
+**What changed:**
+- Hardened group and fund navigation/rendering states and expanded responsive layout coverage for narrow mobile panels.
+- Removed the frame source center fill that tiled a checker-like texture through panel content.
+- Removed edge-connected neutral mattes from twelve Mimiku assets and added an idempotent cleanup command plus PNG transparency tests.
+- Preserved transparent pixel art in Next Image consumers with direct, unoptimized rendering and corrected invite artwork sizing.
+- Kept mobile navigation labels on one line and expanded geometry coverage to create and invitation routes at every Playwright viewport.
+- Added regression tests for frame fill, transparent assets, image consumers, invite aspect ratio, fund stacking, and mobile navigation labels.
+**Decisions:** Cleared only edge-connected near-neutral backgrounds to retain intentional interior highlights and shadows. Kept this batch focused on rendering and route stability instead of redesigning every public page.
+**Known gaps / follow-ups:** Public and authentication pages still use the restrained cream Web treatment rather than the approved full-screen deep-navy pixel-world composition. Real backend Playwright acceptance was not rerun in this batch; visual route acceptance used a deterministic local mock API.
+
+## 2026-08-27 - Close stabilized PWA delivery stage
+
+**Task:** Finalize the current PWA stabilization stage as a reviewable branch delivery.
+**Scope:** `.agents/features.md`, `.agents/devlog.md`, final Web verification and Git change organization
+**What changed:**
+- Reconciled the feature map with the delivered responsive pixel foundation and recorded full public/auth pixel-world parity as a separate follow-up.
+- Re-ran asset-cleaner idempotence, lint, type checking, all Web unit/component tests, and the production build.
+- Reviewed the complete uncommitted diff for correctness, edge cases, architecture, security, style, and regression coverage.
+**Decisions:** Kept the feature branch and worktree intact for owner review; no merge, push, or worktree cleanup was performed.
+**Known gaps / follow-ups:** Real-backend Playwright acceptance remains pending. Public and authentication page visual parity remains the next visual-design stage.

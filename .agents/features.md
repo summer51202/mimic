@@ -1,5 +1,5 @@
 # PairFund Feature Map
-_Last updated: 2026-07-18. Refresh with `/feature-map`._
+_Last updated: 2026-08-27. Refresh with `/feature-map`._
 
 ## MVP Core Path
 Minimal ordered sequence for end-to-end usability. Each step must be `done` for the product to ship.
@@ -118,7 +118,8 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 | done | pwa-fund-list | Display group funds and dashboard fund cards | `web/src/features/funds/fund-list.tsx`, `web/src/features/groups/treasury-dashboard.tsx` | `GET /groups/:id/funds`, `GET /groups/:id/dashboard` |
 | done | pwa-fund-create | Create a fund from the PWA | `web/src/app/app/groups/[groupId]/funds/new/page.tsx` | `POST /groups/:id/funds` |
 | done | pwa-fund-summary | View fund balance, current period, all-time totals, and member positions | `web/src/app/app/funds/[fundId]/page.tsx` | `GET /funds/:id/summary` |
-| done | pwa-pixel-responsive-shell | Complete pixel-game public/authenticated shell across phone, tablet, and desktop viewports | `web/src/shared/brand`, `web/src/shared/ui`, `web/src/app/app-shell.module.css` | n/a |
+| done | pwa-pixel-responsive-shell | Responsive pixel UI foundation for public and authenticated routes across phone, tablet, and desktop viewports | `web/src/shared/brand`, `web/src/shared/ui`, `web/src/app/app-shell.module.css` | n/a |
+| todo | pwa-public-pixel-world | Bring landing, authentication, and feature pages to the approved full-screen deep-navy pixel-world composition | `web/src/app/(public)`, `web/src/features/auth` | n/a |
 | todo | pwa-contributions | Create and list real contribution activity in the PWA | missing PWA activity UI | `contributions.controller.ts` |
 | todo | pwa-expenses | Create and list real expense activity in the PWA | missing PWA activity UI | `expenses.controller.ts` |
 | todo | pwa-activity | Unified activity timeline for contributions, expenses, corrections, and settlements | missing PWA activity UI | `GET /funds/:id/contributions`, `GET /funds/:id/expenses`, settlement routes |
@@ -189,6 +190,8 @@ Minimal ordered sequence for end-to-end usability. Each step must be `done` for 
 - [x] Initial Prisma migration exists and has been applied to the local PostgreSQL development database
 
 ### Stabilization
+- [x] PWA: authenticated group/fund routes, narrow-layout text containment, pixel-frame fill, and Mimiku transparency regression coverage
+- [ ] PWA: real-backend Playwright acceptance for the stabilized route and visual suite
 - [ ] Backend: lock check not yet applied in PATCH/DELETE handlers (currently only in create)
 - [ ] Mobile tasks screen calls `/confirmations` endpoint — not defined in spec; needs resolution
 - [x] Backend: authenticated group and invite integration tests cover route wiring, validation, and authorization
