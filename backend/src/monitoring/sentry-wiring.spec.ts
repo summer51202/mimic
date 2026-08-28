@@ -15,12 +15,11 @@ describe('Sentry backend wiring', () => {
     const instrumentSource = readFileSync(instrument, 'utf8');
     expect(instrumentSource).toContain('MIMIC_SENTRY_DSN');
     expect(instrumentSource).toContain('sendDefaultPii: false');
-    expect(instrumentSource).toContain('beforeSend');
-    expect(instrumentSource).toContain('beforeSendTransaction');
+    expect(instrumentSource).toContain('createSentryEventHooks');
+    expect(instrumentSource).toContain('beforeSend: eventHooks.beforeSend');
+    expect(instrumentSource).toContain('beforeSendTransaction: eventHooks.beforeSendTransaction');
     expect(instrumentSource).toContain('tracesSampleRate: 0');
-    expect(instrumentSource).toContain('return null');
     expect(instrumentSource).toContain('includeLocalVariables: false');
-    expect(instrumentSource).toContain('sanitizeSentryEvent');
     expect(instrumentSource).not.toContain('replayIntegration');
 
     const appModuleSource = readFileSync(appModule, 'utf8');
