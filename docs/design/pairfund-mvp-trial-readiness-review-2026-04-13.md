@@ -149,7 +149,7 @@ Recommended polish before showing:
 Suggested command:
 
 ```powershell
-cd D:\Project\mimic\mobile
+Set-Location mobile
 flutter run -d chrome --dart-define=PAIRFUND_API_MODE=demo
 ```
 
@@ -171,7 +171,7 @@ Required work:
 Suggested command after backend exists:
 
 ```powershell
-cd D:\Project\mimic\mobile
+Set-Location mobile
 flutter run -d chrome --dart-define=PAIRFUND_API_MODE=remote --dart-define=PAIRFUND_API_BASE_URL=http://localhost:3000/api/v1
 ```
 

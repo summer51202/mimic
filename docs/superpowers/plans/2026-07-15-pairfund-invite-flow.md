@@ -118,7 +118,7 @@ describe('GroupsService invitations', () => {
 Run:
 
 ```powershell
-cd D:\Project\mimic\backend
+Set-Location backend
 npm run test -- --runInBand groups.service.spec.ts
 ```
 
@@ -910,7 +910,7 @@ git commit -m "feat(mobile): add create and accept invite flow"
 - [ ] **Step 1: Rebuild and restart the backend container**
 
 ```powershell
-cd D:\Project\mimic\backend
+Set-Location backend
 npm run build
 wsl -d Ubuntu-22.04-InDiskD -- docker restart pairfund-backend
 ```
@@ -933,7 +933,7 @@ Expected: invite response is pending; accept response role is `member`; persiste
 - [ ] **Step 3: Launch Flutter Web remote mode**
 
 ```powershell
-cd D:\Project\mimic\mobile
+Set-Location mobile
 flutter run -d chrome --web-port 8080 `
   --dart-define=PAIRFUND_API_MODE=remote `
   --dart-define=PAIRFUND_API_BASE_URL=http://localhost:3001/api/v1
@@ -959,12 +959,12 @@ Mark `invite-member` and `accept-invite` done in `.agents/features.md`. Append a
 - [ ] **Step 6: Final verification**
 
 ```powershell
-cd D:\Project\mimic\backend
+Set-Location backend
 npm run test -- --runInBand
 npm run test:e2e -- --runInBand
 npm run build
 
-cd D:\Project\mimic\mobile
+Set-Location mobile
 flutter test
 flutter build web --no-wasm-dry-run `
   --dart-define=PAIRFUND_API_MODE=remote `

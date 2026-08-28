@@ -1,6 +1,6 @@
 # PairFund Backend
 
-NestJS API for PairFund mobile and Web clients.
+NestJS API for the mimic Web PWA.
 
 ## Current Local Readiness
 
@@ -15,14 +15,14 @@ npx prisma validate
 npx prisma generate
 ```
 
-The local remote-mode stack is operational with Docker Engine inside WSL2 (Docker
-Desktop is not required): PostgreSQL is exposed on port `5432`, the API on `3001`,
-and Flutter Web on `8080`.
+The local stack is operational with Docker Engine inside WSL2 (Docker Desktop is
+not required): PostgreSQL is exposed on port `5432` and the API on `3001`.
 
 ## Setup
 
 ```powershell
-cd D:\Project\mimic\backend
+# From the repository root
+Set-Location backend
 npm install
 Copy-Item .env.example .env
 npx prisma generate
@@ -46,7 +46,8 @@ password: postgres
 Then run:
 
 ```powershell
-cd D:\Project\mimic\backend
+# From the repository root
+Set-Location backend
 npx prisma migrate dev --name init
 npm run prisma:seed
 npm run start:dev
@@ -69,7 +70,8 @@ directory and runs `node dist/src/main.js`. Rebuild before restarting after code
 changes:
 
 ```powershell
-cd D:\Project\mimic\backend
+# From the repository root
+Set-Location backend
 npm run build
 wsl --exec docker restart pairfund-backend
 ```
@@ -87,17 +89,6 @@ Demo credentials:
 email: demo@pairfund.local
 password: password
 ```
-
-Build and serve Flutter Web against the local API:
-
-```powershell
-cd D:\Project\mimic\mobile
-flutter build web --no-wasm-dry-run --dart-define=PAIRFUND_API_MODE=remote --dart-define=PAIRFUND_API_BASE_URL=http://localhost:3001/api/v1
-python -m http.server 8080 --directory build/web
-```
-
-Open `http://localhost:8080/#/login`. After rebuilding, add a query such as
-`?v=10` before the hash if the browser still shows a cached bundle.
 
 ## Phase A Endpoints
 

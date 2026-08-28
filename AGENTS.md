@@ -4,9 +4,9 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Project Overview
 
-**PairFund** — a shared finance app for couples and small groups (iOS, Android, Web). Users manage shared virtual funds, track contributions and expenses, and settle balances. Key invariant: **settled periods are locked and cannot be edited retroactively**; corrections must be new transactions.
+**mimic / PairFund** — a shared-finance Web PWA for couples and small groups. Users manage shared virtual funds, track contributions and expenses, and settle balances. Key invariant: **settled periods are locked and cannot be edited retroactively**; corrections must be new transactions.
 
-The working directory is `D:\project\mimic`. The project has no root `README.md`; design specs live in `docs/`.
+Run repository commands from the cloned repository root unless a section names a subdirectory. The root `README.md` provides the public project overview; detailed design specs live in `docs/`.
 
 ---
 
@@ -66,37 +66,11 @@ Schema source of truth: `backend/prisma/schema.prisma`.
 
 ---
 
-## Mobile (Flutter + Riverpod)
+## Web PWA (Next.js + React)
 
-### Commands (run from `mobile/`)
+Run Web commands from `web/`. The PWA uses Next.js App Router, server-side BFF routes under `src/app/api/`, shared API and authentication infrastructure under `src/shared/`, and feature modules under `src/features/`.
 
-```bash
-flutter pub get            # Install dependencies
-flutter run                # Run on connected device / Chrome
-flutter test               # Widget tests
-flutter build apk          # Android APK
-```
-
-### Architecture
-
-Feature-first layout under `lib/features/`. Each feature contains:
-- `data/` — repository (interface + implementations: `DemoXRepository`, `RemoteXRepository`)
-- `presentation/` — screens and widgets
-- `providers/` — Riverpod notifiers/providers
-
-Shared infrastructure in `lib/shared/`:
-- `api/pairfund_api_client.dart` — `DioPairFundApiClient`, wraps all HTTP calls, parses `{ data: ... }` envelope via `readDataEnvelope`
-- `api/api_exception_mapper.dart` — maps `DioException` → typed `ApiException` hierarchy
-- `providers/session_provider.dart` — `SessionNotifier` manages auth state (token storage via `flutter_secure_storage`)
-- `app/router/app_router.dart` — GoRouter with redirect logic based on session state
-
-### Demo vs. remote mode
-
-`lib/shared/config/app_config.dart` controls `ApiMode`. Set to `ApiMode.demo` for UI development without a running backend (repositories return hard-coded data). Set to `ApiMode.remote` to connect to `http://localhost:3000/api/v1`.
-
-### Design tokens
-
-Colors, spacing, and border radii are defined in `lib/shared/constants/design_tokens.dart` (`PfColors`, `PfRadii`). Use these — don't hardcode values.
+Use `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build` as the baseline verification sequence. Production builds require `MIMIC_API_BASE_URL`; local development defaults to `http://localhost:3000/api/v1`.
 
 ---
 
@@ -116,7 +90,7 @@ These rules are enforced in `settlements.service.ts` and are documented in `docs
 For deep context on business rules, read these in order:
 1. `docs/design/pairfund-prd-v0.2-final.md` — product rules, MVP scope, accounting invariants
 2. `docs/design/pairfund-backend-accounting-module-map-v0.2.md` — backend module responsibilities
-3. `docs/design/pairfund-mobile-flutter-spec-v0.2.md` — screen specs, state model, navigation
+3. `docs/design/pairfund-web-ui-v0.2.md` — Web PWA screens, states, and interaction model
 
 ---
 

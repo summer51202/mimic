@@ -21,24 +21,22 @@ plugin config is webpack-based and Next.js 16 defaults `next dev` to Turbopack.
 
 ## Local Runtime
 
-Acceptance must use the backend source from this worktree. The existing
-`pairfund-backend` container bind mount points to `D:\Project\mimic\backend`,
-not `D:\Project\mimic\.worktrees\mimic-pwa-foundation\backend`. Do not use
-that drifting prebuilt container as the acceptance backend.
+Acceptance must use the backend source from the same active repository checkout
+as the Web PWA. Do not use a drifting prebuilt container as the acceptance
+backend.
 
-Use three PowerShell terminals. From the worktree, start only PostgreSQL in
-WSL:
+Use three PowerShell terminals. From the repository root, start only PostgreSQL
+in WSL:
 
 ```powershell
-Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation
 wsl --exec docker start pairfund-postgres
 wsl --exec docker ps --filter name=pairfund-postgres
 ```
 
-Build and start the backend from this same worktree on port 3001:
+Build and start the backend from this same checkout on port 3001:
 
 ```powershell
-Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\backend
+Set-Location backend
 npm run build
 $env:DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/pairfund?schema=public'
 $env:PORT = '3001'
@@ -51,7 +49,7 @@ starts this worktree's web server on port 3010 with existing-server reuse
 disabled, so port 3010 must be free:
 
 ```powershell
-Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
+Set-Location web
 'MIMIC_API_BASE_URL=http://localhost:3001/api/v1' | Out-File .env.local -Encoding utf8
 npm run verify:runtime
 ```
@@ -63,7 +61,7 @@ rejects a backend that omits or reports a different revision. Pin a different
 expected revision explicitly only when intentional:
 
 ```powershell
-Set-Location D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
+Set-Location web
 $expectedRevision = (git -C .. rev-parse HEAD).Trim()
 npm run verify:runtime -- --expected-revision $expectedRevision
 ```
@@ -130,9 +128,6 @@ Task 11 verification run on 2026-07-28:
 - `npm run test:e2e` passed: 6 Playwright tests.
 - Production visual/PWA verification passed at 320x720, 390x844, and
   1440x900.
-- Flutter verification was blocked by the local Flutter runtime timing out
-  before runner output; the focused mobile brand-copy test command timed out
-  after 120 seconds.
 - Lighthouse was not run because it is unavailable locally and network access is
   restricted.
 

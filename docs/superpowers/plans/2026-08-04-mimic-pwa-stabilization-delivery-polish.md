@@ -85,7 +85,7 @@ Extend `app-route.test.ts` so `new ApiUnavailableError()` maps to status 503 and
 Run:
 
 ```powershell
-cd D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
+Set-Location web
 npm test -- src/shared/api/server-api.test.ts src/shared/api/app-route.test.ts
 ```
 
@@ -439,7 +439,7 @@ git commit -m "feat(web): add grouped funds overview"
 - [ ] **Step 1: Add PNGJS as a deterministic development dependency**
 
 ```powershell
-cd D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
+Set-Location web
 npm install --save-dev pngjs @types/pngjs
 ```
 
@@ -701,10 +701,10 @@ Add package script:
 "verify:runtime": "node scripts/verify-local-runtime.mjs --base-url http://localhost:3001/api/v1"
 ```
 
-The script optionally accepts `MIMIC_BACKEND_REVISION`; when set, compare it with the expected revision supplied by the acceptance command and fail on mismatch. Document that the existing `pairfund-backend` bind mount points at `D:\Project\mimic\backend`, while the PWA worktree is separate, and provide one authoritative workflow:
+The script optionally accepts `MIMIC_BACKEND_REVISION`; when set, compare it with the expected revision supplied by the acceptance command and fail on mismatch. Document that the `pairfund-backend` bind mount must point at the active checkout's `backend/` directory and provide one authoritative workflow:
 
 ```powershell
-cd D:\Project\mimic\.worktrees\mimic-pwa-foundation
+# From the active repository root
 wsl --exec docker start pairfund-postgres
 cd backend
 npm run build
@@ -717,7 +717,7 @@ Run Web separately from `web/` on 3010 with `.env.local` targeting 3001. Do not 
 - [ ] **Step 3: Verify health and documentation commands**
 
 ```powershell
-cd D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
+Set-Location web
 npm run verify:runtime
 ```
 
@@ -743,7 +743,7 @@ git commit -m "docs(web): make local acceptance deterministic"
 - [ ] **Step 1: Run static and component verification**
 
 ```powershell
-cd D:\Project\mimic\.worktrees\mimic-pwa-foundation\web
+Set-Location web
 npm run lint
 npm run typecheck
 npm test
@@ -775,7 +775,7 @@ Mark PWA stabilization and Funds overview done in `.agents/features.md`. Append 
 - [ ] **Step 5: Run repository hygiene checks**
 
 ```powershell
-cd D:\Project\mimic\.worktrees\mimic-pwa-foundation
+# From the active repository root
 git diff --check
 git status --short
 ```

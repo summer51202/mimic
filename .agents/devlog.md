@@ -438,7 +438,7 @@
 - Made Playwright's runtime root configurable while preserving all existing viewport projects and helper-test exclusion.
 - Documented the PowerShell workflow that starts only PostgreSQL in WSL and runs backend/web processes from this worktree.
 **Decisions:** Split Playwright into navigation and remaining-suite batches so the third checkpoint follows the existing click-driven Groups/Funds test. Used an ephemeral API registration for the authentication setup milestone and discarded its token response.
-**Known gaps / follow-ups:** Full runtime acceptance is blocked while the user-owned `pairfund-backend` container occupies port 3001; it mounts `D:\Project\mimic\backend` and was not stopped or used for acceptance.
+**Known gaps / follow-ups:** Full runtime acceptance is blocked while the user-owned `pairfund-backend` container occupies port 3001; it mounts the active checkout's `backend/` directory and was not stopped or used for acceptance.
 
 ## 2026-08-04 - Enforce runtime process identity and phase alignment
 
@@ -488,3 +488,16 @@
 - Reviewed the complete uncommitted diff for correctness, edge cases, architecture, security, style, and regression coverage.
 **Decisions:** Kept the feature branch and worktree intact for owner review; no merge, push, or worktree cleanup was performed.
 **Known gaps / follow-ups:** Real-backend Playwright acceptance remains pending. Public and authentication page visual parity remains the next visual-design stage.
+
+## 2026-08-28 — Prepare repository for GitHub publication
+
+**Task:** Add public repository documentation and CI while excluding the retiring Flutter client from the current tree.
+**Scope:** Root README and cover asset, GitHub Actions, ignore rules, portable Markdown paths, current-tree Mobile removal, and current agent guidance.
+**What changed:**
+- Added a bilingual PWA-first project README with an approved pixel-art cover.
+- Added parallel Backend and Web CI jobs.
+- Removed `mobile/` from the current tracked tree and ignored local/private working artifacts.
+- Replaced machine-specific repository paths in tracked Markdown.
+- Updated agent guidance and feature-map context for the PWA-first repository direction.
+**Decisions:** Preserved Git history, internal agent documentation, author email metadata, and the original treasury source image; deferred licensing and production legal policy decisions.
+**Known gaps / follow-ups:** Mobile remains available in historical commits; E2E CI, deployment automation, license selection, and production privacy/terms content remain deferred.

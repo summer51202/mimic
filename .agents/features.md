@@ -1,5 +1,7 @@
 # PairFund Feature Map
-_Last updated: 2026-08-27. Refresh with `/feature-map`._
+_Last updated: 2026-08-28. Refresh with `/feature-map`._
+
+> The Flutter client described in historical entries was removed from the current tree when the project moved to a PWA-first direction. Current implementation work targets `web/` and `backend/`; older commits retain the former client for reference.
 
 ## MVP Core Path
 Minimal ordered sequence for end-to-end usability. Each step must be `done` for the product to ship.
