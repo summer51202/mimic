@@ -71,7 +71,7 @@ describe('Sentry privacy policy', () => {
       level: 'fatal',
       timestamp: 123,
       extra: { requestId: 'req_123_ABC', errorCode: 'LOCKED_PERIOD' },
-      request: { method: 'POST', url: 'https://api.example.test' },
+      request: { method: 'POST' },
     });
 
     expect(
@@ -173,7 +173,7 @@ describe('Sentry privacy policy', () => {
       sanitizeSentryEvent({
         request: { method: 'GET', url: `https://api.example.test/users/${ipSecret}?token=secret` },
       }),
-    ).toEqual({ request: { method: 'GET', url: 'https://api.example.test' } });
+    ).toEqual({ request: { method: 'GET' } });
   });
 
   it('uses separate narrow validators for diagnostic identifiers and deployment metadata', () => {
@@ -242,5 +242,22 @@ describe('Sentry privacy policy', () => {
     });
     const serialized = JSON.stringify(output);
     for (const value of prohibited) expect(serialized).not.toContain(value);
+  });
+
+  it('canonicalizes only known runtime frame prefixes', () => {
+    const { sanitizeSentryEvent } = sanitizer();
+    const frames = [
+      { filename: '/app/dist/src/modules/auth/auth.service.js', function: 'saveAuth', lineno: 10, colno: 1 },
+      { filename: 'D:\\work\\backend\\dist\\src\\health\\health.service.js', function: 'checkHealth', lineno: 20, colno: 2 },
+      { filename: 'https://mimic.example/_next/static/chunks/app/foo-abc123.js', function: 'renderApp', lineno: 30, colno: 3 },
+      { filename: '/tmp/customer-secret.js', function: 'bad', lineno: 1, colno: 1 },
+    ];
+    expect(sanitizeSentryEvent({ exception: { values: [{ type: 'DomainError', stacktrace: { frames } }] } })).toEqual({
+      exception: { values: [{ type: 'DomainError', stacktrace: { frames: [
+        { filename: 'src/modules/auth/auth.service.js', function: 'saveAuth', lineno: 10, colno: 1 },
+        { filename: 'src/health/health.service.js', function: 'checkHealth', lineno: 20, colno: 2 },
+        { filename: '_next/static/chunks/app/foo-abc123.js', function: 'renderApp', lineno: 30, colno: 3 },
+      ] } }] },
+    });
   });
 });

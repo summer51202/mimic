@@ -113,7 +113,9 @@ test("web production image uses Next standalone output without secrets", () => {
   assertContains(dockerfile, /^RUN npm ci$/m, "web installs locked dependencies");
   assertContains(dockerfile, /^ARG MIMIC_API_BASE_URL$/m, "web accepts API URL at build time");
   assertContains(dockerfile, /^ARG NEXT_PUBLIC_MIMIC_SENTRY_DSN$/m, "web accepts public Sentry DSN at build time");
-  assertContains(dockerfile, /^RUN npm run build$/m, "web builds with the package script");
+  assertContains(dockerfile, /^ARG NEXT_PUBLIC_MIMIC_ENVIRONMENT$/m, "web accepts public environment at build time");
+  assertContains(dockerfile, /RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN,required=false/, "web mounts the optional Sentry token as a BuildKit secret");
+  assertContains(dockerfile, /\/run\/secrets\/SENTRY_AUTH_TOKEN/, "web reads the token only from the BuildKit secret path");
   assertContains(dockerfile, /^ENV NODE_ENV=production$/m, "web runtime sets production mode");
   assertContains(dockerfile, /^ENV HOSTNAME=0\.0\.0\.0$/m, "web listens on all interfaces");
   assertContains(dockerfile, /^ENV PORT=3000$/m, "web uses port 3000");
@@ -130,5 +132,6 @@ test("web production image uses Next standalone output without secrets", () => {
   }
 
   assert.doesNotMatch(dockerfile, /(JWT_(?:ACCESS|REFRESH)_SECRET|DATABASE_URL)\s*=\s*[^$\s]/, "web Dockerfile has no server secret literal");
+  assert.doesNotMatch(dockerfile, /^ARG SENTRY_AUTH_TOKEN$/m, "web does not accept a Sentry token as an ARG");
   assert.doesNotMatch(dockerfile, /https?:\/\/[^\s"']+/, "web Dockerfile has no baked-in endpoint literal");
 });

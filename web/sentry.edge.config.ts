@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
-import { sanitizeSentryEvent, traceSampleRate } from "./src/shared/monitoring/sentry-privacy";
+import { sanitizeSentryEvent } from "./src/shared/monitoring/sentry-privacy";
 
 const dsn = process.env.MIMIC_SENTRY_DSN?.trim();
 const environment = process.env.MIMIC_ENVIRONMENT?.trim();
@@ -13,11 +13,12 @@ Sentry.init({
   sendDefaultPii: false,
   maxBreadcrumbs: 0,
   enableLogs: false,
-  tracesSampleRate: traceSampleRate(process.env.MIMIC_SENTRY_TRACES_SAMPLE_RATE),
-  beforeSend(event: unknown) {
+  tracesSampleRate: 0,
+  beforeSend(event: unknown, hint: { attachments?: unknown[] }) {
+    hint.attachments = [];
     return { ...sanitizeSentryEvent(event), type: undefined };
   },
-  beforeSendTransaction(event: unknown) {
-    return { ...sanitizeSentryEvent(event), type: "transaction" as const };
+  beforeSendTransaction() {
+    return null;
   },
 });

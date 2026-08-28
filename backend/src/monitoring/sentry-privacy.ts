@@ -7,7 +7,7 @@ const PSEUDONYMOUS_USER_ID = /^(?:anon_[A-Za-z0-9_-]{16,64}|sha256:[a-f0-9]{64})
 const RELEASE = /^[a-f0-9]{7,64}$/;
 const EXCEPTION_TYPE = /^[A-Za-z_$][A-Za-z0-9_$]{0,127}$/;
 const FRAME_FUNCTION = /^[A-Za-z_$][A-Za-z0-9_$]{0,127}$/;
-const PROJECT_FILENAME = /^(?:src\/)?[A-Za-z0-9][A-Za-z0-9_./-]{0,159}\.(?:ts|tsx|js|jsx|mjs|cjs)$/;
+const PROJECT_FILENAME = /^(?:src\/)?[A-Za-z0-9_][A-Za-z0-9_./-]{0,159}\.(?:ts|tsx|js|jsx|mjs|cjs)$/;
 const SAFE_TAG_VALUE = /^[a-z][a-z0-9-]{0,31}$/;
 const SAFE_METHODS = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS']);
 const SAFE_LEVELS = new Set(['fatal', 'error', 'warning', 'log', 'info', 'debug']);
@@ -67,7 +67,7 @@ function isSafeDnsHostname(value: string): boolean {
   );
 }
 
-function isSafeProjectFilename(value: unknown): value is string {
+function isSafeProjectFilename(value: string): boolean {
   return (
     typeof value === 'string' &&
     PROJECT_FILENAME.test(value) &&
@@ -77,6 +77,35 @@ function isSafeProjectFilename(value: unknown): value is string {
     !/\b(?:\d{1,3}\.){3}\d{1,3}\b/.test(value) &&
     !value.split('/').some((segment) => /^\d+$/.test(segment))
   );
+}
+
+function canonicalizeFilename(value: unknown): string | undefined {
+  if (typeof value !== 'string' || value.length > 512) return undefined;
+  let path = value.replace(/\\/g, '/');
+  if (/^https?:\/\//i.test(path)) {
+    try {
+      const url = new URL(path);
+      if (url.username || url.password || url.search || url.hash) return undefined;
+      path = url.pathname;
+    } catch {
+      return undefined;
+    }
+  }
+
+  let candidate: string | undefined;
+  const nextStatic = path.match(/(?:^|\/)\_next\/static\/(.+)$/);
+  const distSource = path.match(/(?:^|\/)dist\/src\/(.+)$/);
+  const source = path.match(/(?:^|\/)src\/(.+)$/);
+  const nextServer = path.match(/(?:^|\/)\.next\/server\/(.+)$/);
+  const webpackSource = path.match(/^webpack:\/\/[^/]+\/(?:\.\/)?src\/(.+)$/);
+  if (nextStatic) candidate = `_next/static/${nextStatic[1]}`;
+  else if (distSource) candidate = `src/${distSource[1]}`;
+  else if (source) candidate = `src/${source[1]}`;
+  else if (nextServer) candidate = `_next/server/${nextServer[1]}`;
+  else if (webpackSource) candidate = `src/${webpackSource[1]}`;
+  else if (!path.includes('/') && !path.includes('\\')) candidate = path;
+
+  return candidate && isSafeProjectFilename(candidate) ? candidate : undefined;
 }
 
 function isSafeSourceLocation(value: unknown): value is number {
@@ -117,12 +146,13 @@ function sanitizeRequest(value: unknown): RecordValue | undefined {
     return undefined;
   }
 
-  return { method, url: url.origin };
+  return { method };
 }
 
 function sanitizeFrame(value: unknown): RecordValue | undefined {
   const frame = record(value);
-  if (!frame || !isSafeProjectFilename(frame.filename)) {
+  const filename = frame ? canonicalizeFilename(frame.filename) : undefined;
+  if (!frame || !filename) {
     return undefined;
   }
 
@@ -132,7 +162,6 @@ function sanitizeFrame(value: unknown): RecordValue | undefined {
   if (frame.colno !== undefined && !isSafeSourceLocation(frame.colno)) return undefined;
 
   const output: RecordValue = {};
-  const filename = frame.filename;
   const functionName = frame.function;
   const lineno = frame.lineno;
   const colno = frame.colno;
@@ -227,13 +256,4 @@ export function sanitizeSentryEvent(event: unknown): RecordValue {
   if (Object.keys(safeTags).length > 0) output.tags = safeTags;
 
   return output;
-}
-
-export function traceSampleRate(value: unknown): number {
-  if (typeof value !== 'string' || !/^(?:0(?:\.\d+)?|1(?:\.0+)?)$/.test(value.trim())) {
-    return 0;
-  }
-
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 && parsed <= 1 ? parsed : 0;
 }

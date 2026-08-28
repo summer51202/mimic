@@ -61,7 +61,7 @@ test("Sentry privacy policy constructs an allowlisted browser event", async () =
     release: "abcdef0123456",
     user: { id: "anon_1234567890abcdef" },
     tags: { service: "web", route: "/app/funds/:fundId" },
-    request: { method: "POST", url: "https://app.example.test" },
+    request: { method: "POST" },
     extra: { requestId: "req_123_ABC", errorCode: "LOCKED_PERIOD" },
     exception: {
       values: [
@@ -79,7 +79,7 @@ test("Sentry privacy policy constructs an allowlisted browser event", async () =
 });
 
 test("Sentry privacy policy rejects malformed URLs, secret diagnostics, and raw routes", async () => {
-  const { sanitizeSentryEvent, traceSampleRate } = await import("./sentry-privacy");
+  const { sanitizeSentryEvent } = await import("./sentry-privacy");
 
   expect(
     sanitizeSentryEvent({
@@ -88,9 +88,6 @@ test("Sentry privacy policy rejects malformed URLs, secret diagnostics, and raw 
       tags: { route: "/app/funds/123", runtime: "browser" },
     }),
   ).toEqual({ tags: { runtime: "browser" } });
-  expect(traceSampleRate("0.25")).toBe(0.25);
-  expect(traceSampleRate("NaN")).toBe(0);
-  expect(traceSampleRate("2")).toBe(0);
 });
 
 test("Sentry privacy policy keeps only safe DNS origins and route templates", async () => {
@@ -108,7 +105,7 @@ test("Sentry privacy policy keeps only safe DNS origins and route templates", as
       tags: { route: "/app/funds/:fundId" },
     }),
   ).toEqual({
-    request: { method: "GET", url: "https://app.example.test" },
+    request: { method: "GET" },
     tags: { route: "/app/funds/:fundId" },
   });
 });
@@ -133,4 +130,20 @@ test("Sentry privacy policy removes address-like frame data and unsafe locations
   });
   const serialized = JSON.stringify(output);
   for (const value of prohibited) expect(serialized).not.toContain(value);
+});
+
+test("Sentry privacy policy canonicalizes known Node and browser frame roots", async () => {
+  const { sanitizeSentryEvent } = await import("./sentry-privacy");
+  const frames = [
+    { filename: "/app/dist/src/modules/auth/auth.service.js", function: "saveAuth", lineno: 10, colno: 1 },
+    { filename: "D:\\work\\backend\\dist\\src\\health\\health.service.js", function: "checkHealth", lineno: 20, colno: 2 },
+    { filename: "https://mimic.example/_next/static/chunks/app/foo-abc123.js", function: "renderApp", lineno: 30, colno: 3 },
+  ];
+  expect(sanitizeSentryEvent({ exception: { values: [{ type: "DomainError", stacktrace: { frames } }] } })).toEqual({
+    exception: { values: [{ type: "DomainError", stacktrace: { frames: [
+      { filename: "src/modules/auth/auth.service.js", function: "saveAuth", lineno: 10, colno: 1 },
+      { filename: "src/health/health.service.js", function: "checkHealth", lineno: 20, colno: 2 },
+      { filename: "_next/static/chunks/app/foo-abc123.js", function: "renderApp", lineno: 30, colno: 3 },
+    ] } }] },
+  });
 });

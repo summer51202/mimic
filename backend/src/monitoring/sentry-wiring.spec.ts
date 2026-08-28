@@ -17,6 +17,8 @@ describe('Sentry backend wiring', () => {
     expect(instrumentSource).toContain('sendDefaultPii: false');
     expect(instrumentSource).toContain('beforeSend');
     expect(instrumentSource).toContain('beforeSendTransaction');
+    expect(instrumentSource).toContain('tracesSampleRate: 0');
+    expect(instrumentSource).toContain('return null');
     expect(instrumentSource).toContain('includeLocalVariables: false');
     expect(instrumentSource).toContain('sanitizeSentryEvent');
     expect(instrumentSource).not.toContain('replayIntegration');

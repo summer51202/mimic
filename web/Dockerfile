@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7
 FROM node:22-bookworm-slim AS deps
 
 WORKDIR /app
@@ -11,12 +12,14 @@ WORKDIR /app
 
 ARG MIMIC_API_BASE_URL
 ARG NEXT_PUBLIC_MIMIC_SENTRY_DSN
+ARG NEXT_PUBLIC_MIMIC_ENVIRONMENT
 ENV MIMIC_API_BASE_URL=$MIMIC_API_BASE_URL
 ENV NEXT_PUBLIC_MIMIC_SENTRY_DSN=$NEXT_PUBLIC_MIMIC_SENTRY_DSN
+ENV NEXT_PUBLIC_MIMIC_ENVIRONMENT=$NEXT_PUBLIC_MIMIC_ENVIRONMENT
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN,required=false if [ -f /run/secrets/SENTRY_AUTH_TOKEN ]; then SENTRY_AUTH_TOKEN="$(cat /run/secrets/SENTRY_AUTH_TOKEN)" npm run build; else npm run build; fi
 
 FROM node:22-bookworm-slim AS runtime
 

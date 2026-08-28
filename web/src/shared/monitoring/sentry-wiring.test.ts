@@ -21,6 +21,8 @@ test("every Next.js Sentry surface enforces the shared privacy policy", () => {
   expect(client).toContain("sendDefaultPii: false");
   expect(client).toContain("beforeSend");
   expect(client).toContain("beforeSendTransaction");
+  expect(client).toContain("tracesSampleRate: 0");
+  expect(client).toContain("return null");
   expect(client).toContain("replaysSessionSampleRate: 0");
   expect(client).toContain("onRouterTransitionStart = Sentry.captureRouterTransitionStart");
   expect(client).not.toContain("process.env.MIMIC_SENTRY_DSN");
@@ -33,6 +35,8 @@ test("every Next.js Sentry surface enforces the shared privacy policy", () => {
     expect(source).toContain("sendDefaultPii: false");
     expect(source).toContain("beforeSend");
     expect(source).toContain("beforeSendTransaction");
+    expect(source).toContain("tracesSampleRate: 0");
+    expect(source).toContain("return null");
     expect(source).not.toContain("replayIntegration");
   }
 
