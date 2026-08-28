@@ -1,21 +1,21 @@
 # Mimic Web UI Design v0.2
 
 Date: 2026-04-07
-Platform: Web
-Direction: Warm desktop experience with richer information density
+Platform: Responsive Web PWA
+Direction: Warm responsive experience with adaptable information density
 
 ## Goal
 
-Extend the Mimic product into a desktop-friendly Web experience that keeps the warm shared-life feeling from mobile while presenting more context, history, and management controls.
+Define the Mimic product as an installable responsive Web PWA that keeps a warm shared-life feeling while adapting context, history, and management controls across narrow and wide viewports.
 
 ## Product Lens
 
-The Web app should feel like:
+The PWA should feel:
 
-* the same product as mobile
-* calmer and roomier, not colder
-* better for reviewing, comparing, and managing
-* especially useful for activity history, settlement review, and settings
+* calm and roomier on wide viewports without becoming colder
+* focused and touch-friendly on narrow viewports
+* useful for reviewing, comparing, and managing
+* especially clear for activity history, settlement review, and settings
 
 ## Interaction Model
 
@@ -114,8 +114,8 @@ Priority order:
 3. recent activity summary
 4. right-rail tasks and reminders
 
-Wireframe: [web-dashboard-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-dashboard-wireframe.svg)
-Mockup: [web-dashboard-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-dashboard-mockup.svg)
+Wireframe: [web-dashboard-wireframe.svg](assets/web-wireframes/web-dashboard-wireframe.svg)
+Mockup: [web-dashboard-mockup.svg](assets/web-mockups/web-dashboard-mockup.svg)
 
 ### 2. Fund Workspace
 
@@ -132,14 +132,14 @@ Priority order:
 3. timeline table or grouped list
 4. right-rail fund-specific context
 
-Wireframe: [web-fund-workspace-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-fund-workspace-wireframe.svg)
-Mockup: [web-fund-workspace-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-fund-workspace-mockup.svg)
+Wireframe: [web-fund-workspace-wireframe.svg](assets/web-wireframes/web-fund-workspace-wireframe.svg)
+Mockup: [web-fund-workspace-mockup.svg](assets/web-mockups/web-fund-workspace-mockup.svg)
 
 ### 3. Activity / Records
 
 Purpose:
 
-* provide a fuller review surface than mobile
+* provide a spacious review surface on wide viewports
 * make filters and grouped history easier to scan
 * support correction entry from locked records
 
@@ -150,8 +150,8 @@ Priority order:
 3. record state badges
 4. contextual actions
 
-Wireframe: [web-activity-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-activity-wireframe.svg)
-Mockup: [web-activity-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-activity-mockup.svg)
+Wireframe: [web-activity-wireframe.svg](assets/web-wireframes/web-activity-wireframe.svg)
+Mockup: [web-activity-mockup.svg](assets/web-mockups/web-activity-mockup.svg)
 
 ### 4. Settlement
 
@@ -168,8 +168,8 @@ Priority order:
 3. lock explanation
 4. prior settlements
 
-Wireframe: [web-settlement-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-settlement-wireframe.svg)
-Mockup: [web-settlement-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-settlement-mockup.svg)
+Wireframe: [web-settlement-wireframe.svg](assets/web-wireframes/web-settlement-wireframe.svg)
+Mockup: [web-settlement-mockup.svg](assets/web-mockups/web-settlement-mockup.svg)
 
 ### 5. Settings
 
@@ -184,14 +184,14 @@ Priority order:
 2. group and fund management cards
 3. preferences and support
 
-Wireframe: [web-settings-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-settings-wireframe.svg)
-Mockup: [web-settings-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-settings-mockup.svg)
+Wireframe: [web-settings-wireframe.svg](assets/web-wireframes/web-settings-wireframe.svg)
+Mockup: [web-settings-mockup.svg](assets/web-mockups/web-settings-mockup.svg)
 
 ## Shared UX Rules
 
-### Desktop Density Rule
+### Wide Viewport Density Rule
 
-Web can show more information than mobile, but should still prefer:
+Wide viewports can show more information than narrow viewports, but should still prefer:
 
 * grouped cards over flat admin tables
 * readable spacing
@@ -215,19 +215,19 @@ When a record belongs to a settled period:
 
 ### Wireframes
 
-* [web-dashboard-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-dashboard-wireframe.svg)
-* [web-fund-workspace-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-fund-workspace-wireframe.svg)
-* [web-activity-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-activity-wireframe.svg)
-* [web-settlement-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-settlement-wireframe.svg)
-* [web-settings-wireframe.svg](/d:/Project/mimic/docs/design/assets/web-wireframes/web-settings-wireframe.svg)
+* [web-dashboard-wireframe.svg](assets/web-wireframes/web-dashboard-wireframe.svg)
+* [web-fund-workspace-wireframe.svg](assets/web-wireframes/web-fund-workspace-wireframe.svg)
+* [web-activity-wireframe.svg](assets/web-wireframes/web-activity-wireframe.svg)
+* [web-settlement-wireframe.svg](assets/web-wireframes/web-settlement-wireframe.svg)
+* [web-settings-wireframe.svg](assets/web-wireframes/web-settings-wireframe.svg)
 
 ### Mockups
 
-* [web-dashboard-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-dashboard-mockup.svg)
-* [web-fund-workspace-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-fund-workspace-mockup.svg)
-* [web-activity-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-activity-mockup.svg)
-* [web-settlement-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-settlement-mockup.svg)
-* [web-settings-mockup.svg](/d:/Project/mimic/docs/design/assets/web-mockups/web-settings-mockup.svg)
+* [web-dashboard-mockup.svg](assets/web-mockups/web-dashboard-mockup.svg)
+* [web-fund-workspace-mockup.svg](assets/web-mockups/web-fund-workspace-mockup.svg)
+* [web-activity-mockup.svg](assets/web-mockups/web-activity-mockup.svg)
+* [web-settlement-mockup.svg](assets/web-mockups/web-settlement-mockup.svg)
+* [web-settings-mockup.svg](assets/web-mockups/web-settings-mockup.svg)
 
 ## Next Web Steps
 

@@ -4,13 +4,13 @@
 
 ### Product
 
-Mimic is a shared finance app for couples and small groups across iOS, Android, and Web.
+Mimic is an installable, responsive Web PWA for couples and small groups.
 
 ### Core Value
 
 * Shared virtual funds without opening a joint bank account
 * Clear separation between contribution, expense, payer, settlement, and correction
-* Mobile-first workflow with Web support
+* Responsive PWA workflow with offline-installable support
 * Settled periods are locked and cannot be edited retroactively
 
 ### Target Users
@@ -616,7 +616,7 @@ flowchart TD
 
 The system follows a request-driven flow:
 
-1. Mobile or Web sends a transaction request
+1. The PWA sends a transaction request
 2. API validates auth and membership
 3. Domain service validates accounting rules
 4. Prisma writes normalized records to PostgreSQL
@@ -626,7 +626,7 @@ The system follows a request-driven flow:
 
 ```mermaid
 flowchart LR
-  UI[Mobile App / Web App] --> API[REST API]
+  UI[Web PWA] --> API[REST API]
   API --> AUTH[Auth Guard]
   API --> GROUP[Group Access Check]
   API --> DOMAIN[Domain Service]
@@ -784,7 +784,7 @@ timeline
   Phase 4 : Dashboard and summary APIs
           : Audit logs
           : Swagger and contract sync
-  Phase 5 : Web and mobile integration
+  Phase 5 : PWA integration
           : End-to-end flows
           : Bug fixing and launch hardening
 ```
@@ -806,4 +806,4 @@ timeline
 * Phase 2: users can create funds and add valid contributions / expenses
 * Phase 3: users can complete settlements and locked records reject mutation
 * Phase 4: fund summary, audit logs, and settlement suggestions are available
-* Phase 5: mobile and web can complete the main workflows against the shared backend
+* Phase 5: the PWA can complete the main workflows against the shared backend

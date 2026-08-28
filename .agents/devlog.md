@@ -520,8 +520,9 @@
 **Scope:** Active repository guidance, READMEs, backend runtime/test/seed configuration, Web documentation, feature map, four current specifications, package metadata, and Prisma schema location.
 **What changed:**
 - Renamed the current PRD, backend map, Web UI specification, and OpenAPI contract to `mimic-*` filenames and updated active brand references.
-- Renamed backend package metadata, local JWT fallbacks, test secrets, demo seed data, and documented local service examples to Mimic.
+- Renamed backend package metadata, test secrets, demo seed data, and documented local service examples to Mimic; replaced runtime JWT fallbacks with required environment validation.
 - Made the PWA feature map authoritative, removed retired-client delivery claims, and recorded missing PWA flows as TODO work.
 - Removed the root Prisma schema copy; `backend/prisma/schema.prisma` is now documented as the only schema source of truth.
+- Corrected current product documentation to describe the PWA-only scope and portable design-asset links.
 **Decisions:** Preserved migrations, historical plans, and prior devlog entries as immutable history; restricted the rename to the active surfaces covered by the naming verifier.
 **Known gaps / follow-ups:** Historical documentation and Git history intentionally retain retired PairFund and client references.

@@ -11,10 +11,10 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 | status | slug | description | PWA entry | backend entry |
 |--------|------|-------------|----------------|---------------|
-| done | user-register | Register with email + password | `—` | `auth.controller.ts POST /auth/register` |
-| done | user-login | Log in and receive access + refresh tokens | `—` | `auth.service.ts login()` |
-| done | user-logout | Sign out and invalidate session | `—` | `auth.controller.ts POST /auth/logout` |
-| done | token-refresh | Auto-refresh access token on expiry | `—` | `auth.controller.ts POST /auth/refresh` |
+| done | user-register | Register through the PWA form and cookie-backed BFF route | `web/src/app/(auth)/register/page.tsx`, `web/src/app/api/auth/register/route.ts` | `auth.controller.ts POST /auth/register` |
+| done | user-login | Log in through the PWA form and receive session cookies from the BFF route | `web/src/app/(auth)/login/page.tsx`, `web/src/app/api/auth/login/route.ts` | `auth.controller.ts POST /auth/login` |
+| done | user-logout | Clear PWA auth cookies and acknowledge backend logout; refresh tokens have no server-side revocation | `web/src/app/api/auth/logout/route.ts` | `auth.controller.ts POST /auth/logout` |
+| done | token-refresh | Exchange a refresh token through the PWA refresh route and redirect expired sessions without a generic interceptor | `web/src/app/api/auth/refresh/route.ts`, `web/src/shared/auth/require-session.ts` | `auth.controller.ts POST /auth/refresh` |
 | done | user-profile-view | View own display name, locale, timezone | `—` | `users.controller.ts GET /me` |
 | done | user-profile-update | Update own profile | `—` | `users.controller.ts PATCH /me` |
 

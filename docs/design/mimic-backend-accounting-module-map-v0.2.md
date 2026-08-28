@@ -2,6 +2,7 @@
 
 Date: 2026-04-07
 Scope: NestJS module, service, and utility mapping for Mimic accounting logic
+
 ## Goal
 
 Map the accounting implementation note into concrete NestJS responsibilities so the backend can be built with clear boundaries and minimal duplication.
