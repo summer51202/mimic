@@ -132,18 +132,55 @@ test("Sentry privacy policy removes address-like frame data and unsafe locations
   for (const value of prohibited) expect(serialized).not.toContain(value);
 });
 
+test("Sentry privacy policy keeps qualified functions and rejects sensitive frame names", async () => {
+  const { sanitizeSentryEvent } = await import("./sentry-privacy");
+  const output = sanitizeSentryEvent({ exception: { values: [{ type: "DomainError", stacktrace: { frames: [
+    { filename: "src/auth/session.ts", function: "AuthService.login", lineno: 1, colno: 1 },
+    { filename: "src/handlers/object.ts", function: "Object.handler", lineno: 2, colno: 1 },
+    { filename: "src/safe_name.ts", function: "$_safe.handler_$", lineno: 3, colno: 1 },
+    { filename: "src/anonymous.ts", function: "<anonymous>", lineno: 4, colno: 1 },
+    { filename: "src/customer-secret.ts", function: "AuthService.login", lineno: 5, colno: 1 },
+    { filename: "src/123/valid.ts", function: "AuthService.login", lineno: 6, colno: 1 },
+    { filename: "src/valid.ts", function: "203.0.113.42", lineno: 7, colno: 1 },
+    { filename: "src/valid.ts", function: "alice@example.test", lineno: 8, colno: 1 },
+    { filename: "src/valid.ts", function: "AuthService.secretLogin", lineno: 9, colno: 1 },
+  ] } }] } });
+  expect(output).toEqual({ exception: { values: [{ type: "DomainError", stacktrace: { frames: [
+    { filename: "src/auth/session.ts", function: "AuthService.login", lineno: 1, colno: 1 },
+    { filename: "src/handlers/object.ts", function: "Object.handler", lineno: 2, colno: 1 },
+    { filename: "src/safe_name.ts", function: "$_safe.handler_$", lineno: 3, colno: 1 },
+    { filename: "src/anonymous.ts", function: "<anonymous>", lineno: 4, colno: 1 },
+  ] } }] } });
+});
+
 test("Sentry privacy policy canonicalizes known Node and browser frame roots", async () => {
   const { sanitizeSentryEvent } = await import("./sentry-privacy");
+  const cwd = process.cwd();
   const frames = [
-    { filename: "/app/dist/src/modules/auth/auth.service.js", function: "saveAuth", lineno: 10, colno: 1 },
-    { filename: "D:\\work\\backend\\dist\\src\\health\\health.service.js", function: "checkHealth", lineno: 20, colno: 2 },
-    { filename: "https://mimic.example/_next/static/chunks/app/foo-abc123.js", function: "renderApp", lineno: 30, colno: 3 },
+    { filename: "/app/.next/server/chunks/auth.service.js", function: "saveAuth", lineno: 10, colno: 1 },
+    { filename: "/app/src/shared/server.ts", function: "load", lineno: 15, colno: 1 },
+    { filename: `${cwd}\\src\\health\\health.service.js`, function: "checkHealth", lineno: 20, colno: 2 },
+    { filename: `${cwd}/.next/server/chunks/local.service.js`, function: "local", lineno: 25, colno: 2 },
+    { filename: `${globalThis.location.origin}/_next/static/chunks/app/foo-abc123.js`, function: "renderApp", lineno: 30, colno: 3 },
   ];
   expect(sanitizeSentryEvent({ exception: { values: [{ type: "DomainError", stacktrace: { frames } }] } })).toEqual({
     exception: { values: [{ type: "DomainError", stacktrace: { frames: [
-      { filename: "src/modules/auth/auth.service.js", function: "saveAuth", lineno: 10, colno: 1 },
+      { filename: "_next/server/chunks/auth.service.js", function: "saveAuth", lineno: 10, colno: 1 },
+      { filename: "src/shared/server.ts", function: "load", lineno: 15, colno: 1 },
       { filename: "src/health/health.service.js", function: "checkHealth", lineno: 20, colno: 2 },
+      { filename: "_next/server/chunks/local.service.js", function: "local", lineno: 25, colno: 2 },
       { filename: "_next/static/chunks/app/foo-abc123.js", function: "renderApp", lineno: 30, colno: 3 },
     ] } }] },
   });
+});
+
+test("Sentry privacy policy drops untrusted paths that merely contain source markers", async () => {
+  const { sanitizeSentryEvent } = await import("./sentry-privacy");
+  const output = sanitizeSentryEvent({ exception: { values: [{ type: "DomainError", stacktrace: { frames: [
+    { filename: "/tmp/customer/src/alice-secret/note.js", function: "AuthService.login", lineno: 1, colno: 1 },
+    { filename: "https://third-party.example/src/alice-secret/note.js", function: "Object.handler", lineno: 2, colno: 2 },
+    { filename: "/_next/static/chunks/app/raw-path.js", function: "renderApp", lineno: 3, colno: 3 },
+  ] } }] } });
+  expect(output).toEqual({ exception: { values: [{ type: "DomainError" }] } });
+  expect(JSON.stringify(output)).not.toContain("alice-secret");
 });

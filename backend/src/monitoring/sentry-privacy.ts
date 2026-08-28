@@ -74,6 +74,7 @@ function isSafeProjectFilename(value: string): boolean {
     !/[?@#%\\:]/.test(value) &&
     !value.includes('..') &&
     !/(?:^|\/)(?:home|users?|private|secrets?)(?:\/|$)/i.test(value) &&
+    !/(?:^|\/)[^/]*(?:token|secret|password|authorization|cookie|api[-_]?key)[^/]*(?:\/|$)/i.test(value) &&
     !/\b(?:\d{1,3}\.){3}\d{1,3}\b/.test(value) &&
     !value.split('/').some((segment) => /^\d+$/.test(segment))
   );
@@ -81,29 +82,18 @@ function isSafeProjectFilename(value: string): boolean {
 
 function canonicalizeFilename(value: unknown): string | undefined {
   if (typeof value !== 'string' || value.length > 512) return undefined;
-  let path = value.replace(/\\/g, '/');
-  if (/^https?:\/\//i.test(path)) {
-    try {
-      const url = new URL(path);
-      if (url.username || url.password || url.search || url.hash) return undefined;
-      path = url.pathname;
-    } catch {
-      return undefined;
+  const path = value.replace(/\\/g, '/');
+  const cwd = process.cwd().replace(/\\/g, '/');
+  const roots = ['/app/dist/src/', '/app/src/', `${cwd}/dist/src/`, `${cwd}/src/`];
+  let candidate: string | undefined;
+  for (const root of roots) {
+    if (path.startsWith(root)) {
+      candidate = `src/${path.slice(root.length)}`;
+      break;
     }
   }
-
-  let candidate: string | undefined;
-  const nextStatic = path.match(/(?:^|\/)\_next\/static\/(.+)$/);
-  const distSource = path.match(/(?:^|\/)dist\/src\/(.+)$/);
-  const source = path.match(/(?:^|\/)src\/(.+)$/);
-  const nextServer = path.match(/(?:^|\/)\.next\/server\/(.+)$/);
-  const webpackSource = path.match(/^webpack:\/\/[^/]+\/(?:\.\/)?src\/(.+)$/);
-  if (nextStatic) candidate = `_next/static/${nextStatic[1]}`;
-  else if (distSource) candidate = `src/${distSource[1]}`;
-  else if (source) candidate = `src/${source[1]}`;
-  else if (nextServer) candidate = `_next/server/${nextServer[1]}`;
-  else if (webpackSource) candidate = `src/${webpackSource[1]}`;
-  else if (!path.includes('/') && !path.includes('\\')) candidate = path;
+  if (!candidate && path.startsWith('src/')) candidate = path;
+  if (!candidate && !path.includes('/')) candidate = path;
 
   return candidate && isSafeProjectFilename(candidate) ? candidate : undefined;
 }
@@ -115,7 +105,7 @@ function isSafeSourceLocation(value: unknown): value is number {
 function isSafeFrameFunction(value: unknown): value is string {
   return (
     typeof value === 'string' &&
-    FRAME_FUNCTION.test(value) &&
+    (value === '<anonymous>' || value.split('.').every((segment) => FRAME_FUNCTION.test(segment))) &&
     !/(?:token|secret|password|authorization|cookie|api[-_]?key)/i.test(value)
   );
 }

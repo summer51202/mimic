@@ -4,12 +4,12 @@ NestJS API for the mimic Web PWA.
 
 ## Monitoring privacy
 
-Sentry is optional and developer-only: set `MIMIC_SENTRY_DSN` to enable it.
-`MIMIC_ENVIRONMENT`, `MIMIC_BACKEND_REVISION`, and the bounded
-`MIMIC_SENTRY_TRACES_SAMPLE_RATE` (0..1) add safe deployment diagnostics. Every
-event is rebuilt from an allowlist: no request bodies, headers, cookies, query
-strings, IP/email, messages, financial text/amounts, breadcrumbs, contexts, or
-exception values are sent. Session Replay and local-variable capture are off.
+Sentry is optional and error-only: set `MIMIC_SENTRY_DSN` to enable it.
+`MIMIC_ENVIRONMENT` and `MIMIC_BACKEND_REVISION` provide bounded deployment
+metadata. Events are rebuilt from an allowlist: no request bodies, headers,
+cookies, query strings, IP/email, messages, financial text/amounts,
+breadcrumbs, contexts, exception values, PII, or attachments are sent. Traces,
+replay, local-variable capture, and logs are disabled.
 
 ## Current Local Readiness
 

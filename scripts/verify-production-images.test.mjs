@@ -114,6 +114,8 @@ test("web production image uses Next standalone output without secrets", () => {
   assertContains(dockerfile, /^ARG MIMIC_API_BASE_URL$/m, "web accepts API URL at build time");
   assertContains(dockerfile, /^ARG NEXT_PUBLIC_MIMIC_SENTRY_DSN$/m, "web accepts public Sentry DSN at build time");
   assertContains(dockerfile, /^ARG NEXT_PUBLIC_MIMIC_ENVIRONMENT$/m, "web accepts public environment at build time");
+  assertContains(dockerfile, /^ARG SENTRY_ORG$/m, "web accepts non-secret Sentry organization at build time");
+  assertContains(dockerfile, /^ARG SENTRY_PROJECT$/m, "web accepts non-secret Sentry project at build time");
   assertContains(dockerfile, /RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN,required=false/, "web mounts the optional Sentry token as a BuildKit secret");
   assertContains(dockerfile, /\/run\/secrets\/SENTRY_AUTH_TOKEN/, "web reads the token only from the BuildKit secret path");
   assertContains(dockerfile, /^ENV NODE_ENV=production$/m, "web runtime sets production mode");
@@ -126,6 +128,8 @@ test("web production image uses Next standalone output without secrets", () => {
   assertContains(dockerfile, /^CMD \["node", "server\.js"\]$/m, "web has the expected start command");
   assertContains(nextConfig, /output:\s*["']standalone["']/, "Next emits standalone output");
   assertContains(nextConfig, /withSerwistInit/, "Serwist wrapper remains configured");
+  assertContains(nextConfig, /org:\s*process\.env\.SENTRY_ORG/, "Sentry source-map upload reads its organization from build configuration");
+  assertContains(nextConfig, /project:\s*process\.env\.SENTRY_PROJECT/, "Sentry source-map upload reads its project from build configuration");
 
   for (const ignored of [".env*", ".next", "coverage", "node_modules", "playwright-report", "test-results", "*.log", ".session"]) {
     assert.ok(hasLine(dockerignore, ignored), `web ignores ${ignored}`);
@@ -133,5 +137,6 @@ test("web production image uses Next standalone output without secrets", () => {
 
   assert.doesNotMatch(dockerfile, /(JWT_(?:ACCESS|REFRESH)_SECRET|DATABASE_URL)\s*=\s*[^$\s]/, "web Dockerfile has no server secret literal");
   assert.doesNotMatch(dockerfile, /^ARG SENTRY_AUTH_TOKEN$/m, "web does not accept a Sentry token as an ARG");
+  assert.doesNotMatch(dockerfile, /^ENV SENTRY_AUTH_TOKEN/m, "web does not store a Sentry token in the image environment");
   assert.doesNotMatch(dockerfile, /https?:\/\/[^\s"']+/, "web Dockerfile has no baked-in endpoint literal");
 });

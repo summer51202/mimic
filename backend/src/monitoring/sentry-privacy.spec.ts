@@ -244,20 +244,77 @@ describe('Sentry privacy policy', () => {
     for (const value of prohibited) expect(serialized).not.toContain(value);
   });
 
+  it('keeps only qualified safe frame functions and non-sensitive project filenames', () => {
+    const { sanitizeSentryEvent } = sanitizer();
+    const output = sanitizeSentryEvent({
+      exception: {
+        values: [{
+          type: 'DomainError',
+          stacktrace: {
+            frames: [
+              { filename: 'src/auth/session.ts', function: 'AuthService.login', lineno: 1, colno: 1 },
+              { filename: 'src/handlers/object.ts', function: 'Object.handler', lineno: 2, colno: 1 },
+              { filename: 'src/safe_name.ts', function: '$_safe.handler_$', lineno: 3, colno: 1 },
+              { filename: 'src/anonymous.ts', function: '<anonymous>', lineno: 4, colno: 1 },
+              { filename: 'src/alice@example.test.ts', function: 'AuthService.login', lineno: 5, colno: 1 },
+              { filename: 'src/203.0.113.42.ts', function: 'AuthService.login', lineno: 6, colno: 1 },
+              { filename: 'src/customer-secret.ts', function: 'AuthService.login', lineno: 7, colno: 1 },
+              { filename: 'src/123/valid.ts', function: 'AuthService.login', lineno: 8, colno: 1 },
+              { filename: 'src/../private.ts', function: 'AuthService.login', lineno: 9, colno: 1 },
+              { filename: '/app/src/C:/customer.ts', function: 'AuthService.login', lineno: 10, colno: 1 },
+              { filename: 'src/valid.ts', function: '203.0.113.42', lineno: 11, colno: 1 },
+              { filename: 'src/valid.ts', function: 'alice@example.test', lineno: 12, colno: 1 },
+              { filename: 'src/valid.ts', function: 'AuthService.secretLogin', lineno: 13, colno: 1 },
+            ],
+          },
+        }],
+      },
+    });
+
+    expect(output).toEqual({
+      exception: {
+        values: [{
+          type: 'DomainError',
+          stacktrace: {
+            frames: [
+              { filename: 'src/auth/session.ts', function: 'AuthService.login', lineno: 1, colno: 1 },
+              { filename: 'src/handlers/object.ts', function: 'Object.handler', lineno: 2, colno: 1 },
+              { filename: 'src/safe_name.ts', function: '$_safe.handler_$', lineno: 3, colno: 1 },
+              { filename: 'src/anonymous.ts', function: '<anonymous>', lineno: 4, colno: 1 },
+            ],
+          },
+        }],
+      },
+    });
+  });
+
   it('canonicalizes only known runtime frame prefixes', () => {
     const { sanitizeSentryEvent } = sanitizer();
+    const cwd = process.cwd();
     const frames = [
       { filename: '/app/dist/src/modules/auth/auth.service.js', function: 'saveAuth', lineno: 10, colno: 1 },
-      { filename: 'D:\\work\\backend\\dist\\src\\health\\health.service.js', function: 'checkHealth', lineno: 20, colno: 2 },
-      { filename: 'https://mimic.example/_next/static/chunks/app/foo-abc123.js', function: 'renderApp', lineno: 30, colno: 3 },
+      { filename: `${cwd}\\dist\\src\\health\\health.service.js`, function: 'checkHealth', lineno: 20, colno: 2 },
+      { filename: `${cwd}/src/health/ready.service.js`, function: 'ready', lineno: 30, colno: 3 },
       { filename: '/tmp/customer-secret.js', function: 'bad', lineno: 1, colno: 1 },
+      { filename: 'https://mimic.example/_next/static/chunks/app/foo-abc123.js', function: 'renderApp', lineno: 40, colno: 3 },
     ];
     expect(sanitizeSentryEvent({ exception: { values: [{ type: 'DomainError', stacktrace: { frames } }] } })).toEqual({
       exception: { values: [{ type: 'DomainError', stacktrace: { frames: [
         { filename: 'src/modules/auth/auth.service.js', function: 'saveAuth', lineno: 10, colno: 1 },
         { filename: 'src/health/health.service.js', function: 'checkHealth', lineno: 20, colno: 2 },
-        { filename: '_next/static/chunks/app/foo-abc123.js', function: 'renderApp', lineno: 30, colno: 3 },
+        { filename: 'src/health/ready.service.js', function: 'ready', lineno: 30, colno: 3 },
       ] } }] },
     });
+  });
+
+  it('drops frame paths that merely contain a trusted marker', () => {
+    const { sanitizeSentryEvent } = sanitizer();
+    const prohibited = ['alice-secret', 'third-party.example'];
+    const output = sanitizeSentryEvent({ exception: { values: [{ type: 'DomainError', stacktrace: { frames: [
+      { filename: '/tmp/customer/src/alice-secret/note.js', function: 'AuthService.login', lineno: 1, colno: 1 },
+      { filename: 'https://third-party.example/src/alice-secret/note.js', function: 'Object.handler', lineno: 2, colno: 2 },
+    ] } }] } });
+    expect(output).toEqual({ exception: { values: [{ type: 'DomainError' }] } });
+    for (const value of prohibited) expect(JSON.stringify(output)).not.toContain(value);
   });
 });

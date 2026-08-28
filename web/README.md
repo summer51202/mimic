@@ -6,12 +6,18 @@ shared-adventure brand system.
 ## Monitoring privacy
 
 Browser reporting is optional through `NEXT_PUBLIC_MIMIC_SENTRY_DSN`; server and
-edge reporting use the private `MIMIC_SENTRY_DSN`. `MIMIC_ENVIRONMENT`,
-`MIMIC_WEB_REVISION`, and the bounded trace-rate variables in `.env.example`
-provide deployment diagnostics. Never expose a server DSN or `SENTRY_AUTH_TOKEN`
-as `NEXT_PUBLIC_*`. Events are reconstructed from an allowlist and exclude
-request/cookie/query data, user PII, messages, financial data, breadcrumbs,
-contexts, and exception values. Replay is disabled.
+edge reporting use the private `MIMIC_SENTRY_DSN`. Browser deployment metadata
+uses `NEXT_PUBLIC_MIMIC_ENVIRONMENT`; server and edge use `MIMIC_ENVIRONMENT`
+and `MIMIC_WEB_REVISION`. Events are error-only and reconstructed from an
+allowlist: request/cookie/query data, user PII, messages, financial data,
+breadcrumbs, contexts, exception values, and attachments are excluded. Traces,
+replay, local-variable capture, and logs are disabled.
+
+Source-map upload accepts the non-secret build arguments `SENTRY_ORG` and
+`SENTRY_PROJECT`. If upload credentials are needed, provide
+`SENTRY_AUTH_TOKEN` only as an optional BuildKit secret mount, for example
+`docker build --secret id=SENTRY_AUTH_TOKEN,src=./sentry-auth-token ...`; never
+pass it as a Docker `ARG`, `ENV`, or `NEXT_PUBLIC_*` value.
 
 ## Local Commands
 

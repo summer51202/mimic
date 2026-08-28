@@ -51,29 +51,32 @@ function isSafeDnsHostname(value: string): boolean {
 function isSafeProjectFilename(value: string): boolean {
   return typeof value === "string" && PROJECT_FILENAME.test(value) && !/[?@#%\\:]/.test(value) &&
     !value.includes("..") && !/(?:^|\/)(?:home|users?|private|secrets?)(?:\/|$)/i.test(value) &&
+    !/(?:^|\/)[^/]*(?:token|secret|password|authorization|cookie|api[-_]?key)[^/]*(?:\/|$)/i.test(value) &&
     !/\b(?:\d{1,3}\.){3}\d{1,3}\b/.test(value) && !value.split("/").some((segment) => /^\d+$/.test(segment));
 }
 
 function canonicalizeFilename(value: unknown): string | undefined {
   if (typeof value !== "string" || value.length > 512) return undefined;
-  let path = value.replace(/\\/g, "/");
+  const path = value.replace(/\\/g, "/");
+  let candidate: string | undefined;
   if (/^https?:\/\//i.test(path)) {
     try {
       const url = new URL(path);
-      if (url.username || url.password || url.search || url.hash) return undefined;
-      path = url.pathname;
+      const locationOrigin = typeof globalThis.location === "undefined" ? undefined : globalThis.location.origin;
+      if (
+        url.username || url.password || url.search || url.hash ||
+        !locationOrigin || url.origin !== locationOrigin || !url.pathname.startsWith("/_next/static/chunks/")
+      ) return undefined;
+      candidate = url.pathname.slice(1);
     } catch {
       return undefined;
     }
   }
-  const nextStatic = path.match(/(?:^|\/)\_next\/static\/(.+)$/);
-  const distSource = path.match(/(?:^|\/)dist\/src\/(.+)$/);
-  const source = path.match(/(?:^|\/)src\/(.+)$/);
-  const nextServer = path.match(/(?:^|\/)\.next\/server\/(.+)$/);
-  const webpackSource = path.match(/^webpack:\/\/[^/]+\/(?:\.\/)?src\/(.+)$/);
-  const candidate = nextStatic ? `_next/static/${nextStatic[1]}` : distSource ? `src/${distSource[1]}` :
-    source ? `src/${source[1]}` : nextServer ? `_next/server/${nextServer[1]}` :
-      webpackSource ? `src/${webpackSource[1]}` : (!path.includes("/") && !path.includes("\\") ? path : undefined);
+  const cwd = typeof process === "undefined" ? "" : process.cwd().replace(/\\/g, "/");
+  const roots = ["/app/.next/server/", "/app/src/", ...(cwd ? [`${cwd}/.next/server/`, `${cwd}/src/`] : [])];
+  for (const root of roots) if (!candidate && path.startsWith(root)) { candidate = root.includes(".next/server") ? `_next/server/${path.slice(root.length)}` : `src/${path.slice(root.length)}`; break; }
+  if (!candidate && path.startsWith("src/")) candidate = path;
+  if (!candidate && !path.includes("/")) candidate = path;
   return candidate && isSafeProjectFilename(candidate) ? candidate : undefined;
 }
 
@@ -82,7 +85,7 @@ function isSafeSourceLocation(value: unknown): value is number {
 }
 
 function isSafeFrameFunction(value: unknown): value is string {
-  return typeof value === "string" && FRAME_FUNCTION.test(value) &&
+  return typeof value === "string" && (value === "<anonymous>" || value.split(".").every((segment) => FRAME_FUNCTION.test(segment))) &&
     !/(?:token|secret|password|authorization|cookie|api[-_]?key)/i.test(value);
 }
 

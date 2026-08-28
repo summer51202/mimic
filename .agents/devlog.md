@@ -565,5 +565,8 @@
 - Replaced the deprecated Sentry build logger option with debug-log tree shaking and exported the client router-transition hook required by Sentry v10.
 - Switched Closed Beta monitoring to error-only telemetry: requests retain only methods, transactions are dropped, attachments are cleared, and recognized runtime stack paths are canonicalized without host directories. The Web image accepts an optional BuildKit `SENTRY_AUTH_TOKEN` secret mount for source maps and falls back safely without one.
 - Centralized each package's Sentry hooks in a tested factory so every init surface shares attachment clearing and transaction suppression; added behavior coverage for both App Router error boundaries.
+- Restricted frame canonicalization to exact Docker and normalized current-worktree roots, rejecting marker-only absolute paths and third-party URLs; added qualified-function and sensitive-filename regression coverage.
+- Added non-secret `SENTRY_ORG`/`SENTRY_PROJECT` build configuration for source-map upload while keeping the optional auth token confined to the BuildKit secret mount.
+- Corrected monitoring documentation to describe error-only telemetry and the supported DSN, environment, revision, and build inputs.
 **Decisions:** Preserved only the Sentry-required event type discriminator alongside the constructed allowlist; it is constant metadata rather than user data.
 **Known gaps / follow-ups:** Linux production-image execution remains deferred because Docker is unavailable on this host; static image coverage includes the Sentry configuration.

@@ -56,6 +56,8 @@ const withSerwist = withSerwistInit({
 });
 
 export default withSentryConfig(withSerwist(nextConfig), {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
   silent: true,
   telemetry: false,
   webpack: {
