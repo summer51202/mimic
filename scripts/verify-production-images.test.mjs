@@ -15,6 +15,26 @@ function hasLine(contents, line) {
   return new RegExp(`^\\s*${escapedLine}\\s*$`, "m").test(contents);
 }
 
+function ignoredPatterns(contents) {
+  return new Set(
+    contents
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith("#")),
+  );
+}
+
+function assertIgnored(patterns, pattern, context) {
+  assert.ok(patterns.has(pattern), `${context} ignores ${pattern}`);
+}
+
+function assertEnvironmentFilesIgnored(patterns, context) {
+  assert.ok(
+    [".env", ".env*", ".env.*"].some((pattern) => patterns.has(pattern)),
+    `${context} ignores .env files`,
+  );
+}
+
 function assertContains(contents, pattern, description) {
   assert.match(contents, pattern, description);
 }
@@ -45,6 +65,41 @@ test("backend production image has the Prisma runtime contract", () => {
   }
   assert.equal(hasLine(dockerignore, "prisma"), false, "backend build context keeps Prisma schema");
   assert.equal(hasLine(dockerignore, "src"), false, "backend build context keeps source");
+});
+
+test("Docker build contexts exclude secrets, VCS data, and generated local output", () => {
+  const backendPatterns = ignoredPatterns(read("backend/.dockerignore"));
+  const webPatterns = ignoredPatterns(read("web/.dockerignore"));
+
+  for (const [patterns, context] of [
+    [backendPatterns, "backend context"],
+    [webPatterns, "web context"],
+  ]) {
+    assertIgnored(patterns, ".git", context);
+    assertIgnored(patterns, ".npmrc", context);
+    assertEnvironmentFilesIgnored(patterns, context);
+    assertIgnored(patterns, "**/*.pem", context);
+    assertIgnored(patterns, "**/*.tsbuildinfo", context);
+  }
+
+  for (const pattern of [".cache", "coverage", "dist", "node_modules", "test", "logs", ".session"]) {
+    assertIgnored(backendPatterns, pattern, "backend context");
+  }
+
+  for (const pattern of [
+    "public/sw.js",
+    ".vercel",
+    "out",
+    "build",
+    ".next",
+    "node_modules",
+    "playwright-report",
+    "test-results",
+    "coverage",
+    ".session",
+  ]) {
+    assertIgnored(webPatterns, pattern, "web context");
+  }
 });
 
 test("web production image uses Next standalone output without secrets", () => {

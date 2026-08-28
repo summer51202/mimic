@@ -548,5 +548,6 @@
 - Moved the Prisma CLI to runtime dependencies, added `prisma:migrate:deploy`, and regenerated the Backend lockfile metadata.
 - Preserved the generated Prisma client/engine directory in the Backend runtime image and configured Next standalone output for the Web image.
 - Added Docker context exclusions and a Node static contract test covering image stages, commands, artifacts, ignores, secrets, Prisma, and standalone output.
+- Hardened both Docker contexts against VCS metadata, `.npmrc`, environment/key files, TypeScript build state, and generated local build caches; the Web context also excludes generated `public/sw.js`.
 **Decisions:** The Backend runtime copies `.prisma` from the build stage after `npm ci --omit=dev` so generated client engines are explicit rather than depending only on install-hook behavior.
 **Known gaps / follow-ups:** This Windows host has no Docker-compatible engine, so `docker build`/container-runtime verification remains deferred to a Docker-capable environment or Railway remote builds.
