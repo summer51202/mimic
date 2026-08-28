@@ -1,8 +1,9 @@
 import * as Sentry from "@sentry/nextjs";
-import { sanitizeSentryEvent } from "./src/shared/monitoring/sentry-privacy";
+import { createSentryEventHooks } from "./src/shared/monitoring/sentry-event-hooks";
 
 const dsn = process.env.NEXT_PUBLIC_MIMIC_SENTRY_DSN?.trim();
 const environment = process.env.NEXT_PUBLIC_MIMIC_ENVIRONMENT?.trim();
+const eventHooks = createSentryEventHooks();
 
 Sentry.init({
   dsn,
@@ -15,13 +16,8 @@ Sentry.init({
   profilesSampleRate: 0,
   replaysSessionSampleRate: 0,
   replaysOnErrorSampleRate: 0,
-  beforeSend(event: unknown, hint: { attachments?: unknown[] }) {
-    hint.attachments = [];
-    return { ...sanitizeSentryEvent(event), type: undefined };
-  },
-  beforeSendTransaction() {
-    return null;
-  },
+  beforeSend: eventHooks.beforeSend,
+  beforeSendTransaction: eventHooks.beforeSendTransaction,
 });
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;

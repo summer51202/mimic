@@ -1,9 +1,10 @@
 import * as Sentry from '@sentry/nestjs';
-import { sanitizeSentryEvent } from './monitoring/sentry-privacy';
+import { createSentryEventHooks } from './monitoring/sentry-event-hooks';
 
 const dsn = process.env.MIMIC_SENTRY_DSN?.trim();
 const environment = process.env.MIMIC_ENVIRONMENT?.trim();
 const release = process.env.MIMIC_BACKEND_REVISION?.trim();
+const eventHooks = createSentryEventHooks();
 
 Sentry.init({
   dsn,
@@ -16,11 +17,6 @@ Sentry.init({
   enableLogs: false,
   tracesSampleRate: 0,
   profilesSampleRate: 0,
-  beforeSend(event, hint: { attachments?: unknown[] }) {
-    hint.attachments = [];
-    return { ...sanitizeSentryEvent(event), type: undefined };
-  },
-  beforeSendTransaction() {
-    return null;
-  },
+  beforeSend: eventHooks.beforeSend,
+  beforeSendTransaction: eventHooks.beforeSendTransaction,
 });

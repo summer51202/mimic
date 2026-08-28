@@ -564,5 +564,6 @@
 - Hardened the allowlist after review: request URLs now retain only verified DNS origins, route tags require explicit operational routes or parameterized templates, and event IDs, releases, environments, pseudonyms, diagnostic IDs, and frame metadata each use independent validators.
 - Replaced the deprecated Sentry build logger option with debug-log tree shaking and exported the client router-transition hook required by Sentry v10.
 - Switched Closed Beta monitoring to error-only telemetry: requests retain only methods, transactions are dropped, attachments are cleared, and recognized runtime stack paths are canonicalized without host directories. The Web image accepts an optional BuildKit `SENTRY_AUTH_TOKEN` secret mount for source maps and falls back safely without one.
+- Centralized each package's Sentry hooks in a tested factory so every init surface shares attachment clearing and transaction suppression; added behavior coverage for both App Router error boundaries.
 **Decisions:** Preserved only the Sentry-required event type discriminator alongside the constructed allowlist; it is constant metadata rather than user data.
 **Known gaps / follow-ups:** Linux production-image execution remains deferred because Docker is unavailable on this host; static image coverage includes the Sentry configuration.

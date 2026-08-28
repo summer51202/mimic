@@ -23,6 +23,7 @@ const {
   listMembersMock,
   notFoundMock,
   refreshMock,
+  captureExceptionMock,
 } = vi.hoisted(() => ({
   cookiesMock: vi.fn(),
   getFundSummaryMock: vi.fn(),
@@ -35,7 +36,10 @@ const {
     throw new Error("NEXT_NOT_FOUND");
   }),
   refreshMock: vi.fn(),
+  captureExceptionMock: vi.fn(),
 }));
+
+vi.mock("@sentry/nextjs", () => ({ captureException: captureExceptionMock }));
 
 vi.mock("next/navigation", () => ({
   notFound: notFoundMock,
@@ -92,6 +96,7 @@ beforeEach(() => {
     throw new Error("NEXT_NOT_FOUND");
   });
   refreshMock.mockReset();
+  captureExceptionMock.mockReset();
   cookiesMock.mockResolvedValue({ get: vi.fn() });
 });
 
@@ -139,6 +144,9 @@ describe("authenticated route boundaries", () => {
     await user.click(screen.getByRole("button", { name: "Retry" }));
 
     expect(reset).toHaveBeenCalledTimes(1);
+    expect(captureExceptionMock).toHaveBeenCalledTimes(1);
+    expect(captureExceptionMock).toHaveBeenCalledWith(expect.any(Error));
+    expect(screen.queryByText("boom")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Return to overview" })).toHaveAttribute(
       "href",
       "/app",
