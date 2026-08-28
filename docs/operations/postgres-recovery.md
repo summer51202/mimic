@@ -25,13 +25,15 @@ For PITR recovery, select the timestamp and click **Restore to this moment**. Ra
 
 ## PostgreSQL version policy
 
-Logical backup and restore fail closed unless source server, backup client, signed-manifest major, target server, and restore client all share one PostgreSQL major. The default image build pins major 16:
+Logical backup and restore fail closed unless source server, backup client, signed-manifest major, target server, and restore client all share one PostgreSQL major. The default image fixes PostgreSQL client major 16 and Alpine release 3.22.2:
 
 ```sh
 docker build --build-arg POSTGRES_MAJOR=16 -f ops/backup/Dockerfile ops/backup -t mimic-backup:pg16
 ```
 
-If Railway changes the database major, build and verify a matching image first; never use a newer `pg_dump` merely because it might be backward-compatible. Record `SHOW server_version_num`, `pg_dump --version`, and `pg_restore --version` in drill evidence.
+If Railway changes the database major, build and verify a matching image first; never use a newer `pg_dump` merely because it might be backward-compatible. Alpine package patch revisions are resolved when the image builds, so record the resulting image digest/SBOM as well as `SHOW server_version_num`, `pg_dump --version`, and `pg_restore --version` in drill evidence. Do not describe package revisions as pinned unless the package repository and versions are locked separately.
+
+Repository tests use fake PostgreSQL clients to prove argument, environment, ordering, and service-file semantics. They do not prove libpq parsing. A Docker/Railway gate must therefore build the image and run a real `psql --dbname=service=mimic_backup` connection plus a real scratch `pg_restore --dbname=service=mimic_restore` drill using the sealed discrete variables before Closed Beta.
 
 ## Encryption and provenance keys
 
@@ -100,22 +102,48 @@ Each backup key contains UTC time plus 128 random bits. The encrypted dump, chec
 
 Deploy `ops/backup/Dockerfile` as Production service `mimic-backup-job` and schedule `0 3 * * 0` (Sunday 03:00 UTC). Configure:
 
-- `DATABASE_URL` referencing Production PostgreSQL.
+- Add these Railway reference variables, replacing `ProductionPostgres` only if the Production database service has a different exact service name:
+
+```dotenv
+MIMIC_BACKUP_DATABASE_HOST=${{ProductionPostgres.PGHOST}}
+MIMIC_BACKUP_DATABASE_PORT=${{ProductionPostgres.PGPORT}}
+MIMIC_BACKUP_DATABASE_USER=${{ProductionPostgres.PGUSER}}
+MIMIC_BACKUP_DATABASE_PASSWORD=${{ProductionPostgres.PGPASSWORD}}
+MIMIC_BACKUP_DATABASE_NAME=${{ProductionPostgres.PGDATABASE}}
+MIMIC_BACKUP_DATABASE_SSL_MODE=require
+```
+
+- `MIMIC_BACKUP_DATABASE_USER` must be a dedicated login with only the connection and read privileges needed by `pg_dump`; it must not own Production objects or hold write/DDL/role-management privileges.
 - `MIMIC_POSTGRES_CLIENT_MAJOR`, `MIMIC_EXPECTED_MIGRATION`, and `MIMIC_BACKUP_RELEASE` matching the deployed release.
 - `MIMIC_BACKUP_AGE_RECIPIENT` and backup-only `MIMIC_BACKUP_MINISIGN_SECRET_KEY`.
 - `MIMIC_BACKUP_S3_ENDPOINT`, `MIMIC_BACKUP_S3_BUCKET`, `AWS_DEFAULT_REGION`, and the write-only `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`; add `AWS_SESSION_TOKEN` only for temporary credentials.
 
-The script writes the database URL to a mode-`0600` temporary [libpq service file](https://www.postgresql.org/docs/current/libpq-pgservice.html), immediately unsets `DATABASE_URL`, and scopes `PGSERVICEFILE` only to each database command. Process arguments contain only `service=mimic_backup`; the exit trap removes the service file. It verifies that the latest successfully applied source migration equals `MIMIC_EXPECTED_MIGRATION`, encrypts before upload, deletes plaintext immediately, signs a manifest containing object/hash/version/migration/release identity, and publishes the signature last. Do not enable shell tracing. A successful log contains only `backup_uploaded=<object key>`.
+The script validates each discrete connection field against control-character/line injection, writes `host`, `port`, `user`, `password`, `dbname`, and `sslmode` separately to a mode-`0600` temporary [libpq service file](https://www.postgresql.org/docs/current/libpq-pgservice.html), and immediately unsets the connection variables. It scopes `PGSERVICEFILE` only to each database command; process arguments contain only `service=mimic_backup`, and the exit trap removes the file. The signing key is written and unset before database children run. AWS credentials are unset globally and supplied only to each `aws` invocation. The script verifies the latest source migration, encrypts before upload, deletes plaintext immediately, signs the manifest, and publishes the signature last. Do not enable shell tracing. A successful log contains only `backup_uploaded=<object key>`.
 
 ## Provision an independent logical-restore target
 
 This sentinel procedure is only for the weekly logical restore, not PITR.
 
-1. Create a new PostgreSQL service in **Staging**, never Production. Obtain that new service's administrative and scratch connection values through the approved vault/injection path. Create a database whose name matches `mimic_*_restore_drill` without placing a URL in process arguments:
+1. Create a new PostgreSQL service in **Staging**, never Production. On the operator runner, wire its exact Railway service variables (replace `ScratchPostgres` only if its service name differs), then create a database whose literal name matches `mimic_*_restore_drill`:
+
+```dotenv
+MIMIC_RESTORE_DATABASE_HOST=${{ScratchPostgres.PGHOST}}
+MIMIC_RESTORE_DATABASE_PORT=${{ScratchPostgres.PGPORT}}
+MIMIC_RESTORE_DATABASE_USER=${{ScratchPostgres.PGUSER}}
+MIMIC_RESTORE_DATABASE_PASSWORD=${{ScratchPostgres.PGPASSWORD}}
+MIMIC_RESTORE_ADMIN_DATABASE_NAME=${{ScratchPostgres.PGDATABASE}}
+MIMIC_RESTORE_DATABASE_NAME=mimic_weekly_restore_drill
+MIMIC_RESTORE_DATABASE_SSL_MODE=require
+```
+
+The scratch restore login may own the new drill database so `--clean` can replace its application schema, but it must have no access to Production and no Railway administration credentials. The backup database login must never be reused here.
 
 ```sh
-PGDATABASE="$SCRATCH_ADMIN_URL" createdb "$MIMIC_RESTORE_DATABASE_NAME"
-unset SCRATCH_ADMIN_URL
+PGHOST="$MIMIC_RESTORE_DATABASE_HOST" PGPORT="$MIMIC_RESTORE_DATABASE_PORT" \
+PGUSER="$MIMIC_RESTORE_DATABASE_USER" PGPASSWORD="$MIMIC_RESTORE_DATABASE_PASSWORD" \
+PGDATABASE="$MIMIC_RESTORE_ADMIN_DATABASE_NAME" PGSSLMODE="$MIMIC_RESTORE_DATABASE_SSL_MODE" \
+createdb "$MIMIC_RESTORE_DATABASE_NAME"
+unset MIMIC_RESTORE_ADMIN_DATABASE_NAME
 ```
 2. Independently query Production once with `SELECT system_identifier::text FROM pg_control_system();` and store the value as protected recovery metadata. Do not supply a Production URL to the restore process.
 3. Generate, validate, export, and display a new 128-bit nonce on the operator host:
@@ -132,14 +160,16 @@ printf 'MIMIC_RESTORE_SENTINEL_NONCE=%s\n' "$MIMIC_RESTORE_SENTINEL_NONCE"
 
 The nonce is not a decryption key, but it is independent target-identity evidence. The approving operator must copy the displayed value into the protected drill record before provisioning, separately from the scratch service configuration. Do not regenerate it after provisioning; supply that recorded value to the restore environment.
 
-4. Scope the scratch URL to the provisioning command, then remove it from the operator shell:
+4. Scope the discrete scratch fields to the provisioning command:
 
 ```sh
-PGDATABASE="$MIMIC_RESTORE_DATABASE_URL" psql --set=ON_ERROR_STOP=1 \
+PGHOST="$MIMIC_RESTORE_DATABASE_HOST" PGPORT="$MIMIC_RESTORE_DATABASE_PORT" \
+PGUSER="$MIMIC_RESTORE_DATABASE_USER" PGPASSWORD="$MIMIC_RESTORE_DATABASE_PASSWORD" \
+PGDATABASE="$MIMIC_RESTORE_DATABASE_NAME" PGSSLMODE="$MIMIC_RESTORE_DATABASE_SSL_MODE" \
+psql --set=ON_ERROR_STOP=1 \
   --set=scratch_database="$MIMIC_RESTORE_DATABASE_NAME" \
   --set=sentinel_nonce="$MIMIC_RESTORE_SENTINEL_NONCE" \
   --file=ops/backup/provision-scratch.sql
-unset MIMIC_RESTORE_DATABASE_URL
 ```
 
 The SQL verifies the connected name, writes `mimic-restore-scratch:<nonce>` as the database comment outside the restored application schema, and prints the scratch cluster system identifier. The approving operator records the nonce and system identifier independently. Restore requires both values and rejects the recorded Production system identifier even if names or confirmation variables are forged.
@@ -151,7 +181,7 @@ Select an object matching `weekly/mimic-YYYYMMDDTHHMMSSZ-<32 lowercase hex>.dump
 - S3 endpoint/bucket and the exact `MIMIC_BACKUP_OBJECT`.
 - The read-only restore principal's AWS variables.
 - `MIMIC_BACKUP_MINISIGN_PUBLIC_KEY`.
-- Scratch-only `MIMIC_RESTORE_DATABASE_URL`, `MIMIC_RESTORE_DATABASE_NAME`, `MIMIC_RESTORE_ENVIRONMENT=staging-scratch`, and `MIMIC_RESTORE_CONFIRM=RESTORE-INTO-SCRATCH`.
+- Scratch-only `MIMIC_RESTORE_DATABASE_HOST`, `MIMIC_RESTORE_DATABASE_PORT`, `MIMIC_RESTORE_DATABASE_USER`, `MIMIC_RESTORE_DATABASE_PASSWORD`, `MIMIC_RESTORE_DATABASE_NAME`, and `MIMIC_RESTORE_DATABASE_SSL_MODE` using the `ScratchPostgres` wiring above; also set `MIMIC_RESTORE_ENVIRONMENT=staging-scratch` and `MIMIC_RESTORE_CONFIRM=RESTORE-INTO-SCRATCH`.
 - Independently recorded `MIMIC_RESTORE_SENTINEL_NONCE`, `MIMIC_RESTORE_SYSTEM_IDENTIFIER`, and `MIMIC_PRODUCTION_SYSTEM_IDENTIFIER`.
 - `MIMIC_POSTGRES_CLIENT_MAJOR`, `MIMIC_EXPECTED_MIGRATION`, and `MIMIC_EXPECTED_RELEASE` matching the selected signed backup and intended release.
 
@@ -166,7 +196,7 @@ docker run --rm -i \
   < /secure/temp/mimic-backup-identity.txt
 ```
 
-The restore copies the scratch URL into its own mode-`0600` temporary libpq service file, immediately unsets `MIMIC_RESTORE_DATABASE_URL`, and scopes `PGSERVICEFILE` only to database commands. Both `pg_restore` and verification explicitly target `service=mimic_restore`; the URL never appears in their arguments, and the exit trap removes the service file. The restore checks target database/system/sentinel and Production inequality before object access. It verifies the minisign signature before trusting manifest fields, validates checksum identity, runs `sha256sum --check`, then decrypts. Only then may `pg_restore --clean --if-exists` run. `verify-restore.sql` fails unless the expected migration is applied, the signed release identity is supplied, and every required Mimic physical table (including `audit_logs`) exists; it then emits exact counts.
+The restore validates the discrete scratch fields, writes each field separately to its own mode-`0600` libpq service file, then unsets the connection variables. It scopes `PGSERVICEFILE` only to database commands. Both `pg_restore` and verification explicitly target `service=mimic_restore`; no credential appears in their arguments, and the exit trap removes the service file. AWS credentials are supplied only to `aws` children. The restore checks target database/system/sentinel and Production inequality before object access. It verifies the minisign signature before trusting manifest fields, validates checksum identity, runs `sha256sum --check`, then decrypts. Only then may `pg_restore --clean --if-exists` run. `verify-restore.sql` fails unless the expected migration is applied, the signed release identity is supplied, and its required-table manifest exactly matches every Prisma model's physical table plus `_prisma_migrations`; it then emits exact counts.
 
 Delete the temporary environment file and scratch service after evidence approval. Retain no decrypted dump or private key copy. A failed guard, signature, checksum, version, migration, release, or table check is terminal and must never be bypassed.
 

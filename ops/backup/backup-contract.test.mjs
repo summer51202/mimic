@@ -20,7 +20,7 @@ test("backup encrypts before upload without shell tracing or predictable temp fi
   assert.match(script, /pg_dump/);
   assert.match(script, /age --recipient/);
   assert.match(script, /sha256sum/);
-  assert.match(script, /aws --endpoint-url/);
+  assert.match(script, /run_aws --endpoint-url/);
 
   const encryptAt = script.indexOf("age --recipient");
   const removePlainAt = script.indexOf('rm -f "$plain"');
@@ -46,9 +46,20 @@ test("backup validates the S3 destination and writes only encrypted artifacts", 
   assert.match(script, /release=/);
   assert.doesNotMatch(script, /s3 cp[^\n]*\$plain/);
   assert.doesNotMatch(script, /printf[^\n]*\$(?:AWS_SECRET_ACCESS_KEY|MIMIC_BACKUP_AGE_RECIPIENT)/);
-  for (const line of script.split("\n").filter((line) => /printf.*\$DATABASE_URL/.test(line))) {
-    assert.match(line, /tr -d|> "\$service_file"/);
+  assert.doesNotMatch(script, /DATABASE_URL/);
+  for (const field of ["HOST", "PORT", "USER", "PASSWORD", "NAME", "SSL_MODE"]) {
+    assert.match(script, new RegExp(`MIMIC_BACKUP_DATABASE_${field}`));
   }
+  for (const parameter of ["host", "port", "user", "password", "dbname", "sslmode"]) {
+    assert.match(script, new RegExp(`printf '${parameter}=%s`));
+  }
+  assert.ok(script.indexOf('> "$signing_key"') < script.indexOf("psql --dbname"));
+  assert.ok(script.indexOf('> "$signing_key"') < script.indexOf("tr -d"));
+  assert.ok(script.indexOf("unset MIMIC_BACKUP_MINISIGN_SECRET_KEY") < script.indexOf("tr -d"));
+  assert.ok(script.indexOf("unset AWS_ACCESS_KEY_ID") < script.indexOf("tr -d"));
+  assert.match(script, /run_aws\(\)/);
+  assert.doesNotMatch(script, /^aws --endpoint-url/m);
+  assert.ok(script.indexOf("unset AWS_ACCESS_KEY_ID") < script.indexOf("tr -d"));
 });
 
 test("restore verifies checksum before decrypting and validates before cleanup restore", async () => {
@@ -83,6 +94,15 @@ test("restore verifies checksum before decrypting and validates before cleanup r
   assert.match(script, /pg_service\.conf/);
   assert.match(script, /chmod 0600/);
   assert.doesNotMatch(script, /export PGDATABASE/);
+  assert.doesNotMatch(script, /DATABASE_URL/);
+  for (const field of ["HOST", "PORT", "USER", "PASSWORD", "NAME", "SSL_MODE"]) {
+    assert.match(script, new RegExp(`MIMIC_RESTORE_DATABASE_${field}`));
+  }
+  for (const parameter of ["host", "port", "user", "password", "dbname", "sslmode"]) {
+    assert.match(script, new RegExp(`printf '${parameter}=%s`));
+  }
+  assert.match(script, /run_aws\(\)/);
+  assert.doesNotMatch(script, /^aws --endpoint-url/m);
   assert.match(
     script,
     /pg_restore[\s\S]*--dbname="service=\$\{service_name\}"/,
@@ -98,7 +118,7 @@ test("restore accepts only collision-resistant weekly encrypted backup object na
   assert.doesNotMatch(script, /basename\s+["']?\$MIMIC_BACKUP_OBJECT/);
 });
 
-test("backup image is pinned, unprivileged, and contains syntax-checkable tools", async () => {
+test("backup image fixes its Alpine release and PostgreSQL major and runs unprivileged", async () => {
   const dockerfile = await read("./Dockerfile");
 
   assert.match(dockerfile, /^FROM alpine:3\.22\.\d+$/m);
@@ -146,9 +166,14 @@ test("required restore tables match Prisma physical table mappings", async () =>
     "utf8",
   );
 
-  assert.match(prisma, /model AuditLog[\s\S]*@@map\("audit_logs"\)/);
-  assert.match(sql, /\('audit_logs'\)/);
-  assert.doesNotMatch(sql, /\('AuditLog'\)/);
+  const modelTables = [...prisma.matchAll(/^model\s+(\w+)\s+\{([\s\S]*?)^\}/gm)]
+    .map(([, model, body]) => body.match(/@@map\("([^"]+)"\)/)?.[1] ?? model)
+    .sort();
+  const requiredValues = sql.match(/WITH required\(name\) AS \(\s*VALUES ([\s\S]*?)\s*\)\s*SELECT/)?.[1];
+  assert.ok(requiredValues, "verification SQL has a required-table manifest");
+  const sqlTables = [...requiredValues.matchAll(/'([^']+)'/g)].map((match) => match[1]).sort();
+
+  assert.deepEqual(sqlTables, ["_prisma_migrations", ...modelTables].sort());
 });
 
 test("scratch provisioning stores an independently generated database sentinel", async () => {
@@ -211,4 +236,7 @@ test("runbook follows Railway sibling PITR and immutable signed-backup procedure
   assert.match(runbook, /MIMIC_RESTORE_SENTINEL_NONCE="\$\(/);
   assert.match(runbook, /sed -n '2p'/);
   assert.match(runbook, /MIMIC_BACKUP_MINISIGN_PUBLIC_KEY.*56/);
+  assert.match(runbook, /MIMIC_BACKUP_DATABASE_HOST=\$\{\{[^}]+\.PGHOST\}\}/);
+  assert.match(runbook, /MIMIC_RESTORE_DATABASE_PASSWORD=\$\{\{[^}]+\.PGPASSWORD\}\}/);
+  assert.doesNotMatch(runbook, /MIMIC_(?:BACKUP|RESTORE)_DATABASE_URL/);
 });

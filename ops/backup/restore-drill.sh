@@ -8,8 +8,12 @@ umask 077
 : "${MIMIC_BACKUP_S3_BUCKET:?MIMIC_BACKUP_S3_BUCKET is required}"
 : "${MIMIC_BACKUP_AGE_IDENTITY_FILE:?MIMIC_BACKUP_AGE_IDENTITY_FILE is required}"
 : "${MIMIC_BACKUP_MINISIGN_PUBLIC_KEY:?MIMIC_BACKUP_MINISIGN_PUBLIC_KEY is required}"
-: "${MIMIC_RESTORE_DATABASE_URL:?MIMIC_RESTORE_DATABASE_URL is required}"
+: "${MIMIC_RESTORE_DATABASE_HOST:?MIMIC_RESTORE_DATABASE_HOST is required}"
+: "${MIMIC_RESTORE_DATABASE_PORT:?MIMIC_RESTORE_DATABASE_PORT is required}"
+: "${MIMIC_RESTORE_DATABASE_USER:?MIMIC_RESTORE_DATABASE_USER is required}"
+: "${MIMIC_RESTORE_DATABASE_PASSWORD:?MIMIC_RESTORE_DATABASE_PASSWORD is required}"
 : "${MIMIC_RESTORE_DATABASE_NAME:?MIMIC_RESTORE_DATABASE_NAME is required}"
+: "${MIMIC_RESTORE_DATABASE_SSL_MODE:?MIMIC_RESTORE_DATABASE_SSL_MODE is required}"
 : "${MIMIC_RESTORE_ENVIRONMENT:?MIMIC_RESTORE_ENVIRONMENT is required}"
 : "${MIMIC_RESTORE_CONFIRM:?MIMIC_RESTORE_CONFIRM is required}"
 : "${MIMIC_RESTORE_SENTINEL_NONCE:?MIMIC_RESTORE_SENTINEL_NONCE is required}"
@@ -42,12 +46,41 @@ case "$MIMIC_RESTORE_SYSTEM_IDENTIFIER:$MIMIC_PRODUCTION_SYSTEM_IDENTIFIER:$MIMI
 if [ "$MIMIC_RESTORE_SYSTEM_IDENTIFIER" = "$MIMIC_PRODUCTION_SYSTEM_IDENTIFIER" ]; then printf '%s\n' 'Refusing restore because scratch and Production identities match' >&2; exit 2; fi
 case "$MIMIC_EXPECTED_MIGRATION:$MIMIC_EXPECTED_RELEASE" in *[!0-9A-Za-z._:-]*) printf '%s\n' 'Expected migration or release is invalid' >&2; exit 2 ;; esac
 if [ ! -r "$MIMIC_BACKUP_AGE_IDENTITY_FILE" ]; then printf '%s\n' 'The age identity file is not readable' >&2; exit 2; fi
-if [ "$(printf '%s' "$MIMIC_RESTORE_DATABASE_URL" | tr -d '\r\n')" != "$MIMIC_RESTORE_DATABASE_URL" ]; then
-  printf '%s\n' 'Restore database URL must be a single line' >&2
-  exit 2
-fi
+restore_database_host="$MIMIC_RESTORE_DATABASE_HOST"
+restore_database_port="$MIMIC_RESTORE_DATABASE_PORT"
+restore_database_user="$MIMIC_RESTORE_DATABASE_USER"
+restore_database_password="$MIMIC_RESTORE_DATABASE_PASSWORD"
+restore_database_name="$MIMIC_RESTORE_DATABASE_NAME"
+restore_database_ssl_mode="$MIMIC_RESTORE_DATABASE_SSL_MODE"
+aws_access_key_id="$AWS_ACCESS_KEY_ID"
+aws_secret_access_key="$AWS_SECRET_ACCESS_KEY"
+aws_default_region="$AWS_DEFAULT_REGION"
+aws_session_token="${AWS_SESSION_TOKEN-}"
+unset MIMIC_RESTORE_DATABASE_HOST MIMIC_RESTORE_DATABASE_PORT MIMIC_RESTORE_DATABASE_USER
+unset MIMIC_RESTORE_DATABASE_PASSWORD MIMIC_RESTORE_DATABASE_NAME MIMIC_RESTORE_DATABASE_SSL_MODE
+unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_DEFAULT_REGION AWS_SESSION_TOKEN
 
-export AWS_EC2_METADATA_DISABLED=true
+reject_controls() {
+  label="$1"
+  value="$2"
+  if [ "$(printf '%s' "$value" | tr -d '\r\n')" != "$value" ] ||
+     printf '%s' "$value" | LC_ALL=C grep -q '[[:cntrl:]]'; then
+    printf '%s\n' "${label} contains control characters" >&2
+    exit 2
+  fi
+}
+reject_controls 'Restore database host' "$restore_database_host"
+reject_controls 'Restore database port' "$restore_database_port"
+reject_controls 'Restore database user' "$restore_database_user"
+reject_controls 'Restore database password' "$restore_database_password"
+reject_controls 'Restore database name' "$restore_database_name"
+reject_controls 'Restore database SSL mode' "$restore_database_ssl_mode"
+case "$restore_database_host" in *[!0-9A-Za-z._-]*) printf '%s\n' 'Restore database host is invalid' >&2; exit 2 ;; esac
+case "$restore_database_port" in ''|*[!0-9]*) printf '%s\n' 'Restore database port is invalid' >&2; exit 2 ;; esac
+if [ "$restore_database_port" -lt 1 ] || [ "$restore_database_port" -gt 65535 ]; then printf '%s\n' 'Restore database port is out of range' >&2; exit 2; fi
+case "$restore_database_user:$restore_database_name" in *[!0-9A-Za-z_.:-]*) printf '%s\n' 'Restore database user or name is invalid' >&2; exit 2 ;; esac
+case "$restore_database_ssl_mode" in disable|allow|prefer|require|verify-ca|verify-full) ;; *) printf '%s\n' 'Restore database SSL mode is invalid' >&2; exit 2 ;; esac
+
 name="${MIMIC_BACKUP_OBJECT#weekly/}"
 workdir="$(mktemp -d "${TMPDIR:-/tmp}/mimic-restore.XXXXXX")"
 service_name=mimic_restore
@@ -60,13 +93,27 @@ plain="${encrypted%.age}"
 cleanup() { rm -rf "$workdir"; }
 trap cleanup EXIT
 trap 'exit 1' HUP INT TERM
-printf '[%s]\ndbname=%s\n' "$service_name" "$MIMIC_RESTORE_DATABASE_URL" > "$service_file"
+run_aws() {
+  AWS_ACCESS_KEY_ID="$aws_access_key_id" AWS_SECRET_ACCESS_KEY="$aws_secret_access_key" \
+    AWS_DEFAULT_REGION="$aws_default_region" AWS_SESSION_TOKEN="$aws_session_token" \
+    AWS_EC2_METADATA_DISABLED=true aws "$@"
+}
+{
+  printf '[%s]\n' "$service_name"
+  printf 'host=%s\n' "$restore_database_host"
+  printf 'port=%s\n' "$restore_database_port"
+  printf 'user=%s\n' "$restore_database_user"
+  printf 'password=%s\n' "$restore_database_password"
+  printf 'dbname=%s\n' "$restore_database_name"
+  printf 'sslmode=%s\n' "$restore_database_ssl_mode"
+} > "$service_file"
 chmod 0600 "$service_file"
-unset MIMIC_RESTORE_DATABASE_URL
+unset restore_database_host restore_database_port restore_database_user
+unset restore_database_password restore_database_ssl_mode
 actual_database="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SELECT current_database()')"
 actual_system_id="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SELECT system_identifier::text FROM pg_control_system()')"
 actual_sentinel="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command="SELECT COALESCE(obj_description(oid, 'pg_database'), '') FROM pg_database WHERE datname=current_database()")"
-if [ "$actual_database" != "$MIMIC_RESTORE_DATABASE_NAME" ]; then printf '%s\n' 'Refusing mismatched scratch database name' >&2; exit 2; fi
+if [ "$actual_database" != "$restore_database_name" ]; then printf '%s\n' 'Refusing mismatched scratch database name' >&2; exit 2; fi
 if [ "$actual_system_id" != "$MIMIC_RESTORE_SYSTEM_IDENTIFIER" ] || [ "$actual_system_id" = "$MIMIC_PRODUCTION_SYSTEM_IDENTIFIER" ]; then printf '%s\n' 'Refusing mismatched or Production PostgreSQL system identity' >&2; exit 2; fi
 if [ "$actual_sentinel" != "mimic-restore-scratch:${MIMIC_RESTORE_SENTINEL_NONCE}" ]; then printf '%s\n' 'Refusing mismatched scratch sentinel' >&2; exit 2; fi
 target_version_num="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SHOW server_version_num')"
@@ -75,8 +122,8 @@ target_major=$((target_version_num / 10000))
 client_major="$(pg_restore --version | sed -n 's/.* \([0-9][0-9]*\)\..*/\1/p')"
 if [ "$target_major" != "$MIMIC_POSTGRES_CLIENT_MAJOR" ] || [ "$client_major" != "$MIMIC_POSTGRES_CLIENT_MAJOR" ]; then printf '%s\n' 'Refusing restore across PostgreSQL major versions' >&2; exit 2; fi
 
-aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}.manifest" "$manifest" --only-show-errors
-aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}.manifest.minisig" "$signature" --only-show-errors
+run_aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}.manifest" "$manifest" --only-show-errors
+run_aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}.manifest.minisig" "$signature" --only-show-errors
 minisign -V -q -P "$MIMIC_BACKUP_MINISIGN_PUBLIC_KEY" -m "$manifest" -x "$signature"
 
 manifest_field() {
@@ -97,8 +144,8 @@ case "$manifest_sha256" in
 case "$manifest_source_version" in ''|*[!0-9]*) printf '%s\n' 'Refusing invalid signed PostgreSQL version' >&2; exit 2 ;; esac
 if [ "$manifest_object" != "$MIMIC_BACKUP_OBJECT" ] || [ "$manifest_major" != "$MIMIC_POSTGRES_CLIENT_MAJOR" ] || [ "$((manifest_source_version / 10000))" != "$target_major" ] || [ "$manifest_migration" != "$MIMIC_EXPECTED_MIGRATION" ] || [ "$manifest_release" != "$MIMIC_EXPECTED_RELEASE" ]; then printf '%s\n' 'Refusing signed backup identity or version mismatch' >&2; exit 2; fi
 
-aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}" "$encrypted" --only-show-errors
-aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}.sha256" "$checksum" --only-show-errors
+run_aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}" "$encrypted" --only-show-errors
+run_aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}.sha256" "$checksum" --only-show-errors
 if ! awk 'NF != 2 { exit 1 }' "$checksum" || [ "$(sed -n 's/ .*//p' "$checksum")" != "$manifest_sha256" ] || [ "$(sed -n 's/^[0-9a-f]*  //p' "$checksum")" != "$name" ]; then printf '%s\n' 'Refusing checksum not authenticated by manifest' >&2; exit 2; fi
 (cd "$workdir" && sha256sum --check "${name}.sha256")
 age --decrypt --identity "$MIMIC_BACKUP_AGE_IDENTITY_FILE" --output "$plain" "$encrypted"

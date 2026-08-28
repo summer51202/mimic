@@ -585,5 +585,8 @@
 - Routed every PostgreSQL client operation through a mode-`0600` temporary libpq service file, with explicit `service=mimic_restore` targeting for destructive restore and command-scoped connection state.
 - Added executable direct-restore semantics coverage and tied required-table verification to Prisma's physical `audit_logs` mapping.
 - Documented exact minisign public-key extraction/validation and explicit scratch nonce assignment, validation, display, export, and separate custody.
+- Replaced nested connection URIs with role-specific host/port/user/password/database/SSL fields, rejecting control-character injection before writing discrete libpq service parameters.
+- Scoped storage credentials to AWS children, persisted and unset the signing key before database children, and contract-checked the full restore table manifest against every Prisma physical model mapping.
+- Added exact Railway reference-variable wiring and distinguished fixed image inputs from package revisions resolved at build time.
 **Decisions:** Kept the age private identity off the scheduled Railway service; only the public recipient is configured there. Kept the minisign signing key backup-only and restore credentials separately read-only. Logical restores require a new Staging scratch cluster/database and can never target Production.
-**Known gaps / follow-ups:** Docker image build and Alpine `/bin/sh` syntax execution require CI or Railway because this Windows host has no Docker-compatible engine; the first real encrypted backup and scratch/PITR restore drill remain operational launch gates.
+**Known gaps / follow-ups:** Docker image build and real libpq service-file parsing require CI or Railway because this Windows host has no Docker-compatible engine or PostgreSQL client; the first real encrypted backup and scratch/PITR restore drill remain operational launch gates.

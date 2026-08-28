@@ -17,7 +17,8 @@ payload_hash="$(printf '%s' 'encrypted fixture' | sha256sum | sed -n 's/ .*//p')
 cat > "${fakebin}/psql" <<'EOF'
 #!/bin/sh
 [ -z "${PGDATABASE+x}" ] || exit 79
-[ -z "${MIMIC_RESTORE_DATABASE_URL+x}" ] || exit 80
+[ -z "${MIMIC_RESTORE_DATABASE_PASSWORD+x}" ] || exit 80
+[ -z "${AWS_ACCESS_KEY_ID+x}" ] || exit 77
 case "$*" in *--dbname=service=mimic_restore*) ;; *) exit 81 ;; esac
 [ -f "$PGSERVICEFILE" ] || exit 82
 case "$*" in
@@ -38,17 +39,26 @@ if [ "${1:-}" = '--version' ]; then
   exit 0
 fi
 [ -z "${PGDATABASE+x}" ] || exit 79
-[ -z "${MIMIC_RESTORE_DATABASE_URL+x}" ] || exit 80
+[ -z "${MIMIC_RESTORE_DATABASE_PASSWORD+x}" ] || exit 80
+[ -z "${AWS_ACCESS_KEY_ID+x}" ] || exit 77
 case "$*" in *--dbname=service=mimic_restore*) ;; *) exit 83 ;; esac
 case "$*" in *postgresql://*) exit 84 ;; esac
 [ -f "$PGSERVICEFILE" ] || exit 85
 [ "$(stat -c '%a' "$PGSERVICEFILE")" = '600' ] || exit 86
 grep -q '^\[mimic_restore\]$' "$PGSERVICEFILE" || exit 87
-grep -q '^dbname=postgresql://placeholder.invalid/mimic_semantics_restore_drill$' "$PGSERVICEFILE" || exit 88
+grep -q '^host=scratch.internal$' "$PGSERVICEFILE" || exit 88
+grep -q '^port=5432$' "$PGSERVICEFILE" || exit 89
+grep -q '^user=mimic_restore$' "$PGSERVICEFILE" || exit 93
+grep -q '^password=password-placeholder$' "$PGSERVICEFILE" || exit 94
+grep -q '^dbname=mimic_semantics_restore_drill$' "$PGSERVICEFILE" || exit 95
+grep -q '^sslmode=require$' "$PGSERVICEFILE" || exit 96
 touch "$MIMIC_TEST_RESTORE_MARKER"
 EOF
 cat > "${fakebin}/aws" <<'EOF'
 #!/bin/sh
+: "${AWS_ACCESS_KEY_ID:?scoped AWS access key missing}"
+: "${AWS_SECRET_ACCESS_KEY:?scoped AWS secret key missing}"
+: "${AWS_DEFAULT_REGION:?scoped AWS region missing}"
 while [ "$1" != 'cp' ]; do shift; done
 shift
 source_object="$1"
@@ -95,8 +105,12 @@ export MIMIC_BACKUP_S3_ENDPOINT='https://storage.invalid'
 export MIMIC_BACKUP_S3_BUCKET='mimic-test'
 export MIMIC_BACKUP_AGE_IDENTITY_FILE="$identity"
 export MIMIC_BACKUP_MINISIGN_PUBLIC_KEY='public-key-placeholder'
-export MIMIC_RESTORE_DATABASE_URL='postgresql://placeholder.invalid/mimic_semantics_restore_drill'
+export MIMIC_RESTORE_DATABASE_HOST='scratch.internal'
+export MIMIC_RESTORE_DATABASE_PORT='5432'
+export MIMIC_RESTORE_DATABASE_USER='mimic_restore'
+export MIMIC_RESTORE_DATABASE_PASSWORD='password-placeholder'
 export MIMIC_RESTORE_DATABASE_NAME='mimic_semantics_restore_drill'
+export MIMIC_RESTORE_DATABASE_SSL_MODE='require'
 export MIMIC_RESTORE_ENVIRONMENT='staging-scratch'
 export MIMIC_RESTORE_CONFIRM='RESTORE-INTO-SCRATCH'
 export MIMIC_RESTORE_SENTINEL_NONCE='0123456789abcdef0123456789abcdef'
