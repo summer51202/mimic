@@ -71,7 +71,7 @@ export default defineRailway((context) => {
     env: {
       NODE_ENV: "production",
       MIMIC_API_BASE_URL:
-        "http://${{mimic-api.RAILWAY_PRIVATE_DOMAIN}}:${{mimic-api.PORT}}/api/v1",
+        "http://${{mimic-api.RAILWAY_PRIVATE_DOMAIN}}:8080/api/v1",
       MIMIC_COOKIE_SECURE: "true",
       MIMIC_ENVIRONMENT: environment,
       MIMIC_WEB_REVISION: "${{RAILWAY_GIT_COMMIT_SHA}}",

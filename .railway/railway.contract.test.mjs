@@ -138,7 +138,7 @@ test("runtime references and release metadata contain no environment-specific or
   assert.equal(variable(web, "MIMIC_WEB_REVISION").value, "${{RAILWAY_GIT_COMMIT_SHA}}");
   assert.equal(
     variable(web, "MIMIC_API_BASE_URL").value,
-    "http://${{mimic-api.RAILWAY_PRIVATE_DOMAIN}}:${{mimic-api.PORT}}/api/v1",
+    "http://${{mimic-api.RAILWAY_PRIVATE_DOMAIN}}:8080/api/v1",
   );
   assert.equal(variable(web, "MIMIC_COOKIE_SECURE").value, "true");
 });

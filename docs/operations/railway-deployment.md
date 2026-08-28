@@ -36,11 +36,13 @@ generated Railway domain. Generate only the Web domain with the CLI after the
 Staging service apply, then preserve that hostname outside Git. The API remains
 private by default.
 
-The SDK also cannot type-safely concatenate two service references with URL
+The SDK also cannot type-safely concatenate a service reference with URL
 syntax. `MIMIC_API_BASE_URL` therefore remains the Railway template literal
-`http://${{mimic-api.RAILWAY_PRIVATE_DOMAIN}}:${{mimic-api.PORT}}/api/v1`.
-Every plan must preserve that expression as a Railway reference, and after apply
-the rendered variable must be an internal `railway.internal` HTTP URL. Stop if
+`http://${{mimic-api.RAILWAY_PRIVATE_DOMAIN}}:8080/api/v1`. The internal app
+port is explicit because a cross-service `${{mimic-api.PORT}}` reference can
+resolve to an empty value during bootstrap. Every plan must preserve the private
+domain expression, and after apply the rendered variable must be an internal
+`railway.internal` HTTP URL with port `8080`. Stop if
 the plan escapes it as plain text or resolves it to a public/hard-coded origin.
 
 The current IaC build model also has no field that maps a Railway variable to the Docker BuildKit secret mount expected by `web/Dockerfile`. Therefore `SENTRY_AUTH_TOKEN` is not declared as a service variable. Source-map upload remains disabled on Railway until a reviewed platform-supported secret-mount mechanism is available. Never work around this by adding the token as a Docker `ARG`, `ENV`, `NEXT_PUBLIC_*` variable, or IaC literal.
@@ -161,7 +163,7 @@ These commands are operational and mutate Railway only where explicitly noted. R
 
 | Name | Source |
 |---|---|
-| `MIMIC_API_BASE_URL` | IaC private reference to `mimic-api`, ending `/api/v1` |
+| `MIMIC_API_BASE_URL` | IaC private reference to `mimic-api` on port `8080`, ending `/api/v1` |
 | `MIMIC_COOKIE_SECURE` | `true` from IaC |
 | `MIMIC_ENVIRONMENT` | `staging` from IaC |
 | `MIMIC_WEB_REVISION` | `${{RAILWAY_GIT_COMMIT_SHA}}` from IaC |

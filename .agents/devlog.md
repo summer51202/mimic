@@ -662,3 +662,13 @@
 - Added an explicit Production gate requiring the backup/restore image to move from PostgreSQL client 16 to 18 before deployment.
 **Decisions:** Preserve the initialized PG18 volume and migrate it to Singapore; do not attempt an unsupported in-place downgrade to PG16.
 **Known gaps / follow-ups:** Upgrade and restore-drill the backup image before any Railway backup service or Production schedule is created.
+
+## 2026-08-28 — Stabilize Railway private API routing
+
+**Task:** Fix the Staging Web readiness failure caused by an empty cross-service API port reference.
+**Scope:** Railway IaC contract, Staging service variables, and deployment runbook
+**What changed:**
+- Replaced the unresolved `${{mimic-api.PORT}}` segment with Railway's explicit internal application port `8080`.
+- Added a contract assertion for the complete private API URL and documented the rendered-variable verification gate.
+**Decisions:** Keep the API private and pin only its Railway-internal application port; do not create an API public domain as a routing workaround.
+**Known gaps / follow-ups:** Apply the focused Staging plan and verify Web readiness before generating the Web-only public domain.
