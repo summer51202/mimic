@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
+import { getRequiredJwtSecret } from './jwt-secrets';
 import { UsersService } from '../users/users.service';
 
 interface TokenUser {
@@ -69,12 +70,13 @@ export class AuthService {
   }
 
   async refresh(refreshToken: string) {
+    const refreshSecret = getRequiredJwtSecret('JWT_REFRESH_SECRET');
+
     try {
       const payload = this.jwtService.verify<{ sub: string; email: string }>(
         refreshToken,
         {
-          secret:
-            process.env.JWT_REFRESH_SECRET ?? 'mimic-local-refresh-secret',
+          secret: refreshSecret,
         },
       );
       const user = await this.usersService.findById(payload.sub);
@@ -119,7 +121,7 @@ export class AuthService {
         email: user.email,
       },
       {
-        secret: process.env.JWT_ACCESS_SECRET ?? 'mimic-local-access-secret',
+        secret: getRequiredJwtSecret('JWT_ACCESS_SECRET'),
         expiresIn: '15m',
       },
     );
@@ -132,8 +134,7 @@ export class AuthService {
         email: user.email,
       },
       {
-        secret:
-          process.env.JWT_REFRESH_SECRET ?? 'mimic-local-refresh-secret',
+        secret: getRequiredJwtSecret('JWT_REFRESH_SECRET'),
         expiresIn: '30d',
       },
     );

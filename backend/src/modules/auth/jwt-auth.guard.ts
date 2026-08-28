@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { getRequiredJwtSecret } from './jwt-secrets';
 
 export interface RequestUser {
   userId: string;
@@ -26,11 +27,13 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     const token = authorization.slice('Bearer '.length);
+    const accessSecret = getRequiredJwtSecret('JWT_ACCESS_SECRET');
+
     try {
       const payload = this.jwtService.verify<{ sub: string; email: string }>(
         token,
         {
-          secret: process.env.JWT_ACCESS_SECRET ?? 'mimic-local-access-secret',
+          secret: accessSecret,
         },
       );
       request.user = {
