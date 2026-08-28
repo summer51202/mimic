@@ -508,6 +508,7 @@
 **Scope:** Naming verification scripts, root and web ignore rules, generated web service worker.
 **What changed:**
 - Added a Node test and scanner for retired-brand references in explicit active product surfaces.
+- Made scanner traversal fail closed for non-missing filesystem errors and skip symbolic links and Windows directory junctions.
 - Ignored the worktree-local retired mobile residue and generated `web/public/sw.js` output.
 - Removed the tracked generated service worker while retaining its TypeScript source.
 **Decisions:** The scanner intentionally reports current active legacy references until the subsequent technical rename task removes them; mobile source remains recoverable in Git history.

@@ -1,4 +1,4 @@
-import { readdir, readFile, stat } from "node:fs/promises";
+import { lstat, readdir, readFile } from "node:fs/promises";
 import { basename, extname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -59,8 +59,15 @@ async function collectTextFiles(root, path, files) {
 
   let entry;
   try {
-    entry = await stat(path);
-  } catch {
+    entry = await lstat(path);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return;
+    }
+    throw error;
+  }
+
+  if (entry.isSymbolicLink()) {
     return;
   }
 
