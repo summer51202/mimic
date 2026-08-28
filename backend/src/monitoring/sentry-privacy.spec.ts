@@ -12,12 +12,12 @@ describe('Sentry privacy policy', () => {
 
     const secret = 'customer@example.test amount=98765 note=private';
     const output = privacy.sanitizeSentryEvent({
-      event_id: 'safe-event-id',
+      event_id: '0123456789abcdef0123456789abcdef',
       level: 'error',
       timestamp: 123,
-      environment: 'beta',
-      release: 'revision',
-      user: { id: '550e8400-e29b-41d4-a716-446655440000', email: secret },
+      environment: 'production',
+      release: 'abcdef0123456',
+      user: { id: 'anon_1234567890abcdef', email: secret },
       tags: { service: 'backend', route: '/api/v1/funds/:fundId', customer: secret },
       message: secret,
       request: {
@@ -32,12 +32,12 @@ describe('Sentry privacy policy', () => {
 
     expect(JSON.stringify(output)).not.toContain(secret);
     expect(output).toEqual({
-      event_id: 'safe-event-id',
+      event_id: '0123456789abcdef0123456789abcdef',
       level: 'error',
       timestamp: 123,
-      environment: 'beta',
-      release: 'revision',
-      user: { id: '550e8400-e29b-41d4-a716-446655440000' },
+      environment: 'production',
+      release: 'abcdef0123456',
+      user: { id: 'anon_1234567890abcdef' },
       tags: { service: 'backend', route: '/api/v1/funds/:fundId' },
     });
   });
@@ -47,11 +47,11 @@ describe('Sentry privacy policy', () => {
 
     expect(
       sanitizeSentryEvent({
-        event_id: 'evt_123',
+        event_id: '0123456789abcdef0123456789abcdef',
         level: 'fatal',
         timestamp: 123,
         extra: {
-          requestId: 'req-123_ABC',
+          requestId: 'req_123_ABC',
           errorCode: 'LOCKED_PERIOD',
           amount: 5000,
           title: 'Dinner with alice@example.test',
@@ -67,11 +67,11 @@ describe('Sentry privacy policy', () => {
         },
       }),
     ).toEqual({
-      event_id: 'evt_123',
+      event_id: '0123456789abcdef0123456789abcdef',
       level: 'fatal',
       timestamp: 123,
-      extra: { requestId: 'req-123_ABC', errorCode: 'LOCKED_PERIOD' },
-      request: { method: 'POST', url: 'https://api.example.test/api/v1/funds/123' },
+      extra: { requestId: 'req_123_ABC', errorCode: 'LOCKED_PERIOD' },
+      request: { method: 'POST', url: 'https://api.example.test' },
     });
 
     expect(
@@ -153,5 +153,54 @@ describe('Sentry privacy policy', () => {
 
     expect(output).toEqual({ type: 'transaction', tags: { service: 'backend', runtime: 'nodejs' } });
     expect(JSON.stringify(output)).not.toContain(secret);
+  });
+
+  it('keeps only a safe DNS origin and rejects raw route slugs', () => {
+    const { sanitizeSentryEvent } = sanitizer();
+    const ipSecret = 'alice@example.test';
+    const output = sanitizeSentryEvent({
+      request: {
+        method: 'GET',
+        url: `https://203.0.113.42/users/${ipSecret}?token=secret`,
+      },
+      tags: { route: '/api/v1/funds/private-note' },
+    });
+
+    expect(output).toEqual({});
+    expect(JSON.stringify(output)).not.toContain(ipSecret);
+
+    expect(
+      sanitizeSentryEvent({
+        request: { method: 'GET', url: `https://api.example.test/users/${ipSecret}?token=secret` },
+      }),
+    ).toEqual({ request: { method: 'GET', url: 'https://api.example.test' } });
+  });
+
+  it('uses separate narrow validators for diagnostic identifiers and deployment metadata', () => {
+    const { sanitizeSentryEvent } = sanitizer();
+    const output = sanitizeSentryEvent({
+      event_id: '0123456789abcdef0123456789abcdef',
+      environment: 'production',
+      release: 'abcdef0123456',
+      user: { id: 'anon_1234567890abcdef' },
+      extra: { requestId: 'req_ABC-123', errorCode: 'LOCKED_PERIOD' },
+    });
+    expect(output).toEqual({
+      event_id: '0123456789abcdef0123456789abcdef',
+      environment: 'production',
+      release: 'abcdef0123456',
+      user: { id: 'anon_1234567890abcdef' },
+      extra: { requestId: 'req_ABC-123', errorCode: 'LOCKED_PERIOD' },
+    });
+
+    expect(
+      sanitizeSentryEvent({
+        event_id: 'event-id',
+        environment: 'beta',
+        release: 'release-name',
+        user: { id: '550e8400-e29b-41d4-a716-446655440000' },
+        extra: { requestId: 'request-1', errorCode: 'secret=value' },
+      }),
+    ).toEqual({});
   });
 });

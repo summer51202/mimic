@@ -56,9 +56,13 @@ const withSerwist = withSerwistInit({
 });
 
 export default withSentryConfig(withSerwist(nextConfig), {
-  disableLogger: true,
   silent: true,
   telemetry: false,
+  webpack: {
+    treeshake: {
+      removeDebugLogging: true,
+    },
+  },
   sourcemaps: {
     disable: !process.env.SENTRY_AUTH_TOKEN,
   },

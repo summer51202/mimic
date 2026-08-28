@@ -1,11 +1,27 @@
 type RecordValue = Record<string, unknown>;
 
-const DIAGNOSTIC_IDENTIFIER = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,79}$/;
-const SAFE_METADATA = /^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$/;
-const SAFE_TYPE = /^[A-Za-z_$][A-Za-z0-9_$.-]{0,127}$/;
+const SENTRY_EVENT_ID = /^[a-f0-9]{32}$/;
+const ERROR_CODE = /^[A-Z][A-Z0-9_]{2,63}$/;
+const REQUEST_ID = /^req_[A-Za-z0-9_-]{1,64}$/;
+const PSEUDONYMOUS_USER_ID = /^(?:anon_[A-Za-z0-9_-]{16,64}|sha256:[a-f0-9]{64})$/;
+const RELEASE = /^[a-f0-9]{7,64}$/;
+const EXCEPTION_TYPE = /^[A-Za-z_$][A-Za-z0-9_$]{0,127}$/;
+const FRAME_FUNCTION = /^[A-Za-z_$][A-Za-z0-9_$]{0,127}$/;
+const PROJECT_FILENAME = /^(?:src\/)?[A-Za-z0-9][A-Za-z0-9_./-]{0,159}\.(?:ts|tsx|js|jsx|mjs|cjs)$/;
+const SAFE_TAG_VALUE = /^[a-z][a-z0-9-]{0,31}$/;
 const SAFE_METHODS = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS']);
 const SAFE_LEVELS = new Set(['fatal', 'error', 'warning', 'log', 'info', 'debug']);
 const SAFE_TAGS = new Set(['service', 'runtime', 'route']);
+const STATIC_ROUTES = new Set([
+  '/health',
+  '/health/live',
+  '/health/ready',
+  '/api/v1/health',
+  '/api/v1/health/live',
+  '/api/v1/health/ready',
+  '/api/health/live',
+  '/api/health/ready',
+]);
 
 function record(value: unknown): RecordValue | undefined {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
@@ -22,17 +38,33 @@ function boundedNumber(value: unknown): number | undefined {
 }
 
 function isSafeRoute(value: unknown): value is string {
-  if (typeof value !== 'string' || value.length > 180 || !value.startsWith('/')) {
+  if (
+    typeof value !== 'string' ||
+    value.length > 180 ||
+    !value.startsWith('/') ||
+    /[%?@#\\]/.test(value) ||
+    value.includes('..')
+  ) {
     return false;
   }
 
-  return value.split('/').slice(1).every((segment) => {
-    if (!segment || segment.includes('?') || segment.includes('@') || /^[0-9]+$/.test(segment)) {
-      return false;
-    }
+  if (STATIC_ROUTES.has(value)) return true;
 
-    return /^(?::[A-Za-z][A-Za-z0-9-]*|[A-Za-z][A-Za-z0-9-]*)$/.test(segment);
-  });
+  const segments = value.split('/').slice(1);
+  return (
+    segments.some((segment) => /^:[A-Za-z][A-Za-z0-9]{0,31}$/.test(segment)) &&
+    segments.every((segment) => /^(?::[A-Za-z][A-Za-z0-9]{0,31}|[a-z][a-z0-9-]{0,31})$/.test(segment))
+  );
+}
+
+function isSafeDnsHostname(value: string): boolean {
+  return (
+    value.length <= 253 &&
+    value !== 'localhost' &&
+    value.includes('.') &&
+    !/^\d{1,3}(?:\.\d{1,3}){3}$/.test(value) &&
+    value.split('.').every((label) => /^[a-z](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(label))
+  );
 }
 
 function sanitizeRequest(value: unknown): RecordValue | undefined {
@@ -50,11 +82,18 @@ function sanitizeRequest(value: unknown): RecordValue | undefined {
     return undefined;
   }
 
-  if (!method || !SAFE_METHODS.has(method) || !['http:', 'https:'].includes(url.protocol)) {
+  if (
+    !method ||
+    !SAFE_METHODS.has(method) ||
+    !['http:', 'https:'].includes(url.protocol) ||
+    url.username ||
+    url.password ||
+    !isSafeDnsHostname(url.hostname)
+  ) {
     return undefined;
   }
 
-  return { method, url: `${url.origin}${url.pathname}` };
+  return { method, url: url.origin };
 }
 
 function sanitizeFrame(value: unknown): RecordValue | undefined {
@@ -64,8 +103,8 @@ function sanitizeFrame(value: unknown): RecordValue | undefined {
   }
 
   const output: RecordValue = {};
-  const filename = boundedString(frame.filename, SAFE_METADATA);
-  const functionName = boundedString(frame.function, SAFE_TYPE);
+  const filename = boundedString(frame.filename, PROJECT_FILENAME);
+  const functionName = boundedString(frame.function, FRAME_FUNCTION);
   const lineno = boundedNumber(frame.lineno);
   const colno = boundedNumber(frame.colno);
 
@@ -87,7 +126,7 @@ function sanitizeException(value: unknown): RecordValue | undefined {
 
   const safeValues = values.flatMap((exceptionValue) => {
     const item = record(exceptionValue);
-    const type = boundedString(item?.type, SAFE_TYPE);
+    const type = boundedString(item?.type, EXCEPTION_TYPE);
     const frames = Array.isArray(record(item?.stacktrace)?.frames)
       ? (record(item?.stacktrace)?.frames as unknown[])
           .map(sanitizeFrame)
@@ -119,14 +158,16 @@ export function sanitizeSentryEvent(event: unknown): RecordValue {
   }
 
   const output: RecordValue = {};
-  const eventId = boundedString(source.event_id, DIAGNOSTIC_IDENTIFIER);
+  const eventId = boundedString(source.event_id, SENTRY_EVENT_ID);
   const level = typeof source.level === 'string' && SAFE_LEVELS.has(source.level) ? source.level : undefined;
   const timestamp = boundedNumber(source.timestamp);
-  const environment = boundedString(source.environment, SAFE_METADATA);
-  const release = boundedString(source.release, SAFE_METADATA);
+  const environment = ['development', 'test', 'staging', 'production'].includes(source.environment as string)
+    ? source.environment
+    : undefined;
+  const release = boundedString(source.release, RELEASE);
   const request = sanitizeRequest(source.request);
   const exception = sanitizeException(source.exception);
-  const userId = boundedString(record(source.user)?.id, DIAGNOSTIC_IDENTIFIER);
+  const userId = boundedString(record(source.user)?.id, PSEUDONYMOUS_USER_ID);
 
   if (source.type === 'transaction') output.type = 'transaction';
   if (eventId) output.event_id = eventId;
@@ -140,17 +181,17 @@ export function sanitizeSentryEvent(event: unknown): RecordValue {
 
   const extra = record(source.extra);
   const safeExtra: RecordValue = {};
-  for (const key of ['requestId', 'errorCode']) {
-    const safeValue = boundedString(extra?.[key], DIAGNOSTIC_IDENTIFIER);
-    if (safeValue) safeExtra[key] = safeValue;
-  }
+  const requestId = boundedString(extra?.requestId, REQUEST_ID);
+  const errorCode = boundedString(extra?.errorCode, ERROR_CODE);
+  if (requestId) safeExtra.requestId = requestId;
+  if (errorCode) safeExtra.errorCode = errorCode;
   if (Object.keys(safeExtra).length > 0) output.extra = safeExtra;
 
   const tags = record(source.tags);
   const safeTags: RecordValue = {};
   for (const key of SAFE_TAGS) {
     const value = tags?.[key];
-    if (key === 'route' ? isSafeRoute(value) : boundedString(value, SAFE_METADATA)) {
+    if (key === 'route' ? isSafeRoute(value) : boundedString(value, SAFE_TAG_VALUE)) {
       safeTags[key] = value;
     }
   }

@@ -5,13 +5,13 @@ test("Sentry privacy policy constructs an allowlisted browser event", async () =
   const secret = "customer@example.test amount=98765 note=private";
 
   const output = sanitizeSentryEvent({
-    event_id: "safe-event-id",
+    event_id: "0123456789abcdef0123456789abcdef",
     level: "error",
     timestamp: 123,
-    environment: "beta",
-    release: "revision",
+    environment: "production",
+    release: "abcdef0123456",
     message: secret,
-    user: { id: "550e8400-e29b-41d4-a716-446655440000", email: secret },
+    user: { id: "anon_1234567890abcdef", email: secret },
     tags: { service: "web", route: "/app/funds/:fundId", customer: secret },
     request: {
       method: "POST",
@@ -21,7 +21,7 @@ test("Sentry privacy policy constructs an allowlisted browser event", async () =
       cookies: { session: secret },
     },
     extra: {
-      requestId: "req-123_ABC",
+      requestId: "req_123_ABC",
       errorCode: "LOCKED_PERIOD",
       amount: 98765,
       title: secret,
@@ -54,15 +54,15 @@ test("Sentry privacy policy constructs an allowlisted browser event", async () =
   });
 
   expect(output).toEqual({
-    event_id: "safe-event-id",
+    event_id: "0123456789abcdef0123456789abcdef",
     level: "error",
     timestamp: 123,
-    environment: "beta",
-    release: "revision",
-    user: { id: "550e8400-e29b-41d4-a716-446655440000" },
+    environment: "production",
+    release: "abcdef0123456",
+    user: { id: "anon_1234567890abcdef" },
     tags: { service: "web", route: "/app/funds/:fundId" },
-    request: { method: "POST", url: "https://app.example.test/app/funds/123" },
-    extra: { requestId: "req-123_ABC", errorCode: "LOCKED_PERIOD" },
+    request: { method: "POST", url: "https://app.example.test" },
+    extra: { requestId: "req_123_ABC", errorCode: "LOCKED_PERIOD" },
     exception: {
       values: [
         {
@@ -91,4 +91,24 @@ test("Sentry privacy policy rejects malformed URLs, secret diagnostics, and raw 
   expect(traceSampleRate("0.25")).toBe(0.25);
   expect(traceSampleRate("NaN")).toBe(0);
   expect(traceSampleRate("2")).toBe(0);
+});
+
+test("Sentry privacy policy keeps only safe DNS origins and route templates", async () => {
+  const { sanitizeSentryEvent } = await import("./sentry-privacy");
+  const secret = "alice@example.test";
+  expect(
+    sanitizeSentryEvent({
+      request: { method: "GET", url: `https://203.0.113.42/users/${secret}?token=secret` },
+      tags: { route: "/api/v1/funds/private-note" },
+    }),
+  ).toEqual({});
+  expect(
+    sanitizeSentryEvent({
+      request: { method: "GET", url: `https://app.example.test/users/${secret}?token=secret` },
+      tags: { route: "/app/funds/:fundId" },
+    }),
+  ).toEqual({
+    request: { method: "GET", url: "https://app.example.test" },
+    tags: { route: "/app/funds/:fundId" },
+  });
 });

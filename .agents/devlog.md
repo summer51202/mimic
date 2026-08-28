@@ -561,5 +561,7 @@
 - Rebuild every captured event from a small allowlist, retaining only safe deployment metadata, bounded diagnostic IDs, pseudonymous user IDs, sanitized request origin/path, safe route templates, and exception type/frames.
 - Disabled breadcrumbs, logs, replay, local variable capture, and invalid trace sampling; transaction events use the same scrubber and never retain raw names.
 - Wrapped the existing Serwist standalone config with Sentry using source-map upload disabled without an auth token.
+- Hardened the allowlist after review: request URLs now retain only verified DNS origins, route tags require explicit operational routes or parameterized templates, and event IDs, releases, environments, pseudonyms, diagnostic IDs, and frame metadata each use independent validators.
+- Replaced the deprecated Sentry build logger option with debug-log tree shaking and exported the client router-transition hook required by Sentry v10.
 **Decisions:** Preserved only the Sentry-required event type discriminator alongside the constructed allowlist; it is constant metadata rather than user data.
 **Known gaps / follow-ups:** Linux production-image execution remains deferred because Docker is unavailable on this host; static image coverage includes the Sentry configuration.

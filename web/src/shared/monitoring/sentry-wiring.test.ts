@@ -22,6 +22,7 @@ test("every Next.js Sentry surface enforces the shared privacy policy", () => {
   expect(client).toContain("beforeSend");
   expect(client).toContain("beforeSendTransaction");
   expect(client).toContain("replaysSessionSampleRate: 0");
+  expect(client).toContain("onRouterTransitionStart = Sentry.captureRouterTransitionStart");
   expect(client).not.toContain("process.env.MIMIC_SENTRY_DSN");
   expect(client).not.toContain("replayIntegration");
 
@@ -42,6 +43,8 @@ test("every Next.js Sentry surface enforces the shared privacy policy", () => {
 
   const nextConfig = readFileSync(root("next.config.ts"), "utf8");
   expect(nextConfig).toContain("withSentryConfig");
+  expect(nextConfig).toContain("removeDebugLogging: true");
+  expect(nextConfig).not.toContain("disableLogger");
   expect(nextConfig).toContain("withSerwist(nextConfig)");
   expect(nextConfig).toContain('output: "standalone"');
 });

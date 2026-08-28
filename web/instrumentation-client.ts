@@ -22,3 +22,5 @@ Sentry.init({
     return { ...sanitizeSentryEvent(event), type: "transaction" as const };
   },
 });
+
+export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
