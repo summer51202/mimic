@@ -245,7 +245,7 @@ describe('Sentry privacy policy', () => {
     for (const value of prohibited) expect(serialized).not.toContain(value);
   });
 
-  it('keeps only qualified safe frame functions and non-sensitive project filenames', () => {
+  it('keeps only qualified safe frame functions and syntactically safe project filenames', () => {
     const { sanitizeSentryEvent } = sanitizer();
     const output = sanitizeSentryEvent({
       exception: {
@@ -259,13 +259,11 @@ describe('Sentry privacy policy', () => {
               { filename: 'src/anonymous.ts', function: '<anonymous>', lineno: 4, colno: 1 },
               { filename: 'src/alice@example.test.ts', function: 'AuthService.login', lineno: 5, colno: 1 },
               { filename: 'src/203.0.113.42.ts', function: 'AuthService.login', lineno: 6, colno: 1 },
-              { filename: 'src/customer-secret.ts', function: 'AuthService.login', lineno: 7, colno: 1 },
-              { filename: 'src/123/valid.ts', function: 'AuthService.login', lineno: 8, colno: 1 },
-              { filename: 'src/../private.ts', function: 'AuthService.login', lineno: 9, colno: 1 },
-              { filename: '/app/src/C:/customer.ts', function: 'AuthService.login', lineno: 10, colno: 1 },
-              { filename: 'src/valid.ts', function: '203.0.113.42', lineno: 11, colno: 1 },
-              { filename: 'src/valid.ts', function: 'alice@example.test', lineno: 12, colno: 1 },
-              { filename: 'src/valid.ts', function: 'AuthService.secretLogin', lineno: 13, colno: 1 },
+              { filename: 'src/123/valid.ts', function: 'AuthService.login', lineno: 7, colno: 1 },
+              { filename: 'src/../private.ts', function: 'AuthService.login', lineno: 8, colno: 1 },
+              { filename: '/app/src/C:/customer.ts', function: 'AuthService.login', lineno: 9, colno: 1 },
+              { filename: 'src/valid.ts', function: '203.0.113.42', lineno: 10, colno: 1 },
+              { filename: 'src/valid.ts', function: 'alice@example.test', lineno: 11, colno: 1 },
             ],
           },
         }],
@@ -296,14 +294,16 @@ describe('Sentry privacy policy', () => {
       { filename: '/app/dist/src/modules/auth/auth.service.js', function: 'saveAuth', lineno: 10, colno: 1 },
       { filename: `${cwd}\\dist\\src\\health\\health.service.js`, function: 'checkHealth', lineno: 20, colno: 2 },
       { filename: `${cwd}/src/health/ready.service.js`, function: 'ready', lineno: 30, colno: 3 },
+      { filename: `${cwd}/dist/src/modules/auth/jwt-secrets.js`, function: 'Object.getRequiredJwtSecret', module: 'dist.src.modules.auth:jwt-secrets', lineno: 40, colno: 4 },
       { filename: '/tmp/customer-secret.js', function: 'bad', lineno: 1, colno: 1 },
-      { filename: 'https://mimic.example/_next/static/chunks/app/foo-abc123.js', function: 'renderApp', lineno: 40, colno: 3 },
+      { filename: 'https://mimic.example/_next/static/chunks/app/foo-abc123.js', function: 'renderApp', lineno: 50, colno: 3 },
     ];
     expect(sanitizeSentryEvent({ exception: { values: [{ type: 'DomainError', stacktrace: { frames } }] } })).toEqual({
       exception: { values: [{ type: 'DomainError', stacktrace: { frames: [
         { filename: 'src/modules/auth/auth.service.js', function: 'saveAuth', lineno: 10, colno: 1 },
         { filename: 'src/health/health.service.js', function: 'checkHealth', lineno: 20, colno: 2 },
         { filename: 'src/health/ready.service.js', function: 'ready', lineno: 30, colno: 3 },
+        { filename: 'src/modules/auth/jwt-secrets.js', function: 'Object.getRequiredJwtSecret', lineno: 40, colno: 4 },
       ] } }] },
     });
   });

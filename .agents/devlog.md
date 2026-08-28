@@ -569,5 +569,6 @@
 - Added non-secret `SENTRY_ORG`/`SENTRY_PROJECT` build configuration for source-map upload while keeping the optional auth token confined to the BuildKit secret mount.
 - Corrected monitoring documentation to describe error-only telemetry and the supported DSN, environment, revision, and build inputs.
 - Ignored SDK-provided frame `module` metadata because it is never emitted, preventing colon-qualified module names from dropping otherwise safe allowlisted frames.
+- Treated trusted repository filenames and qualified function identifiers as code metadata, so SDK frames such as `jwt-secrets.js` and `Object.getRequiredJwtSecret` survive canonicalization without emitting module metadata.
 **Decisions:** Preserved only the Sentry-required event type discriminator alongside the constructed allowlist; it is constant metadata rather than user data.
 **Known gaps / follow-ups:** Linux production-image execution remains deferred because Docker is unavailable on this host; static image coverage includes the Sentry configuration.

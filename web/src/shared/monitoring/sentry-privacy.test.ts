@@ -133,24 +133,24 @@ test("Sentry privacy policy removes address-like frame data and unsafe locations
   for (const value of prohibited) expect(serialized).not.toContain(value);
 });
 
-test("Sentry privacy policy keeps qualified functions and rejects sensitive frame names", async () => {
+test("Sentry privacy policy keeps qualified functions and rejects malformed frame names", async () => {
   const { sanitizeSentryEvent } = await import("./sentry-privacy");
   const output = sanitizeSentryEvent({ exception: { values: [{ type: "DomainError", stacktrace: { frames: [
     { filename: "src/auth/session.ts", function: "AuthService.login", lineno: 1, colno: 1 },
     { filename: "src/handlers/object.ts", function: "Object.handler", lineno: 2, colno: 1 },
     { filename: "src/safe_name.ts", function: "$_safe.handler_$", lineno: 3, colno: 1 },
     { filename: "src/anonymous.ts", function: "<anonymous>", lineno: 4, colno: 1 },
-    { filename: "src/customer-secret.ts", function: "AuthService.login", lineno: 5, colno: 1 },
+    { filename: "src/modules/auth/jwt-secrets.js", function: "Object.getRequiredJwtSecret", module: "dist.src.modules.auth:jwt-secrets", lineno: 5, colno: 1 },
     { filename: "src/123/valid.ts", function: "AuthService.login", lineno: 6, colno: 1 },
     { filename: "src/valid.ts", function: "203.0.113.42", lineno: 7, colno: 1 },
     { filename: "src/valid.ts", function: "alice@example.test", lineno: 8, colno: 1 },
-    { filename: "src/valid.ts", function: "AuthService.secretLogin", lineno: 9, colno: 1 },
   ] } }] } });
   expect(output).toEqual({ exception: { values: [{ type: "DomainError", stacktrace: { frames: [
     { filename: "src/auth/session.ts", function: "AuthService.login", lineno: 1, colno: 1 },
     { filename: "src/handlers/object.ts", function: "Object.handler", lineno: 2, colno: 1 },
     { filename: "src/safe_name.ts", function: "$_safe.handler_$", lineno: 3, colno: 1 },
     { filename: "src/anonymous.ts", function: "<anonymous>", lineno: 4, colno: 1 },
+    { filename: "src/modules/auth/jwt-secrets.js", function: "Object.getRequiredJwtSecret", lineno: 5, colno: 1 },
   ] } }] } });
 });
 

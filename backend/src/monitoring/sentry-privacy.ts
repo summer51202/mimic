@@ -74,7 +74,6 @@ function isSafeProjectFilename(value: string): boolean {
     !/[?@#%\\:]/.test(value) &&
     !value.includes('..') &&
     !/(?:^|\/)(?:home|users?|private|secrets?)(?:\/|$)/i.test(value) &&
-    !/(?:^|\/)[^/]*(?:token|secret|password|authorization|cookie|api[-_]?key)[^/]*(?:\/|$)/i.test(value) &&
     !/\b(?:\d{1,3}\.){3}\d{1,3}\b/.test(value) &&
     !value.split('/').some((segment) => /^\d+$/.test(segment))
   );
@@ -105,8 +104,7 @@ function isSafeSourceLocation(value: unknown): value is number {
 function isSafeFrameFunction(value: unknown): value is string {
   return (
     typeof value === 'string' &&
-    (value === '<anonymous>' || value.split('.').every((segment) => FRAME_FUNCTION.test(segment))) &&
-    !/(?:token|secret|password|authorization|cookie|api[-_]?key)/i.test(value)
+    (value === '<anonymous>' || value.split('.').every((segment) => FRAME_FUNCTION.test(segment)))
   );
 }
 
