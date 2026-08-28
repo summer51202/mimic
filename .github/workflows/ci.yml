@@ -14,17 +14,37 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  naming:
+    name: Active Mimic naming
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - name: Test naming guard
+        run: node --test scripts/verify-mimic-naming.test.mjs
+      - name: Test CI workflow contract
+        run: node --test scripts/verify-ci-workflow.test.mjs
+      - name: Enforce active naming
+        run: node scripts/verify-mimic-naming.mjs
+
   backend:
     name: Backend
     runs-on: ubuntu-latest
+    env:
+      JWT_ACCESS_SECRET: mimic-ci-access-secret
+      JWT_REFRESH_SECRET: mimic-ci-refresh-secret
     defaults:
       run:
         working-directory: backend
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
@@ -37,6 +57,8 @@ jobs:
         run: npm run build
       - name: Test
         run: npm test -- --runInBand
+      - name: HTTP E2E
+        run: npm run test:e2e -- --runInBand
 
   web:
     name: Web PWA
@@ -49,9 +71,9 @@ jobs:
       MIMIC_COOKIE_SECURE: "false"
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
@@ -66,3 +88,32 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+
+  containers:
+    name: Production containers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - name: Verify production image contracts
+        run: node --test scripts/verify-production-images.test.mjs
+      - name: Verify backup behavior contracts on Linux
+        run: node --test ops/backup/backup-contract.test.mjs
+      - name: Build API image
+        run: docker build -f backend/Dockerfile backend -t mimic-api:ci
+      - name: Build Web image without upload credentials
+        run: >-
+          docker build
+          --build-arg MIMIC_API_BASE_URL=http://127.0.0.1:3000/api/v1
+          -f web/Dockerfile web -t mimic-web:ci
+      - name: Build backup image
+        run: docker build -f ops/backup/Dockerfile ops/backup -t mimic-backup:ci
+      - name: Check backup image POSIX shell syntax
+        run: |
+          docker run --rm --entrypoint /bin/sh mimic-backup:ci -n /opt/mimic/backup.sh
+          docker run --rm --entrypoint /bin/sh mimic-backup:ci -n /opt/mimic/restore-drill.sh
+          docker run --rm --entrypoint /bin/sh mimic-backup:ci -n /opt/mimic/restore-entrypoint.sh

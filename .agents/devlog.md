@@ -592,3 +592,16 @@
 - Made the backup password an independent sealed service secret rather than a Production-owner credential reference, and rejected leading/trailing service-field whitespace in both backup and restore behavior tests.
 **Decisions:** Kept the age private identity off the scheduled Railway service; only the public recipient is configured there. Kept the minisign signing key backup-only and restore credentials separately read-only. Logical restores require a new Staging scratch cluster/database and can never target Production.
 **Known gaps / follow-ups:** Docker image build and real libpq service-file parsing require CI or Railway because this Windows host has no Docker-compatible engine or PostgreSQL client; the first real encrypted backup and scratch/PITR restore drill remain operational launch gates.
+
+## 2026-08-28 — Gate Mimic production foundations in CI
+
+**Task:** Strengthen GitHub Actions so every change verifies active naming, the release test baseline, production images, and Linux-only recovery behavior.
+**Scope:** `.github/workflows/ci.yml`, `scripts/verify-ci-workflow.test.mjs`, `.agents/devlog.md`
+**What changed:**
+- Added a dedicated active Mimic naming job and Backend HTTP E2E coverage with explicit non-production JWT inputs.
+- Added API, Web, and backup production image builds plus static image and backup contracts.
+- Made Ubuntu execute the recovery guard/restore semantics contracts and validate both packaged backup scripts with the image's POSIX shell.
+- Pinned checkout and Node setup actions to verified release commits while retaining repository read-only permissions.
+- Kept Web image builds independent of Sentry upload credentials; no auth token is passed as an argument or environment variable.
+**Decisions:** Kept package installs in their existing Backend/Web jobs and used the runner's Docker/Node tooling for container contracts, avoiding a duplicate application dependency install in the image job.
+**Known gaps / follow-ups:** This Windows host has no Docker-compatible engine, so the three image builds and in-image shell checks are intentionally enforced by the Ubuntu CI job; Railway remote builds remain the later deployment gate.
