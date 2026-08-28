@@ -123,7 +123,7 @@ test("restore accepts only collision-resistant weekly encrypted backup object na
 test("backup image fixes its Alpine release and PostgreSQL major and runs unprivileged", async () => {
   const dockerfile = await read("./Dockerfile");
 
-  assert.match(dockerfile, /^FROM alpine:3\.22\.\d+$/m);
+  assert.match(dockerfile, /^FROM alpine:3\.22\.\d+@sha256:[0-9a-f]{64}$/m);
   assert.match(dockerfile, /^ARG POSTGRES_MAJOR=16$/m);
   assert.match(dockerfile, /apk add --no-cache age aws-cli minisign postgresql\$\{POSTGRES_MAJOR\}-client/);
   assert.match(dockerfile, /^RUN addgroup -g 10001 -S mimic && adduser -u 10001 -S -G mimic mimic$/m);

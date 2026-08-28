@@ -39,13 +39,27 @@ function assertContains(contents, pattern, description) {
   assert.match(contents, pattern, description);
 }
 
+function assertPinnedBaseImages(dockerfile, expectedImage, expectedDigest) {
+  const baseImages = [...dockerfile.matchAll(/^FROM\s+(\S+)/gm)].map((match) => match[1]);
+  assert.ok(baseImages.length > 0, "Dockerfile has at least one base image");
+  for (const image of baseImages) {
+    assert.equal(image, `${expectedImage}@sha256:${expectedDigest}`);
+  }
+}
+
 test("backend production image has the Prisma runtime contract", () => {
   const dockerfile = read("backend/Dockerfile");
   const packageJson = JSON.parse(read("backend/package.json"));
   const dockerignore = read("backend/.dockerignore");
 
-  assertContains(dockerfile, /^FROM node:22-bookworm-slim AS build$/m, "backend build stage uses Node 22 slim");
-  assertContains(dockerfile, /^FROM node:22-bookworm-slim AS runtime$/m, "backend runtime stage uses Node 22 slim");
+  assertPinnedBaseImages(
+    dockerfile,
+    "node:22-bookworm-slim",
+    "83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3ebafdd95eaf7767a7e5",
+  );
+
+  assertContains(dockerfile, /^FROM node:22-bookworm-slim@sha256:[0-9a-f]{64} AS build$/m, "backend build stage uses pinned Node 22 slim");
+  assertContains(dockerfile, /^FROM node:22-bookworm-slim@sha256:[0-9a-f]{64} AS runtime$/m, "backend runtime stage uses pinned Node 22 slim");
   assertContains(dockerfile, /^RUN apt-get update && apt-get install -y --no-install-recommends openssl/m, "both stages install OpenSSL");
   assertContains(dockerfile, /^RUN npm ci$/m, "build stage uses reproducible npm ci");
   assertContains(dockerfile, /^RUN npm run prisma:generate$/m, "build stage generates Prisma client");
@@ -107,9 +121,15 @@ test("web production image uses Next standalone output without secrets", () => {
   const nextConfig = read("web/next.config.ts");
   const dockerignore = read("web/.dockerignore");
 
-  assertContains(dockerfile, /^FROM node:22-bookworm-slim AS deps$/m, "web dependency stage uses Node 22 slim");
-  assertContains(dockerfile, /^FROM node:22-bookworm-slim AS build$/m, "web build stage uses Node 22 slim");
-  assertContains(dockerfile, /^FROM node:22-bookworm-slim AS runtime$/m, "web runtime stage uses Node 22 slim");
+  assertPinnedBaseImages(
+    dockerfile,
+    "node:22-bookworm-slim",
+    "83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3ebafdd95eaf7767a7e5",
+  );
+
+  assertContains(dockerfile, /^FROM node:22-bookworm-slim@sha256:[0-9a-f]{64} AS deps$/m, "web dependency stage uses pinned Node 22 slim");
+  assertContains(dockerfile, /^FROM node:22-bookworm-slim@sha256:[0-9a-f]{64} AS build$/m, "web build stage uses pinned Node 22 slim");
+  assertContains(dockerfile, /^FROM node:22-bookworm-slim@sha256:[0-9a-f]{64} AS runtime$/m, "web runtime stage uses pinned Node 22 slim");
   assertContains(dockerfile, /^RUN npm ci$/m, "web installs locked dependencies");
   assertContains(dockerfile, /^ARG MIMIC_API_BASE_URL$/m, "web accepts API URL at build time");
   assertContains(dockerfile, /^ARG NEXT_PUBLIC_MIMIC_SENTRY_DSN$/m, "web accepts public Sentry DSN at build time");
@@ -139,4 +159,39 @@ test("web production image uses Next standalone output without secrets", () => {
   assert.doesNotMatch(dockerfile, /^ARG SENTRY_AUTH_TOKEN$/m, "web does not accept a Sentry token as an ARG");
   assert.doesNotMatch(dockerfile, /^ENV SENTRY_AUTH_TOKEN/m, "web does not store a Sentry token in the image environment");
   assert.doesNotMatch(dockerfile, /https?:\/\/[^\s"']+/, "web Dockerfile has no baked-in endpoint literal");
+});
+
+test("backup build context is deny-by-default and its base image is immutable", () => {
+  const dockerfile = read("ops/backup/Dockerfile");
+  const dockerignore = read("ops/backup/.dockerignore");
+  const patterns = dockerignore
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"));
+
+  assertPinnedBaseImages(
+    dockerfile,
+    "alpine:3.22.2",
+    "4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412",
+  );
+  assert.equal(patterns[0], "**");
+  assert.deepEqual(
+    new Set(patterns.slice(1)),
+    new Set([
+      "!Dockerfile",
+      "!backup.sh",
+      "!restore-drill.sh",
+      "!restore-entrypoint.sh",
+      "!provision-scratch.sql",
+      "!verify-restore.sql",
+    ]),
+  );
+});
+
+test("immutable base image update procedure is documented", () => {
+  const runbook = read("docs/operations/container-images.md");
+  assert.match(runbook, /Docker Hub/i);
+  assert.match(runbook, /multi-arch/i);
+  assert.match(runbook, /sha256:/);
+  assert.match(runbook, /verify-production-images\.test\.mjs/);
 });

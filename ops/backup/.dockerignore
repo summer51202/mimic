@@ -1,0 +1,8 @@
+# Deny the entire recovery-tool source tree, then admit only runtime image inputs.
+**
+!Dockerfile
+!backup.sh
+!restore-drill.sh
+!restore-entrypoint.sh
+!provision-scratch.sql
+!verify-restore.sql

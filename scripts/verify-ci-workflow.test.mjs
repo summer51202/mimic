@@ -2,17 +2,37 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const workflow = await readFile(
+const workflow = (await readFile(
   new URL("../.github/workflows/ci.yml", import.meta.url),
   "utf8",
-);
+)).replace(/\r\n/g, "\n");
 
 test("CI pins third-party actions and keeps repository permissions read-only", () => {
   assert.match(workflow, /^permissions:\s*\n\s+contents: read$/m);
-  assert.doesNotMatch(workflow, /uses:\s+[^\s]+@v\d+(?:\s|$)/m);
-  assert.match(workflow, /actions\/checkout@[0-9a-f]{40}\s+# v4\.2\.2/);
-  assert.match(workflow, /actions\/setup-node@[0-9a-f]{40}\s+# v4\.4\.0/);
+  const actionUses = [...workflow.matchAll(/^\s*-?\s*uses:\s*([^\s#]+).*$/gm)]
+    .map((match) => match[1])
+    .filter((reference) => !reference.startsWith("./"));
+  assert.ok(actionUses.length > 0, "workflow invokes external actions");
+  for (const reference of actionUses) {
+    const separator = reference.lastIndexOf("@");
+    assert.ok(separator > 0, `${reference} has an explicit revision`);
+    assert.match(reference.slice(separator + 1), /^[0-9a-f]{40}$/, `${reference} uses a full commit SHA`);
+  }
+  const checkoutBlocks = [...workflow.matchAll(/uses:\s*actions\/checkout@[0-9a-f]{40}[^\n]*\n([\s\S]*?)(?=\n\s*- name:|\n\s{2}\w|$)/g)];
+  assert.equal(checkoutBlocks.length, 4);
+  for (const [, block] of checkoutBlocks) {
+    assert.match(block, /persist-credentials:\s*false/);
+  }
   assert.match(workflow, /node --test scripts\/verify-ci-workflow\.test\.mjs/);
+});
+
+test("every CI job has a bounded execution time", () => {
+  for (const job of ["naming", "backend", "web", "containers"]) {
+    assert.match(
+      workflow,
+      new RegExp(`^  ${job}:\\r?\\n(?:.*\\r?\\n){0,4}    timeout-minutes: \\d+$`, "m"),
+    );
+  }
 });
 
 test("CI gates active Mimic naming and the full backend HTTP baseline", () => {
@@ -32,6 +52,12 @@ test("CI builds all production images and checks their static contracts", () => 
   assert.match(workflow, /-f web\/Dockerfile web -t mimic-web:ci/);
   assert.match(workflow, /docker build -f ops\/backup\/Dockerfile ops\/backup -t mimic-backup:ci/);
   assert.doesNotMatch(workflow, /SENTRY_AUTH_TOKEN/);
+  assert.match(workflow, /docker image inspect --format/);
+  assert.match(workflow, /pg_dump --version/);
+  for (const tool of ["age", "aws"]) {
+    assert.match(workflow, new RegExp(`${tool} --version`));
+  }
+  assert.match(workflow, /command -v minisign/);
 });
 
 test("CI exercises backup behavior and POSIX syntax on Linux", () => {

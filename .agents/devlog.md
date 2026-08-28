@@ -605,3 +605,16 @@
 - Kept Web image builds independent of Sentry upload credentials; no auth token is passed as an argument or environment variable.
 **Decisions:** Kept package installs in their existing Backend/Web jobs and used the runner's Docker/Node tooling for container contracts, avoiding a duplicate application dependency install in the image job.
 **Known gaps / follow-ups:** This Windows host has no Docker-compatible engine, so the three image builds and in-image shell checks are intentionally enforced by the Ubuntu CI job; Railway remote builds remain the later deployment gate.
+
+## 2026-08-28 — Harden CI supply chain and container verification
+
+**Task:** Resolve the Task 7 review findings around action pins, build contexts, time bounds, immutable bases, and runtime smoke coverage.
+**Scope:** CI workflow/contracts, API/Web/backup Dockerfiles, backup build context, container pin runbook, and recovery contracts
+**What changed:**
+- Made the workflow contract inspect every external `uses:` reference, require a full 40-hex commit SHA, and require checkout credential persistence to be disabled.
+- Added bounded timeouts to every job and non-network runtime smoke checks for image users, commands, Node, PostgreSQL 16, age, minisign, and AWS CLI.
+- Added a deny-by-default backup `.dockerignore` that admits only the six files consumed by its Dockerfile.
+- Pinned every Node and Alpine `FROM` stage to verified official Docker Hub multi-arch index digests and contract-checked the exact values.
+- Documented the official metadata sources, multi-architecture choice, independent inspection, and controlled digest-update procedure.
+**Decisions:** Used manifest-list digests rather than architecture-specific child digests so the immutable pins remain valid across supported local and Railway Linux architectures.
+**Known gaps / follow-ups:** Docker is unavailable on this Windows host; image pulls, builds, and smoke commands remain enforced by the Ubuntu container job and must pass before merge.
