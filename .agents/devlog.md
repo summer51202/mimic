@@ -672,3 +672,15 @@
 - Added a contract assertion for the complete private API URL and documented the rendered-variable verification gate.
 **Decisions:** Keep the API private and pin only its Railway-internal application port; do not create an API public domain as a routing workaround.
 **Known gaps / follow-ups:** Apply the focused Staging plan and verify Web readiness before generating the Web-only public domain.
+
+## 2026-08-28 — Bootstrap Railway Staging
+
+**Task:** Apply and verify the guarded Mimic Staging topology for closed-beta preparation.
+**Scope:** Railway Staging Web, API, PostgreSQL 18 volume, runtime secrets, private networking, public Web domain, and feature map
+**What changed:**
+- Applied the reviewed IaC plan with zero resource deletions and deployed Web/API in Singapore against the existing PostgreSQL 18 volume.
+- Generated independent JWT access/refresh secrets without logging their values and restricted API CORS to the exact Staging Web HTTPS origin.
+- Published only `mimic-web-staging.up.railway.app` on port `8080`; the API retains no public domain.
+- Verified the latest Web/API deployments, public homepage, liveness, readiness, migrations, and PostgreSQL volume state.
+**Decisions:** Keep Production empty and keep the API private; use the Web BFF as the only public application edge.
+**Known gaps / follow-ups:** Enable Railway volume backups manually, complete real two-account/auth privacy acceptance, upgrade the recovery image to PostgreSQL client 18, and switch Staging IaC back to `main` after merge.

@@ -136,7 +136,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 - [x] Railway IaC contract defines isolated `staging`/`production` Web, API, and PostgreSQL foundations without secret literals
 - [x] Railway deployment runbook documents per-environment plan/apply, readiness, migration, domain, rollback, and Production approval gates
 - [x] Error-only Sentry integration and encrypted/signed PostgreSQL backup/restore tooling are repository-ready for the original PG16 contract; Railway deployment remains gated on the PG18 client upgrade below
-- [ ] Apply and verify the reviewed IaC plan in Staging
+- [x] Apply and verify the reviewed IaC plan in Staging, including private API routing, JWT secrets, exact Web-origin CORS, and Web-only public HTTPS
 - [ ] After bootstrap acceptance, switch Staging IaC/contract from the temporary feature branch back to `main` before merge and apply the reviewed post-merge plan
 - [ ] Run real Railway Linux image builds, migrations, health checks, real-API acceptance, and privacy inspection
 - [ ] Enable and verify daily PostgreSQL volume backups in Staging and Production, plus Production PITR
