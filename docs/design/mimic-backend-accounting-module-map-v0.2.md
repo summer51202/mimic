@@ -2,8 +2,6 @@
 
 Date: 2026-04-07
 Scope: NestJS module, service, and utility mapping for Mimic accounting logic
-Reference: [mimic-accounting-rules-implementation-note-v0.2.md](/d:/Project/mimic/docs/design/mimic-accounting-rules-implementation-note-v0.2.md)
-
 ## Goal
 
 Map the accounting implementation note into concrete NestJS responsibilities so the backend can be built with clear boundaries and minimal duplication.
