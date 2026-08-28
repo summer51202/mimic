@@ -65,7 +65,7 @@ export default defineRailway((context) => {
     source: github(repository, { branch, rootDirectory: "/web" }),
     build: {
       builder: "DOCKERFILE",
-      dockerfilePath: "Dockerfile",
+      dockerfilePath: "Dockerfile.railway",
       watchPatterns: ["/web/**"],
     },
     healthcheck: "/api/health/ready",

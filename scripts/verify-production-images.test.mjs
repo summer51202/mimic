@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
@@ -164,6 +164,29 @@ test("web production image uses Next standalone output without secrets", () => {
   assert.doesNotMatch(dockerfile, /^ARG SENTRY_AUTH_TOKEN$/m, "web does not accept a Sentry token as an ARG");
   assert.doesNotMatch(dockerfile, /^ENV SENTRY_AUTH_TOKEN/m, "web does not store a Sentry token in the image environment");
   assert.doesNotMatch(dockerfile, /https?:\/\/[^\s"']+/, "web Dockerfile has no baked-in endpoint literal");
+});
+
+test("Railway web image avoids unsupported Docker secret mounts", () => {
+  const railwayDockerfilePath = path.join(repoRoot, "web/Dockerfile.railway");
+  assert.ok(existsSync(railwayDockerfilePath), "Railway has a dedicated Web Dockerfile");
+
+  const railwayDockerfile = read("web/Dockerfile.railway");
+  assert.doesNotMatch(
+    railwayDockerfile,
+    /--mount=type=secret/,
+    "Railway Dockerfile does not use unsupported BuildKit secret mounts",
+  );
+  assertContains(railwayDockerfile, /^RUN npm run build$/m, "Railway builds without source-map credentials");
+  assertPinnedBaseImages(
+    railwayDockerfile,
+    "node:22-bookworm-slim",
+    "83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3ebafdd95eaf7767a7e5",
+  );
+  assertContains(railwayDockerfile, /^COPY --from=build --chown=node:node \/app\/\.next\/standalone \.\/$/m, "Railway image keeps standalone output");
+  assertContains(railwayDockerfile, /^USER node$/m, "Railway image runs as the non-root node user");
+  assert.doesNotMatch(railwayDockerfile, /^ARG SENTRY_AUTH_TOKEN$/m, "Railway image does not accept the Sentry token as an ARG");
+  assert.doesNotMatch(railwayDockerfile, /^ENV SENTRY_AUTH_TOKEN/m, "Railway image does not store the Sentry token");
+  assert.doesNotMatch(railwayDockerfile, /(JWT_(?:ACCESS|REFRESH)_SECRET|DATABASE_URL)\s*=\s*[^$\s]/, "Railway image has no server secret literal");
 });
 
 test("backup build context is deny-by-default and its base image is immutable", () => {

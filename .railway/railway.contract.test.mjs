@@ -83,7 +83,7 @@ for (const environmentName of ["staging", "production"]) {
       rootDirectory: "/web",
     });
     assert.equal(web.build?.builder, "DOCKERFILE");
-    assert.equal(web.build?.dockerfilePath, "Dockerfile");
+    assert.equal(web.build?.dockerfilePath, "Dockerfile.railway");
     assert.deepEqual(web.build?.watchPatterns, ["/web/**"]);
     assert.equal(web.deploy?.healthcheckPath, "/api/health/ready");
     assert.equal(web.deploy?.restartPolicyType, "ON_FAILURE");

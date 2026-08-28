@@ -643,3 +643,12 @@
 - Documented per-environment plan/apply, Web-only public domain generation, explicit variable gates, private-API Staging verification, daily volume backups, immutable offsite storage, explicit Production approval/rollback, and a two-step unscheduled-then-cron backup rollout.
 **Decisions:** Matched Railway's existing lower-case `production` environment, temporarily configured the bootstrap Staging validation from `codex/mimic-baseline-railway-safety`, required a verified switch back to `main` before merge, kept Production only on `main`, and required separate environment plans; kept source-map auth and the backup service absent because current IaC cannot map the BuildKit secret mount and backup credentials/recovery evidence are not ready.
 **Known gaps / follow-ups:** No Railway config was planned/applied and no service, secret, domain, or deployment was created. Verify a compatible CLI, push and review the Staging branch/plan, complete secrets/Web domain, and pass remote image/runtime/recovery gates before Production work.
+## 2026-08-28 — Railway Web builder compatibility
+
+**Task:** Fix the failed Mimic Staging Web build after Railway rejected Docker BuildKit secret mounts.
+**Scope:** `web/Dockerfile.railway`, `.railway/railway.ts`, Railway IaC/image contract tests, deployment runbook
+**What changed:**
+- Added a Railway-specific Web Dockerfile that keeps the pinned standalone production image contract without an unsupported secret mount.
+- Pointed Railway IaC at `Dockerfile.railway` and added regression coverage for the platform constraint.
+**Decisions:** Source-map upload stays disabled on Railway; `SENTRY_AUTH_TOKEN` is not weakened into an image argument or environment variable.
+**Known gaps / follow-ups:** Re-enable Railway source-map upload only after Railway supports a reviewed build-secret mechanism.

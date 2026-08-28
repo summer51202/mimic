@@ -10,7 +10,7 @@ Both persistent environments use the lower-case Railway names `staging` and `pro
 
 | Resource | Source/root | Dockerfile | Health check | Region |
 |---|---|---|---|---|
-| `mimic-web` | `summer51202/mimic`, `/web` | `Dockerfile` | `/api/health/ready` | `asia-southeast1-eqsg3a` |
+| `mimic-web` | `summer51202/mimic`, `/web` | `Dockerfile.railway` | `/api/health/ready` | `asia-southeast1-eqsg3a` |
 | `mimic-api` | `summer51202/mimic`, `/backend` | `Dockerfile` | `/api/v1/health/ready` | `asia-southeast1-eqsg3a` |
 | `mimic-postgres` | Railway PostgreSQL | managed image/volume | n/a | `asia-southeast1-eqsg3a` |
 
@@ -44,6 +44,12 @@ the rendered variable must be an internal `railway.internal` HTTP URL. Stop if
 the plan escapes it as plain text or resolves it to a public/hard-coded origin.
 
 The current IaC build model also has no field that maps a Railway variable to the Docker BuildKit secret mount expected by `web/Dockerfile`. Therefore `SENTRY_AUTH_TOKEN` is not declared as a service variable. Source-map upload remains disabled on Railway until a reviewed platform-supported secret-mount mechanism is available. Never work around this by adding the token as a Docker `ARG`, `ENV`, `NEXT_PUBLIC_*` variable, or IaC literal.
+
+Railway builds Web with `web/Dockerfile.railway`. Railway's Dockerfile builder
+supports cache mounts but rejects BuildKit secret mounts, so this dedicated file
+runs the same standalone production build without source-map credentials. Keep
+`web/Dockerfile` for builders that can securely mount `SENTRY_AUTH_TOKEN`; never
+copy that token into the Railway-compatible file.
 
 `preserve()` means "retain an existing Railway value"; it does not create or
 supply a value on a new service. Missing JWT secrets or `CORS_ORIGIN` do not
