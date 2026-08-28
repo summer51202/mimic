@@ -572,3 +572,15 @@
 - Treated trusted repository filenames and qualified function identifiers as code metadata, so SDK frames such as `jwt-secrets.js` and `Object.getRequiredJwtSecret` survive canonicalization without emitting module metadata.
 **Decisions:** Preserved only the Sentry-required event type discriminator alongside the constructed allowlist; it is constant metadata rather than user data.
 **Known gaps / follow-ups:** Linux production-image execution remains deferred because Docker is unavailable on this host; static image coverage includes the Sentry configuration.
+
+## 2026-08-28 — Add encrypted PostgreSQL recovery tooling
+
+**Task:** Add portable encrypted logical backups and guarded scratch restore drills for Railway PostgreSQL.
+**Scope:** `ops/backup/` image, scripts, verification SQL and contracts; LF checkout policy; PostgreSQL recovery runbook
+**What changed:**
+- Added a non-root Alpine backup image with PostgreSQL 16, AWS CLI, and age tooling.
+- Added weekly custom-format dumps that are encrypted before upload, checksummed, and handled only in permission-restricted temporary directories.
+- Added checksum-first restore orchestration with canonical object validation, explicit staging-scratch confirmation, and actual database-name verification before destructive restore.
+- Added exact migration/table row-count evidence and a Railway-oriented snapshots, PITR, lifecycle, key custody, drill, RPO/RTO, and escalation runbook.
+**Decisions:** Kept the age private identity off the scheduled Railway service; only the public recipient is configured there. Logical restores require a new scratch database named `mimic_*_restore_drill` and can never target Production.
+**Known gaps / follow-ups:** Docker image build and Alpine `/bin/sh` syntax execution require CI or Railway because this Windows host has no Docker-compatible engine; the first real encrypted backup and scratch/PITR restore drill remain operational launch gates.
