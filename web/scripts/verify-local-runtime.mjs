@@ -109,7 +109,13 @@ export async function checkHealth(
     timeoutMs,
   );
 
-  const revision = liveBody?.data?.revision;
+  if (!isHealthyEnvelope(liveBody)) {
+    throw new Error(
+      `Liveness checkpoint failed (${checkpoint}): ${liveUrl}: invalid liveness response`,
+    );
+  }
+
+  const revision = liveBody.data.revision;
   if (!revision) {
     throw new Error(
       `Backend revision missing at ${liveUrl}; expected ${expectedRevision}`,
@@ -130,7 +136,7 @@ export async function checkHealth(
     "Readiness",
     timeoutMs,
   );
-  if (readyBody?.data?.ok !== true) {
+  if (!isHealthyEnvelope(readyBody)) {
     throw new Error(
       `Readiness checkpoint failed (${checkpoint}): ${readyUrl}: invalid readiness response`,
     );
@@ -138,6 +144,17 @@ export async function checkHealth(
 
   log(`Health checkpoint passed (${checkpoint}): ${liveUrl} and ${readyUrl}`);
   return { liveUrl, readyUrl, revision };
+}
+
+function isHealthyEnvelope(body) {
+  const data = body?.data;
+
+  return (
+    typeof data === "object" &&
+    data !== null &&
+    !Array.isArray(data) &&
+    data.ok === true
+  );
 }
 
 async function fetchHealthCheckpoint(url, checkpoint, label, timeoutMs) {

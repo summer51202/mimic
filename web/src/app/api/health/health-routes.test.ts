@@ -47,4 +47,21 @@ describe("health BFF routes", () => {
       error: { code: "SERVICE_NOT_READY" },
     });
   });
+
+  it.each([
+    { ok: false },
+    {},
+    null,
+    [],
+    "unexpected readiness payload",
+  ])("rejects malformed backend readiness payload %j", async (data) => {
+    requestToApiMock.mockResolvedValueOnce(data as never);
+
+    const response = await getReady();
+
+    expect(response.status).toBe(503);
+    await expect(response.json()).resolves.toEqual({
+      error: { code: "SERVICE_NOT_READY" },
+    });
+  });
 });

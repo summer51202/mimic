@@ -533,7 +533,8 @@
 **Scope:** Backend health module and e2e coverage; Web health BFF routes and runtime verifier; `.agents/devlog.md`.
 **What changed:**
 - Added legacy, liveness, and readiness backend health routes with safe revision exposure and optional Prisma migration verification.
+- Switched Prisma to lazy connection so the process can serve liveness while the database is unavailable.
 - Added local Web liveness, backend-proxied readiness, and dual-endpoint runtime preflight checks.
-- Added focused backend, Web, and verifier coverage for safe failures and readiness gating.
-**Decisions:** Readiness reports only `SERVICE_NOT_READY` for database or migration failures so operational details never leave the service.
+- Added focused backend, Web, and verifier coverage for safe failures, strict `ok: true` envelopes, and readiness gating.
+**Decisions:** Readiness reports only `SERVICE_NOT_READY` for database or migration failures so operational details never leave the service; Web consumers reject malformed success envelopes instead of trusting compile-time contracts.
 **Known gaps / follow-ups:** Production deployment must set `MIMIC_EXPECTED_MIGRATION` when migration-level readiness is required.

@@ -96,6 +96,32 @@ test("checkHealth rejects a backend with no process revision", async () => {
   });
 });
 
+for (const liveBody of [
+  { data: { ok: false, revision: "e40aba9" } },
+  {},
+  { data: [] },
+]) {
+  test("checkHealth rejects an invalid liveness envelope", async () => {
+    await withServer((request, response) => {
+      response.writeHead(200, { "content-type": "application/json" });
+      response.end(
+        JSON.stringify(
+          request.url === "/api/v1/health/live"
+            ? liveBody
+            : { data: { ok: true } },
+        ),
+      );
+    }, async (apiBaseUrl) => {
+      await assert.rejects(
+        checkHealth(apiBaseUrl, "preflight", "e40aba9"),
+        new RegExp(
+          `Liveness checkpoint failed \\(preflight\\): ${apiBaseUrl.replaceAll("/", "\\/")}\\/health\\/live: invalid liveness response`,
+        ),
+      );
+    });
+  });
+}
+
 test("checkHealth rejects a stale backend process revision", async () => {
   await withServer((request, response) => {
     response.writeHead(200, { "content-type": "application/json" });
