@@ -684,3 +684,13 @@
 - Verified the latest Web/API deployments, public homepage, liveness, readiness, migrations, and PostgreSQL volume state.
 **Decisions:** Keep Production empty and keep the API private; use the Web BFF as the only public application edge.
 **Known gaps / follow-ups:** Enable Railway volume backups manually, complete real two-account/auth privacy acceptance, upgrade the recovery image to PostgreSQL client 18, and switch Staging IaC back to `main` after merge.
+
+## 2026-08-28 — Document Railway restart-policy drift
+
+**Task:** Record the false-positive drift remaining after the successful Staging IaC apply.
+**Scope:** Railway deployment runbook and post-apply plan inspection
+**What changed:**
+- Documented that Railway's planner can keep reporting default restart-policy changes after the live deployment manifest already shows `ON_FAILURE` with 10 retries.
+- Added an operator guard against repeatedly applying a plan containing only those two known mismatch lines.
+**Decisions:** Keep the desired restart policy explicit in source and verify it from the live manifest instead of weakening the IaC contract to silence a platform planner mismatch.
+**Known gaps / follow-ups:** Recheck this behavior after future Railway CLI/SDK upgrades and remove the exception once planning becomes idempotent.

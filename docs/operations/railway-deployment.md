@@ -29,6 +29,8 @@ Staging and Production databases, JWT secrets, Sentry configuration, storage cre
 
 Railway IaC is environment-scoped: `railway config plan` and `railway config apply` operate against the currently linked environment. The `environments` list documents the allowed project environments, but one apply must not be treated as configuring both. Link, plan, review, and apply `staging` and `production` separately.
 
+Railway currently reports an idempotence mismatch for the explicit default restart policy: a post-apply plan can still show `restartPolicyType (null → ON_FAILURE)` and `restartPolicyMaxRetries (null → 10)` even when the live deployment manifest already contains `ON_FAILURE` and `10`. Verify the live manifest before treating these two lines as drift, and do not repeatedly apply a plan that contains only this known mismatch.
+
 The pinned SDK models `deploy.preDeployCommand` as an array. `.railway/railway.ts` uses the higher-level `preDeploy` input, which compiles `npm run prisma:migrate:deploy` into a one-element array. Before each apply, verify that the plan retains that command exactly. If the installed Railway CLI/API omits or rewrites it, stop: do not deploy or replace it with `migrate dev`; upgrade/reconcile the CLI and SDK first.
 
 The current SDK can declare literal domains, but it cannot request an unknown
