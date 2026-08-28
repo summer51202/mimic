@@ -4,7 +4,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Project Overview
 
-**mimic / PairFund** — a shared-finance Web PWA for couples and small groups. Users manage shared virtual funds, track contributions and expenses, and settle balances. Key invariant: **settled periods are locked and cannot be edited retroactively**; corrections must be new transactions.
+**Mimic** — a shared-finance Web PWA for couples and small groups. Users manage shared virtual funds, track contributions and expenses, and settle balances. Key invariant: **settled periods are locked and cannot be edited retroactively**; corrections must be new transactions.
 
 Run repository commands from the cloned repository root unless a section names a subdirectory. The root `README.md` provides the public project overview; detailed design specs live in `docs/`.
 
@@ -76,7 +76,7 @@ Use `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build` as the 
 
 ## Accounting Rules (critical domain logic)
 
-These rules are enforced in `settlements.service.ts` and are documented in `docs/design/pairfund-backend-accounting-module-map-v0.2.md`:
+These rules are enforced in `settlements.service.ts` and are documented in `docs/design/mimic-backend-accounting-module-map-v0.2.md`:
 
 1. A member's **position** = total contributions − total expense splits allocated to them
 2. **Settlement suggestion**: calculate net positions for all members, then generate minimum transfers to balance them
@@ -88,9 +88,9 @@ These rules are enforced in `settlements.service.ts` and are documented in `docs
 ## Key Documentation
 
 For deep context on business rules, read these in order:
-1. `docs/design/pairfund-prd-v0.2-final.md` — product rules, MVP scope, accounting invariants
-2. `docs/design/pairfund-backend-accounting-module-map-v0.2.md` — backend module responsibilities
-3. `docs/design/pairfund-web-ui-v0.2.md` — Web PWA screens, states, and interaction model
+1. `docs/design/mimic-prd-v0.2-final.md` — product rules, MVP scope, accounting invariants
+2. `docs/design/mimic-backend-accounting-module-map-v0.2.md` — backend module responsibilities
+3. `docs/design/mimic-web-ui-v0.2.md` — Web PWA screens, states, and interaction model
 
 ---
 

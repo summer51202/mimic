@@ -16,7 +16,7 @@ import { ContributionsService } from '../src/modules/contributions/contributions
 import { SettlementsService } from '../src/modules/settlements/settlements.service';
 
 const JWT_SECRET =
-  'pairfund-dashboard-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
+  'mimic-dashboard-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
 
 describe('Fund dashboard endpoints', () => {
   let app: INestApplication;

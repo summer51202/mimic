@@ -7,7 +7,7 @@ import { GroupsService } from '../src/modules/groups/groups.service';
 import { PrismaService } from '../src/modules/prisma/prisma.service';
 
 const TEST_JWT_ACCESS_SECRET =
-  'pairfund-e2e-only-secret-7f58c9a2d10e4b63a91c5f8472de603b';
+  'mimic-e2e-only-secret-7f58c9a2d10e4b63a91c5f8472de603b';
 
 describe('Group invites', () => {
   let app: INestApplication;

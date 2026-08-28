@@ -74,7 +74,7 @@ export class AuthService {
         refreshToken,
         {
           secret:
-            process.env.JWT_REFRESH_SECRET ?? 'pairfund-local-refresh-secret',
+            process.env.JWT_REFRESH_SECRET ?? 'mimic-local-refresh-secret',
         },
       );
       const user = await this.usersService.findById(payload.sub);
@@ -119,7 +119,7 @@ export class AuthService {
         email: user.email,
       },
       {
-        secret: process.env.JWT_ACCESS_SECRET ?? 'pairfund-local-access-secret',
+        secret: process.env.JWT_ACCESS_SECRET ?? 'mimic-local-access-secret',
         expiresIn: '15m',
       },
     );
@@ -133,7 +133,7 @@ export class AuthService {
       },
       {
         secret:
-          process.env.JWT_REFRESH_SECRET ?? 'pairfund-local-refresh-secret',
+          process.env.JWT_REFRESH_SECRET ?? 'mimic-local-refresh-secret',
         expiresIn: '30d',
       },
     );

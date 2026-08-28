@@ -7,7 +7,7 @@ async function main() {
   const passwordHash = await bcrypt.hash('password', 10);
 
   const user = await prisma.user.upsert({
-    where: { email: 'demo@pairfund.local' },
+    where: { email: 'demo@mimic.local' },
     update: {
       passwordHash,
       displayName: 'Edward',
@@ -15,7 +15,7 @@ async function main() {
       timezone: 'Asia/Taipei',
     },
     create: {
-      email: 'demo@pairfund.local',
+      email: 'demo@mimic.local',
       passwordHash,
       displayName: 'Edward',
       locale: 'zh-TW',
@@ -26,14 +26,14 @@ async function main() {
   const group = await prisma.group.upsert({
     where: { id: '00000000-0000-4000-8000-000000000001' },
     update: {
-      name: 'PairFund Demo',
+      name: 'Mimic Demo',
       groupType: GroupType.COUPLE,
       defaultCurrency: 'TWD',
       createdById: user.id,
     },
     create: {
       id: '00000000-0000-4000-8000-000000000001',
-      name: 'PairFund Demo',
+      name: 'Mimic Demo',
       groupType: GroupType.COUPLE,
       defaultCurrency: 'TWD',
       createdById: user.id,
@@ -74,7 +74,7 @@ async function main() {
     },
   });
 
-  console.log('Seeded demo account: demo@pairfund.local / password');
+  console.log('Seeded demo account: demo@mimic.local / password');
 }
 
 main()

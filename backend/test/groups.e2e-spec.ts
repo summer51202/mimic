@@ -7,7 +7,7 @@ import { GroupsService } from '../src/modules/groups/groups.service';
 import { PrismaService } from '../src/modules/prisma/prisma.service';
 
 const JWT_SECRET =
-  'pairfund-groups-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
+  'mimic-groups-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
 
 describe('Group detail and management', () => {
   let app: INestApplication;

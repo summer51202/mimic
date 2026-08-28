@@ -1,4 +1,4 @@
-# PairFund Web UI Design v0.2
+# Mimic Web UI Design v0.2
 
 Date: 2026-04-07
 Platform: Web
@@ -6,7 +6,7 @@ Direction: Warm desktop experience with richer information density
 
 ## Goal
 
-Extend the PairFund product into a desktop-friendly Web experience that keeps the warm shared-life feeling from mobile while presenting more context, history, and management controls.
+Extend the Mimic product into a desktop-friendly Web experience that keeps the warm shared-life feeling from mobile while presenting more context, history, and management controls.
 
 ## Product Lens
 

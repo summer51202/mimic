@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: PairFund API
+  title: Mimic API
   version: 0.2.0
   summary: Shared virtual fund API for couples and small groups
 servers:

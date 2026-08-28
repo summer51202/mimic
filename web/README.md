@@ -29,8 +29,8 @@ Use three PowerShell terminals. From the repository root, start only PostgreSQL
 in WSL:
 
 ```powershell
-wsl --exec docker start pairfund-postgres
-wsl --exec docker ps --filter name=pairfund-postgres
+wsl --exec docker start mimic-postgres
+wsl --exec docker ps --filter name=mimic-postgres
 ```
 
 Build and start the backend from this same checkout on port 3001:
@@ -38,7 +38,7 @@ Build and start the backend from this same checkout on port 3001:
 ```powershell
 Set-Location backend
 npm run build
-$env:DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/pairfund?schema=public'
+$env:DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/mimic?schema=public'
 $env:PORT = '3001'
 $env:MIMIC_BACKEND_REVISION = (git -C .. rev-parse HEAD).Trim()
 npm run start:dev
@@ -85,7 +85,7 @@ npm run dev -- --webpack --hostname localhost --port 3010
 
 The backend seed account is:
 
-- email: `demo@pairfund.local`
+- email: `demo@mimic.local`
 - password: `password`
 
 For the two-account invitation flow, either use unique throwaway emails through

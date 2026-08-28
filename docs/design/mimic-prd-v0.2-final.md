@@ -1,10 +1,10 @@
-# PairFund PRD / Spec v0.2 Final
+# Mimic PRD / Spec v0.2 Final
 
 ## Overview
 
 ### Product
 
-PairFund is a shared finance app for couples and small groups across iOS, Android, and Web.
+Mimic is a shared finance app for couples and small groups across iOS, Android, and Web.
 
 ### Core Value
 
@@ -768,7 +768,7 @@ The engineering roadmap should move from contract definition to backend core, th
 
 ```mermaid
 timeline
-  title PairFund MVP Engineering Roadmap
+  title Mimic MVP Engineering Roadmap
   Phase 0 : Finalize v0.2 spec
           : Finalize Prisma schema
           : Finalize OpenAPI contract

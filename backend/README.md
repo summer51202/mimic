@@ -1,4 +1,4 @@
-# PairFund Backend
+# Mimic Backend
 
 NestJS API for the mimic Web PWA.
 
@@ -38,7 +38,7 @@ Option A, install PostgreSQL locally:
 ```text
 host: localhost
 port: 5432
-database: pairfund
+database: mimic
 user: postgres
 password: postgres
 ```
@@ -56,7 +56,7 @@ npm run start:dev
 Option B, use Docker Engine inside WSL2:
 
 ```powershell
-wsl --exec docker start pairfund-postgres pairfund-backend
+wsl --exec docker start mimic-postgres mimic-backend
 wsl --exec docker ps
 Invoke-RestMethod http://localhost:3001/api/v1/health
 ```
@@ -73,7 +73,7 @@ changes:
 # From the repository root
 Set-Location backend
 npm run build
-wsl --exec docker restart pairfund-backend
+wsl --exec docker restart mimic-backend
 ```
 
 If WSL stops immediately while background containers are needed, keep one hidden
@@ -86,7 +86,7 @@ Start-Process wsl -ArgumentList '--exec','sleep','infinity' -WindowStyle Hidden
 Demo credentials:
 
 ```text
-email: demo@pairfund.local
+email: demo@mimic.local
 password: password
 ```
 

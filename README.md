@@ -107,14 +107,15 @@ backend/   NestJS API、Prisma schema、migration 與測試
 web/       Next.js PWA、UI、BFF routes 與測試
 docs/      產品需求、設計規格、API 契約與實作計畫
 .agents/   專案 feature map、devlog 與 repository skills
-prisma/    根目錄 Prisma schema 副本
 ```
+
+`backend/prisma/schema.prisma` 是唯一的 Prisma schema source of truth。
 
 ## 主要文件
 
-- [產品需求文件](docs/design/pairfund-prd-v0.2-final.md)
-- [Backend 帳務模組與規則](docs/design/pairfund-backend-accounting-module-map-v0.2.md)
-- [OpenAPI 規格](docs/api/pairfund-openapi-v0.2.yaml)
+- [產品需求文件](docs/design/mimic-prd-v0.2-final.md)
+- [Backend 帳務模組與規則](docs/design/mimic-backend-accounting-module-map-v0.2.md)
+- [OpenAPI 規格](docs/api/mimic-openapi-v0.2.yaml)
 - [功能地圖](.agents/features.md)
 - [Alpha readiness](docs/alpha-readiness.md)
 
@@ -232,14 +233,15 @@ backend/   NestJS API, Prisma schema, migrations, and tests
 web/       Next.js PWA, UI, BFF routes, and tests
 docs/      Product requirements, design specs, API contracts, and implementation plans
 .agents/   Feature map, development log, and repository skills
-prisma/    Root Prisma schema copy
 ```
+
+`backend/prisma/schema.prisma` is the only Prisma schema source of truth.
 
 ## Key Documentation
 
-- [Product requirements](docs/design/pairfund-prd-v0.2-final.md)
-- [Backend accounting modules and rules](docs/design/pairfund-backend-accounting-module-map-v0.2.md)
-- [OpenAPI specification](docs/api/pairfund-openapi-v0.2.yaml)
+- [Product requirements](docs/design/mimic-prd-v0.2-final.md)
+- [Backend accounting modules and rules](docs/design/mimic-backend-accounting-module-map-v0.2.md)
+- [OpenAPI specification](docs/api/mimic-openapi-v0.2.yaml)
 - [Feature map](.agents/features.md)
 - [Alpha readiness](docs/alpha-readiness.md)
 

@@ -72,7 +72,7 @@ describe('App bootstrap', () => {
     });
   });
 
-  it('allows Flutter Web development preflight requests', async () => {
+  it('allows PWA development preflight requests', async () => {
     const response = await request(app.getHttpServer())
       .options('/auth/login')
       .set('Origin', 'http://localhost:8080')

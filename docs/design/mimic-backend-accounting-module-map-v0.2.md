@@ -1,8 +1,8 @@
-# PairFund Backend Accounting Module Map v0.2
+# Mimic Backend Accounting Module Map v0.2
 
 Date: 2026-04-07
-Scope: NestJS module, service, and utility mapping for PairFund accounting logic
-Reference: [pairfund-accounting-rules-implementation-note-v0.2.md](/d:/Project/mimic/docs/design/pairfund-accounting-rules-implementation-note-v0.2.md)
+Scope: NestJS module, service, and utility mapping for Mimic accounting logic
+Reference: [mimic-accounting-rules-implementation-note-v0.2.md](/d:/Project/mimic/docs/design/mimic-accounting-rules-implementation-note-v0.2.md)
 
 ## Goal
 

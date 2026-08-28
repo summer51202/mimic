@@ -7,7 +7,7 @@ import { PrismaService } from '../src/modules/prisma/prisma.service';
 import { UsersService } from '../src/modules/users/users.service';
 
 const JWT_SECRET =
-  'pairfund-users-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
+  'mimic-users-e2e-secret-7f58c9a2d10e4b63a91c5f8472de603b';
 
 describe('Current user profile', () => {
   let app: INestApplication;

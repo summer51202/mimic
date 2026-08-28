@@ -513,3 +513,15 @@
 - Removed the tracked generated service worker while retaining its TypeScript source.
 **Decisions:** The scanner intentionally reports current active legacy references until the subsequent technical rename task removes them; mobile source remains recoverable in Git history.
 **Known gaps / follow-ups:** Broad active-surface naming migration is deferred to the next task.
+
+## 2026-08-28 — Complete Mimic technical rename
+
+**Task:** Complete the active product rename from PairFund to Mimic and remove the duplicate Prisma schema.
+**Scope:** Active repository guidance, READMEs, backend runtime/test/seed configuration, Web documentation, feature map, four current specifications, package metadata, and Prisma schema location.
+**What changed:**
+- Renamed the current PRD, backend map, Web UI specification, and OpenAPI contract to `mimic-*` filenames and updated active brand references.
+- Renamed backend package metadata, local JWT fallbacks, test secrets, demo seed data, and documented local service examples to Mimic.
+- Made the PWA feature map authoritative, removed retired-client delivery claims, and recorded missing PWA flows as TODO work.
+- Removed the root Prisma schema copy; `backend/prisma/schema.prisma` is now documented as the only schema source of truth.
+**Decisions:** Preserved migrations, historical plans, and prior devlog entries as immutable history; restricted the rename to the active surfaces covered by the naming verifier.
+**Known gaps / follow-ups:** Historical documentation and Git history intentionally retain retired PairFund and client references.

@@ -30,7 +30,7 @@ export class JwtAuthGuard implements CanActivate {
       const payload = this.jwtService.verify<{ sub: string; email: string }>(
         token,
         {
-          secret: process.env.JWT_ACCESS_SECRET ?? 'pairfund-local-access-secret',
+          secret: process.env.JWT_ACCESS_SECRET ?? 'mimic-local-access-secret',
         },
       );
       request.user = {
