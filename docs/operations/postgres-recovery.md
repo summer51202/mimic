@@ -1,145 +1,169 @@
 # Mimic PostgreSQL backup and recovery
 
-This runbook covers Railway PostgreSQL snapshots/PITR and the independent weekly encrypted logical backup. Complete the readiness checklist before accepting Closed Beta data. Never restore over the Production database service.
+This runbook combines Railway volume backups/PITR with independently authenticated weekly logical backups. Complete a restore drill before accepting Closed Beta data. Never restore a logical dump over Production.
 
-## Recovery objectives and ownership
+Authoritative Railway behavior is documented in [Point-in-Time Recovery](https://docs.railway.com/volumes/point-in-time-recovery) and [Back Up and Restore Postgres](https://docs.railway.com/guides/postgres-backups-restores). Railway creates a brand-new sibling service for PITR; volume-backup restore is a different, same-service operation.
 
-- Target RPO: at most 15 minutes, provided by Production point-in-time recovery (PITR).
-- Target RTO: under four hours, measured from the restore decision to application/database verification.
-- The weekly offsite logical dump is a portability and disaster-recovery layer. It does not by itself meet the 15-minute RPO.
-- The on-call operator runs the procedure; a second operator verifies the target service and approves every destructive restore command.
-- Escalate immediately to the project owner and hosting/storage support if PITR is unavailable, the measured RPO exceeds 15 minutes, the measured RTO exceeds four hours, a checksum fails, or verification reports missing migrations/tables.
+## Objectives and mandatory evidence
 
-## Before Beta data is accepted
+- Production PITR target RPO: at most 15 minutes.
+- Restore target RTO: under four hours from decision to verified completion.
+- Weekly logical backups provide portable offsite recovery, not the 15-minute RPO.
+- Two operators approve a drill: one executes it and one independently verifies the target identity.
+- Escalate to the project owner and hosting/storage support if PITR is unhealthy, RPO or RTO is missed, a signature/checksum fails, versions differ, required tables/migration are missing, or any target guard fails.
 
-For both Railway environments, confirm that PostgreSQL is a dedicated service and that Staging and Production variables never reference one another.
+Record UTC source/restore timestamps, source/client/target PostgreSQL major and full version numbers, source release, expected migration, object/version ID, system identifiers, sentinel confirmation, migration count, exact row counts, effective RPO/RTO, and explicit confirmation that Production was not modified.
 
-1. In the Railway project, open the Production PostgreSQL service's Backups panel.
-2. Enable daily snapshots and PITR with retention that covers the agreed incident window. Confirm the displayed latest recoverable timestamp is no more than 15 minutes behind UTC now.
-3. Enable daily snapshots for Staging as well. Record the schedule, retention, and first successful snapshot in the recovery evidence log.
-4. Perform a sibling/scratch restore before launch. A backup configuration is not considered operational until a restore has been verified.
-5. Configure the offsite S3-compatible bucket lifecycle to expire objects below `weekly/` after 90 days. Enable object versioning or retention protection when the provider supports it.
+## Railway protection before Beta
 
-Save the following lifecycle document as an untracked temporary file on the operator machine, then apply it with the same endpoint and bucket used by the backup job:
+1. On Production PostgreSQL, open **Backups**, enable a daily volume-backup schedule, and record retention and the first success. Volume restore stages a replacement volume on the same service; it is not the routine drill path.
+2. Click **Enable PITR**. Railway configures WAL archiving and rolling pgBackRest backups. Wait for the first base backup and confirm the available restore range is current enough for the RPO.
+3. Enable daily volume backups on Staging.
+4. Run both a PITR sibling verification and a signed logical restore drill before launch.
+
+For PITR recovery, select the timestamp and click **Restore to this moment**. Railway creates and deploys a new sibling PostgreSQL service automatically; do not pre-create a PITR target. The source remains running. Verify the sibling, then make cutover or row-copying a separately approved incident action. The restored sibling has PITR disabled until explicitly enabled for that service.
+
+## PostgreSQL version policy
+
+Logical backup and restore fail closed unless source server, backup client, signed-manifest major, target server, and restore client all share one PostgreSQL major. The default image build pins major 16:
+
+```sh
+docker build --build-arg POSTGRES_MAJOR=16 -f ops/backup/Dockerfile ops/backup -t mimic-backup:pg16
+```
+
+If Railway changes the database major, build and verify a matching image first; never use a newer `pg_dump` merely because it might be backward-compatible. Record `SHOW server_version_num`, `pg_dump --version`, and `pg_restore --version` in drill evidence.
+
+## Encryption and provenance keys
+
+Generate both key pairs offline under `umask 077`:
+
+```sh
+age-keygen -o mimic-backup-identity.txt
+age-keygen -y mimic-backup-identity.txt
+minisign -G -W -s mimic-backup-signing.key -p mimic-backup-signing.pub
+```
+
+Custody rules:
+
+- Store the age private identity offline/in the approved vault. Railway receives only `MIMIC_BACKUP_AGE_RECIPIENT`.
+- Store the unencrypted minisign secret key only as the masked `MIMIC_BACKUP_MINISIGN_SECRET_KEY` on the isolated backup service. This key is required for unattended signing and must never exist on a restore runner.
+- Restore operators receive only `MIMIC_BACKUP_MINISIGN_PUBLIC_KEY` and the separately controlled age identity.
+- Rotate signing/encryption keys with an overlap drill; retain old verification/decryption keys for retained objects.
+
+## Offsite bucket controls
+
+Use an offsite S3-compatible bucket with versioning enabled. Enable Object Lock/WORM retention when supported; otherwise deny overwrite/delete to the backup principal. Use separate read-only restore and write-only backup credentials: the scheduled backup credential is write-only for `weekly/`, while the restore principal is read-only. Neither credential may administer lifecycle, versioning, or retention.
+
+Configure a 90-day lifecycle for current and non-current `weekly/` objects with an administrative credential used only for bucket setup. Verify the lifecycle afterward. Never place that administrative credential on the backup or restore service.
+
+Save this policy as an untracked temporary `lifecycle-90-days.json`:
 
 ```json
 {
-  "Rules": [
-    {
-      "ID": "expire-mimic-weekly-after-90-days",
-      "Status": "Enabled",
-      "Filter": { "Prefix": "weekly/" },
-      "Expiration": { "Days": 90 },
-      "NoncurrentVersionExpiration": { "NoncurrentDays": 90 }
-    }
-  ]
+  "Rules": [{
+    "ID": "expire-mimic-weekly-after-90-days",
+    "Status": "Enabled",
+    "Filter": { "Prefix": "weekly/" },
+    "Expiration": { "Days": 90 },
+    "NoncurrentVersionExpiration": { "NoncurrentDays": 90 }
+  }]
 }
 ```
 
+Apply and read back the controls with the bucket-administration identity, then securely remove the temporary policy file:
+
 ```sh
+aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3api put-bucket-versioning \
+  --bucket "$MIMIC_BACKUP_S3_BUCKET" --versioning-configuration Status=Enabled
 aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3api put-bucket-lifecycle-configuration \
-  --bucket "$MIMIC_BACKUP_S3_BUCKET" \
-  --lifecycle-configuration file://lifecycle-90-days.json
+  --bucket "$MIMIC_BACKUP_S3_BUCKET" --lifecycle-configuration file://lifecycle-90-days.json
+aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3api get-bucket-versioning \
+  --bucket "$MIMIC_BACKUP_S3_BUCKET"
 aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3api get-bucket-lifecycle-configuration \
   --bucket "$MIMIC_BACKUP_S3_BUCKET"
 ```
 
-Delete the temporary lifecycle document after use. It contains no secret, but it is operational state rather than repository configuration.
+Where Object Lock is supported, enable it during bucket creation and verify it with `s3api get-object-lock-configuration`; do not claim immutability when the provider returns no enabled configuration.
 
-## Create and custody the age identity
+Each backup key contains UTC time plus 128 random bits. The encrypted dump, checksum, signed manifest, and signature share the key; the signature is uploaded last as the publication marker. Consumers ignore sets without a valid signature. Record storage version IDs after upload and alert on any later version or deletion-marker change.
 
-Generate the identity on an offline, encrypted operator device:
+## Weekly Railway cron service
+
+Deploy `ops/backup/Dockerfile` as Production service `mimic-backup-job` and schedule `0 3 * * 0` (Sunday 03:00 UTC). Configure:
+
+- `DATABASE_URL` referencing Production PostgreSQL.
+- `MIMIC_POSTGRES_CLIENT_MAJOR`, `MIMIC_EXPECTED_MIGRATION`, and `MIMIC_BACKUP_RELEASE` matching the deployed release.
+- `MIMIC_BACKUP_AGE_RECIPIENT` and backup-only `MIMIC_BACKUP_MINISIGN_SECRET_KEY`.
+- `MIMIC_BACKUP_S3_ENDPOINT`, `MIMIC_BACKUP_S3_BUCKET`, `AWS_DEFAULT_REGION`, and the write-only `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`; add `AWS_SESSION_TOKEN` only for temporary credentials.
+
+The script passes the database URL through libpq environment state instead of process arguments, verifies that the latest successfully applied source migration equals `MIMIC_EXPECTED_MIGRATION`, encrypts before upload, deletes plaintext immediately, signs a manifest containing object/hash/version/migration/release identity, and publishes the signature last. Do not enable shell tracing. A successful log contains only `backup_uploaded=<object key>`.
+
+## Provision an independent logical-restore target
+
+This sentinel procedure is only for the weekly logical restore, not PITR.
+
+1. Create a new PostgreSQL service in **Staging**, never Production. Obtain that new service's administrative and scratch connection values through the approved vault/injection path. Create a database whose name matches `mimic_*_restore_drill` without placing a URL in process arguments:
 
 ```sh
-umask 077
-age-keygen -o mimic-backup-identity.txt
-age-keygen -y mimic-backup-identity.txt
+export PGDATABASE="$SCRATCH_ADMIN_URL"
+unset SCRATCH_ADMIN_URL
+createdb "$MIMIC_RESTORE_DATABASE_NAME"
+export PGDATABASE="$MIMIC_RESTORE_DATABASE_URL"
+unset MIMIC_RESTORE_DATABASE_URL
+```
+2. Independently query Production once with `SELECT system_identifier::text FROM pg_control_system();` and store the value as protected recovery metadata. Do not supply a Production URL to the restore process.
+3. Generate a new 128-bit nonce on the operator host with `od -An -N16 -tx1 /dev/urandom | tr -d ' \n'`.
+4. While `PGDATABASE` still identifies that new scratch database, run:
+
+```sh
+psql --set=ON_ERROR_STOP=1 \
+  --set=scratch_database="$MIMIC_RESTORE_DATABASE_NAME" \
+  --set=sentinel_nonce="$MIMIC_RESTORE_SENTINEL_NONCE" \
+  --file=ops/backup/provision-scratch.sql
+unset PGDATABASE
 ```
 
-Store the private `mimic-backup-identity.txt` in the approved secrets vault and its offline recovery copy. Do not commit it, upload it to the backup bucket, or configure it on the scheduled Railway service. Put only the public `age1...` recipient output in Railway as `MIMIC_BACKUP_AGE_RECIPIENT`. Test decryption custody with two authorized operators before launch.
+The SQL verifies the connected name, writes `mimic-restore-scratch:<nonce>` as the database comment outside the restored application schema, and prints the scratch cluster system identifier. The approving operator records the nonce and system identifier independently. Restore requires both values and rejects the recorded Production system identifier even if names or confirmation variables are forged.
 
-## Weekly encrypted logical backup
+## Run a signed logical restore drill
 
-Create the Production `mimic-backup-job` Railway service from `ops/backup/Dockerfile`. Schedule it for Sunday 03:00 UTC with cron expression `0 3 * * 0`. Configure these secret/service variables:
+Select an object matching `weekly/mimic-YYYYMMDDTHHMMSSZ-<32 lowercase hex>.dump.age`. Create an untracked mode-`0600` environment file containing:
 
-- `DATABASE_URL` — a reference to the Production PostgreSQL service only.
-- `MIMIC_BACKUP_AGE_RECIPIENT` — the public age recipient; never the private identity.
-- `MIMIC_BACKUP_S3_ENDPOINT` — HTTPS endpoint for the S3-compatible store.
-- `MIMIC_BACKUP_S3_BUCKET` — dedicated backup bucket name.
-- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_DEFAULT_REGION` — credentials limited to writing/reading this bucket and prefix.
-- `AWS_SESSION_TOKEN` — only when the storage provider issues temporary credentials.
+- S3 endpoint/bucket and the exact `MIMIC_BACKUP_OBJECT`.
+- The read-only restore principal's AWS variables.
+- `MIMIC_BACKUP_MINISIGN_PUBLIC_KEY`.
+- Scratch-only `MIMIC_RESTORE_DATABASE_URL`, `MIMIC_RESTORE_DATABASE_NAME`, `MIMIC_RESTORE_ENVIRONMENT=staging-scratch`, and `MIMIC_RESTORE_CONFIRM=RESTORE-INTO-SCRATCH`.
+- Independently recorded `MIMIC_RESTORE_SENTINEL_NONCE`, `MIMIC_RESTORE_SYSTEM_IDENTIFIER`, and `MIMIC_PRODUCTION_SYSTEM_IDENTIFIER`.
+- `MIMIC_POSTGRES_CLIENT_MAJOR`, `MIMIC_EXPECTED_MIGRATION`, and `MIMIC_EXPECTED_RELEASE` matching the selected signed backup and intended release.
 
-The job creates a custom-format dump in a private temporary directory, encrypts it, removes the plaintext, calculates the encrypted object's SHA-256 checksum, and uploads only `.age` and `.age.sha256` objects. A successful run logs only an object key such as `weekly/mimic-<UTC timestamp>.dump.age`.
-
-After every scheduled run:
+Keep the age identity outside the environment file. The image runs as UID/GID 10001. Stream the operator-readable private identity over stdin so Docker creates a mode-`0600` temporary file owned by that non-root process; this avoids bind-mount UID mismatches:
 
 ```sh
-aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 ls \
-  "s3://${MIMIC_BACKUP_S3_BUCKET}/weekly/"
-```
-
-Confirm that the newest encrypted object and checksum have the same timestamp. Alert if the job or either upload is absent. Do not log environment values or enable shell tracing.
-
-## Railway PITR into a sibling service
-
-Use this path for incidents inside the PITR window.
-
-1. Record the incident time in UTC, the requested recovery timestamp, and the newest timestamp Railway declares recoverable.
-2. Create a new PostgreSQL service in the same environment with a unique scratch name ending in `-restore-drill`. Do not change the existing Production service or its variables.
-3. In Railway's PostgreSQL Backups/PITR workflow, choose the requested timestamp and direct the recovery to the new sibling service. If the workflow cannot guarantee a new target, stop and escalate to Railway support; never select an in-place Production restore.
-4. Keep Web/API variables pointing to the original database while verification runs. Restrict scratch database network access to the operators and verification job.
-5. Run the migration and row-count queries from `ops/backup/verify-restore.sql` against the sibling database and compare them with pre-incident evidence.
-6. Record restore start/end, source timestamp, effective RPO, effective RTO, migration count, and all table counts.
-7. Promotion or data reconciliation is a separately approved incident action. The restore drill itself never repoints Production.
-
-## Weekly object restore drill
-
-Run this at least monthly and after changes to PostgreSQL, `age`, storage, or the scripts.
-
-1. Create a new Staging PostgreSQL scratch service. Its actual database name must be lowercase, must match `mimic_*_restore_drill`, and must not contain `prod` or `production`.
-2. Verify the scratch URL independently. Do not copy a Production URL into the shell history or use Production connection variables.
-3. On the secured operator host, retrieve the private age identity from the vault to a permission-restricted temporary file.
-4. Choose the exact `weekly/mimic-YYYYMMDDTHHMMSSZ.dump.age` object. Create `/secure/temp/mimic-restore.env` outside the repository with mode `0600`, populated directly from the secrets vault and dedicated Staging scratch service. It must define:
-
-- `MIMIC_BACKUP_OBJECT`, `MIMIC_BACKUP_S3_ENDPOINT`, and `MIMIC_BACKUP_S3_BUCKET`
-- `MIMIC_BACKUP_AGE_IDENTITY_FILE=/run/secrets/mimic-age-identity`
-- `MIMIC_RESTORE_DATABASE_URL` and `MIMIC_RESTORE_DATABASE_NAME`
-- `MIMIC_RESTORE_ENVIRONMENT=staging-scratch`
-- `MIMIC_RESTORE_CONFIRM=RESTORE-INTO-SCRATCH`
-- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`, and optional `AWS_SESSION_TOKEN`
-
-Do not echo this file, pass its values on the command line, or persist them in shell history. Resolve `MIMIC_BACKUP_IMAGE` to the immutable registry digest deployed on Railway, then run:
-
-```sh
-docker run --rm \
+docker run --rm -i \
+  --user 10001:10001 \
   --env-file /secure/temp/mimic-restore.env \
-  --mount type=bind,src=/secure/temp/mimic-backup-identity.txt,dst=/run/secrets/mimic-age-identity,readonly \
-  --entrypoint /opt/mimic/restore-drill.sh \
-  "$MIMIC_BACKUP_IMAGE"
+  --entrypoint /opt/mimic/restore-entrypoint.sh \
+  "$MIMIC_BACKUP_IMAGE" \
+  < /secure/temp/mimic-backup-identity.txt
 ```
 
-The restore script performs these checks in order: canonical object/explicit scratch guards, encrypted object download, checksum structure, checksum verification, decryption, actual connected database name, destructive scratch restore, and SQL verification. A checksum or guard failure is terminal; do not bypass it.
+The restore checks target database/system/sentinel and Production inequality before object access. It verifies the minisign signature before trusting manifest fields, validates checksum identity, runs `sha256sum --check`, then decrypts. Only then may `pg_restore --clean --if-exists` run. `verify-restore.sql` fails unless the expected migration is applied, the signed release identity is supplied, and every required Mimic table exists; it then emits exact counts.
 
-5. Capture stdout from `verify-restore.sql`, compare migration count with the source release, and investigate zero or unexpected row counts.
-6. Remove the scratch service and securely delete the temporary environment file and private identity only after evidence has been reviewed. Retain the evidence record, not the decrypted dump.
+Delete the temporary environment file and scratch service after evidence approval. Retain no decrypted dump or private key copy. A failed guard, signature, checksum, version, migration, release, or table check is terminal and must never be bypassed.
 
 ## Drill evidence record
 
-Create one record per drill in the approved operations system:
-
 | Field | Required evidence |
 |---|---|
-| Operator and approver | Two named authorized people |
-| Source mechanism | Railway PITR or weekly encrypted object key |
-| Source backup timestamp | UTC timestamp from PITR/object |
-| Restore start / finish | UTC timestamps |
-| Effective RPO | Incident/reference time minus source timestamp |
-| Effective RTO | Restore decision/start to verified finish |
-| Target | Railway environment, service, and actual scratch database name |
-| Production exclusion | Explicit confirmation that no Production URL/service was used or overwritten |
-| Integrity | Successful SHA-256 check for logical restores |
-| Schema | Applied migration count and expected release/migration |
+| Operators | Executor and independent approver |
+| Source | PITR timestamp or signed object key and storage version IDs |
+| Versions | Source/client/target PostgreSQL versions and common major |
+| Identity | Production and scratch system IDs plus sentinel verification; no connection URL |
+| Release/schema | Signed release, expected/applied migration, required-table result |
 | Data | Exact row count for every public table |
-| Result | Pass, failure details, escalation owner, and follow-up due date |
+| Integrity | Minisign result before SHA-256 result |
+| Timing | UTC source, start, verified finish, effective RPO and RTO |
+| Production exclusion | Confirmation no Production service, volume, URL, or signing key was used by restore |
+| Result | Pass/fail, escalation owner, and follow-up due date |
 
-The drill passes only when verification succeeds, no Production connection was used, effective RPO is at most 15 minutes for PITR evidence, and effective RTO is under four hours. A weekly logical object older than 15 minutes may still pass its portability drill, but it cannot be cited as meeting the Production RPO.
+PITR evidence passes only at RPO no more than 15 minutes and RTO under four hours. A weekly logical object may pass portability/integrity while being older than the PITR RPO; never report it as satisfying the 15-minute target.

@@ -578,9 +578,9 @@
 **Task:** Add portable encrypted logical backups and guarded scratch restore drills for Railway PostgreSQL.
 **Scope:** `ops/backup/` image, scripts, verification SQL and contracts; LF checkout policy; PostgreSQL recovery runbook
 **What changed:**
-- Added a non-root Alpine backup image with PostgreSQL 16, AWS CLI, and age tooling.
-- Added weekly custom-format dumps that are encrypted before upload, checksummed, and handled only in permission-restricted temporary directories.
-- Added checksum-first restore orchestration with canonical object validation, explicit staging-scratch confirmation, and actual database-name verification before destructive restore.
-- Added exact migration/table row-count evidence and a Railway-oriented snapshots, PITR, lifecycle, key custody, drill, RPO/RTO, and escalation runbook.
-**Decisions:** Kept the age private identity off the scheduled Railway service; only the public recipient is configured there. Logical restores require a new scratch database named `mimic_*_restore_drill` and can never target Production.
+- Added a pinned non-root Alpine image with configurable PostgreSQL major, AWS CLI, age, and minisign tooling.
+- Added collision-resistant weekly custom-format dumps that are encrypted before upload, checksummed, bound to release/migration/PostgreSQL identity in a signed manifest, and published signature-last.
+- Added hostile guard coverage plus checksum/signature-first restore orchestration requiring an independently provisioned database sentinel, scratch system identifier, and explicit Production system-identity denial.
+- Added stdin-only age identity injection for UID/GID 10001, required-table/migration/release verification, exact row counts, and a current Railway sibling-PITR runbook with version, credential, immutability, RPO/RTO, and escalation controls.
+**Decisions:** Kept the age private identity off the scheduled Railway service; only the public recipient is configured there. Kept the minisign signing key backup-only and restore credentials separately read-only. Logical restores require a new Staging scratch cluster/database and can never target Production.
 **Known gaps / follow-ups:** Docker image build and Alpine `/bin/sh` syntax execution require CI or Railway because this Windows host has no Docker-compatible engine; the first real encrypted backup and scratch/PITR restore drill remain operational launch gates.
