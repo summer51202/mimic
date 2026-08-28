@@ -55,7 +55,7 @@ for (const environmentName of ["staging", "production"]) {
     const web = resource(definition, "service", "mimic-web");
 
     assert.equal(database.engine, "postgres");
-    assert.equal(database.image, "ghcr.io/railwayapp-templates/postgres-ssl:16");
+    assert.equal(database.image, "ghcr.io/railwayapp-templates/postgres-ssl:18");
     assert.deepEqual(database.deploy?.multiRegionConfig, {
       "asia-southeast1-eqsg3a": { numReplicas: 1 },
     });

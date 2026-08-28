@@ -1,7 +1,7 @@
 import {
   defineRailway,
-  database,
   github,
+  postgres,
   preserve,
   project,
   service,
@@ -24,14 +24,7 @@ export default defineRailway((context) => {
   const branch =
     environment === "staging" ? "codex/mimic-baseline-railway-safety" : "main";
 
-  // The SDK's postgres() helper currently tracks PostgreSQL 18. Mimic recovery
-  // tooling is deliberately pinned to major 16, so keep the image explicit.
-  const postgresDatabase = database("mimic-postgres", "postgres", {
-    image: "ghcr.io/railwayapp-templates/postgres-ssl:16",
-    output: "DATABASE_URL",
-    defaultMountPath: "/var/lib/postgresql/data",
-    region,
-  });
+  const postgresDatabase = postgres("mimic-postgres", { region });
 
   const api = service("mimic-api", {
     source: github(repository, { branch, rootDirectory: "/backend" }),

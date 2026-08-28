@@ -652,3 +652,13 @@
 - Pointed Railway IaC at `Dockerfile.railway` and added regression coverage for the platform constraint.
 **Decisions:** Source-map upload stays disabled on Railway; `SENTRY_AUTH_TOKEN` is not weakened into an image argument or environment variable.
 **Known gaps / follow-ups:** Re-enable Railway source-map upload only after Railway supports a reviewed build-secret mechanism.
+
+## 2026-08-28 — Align Railway PostgreSQL with platform major
+
+**Task:** Resolve the unsafe PG18-to-PG16 drift exposed by the first Railway Staging apply.
+**Scope:** Railway IaC/contract, deployment and recovery runbooks, feature map
+**What changed:**
+- Switched the declared Railway database to the SDK PostgreSQL 18 helper, matching the already initialized Staging volume.
+- Added an explicit Production gate requiring the backup/restore image to move from PostgreSQL client 16 to 18 before deployment.
+**Decisions:** Preserve the initialized PG18 volume and migrate it to Singapore; do not attempt an unsupported in-place downgrade to PG16.
+**Known gaps / follow-ups:** Upgrade and restore-drill the backup image before any Railway backup service or Production schedule is created.

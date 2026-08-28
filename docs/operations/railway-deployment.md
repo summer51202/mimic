@@ -108,7 +108,7 @@ These commands are operational and mutate Railway only where explicitly noted. R
    Confirm both sources use `codex/mimic-baseline-railway-safety`, the API
    pre-deploy command is retained as a one-element array, Docker roots and watch
    paths are correct, health checks use readiness, Singapore placement remains,
-   PostgreSQL is major 16, and the private API URL remains a resolvable Railway
+   PostgreSQL is major 18, and the private API URL remains a resolvable Railway
    reference. The generated plan is an operator artifact and must not be
    committed.
 
@@ -251,7 +251,8 @@ Before adding that unscheduled service, require:
 - dedicated non-owning `mimic_backup` LOGIN exists with only CONNECT/USAGE/SELECT and independently generated password;
 - discrete `MIMIC_BACKUP_DATABASE_HOST`, `PORT`, `USER=mimic_backup`, `PASSWORD`, `NAME`, and `SSL_MODE` are configured; no owner `DATABASE_URL` or `PGPASSWORD` reference is used;
 - separate write-only `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` credentials are configured, with `AWS_SESSION_TOKEN` only when temporary credentials require it;
-- `MIMIC_BACKUP_AGE_RECIPIENT`, `MIMIC_BACKUP_MINISIGN_SECRET_KEY`, `MIMIC_BACKUP_S3_ENDPOINT`, `MIMIC_BACKUP_S3_BUCKET`, `AWS_DEFAULT_REGION`, `MIMIC_POSTGRES_CLIENT_MAJOR`, `MIMIC_EXPECTED_MIGRATION`, and `MIMIC_BACKUP_RELEASE` are complete;
+- the backup image and restore tooling have been upgraded from PostgreSQL client 16 to client 18, and their image contracts pass;
+- `MIMIC_BACKUP_AGE_RECIPIENT`, `MIMIC_BACKUP_MINISIGN_SECRET_KEY`, `MIMIC_BACKUP_S3_ENDPOINT`, `MIMIC_BACKUP_S3_BUCKET`, `AWS_DEFAULT_REGION`, `MIMIC_POSTGRES_CLIENT_MAJOR=18`, `MIMIC_EXPECTED_MIGRATION`, and `MIMIC_BACKUP_RELEASE` are complete;
 
 After those prerequisites are ready, add the unscheduled service in a focused
 review and run these manual validation gates:
