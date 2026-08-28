@@ -538,3 +538,15 @@
 - Added focused backend, Web, and verifier coverage for safe failures, strict `ok: true` envelopes, and readiness gating.
 **Decisions:** Readiness reports only `SERVICE_NOT_READY` for database or migration failures so operational details never leave the service; Web consumers reject malformed success envelopes instead of trusting compile-time contracts.
 **Known gaps / follow-ups:** Production deployment must set `MIMIC_EXPECTED_MIGRATION` when migration-level readiness is required.
+
+## 2026-08-28 — Add Mimic production images
+
+**Task:** Add reproducible production container definitions for the Backend and Web PWA.
+**Scope:** Backend package metadata and Docker context; Backend and Web Dockerfiles; Next configuration; static image-contract test; `.agents/devlog.md`.
+**What changed:**
+- Added Node 22 Bookworm Slim multi-stage images with locked dependency installs, production non-root runtimes, and explicit compiled-artifact copies.
+- Moved the Prisma CLI to runtime dependencies, added `prisma:migrate:deploy`, and regenerated the Backend lockfile metadata.
+- Preserved the generated Prisma client/engine directory in the Backend runtime image and configured Next standalone output for the Web image.
+- Added Docker context exclusions and a Node static contract test covering image stages, commands, artifacts, ignores, secrets, Prisma, and standalone output.
+**Decisions:** The Backend runtime copies `.prisma` from the build stage after `npm ci --omit=dev` so generated client engines are explicit rather than depending only on install-hook behavior.
+**Known gaps / follow-ups:** This Windows host has no Docker-compatible engine, so `docker build`/container-runtime verification remains deferred to a Docker-capable environment or Railway remote builds.

@@ -4,6 +4,7 @@ import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   devIndicators: {
     position: "top-right",
   },
