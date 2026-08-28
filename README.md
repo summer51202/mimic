@@ -10,6 +10,11 @@ mimic 是一個以 PWA 為主要使用介面的共享財務應用，協助伴侶
 
 > 專案目前處於 pre-release 階段，適合本機開發、功能驗證與試用；尚未完成正式營運所需的法律文件與部署流程。
 
+Railway 基礎設施設定放在 `.railway/railway.ts`，並以 `staging` 優先、
+`production` 明確核准的方式逐環境套用。正式環境目前仍維持關閉，且備份 cron
+必須等專用唯讀資料庫帳號、外部儲存、簽章與還原演練全部通過後才能建立。詳見
+[`docs/operations/railway-deployment.md`](docs/operations/railway-deployment.md)。
+
 ## 功能特色
 
 - 建立共享群組、邀請成員並管理共同基金。
@@ -135,6 +140,13 @@ docs/      產品需求、設計規格、API 契約與實作計畫
 mimic is a shared-finance application built around a Web PWA. It helps couples and small groups manage shared funds, split expenses, track member positions, and settle balances.
 
 > The project is currently pre-release. It is suitable for local development, functional verification, and trials, but its production legal documents and deployment workflow are not final.
+
+Railway infrastructure is declared in `.railway/railway.ts` and applied one
+environment at a time, Staging first and Production only after explicit
+approval. Production remains closed, and the backup cron cannot be added until
+the dedicated read-only database role, external storage, signing, and restore
+drill gates pass. See
+[`docs/operations/railway-deployment.md`](docs/operations/railway-deployment.md).
 
 ## Features
 

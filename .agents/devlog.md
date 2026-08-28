@@ -631,3 +631,15 @@
 - Added isolated API/Web container bootstrap probes against their liveness endpoints without PostgreSQL or external network services.
 **Decisions:** Declared `js-yaml` directly in the Web development lockfile instead of relying on its prior transitive installation. Described immutable base/frontend selection plus lockfiles as controlled inputs, not byte-for-byte image reproducibility while OS package indexes remain dynamic.
 **Known gaps / follow-ups:** The Windows host still lacks Docker; CI must perform the pinned frontend pull, image builds, runtime probes, and API/Web bootstrap checks.
+
+## 2026-08-28 — Define guarded Railway deployment infrastructure
+
+**Task:** Add repository-side Railway IaC and a Staging-first deployment runbook without applying cloud changes.
+**Scope:** `.railway/` IaC package and contracts, Railway operations documentation, component READMEs, feature map, and devlog
+**What changed:**
+- Declared lower-case `staging` and `production` environments with isolated `mimic-web`, `mimic-api`, and explicit PostgreSQL 16 resources, environment-specific Git branches, Docker roots, Singapore placement, readiness checks, and production-safe Prisma migration command.
+- Used typed PostgreSQL references, non-secret environment metadata, and `preserve()` placeholders; no secret literal or Sentry trace-rate variable is stored in IaC.
+- Added offline contracts for both environment graphs and the deliberate absence of `mimic-backup-job`/cron.
+- Documented per-environment plan/apply, Web-only public domain generation, explicit variable gates, private-API Staging verification, daily volume backups, immutable offsite storage, explicit Production approval/rollback, and a two-step unscheduled-then-cron backup rollout.
+**Decisions:** Matched Railway's existing lower-case `production` environment, temporarily configured the bootstrap Staging validation from `codex/mimic-baseline-railway-safety`, required a verified switch back to `main` before merge, kept Production only on `main`, and required separate environment plans; kept source-map auth and the backup service absent because current IaC cannot map the BuildKit secret mount and backup credentials/recovery evidence are not ready.
+**Known gaps / follow-ups:** No Railway config was planned/applied and no service, secret, domain, or deployment was created. Verify a compatible CLI, push and review the Staging branch/plan, complete secrets/Web domain, and pass remote image/runtime/recovery gates before Production work.

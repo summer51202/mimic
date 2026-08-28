@@ -190,9 +190,13 @@ SQL
 
 Repeat the default-privilege revocation for every recorded object-creator role. Verify the grants are gone before removing the sealed Railway secret; drop the role only after `pg_shdepend`/ownership review confirms it owns no object and no retained recovery process still depends on it.
 
-## Weekly Railway cron service
+## Unscheduled validation, then weekly Railway cron
 
-Deploy `ops/backup/Dockerfile` as Production service `mimic-backup-job` and schedule `0 3 * * 0` (Sunday 03:00 UTC). Configure:
+Roll out `mimic-backup-job` in two separately reviewed changes. First deploy
+`ops/backup/Dockerfile` as an unscheduled Production service with
+`restartPolicyType: NEVER`, no `cronSchedule`, and no public domain. This first
+service exists only to run one controlled backup and restore drill; do not
+combine its creation with scheduling. Configure:
 
 - Add these Railway reference variables, replacing `ProductionPostgres` only if the Production database service has a different exact service name:
 
@@ -211,6 +215,13 @@ MIMIC_BACKUP_DATABASE_SSL_MODE=require
 - `MIMIC_BACKUP_S3_ENDPOINT`, `MIMIC_BACKUP_S3_BUCKET`, `AWS_DEFAULT_REGION`, and the write-only `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`; add `AWS_SESSION_TOKEN` only for temporary credentials.
 
 The script validates each discrete connection field against control-character/line injection, writes `host`, `port`, `user`, `password`, `dbname`, and `sslmode` separately to a mode-`0600` temporary [libpq service file](https://www.postgresql.org/docs/current/libpq-pgservice.html), and immediately unsets the connection variables. It scopes `PGSERVICEFILE` only to each database command; process arguments contain only `service=mimic_backup`, and the exit trap removes the file. The signing key is written and unset before database children run. AWS credentials are unset globally and supplied only to each `aws` invocation. The script verifies the latest source migration, encrypts before upload, deletes plaintext immediately, signs the manifest, and publishes the signature last. Do not enable shell tracing. A successful log contains only `backup_uploaded=<object key>`.
+
+Run the unscheduled service once and complete the independent scratch restore
+procedure below. Only after the encrypted object, checksum, signed manifest,
+signature-last publication, and restore-drill evidence are approved may a
+second reviewed Railway/IaC change add `cronSchedule: "0 3 * * 0"` (Sunday
+03:00 UTC). Keep `restartPolicyType: NEVER` and keep the scheduled service
+non-public. A failed manual backup or restore leaves the service unscheduled.
 
 ## Provision an independent logical-restore target
 

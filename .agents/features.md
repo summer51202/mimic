@@ -131,6 +131,19 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 ## TODO Backlog
 
+### Deployment & Operations
+
+- [x] Railway IaC contract defines isolated `staging`/`production` Web, API, and PostgreSQL foundations without secret literals
+- [x] Railway deployment runbook documents per-environment plan/apply, readiness, migration, domain, rollback, and Production approval gates
+- [x] Error-only Sentry integration and encrypted/signed PostgreSQL backup/restore tooling are repository-ready
+- [ ] Apply and verify the reviewed IaC plan in Staging
+- [ ] After bootstrap acceptance, switch Staging IaC/contract from the temporary feature branch back to `main` before merge and apply the reviewed post-merge plan
+- [ ] Run real Railway Linux image builds, migrations, health checks, real-API acceptance, and privacy inspection
+- [ ] Enable and verify daily PostgreSQL volume backups in Staging and Production, plus Production PITR
+- [ ] Provision the dedicated `mimic_backup` role and immutable external storage, then add an unscheduled private backup service for a manual backup and scratch restore drill
+- [ ] Add the Production backup cron only after the unscheduled service and every recovery gate pass
+- [ ] Keep Production closed until all five Closed Beta plans and release gates pass
+
 ### Auth & Identity
 - [x] Backend keeps temporary POST compatibility while canonical clients use PATCH /me
 - [x] Verify PWA token refresh retries an expired access token after a 401

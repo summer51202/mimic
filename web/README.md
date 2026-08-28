@@ -19,6 +19,16 @@ Source-map upload accepts the non-secret build arguments `SENTRY_ORG` and
 `docker build --secret id=SENTRY_AUTH_TOKEN,src=./sentry-auth-token ...`; never
 pass it as a Docker `ARG`, `ENV`, or `NEXT_PUBLIC_*` value.
 
+## Railway deployment
+
+Railway builds this package from `/web` with `web/Dockerfile` and checks
+`/api/health/ready`. The Web server reaches `mimic-api` over Railway's private
+network; only the generated Web and API domains are public. The current Railway
+IaC SDK cannot bind a variable to the Dockerfile's BuildKit secret mount, so
+Railway source-map upload remains disabled rather than exposing
+`SENTRY_AUTH_TOKEN` as a runtime/build argument. See the Staging-first gates in
+[`docs/operations/railway-deployment.md`](../docs/operations/railway-deployment.md).
+
 ## Local Commands
 
 ```bash

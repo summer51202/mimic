@@ -1,0 +1,17 @@
+{
+  "name": "mimic-railway-infrastructure",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test --test-isolation=none railway.contract.test.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "railway": "3.11.0",
+    "typescript": "5.9.2"
+  }
+}

@@ -233,6 +233,11 @@ test("runbook follows Railway sibling PITR and immutable signed-backup procedure
   assert.match(runbook, /versioning/i);
   assert.match(runbook, /object lock/i);
   assert.match(runbook, /separate.*read.*write/i);
+  assert.match(runbook, /unscheduled Production service/i);
+  assert.match(runbook, /restartPolicyType: NEVER/);
+  assert.match(runbook, /no `cronSchedule`, and no public domain/);
+  assert.match(runbook, /second reviewed Railway\/IaC change add `cronSchedule/);
+  assert.match(runbook, /failed manual backup or restore leaves the service unscheduled/i);
   assert.match(runbook, /MIMIC_RESTORE_SENTINEL_NONCE/);
   assert.match(runbook, /MIMIC_PRODUCTION_SYSTEM_IDENTIFIER/);
   assert.match(runbook, /MIMIC_RESTORE_SENTINEL_NONCE="\$\(/);

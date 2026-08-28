@@ -11,6 +11,16 @@ cookies, query strings, IP/email, messages, financial text/amounts,
 breadcrumbs, contexts, exception values, PII, or attachments are sent. Traces,
 replay, local-variable capture, and logs are disabled.
 
+## Railway deployment
+
+Railway builds this package from `/backend` with `backend/Dockerfile`, checks
+`/api/v1/health/ready`, and runs `npm run prisma:migrate:deploy` in the
+pre-deploy container. `DATABASE_URL`, both JWT secrets, the expected migration,
+environment, revision, CORS origin, and optional error-only Sentry DSN must be
+complete before readiness can pass. Never use `prisma migrate dev` in Railway.
+The complete Staging-first procedure is in
+[`docs/operations/railway-deployment.md`](../docs/operations/railway-deployment.md).
+
 ## Current Local Readiness
 
 Verified in this workspace:

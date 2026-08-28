@@ -15,6 +15,9 @@
 # Local runtime files
 **/.session/
 *.log
+.railway/config.json
+.railway/*-plan.json
+.railway/railway-plan.json
 
 # Editors and operating systems
 **/.idea/
