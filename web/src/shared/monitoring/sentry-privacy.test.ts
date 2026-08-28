@@ -112,3 +112,25 @@ test("Sentry privacy policy keeps only safe DNS origins and route templates", as
     tags: { route: "/app/funds/:fundId" },
   });
 });
+
+test("Sentry privacy policy removes address-like frame data and unsafe locations", async () => {
+  const { sanitizeSentryEvent } = await import("./sentry-privacy");
+  const prohibited = ["203.0.113.42", "alice@example.test", "token=secret"];
+  const output = sanitizeSentryEvent({
+    exception: {
+      values: [{
+        type: "DomainError",
+        stacktrace: { frames: [
+          { filename: "src/203.0.113.42.ts", function: "203.0.113.42", lineno: -1, colno: 1e20 },
+          { filename: "src/alice@example.test.ts", function: "token=secret", lineno: Infinity, colno: 1 },
+          { filename: "src/funds.ts", function: "saveFund", lineno: 12, colno: 3 },
+        ] },
+      }],
+    },
+  });
+  expect(output).toEqual({
+    exception: { values: [{ type: "DomainError", stacktrace: { frames: [{ filename: "src/funds.ts", function: "saveFund", lineno: 12, colno: 3 }] } }] },
+  });
+  const serialized = JSON.stringify(output);
+  for (const value of prohibited) expect(serialized).not.toContain(value);
+});

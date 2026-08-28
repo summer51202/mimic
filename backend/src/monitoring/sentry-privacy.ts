@@ -67,6 +67,30 @@ function isSafeDnsHostname(value: string): boolean {
   );
 }
 
+function isSafeProjectFilename(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    PROJECT_FILENAME.test(value) &&
+    !/[?@#%\\:]/.test(value) &&
+    !value.includes('..') &&
+    !/(?:^|\/)(?:home|users?|private|secrets?)(?:\/|$)/i.test(value) &&
+    !/\b(?:\d{1,3}\.){3}\d{1,3}\b/.test(value) &&
+    !value.split('/').some((segment) => /^\d+$/.test(segment))
+  );
+}
+
+function isSafeSourceLocation(value: unknown): value is number {
+  return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 && value <= 1_000_000;
+}
+
+function isSafeFrameFunction(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    FRAME_FUNCTION.test(value) &&
+    !/(?:token|secret|password|authorization|cookie|api[-_]?key)/i.test(value)
+  );
+}
+
 function sanitizeRequest(value: unknown): RecordValue | undefined {
   const request = record(value);
   if (!request || typeof request.url !== 'string') {
@@ -98,20 +122,25 @@ function sanitizeRequest(value: unknown): RecordValue | undefined {
 
 function sanitizeFrame(value: unknown): RecordValue | undefined {
   const frame = record(value);
-  if (!frame) {
+  if (!frame || !isSafeProjectFilename(frame.filename)) {
     return undefined;
   }
 
-  const output: RecordValue = {};
-  const filename = boundedString(frame.filename, PROJECT_FILENAME);
-  const functionName = boundedString(frame.function, FRAME_FUNCTION);
-  const lineno = boundedNumber(frame.lineno);
-  const colno = boundedNumber(frame.colno);
+  if (frame.function !== undefined && !isSafeFrameFunction(frame.function)) return undefined;
+  if (frame.module !== undefined && !isSafeFrameFunction(frame.module)) return undefined;
+  if (frame.lineno !== undefined && !isSafeSourceLocation(frame.lineno)) return undefined;
+  if (frame.colno !== undefined && !isSafeSourceLocation(frame.colno)) return undefined;
 
-  if (filename) output.filename = filename;
-  if (functionName) output.function = functionName;
-  if (lineno !== undefined) output.lineno = lineno;
-  if (colno !== undefined) output.colno = colno;
+  const output: RecordValue = {};
+  const filename = frame.filename;
+  const functionName = frame.function;
+  const lineno = frame.lineno;
+  const colno = frame.colno;
+
+  output.filename = filename;
+  if (typeof functionName === 'string') output.function = functionName;
+  if (typeof lineno === 'number') output.lineno = lineno;
+  if (typeof colno === 'number') output.colno = colno;
   if (typeof frame.in_app === 'boolean') output.in_app = frame.in_app;
 
   return Object.keys(output).length > 0 ? output : undefined;
