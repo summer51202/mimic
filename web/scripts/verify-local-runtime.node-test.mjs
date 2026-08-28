@@ -155,6 +155,52 @@ test("checkHealth rejects unavailable or malformed readiness without exposing it
   });
 });
 
+for (const { endpoint, label, path } of [
+  {
+    endpoint: "/api/v1/health/live",
+    label: "Liveness",
+    path: "/health/live",
+  },
+  {
+    endpoint: "/api/v1/health/ready",
+    label: "Readiness",
+    path: "/health/ready",
+  },
+]) {
+  test(`checkHealth does not retain malformed ${label} response contents`, async () => {
+    const secretResponse = "database-password";
+
+    await withServer((request, response) => {
+      response.writeHead(200, { "content-type": "application/json" });
+      response.end(
+        request.url === endpoint
+          ? secretResponse
+          : '{"data":{"ok":true,"revision":"e40aba9"}}',
+      );
+    }, async (apiBaseUrl) => {
+      await assert.rejects(
+        checkHealth(apiBaseUrl, "preflight", "e40aba9"),
+        (error) => {
+          assert.match(
+            error.message,
+            new RegExp(`${label} checkpoint failed \\(preflight\\): .*${path.replace("/", "\\/")}: invalid JSON response`),
+          );
+
+          const loggableError = [
+            error.message,
+            error.stack,
+            error.cause?.message,
+            error.cause?.stack,
+            JSON.stringify(error, Object.getOwnPropertyNames(error)),
+          ].join("\n");
+          assert.doesNotMatch(loggableError, /database-password/);
+          return true;
+        },
+      );
+    });
+  });
+}
+
 test("runtime URL validation rejects credentials, query, fragment, and wrong API paths", () => {
   for (const value of [
     "http://user:password@localhost:3001/api/v1",

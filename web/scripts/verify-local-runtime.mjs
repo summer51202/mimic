@@ -163,10 +163,9 @@ async function fetchHealthCheckpoint(url, checkpoint, label, timeoutMs) {
   let body;
   try {
     body = await response.json();
-  } catch (cause) {
+  } catch {
     throw new Error(
       `${label} checkpoint failed (${checkpoint}): ${url}: invalid JSON response`,
-      { cause },
     );
   }
 
