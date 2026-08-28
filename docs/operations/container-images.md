@@ -8,13 +8,19 @@ Current sources, verified 2026-08-28 against official Docker Hub tag metadata:
   - `https://hub.docker.com/v2/namespaces/library/repositories/node/tags/22-bookworm-slim`
 - `alpine:3.22.2@sha256:4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412`
   - `https://hub.docker.com/v2/namespaces/library/repositories/alpine/tags/3.22.2`
+- `docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e`
+  - `https://hub.docker.com/v2/namespaces/docker/repositories/dockerfile/tags/1.7`
+
+The Dockerfile frontend is a separate BuildKit execution dependency, so its syntax directive is pinned just like a `FROM` image. The frontend's verified multi-arch index also includes Linux `amd64` and `arm64` children.
+
+These immutable base/frontend selections and committed npm lockfiles provide controlled dependency selection. This is not byte-for-byte reproducibility: `apt` and `apk` still resolve signed package indexes at build time, and generated metadata or timestamps may vary. CI therefore validates contracts, builds, and runtime behavior rather than comparing image bytes.
 
 ## Updating a pin
 
 1. Choose the intended readable release tag; do not silently change both the release line and digest.
 2. Read the tag's official Docker Hub metadata endpoint and record its top-level `digest`, `media_type`, and architecture list. Require an OCI image index or Docker manifest list with the deployment architectures represented.
 3. On a Docker-capable trusted machine, cross-check with `docker buildx imagetools inspect <image>:<tag>`.
-4. Replace the tag and multi-arch `sha256:` digest in every `FROM` stage and update the exact expected value in `scripts/verify-production-images.test.mjs`.
+4. Replace the tag and multi-arch `sha256:` digest in every affected `FROM` stage or syntax frontend directive, then update the exact expected value in `scripts/verify-production-images.test.mjs`.
 5. Run the production-image contract, build all three images, and execute the CI runtime smoke checks before merging.
 
 Never substitute a per-platform child digest unless the deployment platform is intentionally being restricted and that decision is documented.

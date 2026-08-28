@@ -61,7 +61,7 @@ test("backend production image has the Prisma runtime contract", () => {
   assertContains(dockerfile, /^FROM node:22-bookworm-slim@sha256:[0-9a-f]{64} AS build$/m, "backend build stage uses pinned Node 22 slim");
   assertContains(dockerfile, /^FROM node:22-bookworm-slim@sha256:[0-9a-f]{64} AS runtime$/m, "backend runtime stage uses pinned Node 22 slim");
   assertContains(dockerfile, /^RUN apt-get update && apt-get install -y --no-install-recommends openssl/m, "both stages install OpenSSL");
-  assertContains(dockerfile, /^RUN npm ci$/m, "build stage uses reproducible npm ci");
+  assertContains(dockerfile, /^RUN npm ci$/m, "build stage installs the dependency lockfile");
   assertContains(dockerfile, /^RUN npm run prisma:generate$/m, "build stage generates Prisma client");
   assertContains(dockerfile, /^RUN npm run build$/m, "build stage compiles Nest");
   assertContains(dockerfile, /^RUN npm ci --omit=dev$/m, "runtime installs production dependencies only");
@@ -125,6 +125,11 @@ test("web production image uses Next standalone output without secrets", () => {
     dockerfile,
     "node:22-bookworm-slim",
     "83f487e0a63425e5b4d146fb5e5be574bcbe1b7b843d3ebafdd95eaf7767a7e5",
+  );
+  assertContains(
+    dockerfile,
+    /^# syntax=docker\/dockerfile:1\.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e$/m,
+    "BuildKit Dockerfile frontend is pinned to the verified 1.7 index",
   );
 
   assertContains(dockerfile, /^FROM node:22-bookworm-slim@sha256:[0-9a-f]{64} AS deps$/m, "web dependency stage uses pinned Node 22 slim");
@@ -192,6 +197,9 @@ test("immutable base image update procedure is documented", () => {
   const runbook = read("docs/operations/container-images.md");
   assert.match(runbook, /Docker Hub/i);
   assert.match(runbook, /multi-arch/i);
+  assert.match(runbook, /docker\/dockerfile:1\.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e/);
+  assert.match(runbook, /frontend/i);
   assert.match(runbook, /sha256:/);
+  assert.match(runbook, /not byte-for-byte reproducibility/i);
   assert.match(runbook, /verify-production-images\.test\.mjs/);
 });

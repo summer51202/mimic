@@ -29,8 +29,6 @@ jobs:
           node-version: 22
       - name: Test naming guard
         run: node --test scripts/verify-mimic-naming.test.mjs
-      - name: Test CI workflow contract
-        run: node --test scripts/verify-ci-workflow.test.mjs
       - name: Enforce active naming
         run: node scripts/verify-mimic-naming.mjs
 
@@ -89,6 +87,8 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - name: Install dependencies
         run: npm ci
+      - name: Test parsed CI workflow contract
+        run: node --test ../scripts/verify-ci-workflow.test.mjs
       - name: Lint
         run: npm run lint
       - name: Type-check
@@ -146,3 +146,36 @@ jobs:
             command -v minisign
             aws --version
           '
+      - name: Bootstrap API and Web health endpoints
+        run: |
+          set -eu
+          api_id=""
+          web_id=""
+          cleanup() {
+            if [ -n "$api_id" ]; then docker rm --force "$api_id" >/dev/null 2>&1 || true; fi
+            if [ -n "$web_id" ]; then docker rm --force "$web_id" >/dev/null 2>&1 || true; fi
+          }
+          trap cleanup EXIT
+          api_id="$(docker run --detach --publish 127.0.0.1::3000 \
+            --env DATABASE_URL=postgresql://mimic:ci@127.0.0.1:5432/mimic \
+            --env JWT_ACCESS_SECRET=mimic-ci-access-secret \
+            --env JWT_REFRESH_SECRET=mimic-ci-refresh-secret \
+            mimic-api:ci)"
+          web_id="$(docker run --detach --publish 127.0.0.1::3000 mimic-web:ci)"
+          api_port="$(docker port "$api_id" 3000/tcp | sed 's/.*://' | head -n 1)"
+          web_port="$(docker port "$web_id" 3000/tcp | sed 's/.*://' | head -n 1)"
+          wait_for_health() {
+            label="$1"
+            url="$2"
+            container_id="$3"
+            for attempt in $(seq 1 30); do
+              response="$(curl --fail --silent "$url" 2>/dev/null || true)"
+              if printf '%s' "$response" | grep -q '"ok":true'; then return 0; fi
+              sleep 1
+            done
+            printf '%s\n' "$label failed to become healthy" >&2
+            docker logs "$container_id" >&2
+            return 1
+          }
+          wait_for_health API "http://127.0.0.1:${api_port}/api/v1/health/live" "$api_id"
+          wait_for_health Web "http://127.0.0.1:${web_port}/api/health/live" "$web_id"

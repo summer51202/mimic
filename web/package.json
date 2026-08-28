@@ -38,6 +38,7 @@
     "@vitejs/plugin-react": "^6.0.4",
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
+    "js-yaml": "^4.3.0",
     "jsdom": "^29.1.1",
     "playwright": "^1.61.1",
     "pngjs": "^7.0.0",

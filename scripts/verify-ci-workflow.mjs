@@ -1,0 +1,195 @@
+import { createRequire } from "node:module";
+
+const requireFromWeb = createRequire(
+  new URL("../web/package.json", import.meta.url),
+);
+const { load } = requireFromWeb("js-yaml");
+
+const externalActionPattern =
+  /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+(?:\/[A-Za-z0-9_.\/-]+)?@([0-9a-f]{40})$/i;
+const localActionRoot = "./.github/actions/";
+const localActionSegmentPattern = /^[A-Za-z0-9_.-]+$/;
+
+function invariant(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+function isMapping(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function isAllowedLocalAction(reference) {
+  if (!reference.startsWith(localActionRoot)) return false;
+  const segments = reference.slice(localActionRoot.length).split("/");
+  return (
+    segments.length > 0 &&
+    segments.every(
+      (segment) =>
+        segment !== "." &&
+        segment !== ".." &&
+        localActionSegmentPattern.test(segment),
+    )
+  );
+}
+
+function visitMappings(value, visitor, path = []) {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) =>
+      visitMappings(item, visitor, [...path, index]),
+    );
+    return;
+  }
+  if (!isMapping(value)) return;
+
+  visitor(value, path);
+  for (const [key, child] of Object.entries(value)) {
+    visitMappings(child, visitor, [...path, key]);
+  }
+}
+
+export function parseWorkflowYaml(source) {
+  const workflow = load(source, { json: false });
+  invariant(isMapping(workflow), "workflow must parse to a top-level mapping");
+  return workflow;
+}
+
+export function collectActionReferences(document) {
+  const references = [];
+  visitMappings(document, (mapping, path) => {
+    if (!Object.hasOwn(mapping, "uses")) return;
+    invariant(
+      typeof mapping.uses === "string",
+      `uses at ${path.join(".") || "<root>"} must be a string`,
+    );
+    references.push({ reference: mapping.uses, step: mapping, path });
+  });
+  return references;
+}
+
+export function validateActionReferences(document) {
+  const references = collectActionReferences(document);
+  for (const { reference } of references) {
+    if (reference.startsWith("./")) {
+      invariant(
+        isAllowedLocalAction(reference),
+        `${reference} is not an allowed local action path`,
+      );
+      continue;
+    }
+    invariant(
+      externalActionPattern.test(reference),
+      `${reference} must use a full 40-character commit SHA`,
+    );
+  }
+  return references;
+}
+
+function runCommands(job) {
+  invariant(Array.isArray(job.steps), "job steps must be a sequence");
+  return job.steps
+    .map((step) => step?.run)
+    .filter((command) => typeof command === "string");
+}
+
+function requireCommand(jobName, commands, expected) {
+  invariant(
+    commands.some((command) => command.includes(expected)),
+    `${jobName} must run ${expected}`,
+  );
+}
+
+export function validateCiWorkflow(workflow) {
+  invariant(isMapping(workflow.permissions), "top-level permissions must be a mapping");
+  invariant(
+    Object.keys(workflow.permissions).length === 1 &&
+      workflow.permissions.contents === "read",
+    "top-level permissions must grant only contents: read",
+  );
+  invariant(isMapping(workflow.jobs), "jobs must be a mapping");
+
+  const requiredJobs = ["naming", "backend", "web", "containers"];
+  for (const jobName of requiredJobs) {
+    const job = workflow.jobs[jobName];
+    invariant(isMapping(job), `missing ${jobName} job`);
+    invariant(
+      Number.isInteger(job["timeout-minutes"]) &&
+        job["timeout-minutes"] >= 1 &&
+        job["timeout-minutes"] <= 60,
+      `${jobName} must have a timeout between 1 and 60 minutes`,
+    );
+
+    const checkoutSteps = job.steps.filter(
+      (step) =>
+        typeof step?.uses === "string" &&
+        step.uses.startsWith("actions/checkout@"),
+    );
+    invariant(checkoutSteps.length === 1, `${jobName} must check out exactly once`);
+    invariant(
+      checkoutSteps[0].with?.["persist-credentials"] === false,
+      `${jobName} checkout must set persist-credentials: false`,
+    );
+  }
+
+  const references = validateActionReferences(workflow);
+  invariant(references.length === 8, "expected checkout and setup-node in all four jobs");
+
+  const namingCommands = runCommands(workflow.jobs.naming);
+  requireCommand("naming", namingCommands, "node --test scripts/verify-mimic-naming.test.mjs");
+  requireCommand("naming", namingCommands, "node scripts/verify-mimic-naming.mjs");
+
+  const backendCommands = runCommands(workflow.jobs.backend);
+  for (const expected of [
+    "npm ci",
+    "npm run prisma:generate",
+    "npm run build",
+    "npm test -- --runInBand",
+    "npm run test:e2e -- --runInBand",
+  ]) {
+    requireCommand("backend", backendCommands, expected);
+  }
+  invariant(
+    typeof workflow.jobs.backend.env?.JWT_ACCESS_SECRET === "string" &&
+      typeof workflow.jobs.backend.env?.JWT_REFRESH_SECRET === "string",
+    "backend CI must set both JWT secrets",
+  );
+
+  const webCommands = runCommands(workflow.jobs.web);
+  for (const expected of [
+    "npm ci",
+    "node --test ../scripts/verify-ci-workflow.test.mjs",
+    "npm run lint",
+    "npm run typecheck",
+    "npm test",
+    "npm run build",
+  ]) {
+    requireCommand("web", webCommands, expected);
+  }
+  invariant(
+    workflow.jobs.web.env?.MIMIC_API_BASE_URL ===
+      "http://localhost:3000/api/v1",
+    "web CI must use the local API base URL",
+  );
+
+  const containerCommands = runCommands(workflow.jobs.containers);
+  for (const expected of [
+    "node --test scripts/verify-production-images.test.mjs",
+    "node --test ops/backup/backup-contract.test.mjs",
+    "docker build -f backend/Dockerfile backend -t mimic-api:ci",
+    "-f web/Dockerfile web -t mimic-web:ci",
+    "docker build -f ops/backup/Dockerfile ops/backup -t mimic-backup:ci",
+    "pg_dump --version",
+    "age --version",
+    "command -v minisign",
+    "aws --version",
+    "docker run --detach",
+    "/api/v1/health/live",
+    "/api/health/live",
+  ]) {
+    requireCommand("containers", containerCommands, expected);
+  }
+
+  invariant(
+    !JSON.stringify(workflow).includes("SENTRY_AUTH_TOKEN"),
+    "CI must build without a Sentry auth token",
+  );
+}

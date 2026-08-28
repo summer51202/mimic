@@ -618,3 +618,16 @@
 - Documented the official metadata sources, multi-architecture choice, independent inspection, and controlled digest-update procedure.
 **Decisions:** Used manifest-list digests rather than architecture-specific child digests so the immutable pins remain valid across supported local and Railway Linux architectures.
 **Known gaps / follow-ups:** Docker is unavailable on this Windows host; image pulls, builds, and smoke commands remain enforced by the Ubuntu container job and must pass before merge.
+
+## 2026-08-28 — Parse CI policy and pin the BuildKit frontend
+
+**Task:** Close the remaining CI policy bypass and Dockerfile frontend reproducibility gaps found in Task 7 review.
+**Scope:** parsed workflow validator/tests, Web development lockfile, CI bootstrap probes, Web Dockerfile, container pin runbook, and production-image contracts
+**What changed:**
+- Replaced line-oriented workflow matching with recursive `js-yaml` traversal of every mapping and sequence, including flow mappings, and rejected every non-local action reference without a full 40-character commit SHA.
+- Validated permissions, per-job timeouts, checkout credential handling, environment contracts, and required release commands from the parsed workflow structure.
+- Added hostile flow-mapping and constrained local-action regression probes, and moved the workflow test after the Web job's locked dependency install.
+- Pinned the BuildKit `docker/dockerfile:1.7` syntax frontend to its verified official multi-arch digest and extended the update runbook and image contracts.
+- Added isolated API/Web container bootstrap probes against their liveness endpoints without PostgreSQL or external network services.
+**Decisions:** Declared `js-yaml` directly in the Web development lockfile instead of relying on its prior transitive installation. Described immutable base/frontend selection plus lockfiles as controlled inputs, not byte-for-byte image reproducibility while OS package indexes remain dynamic.
+**Known gaps / follow-ups:** The Windows host still lacks Docker; CI must perform the pinned frontend pull, image builds, runtime probes, and API/Web bootstrap checks.
