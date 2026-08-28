@@ -50,6 +50,7 @@ test("backup validates the S3 destination and writes only encrypted artifacts", 
   for (const field of ["HOST", "PORT", "USER", "PASSWORD", "NAME", "SSL_MODE"]) {
     assert.match(script, new RegExp(`MIMIC_BACKUP_DATABASE_${field}`));
   }
+  assert.match(script, /leading or trailing whitespace/);
   for (const parameter of ["host", "port", "user", "password", "dbname", "sslmode"]) {
     assert.match(script, new RegExp(`printf '${parameter}=%s`));
   }
@@ -98,6 +99,7 @@ test("restore verifies checksum before decrypting and validates before cleanup r
   for (const field of ["HOST", "PORT", "USER", "PASSWORD", "NAME", "SSL_MODE"]) {
     assert.match(script, new RegExp(`MIMIC_RESTORE_DATABASE_${field}`));
   }
+  assert.match(script, /leading or trailing whitespace/);
   for (const parameter of ["host", "port", "user", "password", "dbname", "sslmode"]) {
     assert.match(script, new RegExp(`printf '${parameter}=%s`));
   }
@@ -205,7 +207,7 @@ test("hostile scratch sentinel and Production identity are rejected before stora
   );
   const { stdout } = await execFileAsync("sh", [testScript]);
 
-  assert.match(stdout, /hostile restore guard test passed/);
+  assert.match(stdout, /hostile recovery guard test passed/);
 });
 
 test("restore invokes pg_restore against the temporary libpq service", {
@@ -237,6 +239,16 @@ test("runbook follows Railway sibling PITR and immutable signed-backup procedure
   assert.match(runbook, /sed -n '2p'/);
   assert.match(runbook, /MIMIC_BACKUP_MINISIGN_PUBLIC_KEY.*56/);
   assert.match(runbook, /MIMIC_BACKUP_DATABASE_HOST=\$\{\{[^}]+\.PGHOST\}\}/);
+  assert.match(runbook, /CREATE ROLE mimic_backup/);
+  assert.match(runbook, /GRANT SELECT ON ALL TABLES IN SCHEMA public TO mimic_backup/);
+  assert.match(runbook, /GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO mimic_backup/);
+  assert.match(runbook, /ALTER DEFAULT PRIVILEGES FOR ROLE :"schema_owner"/);
+  assert.match(runbook, /MIMIC_SCHEMA_OWNER="\$\(/);
+  assert.match(runbook, /connected_database.*MIMIC_BACKUP_DATABASE_NAME/);
+  assert.match(runbook, /\\password mimic_backup/);
+  assert.match(runbook, /MIMIC_BACKUP_DATABASE_USER=mimic_backup/);
+  assert.doesNotMatch(runbook, /MIMIC_BACKUP_DATABASE_USER=\$\{\{[^}]+\.PGUSER\}\}/);
+  assert.doesNotMatch(runbook, /MIMIC_BACKUP_DATABASE_PASSWORD=\$\{\{[^}]+\.PGPASSWORD\}\}/);
   assert.match(runbook, /MIMIC_RESTORE_DATABASE_PASSWORD=\$\{\{[^}]+\.PGPASSWORD\}\}/);
   assert.doesNotMatch(runbook, /MIMIC_(?:BACKUP|RESTORE)_DATABASE_URL/);
 });

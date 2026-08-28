@@ -98,6 +98,98 @@ Where Object Lock is supported, enable it during bucket creation and verify it w
 
 Each backup key contains UTC time plus 128 random bits. The encrypted dump, checksum, signed manifest, and signature share the key; the signature is uploaded last as the publication marker. Consumers ignore sets without a valid signature. Record storage version IDs after upload and alert on any later version or deletion-marker change.
 
+## Provision the Production backup login
+
+Create a dedicated `mimic_backup` LOGIN before configuring the cron service. Use an administrator's mode-`0600` libpq service file and the non-secret selector `service=mimic_admin`; never put an administrative URL or password in command arguments. Set `MIMIC_BACKUP_DATABASE_NAME` to the Production database name, verify the administrative service targets it, discover the single role that owns the current public tables, and validate both identifiers:
+
+```sh
+connected_database="$(PGSERVICEFILE=/secure/temp/mimic-admin.pg_service.conf \
+  psql --dbname=service=mimic_admin --tuples-only --no-align --set=ON_ERROR_STOP=1 \
+  --command='SELECT current_database()')"
+MIMIC_SCHEMA_OWNER="$(PGSERVICEFILE=/secure/temp/mimic-admin.pg_service.conf \
+  psql --dbname=service=mimic_admin --tuples-only --no-align --set=ON_ERROR_STOP=1 \
+  --command="SELECT DISTINCT tableowner FROM pg_tables WHERE schemaname='public' ORDER BY tableowner")"
+if [ "$connected_database" != "$MIMIC_BACKUP_DATABASE_NAME" ]; then
+  printf '%s\n' 'Administrative service targets the wrong database' >&2
+  exit 2
+fi
+case "$MIMIC_BACKUP_DATABASE_NAME:$MIMIC_SCHEMA_OWNER" in
+  ''|*[!0-9A-Za-z_.:-]*) printf '%s\n' 'Invalid database or owner identifier' >&2; exit 2 ;;
+esac
+PGSERVICEFILE=/secure/temp/mimic-admin.pg_service.conf \
+psql --dbname=service=mimic_admin --set=ON_ERROR_STOP=1 \
+  --set=production_database="$MIMIC_BACKUP_DATABASE_NAME" \
+  --set=schema_owner="$MIMIC_SCHEMA_OWNER" <<'SQL'
+BEGIN;
+CREATE ROLE mimic_backup LOGIN PASSWORD NULL
+  NOSUPERUSER NOCREATEDB NOCREATEROLE NOINHERIT NOREPLICATION NOBYPASSRLS;
+GRANT CONNECT ON DATABASE :"production_database" TO mimic_backup;
+GRANT USAGE ON SCHEMA public TO mimic_backup;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO mimic_backup;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO mimic_backup;
+ALTER DEFAULT PRIVILEGES FOR ROLE :"schema_owner" IN SCHEMA public
+  GRANT SELECT ON TABLES TO mimic_backup;
+ALTER DEFAULT PRIVILEGES FOR ROLE :"schema_owner" IN SCHEMA public
+  GRANT SELECT ON SEQUENCES TO mimic_backup;
+COMMIT;
+SQL
+```
+
+`CREATE ROLE` intentionally fails if the role already exists; investigate instead of silently replacing an existing principal. Set its password interactively so it is not placed in shell history, process arguments, SQL logs, or this runbook:
+
+```sh
+PGSERVICEFILE=/secure/temp/mimic-admin.pg_service.conf \
+psql --dbname=service=mimic_admin
+```
+
+At the `psql` prompt run `\password mimic_backup`, paste a password generated and held by the approved password manager twice, then run `\q`. Put that same value into the backup service's sealed `MIMIC_BACKUP_DATABASE_PASSWORD` variable through Railway's UI; do not use Raw Editor, a shell assignment, or a reference to the Production database owner's password.
+
+The default-privilege statements affect only future objects created by `MIMIC_SCHEMA_OWNER`. They are not inherited from roles of which that owner is a member. Repeat both statements for every role that can create migrations or public-schema objects, and re-audit after any ownership or migration-role change. If row-level security is introduced, `pg_dump` fails without an explicit policy decision; do not grant `BYPASSRLS` merely to make a backup pass.
+
+Verify the role and current grants as administrator, and retain the output with the deployment record:
+
+```sh
+PGSERVICEFILE=/secure/temp/mimic-admin.pg_service.conf \
+psql --dbname=service=mimic_admin --set=ON_ERROR_STOP=1 <<'SQL'
+SELECT rolname, rolcanlogin, rolsuper, rolcreatedb, rolcreaterole,
+       rolreplication, rolbypassrls
+FROM pg_roles WHERE rolname = 'mimic_backup';
+SELECT has_database_privilege('mimic_backup', current_database(), 'CONNECT') AS can_connect,
+       has_schema_privilege('mimic_backup', 'public', 'USAGE') AS can_use_schema,
+       has_schema_privilege('mimic_backup', 'public', 'CREATE') AS cannot_create_schema_objects;
+SELECT bool_and(has_table_privilege('mimic_backup', format('%I.%I', schemaname, tablename), 'SELECT')) AS all_tables_readable
+FROM pg_tables WHERE schemaname = 'public';
+SELECT COALESCE(bool_and(has_sequence_privilege('mimic_backup', format('%I.%I', sequence_schema, sequence_name), 'SELECT')), true) AS all_sequences_readable
+FROM information_schema.sequences WHERE sequence_schema = 'public';
+\ddp
+SQL
+```
+
+`cannot_create_schema_objects` must be `false`; all other boolean results must be `true`, and every capability flag except `rolcanlogin` must be `false`. The `\ddp` output must show table and sequence `SELECT` defaults for `mimic_backup` under every recorded object-creator role. Finally, run the real-client backup gate with the dedicated credentials and confirm the signed object before scheduling the job.
+
+For password rotation, pause the weekly cron, repeat the interactive `\password mimic_backup` step, immediately replace the sealed Railway password, deploy the backup service, run and verify one backup, then resume the cron. For permanent revocation, pause the cron and run:
+
+```sh
+PGSERVICEFILE=/secure/temp/mimic-admin.pg_service.conf \
+psql --dbname=service=mimic_admin --set=ON_ERROR_STOP=1 \
+  --set=production_database="$MIMIC_BACKUP_DATABASE_NAME" \
+  --set=schema_owner="$MIMIC_SCHEMA_OWNER" <<'SQL'
+BEGIN;
+ALTER DEFAULT PRIVILEGES FOR ROLE :"schema_owner" IN SCHEMA public
+  REVOKE SELECT ON TABLES FROM mimic_backup;
+ALTER DEFAULT PRIVILEGES FOR ROLE :"schema_owner" IN SCHEMA public
+  REVOKE SELECT ON SEQUENCES FROM mimic_backup;
+REVOKE SELECT ON ALL TABLES IN SCHEMA public FROM mimic_backup;
+REVOKE SELECT ON ALL SEQUENCES IN SCHEMA public FROM mimic_backup;
+REVOKE USAGE ON SCHEMA public FROM mimic_backup;
+REVOKE CONNECT ON DATABASE :"production_database" FROM mimic_backup;
+ALTER ROLE mimic_backup NOLOGIN;
+COMMIT;
+SQL
+```
+
+Repeat the default-privilege revocation for every recorded object-creator role. Verify the grants are gone before removing the sealed Railway secret; drop the role only after `pg_shdepend`/ownership review confirms it owns no object and no retained recovery process still depends on it.
+
 ## Weekly Railway cron service
 
 Deploy `ops/backup/Dockerfile` as Production service `mimic-backup-job` and schedule `0 3 * * 0` (Sunday 03:00 UTC). Configure:
@@ -107,13 +199,13 @@ Deploy `ops/backup/Dockerfile` as Production service `mimic-backup-job` and sche
 ```dotenv
 MIMIC_BACKUP_DATABASE_HOST=${{ProductionPostgres.PGHOST}}
 MIMIC_BACKUP_DATABASE_PORT=${{ProductionPostgres.PGPORT}}
-MIMIC_BACKUP_DATABASE_USER=${{ProductionPostgres.PGUSER}}
-MIMIC_BACKUP_DATABASE_PASSWORD=${{ProductionPostgres.PGPASSWORD}}
+MIMIC_BACKUP_DATABASE_USER=mimic_backup
 MIMIC_BACKUP_DATABASE_NAME=${{ProductionPostgres.PGDATABASE}}
 MIMIC_BACKUP_DATABASE_SSL_MODE=require
 ```
 
-- `MIMIC_BACKUP_DATABASE_USER` must be a dedicated login with only the connection and read privileges needed by `pg_dump`; it must not own Production objects or hold write/DDL/role-management privileges.
+- Add `MIMIC_BACKUP_DATABASE_PASSWORD` independently as a sealed backup-service secret containing the password set with `\password`; it must not reference `ProductionPostgres.PGPASSWORD`.
+- `MIMIC_BACKUP_DATABASE_USER` is the dedicated login above. It must not own Production objects or hold write/DDL/role-management privileges.
 - `MIMIC_POSTGRES_CLIENT_MAJOR`, `MIMIC_EXPECTED_MIGRATION`, and `MIMIC_BACKUP_RELEASE` matching the deployed release.
 - `MIMIC_BACKUP_AGE_RECIPIENT` and backup-only `MIMIC_BACKUP_MINISIGN_SECRET_KEY`.
 - `MIMIC_BACKUP_S3_ENDPOINT`, `MIMIC_BACKUP_S3_BUCKET`, `AWS_DEFAULT_REGION`, and the write-only `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`; add `AWS_SESSION_TOKEN` only for temporary credentials.

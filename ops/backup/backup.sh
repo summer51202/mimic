@@ -55,6 +55,9 @@ unset signing_secret_key
 reject_controls() {
   label="$1"
   value="$2"
+  case "$value" in
+    ' '*|*' ') printf '%s\n' "${label} has leading or trailing whitespace" >&2; exit 2 ;;
+  esac
   if [ "$(printf '%s' "$value" | tr -d '\r\n')" != "$value" ] ||
      printf '%s' "$value" | LC_ALL=C grep -q '[[:cntrl:]]'; then
     printf '%s\n' "${label} contains control characters" >&2

@@ -588,5 +588,7 @@
 - Replaced nested connection URIs with role-specific host/port/user/password/database/SSL fields, rejecting control-character injection before writing discrete libpq service parameters.
 - Scoped storage credentials to AWS children, persisted and unset the signing key before database children, and contract-checked the full restore table manifest against every Prisma physical model mapping.
 - Added exact Railway reference-variable wiring and distinguished fixed image inputs from package revisions resolved at build time.
+- Added a fail-closed operator procedure for creating, verifying, rotating, revoking, and eventually dropping the non-owning `mimic_backup` login, including current and default table/sequence read grants.
+- Made the backup password an independent sealed service secret rather than a Production-owner credential reference, and rejected leading/trailing service-field whitespace in both backup and restore behavior tests.
 **Decisions:** Kept the age private identity off the scheduled Railway service; only the public recipient is configured there. Kept the minisign signing key backup-only and restore credentials separately read-only. Logical restores require a new Staging scratch cluster/database and can never target Production.
 **Known gaps / follow-ups:** Docker image build and real libpq service-file parsing require CI or Railway because this Windows host has no Docker-compatible engine or PostgreSQL client; the first real encrypted backup and scratch/PITR restore drill remain operational launch gates.

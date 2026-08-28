@@ -91,6 +91,9 @@ export MIMIC_RESTORE_DATABASE_PASSWORD="password-placeholder
 host=production.internal"
 expect_rejection 'control characters'
 
+export MIMIC_RESTORE_DATABASE_PASSWORD=' password-placeholder '
+expect_rejection 'leading or trailing whitespace'
+
 export MIMIC_BACKUP_DATABASE_HOST='production.internal'
 export MIMIC_BACKUP_DATABASE_PORT='5432'
 export MIMIC_BACKUP_DATABASE_USER='mimic_backup'
@@ -104,15 +107,22 @@ export MIMIC_BACKUP_MINISIGN_SECRET_KEY='signing-key-placeholder'
 export MIMIC_POSTGRES_CLIENT_MAJOR='16'
 export MIMIC_EXPECTED_MIGRATION='20260715125137_init'
 export MIMIC_BACKUP_RELEASE='test-release'
-rm -f "$marker" "$psql_marker" "$error_log"
-if "$(dirname "$0")/backup.sh" 2> "$error_log"; then
-  printf '%s\n' 'backup unexpectedly accepted service-file injection' >&2
-  exit 1
-fi
-if [ -e "$marker" ] || [ -e "$psql_marker" ]; then
-  printf '%s\n' 'backup invoked a child before rejecting service-file injection' >&2
-  exit 1
-fi
-grep -q 'control characters' "$error_log" || exit 1
+expect_backup_rejection() {
+  expected="$1"
+  rm -f "$marker" "$psql_marker" "$error_log"
+  if "$(dirname "$0")/backup.sh" 2> "$error_log"; then
+    printf '%s\n' 'backup unexpectedly accepted an ambiguous service field' >&2
+    exit 1
+  fi
+  if [ -e "$marker" ] || [ -e "$psql_marker" ]; then
+    printf '%s\n' 'backup invoked a child before rejecting an ambiguous service field' >&2
+    exit 1
+  fi
+  grep -q "$expected" "$error_log" || exit 1
+}
+expect_backup_rejection 'control characters'
 
-printf '%s\n' 'hostile restore guard test passed'
+export MIMIC_BACKUP_DATABASE_PASSWORD='password-placeholder '
+expect_backup_rejection 'leading or trailing whitespace'
+
+printf '%s\n' 'hostile recovery guard test passed'
