@@ -582,5 +582,8 @@
 - Added collision-resistant weekly custom-format dumps that are encrypted before upload, checksummed, bound to release/migration/PostgreSQL identity in a signed manifest, and published signature-last.
 - Added hostile guard coverage plus checksum/signature-first restore orchestration requiring an independently provisioned database sentinel, scratch system identifier, and explicit Production system-identity denial.
 - Added stdin-only age identity injection for UID/GID 10001, required-table/migration/release verification, exact row counts, and a current Railway sibling-PITR runbook with version, credential, immutability, RPO/RTO, and escalation controls.
+- Routed every PostgreSQL client operation through a mode-`0600` temporary libpq service file, with explicit `service=mimic_restore` targeting for destructive restore and command-scoped connection state.
+- Added executable direct-restore semantics coverage and tied required-table verification to Prisma's physical `audit_logs` mapping.
+- Documented exact minisign public-key extraction/validation and explicit scratch nonce assignment, validation, display, export, and separate custody.
 **Decisions:** Kept the age private identity off the scheduled Railway service; only the public recipient is configured there. Kept the minisign signing key backup-only and restore credentials separately read-only. Logical restores require a new Staging scratch cluster/database and can never target Production.
 **Known gaps / follow-ups:** Docker image build and Alpine `/bin/sh` syntax execution require CI or Railway because this Windows host has no Docker-compatible engine; the first real encrypted backup and scratch/PITR restore drill remain operational launch gates.

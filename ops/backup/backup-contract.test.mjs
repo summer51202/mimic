@@ -45,10 +45,10 @@ test("backup validates the S3 destination and writes only encrypted artifacts", 
   assert.match(script, /source_migration.*MIMIC_EXPECTED_MIGRATION/);
   assert.match(script, /release=/);
   assert.doesNotMatch(script, /s3 cp[^\n]*\$plain/);
-  assert.doesNotMatch(
-    script,
-    /printf[^\n]*\$(?:DATABASE_URL|AWS_SECRET_ACCESS_KEY|MIMIC_BACKUP_AGE_RECIPIENT)/,
-  );
+  assert.doesNotMatch(script, /printf[^\n]*\$(?:AWS_SECRET_ACCESS_KEY|MIMIC_BACKUP_AGE_RECIPIENT)/);
+  for (const line of script.split("\n").filter((line) => /printf.*\$DATABASE_URL/.test(line))) {
+    assert.match(line, /tr -d|> "\$service_file"/);
+  }
 });
 
 test("restore verifies checksum before decrypting and validates before cleanup restore", async () => {
@@ -74,12 +74,19 @@ test("restore verifies checksum before decrypting and validates before cleanup r
   const checksumAt = script.indexOf("sha256sum --check");
   const decryptAt = script.indexOf("age --decrypt");
   const guardAt = script.indexOf("SELECT current_database()");
-  const restoreAt = script.indexOf("pg_restore --exit-on-error");
+  const restoreAt = script.indexOf('pg_restore --dbname="service=${service_name}"');
   assert.ok(signatureAt >= 0 && signatureAt < checksumAt);
   assert.ok(checksumAt < decryptAt);
   assert.ok(guardAt >= 0 && guardAt < restoreAt);
   assert.match(script, /--clean --if-exists/);
   assert.match(script, /verify-restore\.sql/);
+  assert.match(script, /pg_service\.conf/);
+  assert.match(script, /chmod 0600/);
+  assert.doesNotMatch(script, /export PGDATABASE/);
+  assert.match(
+    script,
+    /pg_restore[\s\S]*--dbname="service=\$\{service_name\}"/,
+  );
 });
 
 test("restore accepts only collision-resistant weekly encrypted backup object names", async () => {
@@ -132,6 +139,18 @@ test("restore verification records migrations and exact public table counts", as
   assert.match(sql, /\\quit 3/);
 });
 
+test("required restore tables match Prisma physical table mappings", async () => {
+  const sql = await read("./verify-restore.sql");
+  const prisma = await readFile(
+    new URL("../../backend/prisma/schema.prisma", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(prisma, /model AuditLog[\s\S]*@@map\("audit_logs"\)/);
+  assert.match(sql, /\('audit_logs'\)/);
+  assert.doesNotMatch(sql, /\('AuditLog'\)/);
+});
+
 test("scratch provisioning stores an independently generated database sentinel", async () => {
   const sql = await read("./provision-scratch.sql");
 
@@ -164,6 +183,17 @@ test("hostile scratch sentinel and Production identity are rejected before stora
   assert.match(stdout, /hostile restore guard test passed/);
 });
 
+test("restore invokes pg_restore against the temporary libpq service", {
+  skip: process.platform === "win32",
+}, async () => {
+  const testScript = fileURLToPath(
+    new URL("./restore-semantics.test.sh", import.meta.url),
+  );
+  const { stdout } = await execFileAsync("sh", [testScript]);
+
+  assert.match(stdout, /direct restore semantics test passed/);
+});
+
 test("runbook follows Railway sibling PITR and immutable signed-backup procedures", async () => {
   const runbook = await readFile(
     new URL("../../docs/operations/postgres-recovery.md", import.meta.url),
@@ -178,4 +208,7 @@ test("runbook follows Railway sibling PITR and immutable signed-backup procedure
   assert.match(runbook, /separate.*read.*write/i);
   assert.match(runbook, /MIMIC_RESTORE_SENTINEL_NONCE/);
   assert.match(runbook, /MIMIC_PRODUCTION_SYSTEM_IDENTIFIER/);
+  assert.match(runbook, /MIMIC_RESTORE_SENTINEL_NONCE="\$\(/);
+  assert.match(runbook, /sed -n '2p'/);
+  assert.match(runbook, /MIMIC_BACKUP_MINISIGN_PUBLIC_KEY.*56/);
 });

@@ -41,6 +41,15 @@ Generate both key pairs offline under `umask 077`:
 age-keygen -o mimic-backup-identity.txt
 age-keygen -y mimic-backup-identity.txt
 minisign -G -W -s mimic-backup-signing.key -p mimic-backup-signing.pub
+MIMIC_BACKUP_MINISIGN_PUBLIC_KEY="$(sed -n '2p' mimic-backup-signing.pub)"
+case "$MIMIC_BACKUP_MINISIGN_PUBLIC_KEY" in RW*) ;; *) printf '%s\n' 'Invalid minisign public-key prefix' >&2; exit 2 ;; esac
+if [ "${#MIMIC_BACKUP_MINISIGN_PUBLIC_KEY}" -ne 56 ] ||
+   [ "$(printf '%s' "$MIMIC_BACKUP_MINISIGN_PUBLIC_KEY" | tr -d 'A-Za-z0-9+/=')" ]; then
+  printf '%s\n' 'Invalid single-line minisign public key' >&2
+  exit 2
+fi
+export MIMIC_BACKUP_MINISIGN_PUBLIC_KEY
+printf 'MIMIC_BACKUP_MINISIGN_PUBLIC_KEY=%s\n' "$MIMIC_BACKUP_MINISIGN_PUBLIC_KEY"
 ```
 
 Custody rules:
@@ -96,7 +105,7 @@ Deploy `ops/backup/Dockerfile` as Production service `mimic-backup-job` and sche
 - `MIMIC_BACKUP_AGE_RECIPIENT` and backup-only `MIMIC_BACKUP_MINISIGN_SECRET_KEY`.
 - `MIMIC_BACKUP_S3_ENDPOINT`, `MIMIC_BACKUP_S3_BUCKET`, `AWS_DEFAULT_REGION`, and the write-only `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`; add `AWS_SESSION_TOKEN` only for temporary credentials.
 
-The script passes the database URL through libpq environment state instead of process arguments, verifies that the latest successfully applied source migration equals `MIMIC_EXPECTED_MIGRATION`, encrypts before upload, deletes plaintext immediately, signs a manifest containing object/hash/version/migration/release identity, and publishes the signature last. Do not enable shell tracing. A successful log contains only `backup_uploaded=<object key>`.
+The script writes the database URL to a mode-`0600` temporary [libpq service file](https://www.postgresql.org/docs/current/libpq-pgservice.html), immediately unsets `DATABASE_URL`, and scopes `PGSERVICEFILE` only to each database command. Process arguments contain only `service=mimic_backup`; the exit trap removes the service file. It verifies that the latest successfully applied source migration equals `MIMIC_EXPECTED_MIGRATION`, encrypts before upload, deletes plaintext immediately, signs a manifest containing object/hash/version/migration/release identity, and publishes the signature last. Do not enable shell tracing. A successful log contains only `backup_uploaded=<object key>`.
 
 ## Provision an independent logical-restore target
 
@@ -105,22 +114,32 @@ This sentinel procedure is only for the weekly logical restore, not PITR.
 1. Create a new PostgreSQL service in **Staging**, never Production. Obtain that new service's administrative and scratch connection values through the approved vault/injection path. Create a database whose name matches `mimic_*_restore_drill` without placing a URL in process arguments:
 
 ```sh
-export PGDATABASE="$SCRATCH_ADMIN_URL"
+PGDATABASE="$SCRATCH_ADMIN_URL" createdb "$MIMIC_RESTORE_DATABASE_NAME"
 unset SCRATCH_ADMIN_URL
-createdb "$MIMIC_RESTORE_DATABASE_NAME"
-export PGDATABASE="$MIMIC_RESTORE_DATABASE_URL"
-unset MIMIC_RESTORE_DATABASE_URL
 ```
 2. Independently query Production once with `SELECT system_identifier::text FROM pg_control_system();` and store the value as protected recovery metadata. Do not supply a Production URL to the restore process.
-3. Generate a new 128-bit nonce on the operator host with `od -An -N16 -tx1 /dev/urandom | tr -d ' \n'`.
-4. While `PGDATABASE` still identifies that new scratch database, run:
+3. Generate, validate, export, and display a new 128-bit nonce on the operator host:
 
 ```sh
-psql --set=ON_ERROR_STOP=1 \
+MIMIC_RESTORE_SENTINEL_NONCE="$(od -An -N16 -tx1 /dev/urandom | tr -d ' \n')"
+case "$MIMIC_RESTORE_SENTINEL_NONCE" in
+  [0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]) ;;
+  *) printf '%s\n' 'Invalid scratch sentinel nonce' >&2; exit 2 ;;
+esac
+export MIMIC_RESTORE_SENTINEL_NONCE
+printf 'MIMIC_RESTORE_SENTINEL_NONCE=%s\n' "$MIMIC_RESTORE_SENTINEL_NONCE"
+```
+
+The nonce is not a decryption key, but it is independent target-identity evidence. The approving operator must copy the displayed value into the protected drill record before provisioning, separately from the scratch service configuration. Do not regenerate it after provisioning; supply that recorded value to the restore environment.
+
+4. Scope the scratch URL to the provisioning command, then remove it from the operator shell:
+
+```sh
+PGDATABASE="$MIMIC_RESTORE_DATABASE_URL" psql --set=ON_ERROR_STOP=1 \
   --set=scratch_database="$MIMIC_RESTORE_DATABASE_NAME" \
   --set=sentinel_nonce="$MIMIC_RESTORE_SENTINEL_NONCE" \
   --file=ops/backup/provision-scratch.sql
-unset PGDATABASE
+unset MIMIC_RESTORE_DATABASE_URL
 ```
 
 The SQL verifies the connected name, writes `mimic-restore-scratch:<nonce>` as the database comment outside the restored application schema, and prints the scratch cluster system identifier. The approving operator records the nonce and system identifier independently. Restore requires both values and rejects the recorded Production system identifier even if names or confirmation variables are forged.
@@ -147,7 +166,7 @@ docker run --rm -i \
   < /secure/temp/mimic-backup-identity.txt
 ```
 
-The restore checks target database/system/sentinel and Production inequality before object access. It verifies the minisign signature before trusting manifest fields, validates checksum identity, runs `sha256sum --check`, then decrypts. Only then may `pg_restore --clean --if-exists` run. `verify-restore.sql` fails unless the expected migration is applied, the signed release identity is supplied, and every required Mimic table exists; it then emits exact counts.
+The restore copies the scratch URL into its own mode-`0600` temporary libpq service file, immediately unsets `MIMIC_RESTORE_DATABASE_URL`, and scopes `PGSERVICEFILE` only to database commands. Both `pg_restore` and verification explicitly target `service=mimic_restore`; the URL never appears in their arguments, and the exit trap removes the service file. The restore checks target database/system/sentinel and Production inequality before object access. It verifies the minisign signature before trusting manifest fields, validates checksum identity, runs `sha256sum --check`, then decrypts. Only then may `pg_restore --clean --if-exists` run. `verify-restore.sql` fails unless the expected migration is applied, the signed release identity is supplied, and every required Mimic physical table (including `audit_logs`) exists; it then emits exact counts.
 
 Delete the temporary environment file and scratch service after evidence approval. Retain no decrypted dump or private key copy. A failed guard, signature, checksum, version, migration, release, or table check is terminal and must never be bypassed.
 

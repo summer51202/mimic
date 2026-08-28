@@ -14,7 +14,7 @@ WITH required(name) AS (
   VALUES ('_prisma_migrations'), ('User'), ('groups'), ('group_members'),
          ('group_invites'), ('funds'), ('categories'), ('contributions'),
          ('expenses'), ('expense_payers'), ('expense_splits'), ('settlements'),
-         ('recurring_contribution_rules'), ('AuditLog')
+         ('recurring_contribution_rules'), ('audit_logs')
 )
 SELECT bool_and(to_regclass(format('%I.%I', 'public', name)) IS NOT NULL)
        AND count(*) = 14 AS required_tables_ok

@@ -21,11 +21,22 @@ case "$MIMIC_BACKUP_S3_BUCKET" in ''|*[!A-Za-z0-9._-]*) printf '%s\n' 'Backup bu
 case "$MIMIC_POSTGRES_CLIENT_MAJOR" in ''|*[!0-9]*) printf '%s\n' 'PostgreSQL client major must be numeric' >&2; exit 2 ;; esac
 case "$MIMIC_EXPECTED_MIGRATION" in ''|*[!0-9A-Za-z._-]*) printf '%s\n' 'Expected migration is invalid' >&2; exit 2 ;; esac
 case "$MIMIC_BACKUP_RELEASE" in ''|*[!0-9A-Za-z._-]*) printf '%s\n' 'Backup release is invalid' >&2; exit 2 ;; esac
+if [ "$(printf '%s' "$DATABASE_URL" | tr -d '\r\n')" != "$DATABASE_URL" ]; then
+  printf '%s\n' 'Database URL must be a single line' >&2
+  exit 2
+fi
 
 export AWS_EC2_METADATA_DISABLED=true
-export PGDATABASE="$DATABASE_URL"
+workdir="$(mktemp -d "${TMPDIR:-/tmp}/mimic-backup.XXXXXX")"
+service_name=mimic_backup
+service_file="${workdir}/pg_service.conf"
+cleanup() { rm -rf "$workdir"; }
+trap cleanup EXIT
+trap 'exit 1' HUP INT TERM
+printf '[%s]\ndbname=%s\n' "$service_name" "$DATABASE_URL" > "$service_file"
+chmod 0600 "$service_file"
 unset DATABASE_URL
-source_version_num="$(psql --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SHOW server_version_num')"
+source_version_num="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SHOW server_version_num')"
 case "$source_version_num" in ''|*[!0-9]*) printf '%s\n' 'Unable to determine source PostgreSQL version' >&2; exit 2 ;; esac
 source_major=$((source_version_num / 10000))
 client_major="$(pg_dump --version | sed -n 's/.* \([0-9][0-9]*\)\..*/\1/p')"
@@ -33,7 +44,7 @@ if [ "$source_major" != "$MIMIC_POSTGRES_CLIENT_MAJOR" ] || [ "$client_major" !=
   printf '%s\n' 'Refusing backup across PostgreSQL major versions' >&2
   exit 2
 fi
-source_migration="$(psql --tuples-only --no-align --set=ON_ERROR_STOP=1 \
+source_migration="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 \
   --command='SELECT migration_name FROM "_prisma_migrations" WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL ORDER BY finished_at DESC LIMIT 1')"
 if [ "$source_migration" != "$MIMIC_EXPECTED_MIGRATION" ]; then
   printf '%s\n' 'Refusing backup because the source migration identity differs' >&2
@@ -48,7 +59,6 @@ case "$random" in
 esac
 base="mimic-${stamp}-${random}.dump"
 object="weekly/${base}.age"
-workdir="$(mktemp -d "${TMPDIR:-/tmp}/mimic-backup.XXXXXX")"
 plain="${workdir}/${base}"
 encrypted="${plain}.age"
 checksum="${encrypted}.sha256"
@@ -56,13 +66,9 @@ manifest="${encrypted}.manifest"
 signature="${manifest}.minisig"
 signing_key="${workdir}/minisign.key"
 
-cleanup() { rm -rf "$workdir"; }
-trap cleanup EXIT
-trap 'exit 1' HUP INT TERM
-
 printf '%s\n' "$MIMIC_BACKUP_MINISIGN_SECRET_KEY" > "$signing_key"
 unset MIMIC_BACKUP_MINISIGN_SECRET_KEY
-pg_dump --format=custom --no-acl --no-owner --file="$plain"
+PGSERVICEFILE="$service_file" pg_dump --dbname="service=${service_name}" --format=custom --no-acl --no-owner --file="$plain"
 age --recipient "$MIMIC_BACKUP_AGE_RECIPIENT" --output "$encrypted" "$plain"
 rm -f "$plain"
 (cd "$workdir" && sha256sum "${base}.age" > "${base}.age.sha256")

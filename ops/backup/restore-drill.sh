@@ -42,24 +42,16 @@ case "$MIMIC_RESTORE_SYSTEM_IDENTIFIER:$MIMIC_PRODUCTION_SYSTEM_IDENTIFIER:$MIMI
 if [ "$MIMIC_RESTORE_SYSTEM_IDENTIFIER" = "$MIMIC_PRODUCTION_SYSTEM_IDENTIFIER" ]; then printf '%s\n' 'Refusing restore because scratch and Production identities match' >&2; exit 2; fi
 case "$MIMIC_EXPECTED_MIGRATION:$MIMIC_EXPECTED_RELEASE" in *[!0-9A-Za-z._:-]*) printf '%s\n' 'Expected migration or release is invalid' >&2; exit 2 ;; esac
 if [ ! -r "$MIMIC_BACKUP_AGE_IDENTITY_FILE" ]; then printf '%s\n' 'The age identity file is not readable' >&2; exit 2; fi
+if [ "$(printf '%s' "$MIMIC_RESTORE_DATABASE_URL" | tr -d '\r\n')" != "$MIMIC_RESTORE_DATABASE_URL" ]; then
+  printf '%s\n' 'Restore database URL must be a single line' >&2
+  exit 2
+fi
 
 export AWS_EC2_METADATA_DISABLED=true
-export PGDATABASE="$MIMIC_RESTORE_DATABASE_URL"
-unset MIMIC_RESTORE_DATABASE_URL
-actual_database="$(psql --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SELECT current_database()')"
-actual_system_id="$(psql --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SELECT system_identifier::text FROM pg_control_system()')"
-actual_sentinel="$(psql --tuples-only --no-align --set=ON_ERROR_STOP=1 --command="SELECT COALESCE(obj_description(oid, 'pg_database'), '') FROM pg_database WHERE datname=current_database()")"
-if [ "$actual_database" != "$MIMIC_RESTORE_DATABASE_NAME" ]; then printf '%s\n' 'Refusing mismatched scratch database name' >&2; exit 2; fi
-if [ "$actual_system_id" != "$MIMIC_RESTORE_SYSTEM_IDENTIFIER" ] || [ "$actual_system_id" = "$MIMIC_PRODUCTION_SYSTEM_IDENTIFIER" ]; then printf '%s\n' 'Refusing mismatched or Production PostgreSQL system identity' >&2; exit 2; fi
-if [ "$actual_sentinel" != "mimic-restore-scratch:${MIMIC_RESTORE_SENTINEL_NONCE}" ]; then printf '%s\n' 'Refusing mismatched scratch sentinel' >&2; exit 2; fi
-target_version_num="$(psql --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SHOW server_version_num')"
-case "$target_version_num" in ''|*[!0-9]*) printf '%s\n' 'Unable to determine target PostgreSQL version' >&2; exit 2 ;; esac
-target_major=$((target_version_num / 10000))
-client_major="$(pg_restore --version | sed -n 's/.* \([0-9][0-9]*\)\..*/\1/p')"
-if [ "$target_major" != "$MIMIC_POSTGRES_CLIENT_MAJOR" ] || [ "$client_major" != "$MIMIC_POSTGRES_CLIENT_MAJOR" ]; then printf '%s\n' 'Refusing restore across PostgreSQL major versions' >&2; exit 2; fi
-
 name="${MIMIC_BACKUP_OBJECT#weekly/}"
 workdir="$(mktemp -d "${TMPDIR:-/tmp}/mimic-restore.XXXXXX")"
+service_name=mimic_restore
+service_file="${workdir}/pg_service.conf"
 encrypted="${workdir}/${name}"
 checksum="${encrypted}.sha256"
 manifest="${encrypted}.manifest"
@@ -68,6 +60,20 @@ plain="${encrypted%.age}"
 cleanup() { rm -rf "$workdir"; }
 trap cleanup EXIT
 trap 'exit 1' HUP INT TERM
+printf '[%s]\ndbname=%s\n' "$service_name" "$MIMIC_RESTORE_DATABASE_URL" > "$service_file"
+chmod 0600 "$service_file"
+unset MIMIC_RESTORE_DATABASE_URL
+actual_database="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SELECT current_database()')"
+actual_system_id="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SELECT system_identifier::text FROM pg_control_system()')"
+actual_sentinel="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command="SELECT COALESCE(obj_description(oid, 'pg_database'), '') FROM pg_database WHERE datname=current_database()")"
+if [ "$actual_database" != "$MIMIC_RESTORE_DATABASE_NAME" ]; then printf '%s\n' 'Refusing mismatched scratch database name' >&2; exit 2; fi
+if [ "$actual_system_id" != "$MIMIC_RESTORE_SYSTEM_IDENTIFIER" ] || [ "$actual_system_id" = "$MIMIC_PRODUCTION_SYSTEM_IDENTIFIER" ]; then printf '%s\n' 'Refusing mismatched or Production PostgreSQL system identity' >&2; exit 2; fi
+if [ "$actual_sentinel" != "mimic-restore-scratch:${MIMIC_RESTORE_SENTINEL_NONCE}" ]; then printf '%s\n' 'Refusing mismatched scratch sentinel' >&2; exit 2; fi
+target_version_num="$(PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --tuples-only --no-align --set=ON_ERROR_STOP=1 --command='SHOW server_version_num')"
+case "$target_version_num" in ''|*[!0-9]*) printf '%s\n' 'Unable to determine target PostgreSQL version' >&2; exit 2 ;; esac
+target_major=$((target_version_num / 10000))
+client_major="$(pg_restore --version | sed -n 's/.* \([0-9][0-9]*\)\..*/\1/p')"
+if [ "$target_major" != "$MIMIC_POSTGRES_CLIENT_MAJOR" ] || [ "$client_major" != "$MIMIC_POSTGRES_CLIENT_MAJOR" ]; then printf '%s\n' 'Refusing restore across PostgreSQL major versions' >&2; exit 2; fi
 
 aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}.manifest" "$manifest" --only-show-errors
 aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUCKET}/${MIMIC_BACKUP_OBJECT}.manifest.minisig" "$signature" --only-show-errors
@@ -96,5 +102,5 @@ aws --endpoint-url "$MIMIC_BACKUP_S3_ENDPOINT" s3 cp "s3://${MIMIC_BACKUP_S3_BUC
 if ! awk 'NF != 2 { exit 1 }' "$checksum" || [ "$(sed -n 's/ .*//p' "$checksum")" != "$manifest_sha256" ] || [ "$(sed -n 's/^[0-9a-f]*  //p' "$checksum")" != "$name" ]; then printf '%s\n' 'Refusing checksum not authenticated by manifest' >&2; exit 2; fi
 (cd "$workdir" && sha256sum --check "${name}.sha256")
 age --decrypt --identity "$MIMIC_BACKUP_AGE_IDENTITY_FILE" --output "$plain" "$encrypted"
-pg_restore --exit-on-error --no-acl --no-owner --clean --if-exists "$plain"
-psql --set=ON_ERROR_STOP=1 --set=expected_migration="$MIMIC_EXPECTED_MIGRATION" --set=expected_release="$MIMIC_EXPECTED_RELEASE" --file="/opt/mimic/verify-restore.sql"
+PGSERVICEFILE="$service_file" pg_restore --dbname="service=${service_name}" --exit-on-error --no-acl --no-owner --clean --if-exists "$plain"
+PGSERVICEFILE="$service_file" psql --dbname="service=${service_name}" --set=ON_ERROR_STOP=1 --set=expected_migration="$MIMIC_EXPECTED_MIGRATION" --set=expected_release="$MIMIC_EXPECTED_RELEASE" --file="/opt/mimic/verify-restore.sql"
