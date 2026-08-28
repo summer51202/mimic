@@ -30,8 +30,8 @@ worktrees/
 # Local brainstorming companion sessions
 .superpowers/
 
-# Retired client and local working assets
-mobile/
+# Retired local build residue and working assets
+/mobile/
 .codex-generated/
 .merge-backup/
 models/

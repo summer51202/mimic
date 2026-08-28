@@ -501,3 +501,14 @@
 - Updated agent guidance and feature-map context for the PWA-first repository direction.
 **Decisions:** Preserved Git history, internal agent documentation, author email metadata, and the original treasury source image; deferred licensing and production legal policy decisions.
 **Known gaps / follow-ups:** Mobile remains available in historical commits; E2E CI, deployment automation, license selection, and production privacy/terms content remain deferred.
+
+## 2026-08-28 — Enforce Mimic product boundary
+
+**Task:** Establish a testable active-brand boundary and stop tracking generated service-worker output.
+**Scope:** Naming verification scripts, root and web ignore rules, generated web service worker.
+**What changed:**
+- Added a Node test and scanner for retired-brand references in explicit active product surfaces.
+- Ignored the worktree-local retired mobile residue and generated `web/public/sw.js` output.
+- Removed the tracked generated service worker while retaining its TypeScript source.
+**Decisions:** The scanner intentionally reports current active legacy references until the subsequent technical rename task removes them; mobile source remains recoverable in Git history.
+**Known gaps / follow-ups:** Broad active-surface naming migration is deferred to the next task.
