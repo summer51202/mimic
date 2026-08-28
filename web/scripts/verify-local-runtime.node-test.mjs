@@ -46,14 +46,21 @@ test("parseArgs accepts health-only, base URL, and expected revision", () => {
   );
 });
 
-test("checkHealth requests the exact health URL", async () => {
+test("checkHealth requires the exact live and ready endpoints", async () => {
   await withServer((request, response) => {
-    assert.equal(request.url, "/api/v1/health");
+    assert.ok(
+      ["/api/v1/health/live", "/api/v1/health/ready"].includes(request.url),
+    );
     response.writeHead(200, { "content-type": "application/json" });
-    response.end('{"data":{"ok":true,"revision":"e40aba9"}}');
+    response.end(
+      request.url === "/api/v1/health/live"
+        ? '{"data":{"ok":true,"revision":"e40aba9"}}'
+        : '{"data":{"ok":true}}',
+    );
   }, async (apiBaseUrl) => {
     const result = await checkHealth(apiBaseUrl, "test checkpoint", "e40aba9");
-    assert.equal(result.healthUrl, `${apiBaseUrl}/health`);
+    assert.equal(result.liveUrl, `${apiBaseUrl}/health/live`);
+    assert.equal(result.readyUrl, `${apiBaseUrl}/health/ready`);
     assert.equal(result.revision, "e40aba9");
   });
 });
@@ -65,48 +72,83 @@ test("checkHealth reports the exact URL when unavailable", async () => {
     (error) => {
       assert.match(
         error.message,
-        /Health checkpoint failed \(preflight\):/,
+        /Liveness checkpoint failed \(preflight\):/,
       );
-      assert.ok(error.message.includes(`${apiBaseUrl}/health`));
+      assert.ok(error.message.includes(`${apiBaseUrl}/health/live`));
       return true;
     },
   );
 });
 
 test("checkHealth rejects a backend with no process revision", async () => {
-  await withServer((_request, response) => {
+  await withServer((request, response) => {
     response.writeHead(200, { "content-type": "application/json" });
-    response.end('{"data":{"ok":true}}');
+    response.end(
+      request.url === "/api/v1/health/live"
+        ? '{"data":{"ok":true}}'
+        : '{"data":{"ok":true}}',
+    );
   }, async (apiBaseUrl) => {
     await assert.rejects(
       checkHealth(apiBaseUrl, "preflight", "e40aba9"),
-      /Backend revision missing at .*\/api\/v1\/health; expected e40aba9/,
+      /Backend revision missing at .*\/api\/v1\/health\/live; expected e40aba9/,
     );
   });
 });
 
 test("checkHealth rejects a stale backend process revision", async () => {
-  await withServer((_request, response) => {
+  await withServer((request, response) => {
     response.writeHead(200, { "content-type": "application/json" });
-    response.end('{"data":{"ok":true,"revision":"deadbee"}}');
+    response.end(
+      request.url === "/api/v1/health/live"
+        ? '{"data":{"ok":true,"revision":"deadbee"}}'
+        : '{"data":{"ok":true}}',
+    );
   }, async (apiBaseUrl) => {
     await assert.rejects(
       checkHealth(apiBaseUrl, "preflight", "e40aba9"),
-      /Backend revision mismatch at .*\/api\/v1\/health: expected e40aba9, received deadbee/,
+      /Backend revision mismatch at .*\/api\/v1\/health\/live: expected e40aba9, received deadbee/,
     );
   });
 });
 
 test("checkHealth does not echo a secret-like backend revision", async () => {
-  await withServer((_request, response) => {
+  await withServer((request, response) => {
     response.writeHead(200, { "content-type": "application/json" });
-    response.end('{"data":{"ok":true,"revision":"token=secret"}}');
+    response.end(
+      request.url === "/api/v1/health/live"
+        ? '{"data":{"ok":true,"revision":"token=secret"}}'
+        : '{"data":{"ok":true}}',
+    );
   }, async (apiBaseUrl) => {
     await assert.rejects(
       checkHealth(apiBaseUrl, "preflight", "e40aba9"),
       (error) => {
         assert.match(error.message, /Backend revision invalid at/);
         assert.doesNotMatch(error.message, /token|secret/);
+        return true;
+      },
+    );
+  });
+});
+
+test("checkHealth rejects unavailable or malformed readiness without exposing its body", async () => {
+  await withServer((request, response) => {
+    if (request.url === "/api/v1/health/ready") {
+      response.writeHead(503, { "content-type": "application/json" });
+      response.end('{"message":"database password"}');
+      return;
+    }
+
+    response.writeHead(200, { "content-type": "application/json" });
+    response.end('{"data":{"ok":true,"revision":"e40aba9"}}');
+  }, async (apiBaseUrl) => {
+    await assert.rejects(
+      checkHealth(apiBaseUrl, "preflight", "e40aba9"),
+      (error) => {
+        assert.match(error.message, /Readiness checkpoint failed \(preflight\):/);
+        assert.ok(error.message.includes(`${apiBaseUrl}/health/ready`));
+        assert.doesNotMatch(error.message, /database password/);
         return true;
       },
     );

@@ -99,23 +99,64 @@ export async function checkHealth(
   expectedRevision,
   { timeoutMs = 5_000, log = console.log } = {},
 ) {
-  const healthUrl = `${normalizeApiBaseUrl(apiBaseUrl)}/health`;
+  const normalizedApiBaseUrl = normalizeApiBaseUrl(apiBaseUrl);
+  const liveUrl = `${normalizedApiBaseUrl}/health/live`;
+  const readyUrl = `${normalizedApiBaseUrl}/health/ready`;
+  const liveBody = await fetchHealthCheckpoint(
+    liveUrl,
+    checkpoint,
+    "Liveness",
+    timeoutMs,
+  );
+
+  const revision = liveBody?.data?.revision;
+  if (!revision) {
+    throw new Error(
+      `Backend revision missing at ${liveUrl}; expected ${expectedRevision}`,
+    );
+  }
+  if (!REVISION_PATTERN.test(revision)) {
+    throw new Error(`Backend revision invalid at ${liveUrl}`);
+  }
+  if (revision !== expectedRevision) {
+    throw new Error(
+      `Backend revision mismatch at ${liveUrl}: expected ${expectedRevision}, received ${revision}`,
+    );
+  }
+
+  const readyBody = await fetchHealthCheckpoint(
+    readyUrl,
+    checkpoint,
+    "Readiness",
+    timeoutMs,
+  );
+  if (readyBody?.data?.ok !== true) {
+    throw new Error(
+      `Readiness checkpoint failed (${checkpoint}): ${readyUrl}: invalid readiness response`,
+    );
+  }
+
+  log(`Health checkpoint passed (${checkpoint}): ${liveUrl} and ${readyUrl}`);
+  return { liveUrl, readyUrl, revision };
+}
+
+async function fetchHealthCheckpoint(url, checkpoint, label, timeoutMs) {
   let response;
   try {
-    response = await fetch(healthUrl, {
+    response = await fetch(url, {
       signal: AbortSignal.timeout(timeoutMs),
     });
   } catch (cause) {
     const detail = cause instanceof Error ? `: ${cause.message}` : "";
     throw new Error(
-      `Health checkpoint failed (${checkpoint}): ${healthUrl}${detail}`,
+      `${label} checkpoint failed (${checkpoint}): ${url}${detail}`,
       { cause },
     );
   }
 
   if (!response.ok) {
     throw new Error(
-      `Health checkpoint failed (${checkpoint}): ${healthUrl}: ${response.status} ${response.statusText}`,
+      `${label} checkpoint failed (${checkpoint}): ${url}: ${response.status} ${response.statusText}`,
     );
   }
 
@@ -124,28 +165,12 @@ export async function checkHealth(
     body = await response.json();
   } catch (cause) {
     throw new Error(
-      `Health checkpoint failed (${checkpoint}): ${healthUrl}: invalid JSON response`,
+      `${label} checkpoint failed (${checkpoint}): ${url}: invalid JSON response`,
       { cause },
     );
   }
 
-  const revision = body?.data?.revision;
-  if (!revision) {
-    throw new Error(
-      `Backend revision missing at ${healthUrl}; expected ${expectedRevision}`,
-    );
-  }
-  if (!REVISION_PATTERN.test(revision)) {
-    throw new Error(`Backend revision invalid at ${healthUrl}`);
-  }
-  if (revision !== expectedRevision) {
-    throw new Error(
-      `Backend revision mismatch at ${healthUrl}: expected ${expectedRevision}, received ${revision}`,
-    );
-  }
-
-  log(`Health checkpoint passed (${checkpoint}): ${healthUrl}`);
-  return { healthUrl, revision };
+  return body;
 }
 
 export function createPlaywrightCommand(files) {

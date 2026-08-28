@@ -1,4 +1,5 @@
-import { Controller, Get, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
+import { HealthModule } from './health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ContributionsModule } from './modules/contributions/contributions.module';
 import { ExpensesModule } from './modules/expenses/expenses.module';
@@ -8,23 +9,10 @@ import { PrismaModule } from './modules/prisma/prisma.module';
 import { SettlementsModule } from './modules/settlements/settlements.module';
 import { UsersModule } from './modules/users/users.module';
 
-@Controller()
-class HealthController {
-  @Get('health')
-  getHealth() {
-    const revision = process.env.MIMIC_BACKEND_REVISION;
-    return {
-      data: {
-        ok: true,
-        ...(/^[0-9a-f]{7,64}$/i.test(revision ?? '') ? { revision } : {}),
-      },
-    };
-  }
-}
-
 @Module({
   imports: [
     PrismaModule,
+    HealthModule,
     UsersModule,
     AuthModule,
     GroupsModule,
@@ -33,6 +21,5 @@ class HealthController {
     ExpensesModule,
     SettlementsModule,
   ],
-  controllers: [HealthController],
 })
 export class AppModule {}

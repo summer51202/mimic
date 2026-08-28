@@ -9,20 +9,24 @@ describe('App bootstrap', () => {
   let app: INestApplication;
   const originalCorsOrigin = process.env.CORS_ORIGIN;
   const originalBackendRevision = process.env.MIMIC_BACKEND_REVISION;
+  const originalExpectedMigration = process.env.MIMIC_EXPECTED_MIGRATION;
+  const prisma = {
+    $connect: jest.fn(),
+    $disconnect: jest.fn(),
+    $queryRawUnsafe: jest.fn(),
+  };
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     })
       .overrideProvider(PrismaService)
-      .useValue({
-        $connect: jest.fn(),
-        $disconnect: jest.fn(),
-      })
+      .useValue(prisma)
       .compile();
 
     app = moduleRef.createNestApplication();
     process.env.CORS_ORIGIN = 'http://localhost:8080';
+    delete process.env.MIMIC_EXPECTED_MIGRATION;
     configureCors(app);
     await app.init();
   });
@@ -42,6 +46,12 @@ describe('App bootstrap', () => {
       delete process.env.MIMIC_BACKEND_REVISION;
     } else {
       process.env.MIMIC_BACKEND_REVISION = originalBackendRevision;
+    }
+
+    if (originalExpectedMigration === undefined) {
+      delete process.env.MIMIC_EXPECTED_MIGRATION;
+    } else {
+      process.env.MIMIC_EXPECTED_MIGRATION = originalExpectedMigration;
     }
   });
 
@@ -70,6 +80,47 @@ describe('App bootstrap', () => {
     await request(app.getHttpServer()).get('/health').expect(200).expect({
       data: { ok: true },
     });
+  });
+
+  it('exposes liveness with a valid backend revision', async () => {
+    process.env.MIMIC_BACKEND_REVISION = 'd329f3cecada42155424a7ec8a5de23336d39111';
+
+    await request(app.getHttpServer()).get('/health/live').expect(200).expect({
+      data: {
+        ok: true,
+        revision: 'd329f3cecada42155424a7ec8a5de23336d39111',
+      },
+    });
+  });
+
+  it('omits invalid backend revisions from liveness', async () => {
+    process.env.MIMIC_BACKEND_REVISION = 'token=do-not-expose';
+
+    await request(app.getHttpServer()).get('/health/live').expect(200).expect({
+      data: { ok: true },
+    });
+  });
+
+  it('reports readiness when the database probe succeeds', async () => {
+    prisma.$queryRawUnsafe.mockResolvedValueOnce([{ ok: 1 }]);
+
+    await request(app.getHttpServer()).get('/health/ready').expect(200).expect({
+      data: { ok: true },
+    });
+  });
+
+  it('returns the default 503 error envelope when the database probe fails', async () => {
+    prisma.$queryRawUnsafe.mockRejectedValueOnce(new Error('database password'));
+
+    const response = await request(app.getHttpServer())
+      .get('/health/ready')
+      .expect(503);
+
+    expect(response.body).toMatchObject({
+      message: 'SERVICE_NOT_READY',
+      statusCode: 503,
+    });
+    expect(JSON.stringify(response.body)).not.toContain('database password');
   });
 
   it('allows PWA development preflight requests', async () => {

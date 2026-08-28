@@ -526,3 +526,14 @@
 - Corrected current product documentation to describe the PWA-only scope and portable design-asset links.
 **Decisions:** Preserved migrations, historical plans, and prior devlog entries as immutable history; restricted the rename to the active surfaces covered by the naming verifier.
 **Known gaps / follow-ups:** Historical documentation and Git history intentionally retain retired PairFund and client references.
+
+## 2026-08-28 — Split deployment liveness and readiness
+
+**Task:** Add safe liveness and database-backed readiness checks for deployment verification.
+**Scope:** Backend health module and e2e coverage; Web health BFF routes and runtime verifier; `.agents/devlog.md`.
+**What changed:**
+- Added legacy, liveness, and readiness backend health routes with safe revision exposure and optional Prisma migration verification.
+- Added local Web liveness, backend-proxied readiness, and dual-endpoint runtime preflight checks.
+- Added focused backend, Web, and verifier coverage for safe failures and readiness gating.
+**Decisions:** Readiness reports only `SERVICE_NOT_READY` for database or migration failures so operational details never leave the service.
+**Known gaps / follow-ups:** Production deployment must set `MIMIC_EXPECTED_MIGRATION` when migration-level readiness is required.
