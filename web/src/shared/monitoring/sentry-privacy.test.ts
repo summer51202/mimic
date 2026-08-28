@@ -40,6 +40,7 @@ test("Sentry privacy policy constructs an allowlisted browser event", async () =
               {
                 filename: "funds.ts",
                 function: "saveFund",
+                module: "dist.src.modules.auth:jwt-secrets",
                 lineno: 22,
                 vars: { secret },
                 context_line: secret,

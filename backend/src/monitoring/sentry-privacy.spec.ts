@@ -100,6 +100,7 @@ describe('Sentry privacy policy', () => {
                 {
                   filename: 'settlements.service.ts',
                   function: 'completeSettlement',
+                  module: 'dist.src.modules.auth:jwt-secrets',
                   lineno: 91,
                   colno: 4,
                   in_app: true,

@@ -115,7 +115,6 @@ function sanitizeFrame(value: unknown): RecordValue | undefined {
   const filename = frame ? canonicalizeFilename(frame.filename) : undefined;
   if (!frame || !filename) return undefined;
   if (frame.function !== undefined && !isSafeFrameFunction(frame.function)) return undefined;
-  if (frame.module !== undefined && !isSafeFrameFunction(frame.module)) return undefined;
   if (frame.lineno !== undefined && !isSafeSourceLocation(frame.lineno)) return undefined;
   if (frame.colno !== undefined && !isSafeSourceLocation(frame.colno)) return undefined;
 
