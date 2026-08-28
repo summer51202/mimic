@@ -551,3 +551,15 @@
 - Hardened both Docker contexts against VCS metadata, `.npmrc`, environment/key files, TypeScript build state, and generated local build caches; the Web context also excludes generated `public/sw.js`.
 **Decisions:** The Backend runtime copies `.prisma` from the build stage after `npm ci --omit=dev` so generated client engines are explicit rather than depending only on install-hook behavior.
 **Known gaps / follow-ups:** This Windows host has no Docker-compatible engine, so `docker build`/container-runtime verification remains deferred to a Docker-capable environment or Railway remote builds.
+
+## 2026-08-28 — Add privacy-filtered Sentry monitoring
+
+**Task:** Add optional developer-only Sentry diagnostics without exporting Closed Beta financial or personal data.
+**Scope:** Backend and Web Sentry initialization, strict privacy scrubbers and tests, Next build wrapper, environment examples, monitoring documentation, and `.agents/devlog.md`.
+**What changed:**
+- Added current Sentry SDKs and early Nest/Next initialization surfaces, disabled by default without a nonblank DSN.
+- Rebuild every captured event from a small allowlist, retaining only safe deployment metadata, bounded diagnostic IDs, pseudonymous user IDs, sanitized request origin/path, safe route templates, and exception type/frames.
+- Disabled breadcrumbs, logs, replay, local variable capture, and invalid trace sampling; transaction events use the same scrubber and never retain raw names.
+- Wrapped the existing Serwist standalone config with Sentry using source-map upload disabled without an auth token.
+**Decisions:** Preserved only the Sentry-required event type discriminator alongside the constructed allowlist; it is constant metadata rather than user data.
+**Known gaps / follow-ups:** Linux production-image execution remains deferred because Docker is unavailable on this host; static image coverage includes the Sentry configuration.

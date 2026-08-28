@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core';
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ContributionsModule } from './modules/contributions/contributions.module';
@@ -11,6 +13,7 @@ import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     PrismaModule,
     HealthModule,
     UsersModule,
@@ -20,6 +23,12 @@ import { UsersModule } from './modules/users/users.module';
     ContributionsModule,
     ExpensesModule,
     SettlementsModule,
+  ],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: SentryGlobalFilter,
+    },
   ],
 })
 export class AppModule {}

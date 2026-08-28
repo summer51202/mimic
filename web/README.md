@@ -3,6 +3,16 @@
 Next.js PWA foundation for the user-facing **mimic** product and the Mimiku
 shared-adventure brand system.
 
+## Monitoring privacy
+
+Browser reporting is optional through `NEXT_PUBLIC_MIMIC_SENTRY_DSN`; server and
+edge reporting use the private `MIMIC_SENTRY_DSN`. `MIMIC_ENVIRONMENT`,
+`MIMIC_WEB_REVISION`, and the bounded trace-rate variables in `.env.example`
+provide deployment diagnostics. Never expose a server DSN or `SENTRY_AUTH_TOKEN`
+as `NEXT_PUBLIC_*`. Events are reconstructed from an allowlist and exclude
+request/cookie/query data, user PII, messages, financial data, breadcrumbs,
+contexts, and exception values. Replay is disabled.
+
 ## Local Commands
 
 ```bash
