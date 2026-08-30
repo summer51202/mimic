@@ -1,5 +1,10 @@
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("@/shared/auth/has-session", () => ({
+  hasSession: vi.fn().mockResolvedValue(false),
+}));
+
 import FeaturesPage, { metadata as featuresMetadata } from "./features/page";
 import InvitePage, { metadata as inviteMetadata } from "./invite/[code]/page";
 import PrivacyPage, { metadata as privacyMetadata } from "./privacy/page";
