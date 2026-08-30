@@ -1,4 +1,4 @@
-import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { ContributionType, FundStatus, MemberStatus, RecordStatus } from '@prisma/client';
 import { ContributionsService } from './contributions.service';
 
@@ -11,6 +11,12 @@ describe('ContributionsService', () => {
         findMany: jest.fn().mockImplementation(() => {
           order.push('members');
           return [{ userId: 'user-1' }, { userId: 'user-2' }];
+        }),
+      },
+      settlement: {
+        findFirst: jest.fn().mockImplementation(() => {
+          order.push('period');
+          return null;
         }),
       },
       contribution: {
@@ -42,7 +48,7 @@ describe('ContributionsService', () => {
       where: { groupId: 'group-1', userId: { in: ['user-1', 'user-2'] }, status: MemberStatus.ACTIVE },
       select: { userId: true },
     });
-    expect(order).toEqual(['lock', 'members', 'write']);
+    expect(order).toEqual(['lock', 'members', 'period', 'write']);
   });
 
   it.each([
@@ -52,6 +58,7 @@ describe('ContributionsService', () => {
     const tx = {
       $executeRaw: jest.fn(),
       groupMember: { findMany: jest.fn().mockResolvedValue(members) },
+      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
       contribution: { create: jest.fn() },
     };
     const prisma = {
@@ -65,11 +72,47 @@ describe('ContributionsService', () => {
       contribution_type: 'one_time', occurred_on: '2026-04-13',
     })).rejects.toEqual(new error(message));
     expect(tx.contribution.create).not.toHaveBeenCalled();
+    expect(tx.settlement.findFirst).not.toHaveBeenCalled();
   });
+
+  it('rejects a correction in a completed settlement period before writing', async () => {
+    const order: string[] = [];
+    const tx = {
+      $executeRaw: jest.fn().mockImplementation(() => { order.push('lock'); }),
+      groupMember: {
+        findMany: jest.fn().mockImplementation(() => {
+          order.push('members');
+          return [{ userId: 'user-1' }, { userId: 'user-2' }];
+        }),
+      },
+      settlement: {
+        findFirst: jest.fn().mockImplementation(() => {
+          order.push('period');
+          return { id: 'settlement-1' };
+        }),
+      },
+      contribution: { create: jest.fn() },
+    };
+    const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) },
+      $transaction: jest.fn((callback) => callback(tx)),
+    };
+    const service = new ContributionsService(prisma as never);
+
+    await expect(service.createContribution('fund-1', 'user-1', {
+      contributor_user_id: 'user-2', amount_minor: 5000,
+      contribution_type: 'correction', occurred_on: '2026-08-30',
+    })).rejects.toEqual(new ConflictException('LOCKED_PERIOD'));
+
+    expect(order).toEqual(['lock', 'members', 'period']);
+    expect(tx.contribution.create).not.toHaveBeenCalled();
+  });
+
   it('creates an active contribution for a fund and actor', async () => {
     const tx = {
       $executeRaw: jest.fn(),
       groupMember: { findMany: jest.fn().mockResolvedValue([{ userId: 'user-1' }, { userId: 'user-2' }]) },
+      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
       contribution: {
         create: jest.fn().mockResolvedValue({
           id: 'contribution-1',

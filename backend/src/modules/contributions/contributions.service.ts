@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { ContributionType, FundStatus, MemberStatus, Prisma, RecordStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { lockGroupMutation } from '../prisma/group-mutation-lock';
+import { assertFundPeriodUnlocked } from '../accounting/settlement-period-lock';
 import { CreateContributionDto } from './dto/create-contribution.dto';
 import { ActivityQueryDto } from '../../common/dto/activity-query.dto';
 
@@ -15,6 +16,7 @@ export class ContributionsService {
     dto: CreateContributionDto,
   ) {
     const fund = await this.requireActiveFund(fundId);
+    const occurredOn = this.toUtcDate(dto.occurred_on);
 
     return this.prisma.$transaction(async (tx) => {
       await lockGroupMutation(tx, fund.groupId);
@@ -24,6 +26,7 @@ export class ContributionsService {
         actorUserId,
         [dto.contributor_user_id],
       );
+      await assertFundPeriodUnlocked(tx, fundId, occurredOn);
 
       return tx.contribution.create({
         data: {
@@ -31,7 +34,7 @@ export class ContributionsService {
           contributorUserId: dto.contributor_user_id,
           amountMinor: BigInt(dto.amount_minor),
           contributionType: this.mapContributionType(dto.contribution_type),
-          occurredOn: this.toUtcDate(dto.occurred_on),
+          occurredOn,
           note: dto.note,
           createdById: actorUserId,
           updatedById: actorUserId,
