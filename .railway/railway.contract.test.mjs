@@ -31,13 +31,11 @@ function variable(service, name) {
   return service.variables[name];
 }
 
+const expectedBranch = "main";
+
 for (const environmentName of ["staging", "production"]) {
   test(`${environmentName} defines the isolated web, API, and PostgreSQL topology`, async () => {
     const definition = await definitionFor(environmentName);
-    const expectedBranch =
-      environmentName === "staging"
-        ? "codex/mimic-baseline-railway-safety"
-        : "main";
 
     assert.equal(definition.name, "Mimic");
     assert.deepEqual(definition.environments, ["staging", "production"]);

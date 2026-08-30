@@ -14,9 +14,8 @@ Both persistent environments use the lower-case Railway names `staging` and `pro
 | `mimic-api` | `summer51202/mimic`, `/backend` | `Dockerfile` | `/api/v1/health/ready` | `asia-southeast1-eqsg3a` |
 | `mimic-postgres` | Railway PostgreSQL | managed image/volume | n/a | `asia-southeast1-eqsg3a` |
 
-Staging Web/API deploy only from `codex/mimic-baseline-railway-safety` and
-Production Web/API deploy only from `main`. The Staging branch must exist on
-GitHub before planning or applying; a local-only worktree branch is not a
+Staging and Production Web/API deploy only from `main`. The reviewed `main` SHA
+must exist on GitHub before planning or applying; a local-only commit is not a
 deployable source.
 
 Web and API use `ON_FAILURE` restart policy. API uses `npm run prisma:migrate:deploy` as a pre-deploy command. The command runs in a separate container, can reach the private network and environment variables, and does not have volume mounts; it must remain non-interactive and exit non-zero on migration failure.
@@ -82,7 +81,7 @@ Install Railway CLI 5.42.1 or newer and confirm `railway --version` before any
 cloud plan. Do not assume that authentication alone proves the executable and
 IaC engine versions are compatible.
 
-## Staging bootstrap
+## Staging setup and maintenance
 
 These commands are operational and mutate Railway only where explicitly noted. Run them manually after reviewing this file; do not run them from an untrusted checkout.
 
@@ -101,7 +100,7 @@ These commands are operational and mutate Railway only where explicitly noted. R
 2. Produce and review a Staging-only plan:
 
    ```powershell
-   git ls-remote --exit-code origin refs/heads/codex/mimic-baseline-railway-safety
+   git ls-remote --exit-code origin refs/heads/main
    railway environment staging
    railway config plan --out .railway/staging-plan.json
    ```
@@ -109,7 +108,7 @@ These commands are operational and mutate Railway only where explicitly noted. R
    The branch probe must return a SHA; push the reviewed branch first if it does
    not. The plan must contain only `mimic-web`, `mimic-api`, and
    `mimic-postgres`; no backup service/cron, no secret literal, and no deletion.
-   Confirm both sources use `codex/mimic-baseline-railway-safety`, the API
+   Confirm both sources use `main`, the API
    pre-deploy command is retained as a one-element array, Docker roots and watch
    paths are correct, health checks use readiness, Singapore placement remains,
    PostgreSQL is major 18, and the private API URL remains a resolvable Railway
@@ -177,7 +176,7 @@ These commands are operational and mutate Railway only where explicitly noted. R
 There are no trace-rate variables: Mimic Sentry telemetry is error-only. Do not add `MIMIC_SENTRY_TRACE_RATE` or `NEXT_PUBLIC_MIMIC_SENTRY_TRACE_RATE`.
 
 7. After the final redeploy, confirm the deployment source
-   SHA equals the reviewed remote Staging branch SHA before using the Web URL.
+   SHA equals the reviewed remote `main` SHA before using the Web URL.
    Require green CI before enabling GitHub autodeploy. Keep Production
    autodeploy disabled and require explicit approval.
 
@@ -202,34 +201,18 @@ without publishing the API. If deeper direct diagnostics are required, use an
 approved Railway shell/SSH inside the environment and the private service URL;
 do not generate a public API domain merely for smoke testing.
 
-Verify that the deployed Git SHA equals the reviewed remote Staging branch SHA,
+Verify that the deployed Git SHA equals the reviewed remote `main` SHA,
 then inspect one synthetic API and Web Sentry error. Stored events may contain
 only the privacy allowlist documented in the component READMEs. Only after all
 checks pass may the generated Web URL be shared or used for Staging acceptance.
 
-## Bootstrap branch retirement gate
+## Source branch gate
 
-`codex/mimic-baseline-railway-safety` is a temporary bootstrap source for this
-first Staging validation only. The branch mapping in `.railway/railway.ts` and
-its contract must not be merged to `main` in that form.
-
-After Staging acceptance passes and before merging:
-
-1. Change the Staging source branch in `.railway/railway.ts` from
-   `codex/mimic-baseline-railway-safety` to `main` and update the Staging
-   contract expectation to `main`. Production remains `main` throughout.
-2. Re-run clean install, typecheck, contract tests, naming verification, and
-   `git diff --check`.
-3. Link `staging`, generate a fresh plan, and review that the source transition
-   to `main` is intentional and that no unrelated resource, variable, region,
-   database, domain, or backup change appears. Do not apply this pre-merge plan:
-   `main` does not contain the release yet.
-4. Include the IaC and contract source switch in the same reviewed merge to
-   `main`; do not leave it as a follow-up commit.
-5. After merge, re-plan because the pre-merge plan is stale, review again, then
-   apply the Staging source switch. Verify the deployed SHA equals the merged
-   `main` SHA. Future `main` merges must then be the only persistent Staging
-   deployment source.
+Both environments persistently source `main`. Before applying any plan, verify
+that the reviewed commit is already available at `origin/main`, that the plan
+does not switch either application service to another branch, and that no
+unrelated resource, variable, region, database, domain, or backup change appears.
+After apply, verify both application deployments report the reviewed `main` SHA.
 
 ## Backup service gate
 

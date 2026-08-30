@@ -18,11 +18,7 @@ export default defineRailway((context) => {
       `Refusing to configure unknown Railway environment: ${context.environmentName ?? "unset"}`,
     );
   }
-  // Temporary bootstrap: deploy this feature branch to Staging for validation.
-  // Before merging, switch Staging back to main, update the contract, and review
-  // a fresh Staging plan so future main merges remain the deployment source.
-  const branch =
-    environment === "staging" ? "codex/mimic-baseline-railway-safety" : "main";
+  const branch = "main";
 
   const postgresDatabase = postgres("mimic-postgres", { region });
 

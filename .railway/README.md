@@ -42,10 +42,8 @@ railway config apply --plan .railway/staging-plan.json
   secret values to source. Missing values remain an explicit operator gate.
 - Mimic uses separate `staging` and `production` links/plans/applies. Never infer
   that one apply configured both environments.
-- Staging temporarily sources `codex/mimic-baseline-railway-safety` for the
-  bootstrap validation; that branch must be pushed and its deployed SHA
-  verified. Before merge, switch the IaC and contract back to `main`, re-run
-  verification and review a new Staging plan. Production always sources `main`.
+- Staging and Production source `main`. Review and apply each environment's plan
+  independently, then verify the deployed SHA matches the reviewed `main` SHA.
 - Generate only the Web public domain. The API stays on Railway's private
   network and Web readiness/BFF acceptance verifies it.
 - Generated plan files and local link metadata are ignored and must not be
