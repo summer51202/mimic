@@ -706,3 +706,15 @@
 - Added focused regression coverage for accounting and invite-session behavior.
 **Decisions:** Preserve authorization errors by checking membership before the period guard; corrections use unlocked dates rather than altering locked history; optional session detection controls UI presentation only, while the BFF/backend remains authoritative for authentication and authorization.
 **Known gaps / follow-ups:** PATCH/DELETE transaction endpoints and their lock checks remain future work; local verification passed (backend tests/build and Web lint/typecheck/tests/build), but Staging deployment and acceptance re-verification remain pending explicit authorization; Staging acceptance data is retained.
+
+## 2026-08-30 — Harden settlement period boundaries
+
+**Task:** Close review findings that allowed inverted or malformed settlement periods to weaken completed-period locking.
+**Scope:** settlement DTO validation, creation and completion services, Prisma migration, regression tests, feature map
+**What changed:**
+- Restricted settlement boundaries to real `YYYY-MM-DD` calendar dates and rejected inverted bounded periods before fund lookup or transaction creation.
+- Revalidated legacy pending settlement boundaries after the group lock and membership check, preventing invalid rows from transitioning to `COMPLETED`.
+- Added a PostgreSQL `NOT VALID` check constraint that protects future inserts and updates without rewriting or scanning legacy settlement rows.
+- Added regression coverage for timestamps, impossible dates, inverted periods, equal dates, and open-ended periods.
+**Decisions:** Preserve same-user, authorization, and non-pending error precedence; allow equal and open-ended periods; leave legacy financial data untouched and make constraint validation an explicit operational step.
+**Known gaps / follow-ups:** Before validating `settlements_period_order_check`, audit each environment for bounded rows where `period_start > period_end`, resolve any findings deliberately, and then run `VALIDATE CONSTRAINT`; Staging deployment and audit remain pending explicit authorization.

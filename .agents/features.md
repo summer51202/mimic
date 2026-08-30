@@ -193,6 +193,8 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 - [x] PWA: authenticated group/fund routes, narrow-layout text containment, pixel-frame fill, and Mimiku transparency regression coverage
 - [ ] PWA: real-backend Playwright acceptance for the stabilized route and visual suite
 - [x] Backend: contribution and expense create handlers reject every transaction type, including corrections, when `occurred_on` is inside a completed settlement period
+- [x] Backend: settlement boundaries accept only real `YYYY-MM-DD` dates; inverted new or legacy-pending periods cannot be created or completed, and a database check protects future direct writes
+- [ ] Operations: audit legacy settlement rows for inverted bounded periods, resolve any findings without rewriting accounting history, then validate `settlements_period_order_check`
 - [ ] Backend: apply the shared settlement-period guard when future PATCH/DELETE transaction endpoints are implemented
 - [x] PWA: the public invite page derives its session-present acceptance UI state from the optional access-token cookie boundary; acceptance authorization remains backend-enforced
 - [x] Backend: authenticated group and invite integration tests cover route wiring, validation, and authorization
