@@ -219,6 +219,63 @@ describe('SettlementsService', () => {
     expect(prisma.$transaction).not.toHaveBeenCalled();
   });
 
+  it.each([
+    [{ period_start: '2026-04-30T00:00:00Z' }],
+    [{ period_end: '2026-02-30' }],
+  ])('rejects malformed settlement periods before looking up the fund', async (periods) => {
+    const prisma = {
+      fund: { findFirst: jest.fn() },
+      $transaction: jest.fn(),
+    };
+    const service = new SettlementsService(prisma as never);
+
+    await expect(
+      service.createSettlement('fund-1', 'owner-1', {
+        from_user_id: 'user-a',
+        to_user_id: 'user-b',
+        amount_minor: 650,
+        settlement_type: 'manual',
+        ...periods,
+      }),
+    ).rejects.toEqual(new BadRequestException('INVALID_SETTLEMENT_PERIOD'));
+
+    expect(prisma.fund.findFirst).not.toHaveBeenCalled();
+    expect(prisma.$transaction).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { period_start: '2026-04-30', period_end: '2026-04-30' },
+    { period_start: '2026-04-30' },
+    { period_end: '2026-04-30' },
+  ])('allows equal and open-ended settlement periods', async (periods) => {
+    const tx = {
+      $executeRaw: jest.fn(),
+      groupMember: {
+        findMany: jest.fn().mockResolvedValue([
+          { userId: 'owner-1' },
+          { userId: 'user-a' },
+          { userId: 'user-b' },
+        ]),
+      },
+      settlement: { create: jest.fn().mockResolvedValue({ id: 'settlement-1' }) },
+    };
+    const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) },
+      $transaction: jest.fn((callback) => callback(tx)),
+    };
+    const service = new SettlementsService(prisma as never);
+
+    await expect(
+      service.createSettlement('fund-1', 'owner-1', {
+        from_user_id: 'user-a',
+        to_user_id: 'user-b',
+        amount_minor: 650,
+        settlement_type: 'manual',
+        ...periods,
+      }),
+    ).resolves.toEqual({ id: 'settlement-1' });
+  });
+
   it('returns settlement details only to active group members', async () => {
     const prisma = {
       groupMember: { findFirst: jest.fn().mockResolvedValue({ userId: 'actor' }) },

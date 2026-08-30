@@ -245,7 +245,15 @@ export class SettlementsService {
   }
 
   private toUtcDate(date: string) {
-    return new Date(`${date}T00:00:00.000Z`);
+    const utcDate = new Date(`${date}T00:00:00.000Z`);
+    if (
+      !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+      Number.isNaN(utcDate.getTime()) ||
+      utcDate.toISOString().slice(0, 10) !== date
+    ) {
+      throw new BadRequestException('INVALID_SETTLEMENT_PERIOD');
+    }
+    return utcDate;
   }
 
   private currentMonthStart() {

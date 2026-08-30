@@ -1,4 +1,4 @@
-import { IsDateString, IsIn, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IsISO8601, IsIn, IsInt, IsOptional, IsString, Matches, Min } from 'class-validator';
 
 export class CreateSettlementDto {
   @IsString()
@@ -12,11 +12,13 @@ export class CreateSettlementDto {
   amount_minor: number;
 
   @IsOptional()
-  @IsDateString()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  @IsISO8601({ strict: true })
   period_start?: string;
 
   @IsOptional()
-  @IsDateString()
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  @IsISO8601({ strict: true })
   period_end?: string;
 
   @IsOptional()
