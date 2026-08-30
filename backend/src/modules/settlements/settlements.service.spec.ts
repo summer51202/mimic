@@ -335,7 +335,7 @@ describe('SettlementsService', () => {
     );
   });
 
-  it('marks pending settlements as completed with completed_at', async () => {
+  it('marks a pending settlement with an equal period as completed with completed_at', async () => {
     const order: string[] = [];
     const tx = {
       $executeRaw: jest.fn().mockImplementation(() => {
@@ -356,7 +356,11 @@ describe('SettlementsService', () => {
           })
           .mockImplementationOnce(() => {
             order.push('read-status');
-            return { status: SettlementStatus.PENDING };
+            return {
+              status: SettlementStatus.PENDING,
+              periodStart: new Date('2026-04-13T00:00:00.000Z'),
+              periodEnd: new Date('2026-04-13T00:00:00.000Z'),
+            };
           }),
         update: jest.fn().mockImplementation(() => {
           order.push('write');
@@ -387,7 +391,7 @@ describe('SettlementsService', () => {
     });
     expect(tx.settlement.findUnique).toHaveBeenCalledWith({
       where: { id: 'settlement-1' },
-      select: { status: true },
+      select: { status: true, periodStart: true, periodEnd: true },
     });
     expect(tx.settlement.update).toHaveBeenCalledWith({
       where: { id: 'settlement-1' },
@@ -397,6 +401,67 @@ describe('SettlementsService', () => {
       },
     });
     expect(order).toEqual(['resolve-group', 'lock', 'members', 'read-status', 'write']);
+  });
+
+  it('rejects a legacy pending settlement with an inverted period before completing it', async () => {
+    const tx = {
+      $executeRaw: jest.fn(),
+      groupMember: { findFirst: jest.fn().mockResolvedValue({ userId: 'actor' }) },
+      settlement: {
+        findUnique: jest
+          .fn()
+          .mockResolvedValueOnce({ fund: { groupId: 'group-1' } })
+          .mockResolvedValueOnce({
+            status: SettlementStatus.PENDING,
+            periodStart: new Date('2026-04-30T00:00:00.000Z'),
+            periodEnd: new Date('2026-04-01T00:00:00.000Z'),
+          }),
+        update: jest.fn(),
+      },
+    };
+    const service = new SettlementsService({
+      $transaction: jest.fn((callback) => callback(tx)),
+    } as never);
+
+    await expect(service.completeSettlement('settlement-1', 'actor', {})).rejects.toEqual(
+      new BadRequestException('INVALID_SETTLEMENT_PERIOD'),
+    );
+
+    expect(tx.settlement.findUnique).toHaveBeenLastCalledWith({
+      where: { id: 'settlement-1' },
+      select: { status: true, periodStart: true, periodEnd: true },
+    });
+    expect(tx.settlement.update).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    {
+      periodStart: new Date('2026-04-01T00:00:00.000Z'),
+      periodEnd: null,
+    },
+    {
+      periodStart: null,
+      periodEnd: new Date('2026-04-30T00:00:00.000Z'),
+    },
+  ])('completes a pending settlement with an open-ended period', async (period) => {
+    const tx = {
+      $executeRaw: jest.fn(),
+      groupMember: { findFirst: jest.fn().mockResolvedValue({ userId: 'actor' }) },
+      settlement: {
+        findUnique: jest
+          .fn()
+          .mockResolvedValueOnce({ fund: { groupId: 'group-1' } })
+          .mockResolvedValueOnce({ status: SettlementStatus.PENDING, ...period }),
+        update: jest.fn().mockResolvedValue({ id: 'settlement-1' }),
+      },
+    };
+    const service = new SettlementsService({
+      $transaction: jest.fn((callback) => callback(tx)),
+    } as never);
+
+    await service.completeSettlement('settlement-1', 'actor', {});
+
+    expect(tx.settlement.update).toHaveBeenCalled();
   });
 
   it('rejects settlement completion when the actor is not an active group member', async () => {

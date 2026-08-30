@@ -187,13 +187,20 @@ export class SettlementsService {
 
       const lockedSettlement = await tx.settlement.findUnique({
         where: { id: settlementId },
-        select: { status: true },
+        select: { status: true, periodStart: true, periodEnd: true },
       });
       if (!lockedSettlement) {
         throw new NotFoundException('SETTLEMENT_NOT_FOUND');
       }
       if (lockedSettlement.status !== SettlementStatus.PENDING) {
         throw new ConflictException('SETTLEMENT_NOT_PENDING');
+      }
+      if (
+        lockedSettlement.periodStart &&
+        lockedSettlement.periodEnd &&
+        lockedSettlement.periodStart > lockedSettlement.periodEnd
+      ) {
+        throw new BadRequestException('INVALID_SETTLEMENT_PERIOD');
       }
 
       return tx.settlement.update({
