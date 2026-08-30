@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { authCookies } from "@/shared/auth/cookies";
+import { isJwtShaped } from "@/shared/auth/jwt-shape";
 
 export type AuthenticatedSession = {
   isAuthenticated: true;
@@ -31,19 +32,4 @@ export async function requireSession(): Promise<AuthenticatedSession> {
   }
 
   redirect(refreshRedirectPath);
-}
-
-function isJwtShaped(token: string): boolean {
-  const trimmedToken = token.trim();
-
-  if (trimmedToken !== token) {
-    return false;
-  }
-
-  const parts = trimmedToken.split(".");
-
-  return (
-    parts.length === 3 &&
-    parts.every((part) => /^[A-Za-z0-9_-]+$/.test(part))
-  );
 }

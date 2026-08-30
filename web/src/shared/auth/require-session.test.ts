@@ -49,6 +49,17 @@ describe("requireSession", () => {
       path: "/login?returnTo=%2Fapp",
     });
   });
+
+  it("returns an authenticated session for a validly shaped access token", async () => {
+    await mockCookies({
+      [authCookies.access]: "aaa.bbb.ccc",
+    });
+
+    await expect(requireSession()).resolves.toEqual({
+      isAuthenticated: true,
+      user: null,
+    });
+  });
 });
 
 async function mockCookies(values: Record<string, string>): Promise<void> {
