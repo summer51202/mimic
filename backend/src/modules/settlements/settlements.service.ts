@@ -90,6 +90,11 @@ export class SettlementsService {
     if (dto.from_user_id === dto.to_user_id) {
       throw new BadRequestException('INVALID_SETTLEMENT_USERS');
     }
+    const periodStart = dto.period_start ? this.toUtcDate(dto.period_start) : null;
+    const periodEnd = dto.period_end ? this.toUtcDate(dto.period_end) : null;
+    if (periodStart && periodEnd && periodStart > periodEnd) {
+      throw new BadRequestException('INVALID_SETTLEMENT_PERIOD');
+    }
     const fund = await this.requireActiveFund(fundId);
 
     return this.prisma.$transaction(async (tx) => {
@@ -101,8 +106,8 @@ export class SettlementsService {
           fromUserId: dto.from_user_id,
           toUserId: dto.to_user_id,
           amountMinor: BigInt(dto.amount_minor),
-          periodStart: dto.period_start ? this.toUtcDate(dto.period_start) : null,
-          periodEnd: dto.period_end ? this.toUtcDate(dto.period_end) : null,
+          periodStart,
+          periodEnd,
           status: SettlementStatus.PENDING,
           settlementType: this.mapSettlementType(dto.settlement_type ?? 'manual'),
           note: dto.note,

@@ -197,6 +197,28 @@ describe('SettlementsService', () => {
     ).rejects.toThrow(BadRequestException);
   });
 
+  it('rejects inverted settlement periods before looking up the fund', async () => {
+    const prisma = {
+      fund: { findFirst: jest.fn() },
+      $transaction: jest.fn(),
+    };
+    const service = new SettlementsService(prisma as never);
+
+    await expect(
+      service.createSettlement('fund-1', 'owner-1', {
+        from_user_id: 'user-a',
+        to_user_id: 'user-b',
+        amount_minor: 650,
+        period_start: '2026-04-30',
+        period_end: '2026-04-01',
+        settlement_type: 'manual',
+      }),
+    ).rejects.toEqual(new BadRequestException('INVALID_SETTLEMENT_PERIOD'));
+
+    expect(prisma.fund.findFirst).not.toHaveBeenCalled();
+    expect(prisma.$transaction).not.toHaveBeenCalled();
+  });
+
   it('returns settlement details only to active group members', async () => {
     const prisma = {
       groupMember: { findFirst: jest.fn().mockResolvedValue({ userId: 'actor' }) },
