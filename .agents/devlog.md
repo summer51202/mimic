@@ -697,12 +697,12 @@
 
 ## 2026-08-30 — Enforce settlement locks and invite session state
 
-**Task:** Fix the Staging acceptance defects that allowed writes into completed settlement periods and hid authenticated invite acceptance.
+**Task:** Fix the Staging acceptance defects that allowed writes into completed settlement periods and hid the session-present invite acceptance UI.
 **Scope:** backend accounting guard, contribution/expense creation, Web session utilities, public invite page, tests, feature map
 **What changed:**
 - Added a shared inclusive completed-settlement period guard returning `LOCKED_PERIOD`.
 - Applied the guard to all contribution and expense creation types, including corrections.
 - Added optional Web session detection and connected it to the public invite page.
 - Added focused regression coverage for accounting and invite-session behavior.
-**Decisions:** Preserve authorization errors by checking membership before the period guard; corrections use unlocked dates rather than altering locked history.
-**Known gaps / follow-ups:** PATCH/DELETE transaction endpoints and their lock checks remain future work; Staging acceptance data is retained.
+**Decisions:** Preserve authorization errors by checking membership before the period guard; corrections use unlocked dates rather than altering locked history; optional session detection controls UI presentation only, while the BFF/backend remains authoritative for authentication and authorization.
+**Known gaps / follow-ups:** PATCH/DELETE transaction endpoints and their lock checks remain future work; local verification passed (backend tests/build and Web lint/typecheck/tests/build), but Staging deployment and acceptance re-verification remain pending explicit authorization; Staging acceptance data is retained.

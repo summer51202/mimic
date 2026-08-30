@@ -194,6 +194,6 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 - [ ] PWA: real-backend Playwright acceptance for the stabilized route and visual suite
 - [x] Backend: contribution and expense create handlers reject every transaction type, including corrections, when `occurred_on` is inside a completed settlement period
 - [ ] Backend: apply the shared settlement-period guard when future PATCH/DELETE transaction endpoints are implemented
-- [x] PWA: the public invite page derives authenticated acceptance state from the optional access-token session boundary
+- [x] PWA: the public invite page derives its session-present acceptance UI state from the optional access-token cookie boundary; acceptance authorization remains backend-enforced
 - [x] Backend: authenticated group and invite integration tests cover route wiring, validation, and authorization
 - [ ] Settlement suggestion algorithm: verify normalization logic against PRD position formula
