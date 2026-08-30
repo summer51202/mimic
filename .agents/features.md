@@ -1,5 +1,5 @@
 # Mimic Feature Map
-_Last updated: 2026-08-28. Refresh with `/feature-map`._
+_Last updated: 2026-08-30. Refresh with `/feature-map`._
 
 > The PWA in `web/` is the only active client. Current implementation work targets `web/` and `backend/`; previous clients remain available only through Git history.
 
@@ -192,6 +192,8 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 ### Stabilization
 - [x] PWA: authenticated group/fund routes, narrow-layout text containment, pixel-frame fill, and Mimiku transparency regression coverage
 - [ ] PWA: real-backend Playwright acceptance for the stabilized route and visual suite
-- [ ] Backend: lock check not yet applied in PATCH/DELETE handlers (currently only in create)
+- [x] Backend: contribution and expense create handlers reject every transaction type, including corrections, when `occurred_on` is inside a completed settlement period
+- [ ] Backend: apply the shared settlement-period guard when future PATCH/DELETE transaction endpoints are implemented
+- [x] PWA: the public invite page derives authenticated acceptance state from the optional access-token session boundary
 - [x] Backend: authenticated group and invite integration tests cover route wiring, validation, and authorization
 - [ ] Settlement suggestion algorithm: verify normalization logic against PRD position formula

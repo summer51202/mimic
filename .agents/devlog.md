@@ -694,3 +694,15 @@
 - Added an operator guard against repeatedly applying a plan containing only those two known mismatch lines.
 **Decisions:** Keep the desired restart policy explicit in source and verify it from the live manifest instead of weakening the IaC contract to silence a platform planner mismatch.
 **Known gaps / follow-ups:** Recheck this behavior after future Railway CLI/SDK upgrades and remove the exception once planning becomes idempotent.
+
+## 2026-08-30 — Enforce settlement locks and invite session state
+
+**Task:** Fix the Staging acceptance defects that allowed writes into completed settlement periods and hid authenticated invite acceptance.
+**Scope:** backend accounting guard, contribution/expense creation, Web session utilities, public invite page, tests, feature map
+**What changed:**
+- Added a shared inclusive completed-settlement period guard returning `LOCKED_PERIOD`.
+- Applied the guard to all contribution and expense creation types, including corrections.
+- Added optional Web session detection and connected it to the public invite page.
+- Added focused regression coverage for accounting and invite-session behavior.
+**Decisions:** Preserve authorization errors by checking membership before the period guard; corrections use unlocked dates rather than altering locked history.
+**Known gaps / follow-ups:** PATCH/DELETE transaction endpoints and their lock checks remain future work; Staging acceptance data is retained.
