@@ -1,5 +1,8 @@
+import type { ReactElement } from "react";
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import { hasSession } from "@/shared/auth/has-session";
 
 vi.mock("@/shared/auth/has-session", () => ({
   hasSession: vi.fn().mockResolvedValue(false),
@@ -12,6 +15,20 @@ import TermsPage, { metadata as termsMetadata } from "./terms/page";
 
 const metadataTitle = (metadata: { title?: unknown }) =>
   typeof metadata.title === "string" ? metadata.title : "";
+
+type InviteAcceptPanelProps = {
+  authenticated: boolean;
+  code: string;
+};
+
+const getInviteAcceptPanel = (page: ReactElement) =>
+  (page as ReactElement<{ children: ReactElement<InviteAcceptPanelProps> }>).props
+    .children;
+
+beforeEach(() => {
+  vi.mocked(hasSession).mockReset();
+  vi.mocked(hasSession).mockResolvedValue(false);
+});
 
 afterEach(() => {
   cleanup();
@@ -60,9 +77,14 @@ describe("public pages", () => {
 
   it("renders invitation entry without financial or membership data", async () => {
     const page = await InvitePage({ params: Promise.resolve({ code: "ABCD1234XYZ_" }) });
+    const invitePanel = getInviteAcceptPanel(page);
 
     render(page);
 
+    expect(invitePanel.props).toMatchObject({
+      authenticated: false,
+      code: "ABCD1234XYZ_",
+    });
     expect(screen.getByRole("heading", { name: "Join this shared money quest." })).toBeInTheDocument();
     expect(screen.getByText("ABCD1234XYZ_")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Log in to accept" })).toHaveAttribute(
@@ -88,11 +110,34 @@ describe("public pages", () => {
     }
   });
 
-  it("renders a clear invalid invitation state for malformed codes", async () => {
-    const page = await InvitePage({ params: Promise.resolve({ code: "bad code!" }) });
+  it("renders an acceptance action for an authenticated invitee", async () => {
+    vi.mocked(hasSession).mockResolvedValue(true);
+
+    const page = await InvitePage({ params: Promise.resolve({ code: "ABCD1234XYZ_" }) });
+    const invitePanel = getInviteAcceptPanel(page);
 
     render(page);
 
+    expect(invitePanel.props).toMatchObject({
+      authenticated: true,
+      code: "ABCD1234XYZ_",
+    });
+    expect(screen.getByRole("button", { name: "Accept invite" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Log in to accept" })).not.toBeInTheDocument();
+  });
+
+  it("renders a clear invalid invitation state for malformed codes", async () => {
+    vi.mocked(hasSession).mockResolvedValue(true);
+
+    const page = await InvitePage({ params: Promise.resolve({ code: "bad code!" }) });
+    const invitePanel = getInviteAcceptPanel(page);
+
+    render(page);
+
+    expect(invitePanel.props).toMatchObject({
+      authenticated: true,
+      code: "",
+    });
     expect(screen.getByRole("heading", { name: "Join this shared money quest." })).toBeInTheDocument();
     expect(screen.getByText("這個邀請不存在或已失效。")).toBeInTheDocument();
     expect(screen.queryByText("bad code!")).not.toBeInTheDocument();
