@@ -531,7 +531,7 @@ Settlement:
 
 * If a transaction's `occurred_on` is inside any completed settlement period, it is locked
 * Locked records cannot be updated, deleted, or restored
-* Locked operations must return `SETTLED_PERIOD_LOCKED`
+* Locked operations must return `LOCKED_PERIOD`
 
 ### Permissions
 
@@ -564,7 +564,7 @@ Settlement:
 * `MEMBER_NOT_IN_GROUP`
 * `SETTLEMENT_ALREADY_COMPLETED`
 * `RESOURCE_ALREADY_DELETED`
-* `SETTLED_PERIOD_LOCKED`
+* `LOCKED_PERIOD`
 * `LAST_OWNER_RESTRICTION`
 * `CONFLICT`
 
@@ -676,7 +676,7 @@ flowchart TD
   A[Settlement completed] --> B[Store period_start and period_end]
   B --> C[Future update/delete/restore checks occurred_on]
   C --> D{Inside completed settlement period?}
-  D -- Yes --> E[Reject with SETTLED_PERIOD_LOCKED]
+  D -- Yes --> E[Reject with LOCKED_PERIOD]
   D -- No --> F[Allow mutation]
 ```
 
