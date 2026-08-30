@@ -10,6 +10,7 @@ import {
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { lockGroupMutation } from '../prisma/group-mutation-lock';
+import { assertFundPeriodUnlocked } from '../accounting/settlement-period-lock';
 import { CreateExpenseDto, ExpenseSplitInput } from './dto/create-expense.dto';
 import { ActivityQueryDto } from '../../common/dto/activity-query.dto';
 
@@ -30,6 +31,7 @@ export class ExpensesService {
     this.validatePayerTotal(dto);
     const allocatedSplits = this.allocateSplits(dto);
     const fund = await this.requireActiveFund(fundId);
+    const occurredOn = this.toUtcDate(dto.occurred_on);
 
     return this.prisma.$transaction(async (tx) => {
       await lockGroupMutation(tx, fund.groupId);
@@ -37,6 +39,7 @@ export class ExpensesService {
         ...dto.payers.map((payer) => payer.payer_user_id),
         ...dto.splits.map((split) => split.user_id),
       ]);
+      await assertFundPeriodUnlocked(tx, fundId, occurredOn);
       const expense = await tx.expense.create({
         data: {
           fundId,
@@ -45,7 +48,7 @@ export class ExpensesService {
           amountMinor: BigInt(dto.amount_minor),
           splitMode: this.mapSplitMode(dto.split_mode),
           expenseType: this.mapExpenseType(dto.expense_type),
-          occurredOn: this.toUtcDate(dto.occurred_on),
+          occurredOn,
           createdById: actorUserId,
           updatedById: actorUserId,
         },

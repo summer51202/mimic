@@ -4,7 +4,7 @@ import {
   RecordStatus,
   SplitType,
 } from '@prisma/client';
-import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { FundStatus, MemberStatus } from '@prisma/client';
 import { ExpensesService } from './expenses.service';
 
@@ -66,6 +66,7 @@ describe('ExpensesService', () => {
         order.push('members');
         return ['actor', 'payer', 'split'].map((userId) => ({ userId }));
       }) },
+      settlement: { findFirst: jest.fn().mockImplementation(() => { order.push('period'); return null; }) },
       expense: { create: jest.fn().mockImplementation(() => { order.push('write'); return { id: 'expense-1' }; }) },
       expensePayer: { createMany: jest.fn() }, expenseSplit: { createMany: jest.fn() },
     };
@@ -81,7 +82,40 @@ describe('ExpensesService', () => {
     });
     expect(prisma.fund.findFirst).toHaveBeenCalledWith({ where: { id: 'fund-1', status: FundStatus.ACTIVE }, select: { id: true, groupId: true } });
     expect(tx.groupMember.findMany).toHaveBeenCalledWith({ where: { groupId: 'group-1', userId: { in: ['actor', 'payer', 'split'] }, status: MemberStatus.ACTIVE }, select: { userId: true } });
-    expect(order).toEqual(['lock', 'members', 'write']);
+    expect(order).toEqual(['lock', 'members', 'period', 'write']);
+  });
+
+  it('rejects a correction expense in a completed settlement period before all writes', async () => {
+    const order: string[] = [];
+    const tx = {
+      $executeRaw: jest.fn().mockImplementation(() => { order.push('lock'); }),
+      groupMember: { findMany: jest.fn().mockImplementation(() => {
+        order.push('members');
+        return [{ userId: 'actor' }];
+      }) },
+      settlement: { findFirst: jest.fn().mockImplementation(() => {
+        order.push('period');
+        return { id: 'settlement-1' };
+      }) },
+      expense: { create: jest.fn() },
+      expensePayer: { createMany: jest.fn() },
+      expenseSplit: { createMany: jest.fn() },
+    };
+    const prisma = {
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) },
+      $transaction: jest.fn((callback) => callback(tx)),
+    };
+    const service = new ExpensesService(prisma as never);
+
+    await expect(service.createExpense('fund-1', 'actor', {
+      title: 'Correction', amount_minor: 1, split_mode: 'equal', expense_type: 'correction', occurred_on: '2026-08-30',
+      payers: [{ payer_user_id: 'actor', amount_minor: 1 }],
+      splits: [{ user_id: 'actor', split_type: 'equal', sort_order: 1 }],
+    })).rejects.toEqual(new ConflictException('LOCKED_PERIOD'));
+    expect(order).toEqual(['lock', 'members', 'period']);
+    expect(tx.expense.create).not.toHaveBeenCalled();
+    expect(tx.expensePayer.createMany).not.toHaveBeenCalled();
+    expect(tx.expenseSplit.createMany).not.toHaveBeenCalled();
   });
 
   it('rejects any inactive non-actor participant before all expense writes', async () => {
@@ -112,6 +146,7 @@ describe('ExpensesService', () => {
     const tx = {
       $executeRaw: jest.fn(),
       groupMember: { findMany: jest.fn().mockResolvedValue([{ userId: 'user-1' }, { userId: 'user-2' }]) },
+      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
       expense: {
         create: jest.fn().mockResolvedValue({
           id: 'expense-1',
@@ -219,6 +254,7 @@ describe('ExpensesService', () => {
     const tx = {
       $executeRaw: jest.fn(),
       groupMember: { findMany: jest.fn().mockResolvedValue([{ userId: 'user-1' }, { userId: 'user-2' }, { userId: 'user-3' }]) },
+      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
       expense: {
         create: jest.fn().mockResolvedValue({
           id: 'expense-2',
