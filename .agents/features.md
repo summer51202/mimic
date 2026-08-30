@@ -1,5 +1,5 @@
 # Mimic Feature Map
-_Last updated: 2026-08-30. Refresh with `/feature-map`._
+_Last updated: 2026-08-31. Refresh with `/feature-map`._
 
 > The PWA in `web/` is the only active client. Current implementation work targets `web/` and `backend/`; previous clients remain available only through Git history.
 
@@ -137,8 +137,9 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 - [x] Railway deployment runbook documents per-environment plan/apply, readiness, migration, domain, rollback, and Production approval gates
 - [x] Error-only Sentry integration and encrypted/signed PostgreSQL backup/restore tooling are repository-ready for the original PG16 contract; Railway deployment remains gated on the PG18 client upgrade below
 - [x] Apply and verify the reviewed IaC plan in Staging, including private API routing, JWT secrets, exact Web-origin CORS, and Web-only public HTTPS
-- [ ] After bootstrap acceptance, switch Staging IaC/contract from the temporary feature branch back to `main` before merge and apply the reviewed post-merge plan
-- [ ] Run real Railway Linux image builds, migrations, health checks, real-API acceptance, and privacy inspection
+- [x] Retire the temporary bootstrap source and verify Staging Web/API deploy persistently from the reviewed `main` SHA
+- [x] Run real Railway Linux image builds, migrations, health checks, and real-API acceptance
+- [ ] Complete API/Web Sentry synthetic-error delivery and privacy-allowlist inspection
 - [ ] Enable and verify daily PostgreSQL volume backups in Staging and Production, plus Production PITR
 - [ ] Upgrade and pin the backup/restore image from PostgreSQL client 16 to 18 before creating the Railway backup service
 - [ ] Provision the dedicated `mimic_backup` role and immutable external storage, then add an unscheduled private backup service for a manual backup and scratch restore drill

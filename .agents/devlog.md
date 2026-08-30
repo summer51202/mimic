@@ -718,3 +718,15 @@
 - Added regression coverage for timestamps, impossible dates, inverted periods, equal dates, and open-ended periods.
 **Decisions:** Preserve same-user, authorization, and non-pending error precedence; allow equal and open-ended periods; leave legacy financial data untouched and make constraint validation an explicit operational step.
 **Known gaps / follow-ups:** Before validating `settlements_period_order_check`, audit each environment for bounded rows where `period_start > period_end`, resolve any findings deliberately, and then run `VALIDATE CONSTRAINT`; Staging deployment and audit remain pending explicit authorization.
+
+## 2026-08-31 — Retire Railway Staging bootstrap source
+
+**Task:** Move persistent Railway Staging deployments from the temporary validation branch to `main`.
+**Scope:** Railway IaC and contract, deployment guidance, Staging source configuration, feature map
+**What changed:**
+- Made `main` the explicit Web/API source for both declared Railway environments and added the matching contract expectation.
+- Applied a reviewed Staging-only plan with zero additions or deletions; no database, variable, domain, backup, or Production resource changed.
+- Verified both Staging services deployed successfully from `main` at `09587adff0cb1be72cba3f8a72fc4a27a1eb1297`, and public live/readiness checks returned `ok: true`.
+- Confirmed the post-apply plan contains only Railway's documented restart-policy false-positive drift.
+**Decisions:** Keep Production empty and retain explicit restart-policy values in IaC; do not repeatedly apply the known non-idempotent planner output.
+**Known gaps / follow-ups:** Complete synthetic Sentry delivery/privacy inspection, backup/PITR gates, and the PostgreSQL 18 recovery-tool upgrade before Production work.
