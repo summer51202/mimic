@@ -243,6 +243,79 @@ test("container CI rejects a conditional containers job", () => {
   );
 });
 
+test("container CI rejects a tolerated containers job failure", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.jobs.containers["continue-on-error"] = true;
+    },
+    /containers job must use only name, runs-on, timeout-minutes, and steps/,
+  );
+});
+
+test("container CI rejects a custom inherited containers shell", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.jobs.containers.defaults = {
+        run: { shell: "bash -c 'exit 0' -- {0}" },
+      };
+    },
+    /containers job must use only name, runs-on, timeout-minutes, and steps/,
+  );
+});
+
+test("container CI rejects a custom inherited top-level shell", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.defaults = { run: { shell: "bash -c 'exit 0' -- {0}" } };
+    },
+    /top-level defaults are not allowed/,
+  );
+});
+
+test("container CI rejects a top-level shell environment override", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.env = { BASH_ENV: "/tmp/ignore-backup-runtime.sh" };
+    },
+    /top-level env is not allowed/,
+  );
+});
+
+test("container CI rejects a containers job shell environment override", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.jobs.containers.env = {
+        BASH_ENV: "/tmp/ignore-backup-runtime.sh",
+      };
+    },
+    /containers job must use only name, runs-on, timeout-minutes, and steps/,
+  );
+});
+
+test("container CI rejects an arbitrary unexpected containers job key", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.jobs.containers.strategy = {};
+    },
+    /containers job must use only name, runs-on, timeout-minutes, and steps/,
+  );
+});
+
+test("container CI rejects run commands that modify later shell environments", () => {
+  for (const environmentFile of ["GITHUB_ENV", "GITHUB_PATH", "BASH_ENV"]) {
+    assertBackupRuntimeRejects(
+      (workflow) => {
+        const buildStep = workflow.jobs.containers.steps.find(
+          (step) => step.name === "Build backup image",
+        );
+        assert.ok(buildStep);
+        buildStep.run += "\nprintf '%s\n' ignored >> \"$" + environmentFile + "\"";
+      },
+      /container CI run commands must not write to GITHUB_ENV, GITHUB_PATH, or BASH_ENV/,
+    );
+  }
+});
+
 test("container CI rejects duplicate dedicated backup runtime steps", () => {
   assertBackupRuntimeRejects(
     (workflow, step) => {

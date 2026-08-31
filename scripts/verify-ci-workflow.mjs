@@ -9,6 +9,8 @@ const externalActionPattern =
   /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+(?:\/[A-Za-z0-9_.\/-]+)?@([0-9a-f]{40})$/i;
 const localActionRoot = "./.github/actions/";
 const localActionSegmentPattern = /^[A-Za-z0-9_.-]+$/;
+const allowedContainersJobKeys = ["name", "runs-on", "steps", "timeout-minutes"];
+const containerEnvironmentFilePattern = /\b(?:GITHUB_ENV|GITHUB_PATH|BASH_ENV)\b/;
 const backupRuntimeStepName = "Verify PostgreSQL 18 backup runtime";
 const backupRuntimeExpectedRun = [
   "docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '",
@@ -147,6 +149,8 @@ export function validateCiWorkflow(workflow) {
       workflow.permissions.contents === "read",
     "top-level permissions must grant only contents: read",
   );
+  invariant(!Object.hasOwn(workflow, "defaults"), "top-level defaults are not allowed");
+  invariant(!Object.hasOwn(workflow, "env"), "top-level env is not allowed");
   invariant(isMapping(workflow.jobs), "jobs must be a mapping");
 
   const requiredJobs = ["naming", "backend", "web", "containers"];
@@ -217,8 +221,20 @@ export function validateCiWorkflow(workflow) {
     !Object.hasOwn(containersJob, "if"),
     "containers job must not define an if condition",
   );
+  const containersJobKeys = Object.keys(containersJob).sort();
+  invariant(
+    containersJobKeys.length === allowedContainersJobKeys.length &&
+      containersJobKeys.every(
+        (key, index) => key === allowedContainersJobKeys[index],
+      ),
+    "containers job must use only name, runs-on, timeout-minutes, and steps",
+  );
 
   const containerCommands = runCommands(containersJob);
+  invariant(
+    !containerCommands.some((command) => containerEnvironmentFilePattern.test(command)),
+    "container CI run commands must not write to GITHUB_ENV, GITHUB_PATH, or BASH_ENV",
+  );
   for (const expected of [
     "node --test scripts/verify-production-images.test.mjs",
     "node --test ops/backup/backup-contract.test.mjs",
