@@ -129,6 +129,17 @@ jobs:
           docker run --rm --entrypoint /bin/sh mimic-backup:ci -n /opt/mimic/backup.sh
           docker run --rm --entrypoint /bin/sh mimic-backup:ci -n /opt/mimic/restore-drill.sh
           docker run --rm --entrypoint /bin/sh mimic-backup:ci -n /opt/mimic/restore-entrypoint.sh
+      - name: Verify PostgreSQL 18 backup runtime
+        run: |
+          docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '
+            set -eu
+            test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"
+            pg_dump --version | grep -Eq "^pg_dump \(PostgreSQL\) 18\."
+            pg_restore --version | grep -Eq "^pg_restore \(PostgreSQL\) 18\."
+            age --version
+            command -v minisign
+            aws --version
+          '
       - name: Smoke-check production image runtimes
         run: |
           test "$(docker image inspect --format '{{.Config.User}}' mimic-api:ci)" = "node"
@@ -139,15 +150,6 @@ jobs:
           docker run --rm --entrypoint node mimic-web:ci --version
           test "$(docker image inspect --format '{{.Config.User}}' mimic-backup:ci)" = "mimic"
           test "$(docker image inspect --format '{{json .Config.Cmd}}' mimic-backup:ci)" = '["/opt/mimic/backup.sh"]'
-          docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '
-            set -eu
-            test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"
-            pg_dump --version | grep -Eq "^pg_dump \(PostgreSQL\) 18\."
-            pg_restore --version | grep -Eq "^pg_restore \(PostgreSQL\) 18\."
-            age --version
-            command -v minisign
-            aws --version
-          '
       - name: Bootstrap API and Web health endpoints
         run: |
           set -eu

@@ -13,6 +13,41 @@ const workflowSource = await readFile(
   "utf8",
 );
 
+const backupRuntimeStepName = "Verify PostgreSQL 18 backup runtime";
+const expectedBackupRuntimeRun = [
+  "docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '",
+  "  set -eu",
+  '  test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"',
+  '  pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 18\\."',
+  '  pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."',
+  "  age --version",
+  "  command -v minisign",
+  "  aws --version",
+  "'",
+].join("\n");
+
+function backupRuntimeStep(workflow) {
+  const steps = workflow.jobs.containers.steps;
+  const existing = steps.find((step) => step.name === backupRuntimeStepName);
+  if (existing) return existing;
+
+  const fallback = { name: backupRuntimeStepName, run: expectedBackupRuntimeRun };
+  steps.push(fallback);
+  return fallback;
+}
+
+function backupRuntimeWorkflow(mutate) {
+  const workflow = parseWorkflowYaml(workflowSource);
+  const step = backupRuntimeStep(workflow);
+  mutate(workflow, step);
+  return workflow;
+}
+
+function assertBackupRuntimeRejects(mutate, message) {
+  const workflow = backupRuntimeWorkflow(mutate);
+  assert.throws(() => validateCiWorkflow(workflow), message);
+}
+
 test("the parsed CI workflow satisfies the complete release contract", () => {
   const workflow = parseWorkflowYaml(workflowSource);
   assert.doesNotThrow(() => validateCiWorkflow(workflow));
@@ -45,218 +80,185 @@ test("recursive action validation accepts only repository-local action paths", (
   );
 });
 
-test("container CI rejects PostgreSQL 16 backup runtime checks", () => {
-  const staleWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = staleWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
+test("the parsed CI workflow defines an isolated PostgreSQL 18 backup runtime step", () => {
+  const workflow = parseWorkflowYaml(workflowSource);
+  const step = workflow.jobs.containers.steps.find(
+    (candidate) => candidate.name === backupRuntimeStepName,
   );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /MIMIC_POSTGRES_CLIENT_MAJOR" = "18"/);
-  smokeStep.run = smokeStep.run.replace(
-    'test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"',
-    'test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "16"',
+  assert.ok(step);
+  assert.deepEqual(Object.keys(step).sort(), ["name", "run"]);
+  assert.equal(
+    step.run.endsWith("\n") ? step.run.slice(0, -1) : step.run,
+    expectedBackupRuntimeRun,
   );
+});
 
-  assert.throws(
-    () => validateCiWorkflow(staleWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+test("container CI rejects PostgreSQL 16 backup runtime checks", () => {
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = step.run.replace(
+        'test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"',
+        'test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "16"',
+      );
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
 });
 
 test("container CI rejects a missing PostgreSQL restore client runtime check", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
-  );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /pg_restore --version/);
-  smokeStep.run = smokeStep.run.replace(
-    'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."\n',
-    "",
-  );
-
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = step.run.replace(
+        '  pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."\n',
+        "",
+      );
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
 });
 
-test("container CI requires fail-fast mode in the backup runtime shell", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
-  );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /\n\s*set -eu\n/);
-  smokeStep.run = smokeStep.run.replace("set -eu", "set -u");
-
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+test("container CI rejects missing fail-fast backup runtime checks", () => {
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = step.run.replace("  set -eu", "  set -u");
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
 });
 
-test("container CI requires fail-fast mode before backup runtime checks", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
-  );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /\n\s*set -eu\n\s*test "\$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"/);
-  smokeStep.run = smokeStep.run.replace(
-    /(set -eu\n\s*)(test "\$MIMIC_POSTGRES_CLIENT_MAJOR" = "18")/,
-    "$2\n            set -eu",
-  );
-
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
-  );
-});
-
-test("container CI rejects a commented backup runtime shell block", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
-  );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(
-    smokeStep.run,
-    /\n\s*docker run --rm --entrypoint \/bin\/sh mimic-backup:ci -c '/,
-  );
-  smokeStep.run = smokeStep.run.replace(
-    "docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '",
-    "# docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '",
-  );
-
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must contain the exact backup image shell block/,
-  );
-});
-
-test("container CI rejects a commented backup runtime requirement", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
-  );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /\n\s*age --version\n/);
-  smokeStep.run = smokeStep.run.replace("age --version", "# age --version");
-
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+test("container CI rejects comment continuations before backup runtime checks", () => {
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = step.run.replace(
+        "  set -eu",
+        ["  # \\", "  set -eu"].join("\n"),
+      );
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
 });
 
 test("container CI rejects a PostgreSQL 16 pg_dump runtime check", () => {
-  const staleWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = staleWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
-  );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /pg_dump --version/);
-  smokeStep.run = smokeStep.run.replace(
-    'pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 18\\."',
-    'pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 16\\."',
-  );
-
-  assert.throws(
-    () => validateCiWorkflow(staleWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = step.run.replace(
+        'pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 18\\."',
+        'pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 16\\."',
+      );
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
 });
 
 test("container CI rejects a PostgreSQL 17 pg_restore runtime check", () => {
-  const staleWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = staleWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
-  );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /pg_restore --version/);
-  smokeStep.run = smokeStep.run.replace(
-    'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."',
-    'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 17\\."',
-  );
-
-  assert.throws(
-    () => validateCiWorkflow(staleWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = step.run.replace(
+        'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."',
+        'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 17\\."',
+      );
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
 });
 
-test("container CI rejects an early-success backup runtime command", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
-  );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /\n\s*set -eu\n/);
-  smokeStep.run = smokeStep.run.replace("set -eu", "set -eu\n            exit 0");
-
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+test("container CI rejects an early-success command before the backup runtime gate", () => {
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = ["exit 0", step.run].join("\n");
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
 });
 
 test("container CI rejects disabling fail-fast backup runtime checks", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = step.run.replace("  set -eu", "  set -eu\n  set +e");
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /\n\s*set -eu\n/);
-  smokeStep.run = smokeStep.run.replace("set -eu", "set -eu\n            set +e");
+});
 
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+test("container CI rejects an outer false conditional around the backup runtime gate", () => {
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = ["if false; then", step.run, "fi"].join("\n");
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
 });
 
 test("container CI rejects a backup runtime function that is never called", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = ["verify_backup_runtime() {", step.run, "}"].join("\n");
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /\n\s*set -eu\n/);
-  assert.match(smokeStep.run, /\n\s*'\n$/);
-  smokeStep.run = smokeStep.run
-    .replace("set -eu", "set -eu\n            verify_backup_runtime() {")
-    .replace(/\n(\s*)'\n$/, "\n$1}\n$1'\n");
+});
 
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must exactly match the expected ordered commands/,
+test("container CI rejects a conditional dedicated backup runtime step", () => {
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.if = "false";
+    },
+    /Verify PostgreSQL 18 backup runtime must have only name and run/,
+  );
+});
+
+test("container CI rejects a tolerated dedicated backup runtime failure", () => {
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step["continue-on-error"] = true;
+    },
+    /Verify PostgreSQL 18 backup runtime must have only name and run/,
+  );
+});
+
+test("container CI rejects an unexpected dedicated backup runtime shell", () => {
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.shell = "bash";
+    },
+    /Verify PostgreSQL 18 backup runtime must have only name and run/,
   );
 });
 
 test("container CI rejects ignoring backup runtime failures", () => {
-  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
-  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
-    (step) => step.name === "Smoke-check production image runtimes",
+  assertBackupRuntimeRejects(
+    (_workflow, step) => {
+      step.run = step.run + " || true";
+    },
+    /Verify PostgreSQL 18 backup runtime must run the exact backup runtime script/,
   );
-  assert.ok(smokeStep);
-  assert.equal(typeof smokeStep.run, "string");
-  assert.match(smokeStep.run, /\n\s*'\n$/);
-  smokeStep.run = smokeStep.run.replace(/\n\s*'\n$/, "\n          ' || true\n");
+});
 
-  assert.throws(
-    () => validateCiWorkflow(incompleteWorkflow),
-    /containers backup runtime contract must contain the exact backup image shell block/,
+test("container CI rejects a conditional containers job", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.jobs.containers.if = "false";
+    },
+    /containers job must not define an if condition/,
+  );
+});
+
+test("container CI rejects duplicate dedicated backup runtime steps", () => {
+  assertBackupRuntimeRejects(
+    (workflow, step) => {
+      workflow.jobs.containers.steps.push({ ...step });
+    },
+    /containers must define exactly one Verify PostgreSQL 18 backup runtime step/,
+  );
+});
+
+test("container CI rejects a missing dedicated backup runtime step", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.jobs.containers.steps = workflow.jobs.containers.steps.filter(
+        (step) => step.name !== backupRuntimeStepName,
+      );
+    },
+    /containers must define exactly one Verify PostgreSQL 18 backup runtime step/,
   );
 });

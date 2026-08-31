@@ -9,15 +9,18 @@ const externalActionPattern =
   /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+(?:\/[A-Za-z0-9_.\/-]+)?@([0-9a-f]{40})$/i;
 const localActionRoot = "./.github/actions/";
 const localActionSegmentPattern = /^[A-Za-z0-9_.-]+$/;
-const backupRuntimeExpectedLines = [
-  "set -eu",
-  'test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"',
-  'pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 18\\."',
-  'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."',
-  "age --version",
-  "command -v minisign",
-  "aws --version",
-];
+const backupRuntimeStepName = "Verify PostgreSQL 18 backup runtime";
+const backupRuntimeExpectedRun = [
+  "docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '",
+  "  set -eu",
+  '  test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"',
+  '  pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 18\\."',
+  '  pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."',
+  "  age --version",
+  "  command -v minisign",
+  "  aws --version",
+  "'",
+].join("\n");
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
@@ -107,38 +110,33 @@ function requireCommand(jobName, commands, expected) {
   );
 }
 
-function backupRuntimeLines(job) {
+function validateBackupRuntimeStep(job) {
   invariant(Array.isArray(job.steps), "containers job steps must be a sequence");
-  const smokeStep = job.steps.find(
-    (step) => step?.name === "Smoke-check production image runtimes",
+  const backupSteps = job.steps.filter(
+    (step) => step?.name === backupRuntimeStepName,
   );
   invariant(
-    isMapping(smokeStep),
-    "containers must define the Smoke-check production image runtimes step",
+    backupSteps.length === 1,
+    "containers must define exactly one " + backupRuntimeStepName + " step",
+  );
+  const backupStep = backupSteps[0];
+  invariant(
+    Object.keys(backupStep).length === 2 &&
+      Object.hasOwn(backupStep, "name") &&
+      Object.hasOwn(backupStep, "run"),
+    backupRuntimeStepName + " must have only name and run",
   );
   invariant(
-    typeof smokeStep.run === "string",
-    "containers smoke-check production image runtimes must run a string command",
+    typeof backupStep.run === "string",
+    backupRuntimeStepName + " run must be a string",
   );
-
-  const shellBlock = smokeStep.run.match(
-    /^[ \t]*docker run --rm --entrypoint \/bin\/sh mimic-backup:ci -c '\r?\n([\s\S]*?)\r?\n[ \t]*'\r?$/m,
-  );
+  const normalizedRun = backupStep.run.replaceAll("\r\n", "\n");
+  const runWithoutOptionalTrailingNewline = normalizedRun.endsWith("\n")
+    ? normalizedRun.slice(0, -1)
+    : normalizedRun;
   invariant(
-    shellBlock,
-    "containers backup runtime contract must contain the exact backup image shell block",
-  );
-  return shellBlock[1]
-    .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter((line) => line !== "" && !line.startsWith("#"));
-}
-
-function requireExactBackupRuntimeLines(lines) {
-  invariant(
-    lines.length === backupRuntimeExpectedLines.length &&
-      lines.every((line, index) => line === backupRuntimeExpectedLines[index]),
-    "containers backup runtime contract must exactly match the expected ordered commands",
+    runWithoutOptionalTrailingNewline === backupRuntimeExpectedRun,
+    backupRuntimeStepName + " must run the exact backup runtime script",
   );
 }
 
@@ -214,7 +212,13 @@ export function validateCiWorkflow(workflow) {
     "web CI must use the local API base URL",
   );
 
-  const containerCommands = runCommands(workflow.jobs.containers);
+  const containersJob = workflow.jobs.containers;
+  invariant(
+    !Object.hasOwn(containersJob, "if"),
+    "containers job must not define an if condition",
+  );
+
+  const containerCommands = runCommands(containersJob);
   for (const expected of [
     "node --test scripts/verify-production-images.test.mjs",
     "node --test ops/backup/backup-contract.test.mjs",
@@ -228,8 +232,7 @@ export function validateCiWorkflow(workflow) {
     requireCommand("containers", containerCommands, expected);
   }
 
-  const backupCommands = backupRuntimeLines(workflow.jobs.containers);
-  requireExactBackupRuntimeLines(backupCommands);
+  validateBackupRuntimeStep(containersJob);
 
   invariant(
     !JSON.stringify(workflow).includes("SENTRY_AUTH_TOKEN"),
