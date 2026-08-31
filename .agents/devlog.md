@@ -741,3 +741,13 @@
 - Replaced the obsolete PG16 incompatibility gate with PG18 build and evidence instructions.
 **Decisions:** Preserve the existing Alpine image, non-root runtime, artifact format, encryption/signing sequence, and fail-closed version checks; keep all Railway backup services and schedules absent.
 **Known gaps / follow-ups:** Provision immutable external storage and the dedicated `mimic_backup` role, then run a real unscheduled backup and scratch restore drill before adding any cron or opening Production. The real backup image build and Linux-only contracts remain a required GitHub CI gate because Docker is unavailable locally.
+
+## 2026-08-31 — Preserve backup script executable modes
+
+**Task:** Repair the Linux CI failure that prevented PostgreSQL 18 backup image verification.
+**Scope:** `ops/backup/backup.sh`, `ops/backup/restore-drill.sh`, `ops/backup/restore-entrypoint.sh`
+**What changed:**
+- Recorded Git mode `100755` for all three production backup and restore entry points.
+- Preserved script contents and retained the existing direct-invocation Linux contract tests.
+**Decisions:** Fixed the repository executable contract instead of wrapping invocations with `sh` or adding a CI-only `chmod`.
+**Known gaps / follow-ups:** GitHub Actions must pass the `Production containers` job after this commit is pushed before the PostgreSQL 18 runtime gate is considered closed.
