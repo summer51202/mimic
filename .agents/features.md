@@ -135,13 +135,13 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 - [x] Railway IaC contract defines isolated `staging`/`production` Web, API, and PostgreSQL foundations without secret literals
 - [x] Railway deployment runbook documents per-environment plan/apply, readiness, migration, domain, rollback, and Production approval gates
-- [x] Error-only Sentry integration and encrypted/signed PostgreSQL backup/restore tooling are repository-ready for the original PG16 contract; Railway deployment remains gated on the PG18 client upgrade below
+- [x] Error-only Sentry integration and encrypted/signed PostgreSQL backup/restore tooling are repository-ready for the PG18 contract
 - [x] Apply and verify the reviewed IaC plan in Staging, including private API routing, JWT secrets, exact Web-origin CORS, and Web-only public HTTPS
 - [x] Retire the temporary bootstrap source and verify Staging Web/API deploy persistently from the reviewed `main` SHA
 - [x] Run real Railway Linux image builds, migrations, health checks, and real-API acceptance
 - [ ] Complete API/Web Sentry synthetic-error delivery and privacy-allowlist inspection
 - [ ] Enable and verify daily PostgreSQL volume backups in Staging and Production, plus Production PITR
-- [ ] Upgrade and pin the backup/restore image from PostgreSQL client 16 to 18 before creating the Railway backup service
+- [x] Upgrade and pin the backup/restore image to PostgreSQL client 18 before creating the Railway backup service
 - [ ] Provision the dedicated `mimic_backup` role and immutable external storage, then add an unscheduled private backup service for a manual backup and scratch restore drill
 - [ ] Add the Production backup cron only after the unscheduled service and every recovery gate pass
 - [ ] Keep Production closed until all five Closed Beta plans and release gates pass

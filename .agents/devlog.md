@@ -730,3 +730,14 @@
 - Confirmed the post-apply plan contains only Railway's documented restart-policy false-positive drift.
 **Decisions:** Keep Production empty and retain explicit restart-policy values in IaC; do not repeatedly apply the known non-idempotent planner output.
 **Known gaps / follow-ups:** Complete synthetic Sentry delivery/privacy inspection, backup/PITR gates, and the PostgreSQL 18 recovery-tool upgrade before Production work.
+
+## 2026-08-31 — Upgrade backup clients to PostgreSQL 18
+
+**Task:** Align the encrypted backup and restore image with Railway PostgreSQL 18.
+**Scope:** backup Docker image, image and shell contracts, container CI, recovery runbook, feature map
+**What changed:**
+- Pinned the backup image to Alpine 3.23.5 and made PostgreSQL client 18 the production default.
+- Updated dump/restore fixtures and CI to verify both client binaries report major 18.
+- Replaced the obsolete PG16 incompatibility gate with PG18 build and evidence instructions.
+**Decisions:** Preserve the existing Alpine image, non-root runtime, artifact format, encryption/signing sequence, and fail-closed version checks; keep all Railway backup services and schedules absent.
+**Known gaps / follow-ups:** Provision immutable external storage and the dedicated `mimic_backup` role, then run a real unscheduled backup and scratch restore drill before adding any cron or opening Production. The real backup image build and Linux-only contracts remain a required GitHub CI gate because Docker is unavailable locally.
