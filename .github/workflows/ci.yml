@@ -140,6 +140,7 @@ jobs:
           test "$(docker image inspect --format '{{.Config.User}}' mimic-backup:ci)" = "mimic"
           test "$(docker image inspect --format '{{json .Config.Cmd}}' mimic-backup:ci)" = '["/opt/mimic/backup.sh"]'
           docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '
+            set -eu
             test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"
             pg_dump --version | grep -Eq "^pg_dump \(PostgreSQL\) 18\."
             pg_restore --version | grep -Eq "^pg_restore \(PostgreSQL\) 18\."

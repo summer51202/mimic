@@ -98,6 +98,40 @@ function requireCommand(jobName, commands, expected) {
   );
 }
 
+function backupRuntimeLines(job) {
+  invariant(Array.isArray(job.steps), "containers job steps must be a sequence");
+  const smokeStep = job.steps.find(
+    (step) => step?.name === "Smoke-check production image runtimes",
+  );
+  invariant(
+    isMapping(smokeStep),
+    "containers must define the Smoke-check production image runtimes step",
+  );
+  invariant(
+    typeof smokeStep.run === "string",
+    "containers smoke-check production image runtimes must run a string command",
+  );
+
+  const shellBlock = smokeStep.run.match(
+    /^\s*docker run --rm --entrypoint \/bin\/sh mimic-backup:ci -c '\r?\n([\s\S]*?)\r?\n\s*'/m,
+  );
+  invariant(
+    shellBlock,
+    "containers backup runtime contract must contain the backup image shell block",
+  );
+  return shellBlock[1]
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line !== "" && !line.startsWith("#"));
+}
+
+function requireBackupRuntimeLine(lines, expected) {
+  invariant(
+    lines.includes(expected),
+    `containers backup runtime contract must include ${expected}`,
+  );
+}
+
 export function validateCiWorkflow(workflow) {
   invariant(isMapping(workflow.permissions), "top-level permissions must be a mapping");
   invariant(
@@ -177,18 +211,28 @@ export function validateCiWorkflow(workflow) {
     "docker build -f backend/Dockerfile backend -t mimic-api:ci",
     "-f web/Dockerfile web -t mimic-web:ci",
     "docker build -f ops/backup/Dockerfile ops/backup -t mimic-backup:ci",
-    'MIMIC_POSTGRES_CLIENT_MAJOR" = "18',
-    "pg_dump --version",
-    "pg_restore --version",
-    "PostgreSQL\\) 18\\.",
-    "age --version",
-    "command -v minisign",
-    "aws --version",
     "docker run --detach",
     "/api/v1/health/live",
     "/api/health/live",
   ]) {
     requireCommand("containers", containerCommands, expected);
+  }
+
+  const backupCommands = backupRuntimeLines(workflow.jobs.containers);
+  invariant(
+    backupCommands[0] === "set -eu",
+    "containers backup runtime contract must begin with set -eu",
+  );
+  for (const expected of [
+    "set -eu",
+    'test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"',
+    'pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 18\\."',
+    'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."',
+    "age --version",
+    "command -v minisign",
+    "aws --version",
+  ]) {
+    requireBackupRuntimeLine(backupCommands, expected);
   }
 
   invariant(
