@@ -9,6 +9,15 @@ const externalActionPattern =
   /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+(?:\/[A-Za-z0-9_.\/-]+)?@([0-9a-f]{40})$/i;
 const localActionRoot = "./.github/actions/";
 const localActionSegmentPattern = /^[A-Za-z0-9_.-]+$/;
+const backupRuntimeExpectedLines = [
+  "set -eu",
+  'test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"',
+  'pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 18\\."',
+  'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."',
+  "age --version",
+  "command -v minisign",
+  "aws --version",
+];
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
@@ -113,11 +122,11 @@ function backupRuntimeLines(job) {
   );
 
   const shellBlock = smokeStep.run.match(
-    /^\s*docker run --rm --entrypoint \/bin\/sh mimic-backup:ci -c '\r?\n([\s\S]*?)\r?\n\s*'/m,
+    /^[ \t]*docker run --rm --entrypoint \/bin\/sh mimic-backup:ci -c '\r?\n([\s\S]*?)\r?\n[ \t]*'\r?$/m,
   );
   invariant(
     shellBlock,
-    "containers backup runtime contract must contain the backup image shell block",
+    "containers backup runtime contract must contain the exact backup image shell block",
   );
   return shellBlock[1]
     .split(/\r?\n/)
@@ -125,10 +134,11 @@ function backupRuntimeLines(job) {
     .filter((line) => line !== "" && !line.startsWith("#"));
 }
 
-function requireBackupRuntimeLine(lines, expected) {
+function requireExactBackupRuntimeLines(lines) {
   invariant(
-    lines.includes(expected),
-    `containers backup runtime contract must include ${expected}`,
+    lines.length === backupRuntimeExpectedLines.length &&
+      lines.every((line, index) => line === backupRuntimeExpectedLines[index]),
+    "containers backup runtime contract must exactly match the expected ordered commands",
   );
 }
 
@@ -219,21 +229,7 @@ export function validateCiWorkflow(workflow) {
   }
 
   const backupCommands = backupRuntimeLines(workflow.jobs.containers);
-  invariant(
-    backupCommands[0] === "set -eu",
-    "containers backup runtime contract must begin with set -eu",
-  );
-  for (const expected of [
-    "set -eu",
-    'test "$MIMIC_POSTGRES_CLIENT_MAJOR" = "18"',
-    'pg_dump --version | grep -Eq "^pg_dump \\(PostgreSQL\\) 18\\."',
-    'pg_restore --version | grep -Eq "^pg_restore \\(PostgreSQL\\) 18\\."',
-    "age --version",
-    "command -v minisign",
-    "aws --version",
-  ]) {
-    requireBackupRuntimeLine(backupCommands, expected);
-  }
+  requireExactBackupRuntimeLines(backupCommands);
 
   invariant(
     !JSON.stringify(workflow).includes("SENTRY_AUTH_TOKEN"),
