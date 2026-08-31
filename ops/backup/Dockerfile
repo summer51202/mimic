@@ -1,6 +1,6 @@
-FROM alpine:3.22.2@sha256:4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412
+FROM alpine:3.23.5@sha256:fd791d74b68913cbb027c6546007b3f0d3bc45125f797758156952bc2d6daf40
 
-ARG POSTGRES_MAJOR=16
+ARG POSTGRES_MAJOR=18
 RUN apk add --no-cache age aws-cli minisign postgresql${POSTGRES_MAJOR}-client
 RUN addgroup -g 10001 -S mimic && adduser -u 10001 -S -G mimic mimic
 

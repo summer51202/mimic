@@ -25,17 +25,13 @@ For PITR recovery, select the timestamp and click **Restore to this moment**. Ra
 
 ## PostgreSQL version policy
 
-Logical backup and restore fail closed unless source server, backup client, signed-manifest major, target server, and restore client all share one PostgreSQL major. The current backup image fixes PostgreSQL client major 16 and Alpine release 3.22.2:
+Logical backup and restore fail closed unless the source server, backup client, signed manifest, target server, and restore client all share one PostgreSQL major. The current backup image matches Railway PostgreSQL 18 and fixes Alpine release 3.23.5:
 
 ```sh
-docker build --build-arg POSTGRES_MAJOR=16 -f ops/backup/Dockerfile ops/backup -t mimic-backup:pg16
+docker build --build-arg POSTGRES_MAJOR=18 -f ops/backup/Dockerfile ops/backup -t mimic-backup:pg18
 ```
 
-Mimic's Railway database runs PostgreSQL 18. The current client-16 backup image
-is therefore intentionally incompatible and must not be deployed against
-Railway. Upgrade and pin the backup image to PostgreSQL client 18, rerun its
-image/guard contracts, and complete a scratch restore drill before enabling the
-unscheduled backup service or any Production schedule.
+Before enabling the unscheduled backup service, retain the resulting image digest and SBOM, verify that `SHOW server_version_num`, `pg_dump --version`, and `pg_restore --version` are all major 18, and complete a scratch restore drill.
 
 If Railway changes the database major, build and verify a matching image first; never use a newer `pg_dump` merely because it might be backward-compatible. Alpine package patch revisions are resolved when the image builds, so record the resulting image digest/SBOM as well as `SHOW server_version_num`, `pg_dump --version`, and `pg_restore --version` in drill evidence. Do not describe package revisions as pinned unless the package repository and versions are locked separately.
 

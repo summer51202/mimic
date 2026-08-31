@@ -123,8 +123,8 @@ test("restore accepts only collision-resistant weekly encrypted backup object na
 test("backup image fixes its Alpine release and PostgreSQL major and runs unprivileged", async () => {
   const dockerfile = await read("./Dockerfile");
 
-  assert.match(dockerfile, /^FROM alpine:3\.22\.\d+@sha256:[0-9a-f]{64}$/m);
-  assert.match(dockerfile, /^ARG POSTGRES_MAJOR=16$/m);
+  assert.match(dockerfile, /^FROM alpine:3\.23\.5@sha256:fd791d74b68913cbb027c6546007b3f0d3bc45125f797758156952bc2d6daf40$/m);
+  assert.match(dockerfile, /^ARG POSTGRES_MAJOR=18$/m);
   assert.match(dockerfile, /apk add --no-cache age aws-cli minisign postgresql\$\{POSTGRES_MAJOR\}-client/);
   assert.match(dockerfile, /^RUN addgroup -g 10001 -S mimic && adduser -u 10001 -S -G mimic mimic$/m);
   assert.match(dockerfile, /^ENV MIMIC_POSTGRES_CLIENT_MAJOR=\$POSTGRES_MAJOR$/m);
@@ -241,6 +241,11 @@ test("runbook follows Railway sibling PITR and immutable signed-backup procedure
   assert.match(runbook, /MIMIC_RESTORE_SENTINEL_NONCE/);
   assert.match(runbook, /MIMIC_PRODUCTION_SYSTEM_IDENTIFIER/);
   assert.match(runbook, /MIMIC_RESTORE_SENTINEL_NONCE="\$\(/);
+  assert.match(
+    runbook,
+    /docker build --build-arg POSTGRES_MAJOR=18 -f ops\/backup\/Dockerfile ops\/backup -t mimic-backup:pg18/,
+  );
+  assert.doesNotMatch(runbook, /POSTGRES_MAJOR=16|mimic-backup:pg16|client-16/);
   assert.match(runbook, /sed -n '2p'/);
   assert.match(runbook, /MIMIC_BACKUP_MINISIGN_PUBLIC_KEY.*56/);
   assert.match(runbook, /MIMIC_BACKUP_DATABASE_HOST=\$\{\{[^}]+\.PGHOST\}\}/);

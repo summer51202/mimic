@@ -199,8 +199,8 @@ test("backup build context is deny-by-default and its base image is immutable", 
 
   assertPinnedBaseImages(
     dockerfile,
-    "alpine:3.22.2",
-    "4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412",
+    "alpine:3.23.5",
+    "fd791d74b68913cbb027c6546007b3f0d3bc45125f797758156952bc2d6daf40",
   );
   assert.equal(patterns[0], "**");
   assert.deepEqual(
