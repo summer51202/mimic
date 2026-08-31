@@ -44,3 +44,38 @@ test("recursive action validation accepts only repository-local action paths", (
     /is not an allowed local action path/,
   );
 });
+
+test("container CI rejects PostgreSQL 16 backup runtime checks", () => {
+  const staleWorkflow = parseWorkflowYaml(workflowSource);
+  const smokeStep = staleWorkflow.jobs.containers.steps.find(
+    (step) => step.name === "Smoke-check production image runtimes",
+  );
+  assert.ok(smokeStep);
+  assert.equal(typeof smokeStep.run, "string");
+  assert.match(smokeStep.run, /MIMIC_POSTGRES_CLIENT_MAJOR" = "18"/);
+  smokeStep.run = smokeStep.run.replaceAll("18", "16");
+
+  assert.throws(
+    () => validateCiWorkflow(staleWorkflow),
+    /containers must run .*18/,
+  );
+});
+
+test("container CI rejects a missing PostgreSQL restore client runtime check", () => {
+  const incompleteWorkflow = parseWorkflowYaml(workflowSource);
+  const smokeStep = incompleteWorkflow.jobs.containers.steps.find(
+    (step) => step.name === "Smoke-check production image runtimes",
+  );
+  assert.ok(smokeStep);
+  assert.equal(typeof smokeStep.run, "string");
+  assert.match(smokeStep.run, /pg_restore --version/);
+  smokeStep.run = smokeStep.run.replace(
+    "pg_restore --version",
+    "restore-client --version",
+  );
+
+  assert.throws(
+    () => validateCiWorkflow(incompleteWorkflow),
+    /containers must run pg_restore --version/,
+  );
+});
