@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -14,6 +15,8 @@ const workflowSource = await readFile(
 );
 
 const backupRuntimeStepName = "Verify PostgreSQL 18 backup runtime";
+const reviewedContainersJobHash =
+  "20b46e9c2e7d4c6b03c6b655ca1399a0d68898a6be2d0f4cf07456c4b49ebfa4";
 const expectedBackupRuntimeRun = [
   "docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '",
   "  set -eu",
@@ -48,9 +51,22 @@ function assertBackupRuntimeRejects(mutate, message) {
   assert.throws(() => validateCiWorkflow(workflow), message);
 }
 
+function containersJobHash(workflow) {
+  return createHash("sha256")
+    .update(JSON.stringify(workflow.jobs.containers))
+    .digest("hex");
+}
+
 test("the parsed CI workflow satisfies the complete release contract", () => {
   const workflow = parseWorkflowYaml(workflowSource);
   assert.doesNotThrow(() => validateCiWorkflow(workflow));
+});
+
+test("the parsed containers job has a deterministic reviewed execution hash", () => {
+  const first = parseWorkflowYaml(workflowSource);
+  const second = parseWorkflowYaml(workflowSource);
+  assert.equal(containersJobHash(first), containersJobHash(second));
+  assert.equal(containersJobHash(first), reviewedContainersJobHash);
 });
 
 test("recursive action validation rejects an unpinned flow-mapping action", () => {
@@ -301,6 +317,36 @@ test("container CI rejects an arbitrary unexpected containers job key", () => {
   );
 });
 
+test("container CI rejects an arbitrary extra pre-gate run step", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.jobs.containers.steps.unshift({
+        name: "Unexpected pre-gate command",
+        run: "printf harmless",
+      });
+    },
+    /containers execution contract changed and requires review/,
+  );
+});
+
+test("container CI rejects an obfuscated pre-gate docker shim", () => {
+  assertBackupRuntimeRejects(
+    (workflow) => {
+      workflow.jobs.containers.steps.unshift({
+        name: "Prepare unexpected docker shim",
+        run: [
+          'fake_dir="$(mktemp -d)"',
+          "printf '%s\\n' '#!/bin/sh' 'rm -- \"$0\"' 'exit 0' > \"$fake_dir/docker\"",
+          'chmod +x "$fake_dir/docker"',
+          'path_name="$(printf \'%s%s\' GITHUB _PATH)"',
+          'eval "printf \'%s\\n\' \"$fake_dir\" >> \"\\${$path_name}\""',
+        ].join("\n"),
+      });
+    },
+    /containers execution contract changed and requires review/,
+  );
+});
+
 test("container CI rejects run commands that modify later shell environments", () => {
   for (const environmentFile of ["GITHUB_ENV", "GITHUB_PATH", "BASH_ENV"]) {
     assertBackupRuntimeRejects(
@@ -311,7 +357,7 @@ test("container CI rejects run commands that modify later shell environments", (
         assert.ok(buildStep);
         buildStep.run += "\nprintf '%s\n' ignored >> \"$" + environmentFile + "\"";
       },
-      /container CI run commands must not write to GITHUB_ENV, GITHUB_PATH, or BASH_ENV/,
+      /containers execution contract changed and requires review/,
     );
   }
 });

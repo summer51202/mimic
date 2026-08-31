@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 
 const requireFromWeb = createRequire(
@@ -10,7 +11,9 @@ const externalActionPattern =
 const localActionRoot = "./.github/actions/";
 const localActionSegmentPattern = /^[A-Za-z0-9_.-]+$/;
 const allowedContainersJobKeys = ["name", "runs-on", "steps", "timeout-minutes"];
-const containerEnvironmentFilePattern = /\b(?:GITHUB_ENV|GITHUB_PATH|BASH_ENV)\b/;
+// Any containers-job change requires intentionally reviewing and updating this hash.
+const reviewedContainersJobHash =
+  "20b46e9c2e7d4c6b03c6b655ca1399a0d68898a6be2d0f4cf07456c4b49ebfa4";
 const backupRuntimeStepName = "Verify PostgreSQL 18 backup runtime";
 const backupRuntimeExpectedRun = [
   "docker run --rm --entrypoint /bin/sh mimic-backup:ci -c '",
@@ -110,6 +113,10 @@ function requireCommand(jobName, commands, expected) {
     commands.some((command) => command.includes(expected)),
     `${jobName} must run ${expected}`,
   );
+}
+
+function containersJobHash(job) {
+  return createHash("sha256").update(JSON.stringify(job)).digest("hex");
 }
 
 function validateBackupRuntimeStep(job) {
@@ -231,10 +238,6 @@ export function validateCiWorkflow(workflow) {
   );
 
   const containerCommands = runCommands(containersJob);
-  invariant(
-    !containerCommands.some((command) => containerEnvironmentFilePattern.test(command)),
-    "container CI run commands must not write to GITHUB_ENV, GITHUB_PATH, or BASH_ENV",
-  );
   for (const expected of [
     "node --test scripts/verify-production-images.test.mjs",
     "node --test ops/backup/backup-contract.test.mjs",
@@ -249,6 +252,10 @@ export function validateCiWorkflow(workflow) {
   }
 
   validateBackupRuntimeStep(containersJob);
+  invariant(
+    containersJobHash(containersJob) === reviewedContainersJobHash,
+    "containers execution contract changed and requires review",
+  );
 
   invariant(
     !JSON.stringify(workflow).includes("SENTRY_AUTH_TOKEN"),
