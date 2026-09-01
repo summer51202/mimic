@@ -898,3 +898,15 @@
 - Added focused coverage for authorization visibility, exact matching, success navigation, recoverable domain errors, and duplicate-submit protection.
 **Decisions:** Keep the input unchanged after failures so owners can retry; describe the operation as removal from view plus archival because membership, invite, and audit history remains retained.
 **Known gaps / follow-ups:** There is no self-service restore flow; the dialog states this explicitly.
+
+## 2026-09-02 — Harden archive confirmation lifecycle
+
+**Task:** Prevent stale group archive confirmations and async completions across close, identity, and ownership changes.
+**Scope:** `web/src/features/groups` archive dialog, group detail controls, client error copy, and action tests
+**What changed:**
+- Kept PixelDialog mounted while closed so it can restore focus, and reset confirmation/error state whenever the dialog closes or its group identity changes.
+- Scoped archive controls to the current owner/group lifecycle so ownership or identity changes close the dialog without reopening stale state.
+- Guarded async completion with mounted and current-operation tokens to prevent stale navigation or state updates.
+- Replaced the handwritten confirmation input with PixelField and added access-loss recovery copy.
+**Decisions:** Use a render-context state reset to avoid effect-driven state updates while invalidating async operations in lifecycle effects.
+**Known gaps / follow-ups:** Full Web typecheck remains blocked by the existing missing Next and CSS module declarations.

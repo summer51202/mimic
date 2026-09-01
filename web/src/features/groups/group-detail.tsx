@@ -29,8 +29,6 @@ export function GroupDetailView({
 }: GroupDetailViewProps) {
   const [renaming, setRenaming] = useState(false);
   const [leaving, setLeaving] = useState(false);
-  const [archiving, setArchiving] = useState(false);
-  const dangerZoneHeadingId = useId();
   const isOwner = group.role.toLowerCase() === "owner";
 
   function refresh() {
@@ -85,22 +83,11 @@ export function GroupDetailView({
       </div>
 
       {isOwner ? (
-        <section
-          aria-labelledby={dangerZoneHeadingId}
-          className={styles.dangerZone}
-        >
-          <div>
-            <h2 id={dangerZoneHeadingId}>Danger zone</h2>
-            <p>Remove a group only when bookkeeping has not started.</p>
-          </div>
-          <PixelButton
-            emphasis="danger"
-            onClick={() => setArchiving(true)}
-            type="button"
-          >
-            Delete empty group
-          </PixelButton>
-        </section>
+        <OwnerArchiveControls
+          groupId={group.id}
+          groupName={group.name}
+          key={`${group.id}\u001f${group.name}`}
+        />
       ) : null}
 
       <LeaveGroupDialog
@@ -109,14 +96,44 @@ export function GroupDetailView({
         onClose={() => setLeaving(false)}
         open={leaving}
       />
-      {isOwner ? (
-        <ArchiveEmptyGroupDialog
-          groupId={group.id}
-          groupName={group.name}
-          onClose={() => setArchiving(false)}
-          open={archiving}
-        />
-      ) : null}
     </section>
+  );
+}
+
+function OwnerArchiveControls({
+  groupId,
+  groupName,
+}: {
+  groupId: string;
+  groupName: string;
+}) {
+  const [archiving, setArchiving] = useState(false);
+  const dangerZoneHeadingId = useId();
+
+  return (
+    <>
+      <section
+        aria-labelledby={dangerZoneHeadingId}
+        className={styles.dangerZone}
+      >
+        <div>
+          <h2 id={dangerZoneHeadingId}>Danger zone</h2>
+          <p>Remove a group only when bookkeeping has not started.</p>
+        </div>
+        <PixelButton
+          emphasis="danger"
+          onClick={() => setArchiving(true)}
+          type="button"
+        >
+          Delete empty group
+        </PixelButton>
+      </section>
+      <ArchiveEmptyGroupDialog
+        groupId={groupId}
+        groupName={groupName}
+        onClose={() => setArchiving(false)}
+        open={archiving}
+      />
+    </>
   );
 }

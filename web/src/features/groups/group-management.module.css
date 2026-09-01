@@ -170,11 +170,6 @@
   gap: var(--mimic-space-3);
 }
 
-.archiveForm label {
-  color: var(--mimic-color-hud-dark);
-  font-weight: 800;
-}
-
 @media (min-width: 48rem) {
   .grid {
     grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.7fr);

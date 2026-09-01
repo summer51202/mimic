@@ -1,11 +1,11 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 
 import { appFetch } from "@/shared/api/app-fetch";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelDialog } from "@/shared/ui/pixel-dialog";
-import { PixelNotice } from "@/shared/ui/pixel-notice";
+import { PixelField } from "@/shared/ui/pixel-field";
 
 import { archiveGroupErrorMessage } from "./group-client-api";
 import styles from "./group-management.module.css";
@@ -18,6 +18,13 @@ interface ArchiveEmptyGroupDialogProps {
   open: boolean;
 }
 
+interface ArchiveDialogState {
+  confirmation: string;
+  context: string;
+  error: string | null;
+  pending: boolean;
+}
+
 export function ArchiveEmptyGroupDialog({
   groupId,
   groupName,
@@ -25,13 +32,37 @@ export function ArchiveEmptyGroupDialog({
   onSuccess,
   open,
 }: ArchiveEmptyGroupDialogProps) {
-  const [confirmation, setConfirmation] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [pending, setPending] = useState(false);
+  const context = `${groupId}\u001f${groupName}\u001f${open ? "open" : "closed"}`;
+  const [state, setState] = useState<ArchiveDialogState>(() =>
+    emptyState(context),
+  );
+  const mountedRef = useRef(false);
+  const operationRef = useRef(0);
+
+  if (state.context !== context) {
+    setState(emptyState(context));
+  }
+
+  useEffect(() => {
+    mountedRef.current = true;
+
+    return () => {
+      mountedRef.current = false;
+      operationRef.current += 1;
+    };
+  }, []);
+
+  useEffect(() => {
+    operationRef.current += 1;
+  }, [groupId, groupName, open]);
+
+  const { confirmation, error, pending } = state;
   const confirmed = confirmation === groupName;
 
-  if (!open) {
-    return null;
+  function closeDialog() {
+    operationRef.current += 1;
+    setState(emptyState(context));
+    onClose();
   }
 
   async function archiveGroup(event: FormEvent<HTMLFormElement>) {
@@ -41,18 +72,31 @@ export function ArchiveEmptyGroupDialog({
       return;
     }
 
-    setPending(true);
-    setError(null);
+    const operation = operationRef.current + 1;
+    operationRef.current = operation;
+    setState((current) => ({ ...current, error: null, pending: true }));
 
     try {
       await appFetch<{ data: { group_id: string; status: "archived" } }>(
         `/api/app/groups/${groupId}/archive`,
         { method: "POST" },
       );
+
+      if (!mountedRef.current || operationRef.current !== operation) {
+        return;
+      }
+
       navigate(onSuccess, "/app/groups");
     } catch (caught) {
-      setError(archiveGroupErrorMessage(caught));
-      setPending(false);
+      if (!mountedRef.current || operationRef.current !== operation) {
+        return;
+      }
+
+      setState((current) => ({
+        ...current,
+        error: archiveGroupErrorMessage(caught),
+        pending: false,
+      }));
     }
   }
 
@@ -60,7 +104,7 @@ export function ArchiveEmptyGroupDialog({
     <PixelDialog
       closeDisabled={pending}
       description="Delete from view is available only for groups where bookkeeping has not started."
-      onClose={onClose}
+      onClose={closeDialog}
       open={open}
       title={`Delete ${groupName}`}
     >
@@ -70,17 +114,19 @@ export function ArchiveEmptyGroupDialog({
         is currently no self-service restore.
       </p>
       <form className={styles.archiveForm} onSubmit={archiveGroup}>
-        <label htmlFor="archive-group-confirmation">
-          Type the group name to confirm
-        </label>
-        <input
+        <PixelField
           autoComplete="off"
-          id="archive-group-confirmation"
-          onChange={(event) => setConfirmation(event.target.value)}
+          error={error}
+          label="Type the group name to confirm"
+          onChange={(event) =>
+            setState((current) => ({
+              ...current,
+              confirmation: event.target.value,
+            }))
+          }
           type="text"
           value={confirmation}
         />
-        {error ? <PixelNotice variant="error">{error}</PixelNotice> : null}
         <PixelButton
           aria-label={
             pending
@@ -96,6 +142,15 @@ export function ArchiveEmptyGroupDialog({
       </form>
     </PixelDialog>
   );
+}
+
+function emptyState(context: string): ArchiveDialogState {
+  return {
+    confirmation: "",
+    context,
+    error: null,
+    pending: false,
+  };
 }
 
 function navigate(

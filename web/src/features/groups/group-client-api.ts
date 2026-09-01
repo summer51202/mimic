@@ -46,6 +46,10 @@ export function archiveGroupErrorMessage(error: unknown): string {
     return "Only an owner can delete an empty group.";
   }
 
+  if (error.code === "GROUP_ACCESS_DENIED") {
+    return "You no longer have access to this group.";
+  }
+
   if (error.status === 401) {
     return "Your session expired. Sign in again, then retry.";
   }

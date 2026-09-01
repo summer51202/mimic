@@ -230,6 +230,58 @@ describe("group detail actions", () => {
     );
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    rerender(<GroupDetailView group={group} members={members} />);
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("resets archive confirmation and errors after a normal close", async () => {
+    const user = userEvent.setup();
+    appFetchMock.mockRejectedValueOnce(
+      new AppClientError(409, "GROUP_HAS_FINANCIAL_HISTORY"),
+    );
+    render(<GroupDetailView group={group} members={members} />);
+    const trigger = screen.getByRole("button", { name: "Delete empty group" });
+
+    await user.click(trigger);
+    const confirmation = screen.getByLabelText(
+      "Type the group name to confirm",
+    );
+    await user.type(confirmation, group.name);
+    await user.click(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    );
+    expect(await screen.findByRole("alert")).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Close dialog" }));
+
+    await waitFor(() => expect(trigger).toHaveFocus());
+    await user.click(trigger);
+
+    expect(screen.getByLabelText("Type the group name to confirm")).toHaveValue(
+      "",
+    );
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    ).toBeDisabled();
+  });
+
+  it("restores focus to the archive trigger after Escape", async () => {
+    const user = userEvent.setup();
+    render(<GroupDetailView group={group} members={members} />);
+    const trigger = screen.getByRole("button", { name: "Delete empty group" });
+
+    await user.click(trigger);
+    await user.click(screen.getByLabelText("Type the group name to confirm"));
+    await user.keyboard("{Escape}");
+
+    await waitFor(() => expect(trigger).toHaveFocus());
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("requires the exact current group name before enabling deletion", async () => {
@@ -254,6 +306,35 @@ describe("group detail actions", () => {
 });
 
 describe("ArchiveEmptyGroupDialog", () => {
+  it("clears confirmation when the group identity changes", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(
+      <ArchiveEmptyGroupDialog groupId="g1" groupName={group.name} open />,
+    );
+    await user.type(
+      screen.getByLabelText("Type the group name to confirm"),
+      group.name,
+    );
+    expect(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    ).toBeEnabled();
+
+    rerender(
+      <ArchiveEmptyGroupDialog groupId="g2" groupName="Another group" open />,
+    );
+
+    expect(screen.getByLabelText("Type the group name to confirm")).toHaveValue(
+      "",
+    );
+    expect(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    ).toBeDisabled();
+  });
+
   it("archives once and navigates to the group list", async () => {
     const user = userEvent.setup();
     const onSuccess = vi.fn();
@@ -290,6 +371,7 @@ describe("ArchiveEmptyGroupDialog", () => {
     ["GROUP_HAS_OTHER_ACTIVE_MEMBERS", "Other active members must leave first."],
     ["GROUP_HAS_FINANCIAL_HISTORY", "Groups with financial history cannot be deleted."],
     ["OWNER_REQUIRED", "Only an owner can delete an empty group."],
+    ["GROUP_ACCESS_DENIED", "You no longer have access to this group."],
   ])(
     "keeps the confirmation recoverable after %s",
     async (code, message) => {
@@ -354,5 +436,39 @@ describe("ArchiveEmptyGroupDialog", () => {
 
     expect(appFetchMock).toHaveBeenCalledTimes(1);
     expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("ignores a pending completion after unmount", async () => {
+    const user = userEvent.setup();
+    const onSuccess = vi.fn();
+    let resolveRequest: ((value: unknown) => void) | undefined;
+    appFetchMock.mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveRequest = resolve;
+      }),
+    );
+    const { unmount } = render(
+      <ArchiveEmptyGroupDialog
+        groupId="g1"
+        groupName={group.name}
+        onSuccess={onSuccess}
+        open
+      />,
+    );
+    await user.type(
+      screen.getByLabelText("Type the group name to confirm"),
+      group.name,
+    );
+    await user.click(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    );
+
+    unmount();
+    resolveRequest?.({ data: { group_id: "g1", status: "archived" } });
+    await Promise.resolve();
+
+    expect(onSuccess).not.toHaveBeenCalled();
   });
 });
