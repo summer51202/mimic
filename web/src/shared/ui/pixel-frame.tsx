@@ -17,5 +17,12 @@ export function PixelFrame({
     .filter(Boolean)
     .join(" ");
 
-  return <div {...props} className={classes} data-variant={variant} />;
+  return (
+    <div
+      {...props}
+      className={classes}
+      data-pixel-frame="true"
+      data-variant={variant}
+    />
+  );
 }

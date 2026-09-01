@@ -44,7 +44,7 @@ const routes = (groupId: string, fundId: string): RouteCase[] => [
 async function expectContainedGeometry(page: Page) {
   const result = await page.locator("[data-contain-text]:visible").evaluateAll((nodes) =>
     nodes.map((node) => {
-      const frame = node.closest<HTMLElement>("[data-frame]");
+      const frame = node.closest<HTMLElement>("[data-pixel-frame]");
       const rect = node.getBoundingClientRect();
       const frameRect = frame?.getBoundingClientRect();
       return {
@@ -72,7 +72,7 @@ async function expectPageGeometry(page: Page, expectsAvatars: boolean) {
     const root = document.documentElement;
     const bodyStyle = getComputedStyle(document.body);
     const rootStyle = getComputedStyle(root);
-    const frames = [...document.querySelectorAll<HTMLElement>("[data-frame]")]
+    const frames = [...document.querySelectorAll<HTMLElement>("[data-pixel-frame]")]
       .filter((frame) => frame.getClientRects().length > 0)
       .map((frame) => {
         const rect = frame.getBoundingClientRect();

@@ -26,6 +26,7 @@ describe("pixel UI primitives", () => {
 
     const frame = screen.getByText("Shared treasury");
 
+    expect(frame).toHaveAttribute("data-pixel-frame", "true");
     expect(frame).toHaveAttribute("data-variant", "treasury");
     expect(frame).toHaveClass("account-card");
   });
