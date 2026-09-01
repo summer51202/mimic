@@ -1,5 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import {
+  ApiConfigurationError,
+  ApiError,
+  ApiUnavailableError,
+} from "@/shared/api/errors";
+import { ApiContractError } from "@/shared/api/read-envelope";
 import { postToApi } from "@/shared/api/server-api";
 import { authCookies } from "@/shared/auth/cookies";
 
@@ -116,8 +122,10 @@ describe("POST /api/auth/refresh", () => {
     );
   });
 
-  it("clears the session when programmatic refresh fails", async () => {
-    postToApiMock.mockRejectedValueOnce(new Error("refresh rejected"));
+  it("clears the session when the backend rejects the refresh token", async () => {
+    postToApiMock.mockRejectedValueOnce(
+      new ApiError(401, "INVALID_REFRESH_TOKEN"),
+    );
 
     const response = await POST(programmaticRefreshRequest());
 
@@ -133,6 +141,25 @@ describe("POST /api/auth/refresh", () => {
       ]),
     );
   });
+
+  it.each([
+    [new ApiUnavailableError(), 503, "UPSTREAM_UNAVAILABLE"],
+    [new ApiConfigurationError(), 500, "API_CONFIGURATION_ERROR"],
+    [new ApiContractError("invalid auth payload"), 502, "API_CONTRACT_ERROR"],
+  ])(
+    "preserves the session for operational refresh failures",
+    async (error, expectedStatus, expectedCode) => {
+      postToApiMock.mockRejectedValueOnce(error);
+
+      const response = await POST(programmaticRefreshRequest());
+
+      expect(response.status).toBe(expectedStatus);
+      await expect(response.json()).resolves.toEqual({
+        error: { code: expectedCode },
+      });
+      expect(response.headers.getSetCookie()).toEqual([]);
+    },
+  );
 });
 
 function refreshRequest(returnTo: string): Request {

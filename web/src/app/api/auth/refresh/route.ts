@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 
+import { ApiError } from "@/shared/api/errors";
 import { postToApi } from "@/shared/api/server-api";
 import {
   type AuthPayload,
+  authRouteErrorResponse,
   clearSessionCookies,
   csrfRejectedResponse,
   hasValidCsrf,
@@ -38,7 +40,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     setAuthSessionCookies(response, payload);
 
     return response;
-  } catch {
+  } catch (error) {
+    if (!(error instanceof ApiError) || error.status !== 401) {
+      return authRouteErrorResponse(error);
+    }
+
     const response = sessionRequiredResponse();
 
     clearSessionCookies(response);
