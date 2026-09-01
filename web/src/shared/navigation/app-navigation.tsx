@@ -38,8 +38,9 @@ const navigationItems = [
   },
   {
     icon: "S",
+    href: "/app/settings",
     label: "Settings",
-    status: "soon",
+    status: "available",
   },
 ] as const;
 

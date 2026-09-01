@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-export const mimicIdSchema = z
-  .string()
-  .regex(/^MIMIC-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{4}-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{4}$/);
+import { mimicIdSchema } from "@/shared/api/domain-contracts";
+
+export { mimicIdSchema };
 
 export const settingsProfileSchema = z.object({
   id: z.string().trim().min(1).max(128),

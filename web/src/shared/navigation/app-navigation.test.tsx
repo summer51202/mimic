@@ -62,18 +62,20 @@ describe("AppNavigation", () => {
     const groups = screen.getByRole("link", { name: /Groups/ });
     const funds = screen.getByRole("link", { name: /Funds/ });
     const activity = screen.getByRole("button", { name: /Activity/ });
-    const settings = screen.getByRole("button", { name: /Settings/ });
+    const settings = screen.getByRole("link", { name: /Settings/ });
 
     expect(overview).toHaveAttribute("aria-current", "page");
     expect(groups).toHaveAttribute("href", "/app/groups");
     expect(funds).toHaveAttribute("href", "/app/funds");
     expect(activity).toBeDisabled();
-    expect(settings).toBeDisabled();
+    expect(settings).toHaveAttribute("href", "/app/settings");
   });
 
   it.each([
     ["/app/groups/g1", "Groups"],
     ["/app/funds/f1", "Funds"],
+    ["/app/settings", "Settings"],
+    ["/app/settings/profile", "Settings"],
   ])("indicates %s as the %s section", (currentPath, currentLabel) => {
     render(
       <AppNavigation
@@ -109,8 +111,9 @@ describe("AppNavigation", () => {
     expect(
       screen.getByRole("button", { name: "Activity (coming soon)" }),
     ).toBeDisabled();
-    expect(
-      screen.getByRole("button", { name: "Settings (coming soon)" }),
-    ).toBeDisabled();
+    expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute(
+      "href",
+      "/app/settings",
+    );
   });
 });

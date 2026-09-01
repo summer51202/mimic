@@ -96,6 +96,7 @@ describe("group queries", () => {
       {
         user_id: "u1",
         display_name: "小明",
+        mimic_id: "MIMIC-2345-6789",
         role: "owner",
         status: "active",
       },

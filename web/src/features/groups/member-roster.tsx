@@ -24,6 +24,9 @@ export function MemberRoster({ members }: MemberRosterProps) {
           />
           <div className={styles.memberMeta}>
             <strong className={styles.memberName} data-contain-text>{member.display_name}</strong>
+            <span className={styles.memberMimicId} data-contain-text>
+              {member.mimic_id}
+            </span>
             <span data-contain-text>{member.status}</span>
           </div>
           <span className={styles.role}>{roleLabel(member.role)}</span>

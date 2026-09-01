@@ -21,8 +21,8 @@ const group: GroupDetail = {
 };
 
 const members: Member[] = [
-  { user_id: "u1", display_name: "小明", role: "owner", status: "active" },
-  { user_id: "u2", display_name: "小美", role: "member", status: "active" },
+  { user_id: "u1", display_name: "小明", mimic_id: "MIMIC-2345-6789", role: "owner", status: "active" },
+  { user_id: "u2", display_name: "小美", mimic_id: "MIMIC-ABCD-EFGH", role: "member", status: "active" },
 ];
 
 afterEach(() => {
@@ -62,6 +62,8 @@ describe("group detail actions", () => {
     expect(screen.getByRole("heading", { name: "我們的生活基金" })).toBeVisible();
     expect(screen.getByText("Owner")).toBeVisible();
     expect(screen.getByText("Member")).toBeVisible();
+    expect(screen.getByText("MIMIC-2345-6789")).toBeVisible();
+    expect(screen.getByText("MIMIC-ABCD-EFGH")).toBeVisible();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     const avatar = screen.getAllByRole("img", { hidden: true })[0];
     expect(avatar).toHaveAttribute("data-pixel-avatar");
@@ -85,11 +87,14 @@ describe("group detail actions", () => {
 
     const groupName = screen.getByText(longName);
     const memberName = screen.getByText(unbrokenName);
+    const memberMimicId = screen.getByText("MIMIC-2345-6789");
     expect(groupName).toHaveAttribute("data-contain-text");
     expect(groupName.className).toMatch(/groupName/);
     expect(memberName).toHaveAttribute("data-contain-text");
     expect(memberName.className).toMatch(/memberName/);
     expect(memberName.parentElement?.className).toMatch(/memberMeta/);
+    expect(memberMimicId).toHaveAttribute("data-contain-text");
+    expect(memberMimicId.className).toMatch(/memberMimicId/);
     expect(groupName.closest("[data-frame]")).toHaveAttribute("data-frame", "group-list");
     expect(memberName.closest("[data-frame]")).not.toBeNull();
   });

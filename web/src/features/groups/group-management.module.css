@@ -115,7 +115,16 @@
 }
 
 .memberMeta {
+  display: grid;
   flex: 1;
+  gap: 0.15rem;
+}
+
+.memberMimicId {
+  color: var(--mimic-color-ink-soft);
+  font-family: var(--mimic-font-pixel), monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
 }
 
 .role {

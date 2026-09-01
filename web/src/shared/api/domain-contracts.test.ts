@@ -5,6 +5,7 @@ import {
   groupSchema,
   inviteAcceptResultSchema,
   inviteCreatedSchema,
+  memberSchema,
 } from "./domain-contracts";
 
 const periodTotals = {
@@ -15,6 +16,27 @@ const periodTotals = {
 };
 
 describe("domain contracts", () => {
+  it("requires a canonical stable identity for group members", () => {
+    expect(
+      memberSchema.parse({
+        user_id: "u1",
+        display_name: "Mina",
+        mimic_id: "MIMIC-2345-6789",
+        role: "member",
+        status: "active",
+      }),
+    ).toMatchObject({ mimic_id: "MIMIC-2345-6789" });
+    expect(() =>
+      memberSchema.parse({
+        user_id: "u1",
+        display_name: "Mina",
+        mimic_id: "u1",
+        role: "member",
+        status: "active",
+      }),
+    ).toThrow();
+  });
+
   it("parses canonical group dashboard money strings", () => {
     const parsed = groupDashboardSchema.parse({
       group: { id: "g1", name: "Adventure Fund", default_currency: "TWD" },

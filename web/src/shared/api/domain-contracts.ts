@@ -8,6 +8,9 @@ export const minorUnitSchema = z
   .pipe(z.string().regex(/^-?(0|[1-9]\d*)$/));
 export const isoDateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 export const inviteCodeSchema = z.string().regex(/^[A-Za-z0-9_-]{12}$/);
+export const mimicIdSchema = z
+  .string()
+  .regex(/^MIMIC-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{4}-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{4}$/);
 
 const labelSchema = z.string().trim().min(1).max(255);
 const statusSchema = z.string().trim().min(1).max(32);
@@ -30,6 +33,7 @@ export const groupDetailSchema = groupSchema.extend({
 export const memberSchema = z.object({
   user_id: idSchema,
   display_name: labelSchema,
+  mimic_id: mimicIdSchema,
   role: statusSchema,
   status: statusSchema,
 });
