@@ -786,3 +786,16 @@
 - Added regression coverage for token rotation, error mapping, one-shot retry, second-401 termination, CSRF header precedence, and form-state preservation.
 **Decisions:** Kept refresh orchestration in the Web BFF and reused the existing client mutation helper so refresh tokens remain HttpOnly and retry behavior is consistent across current JSON mutation callsites.
 **Known gaps / follow-ups:** The helper accepts general `RequestInit` bodies, but all current callsites use replayable JSON strings or no body; a future streaming-body callsite must opt out of replay or provide a replayable body factory.
+
+## 2026-09-01 — Add manual group invitation entry
+
+**Task:** Let signed-in users join a group by entering an invite code or complete invite link.
+**Scope:** Join group route and form, invitation parsing and sharing, Groups and empty Overview entry points, tests, feature map
+**What changed:**
+- Added a dedicated authenticated Join group page that accepts a 12-character invite code or complete `/invite/:code` URL.
+- Routed valid entries through the existing public invite review and explicit acceptance flow.
+- Added Join group actions to the Groups page and the completely empty Overview state while leaving populated dashboards unchanged.
+- Added direct invite-code copying with a manual text-selection fallback alongside the existing link and Web Share options.
+- Added focused parser, form, route, state, and clipboard regression coverage.
+**Decisions:** Keep QR code UI entirely hidden until it is implemented; do not accept invites immediately from the entry form; accept complete HTTP(S) invite URLs from any origin while validating the exact invite path and canonical code format.
+**Known gaps / follow-ups:** QR scanning remains deferred; account profile/logout, public Mimic ID, and safe empty-group archive are separate planned work.
