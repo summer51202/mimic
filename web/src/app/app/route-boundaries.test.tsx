@@ -24,6 +24,7 @@ const {
   notFoundMock,
   refreshMock,
   captureExceptionMock,
+  treasuryOpeningMock,
 } = vi.hoisted(() => ({
   cookiesMock: vi.fn(),
   getFundSummaryMock: vi.fn(),
@@ -37,6 +38,7 @@ const {
   }),
   refreshMock: vi.fn(),
   captureExceptionMock: vi.fn(),
+  treasuryOpeningMock: vi.fn(),
 }));
 
 vi.mock("@sentry/nextjs", () => ({ captureException: captureExceptionMock }));
@@ -56,6 +58,9 @@ vi.mock("@/features/groups/group-queries", () => ({
   getGroupDashboard: getGroupDashboardMock,
   listGroups: listGroupsMock,
   listMembers: listMembersMock,
+}));
+vi.mock("@/features/groups/treasury-opening-delay", () => ({
+  waitForTreasuryOpening: treasuryOpeningMock,
 }));
 vi.mock("@/features/funds/fund-queries", () => ({
   getFundSummary: getFundSummaryMock,
@@ -97,6 +102,7 @@ beforeEach(() => {
   });
   refreshMock.mockReset();
   captureExceptionMock.mockReset();
+  treasuryOpeningMock.mockReset().mockResolvedValue(undefined);
   cookiesMock.mockResolvedValue({ get: vi.fn() });
 });
 
@@ -176,6 +182,7 @@ describe("authenticated route boundaries", () => {
     expect(screen.getByText("dashboard:group-1")).toBeInTheDocument();
     expect(listGroupsMock).toHaveBeenCalledTimes(1);
     expect(getGroupDashboardMock).toHaveBeenCalledWith("group-1");
+    expect(treasuryOpeningMock).toHaveBeenCalledTimes(1);
   });
 
   it("wires a dashboard second-stage outage to recovery", async () => {
