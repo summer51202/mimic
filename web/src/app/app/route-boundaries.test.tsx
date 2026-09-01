@@ -8,6 +8,7 @@ import { AppReadFailure } from "@/shared/ui/app-read-failure";
 import AppError from "./error";
 import FundPage from "./funds/[fundId]/page";
 import GroupDetailPage from "./groups/[groupId]/page";
+import JoinGroupPage from "./groups/join/page";
 import GroupsPage from "./groups/page";
 import AppLoading from "./loading";
 import AppNotFound from "./not-found";
@@ -275,6 +276,14 @@ describe("authenticated route boundaries", () => {
     listGroupsMock.mockRejectedValueOnce(new ApiError(404, "NOT_FOUND"));
     const missingGroups = await GroupsPage();
     expect(() => render(missingGroups)).toThrow("NEXT_NOT_FOUND");
+  });
+
+  it("renders the manual join route without a QR placeholder", () => {
+    render(<JoinGroupPage />);
+
+    expect(screen.getByRole("heading", { name: "Join group" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Invite code or link")).toBeInTheDocument();
+    expect(screen.queryByText(/qr/i)).not.toBeInTheDocument();
   });
 
   it("keeps group-detail parallel reads and rethrows unknown failures", async () => {
