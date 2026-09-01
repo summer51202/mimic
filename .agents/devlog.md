@@ -865,3 +865,14 @@
 - Added regression coverage for all three pending close paths.
 **Decisions:** Always prevent native dialog cancellation so React remains the source of truth for closing; preserve caller-cancelled keyboard events and the existing focus-restoration lifecycle.
 **Known gaps / follow-ups:** Group archive UI wiring remains a separate task.
+
+## 2026-09-02 — Preserve dialog cancel handlers
+
+**Task:** Compose PixelDialog native cancellation with caller-provided `onCancel` handlers without losing veto behavior.
+**Scope:** `web/src/shared/ui/pixel-dialog.tsx`, `web/src/shared/ui/pixel-ui.test.tsx`
+**What changed:**
+- Invoked the caller cancel handler before internal cancellation handling.
+- Preserved caller `preventDefault()` as a veto of `onClose` while still preventing native dialog closure.
+- Added enabled, disabled, and caller-veto native cancellation coverage.
+**Decisions:** Snapshot `defaultPrevented` immediately after the caller handler because the internal handler always prevents the native default.
+**Known gaps / follow-ups:** Group archive UI wiring remains a separate task.

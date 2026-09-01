@@ -11,6 +11,21 @@ import { PixelField } from "./pixel-field";
 import { PixelFrame } from "./pixel-frame";
 import { PixelNotice } from "./pixel-notice";
 
+function installDialogMethods() {
+  Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+    configurable: true,
+    value() {
+      this.setAttribute("open", "");
+    },
+  });
+  Object.defineProperty(HTMLDialogElement.prototype, "close", {
+    configurable: true,
+    value() {
+      this.removeAttribute("open");
+    },
+  });
+}
+
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
@@ -96,14 +111,7 @@ describe("pixel UI primitives", () => {
   it("wires PixelDialog title and description to the dialog", async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
-    Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
-      configurable: true,
-      value() {},
-    });
-    Object.defineProperty(HTMLDialogElement.prototype, "close", {
-      configurable: true,
-      value() {},
-    });
+    installDialogMethods();
     const showModal = vi
       .spyOn(HTMLDialogElement.prototype, "showModal")
       .mockImplementation(function showModalMock(this: HTMLDialogElement) {
@@ -155,18 +163,7 @@ describe("pixel UI primitives", () => {
   it("keeps a pending PixelDialog open across every close path", async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
-    Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
-      configurable: true,
-      value() {
-        this.setAttribute("open", "");
-      },
-    });
-    Object.defineProperty(HTMLDialogElement.prototype, "close", {
-      configurable: true,
-      value() {
-        this.removeAttribute("open");
-      },
-    });
+    installDialogMethods();
 
     render(
       <PixelDialog closeDisabled onClose={onClose} open title="Archive group">
@@ -183,11 +180,74 @@ describe("pixel UI primitives", () => {
 
     dialog.focus();
     await user.keyboard("{Escape}");
-    fireEvent(
-      dialog,
-      new Event("cancel", { bubbles: true, cancelable: true }),
+    const cancelEvent = new Event("cancel", {
+      bubbles: true,
+      cancelable: true,
+    });
+
+    expect(fireEvent(dialog, cancelEvent)).toBe(false);
+    expect(cancelEvent.defaultPrevented).toBe(true);
+
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("closes an enabled PixelDialog through native cancellation", () => {
+    const onClose = vi.fn();
+    installDialogMethods();
+
+    render(
+      <PixelDialog onClose={onClose} open title="Archive group">
+        <p>Archive this empty group.</p>
+      </PixelDialog>,
     );
 
+    const cancelEvent = new Event("cancel", {
+      bubbles: true,
+      cancelable: true,
+    });
+
+    expect(
+      fireEvent(
+        screen.getByRole("dialog", { name: "Archive group" }),
+        cancelEvent,
+      ),
+    ).toBe(false);
+    expect(cancelEvent.defaultPrevented).toBe(true);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("lets a caller veto PixelDialog native cancellation", () => {
+    const onCancel = vi.fn();
+    const onClose = vi.fn();
+    installDialogMethods();
+
+    render(
+      <PixelDialog
+        onCancel={(event) => {
+          onCancel();
+          event.preventDefault();
+        }}
+        onClose={onClose}
+        open
+        title="Archive group"
+      >
+        <p>Archive this empty group.</p>
+      </PixelDialog>,
+    );
+
+    const cancelEvent = new Event("cancel", {
+      bubbles: true,
+      cancelable: true,
+    });
+
+    expect(
+      fireEvent(
+        screen.getByRole("dialog", { name: "Archive group" }),
+        cancelEvent,
+      ),
+    ).toBe(false);
+    expect(onCancel).toHaveBeenCalledTimes(1);
+    expect(cancelEvent.defaultPrevented).toBe(true);
     expect(onClose).not.toHaveBeenCalled();
   });
 

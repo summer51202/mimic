@@ -28,6 +28,7 @@ export function PixelDialog({
   closeDisabled = false,
   closeLabel = "Close dialog",
   description,
+  onCancel: onCancelEvent,
   onClose,
   onKeyDown,
   open,
@@ -92,9 +93,12 @@ export function PixelDialog({
   }
 
   function handleCancel(event: SyntheticEvent<HTMLDialogElement>) {
+    onCancelEvent?.(event);
+    const cancelledByCaller = event.defaultPrevented;
+
     event.preventDefault();
 
-    if (!closeDisabled) {
+    if (!cancelledByCaller && !closeDisabled) {
       onClose();
     }
   }
