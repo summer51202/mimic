@@ -1,6 +1,11 @@
 "use client";
 
-import { type FormEvent, useEffect, useRef, useState } from "react";
+import {
+  type FormEvent,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { appFetch } from "@/shared/api/app-fetch";
 import { PixelButton } from "@/shared/ui/pixel-button";
@@ -39,24 +44,21 @@ export function ArchiveEmptyGroupDialog({
   const latestContextRef = useRef(context);
   const mountedRef = useRef(false);
   const operationRef = useRef(0);
-  latestContextRef.current = context;
 
   if (state.context !== context) {
     setState(emptyState(context));
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     mountedRef.current = true;
+    latestContextRef.current = context;
+    operationRef.current += 1;
 
     return () => {
       mountedRef.current = false;
       operationRef.current += 1;
     };
-  }, []);
-
-  useEffect(() => {
-    operationRef.current += 1;
-  }, [groupId, groupName, open]);
+  }, [context]);
 
   const { confirmation, error, pending } = state;
   const confirmed = confirmation === groupName;

@@ -921,3 +921,13 @@
 - Added pending success and failure coverage across group identity changes, including clean disabled state for the replacement context.
 **Decisions:** Retain the operation-invalidating effects as defense in depth while making correctness independent of passive-effect timing.
 **Known gaps / follow-ups:** Full Web typecheck remains blocked by the existing missing Next and CSS module declarations.
+
+## 2026-09-02 — Track committed archive context
+
+**Task:** Preserve archive request race protection without mutating shared refs during render.
+**Scope:** `web/src/features/groups/archive-empty-group-dialog.tsx`
+**What changed:**
+- Moved latest-context publication, mounted lifecycle, and operation invalidation into a layout effect so only committed group/open context becomes current and unmounts invalidate before microtasks.
+- Preserved mounted, token, and request-context checks for both successful and failed pending requests.
+**Decisions:** Use a layout effect because it runs during commit before promise microtasks and passive effects, while abandoned concurrent renders never publish their context.
+**Known gaps / follow-ups:** RTL/jsdom does not reliably model an abandoned concurrent render; existing pending context-change success/failure coverage remains the observable regression guard.
