@@ -854,3 +854,14 @@
 - Shared the cookie cleanup logic with the existing leave route and added success, conflict, and invalid-ID coverage.
 **Decisions:** Preserve failed upstream responses and their cookie state; pass the request ID into route-parameter validation for consistent error tracing.
 **Known gaps / follow-ups:** Archive UI is intentionally outside this task.
+
+## 2026-09-02 — Lock pending confirmation dialogs
+
+**Task:** Prevent pending PixelDialog confirmations from closing through the close button, Escape key, or native dialog cancellation.
+**Scope:** `web/src/shared/ui/pixel-dialog.tsx`, `web/src/shared/ui/pixel-ui.test.tsx`
+**What changed:**
+- Added an optional `closeDisabled` contract that defaults to the existing closable behavior.
+- Disabled the close button and guarded Escape and native cancel handlers while pending.
+- Added regression coverage for all three pending close paths.
+**Decisions:** Always prevent native dialog cancellation so React remains the source of truth for closing; preserve caller-cancelled keyboard events and the existing focus-restoration lifecycle.
+**Known gaps / follow-ups:** Group archive UI wiring remains a separate task.

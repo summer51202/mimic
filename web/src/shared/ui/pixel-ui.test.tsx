@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { PixelButton } from "./pixel-button";
@@ -150,6 +150,45 @@ describe("pixel UI primitives", () => {
     );
 
     expect(close).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps a pending PixelDialog open across every close path", async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+      configurable: true,
+      value() {
+        this.setAttribute("open", "");
+      },
+    });
+    Object.defineProperty(HTMLDialogElement.prototype, "close", {
+      configurable: true,
+      value() {
+        this.removeAttribute("open");
+      },
+    });
+
+    render(
+      <PixelDialog closeDisabled onClose={onClose} open title="Archive group">
+        <p>Archiving group.</p>
+      </PixelDialog>,
+    );
+
+    const dialog = screen.getByRole("dialog", { name: "Archive group" });
+    const closeButton = screen.getByRole("button", {
+      name: "Close dialog",
+    });
+
+    expect(closeButton).toBeDisabled();
+
+    dialog.focus();
+    await user.keyboard("{Escape}");
+    fireEvent(
+      dialog,
+      new Event("cancel", { bubbles: true, cancelable: true }),
+    );
+
+    expect(onClose).not.toHaveBeenCalled();
   });
 
   it("uses semantic live regions for PixelNotice variants", () => {

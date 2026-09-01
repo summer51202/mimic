@@ -4,6 +4,7 @@ import {
   type HTMLAttributes,
   type KeyboardEvent,
   type ReactNode,
+  type SyntheticEvent,
   useEffect,
   useId,
   useRef,
@@ -13,6 +14,7 @@ import { PixelButton } from "./pixel-button";
 import { PixelFrame } from "./pixel-frame";
 
 type PixelDialogProps = Omit<HTMLAttributes<HTMLDialogElement>, "title"> & {
+  closeDisabled?: boolean;
   closeLabel?: string;
   description?: ReactNode;
   onClose: () => void;
@@ -23,6 +25,7 @@ type PixelDialogProps = Omit<HTMLAttributes<HTMLDialogElement>, "title"> & {
 export function PixelDialog({
   children,
   className,
+  closeDisabled = false,
   closeLabel = "Close dialog",
   description,
   onClose,
@@ -78,8 +81,20 @@ export function PixelDialog({
   function handleKeyDown(event: KeyboardEvent<HTMLDialogElement>) {
     onKeyDown?.(event);
 
-    if (!event.defaultPrevented && event.key === "Escape") {
+    if (
+      !event.defaultPrevented &&
+      event.key === "Escape" &&
+      !closeDisabled
+    ) {
       event.preventDefault();
+      onClose();
+    }
+  }
+
+  function handleCancel(event: SyntheticEvent<HTMLDialogElement>) {
+    event.preventDefault();
+
+    if (!closeDisabled) {
       onClose();
     }
   }
@@ -91,6 +106,7 @@ export function PixelDialog({
       aria-labelledby={titleId}
       aria-modal="true"
       className={["pixel-dialog", className].filter(Boolean).join(" ")}
+      onCancel={handleCancel}
       onKeyDown={handleKeyDown}
       ref={dialogRef}
       role="dialog"
@@ -103,6 +119,7 @@ export function PixelDialog({
           <PixelButton
             emphasis="ghost"
             iconOnlyLabel={closeLabel}
+            disabled={closeDisabled}
             onClick={onClose}
             type="button"
           >
