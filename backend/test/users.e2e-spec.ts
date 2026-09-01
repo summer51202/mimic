@@ -49,6 +49,7 @@ describe('Current user profile', () => {
   it('returns the current user profile in the response envelope', async () => {
     usersService.findById.mockResolvedValue({
       id: 'user-1',
+      mimicId: 'MIMIC-2345-6789',
       email: 'edward@example.com',
       displayName: 'Edward',
       locale: 'zh-TW',
@@ -62,6 +63,7 @@ describe('Current user profile', () => {
       .expect({
         data: {
           id: 'user-1',
+          mimic_id: 'MIMIC-2345-6789',
           email: 'edward@example.com',
           display_name: 'Edward',
           locale: 'zh-TW',
@@ -74,6 +76,7 @@ describe('Current user profile', () => {
   it('updates the current profile through PATCH /me', async () => {
     usersService.updateProfile.mockResolvedValue({
       id: 'user-1',
+      mimicId: 'MIMIC-2345-6789',
       email: 'edward@example.com',
       displayName: 'Edward Lee',
       locale: 'zh-TW',
@@ -85,6 +88,7 @@ describe('Current user profile', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({
         display_name: 'Edward Lee',
+        mimic_id: 'MIMIC-ZZZZ-ZZZZ',
         locale: 'zh-TW',
         timezone: 'Asia/Taipei',
       })
@@ -92,6 +96,7 @@ describe('Current user profile', () => {
       .expect({
         data: {
           id: 'user-1',
+          mimic_id: 'MIMIC-2345-6789',
           email: 'edward@example.com',
           display_name: 'Edward Lee',
           locale: 'zh-TW',
@@ -108,6 +113,7 @@ describe('Current user profile', () => {
   it('keeps POST /me as a compatibility alias', async () => {
     usersService.updateProfile.mockResolvedValue({
       id: 'user-1',
+      mimicId: 'MIMIC-2345-6789',
       email: 'edward@example.com',
       displayName: 'Edward Lee',
       locale: 'zh-TW',
@@ -122,7 +128,17 @@ describe('Current user profile', () => {
         locale: 'zh-TW',
         timezone: 'Asia/Taipei',
       })
-      .expect(201);
+      .expect(201)
+      .expect({
+        data: {
+          id: 'user-1',
+          mimic_id: 'MIMIC-2345-6789',
+          email: 'edward@example.com',
+          display_name: 'Edward Lee',
+          locale: 'zh-TW',
+          timezone: 'Asia/Taipei',
+        },
+      });
     expect(usersService.updateProfile).toHaveBeenCalledWith('user-1', {
       displayName: 'Edward Lee',
       locale: 'zh-TW',

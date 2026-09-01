@@ -10,6 +10,7 @@ import { UsersService } from '../users/users.service';
 
 interface TokenUser {
   id: string;
+  mimicId: string;
   email: string;
   displayName: string;
   locale: string;
@@ -42,6 +43,7 @@ export class AuthService {
 
     return this.buildAuthResponse({
       id: user.id,
+      mimicId: user.mimicId,
       email: user.email,
       displayName: user.displayName,
       locale: user.locale,
@@ -62,6 +64,7 @@ export class AuthService {
 
     return this.buildAuthResponse({
       id: user.id,
+      mimicId: user.mimicId,
       email: user.email,
       displayName: user.displayName,
       locale: user.locale,
@@ -86,6 +89,7 @@ export class AuthService {
 
       return this.buildAuthResponse({
         id: user.id,
+        mimicId: user.mimicId,
         email: user.email,
         displayName: user.displayName,
         locale: user.locale,
@@ -107,6 +111,7 @@ export class AuthService {
   mapUser(user: TokenUser) {
     return {
       id: user.id,
+      mimic_id: user.mimicId,
       email: user.email,
       display_name: user.displayName,
       locale: user.locale,

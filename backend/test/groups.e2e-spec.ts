@@ -87,12 +87,32 @@ describe('Group detail and management', () => {
   });
 
   it('passes requester identity when listing members', async () => {
-    groupsService.listMembers.mockResolvedValue([]);
+    groupsService.listMembers.mockResolvedValue([
+      {
+        userId: 'user-1',
+        user: {
+          displayName: 'Edward',
+          mimicId: 'MIMIC-2345-6789',
+        },
+        role: 'OWNER',
+        status: 'ACTIVE',
+      },
+    ]);
     await request(app.getHttpServer())
       .get('/api/v1/groups/group-1/members')
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
-      .expect({ data: [] });
+      .expect({
+        data: [
+          {
+            user_id: 'user-1',
+            display_name: 'Edward',
+            mimic_id: 'MIMIC-2345-6789',
+            role: 'owner',
+            status: 'active',
+          },
+        ],
+      });
     expect(groupsService.listMembers).toHaveBeenCalledWith(
       'group-1',
       'user-1',
@@ -131,7 +151,10 @@ describe('Group detail and management', () => {
   it('updates a member role with an exact snake_case response', async () => {
     groupsService.updateMemberRole.mockResolvedValue({
       userId: 'user-2',
-      user: { displayName: 'Partner' },
+      user: {
+        displayName: 'Partner',
+        mimicId: 'MIMIC-ABCD-EFGH',
+      },
       role: 'OWNER',
       status: 'ACTIVE',
     });
@@ -145,6 +168,7 @@ describe('Group detail and management', () => {
         data: {
           user_id: 'user-2',
           display_name: 'Partner',
+          mimic_id: 'MIMIC-ABCD-EFGH',
           role: 'owner',
           status: 'active',
         },

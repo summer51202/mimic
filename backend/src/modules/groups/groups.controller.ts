@@ -46,6 +46,7 @@ export class GroupsController {
       data: members.map((member) => ({
         user_id: member.userId,
         display_name: member.user.displayName,
+        mimic_id: member.user.mimicId,
         role: member.role.toLowerCase(),
         status: member.status.toLowerCase(),
       })),
@@ -87,6 +88,7 @@ export class GroupsController {
       data: {
         user_id: member.userId,
         display_name: member.user.displayName,
+        mimic_id: member.user.mimicId,
         role: member.role.toLowerCase(),
         status: member.status.toLowerCase(),
       },

@@ -43,6 +43,7 @@ export class UsersController {
   private mapMe(
     user: {
       id: string;
+      mimicId: string;
       email: string;
       displayName: string;
       locale: string;
@@ -55,6 +56,7 @@ export class UsersController {
 
     return {
       id: user.id,
+      mimic_id: user.mimicId,
       email: user.email,
       display_name: user.displayName,
       locale: user.locale,
