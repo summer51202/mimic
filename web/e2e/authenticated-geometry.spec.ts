@@ -44,7 +44,7 @@ const routes = (groupId: string, fundId: string): RouteCase[] => [
 async function expectContainedGeometry(page: Page) {
   const result = await page.locator("[data-contain-text]:visible").evaluateAll((nodes) =>
     nodes.map((node) => {
-      const frame = node.closest<HTMLElement>("[data-pixel-frame]");
+      const frame = node.closest<HTMLElement>("[data-frame]");
       const rect = node.getBoundingClientRect();
       const frameRect = frame?.getBoundingClientRect();
       return {
