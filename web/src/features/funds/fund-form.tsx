@@ -3,7 +3,8 @@
 import { type FormEvent, useState } from "react";
 import { ZodError } from "zod";
 
-import { appFetch, groupErrorMessage } from "@/features/groups/group-client-api";
+import { groupErrorMessage } from "@/features/groups/group-client-api";
+import { appFetch } from "@/shared/api/app-fetch";
 import type { Fund } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelField } from "@/shared/ui/pixel-field";

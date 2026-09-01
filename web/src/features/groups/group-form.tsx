@@ -3,11 +3,12 @@
 import { type FormEvent, useState } from "react";
 
 import type { Group, GroupDetail } from "@/shared/api/domain-contracts";
+import { appFetch } from "@/shared/api/app-fetch";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelField } from "@/shared/ui/pixel-field";
 import { PixelNotice } from "@/shared/ui/pixel-notice";
 
-import { appFetch, groupErrorMessage } from "./group-client-api";
+import { groupErrorMessage } from "./group-client-api";
 import {
   createGroupSchema,
   renameGroupSchema,

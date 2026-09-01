@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { GroupClientError } from "@/features/groups/group-client-api";
+import { AppClientError } from "@/shared/api/app-fetch";
 
 import { InviteAcceptPanel } from "./invite-accept-panel";
 import { InviteCreatePanel } from "./invite-create-panel";
@@ -281,7 +281,7 @@ describe("InviteAcceptPanel", () => {
             return Promise.resolve(jsonResponse({ token: "csrf-token" }));
           }
 
-          throw new GroupClientError(400, code);
+      throw new AppClientError(400, code);
         }),
       );
 

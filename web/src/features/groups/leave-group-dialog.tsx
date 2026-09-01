@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 
+import { appFetch } from "@/shared/api/app-fetch";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelDialog } from "@/shared/ui/pixel-dialog";
 import { PixelNotice } from "@/shared/ui/pixel-notice";
 
-import { appFetch, groupErrorMessage } from "./group-client-api";
+import { groupErrorMessage } from "./group-client-api";
 
 interface LeaveGroupDialogProps {
   groupId: string;

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { appFetch } from "@/features/groups/group-client-api";
+import { appFetch } from "@/shared/api/app-fetch";
 import { pixelUiAssets } from "@/shared/brand/pixel-ui-assets";
 import type { InviteAcceptResult } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";

@@ -1,4 +1,4 @@
-import { GroupClientError } from "@/features/groups/group-client-api";
+import { AppClientError } from "@/shared/api/app-fetch";
 
 export const inviteMessages = {
   INVITE_NOT_FOUND: "這個邀請不存在或已失效。",
@@ -11,7 +11,7 @@ export const inviteMessages = {
 export type InviteErrorCode = keyof typeof inviteMessages;
 
 export function inviteErrorMessage(error: unknown): string {
-  if (error instanceof GroupClientError && isInviteErrorCode(error.code)) {
+  if (error instanceof AppClientError && isInviteErrorCode(error.code)) {
     return inviteMessages[error.code];
   }
 

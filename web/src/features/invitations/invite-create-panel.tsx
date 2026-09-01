@@ -4,7 +4,7 @@ import Image from "next/image";
 import { type FormEvent, useState } from "react";
 import { ZodError } from "zod";
 
-import { appFetch } from "@/features/groups/group-client-api";
+import { appFetch } from "@/shared/api/app-fetch";
 import { pixelUiAssets } from "@/shared/brand/pixel-ui-assets";
 import type { InviteCreated } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";
