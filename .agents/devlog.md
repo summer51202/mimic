@@ -843,3 +843,14 @@
 - Added regression and ordering coverage for all three create paths.
 **Decisions:** Kept the existing pre-transaction fund lookup for the group lock key and limited the new transaction-level guard to create operations.
 **Known gaps / follow-ups:** None for this task.
+
+## 2026-09-02 — Add empty-group archive Web proxy
+
+**Task:** Proxy empty-group archival through the authenticated Web BFF and clear a stale selected-group preference after success.
+**Scope:** `web/src/app/api/app/groups/[groupId]/archive`, group leave BFF route, shared group preference cookie helper
+**What changed:**
+- Added a POST archive proxy that validates the route ID, forwards without a body, and preserves upstream responses.
+- Cleared the selected-group cookie only after successful archive responses.
+- Shared the cookie cleanup logic with the existing leave route and added success, conflict, and invalid-ID coverage.
+**Decisions:** Preserve failed upstream responses and their cookie state; pass the request ID into route-parameter validation for consistent error tracing.
+**Known gaps / follow-ups:** Archive UI is intentionally outside this task.
