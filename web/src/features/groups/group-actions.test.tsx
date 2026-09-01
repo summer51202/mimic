@@ -3,12 +3,21 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { FundList } from "@/features/funds/fund-list";
+import { AppClientError, appFetch } from "@/shared/api/app-fetch";
 import type { Fund, GroupDetail, Member } from "@/shared/api/domain-contracts";
 
+import { ArchiveEmptyGroupDialog } from "./archive-empty-group-dialog";
 import { GroupDetailView } from "./group-detail";
 import { GroupList } from "./group-list";
 import { LeaveGroupDialog } from "./leave-group-dialog";
 import { MemberRoster } from "./member-roster";
+
+vi.mock("@/shared/api/app-fetch", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/shared/api/app-fetch")>()),
+  appFetch: vi.fn(),
+}));
+
+const appFetchMock = vi.mocked(appFetch);
 
 const group: GroupDetail = {
   id: "g1",
@@ -31,6 +40,7 @@ afterEach(() => {
 });
 
 beforeEach(() => {
+  appFetchMock.mockReset();
   Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
     configurable: true,
     value() {
@@ -43,16 +53,6 @@ beforeEach(() => {
       this.removeAttribute("open");
     },
   });
-  vi.stubGlobal(
-    "fetch",
-    vi.fn(async (input: RequestInfo | URL) => {
-      if (String(input) === "/api/auth/csrf") {
-        return Response.json({ token: "csrf-token" });
-      }
-
-      return Response.json({ data: { ...group, name: "新寶庫" } });
-    }),
-  );
 });
 
 describe("group detail actions", () => {
@@ -138,6 +138,7 @@ describe("group detail actions", () => {
   it("renames a group with a PATCH payload and refresh callback", async () => {
     const user = userEvent.setup();
     const onRefresh = vi.fn();
+    appFetchMock.mockResolvedValueOnce({ data: { ...group, name: "新寶庫" } });
 
     render(
       <GroupDetailView group={group} members={members} onRefresh={onRefresh} />,
@@ -149,26 +150,16 @@ describe("group detail actions", () => {
     await user.click(screen.getByRole("button", { name: "Save name" }));
 
     await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(1));
-    expect(fetch).toHaveBeenCalledWith(
-      "/api/app/groups/g1",
-      expect.objectContaining({
-        body: JSON.stringify({ name: "新寶庫" }),
-        method: "PATCH",
-      }),
-    );
+    expect(appFetchMock).toHaveBeenCalledWith("/api/app/groups/g1", {
+      body: JSON.stringify({ name: "新寶庫" }),
+      method: "PATCH",
+    });
   });
 
   it("keeps the leave dialog open and shows recovery text on failure", async () => {
-    vi.mocked(fetch).mockImplementation(async (input: RequestInfo | URL) => {
-      if (String(input) === "/api/auth/csrf") {
-        return Response.json({ token: "csrf-token" });
-      }
-
-      return Response.json(
-        { error: { code: "GROUP_RECONCILIATION_REQUIRED" } },
-        { status: 409 },
-      );
-    });
+    appFetchMock.mockRejectedValueOnce(
+      new AppClientError(409, "GROUP_RECONCILIATION_REQUIRED"),
+    );
     const user = userEvent.setup();
 
     render(<LeaveGroupDialog groupId="g1" groupName="我們的生活基金" open />);
@@ -185,13 +176,7 @@ describe("group detail actions", () => {
     const user = userEvent.setup();
     const onSuccess = vi.fn();
 
-    vi.mocked(fetch).mockImplementation(async (input: RequestInfo | URL) => {
-      if (String(input) === "/api/auth/csrf") {
-        return Response.json({ token: "csrf-token" });
-      }
-
-      return new Response(null, { status: 204 });
-    });
+    appFetchMock.mockResolvedValueOnce(undefined);
 
     render(
       <LeaveGroupDialog
@@ -205,5 +190,169 @@ describe("group detail actions", () => {
     await user.click(screen.getByRole("button", { name: "Leave group" }));
 
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith("/app"));
+  });
+
+  it("shows empty-group deletion only to owners", () => {
+    const { rerender } = render(
+      <GroupDetailView group={group} members={members} />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Delete empty group" }),
+    ).toBeVisible();
+
+    rerender(
+      <GroupDetailView
+        group={{ ...group, role: "member" }}
+        members={members}
+      />,
+    );
+
+    expect(
+      screen.queryByRole("button", { name: "Delete empty group" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("removes an open archive dialog if the viewer is no longer an owner", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(
+      <GroupDetailView group={group} members={members} />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Delete empty group" }));
+    expect(screen.getByRole("dialog")).toBeVisible();
+
+    rerender(
+      <GroupDetailView
+        group={{ ...group, role: "member" }}
+        members={members}
+      />,
+    );
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("requires the exact current group name before enabling deletion", async () => {
+    const user = userEvent.setup();
+    render(<GroupDetailView group={group} members={members} />);
+
+    await user.click(screen.getByRole("button", { name: "Delete empty group" }));
+    const confirmation = screen.getByLabelText("Type the group name to confirm");
+    const submit = screen.getByRole("button", {
+      name: "Delete empty group permanently from view",
+    });
+
+    expect(submit).toBeDisabled();
+    await user.type(confirmation, "wrong");
+    expect(submit).toBeDisabled();
+    await user.clear(confirmation);
+    await user.type(confirmation, group.name);
+    expect(submit).toBeEnabled();
+    await user.type(confirmation, " ");
+    expect(submit).toBeDisabled();
+  });
+});
+
+describe("ArchiveEmptyGroupDialog", () => {
+  it("archives once and navigates to the group list", async () => {
+    const user = userEvent.setup();
+    const onSuccess = vi.fn();
+    appFetchMock.mockResolvedValueOnce({
+      data: { group_id: "g1", status: "archived" },
+    });
+    render(
+      <ArchiveEmptyGroupDialog
+        groupId="g1"
+        groupName={group.name}
+        onSuccess={onSuccess}
+        open
+      />,
+    );
+
+    await user.type(
+      screen.getByLabelText("Type the group name to confirm"),
+      group.name,
+    );
+    await user.click(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    );
+
+    await waitFor(() => expect(onSuccess).toHaveBeenCalledWith("/app/groups"));
+    expect(appFetchMock).toHaveBeenCalledTimes(1);
+    expect(appFetchMock).toHaveBeenCalledWith("/api/app/groups/g1/archive", {
+      method: "POST",
+    });
+  });
+
+  it.each([
+    ["GROUP_HAS_OTHER_ACTIVE_MEMBERS", "Other active members must leave first."],
+    ["GROUP_HAS_FINANCIAL_HISTORY", "Groups with financial history cannot be deleted."],
+    ["OWNER_REQUIRED", "Only an owner can delete an empty group."],
+  ])(
+    "keeps the confirmation recoverable after %s",
+    async (code, message) => {
+      const user = userEvent.setup();
+      const onSuccess = vi.fn();
+      appFetchMock.mockRejectedValueOnce(new AppClientError(409, code));
+      render(
+        <ArchiveEmptyGroupDialog
+          groupId="g1"
+          groupName={group.name}
+          onSuccess={onSuccess}
+          open
+        />,
+      );
+
+      const confirmation = screen.getByLabelText(
+        "Type the group name to confirm",
+      );
+      await user.type(confirmation, group.name);
+      await user.click(
+        screen.getByRole("button", {
+          name: "Delete empty group permanently from view",
+        }),
+      );
+
+      expect(await screen.findByRole("alert")).toHaveTextContent(message);
+      expect(screen.getByRole("dialog")).toBeVisible();
+      expect(confirmation).toHaveValue(group.name);
+      expect(onSuccess).not.toHaveBeenCalled();
+    },
+  );
+
+  it("locks submission and every close control while pending", async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    appFetchMock.mockReturnValueOnce(new Promise(() => undefined));
+    render(
+      <ArchiveEmptyGroupDialog
+        groupId="g1"
+        groupName={group.name}
+        onClose={onClose}
+        open
+      />,
+    );
+
+    await user.type(
+      screen.getByLabelText("Type the group name to confirm"),
+      group.name,
+    );
+    const submit = screen.getByRole("button", {
+      name: "Delete empty group permanently from view",
+    });
+    const close = screen.getByRole("button", { name: "Close dialog" });
+    await user.click(submit);
+
+    expect(
+      await screen.findByRole("button", { name: "Deleting group..." }),
+    ).toBeDisabled();
+    expect(close).toBeDisabled();
+    await user.click(submit);
+    await user.click(close);
+
+    expect(appFetchMock).toHaveBeenCalledTimes(1);
+    expect(onClose).not.toHaveBeenCalled();
   });
 });

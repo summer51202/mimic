@@ -25,3 +25,30 @@ export function groupErrorMessage(error: unknown): string {
 
   return "The service is temporarily unavailable. Mimiku kept your changes.";
 }
+
+export function archiveGroupErrorMessage(error: unknown): string {
+  const unavailable =
+    "The service is temporarily unavailable. Mimiku kept this group.";
+
+  if (!(error instanceof AppClientError)) {
+    return unavailable;
+  }
+
+  if (error.code === "GROUP_HAS_OTHER_ACTIVE_MEMBERS") {
+    return "Other active members must leave first.";
+  }
+
+  if (error.code === "GROUP_HAS_FINANCIAL_HISTORY") {
+    return "Groups with financial history cannot be deleted.";
+  }
+
+  if (error.code === "OWNER_REQUIRED") {
+    return "Only an owner can delete an empty group.";
+  }
+
+  if (error.status === 401) {
+    return "Your session expired. Sign in again, then retry.";
+  }
+
+  return unavailable;
+}

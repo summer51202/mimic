@@ -886,3 +886,15 @@
 - Explicitly replaced the native `onClose`, `open`, and `title` contracts with PixelDialog's controlled props.
 **Decisions:** Use React's element-specific dialog attributes rather than duplicating the native cancel callback type.
 **Known gaps / follow-ups:** Full Web typecheck remains blocked by existing missing Next and CSS module declarations in this worktree; the changed dialog and test files have no diagnostics.
+
+## 2026-09-02 — Delete unused groups from view
+
+**Task:** Add an owner-only Web confirmation flow for archiving an empty group from view.
+**Scope:** `web/src/features/groups` group detail, archive dialog, client error copy, styles, and action tests
+**What changed:**
+- Added an exact-name confirmation dialog that archives once, locks controls while pending, and returns to the group list after success.
+- Added archive-specific recovery copy for active-member, financial-history, owner, session, and availability failures without changing rename or leave messages.
+- Added an owner-only responsive Danger zone using the existing semantic danger treatment and clear soft-archive retention language.
+- Added focused coverage for authorization visibility, exact matching, success navigation, recoverable domain errors, and duplicate-submit protection.
+**Decisions:** Keep the input unchanged after failures so owners can retry; describe the operation as removal from view plus archival because membership, invite, and audit history remains retained.
+**Known gaps / follow-ups:** There is no self-service restore flow; the dialog states this explicitly.
