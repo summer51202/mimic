@@ -10,6 +10,7 @@ import FundPage from "./funds/[fundId]/page";
 import GroupDetailPage from "./groups/[groupId]/page";
 import JoinGroupPage from "./groups/join/page";
 import GroupsPage from "./groups/page";
+import SettingsPage from "./settings/page";
 import AppLoading from "./loading";
 import AppNotFound from "./not-found";
 import AppPage from "./page";
@@ -19,6 +20,7 @@ const {
   getFundSummaryMock,
   getGroupDashboardMock,
   getGroupMock,
+  getSettingsProfileMock,
   listFundsMock,
   listGroupsMock,
   listMembersMock,
@@ -31,6 +33,7 @@ const {
   getFundSummaryMock: vi.fn(),
   getGroupDashboardMock: vi.fn(),
   getGroupMock: vi.fn(),
+  getSettingsProfileMock: vi.fn(),
   listFundsMock: vi.fn(),
   listGroupsMock: vi.fn(),
   listMembersMock: vi.fn(),
@@ -81,6 +84,14 @@ vi.mock("@/features/funds/fund-queries", () => ({
   getFundSummary: getFundSummaryMock,
   listFunds: listFundsMock,
 }));
+vi.mock("@/features/settings/settings-queries", () => ({
+  getSettingsProfile: getSettingsProfileMock,
+}));
+vi.mock("@/features/settings/settings-form", () => ({
+  SettingsForm: ({ profile }: { profile: { mimic_id: string } }) => (
+    <div>settings:{profile.mimic_id}</div>
+  ),
+}));
 vi.mock("@/features/groups/treasury-dashboard", () => ({
   TreasuryDashboard: ({ selectedGroupId }: { selectedGroupId: string | null }) => (
     <div>dashboard:{selectedGroupId}</div>
@@ -109,6 +120,7 @@ beforeEach(() => {
   getFundSummaryMock.mockReset();
   getGroupDashboardMock.mockReset();
   getGroupMock.mockReset();
+  getSettingsProfileMock.mockReset();
   listFundsMock.mockReset();
   listGroupsMock.mockReset();
   listMembersMock.mockReset();
@@ -292,6 +304,28 @@ describe("authenticated route boundaries", () => {
     expect(screen.getByRole("heading", { name: "Join group" })).toBeInTheDocument();
     expect(screen.getByLabelText("Invite code or link")).toBeInTheDocument();
     expect(screen.queryByText(/qr/i)).not.toBeInTheDocument();
+  });
+
+  it("renders Settings from the authenticated profile and handles read failures", async () => {
+    getSettingsProfileMock.mockResolvedValueOnce({
+      id: "user-1",
+      mimic_id: "MIMIC-2345-6789",
+      email: "edward@example.com",
+      display_name: "Edward",
+      locale: "zh-TW",
+      timezone: "Asia/Taipei",
+    });
+
+    render(await SettingsPage());
+    expect(screen.getByRole("heading", { name: "Settings" })).toBeVisible();
+    expect(screen.getByText("settings:MIMIC-2345-6789")).toBeVisible();
+
+    cleanup();
+    getSettingsProfileMock.mockRejectedValueOnce(new ApiUnavailableError());
+    render(await SettingsPage());
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Mimiku cannot reach the treasury right now.",
+    );
   });
 
   it("keeps group-detail parallel reads and rethrows unknown failures", async () => {
