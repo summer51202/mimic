@@ -36,8 +36,10 @@ export function ArchiveEmptyGroupDialog({
   const [state, setState] = useState<ArchiveDialogState>(() =>
     emptyState(context),
   );
+  const latestContextRef = useRef(context);
   const mountedRef = useRef(false);
   const operationRef = useRef(0);
+  latestContextRef.current = context;
 
   if (state.context !== context) {
     setState(emptyState(context));
@@ -68,11 +70,12 @@ export function ArchiveEmptyGroupDialog({
   async function archiveGroup(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!confirmed || pending) {
+    if (!open || !confirmed || pending) {
       return;
     }
 
     const operation = operationRef.current + 1;
+    const requestContext = context;
     operationRef.current = operation;
     setState((current) => ({ ...current, error: null, pending: true }));
 
@@ -82,13 +85,31 @@ export function ArchiveEmptyGroupDialog({
         { method: "POST" },
       );
 
-      if (!mountedRef.current || operationRef.current !== operation) {
+      if (
+        !isCurrentOperation({
+          latestContext: latestContextRef.current,
+          mounted: mountedRef.current,
+          operation,
+          requestContext,
+          requestOpen: open,
+          token: operationRef.current,
+        })
+      ) {
         return;
       }
 
       navigate(onSuccess, "/app/groups");
     } catch (caught) {
-      if (!mountedRef.current || operationRef.current !== operation) {
+      if (
+        !isCurrentOperation({
+          latestContext: latestContextRef.current,
+          mounted: mountedRef.current,
+          operation,
+          requestContext,
+          requestOpen: open,
+          token: operationRef.current,
+        })
+      ) {
         return;
       }
 
@@ -141,6 +162,29 @@ export function ArchiveEmptyGroupDialog({
         </PixelButton>
       </form>
     </PixelDialog>
+  );
+}
+
+function isCurrentOperation({
+  latestContext,
+  mounted,
+  operation,
+  requestContext,
+  requestOpen,
+  token,
+}: {
+  latestContext: string;
+  mounted: boolean;
+  operation: number;
+  requestContext: string;
+  requestOpen: boolean;
+  token: number;
+}) {
+  return (
+    mounted &&
+    requestOpen &&
+    token === operation &&
+    latestContext === requestContext
   );
 }
 

@@ -910,3 +910,14 @@
 - Replaced the handwritten confirmation input with PixelField and added access-loss recovery copy.
 **Decisions:** Use a render-context state reset to avoid effect-driven state updates while invalidating async operations in lifecycle effects.
 **Known gaps / follow-ups:** Full Web typecheck remains blocked by the existing missing Next and CSS module declarations.
+
+## 2026-09-02 — Reject stale archive completions
+
+**Task:** Close the commit-to-passive-effect race for pending archive requests when dialog context changes.
+**Scope:** `web/src/features/groups/archive-empty-group-dialog.tsx`, `web/src/features/groups/group-actions.test.tsx`
+**What changed:**
+- Synchronously tracked the latest group/open context during render and captured the request context at submission.
+- Required mounted state, current operation token, matching latest context, and an open request context before success or failure side effects.
+- Added pending success and failure coverage across group identity changes, including clean disabled state for the replacement context.
+**Decisions:** Retain the operation-invalidating effects as defense in depth while making correctness independent of passive-effect timing.
+**Known gaps / follow-ups:** Full Web typecheck remains blocked by the existing missing Next and CSS module declarations.

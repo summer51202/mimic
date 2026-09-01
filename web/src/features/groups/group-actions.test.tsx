@@ -471,4 +471,91 @@ describe("ArchiveEmptyGroupDialog", () => {
 
     expect(onSuccess).not.toHaveBeenCalled();
   });
+
+  it("ignores a pending success after the group context changes", async () => {
+    const user = userEvent.setup();
+    const onSuccess = vi.fn();
+    let resolveRequest: ((value: unknown) => void) | undefined;
+    appFetchMock.mockReturnValueOnce(
+      new Promise((resolve) => {
+        resolveRequest = resolve;
+      }),
+    );
+    const { rerender } = render(
+      <ArchiveEmptyGroupDialog
+        groupId="g1"
+        groupName={group.name}
+        onSuccess={onSuccess}
+        open
+      />,
+    );
+    await user.type(
+      screen.getByLabelText("Type the group name to confirm"),
+      group.name,
+    );
+    await user.click(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    );
+
+    rerender(
+      <ArchiveEmptyGroupDialog
+        groupId="g2"
+        groupName="Another group"
+        onSuccess={onSuccess}
+        open
+      />,
+    );
+    resolveRequest?.({ data: { group_id: "g1", status: "archived" } });
+    await Promise.resolve();
+
+    expect(onSuccess).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Type the group name to confirm")).toHaveValue(
+      "",
+    );
+    expect(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    ).toBeDisabled();
+  });
+
+  it("ignores a pending failure after the group context changes", async () => {
+    const user = userEvent.setup();
+    let rejectRequest: ((reason?: unknown) => void) | undefined;
+    appFetchMock.mockReturnValueOnce(
+      new Promise((_, reject) => {
+        rejectRequest = reject;
+      }),
+    );
+    const { rerender } = render(
+      <ArchiveEmptyGroupDialog groupId="g1" groupName={group.name} open />,
+    );
+    await user.type(
+      screen.getByLabelText("Type the group name to confirm"),
+      group.name,
+    );
+    await user.click(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    );
+
+    rerender(
+      <ArchiveEmptyGroupDialog groupId="g2" groupName="Another group" open />,
+    );
+    rejectRequest?.(new AppClientError(403, "GROUP_ACCESS_DENIED"));
+    await Promise.resolve();
+
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByLabelText("Type the group name to confirm")).toHaveValue(
+      "",
+    );
+    expect(
+      screen.getByRole("button", {
+        name: "Delete empty group permanently from view",
+      }),
+    ).toBeDisabled();
+  });
 });
