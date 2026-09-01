@@ -876,3 +876,13 @@
 - Added enabled, disabled, and caller-veto native cancellation coverage.
 **Decisions:** Snapshot `defaultPrevented` immediately after the caller handler because the internal handler always prevents the native default.
 **Known gaps / follow-ups:** Group archive UI wiring remains a separate task.
+
+## 2026-09-02 — Type dialog cancel events
+
+**Task:** Correct PixelDialog's native dialog event typings after adding caller cancel-handler composition.
+**Scope:** `web/src/shared/ui/pixel-dialog.tsx`
+**What changed:**
+- Based PixelDialog props on React's `DialogHTMLAttributes<HTMLDialogElement>` so `onCancel` is typed as a dialog event handler.
+- Explicitly replaced the native `onClose`, `open`, and `title` contracts with PixelDialog's controlled props.
+**Decisions:** Use React's element-specific dialog attributes rather than duplicating the native cancel callback type.
+**Known gaps / follow-ups:** Full Web typecheck remains blocked by existing missing Next and CSS module declarations in this worktree; the changed dialog and test files have no diagnostics.

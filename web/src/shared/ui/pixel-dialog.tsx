@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  type HTMLAttributes,
+  type DialogHTMLAttributes,
   type KeyboardEvent,
   type ReactNode,
   type SyntheticEvent,
@@ -13,7 +13,10 @@ import {
 import { PixelButton } from "./pixel-button";
 import { PixelFrame } from "./pixel-frame";
 
-type PixelDialogProps = Omit<HTMLAttributes<HTMLDialogElement>, "title"> & {
+type PixelDialogProps = Omit<
+  DialogHTMLAttributes<HTMLDialogElement>,
+  "onClose" | "open" | "title"
+> & {
   closeDisabled?: boolean;
   closeLabel?: string;
   description?: ReactNode;
