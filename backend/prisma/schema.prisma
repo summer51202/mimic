@@ -131,6 +131,7 @@ model User {
   email         String   @unique @db.VarChar(255)
   passwordHash  String   @map("password_hash") @db.VarChar(255)
   displayName   String   @map("display_name") @db.VarChar(100)
+  mimicId       String   @unique @map("mimic_id") @db.VarChar(15)
   avatarUrl     String?  @map("avatar_url") @db.VarChar(500)
   locale        String   @default("zh-TW") @db.VarChar(20)
   timezone      String   @default("Asia/Taipei") @db.VarChar(100)
