@@ -7,6 +7,7 @@ import {
 import {
   AuditAction,
   AuditEntityType,
+  FundStatus,
   GroupStatus,
   InviteStatus,
   MemberRole,
@@ -269,6 +270,269 @@ describe('GroupsService.updateMemberRole', () => {
     expect(actorReadOrder).toBeLessThan(targetReadOrder);
     expect(targetReadOrder).toBeLessThan(updateOrder);
     expect(updateOrder).toBeLessThan(auditOrder);
+  });
+});
+
+describe('GroupsService.archiveEmptyGroup', () => {
+  const archiveTime = new Date('2026-09-02T04:00:00.000Z');
+  const group = { id: 'group-1', status: GroupStatus.ACTIVE };
+  const owner = {
+    id: 'membership-1',
+    userId: 'owner-1',
+    role: MemberRole.OWNER,
+    status: MemberStatus.ACTIVE,
+  };
+
+  function setup() {
+    const tx = {
+      $executeRaw: jest.fn().mockResolvedValue(0),
+      group: {
+        findFirst: jest.fn().mockResolvedValue(group),
+        updateMany: jest.fn().mockResolvedValue({ count: 1 }),
+      },
+      groupMember: {
+        findFirst: jest.fn().mockResolvedValue(owner),
+        count: jest.fn().mockResolvedValue(1),
+      },
+      fund: {
+        findMany: jest.fn().mockResolvedValue([
+          { id: 'fund-1' },
+          { id: 'fund-2' },
+        ]),
+        updateMany: jest.fn().mockResolvedValue({ count: 2 }),
+      },
+      contribution: { findFirst: jest.fn().mockResolvedValue(null) },
+      expense: { findFirst: jest.fn().mockResolvedValue(null) },
+      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
+      recurringContributionRule: {
+        findFirst: jest.fn().mockResolvedValue(null),
+      },
+      groupInvite: {
+        updateMany: jest.fn().mockResolvedValue({ count: 2 }),
+      },
+      auditLog: { create: jest.fn().mockResolvedValue({ id: 'audit-1' }) },
+    };
+    const prisma = {
+      $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) =>
+        callback(tx),
+      ),
+    };
+
+    return { service: new GroupsService(prisma as never), prisma, tx };
+  }
+
+  beforeEach(() => jest.useFakeTimers().setSystemTime(archiveTime));
+  afterEach(() => jest.useRealTimers());
+
+  it('returns GROUP_NOT_FOUND before membership checks for an inactive or missing group', async () => {
+    const { service, tx } = setup();
+    tx.group.findFirst.mockResolvedValue(null);
+
+    await expect(
+      service.archiveEmptyGroup('group-1', 'owner-1'),
+    ).rejects.toEqual(new NotFoundException('GROUP_NOT_FOUND'));
+
+    expect(tx.groupMember.findFirst).not.toHaveBeenCalled();
+    expect(tx.groupMember.count).not.toHaveBeenCalled();
+  });
+
+  it('returns GROUP_ACCESS_DENIED for an actor without active membership', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.findFirst.mockResolvedValue(null);
+
+    await expect(
+      service.archiveEmptyGroup('group-1', 'outsider-1'),
+    ).rejects.toEqual(new ForbiddenException('GROUP_ACCESS_DENIED'));
+
+    expect(tx.groupMember.count).not.toHaveBeenCalled();
+  });
+
+  it('returns OWNER_REQUIRED for an active non-owner', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.findFirst.mockResolvedValue({
+      ...owner,
+      role: MemberRole.MEMBER,
+    });
+
+    await expect(
+      service.archiveEmptyGroup('group-1', 'member-1'),
+    ).rejects.toEqual(new ForbiddenException('OWNER_REQUIRED'));
+
+    expect(tx.groupMember.count).not.toHaveBeenCalled();
+  });
+
+  it('rejects another active member while ignoring historical memberships', async () => {
+    const { service, tx } = setup();
+    tx.groupMember.count.mockResolvedValue(2);
+
+    await expect(
+      service.archiveEmptyGroup('group-1', 'owner-1'),
+    ).rejects.toEqual(
+      new ConflictException('GROUP_HAS_OTHER_ACTIVE_MEMBERS'),
+    );
+
+    expect(tx.groupMember.count).toHaveBeenCalledWith({
+      where: { groupId: 'group-1', status: MemberStatus.ACTIVE },
+    });
+    expect(tx.contribution.findFirst).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['contribution', 'contribution-1'],
+    ['expense', 'expense-1'],
+    ['settlement', 'settlement-1'],
+    ['recurringContributionRule', 'rule-1'],
+  ] as const)('rejects history found through %s regardless of record status', async (
+    model,
+    id,
+  ) => {
+    const { service, tx } = setup();
+    tx[model].findFirst.mockResolvedValue({ id });
+
+    await expect(
+      service.archiveEmptyGroup('group-1', 'owner-1'),
+    ).rejects.toEqual(new ConflictException('GROUP_HAS_FINANCIAL_HISTORY'));
+
+    for (const historyModel of [
+      tx.contribution,
+      tx.expense,
+      tx.settlement,
+      tx.recurringContributionRule,
+    ]) {
+      expect(historyModel.findFirst).toHaveBeenCalledWith({
+        where: { fund: { groupId: 'group-1' } },
+        select: { id: true },
+      });
+      expect(historyModel.findFirst.mock.calls[0][0].where).not.toHaveProperty(
+        'status',
+      );
+    }
+    expect(tx.fund.updateMany).not.toHaveBeenCalled();
+    expect(tx.group.updateMany).not.toHaveBeenCalled();
+  });
+
+  it('archives active empty funds, revokes pending invites, and audits once', async () => {
+    const { service, prisma, tx } = setup();
+
+    await expect(
+      service.archiveEmptyGroup('group-1', 'owner-1'),
+    ).resolves.toEqual({ id: 'group-1', status: GroupStatus.ARCHIVED });
+
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(tx.fund.findMany).toHaveBeenCalledWith({
+      where: { groupId: 'group-1', status: FundStatus.ACTIVE },
+      select: { id: true },
+      orderBy: { createdAt: 'asc' },
+    });
+    expect(tx.fund.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: { in: ['fund-1', 'fund-2'] },
+        status: FundStatus.ACTIVE,
+      },
+      data: { status: FundStatus.ARCHIVED, archivedAt: archiveTime },
+    });
+    expect(tx.groupInvite.updateMany).toHaveBeenCalledWith({
+      where: { groupId: 'group-1', status: InviteStatus.PENDING },
+      data: { status: InviteStatus.REVOKED },
+    });
+    expect(tx.group.updateMany).toHaveBeenCalledWith({
+      where: { id: 'group-1', status: GroupStatus.ACTIVE },
+      data: { status: GroupStatus.ARCHIVED },
+    });
+    expect(tx.auditLog.create).toHaveBeenCalledWith({
+      data: {
+        groupId: 'group-1',
+        actorUserId: 'owner-1',
+        entityType: AuditEntityType.GROUP,
+        entityId: 'group-1',
+        action: AuditAction.ARCHIVE,
+        beforeSnapshot: { status: 'active' },
+        afterSnapshot: { status: 'archived' },
+        metadata: {
+          operation: 'archive_empty_group',
+          archived_fund_count: 2,
+          archived_fund_ids: ['fund-1', 'fund-2'],
+          revoked_invite_count: 2,
+        },
+      },
+    });
+  });
+
+  it('skips the fund update when there are no active funds', async () => {
+    const { service, tx } = setup();
+    tx.fund.findMany.mockResolvedValue([]);
+
+    await service.archiveEmptyGroup('group-1', 'owner-1');
+
+    expect(tx.fund.updateMany).not.toHaveBeenCalled();
+    expect(tx.auditLog.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        metadata: expect.objectContaining({
+          archived_fund_count: 0,
+          archived_fund_ids: [],
+        }),
+      }),
+    });
+  });
+
+  it('leaves already archived funds unchanged', async () => {
+    const { service, tx } = setup();
+    tx.fund.findMany.mockResolvedValue([{ id: 'active-fund' }]);
+
+    await service.archiveEmptyGroup('group-1', 'owner-1');
+
+    expect(tx.fund.findMany).toHaveBeenCalledWith({
+      where: { groupId: 'group-1', status: FundStatus.ACTIVE },
+      select: { id: true },
+      orderBy: { createdAt: 'asc' },
+    });
+    expect(tx.fund.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: { in: ['active-fund'] },
+        status: FundStatus.ACTIVE,
+      },
+      data: { status: FundStatus.ARCHIVED, archivedAt: archiveTime },
+    });
+  });
+
+  it('returns GROUP_NOT_FOUND when the conditional group archive loses a race', async () => {
+    const { service, tx } = setup();
+    tx.group.updateMany.mockResolvedValue({ count: 0 });
+
+    await expect(
+      service.archiveEmptyGroup('group-1', 'owner-1'),
+    ).rejects.toEqual(new NotFoundException('GROUP_NOT_FOUND'));
+
+    expect(tx.auditLog.create).not.toHaveBeenCalled();
+  });
+
+  it('locks before ordered eligibility reads and writes', async () => {
+    const { service, tx } = setup();
+
+    await service.archiveEmptyGroup('group-1', 'owner-1');
+
+    const order = (mock: jest.Mock) => mock.mock.invocationCallOrder[0];
+    expect(order(tx.$executeRaw)).toBeLessThan(order(tx.group.findFirst));
+    expect(order(tx.group.findFirst)).toBeLessThan(
+      order(tx.groupMember.findFirst),
+    );
+    expect(order(tx.groupMember.findFirst)).toBeLessThan(
+      order(tx.groupMember.count),
+    );
+    expect(order(tx.groupMember.count)).toBeLessThan(
+      order(tx.contribution.findFirst),
+    );
+    expect(order(tx.recurringContributionRule.findFirst)).toBeLessThan(
+      order(tx.fund.findMany),
+    );
+    expect(order(tx.fund.findMany)).toBeLessThan(order(tx.fund.updateMany));
+    expect(order(tx.fund.updateMany)).toBeLessThan(
+      order(tx.groupInvite.updateMany),
+    );
+    expect(order(tx.groupInvite.updateMany)).toBeLessThan(
+      order(tx.group.updateMany),
+    );
+    expect(order(tx.group.updateMany)).toBeLessThan(order(tx.auditLog.create));
   });
 });
 

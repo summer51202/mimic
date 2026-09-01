@@ -9,6 +9,7 @@ import {
 import {
   AuditAction,
   AuditEntityType,
+  FundStatus,
   GroupStatus,
   GroupType,
   InviteStatus,
@@ -271,6 +272,111 @@ export class GroupsService {
         MemberStatus.LEFT, 'leave_group',
       );
       return updated;
+    });
+  }
+
+  async archiveEmptyGroup(groupId: string, actorUserId: string) {
+    return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, groupId);
+
+      const group = await tx.group.findFirst({
+        where: { id: groupId, status: GroupStatus.ACTIVE },
+      });
+      if (!group) {
+        throw new NotFoundException('GROUP_NOT_FOUND');
+      }
+
+      const actor = await this.findActiveMembership(
+        tx,
+        groupId,
+        actorUserId,
+      );
+      if (!actor) {
+        throw new ForbiddenException('GROUP_ACCESS_DENIED');
+      }
+      if (actor.role !== MemberRole.OWNER) {
+        throw new ForbiddenException('OWNER_REQUIRED');
+      }
+
+      const activeMemberCount = await tx.groupMember.count({
+        where: { groupId, status: MemberStatus.ACTIVE },
+      });
+      if (activeMemberCount !== 1) {
+        throw new ConflictException('GROUP_HAS_OTHER_ACTIVE_MEMBERS');
+      }
+
+      const historyWhere = { fund: { groupId } };
+      const history = await Promise.all([
+        tx.contribution.findFirst({
+          where: historyWhere,
+          select: { id: true },
+        }),
+        tx.expense.findFirst({
+          where: historyWhere,
+          select: { id: true },
+        }),
+        tx.settlement.findFirst({
+          where: historyWhere,
+          select: { id: true },
+        }),
+        tx.recurringContributionRule.findFirst({
+          where: historyWhere,
+          select: { id: true },
+        }),
+      ]);
+      if (history.some(Boolean)) {
+        throw new ConflictException('GROUP_HAS_FINANCIAL_HISTORY');
+      }
+
+      const activeFunds = await tx.fund.findMany({
+        where: { groupId, status: FundStatus.ACTIVE },
+        select: { id: true },
+        orderBy: { createdAt: 'asc' },
+      });
+      const archivedAt = new Date();
+      const archivedFundIds = activeFunds.map((fund) => fund.id);
+
+      if (archivedFundIds.length > 0) {
+        await tx.fund.updateMany({
+          where: {
+            id: { in: archivedFundIds },
+            status: FundStatus.ACTIVE,
+          },
+          data: { status: FundStatus.ARCHIVED, archivedAt },
+        });
+      }
+
+      const revokedInvites = await tx.groupInvite.updateMany({
+        where: { groupId, status: InviteStatus.PENDING },
+        data: { status: InviteStatus.REVOKED },
+      });
+      const archived = await tx.group.updateMany({
+        where: { id: groupId, status: GroupStatus.ACTIVE },
+        data: { status: GroupStatus.ARCHIVED },
+      });
+      if (archived.count !== 1) {
+        throw new NotFoundException('GROUP_NOT_FOUND');
+      }
+
+      await tx.auditLog.create({
+        data: {
+          groupId,
+          actorUserId,
+          entityType: AuditEntityType.GROUP,
+          entityId: groupId,
+          action: AuditAction.ARCHIVE,
+          beforeSnapshot: { status: 'active' },
+          afterSnapshot: { status: 'archived' },
+          metadata: {
+            operation: 'archive_empty_group',
+            archived_fund_count: archivedFundIds.length,
+            archived_fund_ids: archivedFundIds,
+            revoked_invite_count: revokedInvites.count,
+          },
+        },
+      });
+
+      return { id: groupId, status: GroupStatus.ARCHIVED };
     });
   }
 
