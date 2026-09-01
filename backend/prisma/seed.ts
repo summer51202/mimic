@@ -1,5 +1,6 @@
 import { PrismaClient, GroupType, MemberRole } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
+import { generateMimicId } from '../src/modules/users/mimic-id';
 
 const prisma = new PrismaClient();
 
@@ -18,6 +19,7 @@ async function main() {
       email: 'demo@mimic.local',
       passwordHash,
       displayName: 'Edward',
+      mimicId: generateMimicId(),
       locale: 'zh-TW',
       timezone: 'Asia/Taipei',
     },

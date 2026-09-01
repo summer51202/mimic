@@ -511,8 +511,8 @@ Append:
 ```markdown
 ## 2026-09-02 — Add account Settings and stable Mimic IDs
 
-**Task:** Add PWA account information, display-name editing, logout, and an immutable public identity visible in groups.  
-**Scope:** User schema/migration and generation, auth/profile/member response contracts, Web Settings/BFF/navigation/member roster, tests, feature map  
+**Task:** Add PWA account information, display-name editing, logout, and an immutable public identity visible in groups.
+**Scope:** User schema/migration and generation, auth/profile/member response contracts, Web Settings/BFF/navigation/member roster, tests, feature map
 **What changed:**
 - Added unique `MIMIC-XXXX-XXXX` IDs without replacing internal UUID relations or JWT subjects.
 - Added protected Settings profile read/update, Copy ID, and session-clearing logout flows.

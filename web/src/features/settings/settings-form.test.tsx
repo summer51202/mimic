@@ -145,6 +145,30 @@ describe("SettingsForm", () => {
     );
   });
 
+  it("falls back to selecting the Mimic ID when clipboard permission is denied", async () => {
+    const user = userEvent.setup();
+    const range = { selectNodeContents: vi.fn() } as unknown as Range;
+    const selection = {
+      addRange: vi.fn(),
+      removeAllRanges: vi.fn(),
+    } as unknown as Selection;
+    vi.stubGlobal("navigator", {
+      clipboard: { writeText: vi.fn().mockRejectedValue(new Error("denied")) },
+    });
+    vi.spyOn(document, "createRange").mockReturnValue(range);
+    vi.spyOn(window, "getSelection").mockReturnValue(selection);
+    render(<SettingsForm profile={profile} />);
+    const identity = screen.getByText(profile.mimic_id);
+
+    await user.click(screen.getByRole("button", { name: "Copy ID" }));
+
+    expect(selection.addRange).toHaveBeenCalledWith(range);
+    expect(identity).toHaveFocus();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Mimic ID selected. Copy it from the page.",
+    );
+  });
+
   it("signs out once and navigates only after local logout succeeds", async () => {
     const user = userEvent.setup();
     const onLogout = vi.fn();

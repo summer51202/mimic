@@ -68,11 +68,20 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
 
   async function copyMimicId() {
     if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(profile.mimic_id);
-      setNotice({ message: "Mimic ID copied.", variant: "success" });
-      return;
+      try {
+        await navigator.clipboard.writeText(profile.mimic_id);
+        setNotice({ message: "Mimic ID copied.", variant: "success" });
+        return;
+      } catch {
+        selectMimicId();
+        return;
+      }
     }
 
+    selectMimicId();
+  }
+
+  function selectMimicId() {
     const identity = mimicIdRef.current;
     const selection = window.getSelection();
 

@@ -799,3 +799,15 @@
 - Added focused parser, form, route, state, and clipboard regression coverage.
 **Decisions:** Keep QR code UI entirely hidden until it is implemented; do not accept invites immediately from the entry form; accept complete HTTP(S) invite URLs from any origin while validating the exact invite path and canonical code format.
 **Known gaps / follow-ups:** QR scanning remains deferred; account profile/logout, public Mimic ID, and safe empty-group archive are separate planned work.
+
+## 2026-09-02 — Add account settings and stable Mimic IDs
+
+**Task:** Add account information, display-name editing, logout, and a stable public identity that remains recognizable after renaming.
+**Scope:** User schema and migration, Mimic ID generation, auth/profile/member API responses, shared Web mutation client, Settings route and form, app navigation, member roster, tests, feature map
+**What changed:**
+- Added immutable unique `MIMIC-XXXX-XXXX` identifiers for new and existing users, with bounded collision retries.
+- Exposed Mimic IDs through authentication, profile, and group-member responses without changing internal UUID relationships.
+- Added an authenticated Settings page for viewing email and Mimic ID, copying the ID with a manual fallback, editing only the display name, and signing out.
+- Enabled Settings navigation and showed stable Mimic IDs beneath member display names in group rosters.
+**Decisions:** Keep internal UUIDs authoritative for authentication and foreign keys; make Mimic ID read-only and separate from display names; exclude search, invitation by Mimic ID, and QR support from this increment.
+**Known gaps / follow-ups:** Production and Staging need the new Prisma migration applied before deploying the matching API/Web code; account deletion, email changes, avatar editing, and Mimic ID lookup remain out of scope.
