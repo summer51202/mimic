@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { ContributionType, FundStatus, MemberStatus, Prisma, RecordStatus } from '@prisma/client';
+import { ContributionType, FundStatus, GroupStatus, MemberStatus, Prisma, RecordStatus } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { lockGroupMutation } from '../prisma/group-mutation-lock';
 import { assertFundPeriodUnlocked } from '../accounting/settlement-period-lock';
@@ -20,6 +20,7 @@ export class ContributionsService {
 
     return this.prisma.$transaction(async (tx) => {
       await lockGroupMutation(tx, fund.groupId);
+      await this.requireWritableFund(tx, fundId, fund.groupId);
       await this.requireActiveMembers(
         tx,
         fund.groupId,
@@ -50,6 +51,23 @@ export class ContributionsService {
     });
     if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
     return fund;
+  }
+
+  private async requireWritableFund(
+    tx: Prisma.TransactionClient,
+    fundId: string,
+    groupId: string,
+  ) {
+    const fund = await tx.fund.findFirst({
+      where: {
+        id: fundId,
+        groupId,
+        status: FundStatus.ACTIVE,
+        group: { status: GroupStatus.ACTIVE },
+      },
+      select: { id: true },
+    });
+    if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
   }
 
   private async requireActiveMembers(tx: Prisma.TransactionClient, groupId: string, actorUserId: string, participantIds: string[]) {

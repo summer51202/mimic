@@ -3,6 +3,7 @@ import {
   ExpenseSplitMode,
   ExpenseType,
   FundStatus,
+  GroupStatus,
   MemberStatus,
   Prisma,
   RecordStatus,
@@ -35,6 +36,7 @@ export class ExpensesService {
 
     return this.prisma.$transaction(async (tx) => {
       await lockGroupMutation(tx, fund.groupId);
+      await this.requireWritableFund(tx, fundId, fund.groupId);
       await this.requireActiveMembers(tx, fund.groupId, actorUserId, [
         ...dto.payers.map((payer) => payer.payer_user_id),
         ...dto.splits.map((split) => split.user_id),
@@ -85,6 +87,23 @@ export class ExpensesService {
     });
     if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
     return fund;
+  }
+
+  private async requireWritableFund(
+    tx: Prisma.TransactionClient,
+    fundId: string,
+    groupId: string,
+  ) {
+    const fund = await tx.fund.findFirst({
+      where: {
+        id: fundId,
+        groupId,
+        status: FundStatus.ACTIVE,
+        group: { status: GroupStatus.ACTIVE },
+      },
+      select: { id: true },
+    });
+    if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
   }
 
   private async requireActiveMembers(tx: Prisma.TransactionClient, groupId: string, actorUserId: string, participantIds: string[]) {

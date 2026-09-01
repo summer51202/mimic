@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import {
   FundStatus,
+  GroupStatus,
   MemberStatus,
   Prisma,
   SettlementStatus,
@@ -99,6 +100,7 @@ export class SettlementsService {
 
     return this.prisma.$transaction(async (tx) => {
       await lockGroupMutation(tx, fund.groupId);
+      await this.requireWritableFund(tx, fundId, fund.groupId);
       await this.requireActiveMembers(tx, fund.groupId, actorUserId, [dto.from_user_id, dto.to_user_id]);
       return tx.settlement.create({
         data: {
@@ -124,6 +126,23 @@ export class SettlementsService {
     });
     if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
     return fund;
+  }
+
+  private async requireWritableFund(
+    tx: Prisma.TransactionClient,
+    fundId: string,
+    groupId: string,
+  ) {
+    const fund = await tx.fund.findFirst({
+      where: {
+        id: fundId,
+        groupId,
+        status: FundStatus.ACTIVE,
+        group: { status: GroupStatus.ACTIVE },
+      },
+      select: { id: true },
+    });
+    if (!fund) throw new NotFoundException('FUND_NOT_FOUND');
   }
 
   private async requireActiveMembers(tx: Prisma.TransactionClient, groupId: string, actorUserId: string, participantIds: string[]) {

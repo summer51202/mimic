@@ -1,12 +1,56 @@
 import { ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
-import { ContributionType, FundStatus, MemberStatus, RecordStatus } from '@prisma/client';
+import { ContributionType, FundStatus, GroupStatus, MemberStatus, RecordStatus } from '@prisma/client';
 import { ContributionsService } from './contributions.service';
 
 describe('ContributionsService', () => {
+  it('rejects contribution creation when the fund group is archived after the initial read', async () => {
+    const tx = {
+      $executeRaw: jest.fn(),
+      fund: { findFirst: jest.fn().mockResolvedValue(null) },
+      groupMember: {
+        findMany: jest.fn().mockResolvedValue([
+          { userId: 'user-1' },
+          { userId: 'user-2' },
+        ]),
+      },
+      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
+      contribution: { create: jest.fn().mockResolvedValue({ id: 'contribution-1' }) },
+    };
+    const prisma = {
+      fund: {
+        findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }),
+      },
+      $transaction: jest.fn((callback) => callback(tx)),
+    };
+    const service = new ContributionsService(prisma as never);
+
+    await expect(service.createContribution('fund-1', 'user-1', {
+      contributor_user_id: 'user-2', amount_minor: 5000,
+      contribution_type: 'one_time', occurred_on: '2026-04-13',
+    })).rejects.toEqual(new NotFoundException('FUND_NOT_FOUND'));
+
+    expect(tx.fund.findFirst).toHaveBeenCalledWith({
+      where: {
+        id: 'fund-1',
+        groupId: 'group-1',
+        status: FundStatus.ACTIVE,
+        group: { status: GroupStatus.ACTIVE },
+      },
+      select: { id: true },
+    });
+    expect(tx.groupMember.findMany).not.toHaveBeenCalled();
+    expect(tx.settlement.findFirst).not.toHaveBeenCalled();
+    expect(tx.contribution.create).not.toHaveBeenCalled();
+  });
+
   it('locks the group and validates active actor and contributor before writing', async () => {
     const order: string[] = [];
     const tx = {
       $executeRaw: jest.fn().mockImplementation(() => { order.push('lock'); }),
+      fund: { findFirst: jest.fn().mockImplementation(() => {
+        order.push('fund');
+        return { id: 'fund-1' };
+      }) },
       groupMember: {
         findMany: jest.fn().mockImplementation(() => {
           order.push('members');
@@ -48,7 +92,7 @@ describe('ContributionsService', () => {
       where: { groupId: 'group-1', userId: { in: ['user-1', 'user-2'] }, status: MemberStatus.ACTIVE },
       select: { userId: true },
     });
-    expect(order).toEqual(['lock', 'members', 'period', 'write']);
+    expect(order).toEqual(['lock', 'fund', 'members', 'period', 'write']);
   });
 
   it.each([
@@ -57,6 +101,7 @@ describe('ContributionsService', () => {
   ])('rejects an inactive %s before writing', async (_label, members, error, message) => {
     const tx = {
       $executeRaw: jest.fn(),
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1' }) },
       groupMember: { findMany: jest.fn().mockResolvedValue(members) },
       settlement: { findFirst: jest.fn().mockResolvedValue(null) },
       contribution: { create: jest.fn() },
@@ -79,6 +124,7 @@ describe('ContributionsService', () => {
     const order: string[] = [];
     const tx = {
       $executeRaw: jest.fn().mockImplementation(() => { order.push('lock'); }),
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1' }) },
       groupMember: {
         findMany: jest.fn().mockImplementation(() => {
           order.push('members');
@@ -111,6 +157,7 @@ describe('ContributionsService', () => {
   it('creates an active contribution for a fund and actor', async () => {
     const tx = {
       $executeRaw: jest.fn(),
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1' }) },
       groupMember: { findMany: jest.fn().mockResolvedValue([{ userId: 'user-1' }, { userId: 'user-2' }]) },
       settlement: { findFirst: jest.fn().mockResolvedValue(null) },
       contribution: {

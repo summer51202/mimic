@@ -5,13 +5,53 @@ import {
   SettlementType,
 } from '@prisma/client';
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common';
-import { FundStatus, MemberStatus } from '@prisma/client';
+import { FundStatus, GroupStatus, MemberStatus } from '@prisma/client';
 import { SettlementsService } from './settlements.service';
 
 describe('SettlementsService', () => {
+  it('rejects settlement creation when the fund group is archived after the initial read', async () => {
+    const tx = {
+      $executeRaw: jest.fn(),
+      fund: { findFirst: jest.fn().mockResolvedValue(null) },
+      groupMember: {
+        findMany: jest.fn().mockResolvedValue([
+          { userId: 'actor' },
+          { userId: 'from' },
+          { userId: 'to' },
+        ]),
+      },
+      settlement: { create: jest.fn().mockResolvedValue({ id: 'settlement-1' }) },
+    };
+    const prisma = {
+      fund: {
+        findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }),
+      },
+      $transaction: jest.fn((callback) => callback(tx)),
+    };
+    const service = new SettlementsService(prisma as never);
+
+    await expect(service.createSettlement('fund-1', 'actor', {
+      from_user_id: 'from', to_user_id: 'to', amount_minor: 10,
+      settlement_type: 'manual',
+    })).rejects.toEqual(new NotFoundException('FUND_NOT_FOUND'));
+
+    expect(tx.fund.findFirst).toHaveBeenCalledWith({
+      where: {
+        id: 'fund-1',
+        groupId: 'group-1',
+        status: FundStatus.ACTIVE,
+        group: { status: GroupStatus.ACTIVE },
+      },
+      select: { id: true },
+    });
+    expect(tx.groupMember.findMany).not.toHaveBeenCalled();
+    expect(tx.settlement.create).not.toHaveBeenCalled();
+  });
+
   it('locks the group and validates actor, sender, and receiver before settlement write', async () => {
     const order: string[] = [];
     const tx = { $executeRaw: jest.fn().mockImplementation(() => { order.push('lock'); }),
+      fund: { findFirst: jest.fn().mockImplementation(() => { order.push('fund'); return { id: 'fund-1' }; }) },
       groupMember: { findMany: jest.fn().mockImplementation(() => { order.push('members'); return ['actor', 'from', 'to'].map((userId) => ({ userId })); }) },
       settlement: { create: jest.fn().mockImplementation(() => { order.push('write'); return { id: 'settlement-1' }; }) } };
     const prisma = { fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) }, $transaction: jest.fn((callback) => callback(tx)) };
@@ -19,14 +59,14 @@ describe('SettlementsService', () => {
     await service.createSettlement('fund-1', 'actor', { from_user_id: 'from', to_user_id: 'to', amount_minor: 10, settlement_type: 'manual' });
     expect(prisma.fund.findFirst).toHaveBeenCalledWith({ where: { id: 'fund-1', status: FundStatus.ACTIVE }, select: { id: true, groupId: true } });
     expect(tx.groupMember.findMany).toHaveBeenCalledWith({ where: { groupId: 'group-1', userId: { in: ['actor', 'from', 'to'] }, status: MemberStatus.ACTIVE }, select: { userId: true } });
-    expect(order).toEqual(['lock', 'members', 'write']);
+    expect(order).toEqual(['lock', 'fund', 'members', 'write']);
   });
 
   it.each([
     [[], ForbiddenException, 'GROUP_ACCESS_DENIED'],
     [[{ userId: 'actor' }, { userId: 'from' }], NotFoundException, 'MEMBER_NOT_FOUND'],
   ])('rejects inactive settlement members before writing', async (members, error, message) => {
-    const tx = { $executeRaw: jest.fn(), groupMember: { findMany: jest.fn().mockResolvedValue(members) }, settlement: { create: jest.fn() } };
+    const tx = { $executeRaw: jest.fn(), fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1' }) }, groupMember: { findMany: jest.fn().mockResolvedValue(members) }, settlement: { create: jest.fn() } };
     const prisma = { fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1', groupId: 'group-1' }) }, $transaction: jest.fn((callback) => callback(tx)) };
     const service = new SettlementsService(prisma as never);
     await expect(service.createSettlement('fund-1', 'actor', { from_user_id: 'from', to_user_id: 'to', amount_minor: 10, settlement_type: 'manual' })).rejects.toEqual(new error(message));
@@ -133,6 +173,7 @@ describe('SettlementsService', () => {
   it('creates a pending manual settlement record', async () => {
     const tx = {
       $executeRaw: jest.fn(),
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1' }) },
       groupMember: { findMany: jest.fn().mockResolvedValue([{ userId: 'owner-1' }, { userId: 'user-a' }, { userId: 'user-b' }]) },
       settlement: {
         create: jest.fn().mockResolvedValue({
@@ -250,6 +291,7 @@ describe('SettlementsService', () => {
   ])('allows equal and open-ended settlement periods', async (periods) => {
     const tx = {
       $executeRaw: jest.fn(),
+      fund: { findFirst: jest.fn().mockResolvedValue({ id: 'fund-1' }) },
       groupMember: {
         findMany: jest.fn().mockResolvedValue([
           { userId: 'owner-1' },

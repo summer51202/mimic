@@ -832,3 +832,14 @@
 - Added race-focused tests for post-lock archival and invite single-use conditions.
 **Decisions:** Preserved existing public error contracts while using the locked invitation snapshot for all order-sensitive acceptance decisions.
 **Known gaps / follow-ups:** None for this task.
+
+## 2026-09-02 — Revalidate writable funds after group locks
+
+**Task:** Prevent contribution, expense, and settlement creation from writing after their fund's group is archived concurrently.
+**Scope:** `backend/src/modules/contributions`, `backend/src/modules/expenses`, `backend/src/modules/settlements`
+**What changed:**
+- Revalidated the active fund and active parent group inside each create transaction immediately after acquiring the group mutation lock.
+- Returned `FUND_NOT_FOUND` before membership checks, settlement-period checks, or writes when the locked resource is no longer writable.
+- Added regression and ordering coverage for all three create paths.
+**Decisions:** Kept the existing pre-transaction fund lookup for the group lock key and limited the new transaction-level guard to create operations.
+**Known gaps / follow-ups:** None for this task.
