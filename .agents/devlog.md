@@ -751,3 +751,38 @@
 - Preserved script contents and retained the existing direct-invocation Linux contract tests.
 **Decisions:** Fixed the repository executable contract instead of wrapping invocations with `sh` or adding a CI-only `chmod`.
 **Known gaps / follow-ups:** GitHub Actions must pass the `Production containers` job after this commit is pushed before the PostgreSQL 18 runtime gate is considered closed.
+
+## 2026-09-01 — Hold treasury opening state briefly
+
+**Task:** Keep the authenticated treasury loading boundary visible for at least 1,000 ms while overlapping dashboard reads.
+**Scope:** `web/src/features/groups/treasury-opening-delay.ts`, its test, the treasury app page, and route-boundary tests
+**What changed:**
+- Added a 1,000 ms opening promise helper with fake-timer coverage.
+- Started the opening timer before the app reads and awaited it for list, dashboard, and successful outcomes.
+- Added route-boundary coverage confirming the successful dashboard path invokes the helper.
+**Decisions:** Await the shared opening promise only at return boundaries so slow reads are not extended beyond their own duration and other routes remain unchanged.
+**Known gaps / follow-ups:** None for this task.
+
+## 2026-09-01 — Render symmetric pixel frames
+
+**Task:** Replace the raster nine-slice frame border with a symmetric scalable CSS pixel frame.
+**Scope:** `web/src/shared/ui/pixel-frame.module.css`, `web/src/shared/ui/pixel-frame.tsx`, `web/src/shared/ui/pixel-ui.test.tsx`, `web/e2e/authenticated-geometry.spec.ts`
+**What changed:**
+- Added a shared 4px frame border and identical 2px/4px outer highlight rings.
+- Routed treasury, panel, and dialog drop shadows through the shared frame variable.
+- Added a dedicated PixelFrame marker and replaced raster and border-image unit/E2E contracts with assertions against the actual shared frame instances and their symmetric border widths.
+**Decisions:** Preserved existing backgrounds, padding, dialog max width, colors, and PixelFrame DOM/API while removing raster-only declarations.
+**Known gaps / follow-ups:** Authenticated E2E could not run because the local PostgreSQL service uses port 5433 while the project environment targets 5432, and the available project credentials were rejected on 5433. Unit tests, lint, typecheck, and production build passed.
+
+## 2026-09-01 — Recover expired Web mutation sessions
+
+**Task:** Prevent group creation and other authenticated Web mutations from failing generically when the access token expires.
+**Scope:** `web/src/app/api/auth/refresh/route.ts`, its tests, `web/src/features/groups/group-client-api.ts`, group client/form tests
+**What changed:**
+- Added a CSRF-protected programmatic refresh endpoint that rotates access, refresh, and CSRF cookies without returning tokens to client JavaScript.
+- Mapped explicit refresh-token rejection to `SESSION_REQUIRED` and cookie clearing while preserving session cookies for network, configuration, contract, and upstream operational failures.
+- Made authenticated client mutations refresh once after an initial 401, fetch the rotated CSRF token, and replay the original mutation exactly once.
+- Added a clear session-expired recovery message and retained form values after failed create attempts.
+- Added regression coverage for token rotation, error mapping, one-shot retry, second-401 termination, CSRF header precedence, and form-state preservation.
+**Decisions:** Kept refresh orchestration in the Web BFF and reused the existing client mutation helper so refresh tokens remain HttpOnly and retry behavior is consistent across current JSON mutation callsites.
+**Known gaps / follow-ups:** The helper accepts general `RequestInit` bodies, but all current callsites use replayable JSON strings or no body; a future streaming-body callsite must opt out of replay or provide a replayable body factory.
