@@ -86,4 +86,32 @@ describe("GroupForm", () => {
     );
     expect(screen.getByLabelText("Group name")).toHaveValue("我們的生活基金");
   });
+
+  it("keeps form values and shows a session-expired error when refresh is rejected", async () => {
+    vi.mocked(fetch)
+      .mockResolvedValueOnce(Response.json({ token: "csrf-token" }))
+      .mockResolvedValueOnce(Response.json({}, { status: 401 }))
+      .mockResolvedValueOnce(
+        Response.json(
+          { error: { code: "SESSION_REQUIRED" } },
+          { status: 401 },
+        ),
+      );
+    const user = userEvent.setup();
+
+    render(<GroupForm mode="create" />);
+
+    await user.type(screen.getByLabelText("Group name"), "我們的生活基金");
+    await user.click(screen.getByRole("button", { name: "Create group" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Your session expired. Sign in again, then retry.",
+    );
+    expect(screen.getByLabelText("Group name")).toHaveValue("我們的生活基金");
+    expect(
+      vi.mocked(fetch).mock.calls.filter(
+        ([input]) => String(input) === "/api/app/groups",
+      ),
+    ).toHaveLength(1);
+  });
 });
