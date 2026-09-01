@@ -76,9 +76,15 @@ async function expectPageGeometry(page: Page, expectsAvatars: boolean) {
       .filter((frame) => frame.getClientRects().length > 0)
       .map((frame) => {
         const rect = frame.getBoundingClientRect();
+        const style = getComputedStyle(frame);
         return {
+          borderWidths: [
+            style.borderTopWidth,
+            style.borderRightWidth,
+            style.borderBottomWidth,
+            style.borderLeftWidth,
+          ],
           name: frame.dataset.frame ?? frame.dataset.variant ?? frame.className,
-          borderImageSlice: getComputedStyle(frame).borderImageSlice,
           values: [rect.x, rect.y, rect.width, rect.height],
         };
       });
@@ -132,9 +138,9 @@ async function expectPageGeometry(page: Page, expectsAvatars: boolean) {
   expect(geometry.frames.length).toBeGreaterThan(0);
   for (const frame of geometry.frames) {
     expect(
-      frame.borderImageSlice,
-      `${frame.name} must not tile the frame source through its content area`,
-    ).not.toContain("fill");
+      new Set(frame.borderWidths).size,
+      `${frame.name} must use identical border widths on all four edges`,
+    ).toBe(1);
     expect(
       frame.values.every(Number.isFinite),
       `${frame.name} frame geometry must remain finite`,

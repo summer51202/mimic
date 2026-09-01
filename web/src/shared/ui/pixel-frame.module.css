@@ -1,13 +1,12 @@
 .frame {
-  --pixel-frame-image: url("/pixel-ui/frames-ui.png");
-  border: 2px solid var(--mimic-color-frame-line);
-  border-image-source: var(--pixel-frame-image);
-  border-image-slice: 32;
-  border-image-width: 8px;
-  border-image-repeat: round;
+  --pixel-frame-drop-shadow: var(--mimic-shadow-pixel-soft);
+  border: 4px solid var(--mimic-color-frame-line);
   border-radius: var(--mimic-radius-panel);
+  box-shadow:
+    0 0 0 2px var(--mimic-color-coin-action),
+    0 0 0 4px var(--mimic-color-frame-highlight),
+    var(--pixel-frame-drop-shadow);
   color: var(--mimic-color-ink);
-  image-rendering: pixelated;
   max-width: 100%;
   min-width: 0;
   position: relative;
@@ -23,20 +22,20 @@
 }
 
 .treasury {
+  --pixel-frame-drop-shadow: var(--mimic-shadow-stepped);
   background: var(--mimic-color-warm-surface);
-  box-shadow: var(--mimic-shadow-stepped);
   padding: var(--mimic-space-5);
 }
 
 .panel {
+  --pixel-frame-drop-shadow: var(--mimic-shadow-pixel-soft);
   background: var(--mimic-color-surface-raised);
-  box-shadow: var(--mimic-shadow-pixel-soft);
   padding: var(--mimic-space-5);
 }
 
 .dialog {
+  --pixel-frame-drop-shadow: var(--mimic-shadow-stepped);
   background: var(--mimic-color-warm-surface);
-  box-shadow: var(--mimic-shadow-stepped);
   max-width: min(100%, 36rem);
   padding: var(--mimic-space-5);
 }

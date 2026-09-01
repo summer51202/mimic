@@ -58,13 +58,14 @@ describe("pixel UI primitives", () => {
       '.pixel-button[data-focus-ring="visible"]:focus-visible',
     );
     expect(globals).toContain("outline: 3px solid var(--mimic-color-focus)");
-    expect(frameCss).toContain('url("/pixel-ui/frames-ui.png")');
-    expect(frameCss).toContain("border-image-source");
-    expect(frameCss).toContain("border-image-slice: 32");
-    expect(frameCss).not.toMatch(/border-image-slice:[^;]*\bfill\b/);
-    expect(frameCss).toContain("border-image-width: 8px");
-    expect(frameCss).toContain("border-image-repeat: round");
-    expect(frameCss).not.toContain("border-image-repeat: stretch");
+    expect(frameCss).not.toContain("border-image");
+    expect(frameCss).toContain("border: 4px solid var(--mimic-color-frame-line)");
+    expect(frameCss).toContain(
+      "0 0 0 2px var(--mimic-color-coin-action)",
+    );
+    expect(frameCss).toContain(
+      "0 0 0 4px var(--mimic-color-frame-highlight)",
+    );
   });
 
   it("wires PixelField labels, descriptions, and errors to its input", () => {
