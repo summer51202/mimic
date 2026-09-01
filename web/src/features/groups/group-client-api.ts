@@ -76,8 +76,8 @@ function sendRequest(
     ...options,
     headers: {
       "content-type": "application/json",
-      "x-csrf-token": csrfToken,
       ...options.headers,
+      "x-csrf-token": csrfToken,
     },
   });
 }

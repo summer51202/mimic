@@ -25,6 +25,7 @@ describe("appFetch", () => {
     await expect(
       appFetch<{ data: { id: string } }>("/api/app/groups", {
         body: JSON.stringify({ name: "Home" }),
+        headers: { "x-csrf-token": "stale-caller-token" },
         method: "POST",
       }),
     ).resolves.toEqual({ data: { id: "g1" } });
@@ -43,6 +44,11 @@ describe("appFetch", () => {
         "x-csrf-token": "csrf-before",
       },
       method: "POST",
+    });
+    expect(fetchMock.mock.calls[1]?.[1]).toMatchObject({
+      headers: {
+        "x-csrf-token": "csrf-before",
+      },
     });
     expect(fetchMock.mock.calls[4]?.[1]).toMatchObject({
       body: JSON.stringify({ name: "Home" }),
