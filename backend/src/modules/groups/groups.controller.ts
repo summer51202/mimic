@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UseGuards,
@@ -124,6 +125,23 @@ export class GroupsController {
       data: {
         group_id: member.groupId,
         status: member.status.toLowerCase(),
+      },
+    };
+  }
+
+  @Post(':groupId/archive')
+  async archiveEmptyGroup(
+    @Param('groupId', new ParseUUIDPipe({ version: '4' })) groupId: string,
+    @CurrentUser() user: RequestUser,
+  ) {
+    const group = await this.groupsService.archiveEmptyGroup(
+      groupId,
+      user.userId,
+    );
+    return {
+      data: {
+        group_id: group.id,
+        status: group.status.toLowerCase(),
       },
     };
   }

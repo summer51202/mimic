@@ -23,6 +23,7 @@ describe('Group detail and management', () => {
     updateMemberRole: jest.fn(),
     removeMember: jest.fn(),
     leaveGroup: jest.fn(),
+    archiveEmptyGroup: jest.fn(),
   };
 
   beforeAll(async () => {
@@ -221,6 +222,41 @@ describe('Group detail and management', () => {
       'group-1',
       'user-1',
     );
+  });
+
+  it('archives an empty group with an exact snake_case response', async () => {
+    const groupId = '123e4567-e89b-42d3-a456-426614174000';
+    groupsService.archiveEmptyGroup.mockResolvedValue({
+      id: groupId,
+      status: 'ARCHIVED',
+    });
+
+    await request(app.getHttpServer())
+      .post(`/api/v1/groups/${groupId}/archive`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(201)
+      .expect({ data: { group_id: groupId, status: 'archived' } });
+    expect(groupsService.archiveEmptyGroup).toHaveBeenCalledWith(
+      groupId,
+      'user-1',
+    );
+  });
+
+  it('rejects unauthenticated empty-group archival', async () => {
+    const groupId = '123e4567-e89b-42d3-a456-426614174000';
+
+    await request(app.getHttpServer())
+      .post(`/api/v1/groups/${groupId}/archive`)
+      .expect(401);
+    expect(groupsService.archiveEmptyGroup).not.toHaveBeenCalled();
+  });
+
+  it('rejects an invalid group id before archiving an empty group', async () => {
+    await request(app.getHttpServer())
+      .post('/api/v1/groups/not-a-uuid/archive')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(400);
+    expect(groupsService.archiveEmptyGroup).not.toHaveBeenCalled();
   });
 
   it.each([

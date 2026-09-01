@@ -811,3 +811,13 @@
 - Enabled Settings navigation and showed stable Mimic IDs beneath member display names in group rosters.
 **Decisions:** Keep internal UUIDs authoritative for authentication and foreign keys; make Mimic ID read-only and separate from display names; exclude search, invitation by Mimic ID, and QR support from this increment.
 **Known gaps / follow-ups:** Production and Staging need the new Prisma migration applied before deploying the matching API/Web code; account deletion, email changes, avatar editing, and Mimic ID lookup remain out of scope.
+
+## 2026-09-02 — Expose empty-group archive endpoint
+
+**Task:** Expose the existing safe empty-group archive service through the authenticated groups API.
+**Scope:** `backend/src/modules/groups/groups.controller.ts`, `backend/test/groups.e2e-spec.ts`
+**What changed:**
+- Added `POST /api/v1/groups/:groupId/archive` with UUID v4 validation and the established snake_case response contract.
+- Added E2E coverage for successful archival, JWT rejection, and invalid UUID rejection before the service call.
+**Decisions:** Reused the controller-level JWT guard and delegated all archive eligibility rules to `GroupsService.archiveEmptyGroup`.
+**Known gaps / follow-ups:** None for this task.
