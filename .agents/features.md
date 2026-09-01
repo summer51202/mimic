@@ -33,6 +33,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 | done | leave-group | Active member leaves a group and reconciles the selected group | `—` | `groups.controller.ts POST /groups/:id/leave` |
 | done | invite-member | Owner generates an invite code | `—` | `groups.controller.ts POST /groups/:id/invites` |
 | done | accept-invite | User joins group via invite code | `—` | `group-invites.controller.ts POST /group-invites/accept` |
+| done | archive-empty-group | The sole active owner can archive an unused group and its empty Funds; any Contribution, Expense, Settlement, or RecurringRule financial history blocks archival | `web/src/features/groups/archive-empty-group-dialog.tsx` | `groups.controller.ts POST /groups/:id/archive`, `groups.service.ts archiveEmptyGroup()` |
 
 ### Funds
 
@@ -100,6 +101,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 | done | pwa-group-detail | View group detail and fund list | `web/src/app/app/groups/[groupId]/page.tsx` | `GET /groups/:id`, `GET /groups/:id/members`, `GET /groups/:id/funds` |
 | done | pwa-group-rename | Rename a group from the PWA | `web/src/features/groups/group-detail.tsx` | `PATCH /groups/:id` |
 | done | pwa-group-leave | Leave a group and reconcile selected-group preference | `web/src/features/groups/leave-group-dialog.tsx` | `POST /groups/:id/leave` |
+| done | pwa-empty-group-archive | The sole active owner can use an exact-name confirmation to archive an unused group and its empty Funds; any Contribution, Expense, Settlement, or RecurringRule financial history blocks archival | `web/src/features/groups/archive-empty-group-dialog.tsx`, `web/src/features/groups/group-detail.tsx` | `POST /groups/:id/archive` through the Web BFF |
 | done | pwa-member-roster | Display active members with stable Mimic IDs and role labels | `web/src/features/groups/member-roster.tsx` | `GET /groups/:id/members` |
 | done | pwa-invitation-loop | Create, share, open, authenticate for, and explicitly accept invites | `web/src/features/invitations` | `POST /groups/:id/invites`, `POST /group-invites/accept` |
 | done | pwa-join-group-entry | Open a dedicated Join group page, enter a raw invite code or complete invite link, and continue through explicit invitation confirmation | `web/src/app/app/groups/join/page.tsx`, `web/src/features/invitations` | `POST /group-invites/accept` through the existing confirmation flow |
@@ -156,6 +158,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 ### Groups & Membership
 - [x] Role promotion/demotion, settled-member removal, and self-leave governance flows
+- [x] Sole-active-owner safe archive for unused groups, including empty Fund archival and rejection of any Contribution, Expense, Settlement, or RecurringRule financial history
 
 ### Funds
 - [ ] `PATCH /funds/:id` — update fund name/description

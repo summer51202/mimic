@@ -931,3 +931,14 @@
 - Preserved mounted, token, and request-context checks for both successful and failed pending requests.
 **Decisions:** Use a layout effect because it runs during commit before promise microtasks and passive effects, while abandoned concurrent renders never publish their context.
 **Known gaps / follow-ups:** RTL/jsdom does not reliably model an abandoned concurrent render; existing pending context-change success/failure coverage remains the observable regression guard.
+
+## 2026-09-02 — Archive unused groups safely
+
+**Task:** Let the sole active owner remove an unused Group while preserving relational and audit history.
+**Scope:** Group archive transaction and endpoint, group-scoped write serialization, Fund and invite lifecycle, Web BFF, owner Danger zone and confirmation, tests, feature map
+**What changed:**
+- Added soft archival that rejects any Contribution, Expense, Settlement, or RecurringRule financial history, archives active empty Funds, revokes pending invites, and writes an audit record.
+- Serialized group-scoped writers and added post-lock checks so archival cannot race fund, invitation, contribution, expense, or settlement creation.
+- Added an owner-only exact-name confirmation flow and cleared the selected-group preference only after successful archival.
+**Decisions:** Fund creation alone is not financial history; preserve former memberships and historical invites; provide no restore UI in this increment.
+**Known gaps / follow-ups:** Archived-group browsing and restore, independent Fund lifecycle UI, and lifecycle support for groups with financial history remain deferred.
