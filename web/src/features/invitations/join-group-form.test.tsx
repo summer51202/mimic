@@ -43,4 +43,18 @@ describe("JoinGroupForm", () => {
     await user.type(input, " yet");
     expect(input).toHaveValue("not an invite yet");
   });
+
+  it("uses the same actionable error for an empty submission", async () => {
+    const user = userEvent.setup();
+
+    render(<JoinGroupForm onSuccess={vi.fn()} />);
+
+    const input = screen.getByLabelText("Invite code or link");
+    await user.click(screen.getByRole("button", { name: "Review invite" }));
+
+    expect(input).toHaveFocus();
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Enter a valid 12-character invite code or invite link.",
+    );
+  });
 });

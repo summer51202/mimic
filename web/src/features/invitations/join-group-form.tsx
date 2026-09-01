@@ -35,7 +35,7 @@ export function JoinGroupForm({ onSuccess }: JoinGroupFormProps) {
   }
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} noValidate onSubmit={handleSubmit}>
       <PixelField
         ref={inputRef}
         autoCapitalize="none"
