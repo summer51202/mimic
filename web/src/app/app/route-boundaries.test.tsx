@@ -41,6 +41,20 @@ const {
   treasuryOpeningMock: vi.fn(),
 }));
 
+function deferred<T>() {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  const promise = new Promise<T>((resolvePromise) => {
+    resolve = resolvePromise;
+  });
+  return { promise, resolve };
+}
+
+async function flushMicrotasks() {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+}
+
 vi.mock("@sentry/nextjs", () => ({ captureException: captureExceptionMock }));
 
 vi.mock("next/navigation", () => ({
@@ -173,16 +187,71 @@ describe("authenticated route boundaries", () => {
     expect(state).not.toHaveTextContent(/group-private|fund-private/i);
   });
 
-  it("keeps dashboard staged reads intact on success", async () => {
+  it("holds successful dashboard output until the opening boundary resolves", async () => {
+    const opening = deferred<void>();
     listGroupsMock.mockResolvedValue([{ id: "group-1" }]);
     getGroupDashboardMock.mockResolvedValue({ group: { id: "group-1" } });
+    treasuryOpeningMock.mockReturnValue(opening.promise);
 
-    render(await AppPage({ searchParams: Promise.resolve({}) }));
+    let settled = false;
+    const pagePromise = AppPage({ searchParams: Promise.resolve({}) }).then((page) => {
+      settled = true;
+      return page;
+    });
+    await flushMicrotasks();
 
-    expect(screen.getByText("dashboard:group-1")).toBeInTheDocument();
+    expect(settled).toBe(false);
+    expect(treasuryOpeningMock.mock.invocationCallOrder[0]).toBeLessThan(
+      listGroupsMock.mock.invocationCallOrder[0],
+    );
     expect(listGroupsMock).toHaveBeenCalledTimes(1);
     expect(getGroupDashboardMock).toHaveBeenCalledWith("group-1");
     expect(treasuryOpeningMock).toHaveBeenCalledTimes(1);
+
+    opening.resolve();
+    render(await pagePromise);
+    expect(screen.getByText("dashboard:group-1")).toBeInTheDocument();
+  });
+
+  it("holds a list-groups failure until the opening boundary resolves", async () => {
+    const opening = deferred<void>();
+    listGroupsMock.mockRejectedValue(new ApiUnavailableError());
+    treasuryOpeningMock.mockReturnValue(opening.promise);
+
+    let settled = false;
+    const pagePromise = AppPage({ searchParams: Promise.resolve({}) }).then((page) => {
+      settled = true;
+      return page;
+    });
+    await flushMicrotasks();
+
+    expect(settled).toBe(false);
+    opening.resolve();
+    render(await pagePromise);
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Mimiku cannot reach the treasury right now.",
+    );
+  });
+
+  it("holds a dashboard failure until the opening boundary resolves", async () => {
+    const opening = deferred<void>();
+    listGroupsMock.mockResolvedValue([{ id: "group-1" }]);
+    getGroupDashboardMock.mockRejectedValue(new ApiUnavailableError());
+    treasuryOpeningMock.mockReturnValue(opening.promise);
+
+    let settled = false;
+    const pagePromise = AppPage({ searchParams: Promise.resolve({}) }).then((page) => {
+      settled = true;
+      return page;
+    });
+    await flushMicrotasks();
+
+    expect(settled).toBe(false);
+    opening.resolve();
+    render(await pagePromise);
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Mimiku cannot reach the treasury right now.",
+    );
   });
 
   it("wires a dashboard second-stage outage to recovery", async () => {

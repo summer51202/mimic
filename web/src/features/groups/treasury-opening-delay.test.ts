@@ -9,12 +9,13 @@ describe("waitForTreasuryOpening", () => {
 
   it("remains pending until the 1,000 ms opening floor", async () => {
     vi.useFakeTimers();
+    expect(treasuryOpeningMinimumMs).toBe(1_000);
     let settled = false;
     const opening = waitForTreasuryOpening().then(() => {
       settled = true;
     });
 
-    await vi.advanceTimersByTimeAsync(treasuryOpeningMinimumMs - 1);
+    await vi.advanceTimersByTimeAsync(999);
     expect(settled).toBe(false);
 
     await vi.advanceTimersByTimeAsync(1);
