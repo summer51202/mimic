@@ -3,8 +3,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { FundStatus, GroupStatus, MemberStatus } from '@prisma/client';
+import { FundStatus, GroupStatus, MemberStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { lockGroupMutation } from '../prisma/group-mutation-lock';
 import { CreateFundDto } from './dto/create-fund.dto';
 
 @Injectable()
@@ -12,14 +13,17 @@ export class FundsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createFund(groupId: string, userId: string, dto: CreateFundDto) {
-    await this.assertActiveGroupMember(groupId, userId);
-    return this.prisma.fund.create({
-      data: {
-        groupId,
-        name: dto.name,
-        currency: dto.currency,
-        createdById: userId,
-      },
+    return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, groupId);
+      await this.assertActiveGroupMember(groupId, userId, tx);
+      return tx.fund.create({
+        data: {
+          groupId,
+          name: dto.name,
+          currency: dto.currency,
+          createdById: userId,
+        },
+      });
     });
   }
 
@@ -74,8 +78,12 @@ export class FundsService {
     return fund;
   }
 
-  private async assertActiveGroupMember(groupId: string, userId: string) {
-    const group = await this.prisma.group.findFirst({
+  private async assertActiveGroupMember(
+    groupId: string,
+    userId: string,
+    client: Prisma.TransactionClient | PrismaService = this.prisma,
+  ) {
+    const group = await client.group.findFirst({
       where: { id: groupId, status: GroupStatus.ACTIVE },
       select: { id: true },
     });
@@ -84,7 +92,7 @@ export class FundsService {
       throw new NotFoundException('GROUP_NOT_FOUND');
     }
 
-    const member = await this.prisma.groupMember.findFirst({
+    const member = await client.groupMember.findFirst({
       where: { groupId, userId, status: MemberStatus.ACTIVE },
       select: { userId: true },
     });

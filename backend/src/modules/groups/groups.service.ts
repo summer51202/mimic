@@ -521,37 +521,41 @@ export class GroupsService {
     actorUserId: string,
     dto: CreateGroupInviteDto,
   ) {
-    const group = await this.prisma.group.findFirst({
-      where: { id: groupId, status: GroupStatus.ACTIVE },
-    });
+    return this.prisma.$transaction(async (tx) => {
+      await lockGroupMutation(tx, groupId);
 
-    if (!group) {
-      throw new ForbiddenException('GROUP_OWNER_REQUIRED');
-    }
+      const group = await tx.group.findFirst({
+        where: { id: groupId, status: GroupStatus.ACTIVE },
+      });
 
-    const ownerMembership = await this.prisma.groupMember.findFirst({
-      where: {
-        groupId,
-        userId: actorUserId,
-        role: MemberRole.OWNER,
-        status: MemberStatus.ACTIVE,
-      },
-    });
+      if (!group) {
+        throw new ForbiddenException('GROUP_OWNER_REQUIRED');
+      }
 
-    if (!ownerMembership) {
-      throw new ForbiddenException('GROUP_OWNER_REQUIRED');
-    }
+      const ownerMembership = await tx.groupMember.findFirst({
+        where: {
+          groupId,
+          userId: actorUserId,
+          role: MemberRole.OWNER,
+          status: MemberStatus.ACTIVE,
+        },
+      });
 
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+      if (!ownerMembership) {
+        throw new ForbiddenException('GROUP_OWNER_REQUIRED');
+      }
 
-    return this.prisma.groupInvite.create({
-      data: {
-        groupId,
-        inviteCode: randomBytes(9).toString('base64url'),
-        invitedById: actorUserId,
-        invitedEmail: dto.invited_email,
-        expiresAt,
-      },
+      const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+      return tx.groupInvite.create({
+        data: {
+          groupId,
+          inviteCode: randomBytes(9).toString('base64url'),
+          invitedById: actorUserId,
+          invitedEmail: dto.invited_email,
+          expiresAt,
+        },
+      });
     });
   }
 
@@ -569,27 +573,40 @@ export class GroupsService {
         }),
       ]);
 
-      if (!invite || !user || invite.group.status !== GroupStatus.ACTIVE) {
+      if (!invite || !user) {
         throw new NotFoundException('INVITE_NOT_FOUND');
       }
-      if (invite.status !== InviteStatus.PENDING) {
+
+      await lockGroupMutation(tx, invite.groupId);
+
+      const currentInvite = await tx.groupInvite.findUnique({
+        where: { inviteCode },
+        include: { group: true },
+      });
+      if (
+        !currentInvite ||
+        currentInvite.group.status !== GroupStatus.ACTIVE
+      ) {
+        throw new NotFoundException('INVITE_NOT_FOUND');
+      }
+      if (currentInvite.status !== InviteStatus.PENDING) {
         throw new ConflictException('INVITE_ALREADY_USED');
       }
 
       const acceptedAt = new Date();
-      if (invite.expiresAt <= acceptedAt) {
+      if (currentInvite.expiresAt <= acceptedAt) {
         throw new GoneException('INVITE_EXPIRED');
       }
       if (
-        invite.invitedEmail &&
-        invite.invitedEmail.toLowerCase() !== user.email.toLowerCase()
+        currentInvite.invitedEmail &&
+        currentInvite.invitedEmail.toLowerCase() !== user.email.toLowerCase()
       ) {
         throw new ForbiddenException('INVITE_EMAIL_MISMATCH');
       }
 
       const existingMembership = await tx.groupMember.findUnique({
         where: {
-          groupId_userId: { groupId: invite.groupId, userId },
+          groupId_userId: { groupId: currentInvite.groupId, userId },
         },
       });
       if (existingMembership?.status === MemberStatus.ACTIVE) {
@@ -598,7 +615,7 @@ export class GroupsService {
 
       const consumed = await tx.groupInvite.updateMany({
         where: {
-          id: invite.id,
+          id: currentInvite.id,
           status: InviteStatus.PENDING,
           expiresAt: { gt: acceptedAt },
           group: { status: GroupStatus.ACTIVE },
@@ -610,19 +627,6 @@ export class GroupsService {
         },
       });
       if (consumed.count !== 1) {
-        const currentInvite = await tx.groupInvite.findUnique({
-          where: { inviteCode },
-          select: {
-            status: true,
-            group: { select: { status: true } },
-          },
-        });
-        if (
-          !currentInvite ||
-          currentInvite.group.status !== GroupStatus.ACTIVE
-        ) {
-          throw new NotFoundException('INVITE_NOT_FOUND');
-        }
         throw new ConflictException('INVITE_ALREADY_USED');
       }
 
@@ -648,7 +652,7 @@ export class GroupsService {
       } else {
         membership = await tx.groupMember.create({
           data: {
-            groupId: invite.groupId,
+            groupId: currentInvite.groupId,
             userId,
             role: MemberRole.MEMBER,
             status: MemberStatus.ACTIVE,
@@ -656,7 +660,11 @@ export class GroupsService {
         });
       }
 
-      return { invite, group: invite.group, membership };
+      return {
+        invite: currentInvite,
+        group: currentInvite.group,
+        membership,
+      };
       });
     } catch (error) {
       if (

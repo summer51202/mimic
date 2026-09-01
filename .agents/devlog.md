@@ -821,3 +821,14 @@
 - Added E2E coverage for successful archival, JWT rejection, and invalid UUID rejection before the service call.
 **Decisions:** Reused the controller-level JWT guard and delegated all archive eligibility rules to `GroupsService.archiveEmptyGroup`.
 **Known gaps / follow-ups:** None for this task.
+
+## 2026-09-02 — Serialize fund and invitation lifecycle writes
+
+**Task:** Serialize fund creation and group invitation writes against group archival.
+**Scope:** `backend/src/modules/funds/funds.service.ts`, `backend/src/modules/funds/funds.service.spec.ts`, `backend/src/modules/groups/groups.service.ts`, `backend/src/modules/groups/groups.service.spec.ts`
+**What changed:**
+- Locked the group mutation boundary before revalidating active group membership and creating funds or invites.
+- Re-read accepted invitations and their group after acquiring the group lock, then kept validation, consumption, and membership writes inside the same transaction.
+- Added race-focused tests for post-lock archival and invite single-use conditions.
+**Decisions:** Preserved existing public error contracts while using the locked invitation snapshot for all order-sensitive acceptance decisions.
+**Known gaps / follow-ups:** None for this task.

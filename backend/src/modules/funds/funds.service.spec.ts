@@ -10,36 +10,107 @@ const createPrisma = ({
   group?: { id: string; status: GroupStatus } | null;
   member?: { userId: string } | null;
   fund?: { id: string; groupId: string } | null;
-} = {}) => ({
-  group: { findFirst: jest.fn().mockResolvedValue(group) },
-  groupMember: { findFirst: jest.fn().mockResolvedValue(member) },
-  fund: {
-    create: jest.fn().mockResolvedValue({
-      id: 'fund-1',
-      groupId: 'group-1',
-      name: 'Date Fund',
-      currency: 'TWD',
-      status: FundStatus.ACTIVE,
-    }),
-    findMany: jest.fn().mockResolvedValue([
-      {
+} = {}) => {
+  const tx = {
+    $executeRaw: jest.fn().mockResolvedValue(0),
+    group: { findFirst: jest.fn().mockResolvedValue(group) },
+    groupMember: { findFirst: jest.fn().mockResolvedValue(member) },
+    fund: {
+      create: jest.fn().mockResolvedValue({
         id: 'fund-1',
         groupId: 'group-1',
         name: 'Date Fund',
         currency: 'TWD',
         status: FundStatus.ACTIVE,
-        contributions: [],
-        expenses: [],
-      },
-    ]),
-    findFirst: jest
-      .fn()
-      .mockResolvedValue(fund ? { groupId: fund.groupId } : null),
-    findUnique: jest.fn().mockResolvedValue(fund),
-  },
-});
+      }),
+    },
+  };
+  const root = {
+    group: { findFirst: jest.fn().mockResolvedValue(group) },
+    groupMember: { findFirst: jest.fn().mockResolvedValue(member) },
+    fund: {
+      create: jest.fn(),
+      findMany: jest.fn().mockResolvedValue([
+        {
+          id: 'fund-1',
+          groupId: 'group-1',
+          name: 'Date Fund',
+          currency: 'TWD',
+          status: FundStatus.ACTIVE,
+          contributions: [],
+          expenses: [],
+        },
+      ]),
+      findFirst: jest
+        .fn()
+        .mockResolvedValue(fund ? { groupId: fund.groupId } : null),
+      findUnique: jest.fn().mockResolvedValue(fund),
+    },
+  };
+  return {
+    ...root,
+    $transaction: jest.fn((callback) => callback(tx)),
+    tx,
+  };
+};
 
 describe('FundsService', () => {
+  it('locks and revalidates the active group membership before creating a fund', async () => {
+    const prisma = createPrisma();
+    const service = new FundsService(prisma as never);
+
+    await service.createFund('group-1', 'actor', {
+      name: 'Date Fund',
+      currency: 'TWD',
+    });
+
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(prisma.tx.$executeRaw).toHaveBeenCalledTimes(1);
+    expect(prisma.tx.group.findFirst).toHaveBeenCalledWith({
+      where: { id: 'group-1', status: GroupStatus.ACTIVE },
+      select: { id: true },
+    });
+    expect(prisma.tx.groupMember.findFirst).toHaveBeenCalledWith({
+      where: {
+        groupId: 'group-1',
+        userId: 'actor',
+        status: MemberStatus.ACTIVE,
+      },
+      select: { userId: true },
+    });
+    expect(prisma.tx.fund.create).toHaveBeenCalledWith({
+      data: {
+        groupId: 'group-1',
+        name: 'Date Fund',
+        currency: 'TWD',
+        createdById: 'actor',
+      },
+    });
+    expect(prisma.tx.$executeRaw.mock.invocationCallOrder[0]).toBeLessThan(
+      prisma.tx.group.findFirst.mock.invocationCallOrder[0],
+    );
+  });
+
+  it('rejects fund creation when the group is archived after waiting for the lock', async () => {
+    const prisma = createPrisma({ group: null });
+    const service = new FundsService(prisma as never);
+
+    await expect(
+      service.createFund('group-1', 'actor', {
+        name: 'Date Fund',
+        currency: 'TWD',
+      }),
+    ).rejects.toEqual(new NotFoundException('GROUP_NOT_FOUND'));
+
+    expect(prisma.tx.$executeRaw).toHaveBeenCalledTimes(1);
+    expect(prisma.tx.group.findFirst).toHaveBeenCalledWith({
+      where: { id: 'group-1', status: GroupStatus.ACTIVE },
+      select: { id: true },
+    });
+    expect(prisma.tx.groupMember.findFirst).not.toHaveBeenCalled();
+    expect(prisma.tx.fund.create).not.toHaveBeenCalled();
+  });
+
   it('rejects fund creation when the actor is not an active group member', async () => {
     const prisma = createPrisma({ member: null });
     const service = new FundsService(prisma as never);
@@ -51,11 +122,11 @@ describe('FundsService', () => {
       }),
     ).rejects.toEqual(new ForbiddenException('GROUP_ACCESS_DENIED'));
 
-    expect(prisma.group.findFirst).toHaveBeenCalledWith({
+    expect(prisma.tx.group.findFirst).toHaveBeenCalledWith({
       where: { id: 'group-1', status: GroupStatus.ACTIVE },
       select: { id: true },
     });
-    expect(prisma.groupMember.findFirst).toHaveBeenCalledWith({
+    expect(prisma.tx.groupMember.findFirst).toHaveBeenCalledWith({
       where: {
         groupId: 'group-1',
         userId: 'outsider',
@@ -63,7 +134,7 @@ describe('FundsService', () => {
       },
       select: { userId: true },
     });
-    expect(prisma.fund.create).not.toHaveBeenCalled();
+    expect(prisma.tx.fund.create).not.toHaveBeenCalled();
   });
 
   it('lets an active member list active funds in their group', async () => {

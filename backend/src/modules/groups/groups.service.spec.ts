@@ -841,7 +841,8 @@ describe('GroupsService.createInvite', () => {
     const now = new Date('2026-07-16T00:00:00.000Z');
     jest.useFakeTimers().setSystemTime(now);
     const invite = { id: 'invite-1' };
-    const prisma = {
+    const tx = {
+      $executeRaw: jest.fn().mockResolvedValue(0),
       group: {
         findFirst: jest.fn().mockResolvedValue({ id: 'group-1' }),
       },
@@ -852,6 +853,7 @@ describe('GroupsService.createInvite', () => {
         create: jest.fn().mockResolvedValue(invite),
       },
     };
+    const prisma = { $transaction: jest.fn((callback) => callback(tx)) };
     const service = new GroupsService(prisma as never);
 
     await expect(
@@ -863,10 +865,12 @@ describe('GroupsService.createInvite', () => {
         }),
       ),
     ).resolves.toBe(invite);
-    expect(prisma.group.findFirst).toHaveBeenCalledWith({
+    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
+    expect(tx.$executeRaw).toHaveBeenCalledTimes(1);
+    expect(tx.group.findFirst).toHaveBeenCalledWith({
       where: { id: 'group-1', status: GroupStatus.ACTIVE },
     });
-    expect(prisma.groupMember.findFirst).toHaveBeenCalledWith({
+    expect(tx.groupMember.findFirst).toHaveBeenCalledWith({
       where: {
         groupId: 'group-1',
         userId: 'owner-1',
@@ -874,7 +878,7 @@ describe('GroupsService.createInvite', () => {
         status: MemberStatus.ACTIVE,
       },
     });
-    expect(prisma.groupInvite.create).toHaveBeenCalledWith({
+    expect(tx.groupInvite.create).toHaveBeenCalledWith({
       data: {
         groupId: 'group-1',
         invitedById: 'owner-1',
@@ -883,10 +887,14 @@ describe('GroupsService.createInvite', () => {
         expiresAt: new Date('2026-07-23T00:00:00.000Z'),
       },
     });
+    expect(tx.$executeRaw.mock.invocationCallOrder[0]).toBeLessThan(
+      tx.group.findFirst.mock.invocationCallOrder[0],
+    );
   });
 
   it('rejects an actor who is not an active owner', async () => {
-    const prisma = {
+    const tx = {
+      $executeRaw: jest.fn().mockResolvedValue(0),
       group: {
         findFirst: jest.fn().mockResolvedValue({ id: 'group-1' }),
       },
@@ -897,16 +905,19 @@ describe('GroupsService.createInvite', () => {
         create: jest.fn(),
       },
     };
+    const prisma = { $transaction: jest.fn((callback) => callback(tx)) };
     const service = new GroupsService(prisma as never);
 
     await expect(
       service.createInvite('group-1', 'member-1', {}),
     ).rejects.toEqual(new ForbiddenException('GROUP_OWNER_REQUIRED'));
-    expect(prisma.groupInvite.create).not.toHaveBeenCalled();
+    expect(tx.$executeRaw).toHaveBeenCalledTimes(1);
+    expect(tx.groupInvite.create).not.toHaveBeenCalled();
   });
 
   it('rejects invite creation when the group is inactive', async () => {
-    const prisma = {
+    const tx = {
+      $executeRaw: jest.fn().mockResolvedValue(0),
       group: {
         findFirst: jest.fn().mockResolvedValue(null),
       },
@@ -917,13 +928,15 @@ describe('GroupsService.createInvite', () => {
         create: jest.fn(),
       },
     };
+    const prisma = { $transaction: jest.fn((callback) => callback(tx)) };
     const service = new GroupsService(prisma as never);
 
     await expect(
       service.createInvite('group-1', 'owner-1', {}),
     ).rejects.toEqual(new ForbiddenException('GROUP_OWNER_REQUIRED'));
-    expect(prisma.groupMember.findFirst).not.toHaveBeenCalled();
-    expect(prisma.groupInvite.create).not.toHaveBeenCalled();
+    expect(tx.$executeRaw).toHaveBeenCalledTimes(1);
+    expect(tx.groupMember.findFirst).not.toHaveBeenCalled();
+    expect(tx.groupInvite.create).not.toHaveBeenCalled();
   });
 });
 
@@ -1074,6 +1087,7 @@ describe('GroupsService.acceptInvite', () => {
 
   function setup(overrides: Record<string, unknown> = {}) {
     const tx = {
+      $executeRaw: jest.fn().mockResolvedValue(0),
       groupInvite: {
         findUnique: jest.fn().mockResolvedValue(pendingInvite),
         updateMany: jest.fn().mockResolvedValue({ count: 1 }),
@@ -1105,7 +1119,13 @@ describe('GroupsService.acceptInvite', () => {
       membership: { id: 'membership-1' },
     });
     expect(prisma.$transaction).toHaveBeenCalledTimes(1);
-    expect(tx.groupInvite.findUnique).toHaveBeenCalledWith({
+    expect(tx.$executeRaw).toHaveBeenCalledTimes(1);
+    expect(tx.groupInvite.findUnique).toHaveBeenCalledTimes(2);
+    expect(tx.groupInvite.findUnique).toHaveBeenNthCalledWith(1, {
+      where: { inviteCode: 'invite-code' },
+      include: { group: true },
+    });
+    expect(tx.groupInvite.findUnique).toHaveBeenNthCalledWith(2, {
       where: { inviteCode: 'invite-code' },
       include: { group: true },
     });
@@ -1134,6 +1154,9 @@ describe('GroupsService.acceptInvite', () => {
         status: MemberStatus.ACTIVE,
       },
     });
+    expect(tx.$executeRaw.mock.invocationCallOrder[0]).toBeLessThan(
+      tx.groupInvite.findUnique.mock.invocationCallOrder[1],
+    );
   });
 
   it.each([
@@ -1270,17 +1293,20 @@ describe('GroupsService.acceptInvite', () => {
 
   it('returns INVITE_NOT_FOUND and creates no membership when group is archived after read', async () => {
     const { service, tx } = setup();
-    tx.groupInvite.updateMany.mockResolvedValue({ count: 0 });
     tx.groupInvite.findUnique
       .mockResolvedValueOnce(pendingInvite)
       .mockResolvedValueOnce({
+        ...pendingInvite,
         status: InviteStatus.PENDING,
-        group: { status: GroupStatus.ARCHIVED },
+        group: { ...group, status: GroupStatus.ARCHIVED },
       });
 
     await expect(service.acceptInvite(user.id, 'invite-code')).rejects.toEqual(
       new NotFoundException('INVITE_NOT_FOUND'),
     );
+    expect(tx.$executeRaw).toHaveBeenCalledTimes(1);
+    expect(tx.groupInvite.findUnique).toHaveBeenCalledTimes(2);
+    expect(tx.groupInvite.updateMany).not.toHaveBeenCalled();
     expect(tx.groupMember.create).not.toHaveBeenCalled();
     expect(tx.groupMember.updateMany).not.toHaveBeenCalled();
   });
