@@ -271,6 +271,14 @@ describe("authenticated route boundaries", () => {
     listGroupsMock.mockResolvedValueOnce([{ id: "group-1" }]);
     render(await GroupsPage());
     expect(screen.getByText("groups:1")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Create group" })).toHaveAttribute(
+      "href",
+      "/app/groups/new",
+    );
+    expect(screen.getByRole("link", { name: "Join group" })).toHaveAttribute(
+      "href",
+      "/app/groups/join",
+    );
 
     cleanup();
     listGroupsMock.mockRejectedValueOnce(new ApiError(404, "NOT_FOUND"));

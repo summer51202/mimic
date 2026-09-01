@@ -35,10 +35,15 @@ export function TreasuryDashboard({
         <div className={styles.emptyCopy}>
           <p className={styles.kicker}>mimic adventure log</p>
           <h1>建立你們的共同寶庫</h1>
-          <p>咪咪庫已經準備好地圖，先建立群組，就能開始一起存、一起花。</p>
-          <Link className="pixel-button" data-emphasis="primary" href="/app/groups/new">
-            建立群組
-          </Link>
+          <p>咪咪庫已經準備好地圖，建立或加入群組，就能開始一起存、一起花。</p>
+          <div className={styles.emptyActions}>
+            <Link className="pixel-button" data-emphasis="primary" href="/app/groups/new">
+              建立群組
+            </Link>
+            <Link className="pixel-button" data-emphasis="secondary" href="/app/groups/join">
+              加入群組
+            </Link>
+          </div>
         </div>
       </section>
     );

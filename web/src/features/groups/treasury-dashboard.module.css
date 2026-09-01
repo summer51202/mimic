@@ -209,6 +209,13 @@
   line-height: 1.5;
 }
 
+.emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--mimic-space-3);
+}
+
 @media (min-width: 48rem) {
   .topBar {
     grid-template-columns: minmax(0, 1fr) auto;

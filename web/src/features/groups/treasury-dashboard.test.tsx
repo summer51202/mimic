@@ -106,6 +106,10 @@ describe("TreasuryDashboard", () => {
       "href",
       "/app/groups/new",
     );
+    expect(screen.getByRole("link", { name: "加入群組" })).toHaveAttribute(
+      "href",
+      "/app/groups/join",
+    );
   });
 
   it("renders the selected group treasury without preview placeholder copy", () => {
@@ -134,6 +138,7 @@ describe("TreasuryDashboard", () => {
     expect(document.querySelector("img[data-pixel-avatar]")).not.toBeNull();
     expect(screen.queryByText(/Private app preview/i)).not.toBeInTheDocument();
     expect(screen.queryByText("近期支出")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "加入群組" })).not.toBeInTheDocument();
   });
   it("assigns long treasury names and extreme amounts to their owning containers", () => {
     const longName = "N".repeat(255);

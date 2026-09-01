@@ -19,10 +19,15 @@ export default async function GroupsPage() {
       <header className={styles.header}>
         <p>party roster</p>
         <h1>Your shared groups</h1>
-        <p>Choose a treasury party or create a new one with Mimiku.</p>
-        <Link className="pixel-button" data-emphasis="primary" href="/app/groups/new">
-          Create group
-        </Link>
+        <p>Choose a treasury party, create a new one, or join with an invite.</p>
+        <div className={styles.actions}>
+          <Link className="pixel-button" data-emphasis="primary" href="/app/groups/new">
+            Create group
+          </Link>
+          <Link className="pixel-button" data-emphasis="secondary" href="/app/groups/join">
+            Join group
+          </Link>
+        </div>
       </header>
       <GroupList groups={groups} />
     </section>
