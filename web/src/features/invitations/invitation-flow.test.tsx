@@ -107,7 +107,7 @@ describe("InviteSharePanel", () => {
     vi.unstubAllGlobals();
   });
 
-  it("copies the invite URL and only calls Web Share after an explicit click", async () => {
+  it("copies the invite code and URL and only calls Web Share after an explicit click", async () => {
     const user = userEvent.setup();
     const writeText = vi.fn().mockResolvedValue(undefined);
     const share = vi.fn().mockResolvedValue(undefined);
@@ -121,12 +121,50 @@ describe("InviteSharePanel", () => {
     );
 
     expect(share).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+    expect(writeText).toHaveBeenNthCalledWith(1, "abcDEF123_-4");
+
     await user.click(screen.getByRole("button", { name: "Copy link" }));
-    expect(writeText).toHaveBeenCalledWith("https://app.example/invite/abcDEF123_-4");
+    expect(writeText).toHaveBeenNthCalledWith(
+      2,
+      "https://app.example/invite/abcDEF123_-4",
+    );
 
     await user.click(screen.getByRole("button", { name: "Share invite" }));
     expect(share).toHaveBeenCalledWith(
       expect.objectContaining({ url: "https://app.example/invite/abcDEF123_-4" }),
+    );
+  });
+
+  it("selects the invite code as a manual fallback", async () => {
+    const user = userEvent.setup();
+    const range = {
+      selectNodeContents: vi.fn(),
+    } as unknown as Range;
+    const selection = {
+      addRange: vi.fn(),
+      removeAllRanges: vi.fn(),
+    } as unknown as Selection;
+    vi.stubGlobal("navigator", {});
+    vi.spyOn(document, "createRange").mockReturnValue(range);
+    vi.spyOn(window, "getSelection").mockReturnValue(selection);
+
+    render(
+      <InviteSharePanel
+        invite={mockInvite()}
+        origin="https://app.example"
+      />,
+    );
+
+    const code = screen.getByText("abcDEF123_-4");
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
+
+    expect(range.selectNodeContents).toHaveBeenCalledWith(code);
+    expect(selection.removeAllRanges).toHaveBeenCalled();
+    expect(selection.addRange).toHaveBeenCalledWith(range);
+    expect(code).toHaveFocus();
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Invite code selected. Copy it from the page.",
     );
   });
 
