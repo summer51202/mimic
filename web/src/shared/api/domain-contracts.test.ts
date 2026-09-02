@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  contributionSchema,
+  expenseSchema,
   groupDashboardSchema,
   groupSchema,
   inviteAcceptResultSchema,
@@ -16,6 +18,23 @@ const periodTotals = {
 };
 
 describe("domain contracts", () => {
+  it("parses contribution and expense activity records", () => {
+    expect(contributionSchema.parse({
+      id: "c1", fund_id: "f1", contributor_user_id: "u1",
+      amount_minor: "5000", contribution_type: "regular",
+      occurred_on: "2026-09-02", note: null, status: "active",
+    }).amount_minor).toBe("5000");
+
+    expect(expenseSchema.parse({
+      id: "e1", fund_id: "f1", title: "Dinner", note: null,
+      amount_minor: "1200", split_mode: "equal", expense_type: "fund_expense",
+      occurred_on: "2026-09-02", status: "active",
+      payers: [{ payer_user_id: "u1", amount_minor: "1200" }],
+      splits: [{ user_id: "u1", split_type: "equal", ratio_value: null,
+        fixed_amount_minor: null, allocated_amount_minor: "1200", sort_order: 0 }],
+    }).payers[0]?.amount_minor).toBe("1200");
+  });
+
   it("requires a canonical stable identity for group members", () => {
     expect(
       memberSchema.parse({

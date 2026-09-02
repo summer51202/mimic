@@ -33,8 +33,9 @@ const navigationItems = [
   },
   {
     icon: "A",
+    href: "/app/activity",
     label: "Activity",
-    status: "soon",
+    status: "available",
   },
   {
     icon: "S",

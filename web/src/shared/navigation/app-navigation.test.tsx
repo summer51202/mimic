@@ -61,19 +61,20 @@ describe("AppNavigation", () => {
     const overview = screen.getByRole("link", { name: /Overview/ });
     const groups = screen.getByRole("link", { name: /Groups/ });
     const funds = screen.getByRole("link", { name: /Funds/ });
-    const activity = screen.getByRole("button", { name: /Activity/ });
+    const activity = screen.getByRole("link", { name: /Activity/ });
     const settings = screen.getByRole("link", { name: /Settings/ });
 
     expect(overview).toHaveAttribute("aria-current", "page");
     expect(groups).toHaveAttribute("href", "/app/groups");
     expect(funds).toHaveAttribute("href", "/app/funds");
-    expect(activity).toBeDisabled();
+    expect(activity).toHaveAttribute("href", "/app/activity");
     expect(settings).toHaveAttribute("href", "/app/settings");
   });
 
   it.each([
     ["/app/groups/g1", "Groups"],
     ["/app/funds/f1", "Funds"],
+    ["/app/activity", "Activity"],
     ["/app/settings", "Settings"],
     ["/app/settings/profile", "Settings"],
   ])("indicates %s as the %s section", (currentPath, currentLabel) => {
@@ -100,17 +101,17 @@ describe("AppNavigation", () => {
       expect(item).toHaveAccessibleName();
     }
 
-    for (const item of screen.getAllByRole("button")) {
+    for (const item of screen.queryAllByRole("button")) {
       expect(item).toHaveAccessibleName();
     }
   });
 
-  it("announces disabled future sections as coming soon", () => {
+  it("exposes Activity as an available primary section", () => {
     render(<AppNavigation currentSection="/app" variant="desktop" />);
 
     expect(
-      screen.getByRole("button", { name: "Activity (coming soon)" }),
-    ).toBeDisabled();
+      screen.getByRole("link", { name: "Activity" }),
+    ).toHaveAttribute("href", "/app/activity");
     expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute(
       "href",
       "/app/settings",

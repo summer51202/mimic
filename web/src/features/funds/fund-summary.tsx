@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import type { FundSummary as FundSummaryData } from "@/shared/api/domain-contracts";
 import { formatMinorUnit } from "@/shared/finance/minor-unit";
 import { PixelFrame } from "@/shared/ui/pixel-frame";
@@ -27,7 +29,11 @@ export function FundSummary({ summary }: FundSummaryProps) {
         <strong className={`${styles.balance} ${styles.balanceAmount}`} data-contain-text>
           <MoneyAmount currency={currency} value={summary.fund.cash_balance_minor} />
         </strong>
-        <p className={styles.notice}>活動功能將在下一階段開放</p>
+        <div className={styles.activityActions}>
+          <Link className="pixel-button" data-emphasis="primary" href={`/app/activity?fund=${encodeURIComponent(summary.fund.id)}&action=contribution`}>Add contribution</Link>
+          <Link className="pixel-button" data-emphasis="secondary" href={`/app/activity?fund=${encodeURIComponent(summary.fund.id)}&action=expense`}>Add expense</Link>
+          <Link className="pixel-button" data-emphasis="ghost" href={`/app/activity?fund=${encodeURIComponent(summary.fund.id)}`}>View all activity</Link>
+        </div>
       </PixelFrame>
 
       <PixelFrame className={styles.panel} data-frame="current-period">

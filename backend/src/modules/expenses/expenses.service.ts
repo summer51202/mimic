@@ -245,7 +245,10 @@ export class ExpensesService {
       const weight = split.split_type === 'equal' ? 1 : split.ratio_value ?? 0;
       const allocation = isLast
         ? amount - allocatedSoFar
-        : Math.round((amount * weight) / ratioTotal);
+        : Math.min(
+            Math.round((amount * weight) / ratioTotal),
+            amount - allocatedSoFar,
+          );
 
       allocations.set(split.user_id, allocation);
       allocatedSoFar += allocation;

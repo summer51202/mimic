@@ -952,3 +952,15 @@
 - Aligned the unique-index name with the existing Prisma table and added regression coverage for the physical table contract.
 **Decisions:** Correct the existing migration because it failed transactionally and has not been successfully applied in Staging; preserve the additive backfill and uniqueness behavior.
 **Known gaps / follow-ups:** Before retrying Staging deployment, mark the failed `20260902010000_add_user_mimic_id` migration as rolled back with Prisma Migrate; then deploy the corrected GitHub commit.
+
+## 2026-09-02 — Complete the core Activity bookkeeping loop
+
+**Task:** Implement the approved timeline-first Activity page with common contribution and expense entry flows.
+**Scope:** `web/src/app/app/activity`, Activity feature components and queries, contribution/expense BFF routes, fund-summary shortcuts, navigation and API contracts; backend expense allocation rounding
+**What changed:**
+- Enabled Activity navigation and added a fund-scoped merged contribution/expense ledger with fund balance, filters, notes, multi-payer summaries, empty states, and fund switching.
+- Added deep-linkable contribution and expense dialogs with regular/one-time contributions, multi-payer EQUAL/FIXED expenses, exact minor-unit validation, equal-share preview, mutation feedback, and server refresh.
+- Added same-origin BFF POST routes and fund-summary shortcuts into the shared Activity workflow.
+- Preserved normal split rounding while capping early shares so tiny amounts cannot create a negative final allocation.
+**Decisions:** Keep Activity timeline-first and fund-scoped; expose only the approved common contribution types and EQUAL/FIXED split modes while leaving backend validation authoritative.
+**Known gaps / follow-ups:** RATIO/HYBRID expense entry, correction/adjustment UI, settlement records, editing/deletion, pagination beyond the first 50 records per type, and a unified audit-backed activity endpoint remain deferred.

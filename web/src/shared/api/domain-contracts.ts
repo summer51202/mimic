@@ -96,6 +96,45 @@ export const fundSummarySchema = z.object({
   all_time: periodTotalsSchema,
 });
 
+export const contributionSchema = z.object({
+  id: idSchema,
+  fund_id: idSchema,
+  contributor_user_id: idSchema,
+  amount_minor: minorUnitSchema,
+  contribution_type: z.enum(["regular", "one_time", "adjustment", "correction"]),
+  occurred_on: isoDateSchema,
+  note: z.string().nullable(),
+  status: statusSchema,
+});
+
+const expensePayerSchema = z.object({
+  payer_user_id: idSchema,
+  amount_minor: minorUnitSchema,
+});
+
+const expenseSplitSchema = z.object({
+  user_id: idSchema,
+  split_type: z.enum(["equal", "ratio", "fixed"]),
+  ratio_value: z.number().nullable(),
+  fixed_amount_minor: minorUnitSchema.nullable(),
+  allocated_amount_minor: minorUnitSchema,
+  sort_order: z.number().int(),
+});
+
+export const expenseSchema = z.object({
+  id: idSchema,
+  fund_id: idSchema,
+  title: labelSchema,
+  note: z.string().nullable(),
+  amount_minor: minorUnitSchema,
+  split_mode: z.enum(["equal", "ratio", "fixed", "hybrid"]),
+  expense_type: z.enum(["fund_expense", "refund", "adjustment", "correction"]),
+  occurred_on: isoDateSchema,
+  status: statusSchema,
+  payers: z.array(expensePayerSchema).min(1),
+  splits: z.array(expenseSplitSchema).min(1),
+});
+
 const dashboardFundSchema = z.object({
   fund_id: idSchema,
   name: labelSchema,
@@ -130,4 +169,6 @@ export type InviteAcceptResult = z.infer<typeof inviteAcceptResultSchema>;
 export type Fund = z.infer<typeof fundSchema>;
 export type PeriodTotals = z.infer<typeof periodTotalsSchema>;
 export type FundSummary = z.infer<typeof fundSummarySchema>;
+export type Contribution = z.infer<typeof contributionSchema>;
+export type Expense = z.infer<typeof expenseSchema>;
 export type GroupDashboard = z.infer<typeof groupDashboardSchema>;

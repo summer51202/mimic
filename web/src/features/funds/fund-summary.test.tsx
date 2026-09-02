@@ -11,7 +11,7 @@ import { FundSummary } from "./fund-summary";
 afterEach(() => cleanup());
 
 describe("FundSummary", () => {
-  it("renders empty current period, signed member positions, and no transaction actions", () => {
+  it("renders empty current period, signed positions, and Activity shortcuts", () => {
     render(<FundSummary summary={summary()} />);
 
     expect(screen.getByRole("heading", { name: "生活基金" })).toBeVisible();
@@ -19,8 +19,9 @@ describe("FundSummary", () => {
     expect(screen.getAllByText("NT$24,680.00")[0]).toBeVisible();
     expect(screen.getByText("本期尚無交易")).toBeVisible();
     expect(screen.getAllByText("-NT$800.00")[0]).toBeVisible();
-    expect(screen.queryByRole("button", { name: "新增支出" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "新增存款" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Add contribution" })).toHaveAttribute("href", "/app/activity?fund=f1&action=contribution");
+    expect(screen.getByRole("link", { name: "Add expense" })).toHaveAttribute("href", "/app/activity?fund=f1&action=expense");
+    expect(screen.getByRole("link", { name: "View all activity" })).toHaveAttribute("href", "/app/activity?fund=f1");
   });
 
   it("renders current period dates and all-time totals in a secondary disclosure", () => {

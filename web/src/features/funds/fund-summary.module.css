@@ -106,11 +106,18 @@
   padding: var(--mimic-space-3) 0;
 }
 
-.notice {
+.notice,
+.activityActions {
   border-top: 1px solid var(--mimic-color-line);
   color: var(--mimic-color-ink-soft);
   font-weight: 800;
   padding-top: var(--mimic-space-3);
+}
+
+.activityActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mimic-space-2);
 }
 
 .summaryDisclosure {

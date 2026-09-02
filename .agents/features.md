@@ -57,8 +57,8 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 | status | slug | description | PWA entry | backend entry |
 |--------|------|-------------|----------------|---------------|
-| done | create-contribution | Add a regular or one-time contribution to a fund | `—` | `contributions.service.ts createContribution()` |
-| done | list-contributions | List contributions for a fund | `—` | `contributions.controller.ts GET /funds/:id/contributions` |
+| done | create-contribution | Add a regular or one-time contribution to a fund | `web/src/features/activity/contribution-form.tsx` | `contributions.service.ts createContribution()` |
+| done | list-contributions | List contributions for a fund | `web/src/features/activity/activity-queries.ts` | `contributions.controller.ts GET /funds/:id/contributions` |
 | todo | update-contribution | Edit an unlocked contribution | — | missing `PATCH /contributions/:id` |
 | todo | delete-contribution | Soft-delete an unlocked contribution | — | missing `DELETE /contributions/:id` |
 
@@ -66,8 +66,8 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 | status | slug | description | PWA entry | backend entry |
 |--------|------|-------------|----------------|---------------|
-| done | create-expense | Record an expense with payers and EQUAL/RATIO/FIXED/HYBRID splits | `—` | `expenses.service.ts createExpense()` |
-| done | list-expenses | List expenses for a fund | `—` | `expenses.controller.ts GET /funds/:id/expenses` |
+| done | create-expense | Record an expense with payers and EQUAL/RATIO/FIXED/HYBRID splits; the PWA currently exposes EQUAL and FIXED | `web/src/features/activity/expense-form.tsx` | `expenses.service.ts createExpense()` |
+| done | list-expenses | List expenses for a fund | `web/src/features/activity/activity-queries.ts` | `expenses.controller.ts GET /funds/:id/expenses` |
 | done | create-correction | Add correction transaction for a past error (new record, no edit) | `—` | `expenses.service.ts` (expense_type=CORRECTION) |
 | todo | update-expense | Edit an unlocked expense | — | missing `PATCH /expenses/:id` |
 | todo | delete-expense | Soft-delete an unlocked expense | — | missing `DELETE /expenses/:id` |
@@ -111,9 +111,9 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 | done | pwa-pixel-responsive-shell | Responsive pixel UI foundation for public and authenticated routes across phone, tablet, and desktop viewports | `web/src/shared/brand`, `web/src/shared/ui`, `web/src/app/app-shell.module.css` | n/a |
 | done | pwa-account-settings | View account identity, edit display name, copy Mimic ID, and sign out | `web/src/app/app/settings/page.tsx`, `web/src/features/settings/settings-form.tsx` | `GET /me`, `PATCH /me`, `POST /auth/logout` |
 | todo | pwa-public-pixel-world | Bring landing, authentication, and feature pages to the approved full-screen deep-navy pixel-world composition | `web/src/app/(public)`, `web/src/features/auth` | n/a |
-| todo | pwa-contributions | Create and list real contribution activity in the PWA | missing PWA activity UI | `contributions.controller.ts` |
-| todo | pwa-expenses | Create and list real expense activity in the PWA | missing PWA activity UI | `expenses.controller.ts` |
-| todo | pwa-activity | Unified activity timeline for contributions, expenses, corrections, and settlements | missing PWA activity UI | `GET /funds/:id/contributions`, `GET /funds/:id/expenses`, settlement routes |
+| done | pwa-contributions | Create regular or one-time contributions and list them in the selected fund's Activity ledger | `web/src/features/activity/contribution-form.tsx`, `web/src/app/app/activity/page.tsx` | `contributions.controller.ts` |
+| in-progress | pwa-expenses | Create multi-payer EQUAL or FIXED expenses and list them in the selected fund's Activity ledger; RATIO and HYBRID creation remain deferred | `web/src/features/activity/expense-form.tsx`, `web/src/app/app/activity/page.tsx` | `expenses.controller.ts` |
+| in-progress | pwa-activity | Fund-scoped merged contribution/expense timeline with fund switching, filters, current balance, and create dialogs; corrections and settlements are not yet included | `web/src/features/activity`, `web/src/app/app/activity/page.tsx` | `GET /funds/:id/contributions`, `GET /funds/:id/expenses`, settlement routes |
 | todo | pwa-settlements | Suggest, create, complete, cancel, and view settlements in the PWA | missing PWA settlement UI | `settlements.controller.ts` |
 | todo | pwa-role-changes | Promote or demote group members in the PWA | missing PWA governance UI | `PATCH /groups/:id/members/:memberId` |
 | todo | pwa-member-removal | Remove another member from a group in the PWA | missing PWA governance UI | `DELETE /groups/:id/members/:memberId` |
@@ -169,11 +169,14 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 - [ ] PWA UI for category selection on expense creation
 
 ### Contributions
+- [x] PWA create/list loop for regular and one-time contributions
 - [ ] `GET /contributions/:id` — individual contribution detail
 - [ ] `PATCH /contributions/:id` — edit unlocked contribution
 - [ ] `DELETE /contributions/:id` — soft-delete unlocked contribution
 
 ### Expenses
+- [x] PWA create/list loop for multi-payer EQUAL and FIXED expenses
+- [ ] PWA RATIO and HYBRID split creation
 - [ ] `GET /expenses/:id` — individual expense detail
 - [ ] `PATCH /expenses/:id` — edit unlocked expense
 - [ ] `DELETE /expenses/:id` — soft-delete
@@ -189,7 +192,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 ### Audit Logs
 - [ ] Entire audit module (NestJS module + controller)
-- [ ] PWA activity UI and audit-log endpoint wiring
+- [ ] Extend the PWA Activity ledger with corrections, settlements, and an audit-log endpoint
 
 ### Recurring Rules
 - [ ] [out-of-scope] Recurring contribution rules — post-MVP per PRD
