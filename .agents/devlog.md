@@ -942,3 +942,13 @@
 - Added an owner-only exact-name confirmation flow and cleared the selected-group preference only after successful archival.
 **Decisions:** Fund creation alone is not financial history; preserve former memberships and historical invites; provide no restore UI in this increment.
 **Known gaps / follow-ups:** Archived-group browsing and restore, independent Fund lifecycle UI, and lifecycle support for groups with financial history remain deferred.
+
+## 2026-09-02 — Correct Mimic ID migration table target
+
+**Task:** Fix the failed Staging API pre-deploy migration that referenced a nonexistent user table.
+**Scope:** `backend/prisma/migrations/20260902010000_add_user_mimic_id/migration.sql`, migration contract test
+**What changed:**
+- Changed every Mimic ID migration table reference from `"users"` to the physical Prisma table name `"User"`.
+- Aligned the unique-index name with the existing Prisma table and added regression coverage for the physical table contract.
+**Decisions:** Correct the existing migration because it failed transactionally and has not been successfully applied in Staging; preserve the additive backfill and uniqueness behavior.
+**Known gaps / follow-ups:** Before retrying Staging deployment, mark the failed `20260902010000_add_user_mimic_id` migration as rolled back with Prisma Migrate; then deploy the corrected GitHub commit.
