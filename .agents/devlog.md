@@ -964,3 +964,13 @@
 - Preserved normal split rounding while capping early shares so tiny amounts cannot create a negative final allocation.
 **Decisions:** Keep Activity timeline-first and fund-scoped; expose only the approved common contribution types and EQUAL/FIXED split modes while leaving backend validation authoritative.
 **Known gaps / follow-ups:** RATIO/HYBRID expense entry, correction/adjustment UI, settlement records, editing/deletion, pagination beyond the first 50 records per type, and a unified audit-backed activity endpoint remain deferred.
+
+## 2026-09-02 — Stabilize Activity route test teardown
+
+**Task:** Fix the Web CI test failure caused by React work continuing after the Activity route test environment was destroyed.
+**Scope:** `web/src/app/app/activity/page.test.tsx`
+**What changed:**
+- Added explicit React Testing Library cleanup after every Activity route test.
+- Ensured the intentional `notFound()` render failure is unmounted before Vitest tears down jsdom.
+**Decisions:** Match the existing authenticated route-boundary test lifecycle instead of suppressing Vitest unhandled errors or changing production behavior.
+**Known gaps / follow-ups:** None.
