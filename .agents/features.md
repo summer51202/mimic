@@ -1,7 +1,27 @@
 # Mimic Feature Map
-_Last updated: 2026-09-02. Refresh with `/feature-map`._
+_Last updated: 2026-09-11. Refresh with `/feature-map`._
 
 > The PWA in `web/` is the only active client. Current implementation work targets `web/` and `backend/`; previous clients remain available only through Git history.
+
+## Financial spaces redesign — Phase 1
+
+The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md` supersedes the universal Fund model and its accounting assumptions. The legacy capability entries below describe existing disconnected Fund behavior, not the new modes' accounting rules.
+
+| status | capability | entry / acceptance |
+|--------|------------|--------------------|
+| done | Neutral personal/shared/pooled metadata, explicit participation and manager roles | `backend/prisma/schema.prisma`, `backend/src/modules/financial-spaces/` |
+| done | Authenticated create/read/rename, pre-history shared-mode switch, private and governance-only projections | `/api/v1/me/spaces`, `/api/v1/groups/:groupId/spaces`, `/api/v1/spaces/:spaceId` |
+| done | Participant add, delegation, empty-box exit/rejoin/archive, atomic audit and version concurrency | Participant/role/end/archive routes; real PostgreSQL HTTP and concurrency suites |
+| done | Group departure/archive guards | `backend/src/modules/groups/groups.service.ts` |
+| done | Strict Web contract and local repeatable fixtures | `web/src/shared/api/financial-space-contracts.ts`, `backend/prisma/seed-financial-spaces.ts` |
+| planned | Personal daily expenses and common categories/tags | P2; first new posting UI |
+| planned | Shared payer/allocation service, batch settlement and locks | P3 |
+| planned | Personal references to shared expenses | P4 |
+| planned | Pooled commitments, book/available balances, advances, reimbursements and returns | P5 |
+| planned | 寶箱 navigation, homepage, quick entry and task center | P6 |
+| planned | Offline drafts, full three-mode real-backend browser acceptance and legacy removal | P7 |
+
+P1 has no monetary summary or financial posting API. Nonempty exit/archive is conservatively rejected until the owning mode phase implements its obligations. See `docs/superpowers/plans/2026-09-11-financial-spaces-phase-1.md` for acceptance evidence and scope.
 
 ## Backend Capability Map
 

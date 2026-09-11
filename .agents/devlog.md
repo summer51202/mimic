@@ -974,3 +974,28 @@
 - Ensured the intentional `notFound()` render failure is unmounted before Vitest tears down jsdom.
 **Decisions:** Match the existing authenticated route-boundary test lifecycle instead of suppressing Vitest unhandled errors or changing production behavior.
 **Known gaps / follow-ups:** None.
+
+## 2026-09-11 — Deliver financial spaces phase 1 management core
+
+**Task:** Execute the approved financial-spaces P1 plan sequentially in the isolated implementation worktree.
+**Scope:** Additive Prisma schema/migration and local seed; `backend/src/modules/financial-spaces`, global request validation, group lifecycle guards, real PostgreSQL integration/concurrency tests; Web financial-space contracts; feature map and P1 execution record.
+**What changed:**
+- Added neutral PERSONAL_EXPENSES / SHARED_EXPENSES / POOLED_FUND metadata with separate personal ownership and group scope, explicit participant intervals and manager roles.
+- Delivered authenticated create/list/read/rename/mode-before-history APIs, participant add/delegate/end/rejoin, empty archive and idempotent archive/end retries. Server-assigned audit actors/timestamps and versions are atomic with mutations.
+- Restricted group-owner nonparticipants to five governance fields in group lists; inaccessible details and participant intervals return indistinguishable 404 responses. Strict DTOs reject foreign financial fields before legacy whitelist stripping.
+- Added group → space transaction locks, last-manager protection, stale-write checks, group departure/archive guards and database identity/interval constraints. New core has no dependency on legacy Fund accounting.
+- Added strict Web projection parsers and guarded local demo seed. Two real seed runs retain 3 spaces, 5 participant intervals and 3 CREATE audits; rerunning does not overwrite an existing mode or first-record latch.
+**Decisions:**
+- P1 is a usable real-backend management API slice. It posts no money and returns no fabricated zero summary. Nonempty archive/exit remains rejected until P3/P5 implement mode-owned obligations.
+- Kept legacy Fund schema/data disconnected until P7. Applied the additive migration only to a fresh schema and an old-schema fixture in the dedicated loopback test database; legacy Fund fields remained exactly unchanged and no financial space was synthesized.
+- Used direct transactional group guard queries without a new GroupsModule dependency. Lock/participant behavior uses real database tests; conditional pipe behavior is covered through DTO and real HTTP tests. Detailed plan deviations are recorded in the P1 execution record.
+- RED/GREEN self-review fixes cover inherited invalid currency, unchanged updates incorrectly creating audit/version changes, interval existence disclosure and valid IANA aliases omitted by timezone enumeration. Seed URL safety also has an observed failing-then-passing test cycle.
+**Verification:**
+- `npx prisma validate` and backend `npm run build` passed. Final unit run: 24 suites / 266 tests. Existing e2e: 5 suites / 54 tests, no provider changes to those suites.
+- Web `npm run lint`, `npm run typecheck`, and `npm test` passed: 69 files / 446 tests.
+- Final `npm run test:spaces-db` passed: 2 suites / 27 tests, including real HTTP, schema guards, concurrent duplicate actions, group departure races and audit-failure rollback. Web `npm run build` exited 0 with the baseline standalone warning below.
+- Local migration checks passed for fresh and legacy-upgrade histories. Seed safety tests reject external, missing, malformed and unapproved database targets. No Staging or Production database was used.
+**Known gaps / follow-ups:**
+- P2–P7 remain as mapped in the roadmap, including accounting services, settlements/confirmations/corrections, UI redesign and offline drafts. Full three-mode browser acceptance against a real backend remains the P7 release gate; P1 is verified with authenticated real HTTP and PostgreSQL.
+- The pre-existing Web standalone build warning about missing `(public)/page_client-reference-manifest.js` also occurs on this branch. It predates P1; standalone runtime packaging needs a separate follow-up before deployment.
+- Original root untracked `.codex-remote-attachments/` and `reference/` were preserved. Work stays on `codex/financial-spaces`; no merge or push is included.

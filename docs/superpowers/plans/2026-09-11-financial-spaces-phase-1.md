@@ -443,3 +443,29 @@ npm run build
 Only this plan and the roadmap were changed. Both documents were reread for scope, names, nullable ownership, mode projections and migration dependencies; staged `git diff --cached --check` passed. No product files or database were changed. The new worktree is based exactly on `66f29e3`.
 
 Baseline setup was attempted independently in backend and web with `npm ci --no-audit --no-fund`. Both failed with ENOTCACHED (missing registry responses in offline cache), with cleanup EPERM warnings inside the newly created worktree's node_modules. Network-enabled retries produced no completion and were interrupted. Consequently dependency installation, build, unit tests, e2e and browser acceptance are **not verified in this planning turn**. Before execution, complete installation and the baseline commands in Task 6; investigate baseline failures before changing product code. This environment limitation does not prevent review or commit of the documentation-only plan.
+
+## Execution record — 2026-09-11
+
+The user selected sequential execution in this task. No subagents were used. The original checkboxes above preserve the approved task instructions; this execution record documents the actual delivery and deviations.
+
+| Task | Delivered evidence |
+|------|--------------------|
+| 1 | Pure half-open date and mode tests; unchanged mode remains valid after history; separate timezone midnight/leap-day tests |
+| 2 | Additive migration, immutable financial identity trigger, schema/interval/role constraints; fresh and legacy-upgrade schemas verified in isolated local PostgreSQL |
+| 3 | Real JWT HTTP creation/list/detail/update with strict DTOs, safe governance projection, atomic audit and stale-write rejection |
+| 4 | Add/promote/demote/end/rejoin/archive, last-manager protection, group departure/archive guards, real concurrent transactions and audit-failure rollback |
+| 5 | Strict independent Web contract, three repeatable local demo spaces, seed URL guard; two seed runs retain 3 spaces / 5 participants / 3 CREATE audits |
+| 6 | See final verification results in `.agents/devlog.md`; self-review covers schema, new services, changed group functions, DTO/controller boundary and Web contracts |
+
+Implementation adjustments:
+
+- `groups.service.ts` queries current participation directly inside its existing group lock. `groups.module.ts` does not import the financial-spaces module: no service dependency is needed, and there is no DI cycle.
+- Shared locking and participant persistence are tested with two actual Prisma connections in `financial-spaces-concurrency.e2e-spec.ts`, rather than mock-only lock/participant service test files. The global pipe's legacy/strict behavior is covered by `dto/space-dto.spec.ts` and the HTTP application. The loopback/protocol/exact-database guard is inline at the start of each real-DB suite; cleanup remains fixture-scoped.
+- DTO classes serve as the typed create/update commands. `financial-spaces.types.ts` owns only response projections; no duplicate command shapes were introduced.
+- Migration SQL was generated from the old/new schema diff, then reviewed and supplemented with constraints. Existing migration checksums were preserved. Local schemas `migration_upgrade` and `migration_fresh` in the dedicated test database exercise both histories; old Fund was compared as serialized field data before/after, with no new-space conversion.
+- Seed logic is separated into `prisma/seed-financial-spaces.ts` for repeatability tests and `prisma/local-seed-target.ts` with its unit test. Only explicitly named loopback development/test databases are accepted by the seed entry point.
+- Valid IANA timezone aliases use `@IsTimeZone()` (Intl construction) rather than `supportedValuesOf('timeZone')`, whose list omits valid aliases. Currency remains the supported ISO list and is validated again when inherited from a group.
+- An unchanged metadata update checks authorization/status/version but creates neither a new audit nor a new version. A missing participant ID uses the same `SPACE_NOT_FOUND` response as an inaccessible interval, preventing existence disclosure.
+- Scope/interval tests are P1 tests. Temporary settlement locks, permanent period locks, correction posting, and financial confirmation receipts remain explicitly assigned to P3/P5. No fake obligation provider, zero summary, financial compatibility layer or public latch endpoint was created.
+
+Observed RED → GREEN cycles include pure policy, missing database tables, strict DTO unknown-field rejection, real management/participant routes, group archive guard, Web governance leakage, no-op seed repeatability, inherited currency rejection, seed target safety, no-op metadata mutation, interval-existence privacy and valid timezone aliases. Additional concurrency and calendar tests verify already implemented behavior; they did not require speculative production changes.
