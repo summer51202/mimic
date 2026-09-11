@@ -275,11 +275,11 @@ Run shared component tests and Playwright in one viewport against a development 
 
 Create `shared.css` using existing brand tokens and primitives. Keep the signature element a “settlement trail” connecting payer → recipient states; surrounding cards remain quiet. Use CSS grid/minmax, logical properties, safe-area padding, `overflow-wrap:anywhere`, visible `:focus-visible`, and reduced-motion query. Do not introduce remote fonts, emoji icons, raw one-off palette or animation dependencies.
 
-- [ ] **Step 4: Run GREEN**
+- [x] **Step 4: Run GREEN**
 
 Run the component suites and all four Playwright projects once the real runtime in Task 7 is available; expected all geometry/focus assertions PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```text
 style(web): finish responsive shared expense workspace
@@ -287,7 +287,7 @@ style(web): finish responsive shared expense workspace
 
 ### Task 7: Real backend browser journey, documentation and final gate
 
-- [ ] **Step 1: Write the real journey before changing runtime helpers**
+- [x] **Step 1: Write the real journey before changing runtime helpers**
 
 Complete `shared-expenses.runtime.spec.ts` using `uniqueAccounts`, `signInWithApiSession` and separate browser contexts. It must reject non-loopback `MIMIC_API_BASE_URL` and must not call `page.route`, `route.fulfill`, mock financial fetches or import service mocks.
 
@@ -306,15 +306,15 @@ The scenario must:
 
 Additionally inject one stale version using a direct local API mutation and one repeated identical request ID; assert UI refresh/review and backend idempotency without duplicate expense/confirmation.
 
-- [ ] **Step 2: Establish task-owned runtime**
+- [x] **Step 2: Establish task-owned runtime**
 
 Use only a new/confirmed loopback PostgreSQL database and schema. Record exact host, port, database and schema in the execution record. Run migrations/seed only against that URL. Start backend on a task-owned loopback port and Web on another task-owned loopback port with hidden processes/log files. Confirm `/api/v1/health` before Playwright. Never use staging/production URLs or credentials.
 
-- [ ] **Step 3: Run browser RED and debug systematically**
+- [x] **Step 3: Run browser RED and debug systematically**
 
 Run the shared runtime spec first. For every unexpected failure, read and apply `superpowers:systematic-debugging`, reproduce the root cause, add/retain a focused failing regression, then make the smallest fix. Do not weaken assertions to match bugs.
 
-- [ ] **Step 4: Run all viewport projects GREEN**
+- [x] **Step 4: Run all viewport projects GREEN**
 
 Run:
 
@@ -327,11 +327,11 @@ npm run test:e2e -- shared-expenses.runtime.spec.ts
 
 Expected: shared journey passes phone-small, phone, tablet and desktop with real persisted responses.
 
-- [ ] **Step 5: Run self-review**
+- [x] **Step 5: Run self-review**
 
 Read and apply `superpowers:self-review`. Review all changed source and tests for exact-money handling, privacy, permissions, conflict recovery, idempotency, accessibility, responsive bounds and legacy leakage. Fix every critical/important finding with a demonstrated RED→GREEN regression.
 
-- [ ] **Step 6: Run verification-before-completion**
+- [x] **Step 6: Run verification-before-completion**
 
 Read and apply `superpowers:verification-before-completion`, then run fresh:
 
@@ -356,11 +356,11 @@ $env:MIMIC_RUNTIME_ACCEPTANCE='1'; $env:PLAYWRIGHT_BASE_URL='http://127.0.0.1:<w
 
 Record exact exit codes/counts and keep the known standalone `(public)/page_client-reference-manifest.js` ENOENT warning separate from failures.
 
-- [ ] **Step 7: Update checkpoint records**
+- [x] **Step 7: Update checkpoint records**
 
 Mark this plan's completed boxes. Update `.agents/features.md` from P3 shared Web in-progress to done while leaving P4–P7 planned. Append `.agents/devlog.md` in the repository format. Create the execution record with RED evidence, commits, runtime ports/database/schema, test counts, self-review findings, known warning and explicit remaining phases.
 
-- [ ] **Step 8: Commit records, stop processes and prove clean**
+- [x] **Step 8: Commit records, stop processes and prove clean**
 
 Commit documentation only:
 

@@ -1111,3 +1111,15 @@
 - Independent connections verify write/archive and write/exit races, duplicate lifecycle requests, concurrent manager exits and audit-failure rollback.
 **Decisions:** Pooled mode keeps the conservative nonempty guard. Shared lifecycle reuses the authoritative bigint read model and existing group-to-space mutation lock; no schema, money formula or legacy Fund compatibility layer was added.
 **Known gaps / follow-ups:** P3 still requires shared Web delivery and a real-backend browser journey. P4 references, P5 pooled lifecycle and later navigation/draft/cleanup phases remain planned.
+
+## 2026-09-11 — P3 shared Web and browser checkpoint
+
+**Task:** Complete the participant-private shared bookkeeping Web UI and prove the full lifecycle against the real task-local backend.
+**Scope:** Shared Web/BFF contracts and routes, group discovery, expense/position workspace, settlement/correction/lifecycle panels, responsive pixel CSS, Playwright runtime acceptance, feature map and execution records.
+**What changed:**
+- Added strict Zod projections and CSRF/session BFF routes for shared spaces, participants, expenses, summaries, batches, transfers and corrections.
+- Added participant-only navigation, exact decimal-string payer/allocation editing, authoritative positions, two-party batch confirmation, lock recovery, immutable correction and settled exit/archive UI.
+- Added phone-small, phone, tablet and desktop real-backend acceptance with four isolated actor contexts, no mocked financial responses, stale-version recovery and request-ID replay checks.
+- Reconstructed subsequent correction targets from ordered signed deltas with `BigInt`, and made archived workspaces explicitly read-only.
+**Decisions:** Group governors receive metadata-only cards without financial links; former participants see neither the box name nor financial responses. Production browser acceptance reuses explicit task-owned servers so Next development cold compilation cannot obscure mutation outcomes. No legacy Fund adapter was introduced.
+**Known gaps / follow-ups:** P4 personal references, P5 pooled accounting, P6 navigation/home/tasks and P7 durable drafts/full three-mode cleanup remain planned. The existing standalone `(public)/page_client-reference-manifest.js` ENOENT copy warning remains a separate release concern.

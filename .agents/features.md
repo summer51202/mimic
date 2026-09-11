@@ -3,7 +3,7 @@ _Last updated: 2026-09-11. Refresh with `/feature-map`._
 
 > The PWA in `web/` is the only active client. Current implementation work targets `web/` and `backend/`; previous clients remain available only through Git history.
 
-## Financial spaces redesign — Phases 1 and 2 complete, Phase 3 in progress
+## Financial spaces redesign — Phases 1–3 complete, Phase 4 planned
 
 The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md` supersedes the universal Fund model and its accounting assumptions. The legacy capability entries below describe existing disconnected Fund behavior, not the new modes' accounting rules.
 
@@ -22,13 +22,13 @@ The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-d
 | done | Shared payer/allocation persistence, participant-private HTTP CRUD, audited receipts and exact full-space summary | `backend/src/modules/shared-expenses/`; real HTTP and two-connection tests |
 | done | Shared batch snapshots, temporary/permanent locks, two-party confirmation and immutable corrections | `backend/src/modules/shared-settlements/`; real HTTP and concurrency tests |
 | done | Safe settled shared lifecycle with obligation, manager-survival and privacy guards | `shared-lifecycle.ts`; real HTTP and independent-connection concurrency suites |
-| in-progress | Shared Web journey | P3 remaining checkpoint |
+| done | Participant-private shared Web journey, exact payer/allocation editor, positions, batch confirmations, immutable corrections and settled lifecycle | `/app/spaces/:spaceId`, `web/src/features/shared-expenses/`, `web/src/features/shared-settlements/`; four-viewport real-backend acceptance |
 | planned | Personal references to shared expenses | P4 |
 | planned | Pooled commitments, book/available balances, advances, reimbursements and returns | P5 |
 | planned | 寶箱 navigation, homepage, quick entry and task center | P6 |
 | planned | Offline drafts, full three-mode real-backend browser acceptance and legacy removal | P7 |
 
-P2 enables personal daily expense posting and consumption. P3 now exposes shared expense HTTP CRUD, batch settlements, two-party confirmation, corrections, full-space positions and settled exit/archive; shared Web delivery remains incomplete. Shared spaces have a16-current-participant limit matching bounded exact settlement search. Pooled monetary services and full navigation cutover are later phases. Nonempty pooled exit/archive remains conservatively rejected until that mode owns its lifecycle obligations. Durable local drafts are P7; P2 retains input only while its form stays open and never posts automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
+P2 enables personal daily expense posting and consumption. P3 now delivers shared expense HTTP and Web CRUD, exact positions, batch settlements, two-party confirmation, immutable corrections, settled exit/archive and a four-viewport real-backend browser journey. Shared spaces have a16-current-participant limit matching bounded exact settlement search. P4 references, pooled monetary services and full navigation cutover are later phases. Nonempty pooled exit/archive remains conservatively rejected until that mode owns its lifecycle obligations. Durable local drafts are P7; current forms retain input only while open and never post automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
 
 ## Backend Capability Map
 
@@ -194,7 +194,8 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 ### Categories
 - [x] Neutral taxonomy module with private/group scope, stable system defaults and historical merge/archive semantics
 - [x] Personal PWA category/tag picker and private term management
-- [ ] Connect the same vocabulary to P3 shared and P5 pooled expense forms
+- [x] Connect group vocabulary to the P3 shared expense form
+- [ ] Connect the same vocabulary to P5 pooled expense forms
 
 ### Contributions
 - [x] PWA create/list loop for regular and one-time contributions
