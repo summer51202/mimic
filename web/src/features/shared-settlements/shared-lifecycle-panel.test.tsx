@@ -57,3 +57,13 @@ it('refreshes authoritative participant state after a stale lifecycle write', as
   await waitFor(() => expect(onChanged).toHaveBeenCalledOnce());
   expect(screen.getByRole('alert')).toHaveTextContent('寶箱參與者或狀態已變更');
 });
+
+it('closes the confirmation dialog after archive succeeds', async () => {
+  const view = render(<SharedLifecyclePanel space={space} currentUserId={a} participants={participants} members={members} onChanged={vi.fn()} />);
+  await userEvent.click(screen.getByRole('button', { name: '封存共同分帳寶箱' }));
+  await userEvent.type(screen.getByLabelText('輸入寶箱名稱確認'), space.name);
+  await userEvent.click(screen.getByRole('button', { name: '確認封存' }));
+  await waitFor(() => expect(mocks.request).toHaveBeenCalledOnce());
+  view.rerender(<SharedLifecyclePanel space={{ ...space, status: 'ARCHIVED' }} currentUserId={a} participants={participants} members={members} onChanged={vi.fn()} />);
+  expect(screen.queryByRole('dialog', { name: '封存共同分帳寶箱' })).not.toBeInTheDocument();
+});

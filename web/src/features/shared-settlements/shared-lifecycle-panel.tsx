@@ -44,6 +44,7 @@ export function SharedLifecyclePanel({ space, currentUserId, participants, membe
     try {
       await appFetch(path, { method: path.endsWith('/role') ? 'PATCH' : 'POST', body: JSON.stringify(body) });
       await onChanged();
+      if (path.endsWith('/archive')) { setArchiveOpen(false); setConfirmation(''); }
     } catch (failure) {
       setError(explain(failure));
       if (failure instanceof AppClientError && failure.code === 'SPACE_VERSION_CONFLICT') {

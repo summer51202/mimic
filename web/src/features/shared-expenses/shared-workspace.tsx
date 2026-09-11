@@ -11,6 +11,7 @@ import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
 import { SharedExpenseForm } from './shared-expense-form';
 import { SharedExpenseList } from './shared-expense-list';
+import { applyExpenseCorrections } from './shared-money';
 import type { SharedWorkspaceData } from './shared-queries';
 import { SettlementPanel } from '../shared-settlements/settlement-panel';
 import { CorrectionForm } from '../shared-settlements/correction-form';
@@ -107,7 +108,7 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
       {dialog === 'expense' && <SharedExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'} spaceId={space.id} currency={space.currency} timezone={space.timezone}
         currentUserId={group.current_user_id} participants={data.participants} terms={data.terms} record={editing}
         lockKind={lockKind(editing)}
-        onCorrection={record => { setEditing(record); setDialog('correction'); }}
+        onCorrection={record => { setEditing(applyExpenseCorrections(record, data.corrections.items)); setDialog('correction'); }}
         onSaved={async result => { setDialog(null); setEditing(undefined); setNotice(`已確認「${result.record.title}」${money(result.record.amount_minor)}。`); try { await refresh(); } catch { setError('已確認儲存，但摘要更新失敗；請重新讀取。'); } }}
         onReload={async () => (await refresh()).expenses.items.find(item => item.id === editing?.id)} />}
     </PixelDialog>
