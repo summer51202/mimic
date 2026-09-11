@@ -94,12 +94,12 @@ Files:
 
 ## Task 5 — Add strict Web/BFF contracts
 
-- [ ] Add RED Zod tests for the discriminated personal-month entries, nonnegative reference allocation strings, category labels, strict mutation response, lock flag, and malformed/float rejection.
-- [ ] Add RED BFF route tests for create/update/remove forwarding, UUID path validation, CSRF/auth behavior, and upstream error preservation.
-- [ ] Implement strict contracts and thin BFF routes following the existing personal/shared route pattern.
-- [ ] Update personal/shared server queries to load only the owned personal boxes and private tags required by the current participant.
-- [ ] Run focused Web tests GREEN.
-- [ ] Commit: `feat: expose private references through Web BFF`
+- [x] Add RED Zod tests for the discriminated personal-month entries, nonnegative reference allocation strings, category labels, strict mutation response, lock flag, and malformed/float rejection.
+- [x] Add RED BFF route tests for create/update/remove forwarding, UUID path validation, CSRF/auth behavior, and upstream error preservation.
+- [x] Implement strict contracts and thin BFF routes following the existing personal/shared route pattern.
+- [x] Update personal/shared server queries to load only the owned personal boxes and private tags required by the current participant.
+- [x] Run focused Web tests GREEN.
+- [x] Commit: `feat: expose private references through Web BFF`
 
 Files:
 

@@ -12,6 +12,7 @@ import {
   sharedSummarySchema,
 } from '@/shared/api/shared-finance-contracts';
 import { taxonomyPickerSchema } from '@/shared/api/taxonomy-contracts';
+import { taxonomyTermSchema } from '@/shared/api/taxonomy-contracts';
 
 const uuid = z.string().uuid();
 
@@ -29,7 +30,7 @@ export async function loadSharedWorkspace(spaceId: string) {
     throw new ApiError(404, 'SPACE_NOT_FOUND');
   }
   const groupId = space.group_id;
-  const [participants, group, members, categories, tags, expenses, summary, batches, corrections] = await Promise.all([
+  const [participants, group, members, categories, tags, expenses, summary, batches, corrections, personalSpaces, personalTags] = await Promise.all([
     authenticatedServerApi(`/spaces/${spaceId}/participants`, { method: 'GET' }),
     authenticatedServerApi(`/groups/${groupId}`, { method: 'GET' }),
     authenticatedServerApi(`/groups/${groupId}/members`, { method: 'GET' }),
@@ -39,6 +40,8 @@ export async function loadSharedWorkspace(spaceId: string) {
     authenticatedServerApi(`/spaces/${spaceId}/shared-expenses/summary`, { method: 'GET' }),
     authenticatedServerApi(`/spaces/${spaceId}/shared-settlements`, { method: 'GET' }),
     authenticatedServerApi(`/spaces/${spaceId}/shared-corrections`, { method: 'GET' }),
+    authenticatedServerApi('/me/spaces', { method: 'GET' }),
+    authenticatedServerApi('/me/taxonomy?kind=TAG&include_inactive=true', { method: 'GET' }),
   ]);
   const categoryPicker = taxonomyPickerSchema.parse(categories);
   const tagPicker = taxonomyPickerSchema.parse(tags);
@@ -52,6 +55,9 @@ export async function loadSharedWorkspace(spaceId: string) {
     summary: sharedSummarySchema.parse(summary),
     batches: sharedBatchPageSchema.parse(batches),
     corrections: sharedCorrectionPageSchema.parse(corrections),
+    personalSpaces: financialSpaceSchema.array().parse(personalSpaces).filter(item => item.access === 'PARTICIPANT'
+      && item.mode === 'PERSONAL_EXPENSES' && item.status === 'ACTIVE' && item.currency === space.currency),
+    personalTags: taxonomyTermSchema.array().parse(personalTags),
   };
 }
 
