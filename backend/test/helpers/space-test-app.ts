@@ -34,6 +34,9 @@ export async function createSpaceTestApp() {
   const close = async () => {
     const ids = users.map(user => user.id);
     const spaceWhere = { createdById: { in: ids } };
+    await prisma.personalReferenceReceipt.deleteMany({ where: { space: spaceWhere } });
+    await prisma.personalExpenseReferenceTag.deleteMany({ where: { reference: { personalSpace: spaceWhere } } });
+    await prisma.personalExpenseReference.deleteMany({ where: { personalSpace: spaceWhere } });
     await prisma.sharedOperationReceipt.deleteMany({ where: { space: spaceWhere } });
     await prisma.sharedCorrection.deleteMany({ where: { space: spaceWhere } });
     await prisma.sharedSettlementBatch.deleteMany({ where: { space: spaceWhere } });

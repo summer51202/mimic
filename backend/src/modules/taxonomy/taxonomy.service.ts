@@ -152,6 +152,12 @@ export class TaxonomyService {
     };
   }
 
+  async resolveTags(tx: Prisma.TransactionClient, space: FinancialSpace, actorId: string,
+    tagIds: string[], previousTagIds: string[] = []): Promise<string[]> {
+    return (await this.resolveSelection(tx, space, actorId, undefined, tagIds,
+      { categoryId: UNCATEGORIZED_ID, tagIds: previousTagIds })).tagIds;
+  }
+
   listForSpace(spaceId: string, actorId: string, query: TaxonomyQueryDto): Promise<TaxonomyPickerResult> {
     return this.prisma.$transaction(async tx => {
       const { space } = await this.spaces.requireParticipant(tx, spaceId, actorId);

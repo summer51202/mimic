@@ -4,6 +4,8 @@ import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
 import { PersonalExpensesService } from './personal-expenses.service';
 import { CreatePersonalExpenseDto, DeletePersonalExpenseDto, PersonalMonthQueryDto, UpdatePersonalExpenseDto } from './dto/personal-expense.dto';
 import { PersonalExpenseQueriesService } from './personal-expense-queries.service';
+import { PersonalReferencesService } from './personal-references.service';
+import { CreatePersonalReferenceDto, RemovePersonalReferenceDto, UpdatePersonalReferenceDto } from './dto/personal-reference.dto';
 @Controller('spaces/:spaceId/personal-expenses')
 @UseGuards(JwtAuthGuard)
 export class PersonalExpensesController {
@@ -24,5 +26,32 @@ export class PersonalExpensesController {
   @HttpCode(200)
   async delete(@Param('spaceId', ParseUUIDPipe) spaceId: string, @Param('expenseId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser, @Body() dto: DeletePersonalExpenseDto) {
     return { data: await this.expenses.delete(spaceId, id, user.userId, dto) };
+  }
+}
+
+@Controller('spaces/:spaceId/personal-references')
+@UseGuards(JwtAuthGuard)
+export class PersonalReferencesController {
+  constructor(private readonly references: PersonalReferencesService) {}
+
+  @Post()
+  async create(@Param('spaceId', ParseUUIDPipe) spaceId: string, @CurrentUser() user: RequestUser,
+    @Body() dto: CreatePersonalReferenceDto) {
+    return { data: await this.references.create(spaceId, user.userId, dto) };
+  }
+
+  @Patch(':referenceId')
+  async update(@Param('spaceId', ParseUUIDPipe) spaceId: string,
+    @Param('referenceId', ParseUUIDPipe) referenceId: string, @CurrentUser() user: RequestUser,
+    @Body() dto: UpdatePersonalReferenceDto) {
+    return { data: await this.references.update(spaceId, referenceId, user.userId, dto) };
+  }
+
+  @Post(':referenceId/remove')
+  @HttpCode(200)
+  async remove(@Param('spaceId', ParseUUIDPipe) spaceId: string,
+    @Param('referenceId', ParseUUIDPipe) referenceId: string, @CurrentUser() user: RequestUser,
+    @Body() dto: RemovePersonalReferenceDto) {
+    return { data: await this.references.remove(spaceId, referenceId, user.userId, dto) };
   }
 }

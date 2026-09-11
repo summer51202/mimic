@@ -12,6 +12,8 @@
     "financial-spaces-concurrency.e2e-spec.ts",
     "personal-expenses.e2e-spec.ts",
     "personal-expenses-concurrency.e2e-spec.ts",
+    "personal-references.e2e-spec.ts",
+    "personal-references-concurrency.e2e-spec.ts",
     "taxonomy.e2e-spec.ts",
     "shared-expenses.e2e-spec.ts",
     "shared-expenses-concurrency.e2e-spec.ts",

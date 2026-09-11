@@ -57,13 +57,13 @@ Files:
 
 ## Task 3 — Implement locked, idempotent private-reference mutations
 
-- [ ] Add RED service/e2e tests for create, exact retry replay, request-id payload conflict, same-currency and mode checks, owned-active personal destination, active source, current shared participation, positive owner allocation, private taxonomy validation, uniqueness/reactivation, stale reference version, update, remove, and audit/space-version effects.
-- [ ] Add RED concurrency tests proving duplicate create/retry does not double-write and source mutation/participant exit cannot race authorization.
-- [ ] Add a deterministic pair-lock path: shared group/source first, then personal taxonomy/destination; re-run both authorizations inside the transaction.
-- [ ] Implement `PersonalReferencesService`, controller routes, module wiring, dedicated receipt replay, audit snapshots that contain private data only in the personal space, and first-formal-record latching.
-- [ ] Keep failures non-enumerating (`SOURCE_EXPENSE_NOT_FOUND` or destination-scoped errors) and never return shared source details to former/non-participants.
-- [ ] Run focused unit, ordinary e2e, and task-local PostgreSQL suites GREEN.
-- [ ] Commit: `feat: manage private shared expense references`
+- [x] Add RED service/e2e tests for create, exact retry replay, request-id payload conflict, same-currency and mode checks, owned-active personal destination, active source, current shared participation, positive owner allocation, private taxonomy validation, uniqueness/reactivation, stale reference version, update, remove, and audit/space-version effects.
+- [x] Add concurrency tests proving duplicate create/retry does not double-write, same-version update/remove cannot both commit, and source participant exit cannot race authorization.
+- [x] Add a deterministic pair-lock path: shared group/source first, then personal taxonomy/destination; re-run both authorizations inside the transaction.
+- [x] Implement `PersonalReferencesService`, controller routes, module wiring, dedicated receipt replay, audit snapshots that contain private data only in the personal space, and first-formal-record latching.
+- [x] Keep failures non-enumerating (`SOURCE_EXPENSE_NOT_FOUND` or destination-scoped errors) and never return shared source details to former/non-participants.
+- [x] Run focused unit, ordinary e2e, and task-local PostgreSQL suites GREEN.
+- [x] Commit: `feat: manage private shared expense references`
 
 Files:
 
