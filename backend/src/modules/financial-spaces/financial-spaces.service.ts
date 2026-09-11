@@ -7,6 +7,7 @@ import { lockFinancialSpace } from './financial-space-lock';
 import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { ParticipantSpace, SpaceListItem } from './financial-spaces.types';
+import { requireSharedParticipantLimit } from './shared-participant-limit';
 
 @Injectable()
 export class FinancialSpacesService {
@@ -85,6 +86,7 @@ export class FinancialSpacesService {
       if ((dto.name === undefined || dto.name === space.name) && mode === space.mode) {
         return this.project(space, role);
       }
+      if (mode !== space.mode) requireSharedParticipantLimit(mode, await tx.spaceParticipant.count({ where: { spaceId, effectiveTo: null } }));
       const updated = await tx.financialSpace.update({ where: { id: spaceId }, data: {
         name: dto.name, mode, version: { increment: 1 },
       } });

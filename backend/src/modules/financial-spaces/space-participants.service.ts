@@ -3,6 +3,7 @@ import { Prisma, SpaceParticipant, SpaceParticipantRole } from '@prisma/client';
 import { FinancialSpacesService } from './financial-spaces.service';
 import { AddParticipantDto } from './dto/add-participant.dto';
 import { UpdateParticipantRoleDto } from './dto/update-participant-role.dto';
+import { requireSharedParticipantLimit } from './shared-participant-limit';
 
 @Injectable()
 export class SpaceParticipantsService {
@@ -20,6 +21,7 @@ export class SpaceParticipantsService {
       if (!target) throw new NotFoundException('MEMBER_NOT_FOUND');
       const current = await tx.spaceParticipant.findFirst({ where: { spaceId, userId: dto.user_id, effectiveTo: null } });
       if (current) throw new ConflictException('SPACE_PARTICIPANT_EXISTS');
+      requireSharedParticipantLimit(space.mode, 1 + await tx.spaceParticipant.count({ where: { spaceId, effectiveTo: null } }));
       const participant = await tx.spaceParticipant.create({ data: {
         spaceId, userId: dto.user_id, effectiveFrom: this.spaces.today(space.timezone), role: 'PARTICIPANT',
       } });
