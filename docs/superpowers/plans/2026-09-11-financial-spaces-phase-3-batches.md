@@ -39,7 +39,7 @@ Create under `backend/src/modules/shared-settlements/`:
 - `shared-settlements.service.ts`: start/cancel/send/receive; detail/list reads with participant authorization and RepeatableRead.
 - `shared-corrections.service.ts`: source-bound revisioned target replacement and delta posting; immutable correction reads.
 - `shared-settlements.controller.ts`, `shared-corrections.controller.ts`, `shared-settlements.module.ts`: strict authenticated route wiring.
-- `dto/shared-settlement.dto.ts`: request/version/date DTOs, bounded pagination and correction target DTOs.
+- `dto/shared-settlement.dto.ts` and `dto/shared-correction.dto.ts`: request/version/date DTOs, bounded pagination and correction target DTOs.
 
 Create `backend/src/modules/shared-expenses/shared-financial-read.ts`: `readSharedFinancials(tx,spaceId,end?)` yields bigint spending and MemberAmount positions. Retain the existing SQL expense integrity check and grouped sums, then add signed correction effects and COMPLETED transfer facts; optional end includes transactions up to that date and transfers whose batch periodEnd<=end. Error on inconsistent source facts; no partial total fallback.
 
@@ -93,35 +93,35 @@ Transfer correction states the actual transferred amount. Compare with latest co
 
 ### 1. Period policy and schema
 
-- [ ] Test first/next period dates, leap day/year rollover, invalid dates, inverted/end-future ranges, canonical65-digit integer limits. Observe assertion failures before policy implementation, then green.
-- [ ] Real database table-presence assertion must fail before adding schema/migration. Add models/inverses/indexes/checks, generate Prisma client and deploy only to task-local phase2. Verify invalid period, multiple pending batch and invalid confirmation actor/state facts fail direct writes.
-- [ ] Full migration install on new local schema `phase3_batches_fresh`; seed twice. No migration reset or external DB operation.
+- [x] Test first/next period dates, leap day/year rollover, invalid dates, inverted/end-future ranges, canonical65-digit integer limits. Observe assertion failures before policy implementation, then green.
+- [x] Real database table-presence assertion must fail before adding schema/migration. Add models/inverses/indexes/checks, generate Prisma client and deploy only to task-local phase2. Verify invalid period, multiple pending batch and invalid confirmation actor/state facts fail direct writes.
+- [x] Full migration install on new local schema `phase3_batches_fresh`; seed twice. No migration reset or external DB operation.
 
 ### 2. Start/cancel and expense lock wiring
 
-- [ ] Real HTTP start test A pays1000, A/B shares400/600 expects B→A600 and snapshot versions; observe404 before controller/service implementation.
-- [ ] Pending period tests independently assert create/edit/delete/backdate blocked409. Test moving record from locked date to open date and open date into locked date. Cancel before sent permits the same edits; canceled history remains. Zero-transfer and empty batch completes atomically and permanently locks dates.
-- [ ] Test manager/nonparticipant/wrong-mode authorization, one pending batch, invalid dates, stale space version, exact receipt replay and changed key payload409. Snapshot rejects incomplete facts rather than creating partial suggestions.
+- [x] Real HTTP start test A pays1000, A/B shares400/600 expects B→A600 and snapshot versions; observe404 before controller/service implementation.
+- [x] Pending period tests independently assert create/edit/delete/backdate blocked409. Test moving record from locked date to open date and open date into locked date. Cancel before sent permits the same edits; canceled history remains. Zero-transfer and empty batch completes atomically and permanently locks dates.
+- [x] Test manager/nonparticipant/wrong-mode authorization, one pending batch, invalid dates, stale space version, exact receipt replay and changed key payload409. Snapshot rejects incomplete facts rather than creating partial suggestions.
 
 ### 3. Two-party completion and authoritative summary
 
-- [ ] Add failing send/receive HTTP tests: wrong actor403, out-of-order409, sender fact/time captured and summary unchanged at SENT; receipt zeros positions. Repeated keys and new-key repeated action retain timestamps and versions.
-- [ ] Three participants/multiple transfers: one completed transfer does not complete batch; last receipt completes whole batch and permanent lock. Manager cancellation after any send rejects. Next batch start=prior end+1. Later open-period expenses remain outstanding after prior batch completes.
-- [ ] Transfer amount beyond PG bigint row range stays exact using integer numeric storage and bigint arithmetic. Completed payments never affect spending.
+- [x] Add failing send/receive HTTP tests: wrong actor403, out-of-order409, sender fact/time captured and summary unchanged at SENT; receipt zeros positions. Repeated keys and new-key repeated action retain timestamps and versions.
+- [x] Three participants/multiple transfers: one completed transfer does not complete batch; last receipt completes whole batch and permanent lock. Manager cancellation after any send rejects. Next batch start=prior end+1. Later open-period expenses remain outstanding after prior batch completes.
+- [x] Transfer amount beyond PG bigint row range stays exact using integer numeric storage and bigint arithmetic. Completed payments never affect spending.
 
 ### 4. Immutable corrections
 
-- [ ] Expense correction test: settle1000 with400/600, then correct next-day total800 with320/480. Assert signed amount−200 and corresponding side deltas, new obligations A−120/B+120, spending800, original source and batch snapshot unchanged. Settle correction next batch and reach zero.
-- [ ] Test zero-total responsibility redistribution and full void; second correction uses source_revision1 and targets already corrected state. Stale revision/no-op/foreign source/temporary source/locked or future correction date reject. Nonmanager and nonparticipant cannot correct.
-- [ ] Transfer correction actual700 after confirmed600 produces B+100/A−100, amountMinor0 and unchanged spending. Repeat/new source revision and zero actual transfer cases remain exact. Preserve original sent/received timestamps.
-- [ ] Correction list is participant-private, bounded and cursor-scoped. Correction effect IDs/revisions are present in subsequent batch snapshots.
+- [x] Expense correction test: settle1000 with400/600, then correct next-day total800 with320/480. Assert signed amount−200 and corresponding side deltas, new obligations A−120/B+120, spending800, original source and batch snapshot unchanged. Settle correction next batch and reach zero.
+- [x] Test zero-total responsibility redistribution and full void; second correction uses source_revision1 and targets already corrected state. Stale revision/no-op/foreign source/temporary source/locked or future correction date reject. Nonmanager and nonparticipant cannot correct.
+- [x] Transfer correction actual700 after confirmed600 produces B+100/A−100, amountMinor0 and unchanged spending. Repeat/new source revision and zero actual transfer cases remain exact. Preserve original sent/received timestamps.
+- [x] Correction list is participant-private, bounded and cursor-scoped. Correction effect IDs/revisions are present in subsequent batch snapshots.
 
 ### 5. Concurrency, rollback, review and commit
 
-- [ ] Two Prisma connections test expense edit versus batch start, duplicate batch starts, cancel versus send, duplicate send/receive, last two receipts, duplicate source revision corrections, and correction creation versus next batch start. Assert serial outcomes and conservation.
-- [ ] Fixture-specific CHECK failures on audit/receipt roll back batch/transfers/locks, confirmation state/versions, and correction/effects/revision together. No incomplete confirmation or financial posting survives a failed transaction.
-- [ ] Backend baseline: `npx prisma validate`, `npm run build`, `npm test -- --runInBand`, `npm run test:e2e -- --runInBand`, `npm run test:spaces-db` with explicit loopback phase2 URL.
-- [ ] Self-review all changed functions and state/lock paths; fix important findings via red/green. Update devlog/features and execution record. `git diff --check`; conventional commits for schema, batch/locks, confirmations, corrections and acceptance. Preserve unrelated files; no merge/push.
+- [x] Two Prisma connections test expense edit versus batch start, duplicate batch starts, cancel versus send, duplicate send/receive, last two receipts, duplicate source revision corrections, and correction creation versus next batch start. Assert serial outcomes and conservation.
+- [x] Fixture-specific CHECK failures on audit/receipt roll back batch/transfers/locks, confirmation state/versions, and correction/effects/revision together. No incomplete confirmation or financial posting survives a failed transaction.
+- [x] Backend baseline: `npx prisma validate`, `npm run build`, `npm test -- --runInBand`, `npm run test:e2e -- --runInBand`, `npm run test:spaces-db` with explicit loopback phase2 URL.
+- [x] Self-review all changed functions and state/lock paths; fix important findings via red/green. Update devlog/features and execution record. `git diff --check`; conventional commits for schema, batch/locks, confirmations, corrections and acceptance. Preserve unrelated files; no merge/push.
 
 ## Plan self-review
 

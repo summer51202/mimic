@@ -20,13 +20,14 @@ The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-d
 | done | No-group personal box onboarding, monthly bookkeeping, taxonomy management and offline submission prevention | `/app/personal`, `web/src/features/personal-expenses/`, `web/src/features/taxonomy/` |
 | done | Exact shared positions, signed effects, integer allocation and bounded exact minimum transfers | `shared-accounting.ts`, `shared-allocation.ts`, `shared-settlements/minimum-transfers.ts` |
 | done | Shared payer/allocation persistence, participant-private HTTP CRUD, audited receipts and exact full-space summary | `backend/src/modules/shared-expenses/`; real HTTP and two-connection tests |
-| in-progress | Shared batch settlement, locks, corrections, safe settled lifecycle and Web journey | P3 remaining checkpoints |
+| done | Shared batch snapshots, temporary/permanent locks, two-party confirmation and immutable corrections | `backend/src/modules/shared-settlements/`; real HTTP and concurrency tests |
+| in-progress | Safe settled lifecycle and shared Web journey | P3 remaining checkpoints |
 | planned | Personal references to shared expenses | P4 |
 | planned | Pooled commitments, book/available balances, advances, reimbursements and returns | P5 |
 | planned | 寶箱 navigation, homepage, quick entry and task center | P6 |
 | planned | Offline drafts, full three-mode real-backend browser acceptance and legacy removal | P7 |
 
-P2 enables personal daily expense posting and consumption. P3 now exposes shared expense HTTP CRUD and full-space positions; settlement operations and shared Web delivery remain incomplete. Shared spaces have a16-current-participant limit matching bounded exact settlement search. Pooled monetary services and full navigation cutover are later phases. Nonempty exit/archive remains conservatively rejected until the owning mode lifecycle implements its obligations. Durable local drafts are P7; P2 retains input only while its form stays open and never posts automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
+P2 enables personal daily expense posting and consumption. P3 now exposes shared expense HTTP CRUD, batch settlements, two-party confirmation, corrections and full-space positions; shared Web delivery remains incomplete. Shared spaces have a16-current-participant limit matching bounded exact settlement search. Pooled monetary services and full navigation cutover are later phases. Nonempty exit/archive remains conservatively rejected until the owning mode lifecycle implements its obligations. Durable local drafts are P7; P2 retains input only while its form stays open and never posts automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
 
 ## Backend Capability Map
 
