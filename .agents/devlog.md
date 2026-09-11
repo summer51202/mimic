@@ -1123,3 +1123,16 @@
 - Reconstructed subsequent correction targets from ordered signed deltas with `BigInt`, and made archived workspaces explicitly read-only.
 **Decisions:** Group governors receive metadata-only cards without financial links; former participants see neither the box name nor financial responses. Production browser acceptance reuses explicit task-owned servers so Next development cold compilation cannot obscure mutation outcomes. No legacy Fund adapter was introduced.
 **Known gaps / follow-ups:** P4 personal references, P5 pooled accounting, P6 navigation/home/tasks and P7 durable drafts/full three-mode cleanup remain planned. The existing standalone `(public)/page_client-reference-manifest.js` ENOENT copy warning remains a separate release concern.
+
+## 2026-09-12 — P4 private shared-expense references
+
+**Task:** Link a participant's authoritative shared allocation into an owned personal ledger and prove its privacy and lifecycle against the real backend.
+**Scope:** Prisma reference/receipt storage, personal reference mutation and month-query services, strict Web BFF contracts, shared opt-in and personal-ledger UI, four-viewport Playwright acceptance, and checkpoint documentation.
+**What changed:**
+- Added versioned private reference rows, private tags/notes, dedicated idempotency receipts and personal-space-only audits without creating a duplicate expense.
+- Added current-participant, positive-allocation, same-currency and mode authorization under deterministic source/destination locks; former participants and governance-only users receive non-enumerating denials.
+- Merged manual expenses and shared references into exact bigint personal consumption with canonical source categories, stable pagination, cross-space view versions and completed-source lock cues.
+- Added shared opt-in plus personal private-metadata edit/remove UI with offline, stale, retry, focus and narrow-layout behavior.
+- Added real-backend acceptance for phone-small, phone, tablet and desktop, including source updates, settlement, transfer exclusion, remove/reactivate, exit, archive and foreign/pool rejection.
+**Decisions:** References derive amount/title/date/category from the shared source and never copy financial facts. Settlement transfers are not personal spending. Completed-source corrections remain separate next-period shared records. Omitted and explicit-null metadata are distinct idempotency payloads.
+**Known gaps / follow-ups:** P5 pooled accounting, P6 navigation/home/tasks and P7 drafts/cleanup/full three-mode acceptance remain. The existing standalone public manifest-copy ENOENT warning persists.

@@ -131,11 +131,11 @@ Files:
 
 ## Task 7 — Render and manage references in the personal ledger
 
-- [ ] Add RED component tests for source badge, authoritative amount/category, private tags/note, locked cue, manual-vs-reference actions, edit-private-metadata only, soft remove, stale reload, idempotent retry, source-disappeared refresh, empty/loading/error states, keyboard focus, and narrow layouts.
-- [ ] Implement discriminated rendering so manual records retain existing edit/delete forms while references expose only private metadata edit/remove actions.
-- [ ] Prefer backend-projected canonical `category_name`; never attempt to fetch group taxonomy from a former participant's browser.
-- [ ] Run focused Web tests GREEN.
-- [ ] Commit: `feat: show shared references in personal spending`
+- [x] Add RED component tests for source badge, authoritative amount/category, private tags/note, locked cue, manual-vs-reference actions, edit-private-metadata only, soft remove, stale reload, idempotent retry, source-disappeared refresh, empty/loading/error states, keyboard focus, and narrow layouts.
+- [x] Implement discriminated rendering so manual records retain existing edit/delete forms while references expose only private metadata edit/remove actions.
+- [x] Prefer backend-projected canonical `category_name`; never attempt to fetch group taxonomy from a former participant's browser.
+- [x] Run focused Web tests GREEN.
+- [x] Commit: `feat: show shared references in personal spending`
 
 Files:
 
@@ -146,12 +146,12 @@ Files:
 
 ## Task 8 — Real-backend browser acceptance
 
-- [ ] Add a RED Playwright journey with no mocked financial responses: register two users, create/join group, create personal and shared boxes, add participant, create shared expense, add owner allocation to personal ledger, verify personal amount/category/private metadata, edit unlocked source and observe personal update, settle and lock, remove/re-add private reference as applicable, exit participant, and verify source details disappear/financial reads remain denied.
-- [ ] Prove settlement transfers never appear in personal consumption and a foreign-currency/pool source cannot be referenced.
-- [ ] Exercise phone `320x568` and `390x844`, tablet `768x1024`, and desktop `1440x900`; assert keyboard reachability, focus restoration, dialog bounds, and no horizontal overflow.
-- [ ] Start only an explicitly named task-owned loopback PostgreSQL database/schema and loopback API/Web processes; record ports/PIDs/logs outside versioned paths where practical.
-- [ ] Use systematic debugging for every unexpected failure and keep the journey GREEN.
-- [ ] Commit: `test: cover private reference browser journey`
+- [x] Add a RED Playwright journey with no mocked financial responses: register two users, create/join group, create personal and shared boxes, add participant, create shared expense, add owner allocation to personal ledger, verify personal amount/category/private metadata, edit unlocked source and observe personal update, settle and lock, remove/re-add private reference as applicable, exit participant, and verify source details disappear/financial reads remain denied.
+- [x] Prove settlement transfers never appear in personal consumption and a foreign-currency/pool source cannot be referenced.
+- [x] Exercise phone `320x568` and `390x844`, tablet `768x1024`, and desktop `1440x900`; assert keyboard reachability, focus restoration, dialog bounds, and no horizontal overflow.
+- [x] Start only an explicitly named task-owned loopback PostgreSQL database/schema and loopback API/Web processes; record ports/PIDs/logs outside versioned paths where practical.
+- [x] Use systematic debugging for every unexpected failure and keep the journey GREEN.
+- [x] Commit: `test: cover private reference browser journey`
 
 Files:
 
@@ -161,22 +161,22 @@ Files:
 
 ## Task 9 — Documentation, self-review, and checkpoint verification
 
-- [ ] Run self-review over the complete P4 diff; fix critical/important findings with RED regression tests and small commits.
-- [ ] Update this checklist, `.agents/features.md`, and `.agents/devlog.md`.
-- [ ] Add `docs/superpowers/plans/2026-09-12-financial-spaces-phase-4-private-references-execution.md` with API/data decisions, RED/GREEN evidence, browser coverage, task-local database identity, exact verification counts, known warning, and remaining phases.
-- [ ] Run backend verification from `backend/`:
+- [x] Run self-review over the complete P4 diff; fix critical/important findings with RED regression tests and small commits.
+- [x] Update this checklist, `.agents/features.md`, and `.agents/devlog.md`.
+- [x] Add `docs/superpowers/plans/2026-09-12-financial-spaces-phase-4-private-references-execution.md` with API/data decisions, RED/GREEN evidence, browser coverage, task-local database identity, exact verification counts, known warning, and remaining phases.
+- [x] Run backend verification from `backend/`:
   - `npm run build`
   - `npm test -- --runInBand`
   - `npm run test:e2e -- --runInBand`
   - `DATABASE_URL=<explicit task-local URL> npm run test:spaces-db`
-- [ ] Run Web verification from `web/`:
+- [x] Run Web verification from `web/`:
   - `npm run lint`
   - `npm run typecheck`
   - `npm test`
   - `MIMIC_API_BASE_URL=http://localhost:3000/api/v1 npm run build`
   - real-backend Playwright personal-reference acceptance
-- [ ] Stop task-owned PostgreSQL/API/Web processes, run `git diff --check`, verify `git status --short --branch` is clean, and preserve root `.codex-remote-attachments/` and `reference/` untouched.
-- [ ] Commit: `docs: record private reference checkpoint verification`
+- [x] Stop task-owned PostgreSQL/API/Web processes, run `git diff --check`, verify `git status --short --branch` is clean, and preserve root `.codex-remote-attachments/` and `reference/` untouched.
+- [x] Commit: `docs: record private reference checkpoint verification`
 
 ## Completion boundary
 
