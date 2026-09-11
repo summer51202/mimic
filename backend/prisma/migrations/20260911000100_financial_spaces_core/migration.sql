@@ -126,5 +126,3 @@ END;
 $$ LANGUAGE plpgsql;
 CREATE TRIGGER financial_space_identity_guard BEFORE UPDATE ON financial_spaces
  FOR EACH ROW EXECUTE FUNCTION protect_financial_space_identity();
-
-
