@@ -70,7 +70,7 @@ export class PersonalReferencesService {
       source_expense_id: 'source_expense_id' in dto ? dto.source_expense_id : null,
       version: 'version' in dto ? dto.version : null,
       tag_ids: 'tag_ids' in dto && dto.tag_ids ? [...dto.tag_ids].sort() : null,
-      note: 'note' in dto ? dto.note ?? null : null,
+      note: 'note' in dto ? { present: true, value: dto.note ?? null } : { present: false },
     };
   }
 

@@ -80,7 +80,10 @@ describe('private shared-expense reference lifecycle', () => {
   });
 
   it('updates only private metadata, soft-removes, and reactivates the unique history row', async () => {
-    const created = (await f.call('post', path(), 1).send(createBody()).expect(201)).body.data.reference;
+    const created = (await f.call('post', path(), 1).send({ ...createBody(), note: 'Keep me' }).expect(201)).body.data.reference;
+    const omittedNote = { request_id: randomUUID(), version: 1, tag_ids: [] };
+    await f.call('patch', `${path()}/${created.id}`, 1).send(omittedNote).expect(200);
+    await f.call('patch', `${path()}/${created.id}`, 1).send({ ...omittedNote, note: null }).expect(409);
     const update = { request_id: randomUUID(), version: 1, note: 'Private update', tag_ids: [] };
     const changed = await f.call('patch', `${path()}/${created.id}`, 1).send(update).expect(200);
     expect(changed.body.data).toMatchObject({ change_minor: '0', reference: { version: 2, note: 'Private update' } });
