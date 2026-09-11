@@ -127,6 +127,17 @@ enum AuditAction {
 }
 
 model User {
+  sharedBatchesCreated SharedSettlementBatch[] @relation("SharedBatchCreator")
+  sharedBatchesCompleted SharedSettlementBatch[] @relation("SharedBatchCompleter")
+  sharedBatchesCanceled SharedSettlementBatch[] @relation("SharedBatchCanceler")
+  sharedTransfersFrom SharedSettlementTransfer[] @relation("SharedTransferFrom")
+  sharedTransfersTo SharedSettlementTransfer[] @relation("SharedTransferTo")
+  sharedTransfersSent SharedSettlementTransfer[] @relation("SharedTransferSender")
+  sharedTransfersReceived SharedSettlementTransfer[] @relation("SharedTransferReceiver")
+  sharedCorrections SharedCorrection[] @relation("SharedCorrectionCreator")
+  sharedCorrectionPayers SharedCorrectionPayer[]
+  sharedCorrectionAllocations SharedCorrectionAllocation[]
+  sharedOperationReceipts SharedOperationReceipt[]
   sharedPayers SharedExpensePayer[]
   sharedAllocations SharedExpenseAllocation[]
   ownedTaxonomyTerms TaxonomyTerm[] @relation("TaxonomyOwner")
@@ -466,6 +477,12 @@ enum SpaceParticipantRole {
 }
 
 enum SpaceAuditAction {
+  SHARED_BATCH_STARTED
+  SHARED_BATCH_CANCELED
+  SHARED_BATCH_COMPLETED
+  SHARED_TRANSFER_SENT
+  SHARED_TRANSFER_RECEIVED
+  SHARED_CORRECTION_CREATED
   EXPENSE_CREATED
   EXPENSE_UPDATED
   EXPENSE_DELETED
@@ -478,6 +495,9 @@ enum SpaceAuditAction {
 }
 
 model FinancialSpace {
+  sharedBatches SharedSettlementBatch[]
+  sharedCorrections SharedCorrection[]
+  sharedOperationReceipts SharedOperationReceipt[]
   expenseRecords ExpenseRecord[]
   expenseReceipts ExpenseMutationReceipt[]
   id                  String               @id @default(uuid()) @db.Uuid
@@ -606,6 +626,7 @@ model TaxonomyAuditEvent {
   @@map("taxonomy_audit_events")
 }
 model ExpenseRecord {
+  sharedCorrections SharedCorrection[]
   sharedPayers SharedExpensePayer[]
   sharedAllocations SharedExpenseAllocation[]
   id          String @id @default(uuid()) @db.Uuid
@@ -671,4 +692,121 @@ model ExpenseMutationReceipt {
   actor       User @relation("ExpenseReceiptActor", fields: [actorUserId], references: [id])
   @@unique([spaceId, actorUserId, requestId])
   @@map("expense_mutation_receipts")
+}
+
+enum SharedBatchStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+enum SharedTransferStatus {
+  AWAITING_PAYMENT
+  SENT
+  COMPLETED
+}
+enum SharedOperationAction {
+  BATCH_START
+  BATCH_CANCEL
+  TRANSFER_SENT
+  TRANSFER_RECEIVED
+  EXPENSE_CORRECTION
+  TRANSFER_CORRECTION
+}
+model SharedSettlementBatch {
+  id String @id @default(uuid()) @db.Uuid
+  spaceId String @map("space_id") @db.Uuid
+  periodStart DateTime @map("period_start") @db.Date
+  periodEnd DateTime @map("period_end") @db.Date
+  status SharedBatchStatus @default(PENDING)
+  version Int @default(1)
+  snapshot Json
+  createdById String @map("created_by_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  completedById String? @map("completed_by_id") @db.Uuid
+  completedAt DateTime? @map("completed_at") @db.Timestamptz(6)
+  canceledById String? @map("canceled_by_id") @db.Uuid
+  canceledAt DateTime? @map("canceled_at") @db.Timestamptz(6)
+  space FinancialSpace @relation(fields: [spaceId], references: [id])
+  creator User @relation("SharedBatchCreator", fields: [createdById], references: [id])
+  completer User? @relation("SharedBatchCompleter", fields: [completedById], references: [id], onDelete: Restrict)
+  canceler User? @relation("SharedBatchCanceler", fields: [canceledById], references: [id], onDelete: Restrict)
+  transfers SharedSettlementTransfer[]
+  @@index([spaceId, periodEnd])
+  @@map("shared_settlement_batches")
+}
+model SharedSettlementTransfer {
+  id String @id @default(uuid()) @db.Uuid
+  batchId String @map("batch_id") @db.Uuid
+  fromUserId String @map("from_user_id") @db.Uuid
+  toUserId String @map("to_user_id") @db.Uuid
+  amountMinor Decimal @map("amount_minor") @db.Decimal(65, 0)
+  status SharedTransferStatus @default(AWAITING_PAYMENT)
+  version Int @default(1)
+  sentById String? @map("sent_by_id") @db.Uuid
+  sentAt DateTime? @map("sent_at") @db.Timestamptz(6)
+  receivedById String? @map("received_by_id") @db.Uuid
+  receivedAt DateTime? @map("received_at") @db.Timestamptz(6)
+  batch SharedSettlementBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  fromUser User @relation("SharedTransferFrom", fields: [fromUserId], references: [id])
+  toUser User @relation("SharedTransferTo", fields: [toUserId], references: [id])
+  sender User? @relation("SharedTransferSender", fields: [sentById], references: [id], onDelete: Restrict)
+  receiver User? @relation("SharedTransferReceiver", fields: [receivedById], references: [id], onDelete: Restrict)
+  corrections SharedCorrection[]
+  @@index([batchId, status])
+  @@map("shared_settlement_transfers")
+}
+model SharedCorrection {
+  id String @id @default(uuid()) @db.Uuid
+  spaceId String @map("space_id") @db.Uuid
+  sourceExpenseId String? @map("source_expense_id") @db.Uuid
+  sourceTransferId String? @map("source_transfer_id") @db.Uuid
+  revision Int
+  occurredOn DateTime @map("occurred_on") @db.Date
+  reason String @db.VarChar(2000)
+  amountMinor Decimal @map("amount_minor") @db.Decimal(65, 0)
+  targetAmountMinor Decimal @map("target_amount_minor") @db.Decimal(65, 0)
+  createdById String @map("created_by_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  space FinancialSpace @relation(fields: [spaceId], references: [id])
+  sourceExpense ExpenseRecord? @relation(fields: [sourceExpenseId], references: [id], onDelete: Restrict)
+  sourceTransfer SharedSettlementTransfer? @relation(fields: [sourceTransferId], references: [id], onDelete: Restrict)
+  creator User @relation("SharedCorrectionCreator", fields: [createdById], references: [id])
+  payers SharedCorrectionPayer[]
+  allocations SharedCorrectionAllocation[]
+  @@unique([sourceExpenseId, revision])
+  @@unique([sourceTransferId, revision])
+  @@index([spaceId, occurredOn, id])
+  @@map("shared_corrections")
+}
+model SharedCorrectionPayer {
+  correctionId String @map("correction_id") @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  amountMinor Decimal @map("amount_minor") @db.Decimal(65, 0)
+  correction SharedCorrection @relation(fields: [correctionId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+  @@id([correctionId, userId])
+  @@map("shared_correction_payers")
+}
+model SharedCorrectionAllocation {
+  correctionId String @map("correction_id") @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  amountMinor Decimal @map("amount_minor") @db.Decimal(65, 0)
+  correction SharedCorrection @relation(fields: [correctionId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+  @@id([correctionId, userId])
+  @@map("shared_correction_allocations")
+}
+model SharedOperationReceipt {
+  id String @id @default(uuid()) @db.Uuid
+  spaceId String @map("space_id") @db.Uuid
+  actorUserId String @map("actor_user_id") @db.Uuid
+  requestId String @map("request_id") @db.Uuid
+  action SharedOperationAction
+  payloadHash String @map("payload_hash") @db.VarChar(64)
+  response Json
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  space FinancialSpace @relation(fields: [spaceId], references: [id])
+  actor User @relation(fields: [actorUserId], references: [id])
+  @@unique([spaceId, actorUserId, requestId])
+  @@map("shared_operation_receipts")
 }
