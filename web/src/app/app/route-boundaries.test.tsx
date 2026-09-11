@@ -23,6 +23,7 @@ const {
   getSettingsProfileMock,
   listFundsMock,
   listGroupsMock,
+  listGroupSharedSpacesMock,
   listMembersMock,
   notFoundMock,
   refreshMock,
@@ -36,6 +37,7 @@ const {
   getSettingsProfileMock: vi.fn(),
   listFundsMock: vi.fn(),
   listGroupsMock: vi.fn(),
+  listGroupSharedSpacesMock: vi.fn(),
   listMembersMock: vi.fn(),
   notFoundMock: vi.fn(() => {
     throw new Error("NEXT_NOT_FOUND");
@@ -84,6 +86,9 @@ vi.mock("@/features/funds/fund-queries", () => ({
   getFundSummary: getFundSummaryMock,
   listFunds: listFundsMock,
 }));
+vi.mock("@/features/shared-expenses/shared-queries", () => ({
+  listGroupSharedSpaces: listGroupSharedSpacesMock,
+}));
 vi.mock("@/features/settings/settings-queries", () => ({
   getSettingsProfile: getSettingsProfileMock,
 }));
@@ -123,6 +128,7 @@ beforeEach(() => {
   getSettingsProfileMock.mockReset();
   listFundsMock.mockReset();
   listGroupsMock.mockReset();
+  listGroupSharedSpacesMock.mockReset().mockResolvedValue([]);
   listMembersMock.mockReset();
   notFoundMock.mockReset().mockImplementation(() => {
     throw new Error("NEXT_NOT_FOUND");
@@ -338,6 +344,7 @@ describe("authenticated route boundaries", () => {
     expect(getGroupMock).toHaveBeenCalledWith("group-1");
     expect(listMembersMock).toHaveBeenCalledWith("group-1");
     expect(listFundsMock).toHaveBeenCalledWith("group-1");
+    expect(listGroupSharedSpacesMock).toHaveBeenCalledWith("group-1");
 
     cleanup();
     const unknown = new Error("parallel read failed");
