@@ -82,7 +82,7 @@ All arrays are copied and deterministically ordered by code-point user ID; no mu
 
 Files: create `backend/src/modules/shared-expenses/shared-accounting.ts` and `shared-accounting.spec.ts`.
 
-- [ ] Write failing tests, starting with the canonical example:
+- [x] Write failing tests, starting with the canonical example:
 
 ```typescript
 const expense = {
@@ -95,16 +95,16 @@ expect(sharedPositions([expense], [])).toEqual([
 ]);
 ```
 
-- [ ] Run `npm test -- --runInBand --testPathPattern=shared-accounting` from backend; confirm missing implementation failure.
-- [ ] Implement the declared functions using map accumulation: payer `+amount`, allocation `-amount`; COMPLETED sender `+amount`, recipient `-amount`. Validate all effects and payment endpoints/status/positive amounts before accumulation. Validate side uniqueness and equal sums. Preserve zero-position participants appearing in facts.
-- [ ] Add red/green cases for SENT and AWAITING_PAYMENT unchanged positions, COMPLETED zeroing, multiple payers, signed reversal, zero-total redistribution, amounts above 2^53, duplicates, invalid payment, negative ordinary expense/payer/allocation, and sum mismatch.
-- [ ] Rerun targeted suite; inspect implementation for incorrect signs and any contribution input.
+- [x] Run `npm test -- --runInBand --testPathPattern=shared-accounting` from backend; confirm missing implementation failure.
+- [x] Implement the declared functions using map accumulation: payer `+amount`, allocation `-amount`; COMPLETED sender `+amount`, recipient `-amount`. Validate all effects and payment endpoints/status/positive amounts before accumulation. Validate side uniqueness and equal sums. Preserve zero-position participants appearing in facts.
+- [x] Add red/green cases for SENT and AWAITING_PAYMENT unchanged positions, COMPLETED zeroing, multiple payers, signed reversal, zero-total redistribution, amounts above 2^53, duplicates, invalid payment, negative ordinary expense/payer/allocation, and sum mismatch.
+- [x] Rerun targeted suite; inspect implementation for incorrect signs and any contribution input.
 
 ## Task 2 — Exact allocations
 
 Files: create `backend/src/modules/shared-expenses/shared-allocation.ts` and `shared-allocation.spec.ts`.
 
-- [ ] Write failing equal-split test:
+- [x] Write failing equal-split test:
 
 ```typescript
 expect(allocateShared(100n, { mode: 'EQUAL', userIds: ['C', 'B', 'A'] })).toEqual([
@@ -114,16 +114,16 @@ expect(allocateShared(100n, { mode: 'EQUAL', userIds: ['C', 'B', 'A'] })).toEqua
 ]);
 ```
 
-- [ ] Run `npm test -- --runInBand --testPathPattern=shared-allocation`; confirm missing implementation failure.
-- [ ] Implement fixed validation and largest remainder: `floor = total * weight / sumWeights`, `remainder = total * weight % sumWeights`. Award leftover units in descending remainder, then ascending user ID. HYBRID uses `total - sumFixed`, requires disjoint IDs and no over-allocation. Final result sorted by ID.
-- [ ] Add red/green tests: ratio 1:2 with total100 →33/67; hybrid fixed A20 and weights B1/C2 →20/27/53; exact fixed amounts; zero remainder; input permutation stability; huge bigint values; nonpositive weights; duplicate/overlapping IDs; empty selections; invalid negative total/fixed amount; fixed sum mismatch.
-- [ ] Rerun targeted suite and conservation assertions for each allocation mode.
+- [x] Run `npm test -- --runInBand --testPathPattern=shared-allocation`; confirm missing implementation failure.
+- [x] Implement fixed validation and largest remainder: `floor = total * weight / sumWeights`, `remainder = total * weight % sumWeights`. Award leftover units in descending remainder, then ascending user ID. HYBRID uses `total - sumFixed`, requires disjoint IDs and no over-allocation. Final result sorted by ID.
+- [x] Add red/green tests: ratio 1:2 with total100 →33/67; hybrid fixed A20 and weights B1/C2 →20/27/53; exact fixed amounts; zero remainder; input permutation stability; huge bigint values; nonpositive weights; duplicate/overlapping IDs; empty selections; invalid negative total/fixed amount; fixed sum mismatch.
+- [x] Rerun targeted suite and conservation assertions for each allocation mode.
 
 ## Task 3 — Exact minimum transfers
 
 Files: create `backend/src/modules/shared-settlements/minimum-transfers.ts` and `minimum-transfers.spec.ts`.
 
-- [ ] Write failing canonical and greedy-counterexample tests:
+- [x] Write failing canonical and greedy-counterexample tests:
 
 ```typescript
 const positions = [-8n, -7n, -5n, 10n, 8n, 2n]
@@ -131,18 +131,18 @@ const positions = [-8n, -7n, -5n, 10n, 8n, 2n]
 expect(minimumTransfers(positions)).toHaveLength(4);
 ```
 
-- [ ] Run `npm test -- --runInBand --testPathPattern=minimum-transfers`; confirm missing implementation failure.
-- [ ] Implement subset sums and the maximum number of disjoint zero-sum groups. For each mask, choose a predecessor maximizing its group count and add one if this mask sums to zero. Reconstruct a deterministic participant ordering from stored predecessors, splitting at zero-sum prefixes. Pair debtors with creditors inside each resulting group using positive minimum remaining amounts. A maximally partitioned group cannot contain a proper zero-sum subset, so it needs exactly size−1 transfers; globally this achieves the minimum `n - groupCount`.
-- [ ] Add red/green tests: all zero, exact opposite pair, duplicate ID, nonzero total, deterministic reordered input, strictly debtor→creditor direction, no self transfer, bigint precision, 16 nonzero positions supported, 17 rejected, additional zero positions ignored for limit.
-- [ ] Add an independent exhaustive zero-sum partition oracle for small generated balanced vectors; assert minimum count and replay every suggested payment to zero every position. The oracle enumerates subgroups, not the production prefix recurrence.
-- [ ] Run the targeted suite and verify the bounded 16-member case completes within Jest's default timeout; no wall-clock microbenchmark threshold.
+- [x] Run `npm test -- --runInBand --testPathPattern=minimum-transfers`; confirm missing implementation failure.
+- [x] Implement subset sums and the maximum number of disjoint zero-sum groups. For each mask, choose a predecessor maximizing its group count and add one if this mask sums to zero. Reconstruct a deterministic participant ordering from stored predecessors, splitting at zero-sum prefixes. Pair debtors with creditors inside each resulting group using positive minimum remaining amounts. A maximally partitioned group cannot contain a proper zero-sum subset, so it needs exactly size−1 transfers; globally this achieves the minimum `n - groupCount`.
+- [x] Add red/green tests: all zero, exact opposite pair, duplicate ID, nonzero total, deterministic reordered input, strictly debtor→creditor direction, no self transfer, bigint precision, 16 nonzero positions supported, 17 rejected, additional zero positions ignored for limit.
+- [x] Add an independent exhaustive zero-sum partition oracle for small generated balanced vectors; assert minimum count and replay every suggested payment to zero every position. The oracle enumerates subgroups, not the production prefix recurrence.
+- [x] Run the targeted suite and verify the bounded 16-member case completes within Jest's default timeout; no wall-clock microbenchmark threshold.
 
 ## Task 4 — Verification and commit checkpoint
 
-- [ ] From backend run `npm run build`, `npm test -- --runInBand`, and `npm run test:e2e -- --runInBand`; all must exit0. No schema/DB commands are needed for this pure-function checkpoint.
-- [ ] Read every new source function and test; check input immutability, money precision, validity guards, determinism, complexity, and independent oracle assertions. Fix critical/important findings with failing regression tests before implementation fixes.
-- [ ] Append `.agents/devlog.md` with kernel scope, tests, explicit remaining P3 persistence/UI work and numeric search limit. Record evidence in `docs/superpowers/plans/2026-09-11-financial-spaces-phase-3-accounting-execution.md`.
-- [ ] Run `git diff --check`; stage only this checkpoint's source/tests/devlog/evidence and commit `feat: calculate exact shared expense positions and settlements`.
+- [x] From backend run `npm run build`, `npm test -- --runInBand`, and `npm run test:e2e -- --runInBand`; all must exit0. No schema/DB commands are needed for this pure-function checkpoint.
+- [x] Read every new source function and test; check input immutability, money precision, validity guards, determinism, complexity, and independent oracle assertions. Fix critical/important findings with failing regression tests before implementation fixes.
+- [x] Append `.agents/devlog.md` with kernel scope, tests, explicit remaining P3 persistence/UI work and numeric search limit. Record evidence in `docs/superpowers/plans/2026-09-11-financial-spaces-phase-3-accounting-execution.md`.
+- [x] Run `git diff --check`; stage only this checkpoint's source/tests/devlog/evidence and commit `feat: calculate exact shared expense positions and settlements`.
 
 Web files and routes do not change in this checkpoint. Its Web baseline and real-backend shared browser journey are mandatory before declaring P3 complete, alongside migrations, real PostgreSQL concurrency tests, lock/correction tests, and confirmation rollback tests. A passing arithmetic suite is not P3 acceptance.
 
