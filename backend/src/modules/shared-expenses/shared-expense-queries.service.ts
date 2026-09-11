@@ -1,11 +1,11 @@
-import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { FinancialSpacesService } from '../financial-spaces/financial-spaces.service';
 import { ExpenseRecordsService } from '../expense-records/expense-records.service';
 import { SharedExpenseQueryDto } from './dto/shared-expense.dto';
 import { projectShared, sharedInclude, wireAmounts } from './shared-expense-records';
-import { sharedPositions } from './shared-accounting';
+import { readSharedFinancials } from './shared-financial-read';
 
 @Injectable()
 export class SharedExpenseQueriesService {
@@ -39,26 +39,12 @@ export class SharedExpenseQueriesService {
   summary(spaceId: string, actorId: string) {
     return this.prisma.$transaction(async tx => {
       const space = await this.authorize(tx, spaceId, actorId);
-      const [totals] = await tx.$queryRaw<Array<{ amount: string; invalid: boolean }>>(Prisma.sql`
-        SELECT COALESCE(SUM(e.amount_minor),0)::text AS amount,
-        COALESCE(BOOL_OR(
-          e.amount_minor <> COALESCE((SELECT SUM(p.amount_minor) FROM shared_expense_payers p WHERE p.expense_id=e.id),0)
-          OR e.amount_minor <> COALESCE((SELECT SUM(a.amount_minor) FROM shared_expense_allocations a WHERE a.expense_id=e.id),0)
-        ),false) AS invalid FROM expense_records e WHERE e.space_id=${spaceId}::uuid AND e.status='ACTIVE'`);
-      if (totals.invalid) throw new InternalServerErrorException('SHARED_FACTS_INVALID');
-      const payers = await tx.$queryRaw<Array<{ userId: string; amount: string }>>(Prisma.sql`
-        SELECT p.user_id AS "userId", SUM(p.amount_minor)::text AS amount FROM shared_expense_payers p
-        JOIN expense_records e ON e.id=p.expense_id WHERE e.space_id=${spaceId}::uuid AND e.status='ACTIVE' GROUP BY p.user_id`);
-      const allocations = await tx.$queryRaw<Array<{ userId: string; amount: string }>>(Prisma.sql`
-        SELECT a.user_id AS "userId", SUM(a.amount_minor)::text AS amount FROM shared_expense_allocations a
-        JOIN expense_records e ON e.id=a.expense_id WHERE e.space_id=${spaceId}::uuid AND e.status='ACTIVE' GROUP BY a.user_id`);
-      const convert = (rows: typeof payers) => rows.map(row => ({ userId: row.userId, amountMinor: BigInt(row.amount) }));
-      const positions = sharedPositions([{ amountMinor: BigInt(totals.amount), payers: convert(payers), allocations: convert(allocations) }], []);
+      const { spending, positions } = await readSharedFinancials(tx, spaceId);
       const members = await tx.spaceParticipant.findMany({ where: { spaceId, effectiveTo: null, effectiveFrom: { lte: this.spaces.today(space.timezone) } } });
       const present = new Set(positions.map(row => row.userId));
       for (const member of members) if (!present.has(member.userId)) positions.push({ userId: member.userId, amountMinor: 0n });
       return { space_id: spaceId, mode: 'SHARED_EXPENSES' as const, currency: space.currency, space_version: space.version,
-        spending_minor: totals.amount, positions: wireAmounts(positions) };
+        spending_minor: spending.toString(), positions: wireAmounts(positions) };
     }, { isolationLevel: 'RepeatableRead' });
   }
 }

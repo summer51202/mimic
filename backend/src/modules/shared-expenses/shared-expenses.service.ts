@@ -4,6 +4,7 @@ import { ExpenseMutationAction, FinancialSpace, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { FinancialSpacesService } from '../financial-spaces/financial-spaces.service';
 import { requireSharedParticipantLimit } from '../financial-spaces/shared-participant-limit';
+import { requireSharedPeriodOpen } from '../shared-settlements/shared-period-lock';
 import { ExpenseRecordsService } from '../expense-records/expense-records.service';
 import { parseExpenseDate, parseExpenseMinor } from '../expense-records/expense-values';
 import { TaxonomyService } from '../taxonomy/taxonomy.service';
@@ -45,6 +46,7 @@ export class SharedExpensesService {
       validateSharedExpense(effect);
     } catch (error) { throw new BadRequestException(error instanceof Error ? error.message : 'SHARED_INPUT_INVALID'); }
     if (occurredOn < space.openedOn || occurredOn > this.spaces.today(space.timezone)) throw new BadRequestException('EXPENSE_DATE_INVALID');
+    await requireSharedPeriodOpen(tx, space.id, [occurredOn]);
     const participants = await tx.spaceParticipant.findMany({ where: { spaceId: space.id, effectiveTo: null },
       include: { user: { select: { status: true, memberships: { where: { groupId: space.groupId!, status: 'ACTIVE' }, select: { id: true } } } } } });
     requireSharedParticipantLimit(space.mode, participants.length);
@@ -74,6 +76,7 @@ export class SharedExpensesService {
         if (current.createdById !== actorId && role !== 'MANAGER') throw new ForbiddenException('EXPENSE_EDITOR_REQUIRED');
         if (current.status !== 'ACTIVE') throw new ConflictException('EXPENSE_DELETED');
         if (!('version' in dto) || current.version !== dto.version) throw new ConflictException('EXPENSE_VERSION_CONFLICT');
+        await requireSharedPeriodOpen(tx, spaceId, [current.occurredOn]);
       }
       const before = current ? projectShared(current, space.currency, this.records) : null;
       let changed = true;
