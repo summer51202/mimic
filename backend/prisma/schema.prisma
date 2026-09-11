@@ -127,6 +127,8 @@ enum AuditAction {
 }
 
 model User {
+  sharedPayers SharedExpensePayer[]
+  sharedAllocations SharedExpenseAllocation[]
   ownedTaxonomyTerms TaxonomyTerm[] @relation("TaxonomyOwner")
   createdTaxonomyTerms TaxonomyTerm[] @relation("TaxonomyCreator")
   taxonomyAuditEvents TaxonomyAuditEvent[] @relation("TaxonomyAuditActor")
@@ -604,6 +606,8 @@ model TaxonomyAuditEvent {
   @@map("taxonomy_audit_events")
 }
 model ExpenseRecord {
+  sharedPayers SharedExpensePayer[]
+  sharedAllocations SharedExpenseAllocation[]
   id          String @id @default(uuid()) @db.Uuid
   spaceId     String @map("space_id") @db.Uuid
   amountMinor BigInt @map("amount_minor")
@@ -632,6 +636,27 @@ model ExpenseRecordTag {
   tag       TaxonomyTerm @relation(fields: [tagId], references: [id])
   @@id([expenseId, tagId])
   @@map("expense_record_tags")
+}
+
+model SharedExpensePayer {
+  expenseId String @map("expense_id") @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  amountMinor BigInt @map("amount_minor")
+  expense ExpenseRecord @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+  @@id([expenseId, userId])
+  @@index([userId])
+  @@map("shared_expense_payers")
+}
+model SharedExpenseAllocation {
+  expenseId String @map("expense_id") @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  amountMinor BigInt @map("amount_minor")
+  expense ExpenseRecord @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+  @@id([expenseId, userId])
+  @@index([userId])
+  @@map("shared_expense_allocations")
 }
 model ExpenseMutationReceipt {
   id          String @id @default(uuid()) @db.Uuid

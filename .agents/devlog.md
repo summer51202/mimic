@@ -1060,3 +1060,12 @@
 **Decisions:** Largest remainder uses stable identity tie-breaking. Exact settlement search maximizes zero-sum partitions in O(n*2^n), capped at 16 nonzero positions with explicit rejection rather than approximation. Internal aggregates can exceed a database row's bigint range; persistence validation is a later boundary.
 **Verification:** Observed 21 accounting, 20 allocation, and 11 minimum-transfer assertion failures before implementations; all 52 new tests then passed. Independent exhaustive oracle checked 625 small balanced cases and replayed transfers to zero. Backend build, all 34 unit suites/372 tests, and 5 ordinary e2e suites/54 tests passed. Reviewed every new source function and test; no critical/important issue remained.
 **Known gaps / follow-ups:** This is an arithmetic checkpoint, not P3 acceptance. Shared schema/CRUD, effective-date validation, batch locks, correction persistence, audited/idempotent two-party confirmations, safe lifecycle, Web and real-backend browser acceptance still require implementation. The later integration must enforce the supported participant population before obligations can exceed the search bound. No database, Web, merge, or push operation occurred here.
+
+## 2026-09-11 — P3 shared expense persistence
+
+**Task:** Persist shared payer and allocation facts independently of legacy Fund expenses.
+**Scope:** Prisma schema and `20260911000300_shared_expense_facts` migration.
+**What changed:** Added shared payer/allocation relations on common ExpenseRecord, composite expense/user keys, user/expense foreign keys, positive payer and nonnegative allocation checks. Soft deletion retains facts; physical fixture cleanup cascades from ExpenseRecord.
+**Decisions:** Additive migration with no legacy conversion or resets. Common positive expense storage remains unchanged; locked-source signed corrections belong to the following settlement checkpoint.
+**Verification:** Real database table assertion failed before migration and passed afterward. Upgrade on task-local phase2 and all six migrations on phase3_fresh passed; fresh seed ran twice. Direct constraint tests rejected zero payer, negative allocation, duplicate identity and nonexistent user. Prisma validate and full Backend build/unit/e2e/realDB regression passed with the related HTTP implementation present.
+**Known gaps / follow-ups:** The following commit connects authenticated CRUD and summary. Settlement batches, permanent/temporary locks, corrections and Web acceptance remain P3 work. Only the task-owned loopback PostgreSQL was accessed.
