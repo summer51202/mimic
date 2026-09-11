@@ -11,7 +11,7 @@ import {
   sharedParticipantSchema,
   sharedSummarySchema,
 } from '@/shared/api/shared-finance-contracts';
-import { taxonomyTermSchema } from '@/shared/api/taxonomy-contracts';
+import { taxonomyPickerSchema } from '@/shared/api/taxonomy-contracts';
 
 const uuid = z.string().uuid();
 
@@ -40,12 +40,14 @@ export async function loadSharedWorkspace(spaceId: string) {
     authenticatedServerApi(`/spaces/${spaceId}/shared-settlements`, { method: 'GET' }),
     authenticatedServerApi(`/spaces/${spaceId}/shared-corrections`, { method: 'GET' }),
   ]);
+  const categoryPicker = taxonomyPickerSchema.parse(categories);
+  const tagPicker = taxonomyPickerSchema.parse(tags);
   return {
     space,
     participants: sharedParticipantSchema.array().parse(participants),
     group: groupDetailSchema.parse(group),
     members: memberSchema.array().parse(members),
-    terms: [...taxonomyTermSchema.array().parse(categories), ...taxonomyTermSchema.array().parse(tags)],
+    terms: [...categoryPicker.terms, ...tagPicker.terms],
     expenses: sharedExpensePageSchema.parse(expenses),
     summary: sharedSummarySchema.parse(summary),
     batches: sharedBatchPageSchema.parse(batches),

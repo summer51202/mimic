@@ -76,8 +76,10 @@ export function SharedExpenseForm({ spaceId, currency, timezone, currentUserId, 
       onSaved(sharedExpenseMutationSchema.parse(response.data));
     } catch (failure) {
       if (failure instanceof AppClientError && failure.status === 409) {
-        if (failure.code === 'SHARED_PERIOD_LOCKED') {
-          setLocked(true); setError(lockKind === 'PENDING'
+        if (['SHARED_PERIOD_TEMPORARY_LOCK', 'SHARED_PERIOD_PERMANENT_LOCK', 'SHARED_PERIOD_LOCKED'].includes(failure.code)) {
+          const resolvedLock = failure.code === 'SHARED_PERIOD_TEMPORARY_LOCK' ? 'PENDING'
+            : failure.code === 'SHARED_PERIOD_PERMANENT_LOCK' ? 'PERMANENT' : lockKind;
+          setLocked(resolvedLock === 'PERMANENT'); setError(resolvedLock === 'PENDING'
             ? '進行中的結算批次暫時鎖定這個期間。付款前可由管理者取消；否則請完成批次。'
             : '這個期間已永久鎖定，原紀錄不能再改寫。請在下一個開放期間建立更正。');
         } else {

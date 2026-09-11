@@ -38,7 +38,7 @@ export const sharedCorrectionSchema = z.object({
   id: uuid, space_id: uuid, source_expense_id: uuid.nullable(), source_transfer_id: uuid.nullable(),
   revision: z.number().int().nonnegative().safe(), occurred_on: z.iso.date(), reason: z.string().min(1).max(2000),
   amount_minor: canonicalSigned, target_amount_minor: canonicalUnsigned,
-  payers: z.array(amountRowSchema).max(16), allocations: z.array(amountRowSchema).max(16),
+  payers: z.array(signedAmountRowSchema).max(16), allocations: z.array(signedAmountRowSchema).max(16),
   created_by: uuid, created_at: iso,
 }).strict().superRefine((value, ctx) => {
   if ((value.source_expense_id === null) === (value.source_transfer_id === null)) {

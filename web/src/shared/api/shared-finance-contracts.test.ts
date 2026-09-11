@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   sharedBatchSchema,
+  sharedCorrectionSchema,
   sharedExpenseMutationSchema,
   sharedExpensePageSchema,
   sharedSummarySchema,
@@ -51,5 +52,13 @@ describe('shared finance wire contracts', () => {
       completed_by: null, completed_at: null, canceled_by: null, canceled_at: null };
     expect(() => sharedBatchSchema.parse({ ...envelope, transfers: [{ ...base, status: 'SENT' }] })).toThrow();
     expect(() => sharedBatchSchema.parse({ ...envelope, transfers: [{ ...base, status: 'AWAITING_PAYMENT', sent_by: a }] })).toThrow();
+  });
+
+  it('accepts signed delta rows in immutable correction projections', () => {
+    const correction = { id: a, space_id: b, source_expense_id: a, source_transfer_id: null, revision: 1,
+      occurred_on: '2026-09-11', reason: 'Actual total', amount_minor: '-200', target_amount_minor: '800',
+      payers: [{ user_id: a, amount_minor: '-200' }], allocations: [{ user_id: b, amount_minor: '-120' }],
+      created_by: a, created_at: '2026-09-11T01:00:00.000Z' };
+    expect(sharedCorrectionSchema.parse(correction)).toEqual(correction);
   });
 });

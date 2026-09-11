@@ -37,7 +37,7 @@ describe('SharedExpenseForm', () => {
   });
 
   it('keeps input and offers correction after a permanent period lock', async () => {
-    mocks.request.mockRejectedValue(new AppClientError(409, 'SHARED_PERIOD_LOCKED'));
+    mocks.request.mockRejectedValue(new AppClientError(409, 'SHARED_PERIOD_PERMANENT_LOCK'));
     const correction = vi.fn();
     const record = { id: a, space_id: a, amount_minor: '100', currency: 'TWD', occurred_on: '2026-01-01', title: '舊車票', note: null,
       category_id: a, tag_ids: [], status: 'ACTIVE' as const, version: 1, created_by: a, updated_by: a,
@@ -54,7 +54,7 @@ describe('SharedExpenseForm', () => {
   });
 
   it('distinguishes a pending batch lock and does not offer a correction yet', async () => {
-    mocks.request.mockRejectedValue(new AppClientError(409, 'SHARED_PERIOD_LOCKED'));
+    mocks.request.mockRejectedValue(new AppClientError(409, 'SHARED_PERIOD_TEMPORARY_LOCK'));
     const record = { id: a, space_id: a, amount_minor: '100', currency: 'TWD', occurred_on: '2026-01-01', title: '車票', note: null,
       category_id: a, tag_ids: [], status: 'ACTIVE' as const, version: 1, created_by: a, updated_by: a,
       created_at: '2026-01-01T00:00:00.000Z', updated_at: '2026-01-01T00:00:00.000Z',

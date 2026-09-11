@@ -27,6 +27,7 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
   const online = useOnline();
   const { space, group } = data;
   const manager = space.role === 'MANAGER';
+  const active = space.status === 'ACTIVE';
   const nameFor = (id: string) => data.participants.find(person => person.user_id === id)?.display_name ?? '已離開的參與者';
   const money = (minor: string) => formatMinorUnit(minor, space.currency, 'zh-TW');
   const lockKind = (record: SharedExpense | undefined) => {
@@ -84,8 +85,9 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
     finally { setBusy(false); }
   }
   return <main className="shared-page">
-    <header className="shared-hero"><div><p className="shared-eyebrow">SHARED EXPENSES · 共同分帳</p><h1>{space.name}</h1><p>{group.name} · {space.currency} · {manager ? '寶箱管理者' : '參與者'}</p></div>
-      <PixelButton disabled={space.status !== 'ACTIVE'} onClick={() => { setEditing(undefined); setDialog('expense'); }}>新增共同支出</PixelButton></header>
+    <header className="shared-hero"><div><p className="shared-eyebrow">SHARED EXPENSES · 共同分帳</p><h1>{space.name}</h1><p>{group.name} · {space.currency} · {manager ? '寶箱管理者' : '參與者'}</p>
+      {!active && <p className="shared-archive-state">已封存 · 唯讀</p>}</div>
+      {active && <PixelButton onClick={() => { setEditing(undefined); setDialog('expense'); }}>新增共同支出</PixelButton>}</header>
     {notice && <p role="status" className="shared-notice">{notice}</p>}
     {error && <div role="alert"><p>{error}</p><PixelButton emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>重新讀取</PixelButton></div>}
     <section className="shared-summary" aria-labelledby="shared-summary-title"><PixelPanel><p>共同支出總額</p><strong data-testid="shared-spending">{money(data.summary.spending_minor)}</strong><p>這不是帳戶餘額。</p></PixelPanel>
@@ -95,9 +97,9 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
         return <li key={position.user_id}>{nameFor(position.user_id)} · {state} {money(amount)}</li>;
       })}</ul></PixelPanel></section>
     <SettlementPanel spaceId={space.id} spaceVersion={space.version} currency={space.currency} timezone={space.timezone} currentUserId={group.current_user_id}
-      manager={manager} batches={data.batches.items} nameFor={nameFor} onChanged={async () => { await refresh(); setNotice('結算狀態已更新。'); }} />
+      manager={active && manager} batches={data.batches.items} nameFor={nameFor} onChanged={async () => { await refresh(); setNotice('結算狀態已更新。'); }} />
     <PixelPanel><div className="shared-section-heading"><h2>共同支出</h2></div>
-      <SharedExpenseList expenses={data.expenses.items} currency={space.currency} currentUserId={group.current_user_id} manager={manager} nameFor={nameFor}
+      <SharedExpenseList expenses={data.expenses.items} currency={space.currency} currentUserId={group.current_user_id} manager={manager} readOnly={!active} nameFor={nameFor}
         onEdit={record => { setEditing(record); setDialog('expense'); }} onDelete={record => { setEditing(record); setDialog('delete'); setError(''); }} />
       {data.expenses.next_cursor && <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void moreExpenses()}>載入更多共同支出</PixelButton>}
     </PixelPanel>

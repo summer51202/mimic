@@ -6,7 +6,9 @@ const webBaseUrl =
   "http://localhost:3010";
 const webUrl = new URL(webBaseUrl);
 const reuseExistingServer =
-  !process.env.CI && process.env.MIMIC_RUNTIME_ACCEPTANCE !== "1";
+  !process.env.CI &&
+  (process.env.MIMIC_RUNTIME_ACCEPTANCE !== "1" ||
+    process.env.MIMIC_REUSE_EXISTING_SERVER === "1");
 
 export default defineConfig({
   testDir: "./e2e",

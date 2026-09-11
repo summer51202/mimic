@@ -1,6 +1,7 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { AppClientError } from '@/shared/api/app-fetch';
 import { SharedLifecyclePanel } from './shared-lifecycle-panel';
 const mocks = vi.hoisted(() => ({ request: vi.fn() }));
 vi.mock('@/shared/api/app-fetch', async original => ({ ...await original<object>(), appFetch: mocks.request }));
@@ -46,4 +47,13 @@ it('removes every lifecycle write after archive', () => {
   expect(screen.queryByRole('button', { name: '離開這個寶箱' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: '封存共同分帳寶箱' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: '結束參與－阿美' })).not.toBeInTheDocument();
+});
+
+it('refreshes authoritative participant state after a stale lifecycle write', async () => {
+  const onChanged = vi.fn().mockResolvedValue(undefined);
+  mocks.request.mockRejectedValueOnce(new AppClientError(409, 'SPACE_VERSION_CONFLICT'));
+  render(<SharedLifecyclePanel space={space} currentUserId={a} participants={participants} members={members} onChanged={onChanged} />);
+  await userEvent.click(screen.getByRole('button', { name: '離開這個寶箱' }));
+  await waitFor(() => expect(onChanged).toHaveBeenCalledOnce());
+  expect(screen.getByRole('alert')).toHaveTextContent('寶箱參與者或狀態已變更');
 });

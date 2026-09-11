@@ -66,6 +66,16 @@ it('integrates settled lifecycle controls while the space remains active', () =>
   expect(screen.getByRole('button', { name: '封存共同分帳寶箱' })).toBeVisible();
 });
 
+it('labels an archived shared box and removes every financial write action', () => {
+  const archived = data(); archived.space = { ...archived.space, status: 'ARCHIVED' };
+  render(<SharedWorkspace initial={archived} />);
+  expect(screen.getByText('已封存 · 唯讀')).toBeVisible();
+  expect(screen.queryByRole('button', { name: '新增共同支出' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: '編輯 住宿' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: '刪除 住宿' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: '開始結算批次' })).not.toBeInTheDocument();
+});
+
 it('discards a paged read from a stale space version and refreshes authoritative first pages', async () => {
   const initial = data(); initial.expenses.next_cursor = b;
   const latestExpense = { ...initial.expenses.items[0], id: groupId, title: '最新住宿', version: 2 };

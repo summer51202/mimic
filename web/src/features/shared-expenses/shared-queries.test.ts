@@ -23,12 +23,13 @@ describe('shared server queries', () => {
   });
 
   it('authorizes participant detail before composing every strict financial read', async () => {
+    const term = { id: userId, canonical_id: userId, kind: 'CATEGORY', scope: 'GROUP', name: '住宿', status: 'ACTIVE', version: 1 };
     vi.mocked(authenticatedServerApi).mockImplementation(async path => {
       if (path === `/spaces/${spaceId}`) return participantSpace;
       if (path.endsWith('/participants')) return [{ id: userId, user_id: userId, display_name: '阿明', role: 'MANAGER', effective_from: '2026-09-01', effective_to: null }];
       if (path === `/groups/${groupId}`) return { id: groupId, name: '旅伴', group_type: 'GROUP', default_currency: 'TWD', status: 'ACTIVE', role: 'owner', current_user_id: userId };
       if (path.endsWith('/members')) return [{ user_id: userId, display_name: '阿明', mimic_id: 'MIMIC-2345-6789', role: 'owner', status: 'active' }];
-      if (path.includes('/taxonomy')) return [];
+      if (path.includes('/taxonomy')) return { terms: [term], recent_ids: [], frequent_ids: [], context_ids: [] };
       if (path.endsWith('/shared-expenses')) return { space_id: spaceId, space_version: 1, items: [], next_cursor: null };
       if (path.endsWith('/summary')) return { space_id: spaceId, mode: 'SHARED_EXPENSES', currency: 'TWD', space_version: 1, spending_minor: '0', positions: [{ user_id: userId, amount_minor: '0' }] };
       if (path.endsWith('/shared-settlements') || path.endsWith('/shared-corrections')) return { items: [], next_cursor: null };
@@ -36,6 +37,7 @@ describe('shared server queries', () => {
     });
     const result = await loadSharedWorkspace(spaceId);
     expect(result.space.id).toBe(spaceId);
+    expect(result.terms).toEqual([term, term]);
     expect(result.summary.positions[0].amount_minor).toBe('0');
     expect(vi.mocked(authenticatedServerApi).mock.calls[0][0]).toBe(`/spaces/${spaceId}`);
   });

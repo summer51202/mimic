@@ -44,7 +44,12 @@ export function SharedLifecyclePanel({ space, currentUserId, participants, membe
     try {
       await appFetch(path, { method: path.endsWith('/role') ? 'PATCH' : 'POST', body: JSON.stringify(body) });
       await onChanged();
-    } catch (failure) { setError(explain(failure)); }
+    } catch (failure) {
+      setError(explain(failure));
+      if (failure instanceof AppClientError && failure.code === 'SPACE_VERSION_CONFLICT') {
+        try { await onChanged(); } catch { /* Keep the recovery message and prior confirmed view. */ }
+      }
+    }
     finally { setBusy(false); }
   }
   return <PixelPanel className="shared-lifecycle"><div className="shared-section-heading"><div><p>PARTICIPANTS & CLOSURE</p><h2>參與者與封存</h2></div></div>
