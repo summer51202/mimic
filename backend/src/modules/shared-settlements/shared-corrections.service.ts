@@ -64,8 +64,12 @@ export class SharedCorrectionsService {
         if (target.amountMinor === 0n) { if (target.payers.length || target.allocations.length) throw new Error('SHARED_VOID_INVALID'); }
         else validateSharedExpense(target);
       } catch (error) { throw new BadRequestException(error instanceof Error ? error.message : 'SHARED_INPUT_INVALID'); }
+      const sourceParties = new Set([
+        ...source.sharedPayers.map(row => row.userId),
+        ...source.sharedAllocations.map(row => row.userId),
+      ]);
       for (const userId of new Set([...target.payers, ...target.allocations].map(row => row.userId))) {
-        const historical = await tx.spaceParticipant.findFirst({ where: { spaceId, userId, effectiveFrom: { lte: source.occurredOn }, OR: [{ effectiveTo: null }, { effectiveTo: { gt: source.occurredOn } }] } });
+        const historical = sourceParties.has(userId) || await tx.spaceParticipant.findFirst({ where: { spaceId, userId, effectiveFrom: { lte: source.occurredOn }, OR: [{ effectiveTo: null }, { effectiveTo: { gt: source.occurredOn } }] } });
         if (!historical) throw new BadRequestException('SHARED_PARTICIPANT_INELIGIBLE');
         await this.spaces.requireParticipant(tx, spaceId, userId);
       }

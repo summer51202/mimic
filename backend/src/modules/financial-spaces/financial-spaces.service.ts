@@ -8,6 +8,7 @@ import { CreateSpaceDto } from './dto/create-space.dto';
 import { UpdateSpaceDto } from './dto/update-space.dto';
 import { ParticipantSpace, SpaceListItem } from './financial-spaces.types';
 import { requireSharedParticipantLimit } from './shared-participant-limit';
+import { requireSharedLifecycleReady } from '../shared-settlements/shared-lifecycle';
 
 @Injectable()
 export class FinancialSpacesService {
@@ -101,7 +102,8 @@ export class FinancialSpacesService {
       const { space, role } = await this.requireParticipant(tx, spaceId, actorId, true);
       if (space.status === 'ARCHIVED') return this.project(space, role);
       this.requireWritable(space, version);
-      this.requireEmpty(space);
+      if (space.mode === 'SHARED_EXPENSES') await requireSharedLifecycleReady(tx, spaceId);
+      else this.requireEmpty(space);
       const updated = await tx.financialSpace.update({ where: { id: spaceId }, data: {
         status: 'ARCHIVED', archivedAt: new Date(), version: { increment: 1 },
       } });

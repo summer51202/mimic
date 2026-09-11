@@ -250,10 +250,10 @@ describe('financial space authenticated management', () => {
     expect(last.body.message).toBe('SPACE_MANAGER_REQUIRED');
   });
 
-  it('rejects personal invitations, foreign interval IDs and nonempty exits', async () => {
+  it('rejects personal invitations, foreign interval IDs and nonempty pooled exits', async () => {
     const personal = await create('PERSONAL_EXPENSES');
     await call('post', `/spaces/${personal.id}/participants`).send({ version: 1, user_id: users[1].id }).expect(409);
-    const space = await create();
+    const space = await create('POOLED_FUND');
     await call('post', `/spaces/${space.id}/participants`).send({ version: 1, user_id: randomUUID() }).expect(404);
     await call('patch', `/spaces/${space.id}/participants/${randomUUID()}/role`)
       .send({ version: 1, role: 'MANAGER' }).expect(404);

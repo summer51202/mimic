@@ -17,7 +17,9 @@
     "shared-expenses-concurrency.e2e-spec.ts",
     "shared-settlements.e2e-spec.ts",
     "shared-corrections.e2e-spec.ts",
-    "shared-settlements-concurrency.e2e-spec.ts"
+    "shared-settlements-concurrency.e2e-spec.ts",
+    "shared-lifecycle.e2e-spec.ts",
+    "shared-lifecycle-concurrency.e2e-spec.ts"
   ],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"

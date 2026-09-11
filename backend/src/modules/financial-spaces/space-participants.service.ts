@@ -4,6 +4,7 @@ import { FinancialSpacesService } from './financial-spaces.service';
 import { AddParticipantDto } from './dto/add-participant.dto';
 import { UpdateParticipantRoleDto } from './dto/update-participant-role.dto';
 import { requireSharedParticipantLimit } from './shared-participant-limit';
+import { requireSharedLifecycleReady } from '../shared-settlements/shared-lifecycle';
 
 @Injectable()
 export class SpaceParticipantsService {
@@ -40,7 +41,7 @@ export class SpaceParticipantsService {
       const target = await this.target(tx, spaceId, participantId);
       if (target.effectiveTo !== null) throw new NotFoundException('SPACE_PARTICIPANT_NOT_FOUND');
       if (target.role === dto.role) return this.project(target);
-      if (dto.role !== 'MANAGER') await this.requireOtherManager(tx, target, this.spaces.today(space.timezone));
+      if (dto.role !== 'MANAGER') await this.requireOtherManager(tx, target, this.spaces.today(space.timezone), space.groupId);
       const updated = await tx.spaceParticipant.update({ where: { id: target.id }, data: { role: dto.role } });
       await tx.financialSpace.update({ where: { id: spaceId }, data: { version: { increment: 1 } } });
       const after = this.project(updated);
@@ -63,9 +64,10 @@ export class SpaceParticipantsService {
       if (target.effectiveTo !== null) return this.project(target);
       if (space.version !== version) throw new ConflictException('SPACE_VERSION_CONFLICT');
       if (!space.groupId) throw new ConflictException('SPACE_SCOPE_IMMUTABLE');
-      this.spaces.requireEmpty(space);
+      if (space.mode === 'SHARED_EXPENSES') await requireSharedLifecycleReady(tx, spaceId, target.userId);
+      else this.spaces.requireEmpty(space);
       const today = this.spaces.today(space.timezone);
-      await this.requireOtherManager(tx, target, today);
+      await this.requireOtherManager(tx, target, today, space.groupId);
       const ended = await tx.spaceParticipant.update({ where: { id: target.id }, data: { effectiveTo: today } });
       await tx.financialSpace.update({ where: { id: spaceId }, data: { version: { increment: 1 } } });
       const after = this.project(ended);
@@ -80,12 +82,13 @@ export class SpaceParticipantsService {
     return target;
   }
 
-  private async requireOtherManager(tx: Prisma.TransactionClient, target: SpaceParticipant, today: Date) {
+  private async requireOtherManager(tx: Prisma.TransactionClient, target: SpaceParticipant, today: Date, groupId: string) {
     if (target.role !== SpaceParticipantRole.MANAGER) return;
     const count = await tx.spaceParticipant.count({ where: {
-      spaceId: target.spaceId, role: 'MANAGER', effectiveTo: null, effectiveFrom: { lte: today },
+      id: { not: target.id }, spaceId: target.spaceId, role: 'MANAGER', effectiveTo: null, effectiveFrom: { lte: today },
+      user: { status: 'ACTIVE', memberships: { some: { groupId, status: 'ACTIVE' } } },
     } });
-    if (count <= 1) throw new ConflictException('SPACE_MANAGER_REQUIRED');
+    if (count === 0) throw new ConflictException('SPACE_MANAGER_REQUIRED');
   }
 
   private project(participant: SpaceParticipant) {
