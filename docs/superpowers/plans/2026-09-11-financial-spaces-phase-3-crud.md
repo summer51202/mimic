@@ -41,6 +41,8 @@ model SharedExpenseAllocation {
 
 Add inverse `sharedPayers`/`sharedAllocations` arrays to User and ExpenseRecord. SQL checks require payer >0 and allocation >=0. Composite keys reject duplicates; FK rejects nonexistent records/users. Application transactions enforce both sums, same-space participant eligibility, and SHARED_EXPENSES mode. Migration is additive; no copied legacy rows or schema reset. Verify upgrade from phase2 and a fresh phase3_fresh local schema; seed twice with no new financial seed records.
 
+Existing fixture cleanup cascades the new relations through ExpenseRecord; no helper change is needed. Neutral common input fields were extracted to `src/modules/expense-records/expense-input.dto.ts`, with the existing personal DTO inheriting this base unchanged.
+
 New Backend files:
 
 - `src/modules/shared-expenses/dto/shared-expense.dto.ts`: strict positive/signed-free minor strings, nested UUID amount rows, complete replacement and version DTOs, bounded cursor query.
@@ -50,7 +52,7 @@ New Backend files:
 - `src/modules/shared-expenses/shared-expenses.controller.ts`, `shared-expenses.module.ts`: authenticated routes and Nest wiring.
 - `test/shared-expenses.e2e-spec.ts`, `test/shared-expenses-concurrency.e2e-spec.ts`: real AppModule HTTP and two-connection tests.
 
-Modify `src/app.module.ts`, `test/helpers/space-test-app.ts` (fixture cleanup), `test/jest-financial-spaces-db.json` and `test/jest-e2e.json` (explicit DB suite registration/exclusion). Reuse ExpenseRecordsService projection, parseExpenseDate/Minor, TaxonomyService selection and FinancialSpacesService participant checks. Add `shared-participant-limit.ts`/`.spec.ts` in financial-spaces and wire participant add and pre-history mode switch to the 16-current-participant bound. Test the wiring with HTTP fixtures and retain existing empty-only lifecycle guards.
+Modify `src/app.module.ts`, `test/jest-financial-spaces-db.json` and `test/jest-e2e.json` (explicit DB suite registration/exclusion). Reuse ExpenseRecordsService projection, parseExpenseDate/Minor, TaxonomyService selection and FinancialSpacesService participant checks. Add `shared-participant-limit.ts`/`.spec.ts` in financial-spaces and wire participant add and pre-history mode switch to the 16-current-participant bound. Test the wiring with HTTP fixtures and retain existing empty-only lifecycle guards.
 
 ## API contracts and transitions
 
@@ -90,33 +92,33 @@ Summary queries all ACTIVE common expenses in this space, plus SQL grouped payer
 
 ### 1. Persist facts and validate migration
 
-- [ ] Add real DB schema test using `SELECT to_regclass('shared_expense_payers')` expecting a table; run `npm run test:spaces-db -- --testPathPattern=shared-expenses` and observe failure before migration.
-- [ ] Add the models/inverses and migration SQL, with FK/check/unique constraints as defined above. Run Prisma generate, migrate deploy against explicit local phase2, then rerun schema test.
-- [ ] Add direct-write tests for zero payer, negative allocation, duplicate identity and nonexistent user; verify rejection and local fixture cleanup. Apply full history to phase3_fresh and run seed twice; preserve existing phase2 private expense schema/data.
+- [x] Add real DB schema test using `SELECT to_regclass('shared_expense_payers')` expecting a table; run `npm run test:spaces-db -- --testPathPattern=shared-expenses` and observe failure before migration.
+- [x] Add the models/inverses and migration SQL, with FK/check/unique constraints as defined above. Run Prisma generate, migrate deploy against explicit local phase2, then rerun schema test.
+- [x] Add direct-write tests for zero payer, negative allocation, duplicate identity and nonexistent user; verify rejection and local fixture cleanup. Apply full history to phase3_fresh and run seed twice; preserve existing phase2 private expense schema/data.
 
 ### 2. HTTP financial lifecycle
 
-- [ ] Add HTTP creation test: A pays1000, allocations A400/B600; expect record facts and position changes A600/B-600. Observe route404 before adding DTO/controller/service/module.
-- [ ] Implement strict DTOs, participant-date and mode guards, transaction receipt and CREATE facts/audit/latch. Run real HTTP tests.
-- [ ] Add PATCH payer-only and allocation-only tests, expected version2 and changed position deltas; add DELETE and replay tests. Observe failure before respective implementation. Include no-op, stale409, soft-deleted409, cross-box404, creator/manager403, nonparticipant404 and archived409.
-- [ ] Add independent key/payload replay, rollback and concurrent edit/delete tests before implementing any missing guards. Audits must include full before/after facts and actor/time. Duplicate create must produce exactly one record and receipt.
+- [x] Add HTTP creation test: A pays1000, allocations A400/B600; expect record facts and position changes A600/B-600. Observe route404 before adding DTO/controller/service/module.
+- [x] Implement strict DTOs, participant-date and mode guards, transaction receipt and CREATE facts/audit/latch. Run real HTTP tests.
+- [x] Add PATCH payer-only and allocation-only tests, expected version2 and changed position deltas; add DELETE and replay tests. Observe failure before respective implementation. Include no-op, stale409, soft-deleted409, cross-box404, creator/manager403, nonparticipant404 and archived409.
+- [x] Add independent key/payload replay, rollback and concurrent edit/delete tests before implementing any missing guards. Audits must include full before/after facts and actor/time. Duplicate create must produce exactly one record and receipt.
 
 ### 3. Authoritative reads and privacy
 
-- [ ] Add missing GET list/detail/summary tests; then implement repeatable-read queries. Test spending>2^53 and >single-row max with at least2 valid expenses; limit1 cannot truncate totals. Detail preserves deleted facts; list excludes them.
-- [ ] Test cursor from foreign/deleted record rejects400, stable occurrence DESC/id DESC ordering, wrong mode409 and nonparticipant/group-governor404 on every read/mutation. Taxonomy allows system/group terms; rejects private/foreign group terms, wrong kind, and new archived use; edits retain original historical IDs.
-- [ ] Add schema corruption test in isolated fixture: delete one allocation fact directly, then summary must fail instead of reporting a partial position. Restore fixture during cleanup.
+- [x] Add missing GET list/detail/summary tests; then implement repeatable-read queries. Test spending>2^53 and >single-row max with at least2 valid expenses; limit1 cannot truncate totals. Detail preserves deleted facts; list excludes them.
+- [x] Test cursor from foreign/deleted record rejects400, stable occurrence DESC/id DESC ordering, wrong mode409 and nonparticipant/group-governor404 on every read/mutation. Taxonomy allows system/group terms; rejects private/foreign group terms, wrong kind, and new archived use; edits retain original historical IDs.
+- [x] Add schema corruption test in isolated fixture: delete one allocation fact directly, then summary must fail instead of reporting a partial position. Restore fixture during cleanup.
 
 ### 4. Supported participant limit
 
-- [ ] Write pure guard test accepting16/rejecting17 for SHARED_EXPENSES and leaving POOLED_FUND unaffected. Observe red, implement guard.
-- [ ] Wire under existing group/space locks when adding a participant or switching into shared mode. Real HTTP test creates16 current participants, rejects17th; mode switch with17 rejects. Shared expense writes independently reject unsupported existing population. No financial metadata is exposed in failure payloads.
+- [x] Write pure guard test accepting16/rejecting17 for SHARED_EXPENSES and leaving POOLED_FUND unaffected. Observe red, implement guard.
+- [x] Wire under existing group/space locks when adding a participant or switching into shared mode. Real HTTP test creates16 current participants, rejects17th; mode switch with17 rejects. Shared expense writes independently reject unsupported existing population. No financial metadata is exposed in failure payloads.
 
 ### 5. Verify and record
 
-- [ ] From Backend run `npx prisma validate`, `npm run build`, `npm test -- --runInBand`, `npm run test:e2e -- --runInBand`, and `npm run test:spaces-db` with explicit `DATABASE_URL=postgresql://mimic_test@127.0.0.1:55439/mimic_financial_spaces_test?schema=phase2`.
-- [ ] Self-review changed functions for mode/privacy, transaction atomicity, input immutability, numeric ranges, snapshot consistency, no-op deltas and date boundary tests. Fix important findings through red/green regression.
-- [ ] Update `.agents/devlog.md`, `.agents/features.md`, and checkpoint execution record; `git diff --check`; conventional commits for schema, HTTP implementation and acceptance. No merge/push.
+- [x] From Backend run `npx prisma validate`, `npm run build`, `npm test -- --runInBand`, `npm run test:e2e -- --runInBand`, and `npm run test:spaces-db` with explicit `DATABASE_URL=postgresql://mimic_test@127.0.0.1:55439/mimic_financial_spaces_test?schema=phase2`.
+- [x] Self-review changed functions for mode/privacy, transaction atomicity, input immutability, numeric ranges, snapshot consistency, no-op deltas and date boundary tests. Fix important findings through red/green regression.
+- [x] Update `.agents/devlog.md`, `.agents/features.md`, and checkpoint execution record; `git diff --check`; conventional commits for schema, HTTP implementation and acceptance. No merge/push.
 
 ## Plan self-review
 
