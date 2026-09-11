@@ -55,8 +55,8 @@ export async function loadSharedWorkspace(spaceId: string) {
     summary: sharedSummarySchema.parse(summary),
     batches: sharedBatchPageSchema.parse(batches),
     corrections: sharedCorrectionPageSchema.parse(corrections),
-    personalSpaces: financialSpaceSchema.array().parse(personalSpaces).filter(item => item.access === 'PARTICIPANT'
-      && item.mode === 'PERSONAL_EXPENSES' && item.status === 'ACTIVE' && item.currency === space.currency),
+    personalSpaces: financialSpaceSchema.array().parse(personalSpaces).flatMap(item => item.access === 'PARTICIPANT'
+      && item.mode === 'PERSONAL_EXPENSES' && item.status === 'ACTIVE' && item.currency === space.currency ? [item] : []),
     personalTags: taxonomyTermSchema.array().parse(personalTags),
   };
 }
