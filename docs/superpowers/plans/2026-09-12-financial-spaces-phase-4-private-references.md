@@ -77,12 +77,12 @@ Files:
 
 ## Task 4 — Join authorized references into personal month reads
 
-- [ ] Add RED query/e2e tests for mixed manual/reference totals, source category inheritance and canonical merge, private tags/note, source-edit follow-through, completed-period immutability, source soft-delete exclusion with retained history, former-participant denial/omission, settlement exclusion, and no pooled/foreign references.
-- [ ] Add RED pagination tests across same-day manual/reference rows, invalid cursors, page continuity, and `space_version` stale-page recovery.
-- [ ] Implement one RepeatableRead read model that rechecks current source participation, merges both entry kinds by `(occurred_on, id)`, totals bigint allocations, and returns canonical decimal strings plus category names.
-- [ ] Ensure archived personal spaces remain readable and reference history contributes to `SPACE_HAS_FINANCIAL_HISTORY`.
-- [ ] Run focused unit, ordinary e2e, and task-local PostgreSQL suites GREEN.
-- [ ] Commit: `feat: include shared references in personal spending`
+- [x] Add RED query/e2e tests for mixed manual/reference totals, source category inheritance and canonical merge, private tags/note, source-edit follow-through, completed-period immutability, source soft-delete exclusion with retained history, former-participant denial/omission, settlement exclusion, and no pooled/foreign references.
+- [x] Add RED pagination tests across same-day manual/reference rows, invalid cursors, page continuity, and cross-space `view_version` stale-page recovery.
+- [x] Implement one RepeatableRead read model that rechecks current source participation, merges both entry kinds by `(occurred_on, id)`, totals bigint allocations, and returns canonical decimal strings plus category names.
+- [x] Ensure archived personal spaces remain readable and reference history contributes to `SPACE_HAS_FINANCIAL_HISTORY`.
+- [x] Run focused unit, ordinary e2e, and task-local PostgreSQL suites GREEN.
+- [x] Commit: `feat: include shared references in personal spending`
 
 Files:
 

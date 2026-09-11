@@ -68,7 +68,8 @@ describe('private expense financial lifecycle', () => {
     await f.call('patch', `/spaces/${spaceId}/personal-expenses/${record.id}`).send({ ...body(), category_id: term.id, amount_minor: '200', version: 1 }).expect(200);
     await f.call('post', `/spaces/${spaceId}/personal-expenses`).send({ ...body(), category_id: term.id }).expect(400);
     await f.call('post', `/spaces/${spaceId}/personal-expenses`).send({ ...body(), tag_ids: [term.id] }).expect(400);
-    expect((await f.call('get', `/spaces/${spaceId}/personal-expenses?month=2026-01`).expect(200)).body.data.categories).toEqual([{ category_id: term.id, spending_minor: '200' }]);
+    expect((await f.call('get', `/spaces/${spaceId}/personal-expenses?month=2026-01`).expect(200)).body.data.categories)
+      .toEqual([{ category_id: term.id, category_name: term.name, spending_minor: '200' }]);
   });
   it('isolates months, boxes and cursors across date changes', async () => {
     const record = (await f.call('post', `/spaces/${spaceId}/personal-expenses`).send(body()).expect(201)).body.data.record;
@@ -130,7 +131,7 @@ describe('private expense financial lifecycle', () => {
     expect(month.next_cursor).toBeTruthy();
     await f.call('post', `/me/taxonomy/${a.id}/merge`).send({ version: 1, target_id: b.id, target_version: 1 }).expect(200);
     const merged = (await f.call('get', `/spaces/${spaceId}/personal-expenses?month=2026-01`).expect(200)).body.data;
-    expect(merged.categories).toEqual([{ category_id: b.id, spending_minor: '9007199254741118' }]);
+    expect(merged.categories).toEqual([{ category_id: b.id, category_name: b.name, spending_minor: '9007199254741118' }]);
     expect((await f.prisma.expenseRecord.findUniqueOrThrow({ where: { id: first.id } })).categoryId).toBe(a.id);
     await f.call('post', `/spaces/${spaceId}/personal-expenses/${first.id}/delete`).send({ request_id: randomUUID(), version: 1 }).expect(200);
     expect((await f.call('get', `/spaces/${spaceId}/personal-expenses?month=2026-01`).expect(200)).body.data.spending_minor).toBe('9007199254740993');

@@ -9,6 +9,22 @@ export interface ExpenseWriteResult { record: ExpenseProjection; before: Expense
 export interface ExpenseFields { amountMinor: bigint; occurredOn: Date; title: string; note: string | null; categoryId: string; tagIds: string[] }
 export interface PersonalMonth {
   space_id: string; mode: 'PERSONAL_EXPENSES'; currency: string; month: string; space_version: number;
-  spending_minor: string; categories: Array<{ category_id: string; spending_minor: string }>;
-  items: ExpenseProjection[]; next_cursor: string | null;
+  view_version: string; spending_minor: string;
+  categories: Array<{ category_id: string; category_name: string; spending_minor: string }>;
+  items: PersonalMonthEntry[]; next_cursor: string | null;
 }
+
+export interface PersonalManualEntry extends ExpenseProjection {
+  entry_type: 'MANUAL';
+  category_name: string;
+}
+
+export interface PersonalReferenceEntry {
+  entry_type: 'SHARED_REFERENCE'; id: string; space_id: string; source_space_id: string;
+  source_expense_id: string; owner_user_id: string; amount_minor: string; currency: string;
+  occurred_on: string; title: string; note: string | null; category_id: string;
+  category_name: string; tag_ids: string[]; status: 'ACTIVE'; version: number;
+  source_locked: boolean; created_at: string; updated_at: string;
+}
+
+export type PersonalMonthEntry = PersonalManualEntry | PersonalReferenceEntry;
