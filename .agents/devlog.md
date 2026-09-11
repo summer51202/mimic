@@ -1034,3 +1034,11 @@
 **Decisions:** Personal accounting has no balances, income, payers or transfers. Open dates before box creation are valid for personal history; future local dates are rejected. Archived terms can remain on unchanged historical selections but cannot be selected for new postings. Empty successful reads return zero; failures propagate.
 **Verification:** Observed missing-route RED before financial/monthly implementation. Full realDB regression: 5 suites/48 cases passed, including P1 privacy, duplicate create/update/delete, edit/delete and archive races, taxonomy races, audit/receipt rollback, schema constraints, month/currency/cursor isolation, large totals and unchanged stored IDs after merge. Baseline Prisma validate/build, 320 unit and 54 ordinary e2e passed. Self-review corrected the test's expected currency-mutation status to existing strict DTO400.
 **Known gaps / follow-ups:** Web acceptance is in progress; P3 shared and P5 pooled financial services are intentionally separate later work.
+
+## 2026-09-11 — P2 Web financial contracts
+
+**Task:** Connect private expense and taxonomy endpoints through the authenticated Web BFF.
+**Scope:** Strict financial/taxonomy response schemas, UUID/query BFF routes, exact amount parser compatibility and tests.
+**What changed:** Added me/spaces, private taxonomy lifecycle, participant picker, monthly expenses and financial mutation routes. Request bodies preserve minor-unit strings and request UUIDs; common CSRF/session refresh behavior is reused.
+**Verification:** Missing-route/schema RED preceded implementation. Focused contract/BFF/parser run passed 37 tests. Self-review caught an unsafe Zod BigInt refinement for invalid decimal input and changed it to guard parsing; Web typecheck caught bigint literal syntax against its existing target and was corrected to BigInt constructors. Earlier Web lint/typecheck passed before subsequent UI refinements; final full baseline remains pending.
+**Known gaps / follow-ups:** UI and real backend browser acceptance are separate following work. No financial number coercion or legacy Fund projection was introduced.

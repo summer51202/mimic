@@ -5,7 +5,7 @@ export function majorToMinorString(value: string, currency: string): string {
     .resolvedOptions().maximumFractionDigits ?? 0;
   const fraction = match[2] ?? '';
   if (fraction.length > digits) throw new Error('EXPENSE_AMOUNT_PRECISION');
-  const amount = BigInt(match[1]) * 10n ** BigInt(digits) + BigInt(fraction.padEnd(digits, '0') || '0');
-  if (amount <= 0n || amount > 9223372036854775807n) throw new Error('EXPENSE_AMOUNT_INVALID');
+  const amount = BigInt(match[1]) * BigInt(10) ** BigInt(digits) + BigInt(fraction.padEnd(digits, '0') || '0');
+  if (amount <= BigInt(0) || amount > BigInt('9223372036854775807')) throw new Error('EXPENSE_AMOUNT_INVALID');
   return amount.toString();
 }
