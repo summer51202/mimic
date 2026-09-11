@@ -16,10 +16,11 @@ import type { SharedWorkspaceData } from './shared-queries';
 import { SettlementPanel } from '../shared-settlements/settlement-panel';
 import { CorrectionForm } from '../shared-settlements/correction-form';
 import { SharedLifecyclePanel } from '../shared-settlements/shared-lifecycle-panel';
+import { PersonalReferenceForm } from './personal-reference-form';
 
 export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
   const [data, setData] = useState(initial);
-  const [dialog, setDialog] = useState<'expense' | 'delete' | 'correction' | null>(null);
+  const [dialog, setDialog] = useState<'expense' | 'delete' | 'correction' | 'reference' | null>(null);
   const [editing, setEditing] = useState<SharedExpense>();
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
@@ -101,7 +102,8 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
       manager={active && manager} batches={data.batches.items} nameFor={nameFor} onChanged={async () => { await refresh(); setNotice('結算狀態已更新。'); }} />
     <PixelPanel><div className="shared-section-heading"><h2>共同支出</h2></div>
       <SharedExpenseList expenses={data.expenses.items} currency={space.currency} currentUserId={group.current_user_id} manager={manager} readOnly={!active} nameFor={nameFor}
-        onEdit={record => { setEditing(record); setDialog('expense'); }} onDelete={record => { setEditing(record); setDialog('delete'); setError(''); }} />
+        onEdit={record => { setEditing(record); setDialog('expense'); }} onDelete={record => { setEditing(record); setDialog('delete'); setError(''); }}
+        onReference={record => { setEditing(record); setDialog('reference'); setError(''); }} />
       {data.expenses.next_cursor && <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void moreExpenses()}>載入更多共同支出</PixelButton>}
     </PixelPanel>
     <PixelDialog open={dialog === 'expense'} title={editing ? '編輯共同支出' : '新增共同支出'} closeLabel="關閉" onClose={() => setDialog(null)} closeDisabled={busy}>
@@ -111,6 +113,13 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
         onCorrection={record => { setEditing(applyExpenseCorrections(record, data.corrections.items)); setDialog('correction'); }}
         onSaved={async result => { setDialog(null); setEditing(undefined); setNotice(`已確認「${result.record.title}」${money(result.record.amount_minor)}。`); try { await refresh(); } catch { setError('已確認儲存，但摘要更新失敗；請重新讀取。'); } }}
         onReload={async () => (await refresh()).expenses.items.find(item => item.id === editing?.id)} />}
+    </PixelDialog>
+    <PixelDialog open={dialog === 'reference'} title="加入我的帳本" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
+      {dialog === 'reference' && editing && <PersonalReferenceForm sourceExpenseId={editing.id}
+        sourceLocked={lockKind(editing) === 'PERMANENT'} personalSpaces={data.personalSpaces} personalTags={data.personalTags}
+        onSaved={(_result, personalSpaceId) => { const destination = data.personalSpaces.find(item => item.id === personalSpaceId);
+          setDialog(null); setEditing(undefined); setNotice(`已把你的分攤加入「${destination?.name ?? '個人寶箱'}」。`); }}
+        onReload={refresh} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'delete'} title="刪除此筆共同支出？" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
       <p>「{editing?.title}」將從位置計算移除，稽核紀錄仍保留。已鎖定期間不能刪除。</p>

@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import type { SharedWorkspaceData } from './shared-queries';
@@ -25,7 +25,11 @@ function data(role: 'MANAGER' | 'PARTICIPANT' = 'MANAGER'): SharedWorkspaceData 
     ], expenses: { space_id: a, space_version: 2, items: [expense], next_cursor: null },
     summary: { space_id: a, mode: 'SHARED_EXPENSES', currency: 'TWD', space_version: 2, spending_minor: '1000',
       positions: [{ user_id: a, amount_minor: '600' }, { user_id: b, amount_minor: '-600' }] },
-    batches: { items: [], next_cursor: null }, corrections: { items: [], next_cursor: null } };
+    batches: { items: [], next_cursor: null }, corrections: { items: [], next_cursor: null },
+    personalSpaces: [{ id: groupId, name: '我的日常', access: 'PARTICIPANT', mode: 'PERSONAL_EXPENSES', status: 'ACTIVE',
+      currency: 'TWD', timezone: 'Asia/Taipei', opened_on: '2026-01-01', group_id: null, owner_user_id: a,
+      role: 'MANAGER', version: 1, first_formal_record_at: null }],
+    personalTags: [] };
 }
 beforeEach(() => { mocks.request.mockReset(); });
 afterEach(cleanup);
@@ -45,6 +49,25 @@ it('lets a manager edit any expense but hides another creator edit from a partic
   view.unmount();
   render(<SharedWorkspace initial={data('PARTICIPANT')} />);
   expect(screen.queryByRole('button', { name: '編輯 住宿' })).not.toBeInTheDocument();
+});
+
+it('lets an allocated participant open the private reference flow without manager privilege', async () => {
+  render(<SharedWorkspace initial={data('PARTICIPANT')} />);
+  const trigger = screen.getByRole('button', { name: '加入我的帳本－住宿' });
+  trigger.focus();
+  await userEvent.click(trigger);
+  const dialog = screen.getByRole('dialog', { name: '加入我的帳本' });
+  expect(dialog).toBeVisible();
+  expect(screen.getByRole('combobox', { name: '加入到' })).toHaveValue(groupId);
+  await userEvent.click(within(dialog).getByRole('button', { name: '關閉' }));
+  expect(trigger).toHaveFocus();
+});
+
+it('does not offer a reference for an absent or zero current-user allocation', () => {
+  const initial = data();
+  initial.expenses.items[0].allocations = [{ user_id: b, amount_minor: '1000' }];
+  render(<SharedWorkspace initial={initial} />);
+  expect(screen.queryByRole('button', { name: '加入我的帳本－住宿' })).not.toBeInTheDocument();
 });
 
 it('shows an actionable empty state without a fabricated balance', () => {
@@ -74,6 +97,7 @@ it('labels an archived shared box and removes every financial write action', () 
   expect(screen.queryByRole('button', { name: '編輯 住宿' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: '刪除 住宿' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: '開始結算批次' })).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: '加入我的帳本－住宿' })).toBeVisible();
 });
 
 it('discards a paged read from a stale space version and refreshes authoritative first pages', async () => {

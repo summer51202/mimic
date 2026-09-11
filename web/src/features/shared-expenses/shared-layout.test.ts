@@ -18,6 +18,11 @@ describe('shared workspace responsive contract', () => {
     expect(css).toMatch(/min-height:\s*2\.75rem/);
     expect(css).toContain('.settlement-trail');
     expect(css).toContain('.shared-participant-list');
+    expect(css).toContain('.personal-reference-ticket');
+    expect(css).toContain('.personal-reference-form');
+    expect(css).toContain('.personal-reference-tags');
+    expect(css).toMatch(/\.personal-reference-form[\s\S]*min-width:\s*0/);
+    expect(css).toMatch(/\.personal-reference-tags input[\s\S]*width:\s*1\.5rem/);
     expect(css).toContain('overflow-wrap: anywhere');
     expect(css).toContain('max-height: calc(100dvh - 2rem)');
     expect(css).toContain('@media (max-width: 640px)');

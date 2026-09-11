@@ -155,6 +155,59 @@
   width: 1.5rem;
 }
 
+.personal-reference-form,
+.personal-reference-tags,
+.personal-reference-empty {
+  display: grid;
+  gap: var(--mimic-space-3);
+  min-width: 0;
+}
+
+.personal-reference-ticket {
+  border-block: 2px dashed var(--mimic-color-line);
+  color: var(--mimic-color-hud-dark);
+  font-weight: 800;
+  margin: 0;
+  padding: var(--mimic-space-3) var(--mimic-space-1);
+}
+
+.personal-reference-lock {
+  background: var(--mimic-color-coin-action);
+  border: 2px solid var(--mimic-color-hud-dark);
+  border-radius: var(--mimic-radius-2);
+  color: var(--mimic-color-hud-dark);
+  padding: var(--mimic-space-3);
+}
+
+.personal-reference-tags {
+  border: 2px solid var(--mimic-color-line);
+  padding: var(--mimic-space-3);
+}
+
+.personal-reference-tags legend {
+  color: var(--mimic-color-hud-dark);
+  font-weight: 800;
+  padding-inline: var(--mimic-space-1);
+}
+
+.personal-reference-tags label {
+  align-items: center;
+  display: flex;
+  min-height: 2.75rem;
+}
+
+.personal-reference-tags input {
+  height: 1.5rem;
+  margin-inline-end: var(--mimic-space-2);
+  width: 1.5rem;
+}
+
+.personal-reference-tags input:focus-visible,
+.pixel-link:focus-visible {
+  outline: 3px solid var(--mimic-color-focus);
+  outline-offset: 3px;
+}
+
 .shared-notice,
 .shared-page [role='alert'] {
   border: 2px solid var(--mimic-color-hud-dark);

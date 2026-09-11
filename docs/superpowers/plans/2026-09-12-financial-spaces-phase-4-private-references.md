@@ -114,12 +114,12 @@ Files:
 
 ## Task 6 — Add the shared-expense opt-in flow
 
-- [ ] Add RED component tests for eligibility by current-user allocation, matching owned personal boxes, destination selection, private tags/note, empty destination guidance, loading/offline disablement, focus return, retry with the same UUID, stale/conflict reload, and no manager/governor privacy bypass.
-- [ ] Implement a compact pixel-world reference dialog/action in each eligible shared expense without changing shared financial facts.
-- [ ] Keep the action available on archived/locked shared sources when the personal destination is active; show permanent-lock context without implying editability.
-- [ ] Add responsive CSS tests/coverage for phone, tablet, and desktop dialog bounds and action wrapping.
-- [ ] Run focused Web tests GREEN.
-- [ ] Commit: `feat: add shared expense to personal ledger`
+- [x] Add RED component tests for eligibility by current-user allocation, matching owned personal boxes, destination selection, private tags/note, empty destination guidance, loading/offline disablement, focus return, retry with the same UUID, stale/conflict reload, and no manager/governor privacy bypass.
+- [x] Implement a compact pixel-world reference dialog/action in each eligible shared expense without changing shared financial facts.
+- [x] Keep the action available on archived/locked shared sources when the personal destination is active; show permanent-lock context without implying editability.
+- [x] Add responsive CSS tests/coverage for phone, tablet, and desktop dialog bounds and action wrapping.
+- [x] Run focused Web tests GREEN.
+- [x] Commit: `feat: add shared expense to personal ledger`
 
 Files:
 
