@@ -999,3 +999,12 @@
 - P2–P7 remain as mapped in the roadmap, including accounting services, settlements/confirmations/corrections, UI redesign and offline drafts. Full three-mode browser acceptance against a real backend remains the P7 release gate; P1 is verified with authenticated real HTTP and PostgreSQL.
 - The pre-existing Web standalone build warning about missing `(public)/page_client-reference-manifest.js` also occurs on this branch. It predates P1; standalone runtime packaging needs a separate follow-up before deployment.
 - Original root untracked `.codex-remote-attachments/` and `reference/` were preserved. Work stays on `codex/financial-spaces`; no merge or push is included.
+
+## 2026-09-11 — P2 exact expense values
+
+**Task:** Begin the approved P2 plan sequentially with exact money/date boundaries.
+**Scope:** Backend expense-values and Web major-to-minor parser with focused tests.
+**What changed:** Added positive bigint minor-unit validation, real DATE/month boundaries and decimal-text conversion without floating-point amounts.
+**Decisions:** Preserve existing bigint-safe display formatting; keep the new input parser separate from legacy Activity number arithmetic. Individual records use PostgreSQL bigint bounds; aggregate range is a separate concern.
+**Verification:** Observed missing-module RED, then 22 backend value tests and 13 Web input tests passed. Shared local database guard has 9 passing cases after extraction. Full P2 baseline remains a later gate.
+**Known gaps / follow-ups:** P2 taxonomy, financial CRUD, monthly read model and browser UI are still in progress.
