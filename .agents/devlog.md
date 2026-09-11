@@ -1017,3 +1017,11 @@
 **Decisions:** Additive migration retains legacy development fixtures until P7 cleanup. Scope/merge/name/amount/version constraints complement service authorization. System seed updates display metadata without replacing identities or private terms.
 **Verification:** Observed absent expense table RED before migration. Fresh and P1-upgrade migration histories passed on task-owned local schemas; before/after legacy Fund and P1 box snapshots matched. Constraint, duplicate receipt, FK and private-seed preservation checks passed in the 10-case personal DB suite. Full seed ran twice successfully. Prisma validate/build passed; current backend baseline is 320 unit and 54 e2e tests passing.
 **Known gaps / follow-ups:** Financial endpoints and Web are separate following commits. P2 runtime acceptance remains in progress; no external database was modified.
+
+## 2026-09-11 — P2 scoped taxonomy lifecycle
+
+**Task:** Make common categories and tags usable with private/group scope and stable historical identity.
+**Scope:** Taxonomy DTOs, policies, controller/service/module, authenticated HTTP test fixture and lifecycle tests.
+**What changed:** Added create, rename, merge and archive; immutable system terms; actor-scoped recent/frequent/context picker with participant authorization. Mutations serialize by owner/group and atomically audit actor/time. Merge resolves canonical graphs without rewriting expense IDs.
+**Verification:** Observed route404 RED, then 3 real HTTP lifecycle cases GREEN. Two independent Prisma clients tested duplicate term creation, stale renames, competing merges and audit rollback. Missing default regression observed400-style input error RED, then explicit SYSTEM_TAXONOMY_MISSING GREEN. Baseline build/320 unit/54 e2e passed with the P2 modules present.
+**Known gaps / follow-ups:** Personal expense posting and Web are following commits; shared and pooled financial rules remain P3/P5.

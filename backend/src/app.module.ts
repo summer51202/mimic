@@ -7,6 +7,7 @@ import { ContributionsModule } from './modules/contributions/contributions.modul
 import { ExpensesModule } from './modules/expenses/expenses.module';
 import { FundsModule } from './modules/funds/funds.module';
 import { FinancialSpacesModule } from './modules/financial-spaces/financial-spaces.module';
+import { TaxonomyModule } from './modules/taxonomy/taxonomy.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { SettlementsModule } from './modules/settlements/settlements.module';
@@ -22,6 +23,7 @@ import { UsersModule } from './modules/users/users.module';
     GroupsModule,
     FundsModule,
     FinancialSpacesModule,
+    TaxonomyModule,
     ContributionsModule,
     ExpensesModule,
     SettlementsModule,
