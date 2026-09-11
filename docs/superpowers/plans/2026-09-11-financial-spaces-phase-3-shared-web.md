@@ -36,15 +36,15 @@
 
 ### Task 1: Strict shared contracts and BFF surface
 
-- [ ] **Step 1: Write contract RED tests**
+- [x] **Step 1: Write contract RED tests**
 
 Create `web/src/shared/api/shared-finance-contracts.test.ts`. Assert that schemas accept representative backend projections, including `"9007199254740993"`, negative summary positions and batch snapshot payloads, and reject numeric money, `-0`, unknown fields, illegal transfer state/timestamps and malformed pagination.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 Run `npm test -- src/shared/api/shared-finance-contracts.test.ts` from `web/`. Expected: FAIL because `shared-finance-contracts.ts` does not exist.
 
-- [ ] **Step 3: Implement minimal strict schemas**
+- [x] **Step 3: Implement minimal strict schemas**
 
 Create `shared-finance-contracts.ts` with reusable `uuid`, `canonicalUnsigned`, `canonicalSigned`, `safeVersion`, and schemas matching these exact wire keys:
 
@@ -73,19 +73,19 @@ batch = z.object({ id: uuid, space_id: uuid, period_start: z.iso.date(), period_
 
 Add `superRefine` state consistency checks for transfer sent/received facts and batch terminal facts. Export inferred types and strict paged list/correction schemas.
 
-- [ ] **Step 4: Run GREEN**
+- [x] **Step 4: Run GREEN**
 
 Run the same focused test; expected PASS.
 
-- [ ] **Step 5: Add BFF RED route tests**
+- [x] **Step 5: Add BFF RED route tests**
 
 Create `web/src/app/api/app/shared-routes.test.ts`. Import each route handler, mock `forwardAppRoute`, and assert exact upstream path, UUID rejection, CSRF forwarding and only `cursor`/`limit` query forwarding. Include expense detail/delete, summary, participants/end/archive, settlement detail/cancel/sent/received and correction collection routes.
 
-- [ ] **Step 6: Run RED and implement routes**
+- [x] **Step 6: Run RED and implement routes**
 
 Run `npm test -- src/app/api/app/shared-routes.test.ts`; expected missing module/handler failures. Add the thin route files and extend `financial-space-route.ts` so shared expense, settlement and correction collections accept only `cursor` and `limit`; unexpected query keys return `INVALID_QUERY`.
 
-- [ ] **Step 7: Run GREEN and commit**
+- [x] **Step 7: Run GREEN and commit**
 
 Run both Task 1 test files. Commit only contracts/routes/tests:
 
@@ -377,4 +377,3 @@ Stop only task-owned PostgreSQL/backend/Web processes. Run `git diff --check`, `
 - Type consistency: mutations use `request_id`; expense and participant/space operations use their owning versions; transfer actions use transfer version; batch cancel uses batch version. All money crosses contracts as canonical strings and only `BigInt` helpers calculate it.
 - Placeholder scan: angle-bracket runtime ports/URL are execution-time values that must be recorded after task-owned services are provisioned; they are not product-code placeholders. Every product file, behavior, command and expected RED/GREEN outcome is named.
 - Security: financial composition begins only after participant detail succeeds; governance projections never trigger financial requests. Former/nonparticipants get no cached or synthesized amounts.
-
