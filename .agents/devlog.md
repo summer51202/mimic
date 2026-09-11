@@ -1025,3 +1025,12 @@
 **What changed:** Added create, rename, merge and archive; immutable system terms; actor-scoped recent/frequent/context picker with participant authorization. Mutations serialize by owner/group and atomically audit actor/time. Merge resolves canonical graphs without rewriting expense IDs.
 **Verification:** Observed route404 RED, then 3 real HTTP lifecycle cases GREEN. Two independent Prisma clients tested duplicate term creation, stale renames, competing merges and audit rollback. Missing default regression observed400-style input error RED, then explicit SYSTEM_TAXONOMY_MISSING GREEN. Baseline build/320 unit/54 e2e passed with the P2 modules present.
 **Known gaps / follow-ups:** Personal expense posting and Web are following commits; shared and pooled financial rules remain P3/P5.
+
+## 2026-09-11 — P2 private expense accounting
+
+**Task:** Deliver owner-only daily expenses and authoritative monthly consumption.
+**Scope:** Expense persistence/receipt services, personal-expense module/DTO/query/consumption services, authenticated lifecycle and concurrency tests.
+**What changed:** Create/full-replacement edit/soft-delete with canonical minor-unit strings, real dates, owner/mode checks and atomic actor/time audit. Receipt replay authorizes first and never duplicates writes. First-record latch never clears. Full-month SUM is independent of page size and uses canonical taxonomy only for grouping.
+**Decisions:** Personal accounting has no balances, income, payers or transfers. Open dates before box creation are valid for personal history; future local dates are rejected. Archived terms can remain on unchanged historical selections but cannot be selected for new postings. Empty successful reads return zero; failures propagate.
+**Verification:** Observed missing-route RED before financial/monthly implementation. Full realDB regression: 5 suites/48 cases passed, including P1 privacy, duplicate create/update/delete, edit/delete and archive races, taxonomy races, audit/receipt rollback, schema constraints, month/currency/cursor isolation, large totals and unchanged stored IDs after merge. Baseline Prisma validate/build, 320 unit and 54 ordinary e2e passed. Self-review corrected the test's expected currency-mutation status to existing strict DTO400.
+**Known gaps / follow-ups:** Web acceptance is in progress; P3 shared and P5 pooled financial services are intentionally separate later work.
