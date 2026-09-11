@@ -70,7 +70,7 @@ test('private shared-expense reference follows authority, settlement, exit, and 
     const foreign = await data<{ id: string }>(partnerSession, '/me/spaces', { method: 'POST', body: JSON.stringify({
       name: '美元私人帳本', mode: 'PERSONAL_EXPENSES', currency: 'USD', timezone: 'Asia/Taipei',
     }) });
-    const privateTag = await data<{ id: string }>(partnerSession, '/me/taxonomy', { method: 'POST', body: JSON.stringify({ kind: 'TAG', name: '私人旅行' }) });
+    await data(partnerSession, '/me/taxonomy', { method: 'POST', body: JSON.stringify({ kind: 'TAG', name: '私人旅行' }) });
     const category = await data<{ id: string; name: string }>(ownerSession, `/groups/${group.id}/taxonomy`, { method: 'POST', body: JSON.stringify({ kind: 'CATEGORY', name: '共同餐飲' }) });
     const shared = await data<{ id: string; opened_on: string }>(ownerSession, `/groups/${group.id}/spaces`, { method: 'POST', body: JSON.stringify({
       name: '旅行分帳', mode: 'SHARED_EXPENSES', currency: 'TWD', timezone: 'Asia/Taipei',
@@ -88,9 +88,9 @@ test('private shared-expense reference follows authority, settlement, exit, and 
     const pooled = await data<{ id: string }>(ownerSession, `/groups/${group.id}/spaces`, { method: 'POST', body: JSON.stringify({ name: '不可參照池', mode: 'POOLED_FUND' }) });
     await data(ownerSession, `/spaces/${pooled.id}/participants`, { method: 'POST', body: JSON.stringify({ user_id: partnerId, version: 1 }) });
     const pooledExpense = await prisma.expenseRecord.create({ data: {
-      spaceId: pooled.id, amountMinor: 5n, occurredOn: new Date(`${shared.opened_on}T00:00:00.000Z`), title: '池內資料不可洩漏',
+      spaceId: pooled.id, amountMinor: BigInt(5), occurredOn: new Date(`${shared.opened_on}T00:00:00.000Z`), title: '池內資料不可洩漏',
       categoryId: category.id, createdById: ownerId, updatedById: ownerId,
-      sharedAllocations: { create: [{ userId: partnerId, amountMinor: 5n }] },
+      sharedAllocations: { create: [{ userId: partnerId, amountMinor: BigInt(5) }] },
     } });
     const pooledDenied = await api(partnerSession, `/spaces/${personal.id}/personal-references`, { method: 'POST', body: JSON.stringify({ request_id: crypto.randomUUID(), source_expense_id: pooledExpense.id }) });
     expect(pooledDenied.response.status).toBe(404);
