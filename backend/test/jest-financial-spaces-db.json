@@ -13,7 +13,10 @@
     "**/test/personal-expenses-concurrency.e2e-spec.ts",
     "**/test/taxonomy.e2e-spec.ts",
     "**/test/shared-expenses.e2e-spec.ts",
-    "**/test/shared-expenses-concurrency.e2e-spec.ts"
+    "**/test/shared-expenses-concurrency.e2e-spec.ts",
+    "**/test/shared-settlements.e2e-spec.ts",
+    "**/test/shared-corrections.e2e-spec.ts",
+    "**/test/shared-settlements-concurrency.e2e-spec.ts"
   ],
   "testTimeout": 30000,
   "transform": {

@@ -14,7 +14,10 @@
     "personal-expenses-concurrency.e2e-spec.ts",
     "taxonomy.e2e-spec.ts",
     "shared-expenses.e2e-spec.ts",
-    "shared-expenses-concurrency.e2e-spec.ts"
+    "shared-expenses-concurrency.e2e-spec.ts",
+    "shared-settlements.e2e-spec.ts",
+    "shared-corrections.e2e-spec.ts",
+    "shared-settlements-concurrency.e2e-spec.ts"
   ],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"

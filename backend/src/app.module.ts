@@ -10,6 +10,7 @@ import { FinancialSpacesModule } from './modules/financial-spaces/financial-spac
 import { TaxonomyModule } from './modules/taxonomy/taxonomy.module';
 import { PersonalExpensesModule } from './modules/personal-expenses/personal-expenses.module';
 import { SharedExpensesModule } from './modules/shared-expenses/shared-expenses.module';
+import { SharedSettlementsModule } from './modules/shared-settlements/shared-settlements.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { SettlementsModule } from './modules/settlements/settlements.module';
@@ -28,6 +29,7 @@ import { UsersModule } from './modules/users/users.module';
     TaxonomyModule,
     PersonalExpensesModule,
     SharedExpensesModule,
+    SharedSettlementsModule,
     ContributionsModule,
     ExpensesModule,
     SettlementsModule,
