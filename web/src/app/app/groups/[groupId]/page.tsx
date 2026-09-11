@@ -1,6 +1,7 @@
 import { listFunds } from "@/features/funds/fund-queries";
 import { getGroup, listMembers } from "@/features/groups/group-queries";
 import { GroupDetailView } from "@/features/groups/group-detail";
+import { listGroupSharedSpaces } from "@/features/shared-expenses/shared-queries";
 import { AppReadFailure } from "@/shared/ui/app-read-failure";
 
 interface GroupDetailPageProps {
@@ -18,12 +19,13 @@ export default async function GroupDetailPage({
       getGroup(groupId),
       listMembers(groupId),
       listFunds(groupId),
+      listGroupSharedSpaces(groupId),
     ]);
   } catch (error) {
     return <AppReadFailure error={error} />;
   }
 
-  const [group, members, funds] = reads;
+  const [group, members, funds, sharedSpaces] = reads;
 
-  return <GroupDetailView funds={funds} group={group} members={members} />;
+  return <GroupDetailView funds={funds} group={group} members={members} sharedSpaces={sharedSpaces} />;
 }

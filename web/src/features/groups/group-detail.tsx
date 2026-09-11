@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useId, useState } from "react";
 
 import { FundList } from "@/features/funds/fund-list";
+import { SharedSpaceList } from "@/features/shared-expenses/shared-space-list";
+import type { FinancialSpace } from "@/shared/api/financial-space-contracts";
 import type { Fund, GroupDetail, Member } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelFrame } from "@/shared/ui/pixel-frame";
@@ -18,6 +20,7 @@ interface GroupDetailViewProps {
   funds?: Fund[];
   group: GroupDetail;
   members: Member[];
+  sharedSpaces?: FinancialSpace[];
   onRefresh?: () => void;
 }
 
@@ -25,6 +28,7 @@ export function GroupDetailView({
   funds = [],
   group,
   members,
+  sharedSpaces = [],
   onRefresh,
 }: GroupDetailViewProps) {
   const [renaming, setRenaming] = useState(false);
@@ -74,6 +78,7 @@ export function GroupDetailView({
           <MemberRoster members={members} />
         </PixelFrame>
         <FundList funds={funds} groupId={group.id} />
+        <SharedSpaceList groupId={group.id} spaces={sharedSpaces} defaultCurrency={group.default_currency} />
         {renaming ? (
           <PixelFrame>
             <h2>Rename</h2>

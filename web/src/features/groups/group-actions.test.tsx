@@ -16,6 +16,7 @@ vi.mock("@/shared/api/app-fetch", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/shared/api/app-fetch")>()),
   appFetch: vi.fn(),
 }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 
 const appFetchMock = vi.mocked(appFetch);
 
@@ -133,6 +134,17 @@ describe("group detail actions", () => {
       "data-frame",
       "fund-list",
     );
+  });
+
+  it("adds participant-private shared space discovery without replacing Funds", () => {
+    const shared = { id: "10000000-0000-4000-8000-000000000001", name: "旅行分帳", access: "PARTICIPANT" as const,
+      mode: "SHARED_EXPENSES" as const, status: "ACTIVE" as const, currency: "TWD", timezone: "Asia/Taipei",
+      opened_on: "2026-09-01", group_id: "10000000-0000-4000-8000-000000000002", owner_user_id: null,
+      role: "MANAGER" as const, version: 1, first_formal_record_at: null };
+    render(<GroupDetailView group={group} members={members} sharedSpaces={[shared]} />);
+    expect(screen.getByRole("heading", { name: "共同分帳" })).toBeVisible();
+    expect(screen.getByRole("link", { name: /旅行分帳/ })).toHaveAttribute("href", `/app/spaces/${shared.id}`);
+    expect(screen.getByRole("heading", { name: "Funds" })).toBeVisible();
   });
 
   it("renames a group with a PATCH payload and refresh callback", async () => {

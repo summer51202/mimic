@@ -27,7 +27,7 @@
 - Modify `web/src/shared/api/financial-space-route.ts` and test: allow only the actual `cursor`/`limit` query keys on shared collection routes.
 - Create BFF route handlers under `web/src/app/api/app/groups/[groupId]/spaces/` and `web/src/app/api/app/spaces/[spaceId]/`: one-line `forwardSpaceRoute` adapters for every observed route above.
 - Create `web/src/features/shared-expenses/shared-queries.ts` and test: fail-closed server composition of space, participants, group members, taxonomy, expenses, summary, batches and corrections.
-- Create `web/src/features/shared-expenses/shared-space-list.tsx`, `shared-space-form.tsx` and tests; modify group detail query/view/page to show participant links, governance-only cards and manager creation.
+- Create `web/src/features/shared-expenses/shared-space-list.tsx`, `shared-space-form.tsx` and tests; modify group detail query/view/page to show participant links, governance-only cards and shared-space creation.
 - Create `web/src/features/shared-expenses/shared-expense-form.tsx`, `shared-expense-list.tsx`, `shared-workspace.tsx` and tests: exact payer/allocation editor, positions and refresh/pagination state.
 - Create `web/src/features/shared-settlements/settlement-panel.tsx`, `correction-form.tsx`, `shared-lifecycle-panel.tsx` and tests.
 - Create `web/src/app/app/spaces/[spaceId]/page.tsx`, `loading.tsx`, and `web/src/features/shared-expenses/shared.css`.
@@ -95,7 +95,7 @@ feat(web): add strict shared finance boundary
 
 ### Task 2: Shared box discovery, creation and private entry
 
-- [ ] **Step 1: Write server-query RED tests**
+- [x] **Step 1: Write server-query RED tests**
 
 Create `web/src/features/shared-expenses/shared-queries.test.ts`. Mock `authenticatedServerApi` and assert:
 
@@ -104,27 +104,27 @@ Create `web/src/features/shared-expenses/shared-queries.test.ts`. Mock `authenti
 - any malformed or failed financial response rejects the whole composition rather than substituting zero/empty values;
 - invalid UUID and former-participant 404 remain 404.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 Run `npm test -- src/features/shared-expenses/shared-queries.test.ts`; expected missing module failure.
 
-- [ ] **Step 3: Implement fail-closed queries**
+- [x] **Step 3: Implement fail-closed queries**
 
 Create `shared-queries.ts` with `listGroupSharedSpaces(groupId)` and `loadSharedWorkspace(spaceId)`. Parse every response using Task 1 schemas and existing `groupDetailSchema`, `memberSchema`, `taxonomyTermSchema`, and `financialSpaceSchema`. Load independent reads with `Promise.all` only after the participant detail establishes `group_id` and shared mode.
 
-- [ ] **Step 4: Run GREEN**
+- [x] **Step 4: Run GREEN**
 
 Run the query test; expected PASS.
 
-- [ ] **Step 5: Write shared-space list/form RED tests**
+- [x] **Step 5: Write shared-space list/form RED tests**
 
-Create `shared-space-list.test.tsx` and `shared-space-form.test.tsx`. Assert participant cards link to `/app/spaces/:id`; governance cards show name/mode/status without currency, roles, participants, amount, action or financial link; only a group member may open create; create sends `{ name, mode:'SHARED_EXPENSES', currency, request_id }`, reuses the request UUID after uncertain retry, and navigates to the returned participant projection.
+Create `shared-space-list.test.tsx` and `shared-space-form.test.tsx`. Assert participant cards link to `/app/spaces/:id`; governance cards show name/mode/status without currency, roles, participants, amount, action or financial link; a current group member may open create; create sends only the backend-supported `{ name, mode:'SHARED_EXPENSES', currency, timezone }` fields and navigates to the returned participant projection. Because the existing create-space API has no receipt key, an uncertain failure instructs the user to refresh the list before manually deciding whether to retry; it must not claim idempotency.
 
-- [ ] **Step 6: Run RED and implement UI**
+- [x] **Step 6: Run RED and implement UI**
 
 Run the two tests; expected missing component failures. Create the components, add the group-space BFF route, extend `GroupDetailPage` reads with `listGroupSharedSpaces`, and add `SharedSpaceList` to `GroupDetailView`. Keep Funds untouched and do not map them to boxes.
 
-- [ ] **Step 7: Run GREEN and commit**
+- [x] **Step 7: Run GREEN and commit**
 
 Run group query/view regression tests plus new tests. Commit:
 
