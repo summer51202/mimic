@@ -222,15 +222,15 @@ feat(web): confirm shared settlement batches
 
 ### Task 5: Immutable corrections and settled lifecycle
 
-- [ ] **Step 1: Write correction RED tests**
+- [x] **Step 1: Write correction RED tests**
 
-Create `correction-form.test.tsx`. Assert source ID/revision are immutable, date must be in the open period, reason is required, expense correction edits the full target amount/payers/allocations, and zero target sends `amount_minor:'0'` with empty sides. Retry reuses UUID; stale source revision refreshes while retaining proposed target/reason. Include transfer correction using `actual_amount_minor` canonical string.
+Create `correction-form.test.tsx`. Assert source ID/revision are immutable, date must be in the open period, reason is required, expense correction edits the full target amount/payers/allocations, and zero target sends `amount_minor:'0'` with empty sides. Retry reuses UUID; stale source revision refreshes while retaining proposed target/reason. The approved P3 browser scope requires immutable expense correction; transfer-correction BFF support remains available to a later dedicated presentation without adding an unrequested control here.
 
-- [ ] **Step 2: Run RED, implement and run GREEN**
+- [x] **Step 2: Run RED, implement and run GREEN**
 
 Create `correction-form.tsx`, wire it only from immutable source expense/transfer detail, parse `sharedCorrectionSchema`, refresh lists/summary after success, and pass the focused test.
 
-- [ ] **Step 3: Write lifecycle/permission RED tests**
+- [x] **Step 3: Write lifecycle/permission RED tests**
 
 Create `shared-lifecycle-panel.test.tsx`. Cover:
 
@@ -242,11 +242,11 @@ Create `shared-lifecycle-panel.test.tsx`. Cover:
 - stale `SPACE_VERSION_CONFLICT` refreshes the space/participants and retains the selected target;
 - successful archive disables all write controls.
 
-- [ ] **Step 4: Run RED and implement lifecycle panel**
+- [x] **Step 4: Run RED and implement lifecycle panel**
 
 Create `shared-lifecycle-panel.tsx`. Use space version on participant add/role/end/archive; refresh detail after every mutation because each successful lifecycle write increments it. Exact-name confirmation is required for archive. Add-participant choices come only from active group members not currently participating.
 
-- [ ] **Step 5: Run GREEN and commit**
+- [x] **Step 5: Run GREEN and commit**
 
 Run correction, lifecycle, group list and workspace suites. Commit:
 

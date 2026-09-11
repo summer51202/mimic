@@ -60,6 +60,12 @@ it('integrates manager settlement controls with the authoritative workspace vers
   expect(screen.getByRole('button', { name: '開始結算批次' })).toBeVisible();
 });
 
+it('integrates settled lifecycle controls while the space remains active', () => {
+  render(<SharedWorkspace initial={data()} />);
+  expect(screen.getByRole('heading', { name: '參與者與封存' })).toBeVisible();
+  expect(screen.getByRole('button', { name: '封存共同分帳寶箱' })).toBeVisible();
+});
+
 it('discards a paged read from a stale space version and refreshes authoritative first pages', async () => {
   const initial = data(); initial.expenses.next_cursor = b;
   const latestExpense = { ...initial.expenses.items[0], id: groupId, title: '最新住宿', version: 2 };

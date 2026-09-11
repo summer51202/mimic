@@ -13,10 +13,12 @@ import { SharedExpenseForm } from './shared-expense-form';
 import { SharedExpenseList } from './shared-expense-list';
 import type { SharedWorkspaceData } from './shared-queries';
 import { SettlementPanel } from '../shared-settlements/settlement-panel';
+import { CorrectionForm } from '../shared-settlements/correction-form';
+import { SharedLifecyclePanel } from '../shared-settlements/shared-lifecycle-panel';
 
 export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
   const [data, setData] = useState(initial);
-  const [dialog, setDialog] = useState<'expense' | 'delete' | null>(null);
+  const [dialog, setDialog] = useState<'expense' | 'delete' | 'correction' | null>(null);
   const [editing, setEditing] = useState<SharedExpense>();
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
@@ -103,6 +105,7 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
       {dialog === 'expense' && <SharedExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'} spaceId={space.id} currency={space.currency} timezone={space.timezone}
         currentUserId={group.current_user_id} participants={data.participants} terms={data.terms} record={editing}
         lockKind={lockKind(editing)}
+        onCorrection={record => { setEditing(record); setDialog('correction'); }}
         onSaved={async result => { setDialog(null); setEditing(undefined); setNotice(`已確認「${result.record.title}」${money(result.record.amount_minor)}。`); try { await refresh(); } catch { setError('已確認儲存，但摘要更新失敗；請重新讀取。'); } }}
         onReload={async () => (await refresh()).expenses.items.find(item => item.id === editing?.id)} />}
     </PixelDialog>
@@ -112,5 +115,15 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
       <PixelButton emphasis="danger" disabled={busy || !online} onClick={() => void remove()}>確認刪除</PixelButton>
       <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void reload()}>重新讀取最新資料</PixelButton>
     </PixelDialog>
+    <PixelDialog open={dialog === 'correction'} title="建立不可變更的更正" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
+      {dialog === 'correction' && editing && <CorrectionForm spaceId={space.id} currency={space.currency} timezone={space.timezone}
+        sourceExpense={editing} participants={data.participants}
+        sourceRevision={Math.max(0, ...data.corrections.items.filter(item => item.source_expense_id === editing.id).map(item => item.revision))}
+        onSaved={async () => { setDialog(null); setEditing(undefined); await refresh(); setNotice('已在開放期間建立更正，原始紀錄保持不變。'); }}
+        onReload={async () => { const latest = await refresh(); return Math.max(0, ...latest.corrections.items.filter(item => item.source_expense_id === editing.id).map(item => item.revision)); }} />}
+    </PixelDialog>
+    <SharedLifecyclePanel space={space} currentUserId={group.current_user_id} participants={data.participants} members={data.members}
+      onChanged={async () => { try { await refresh(); setNotice('寶箱參與者或狀態已更新。'); }
+        catch { window.location.assign(`/app/groups/${group.id}`); } }} />
   </main>;
 }
