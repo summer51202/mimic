@@ -305,6 +305,11 @@ export class GroupsService {
         throw new ConflictException('GROUP_HAS_OTHER_ACTIVE_MEMBERS');
       }
 
+      const activeSpace = await tx.financialSpace.findFirst({
+        where: { groupId, status: 'ACTIVE' }, select: { id: true },
+      });
+      if (activeSpace) throw new ConflictException('GROUP_HAS_ACTIVE_SPACES');
+
       const historyWhere = { fund: { groupId } };
       const history = await Promise.all([
         tx.contribution.findFirst({
@@ -421,6 +426,11 @@ export class GroupsService {
     groupId: string,
     userId: string,
   ) {
+    const participation = await tx.spaceParticipant.findFirst({
+      where: { userId, effectiveTo: null, space: { groupId } }, select: { id: true },
+    });
+    if (participation) throw new ConflictException('GROUP_HAS_SPACE_PARTICIPATION');
+
     const openPositions = await tx.$queryRaw<
       Array<{ fund_id: string; position_minor: bigint }>
     >(Prisma.sql`

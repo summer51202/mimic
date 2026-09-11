@@ -522,4 +522,3 @@ model SpaceAuditEvent {
   @@index([spaceId, createdAt])
   @@map("space_audit_events")
 }
-

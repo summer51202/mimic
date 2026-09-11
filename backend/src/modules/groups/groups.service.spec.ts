@@ -59,6 +59,8 @@ describe('GroupsService.updateMemberRole', () => {
 
   function setup() {
     const tx = {
+      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
+      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
       $executeRaw: jest.fn().mockResolvedValue(0),
       group: { findFirst: jest.fn().mockResolvedValue(group) },
       groupMember: {
@@ -285,6 +287,8 @@ describe('GroupsService.archiveEmptyGroup', () => {
 
   function setup() {
     const tx = {
+      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
+      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
       $executeRaw: jest.fn().mockResolvedValue(0),
       group: {
         findFirst: jest.fn().mockResolvedValue(group),
@@ -323,6 +327,14 @@ describe('GroupsService.archiveEmptyGroup', () => {
 
   beforeEach(() => jest.useFakeTimers().setSystemTime(archiveTime));
   afterEach(() => jest.useRealTimers());
+
+  it('rejects an active financial space before archiving a group', async () => {
+    const { service, tx } = setup();
+    tx.financialSpace.findFirst.mockResolvedValue({ id: 'space-1' });
+    await expect(service.archiveEmptyGroup('group-1', 'owner-1'))
+      .rejects.toEqual(new ConflictException('GROUP_HAS_ACTIVE_SPACES'));
+    expect(tx.group.updateMany).not.toHaveBeenCalled();
+  });
 
   it('returns GROUP_NOT_FOUND before membership checks for an inactive or missing group', async () => {
     const { service, tx } = setup();
@@ -550,6 +562,8 @@ describe('GroupsService member departure', () => {
   function setup(positionRows: Array<{ fund_id: string; position_minor: bigint }> = []) {
     const removed = { ...member, status: MemberStatus.REMOVED };
     const tx = {
+      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
+      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
       $executeRaw: jest.fn().mockResolvedValue(0),
       group: { findFirst: jest.fn().mockResolvedValue(group) },
       groupMember: {
@@ -842,6 +856,8 @@ describe('GroupsService.createInvite', () => {
     jest.useFakeTimers().setSystemTime(now);
     const invite = { id: 'invite-1' };
     const tx = {
+      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
+      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
       $executeRaw: jest.fn().mockResolvedValue(0),
       group: {
         findFirst: jest.fn().mockResolvedValue({ id: 'group-1' }),
@@ -894,6 +910,8 @@ describe('GroupsService.createInvite', () => {
 
   it('rejects an actor who is not an active owner', async () => {
     const tx = {
+      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
+      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
       $executeRaw: jest.fn().mockResolvedValue(0),
       group: {
         findFirst: jest.fn().mockResolvedValue({ id: 'group-1' }),
@@ -917,6 +935,8 @@ describe('GroupsService.createInvite', () => {
 
   it('rejects invite creation when the group is inactive', async () => {
     const tx = {
+      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
+      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
       $executeRaw: jest.fn().mockResolvedValue(0),
       group: {
         findFirst: jest.fn().mockResolvedValue(null),
@@ -1087,6 +1107,8 @@ describe('GroupsService.acceptInvite', () => {
 
   function setup(overrides: Record<string, unknown> = {}) {
     const tx = {
+      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
+      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
       $executeRaw: jest.fn().mockResolvedValue(0),
       groupInvite: {
         findUnique: jest.fn().mockResolvedValue(pendingInvite),

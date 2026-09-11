@@ -6,6 +6,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ContributionsModule } from './modules/contributions/contributions.module';
 import { ExpensesModule } from './modules/expenses/expenses.module';
 import { FundsModule } from './modules/funds/funds.module';
+import { FinancialSpacesModule } from './modules/financial-spaces/financial-spaces.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { SettlementsModule } from './modules/settlements/settlements.module';
@@ -20,6 +21,7 @@ import { UsersModule } from './modules/users/users.module';
     AuthModule,
     GroupsModule,
     FundsModule,
+    FinancialSpacesModule,
     ContributionsModule,
     ExpensesModule,
     SettlementsModule,
