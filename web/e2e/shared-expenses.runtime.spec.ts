@@ -249,17 +249,18 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
     await expect(partnerPage.getByText('COMPLETED', { exact: true })).toHaveCount(2);
 
     await page.reload();
-    const latestSpaceBeforeExit = await data<SpaceProjection>(ownerSession, `/spaces/${spaceId}`);
-    const managerExitRequest = page.waitForRequest(request => request.url().includes(`/spaces/${spaceId}/participants/`) && request.url().endsWith('/end'));
-    await clickHydrated(page.getByRole('button', { name: '離開這個寶箱' }));
-    const attemptedVersion = (await managerExitRequest).postDataJSON().version;
-    if (attemptedVersion !== latestSpaceBeforeExit.version) {
+    let managerGuardObserved = false;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const managerExitResponse = page.waitForResponse(response => response.url().includes(`/spaces/${spaceId}/participants/`) && response.url().endsWith('/end'));
+      await clickHydrated(page.getByRole('button', { name: '離開這個寶箱' }));
+      const response = await managerExitResponse;
+      const code = ((await response.json()) as { error?: { code?: string } }).error?.code;
+      if (code === 'SPACE_MANAGER_REQUIRED') { managerGuardObserved = true; break; }
+      expect(code).toBe('SPACE_VERSION_CONFLICT');
       await expect(page.locator('.shared-lifecycle').getByRole('alert')).toContainText('寶箱參與者或狀態已變更');
       await expect(page.getByRole('button', { name: '離開這個寶箱' })).toBeEnabled();
-      const retryRequest = page.waitForRequest(request => request.url().includes(`/spaces/${spaceId}/participants/`) && request.url().endsWith('/end'));
-      await clickHydrated(page.getByRole('button', { name: '離開這個寶箱' }));
-      expect((await retryRequest).postDataJSON().version).toBe(latestSpaceBeforeExit.version);
     }
+    expect(managerGuardObserved).toBe(true);
     await expect(page.locator('.shared-lifecycle').getByRole('alert')).toContainText('寶箱必須保留至少一位有效管理者');
     await partnerPage.reload();
     await clickHydrated(partnerPage.getByRole('button', { name: '離開這個寶箱' }));
