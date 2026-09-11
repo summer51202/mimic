@@ -1008,3 +1008,12 @@
 **Decisions:** Preserve existing bigint-safe display formatting; keep the new input parser separate from legacy Activity number arithmetic. Individual records use PostgreSQL bigint bounds; aggregate range is a separate concern.
 **Verification:** Observed missing-module RED, then 22 backend value tests and 13 Web input tests passed. Shared local database guard has 9 passing cases after extraction. Full P2 baseline remains a later gate.
 **Known gaps / follow-ups:** P2 taxonomy, financial CRUD, monthly read model and browser UI are still in progress.
+
+## 2026-09-11 — P2 persistence and stable taxonomy
+
+**Task:** Add neutral expense facts and shared vocabulary without changing legacy financial semantics.
+**Scope:** Prisma schema/migration, taxonomy catalog/seed, local DB guard and test configuration.
+**What changed:** Added ExpenseRecord, record tags, idempotency receipts, scoped taxonomy identities and audit events. Added 16 localized categories and 15 contextual tags with stable UUIDs; extracted the loopback-only test database guard.
+**Decisions:** Additive migration retains legacy development fixtures until P7 cleanup. Scope/merge/name/amount/version constraints complement service authorization. System seed updates display metadata without replacing identities or private terms.
+**Verification:** Observed absent expense table RED before migration. Fresh and P1-upgrade migration histories passed on task-owned local schemas; before/after legacy Fund and P1 box snapshots matched. Constraint, duplicate receipt, FK and private-seed preservation checks passed in the 10-case personal DB suite. Full seed ran twice successfully. Prisma validate/build passed; current backend baseline is 320 unit and 54 e2e tests passing.
+**Known gaps / follow-ups:** Financial endpoints and Web are separate following commits. P2 runtime acceptance remains in progress; no external database was modified.

@@ -3,7 +3,7 @@
   "rootDir": "..",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
-  "testPathIgnorePatterns": ["financial-spaces.e2e-spec.ts", "financial-spaces-concurrency.e2e-spec.ts"],
+  "testPathIgnorePatterns": ["financial-spaces.e2e-spec.ts", "financial-spaces-concurrency.e2e-spec.ts", "personal-expenses.e2e-spec.ts", "personal-expenses-concurrency.e2e-spec.ts", "taxonomy.e2e-spec.ts"],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   }

@@ -3,11 +3,13 @@ import * as bcrypt from 'bcryptjs';
 import { generateMimicId } from '../src/modules/users/mimic-id';
 import { assertLocalSeedTarget } from './local-seed-target';
 import { seedFinancialSpaces } from './seed-financial-spaces';
+import { seedTaxonomy } from './seed-taxonomy';
 
 const prisma = new PrismaClient();
 
 async function main() {
   assertLocalSeedTarget(process.env.DATABASE_URL);
+  await seedTaxonomy(prisma);
   const passwordHash = await bcrypt.hash('password', 10);
 
   const user = await prisma.user.upsert({

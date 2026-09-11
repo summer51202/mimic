@@ -127,6 +127,12 @@ enum AuditAction {
 }
 
 model User {
+  ownedTaxonomyTerms TaxonomyTerm[] @relation("TaxonomyOwner")
+  createdTaxonomyTerms TaxonomyTerm[] @relation("TaxonomyCreator")
+  taxonomyAuditEvents TaxonomyAuditEvent[] @relation("TaxonomyAuditActor")
+  createdExpenseRecords ExpenseRecord[] @relation("ExpenseRecordCreator")
+  updatedExpenseRecords ExpenseRecord[] @relation("ExpenseRecordUpdater")
+  expenseMutationReceipts ExpenseMutationReceipt[] @relation("ExpenseReceiptActor")
   personalSpaces FinancialSpace[] @relation("PersonalSpaceOwner")
   createdSpaces FinancialSpace[] @relation("SpaceCreator")
   spaceParticipations SpaceParticipant[]
@@ -166,6 +172,7 @@ model User {
 }
 
 model Group {
+  taxonomyTerms TaxonomyTerm[]
   financialSpaces FinancialSpace[]
   id              String      @id @default(uuid()) @db.Uuid
   name            String      @db.VarChar(100)
@@ -457,6 +464,9 @@ enum SpaceParticipantRole {
 }
 
 enum SpaceAuditAction {
+  EXPENSE_CREATED
+  EXPENSE_UPDATED
+  EXPENSE_DELETED
   CREATE
   UPDATE
   PARTICIPANT_ADDED
@@ -466,6 +476,8 @@ enum SpaceAuditAction {
 }
 
 model FinancialSpace {
+  expenseRecords ExpenseRecord[]
+  expenseReceipts ExpenseMutationReceipt[]
   id                  String               @id @default(uuid()) @db.Uuid
   name                String               @db.VarChar(100)
   mode                FinancialSpaceMode
@@ -521,4 +533,117 @@ model SpaceAuditEvent {
 
   @@index([spaceId, createdAt])
   @@map("space_audit_events")
+}
+
+enum TaxonomyKind {
+  CATEGORY
+  TAG
+}
+enum TaxonomyScope {
+  SYSTEM
+  PERSONAL
+  GROUP
+}
+enum TaxonomyStatus {
+  ACTIVE
+  ARCHIVED
+  MERGED
+}
+enum TaxonomyAction {
+  CREATE
+  RENAME
+  MERGE
+  ARCHIVE
+}
+enum ExpenseMutationAction {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+model TaxonomyTerm {
+  id             String @id @default(uuid()) @db.Uuid
+  kind           TaxonomyKind
+  scope          TaxonomyScope
+  scopeKey       String @map("scope_key") @db.VarChar(64)
+  ownerUserId    String? @map("owner_user_id") @db.Uuid
+  groupId        String? @map("group_id") @db.Uuid
+  systemKey      String? @unique @map("system_key") @db.VarChar(64)
+  name           String @db.VarChar(60)
+  normalizedName String @map("normalized_name") @db.VarChar(120)
+  translations   Json @default("{}")
+  categoryKeys   String[] @default([]) @map("category_keys")
+  status         TaxonomyStatus @default(ACTIVE)
+  mergedIntoId   String? @map("merged_into_id") @db.Uuid
+  createdById    String? @map("created_by_id") @db.Uuid
+  version        Int @default(1)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  owner          User? @relation("TaxonomyOwner", fields: [ownerUserId], references: [id])
+  group          Group? @relation(fields: [groupId], references: [id])
+  creator        User? @relation("TaxonomyCreator", fields: [createdById], references: [id])
+  mergedInto     TaxonomyTerm? @relation("TaxonomyMerge", fields: [mergedIntoId], references: [id])
+  mergedSources  TaxonomyTerm[] @relation("TaxonomyMerge")
+  expenseRecords ExpenseRecord[] @relation("ExpenseCategory")
+  expenseTags    ExpenseRecordTag[]
+  auditEvents    TaxonomyAuditEvent[]
+  @@index([scopeKey, kind, status])
+  @@map("taxonomy_terms")
+}
+model TaxonomyAuditEvent {
+  id          String @id @default(uuid()) @db.Uuid
+  termId      String @map("term_id") @db.Uuid
+  actorUserId String @map("actor_user_id") @db.Uuid
+  action      TaxonomyAction
+  before      Json?
+  after       Json
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  term        TaxonomyTerm @relation(fields: [termId], references: [id])
+  actor       User @relation("TaxonomyAuditActor", fields: [actorUserId], references: [id])
+  @@index([termId, createdAt])
+  @@map("taxonomy_audit_events")
+}
+model ExpenseRecord {
+  id          String @id @default(uuid()) @db.Uuid
+  spaceId     String @map("space_id") @db.Uuid
+  amountMinor BigInt @map("amount_minor")
+  occurredOn  DateTime @map("occurred_on") @db.Date
+  title       String @db.VarChar(200)
+  note        String? @db.VarChar(2000)
+  categoryId  String @map("category_id") @db.Uuid
+  status      RecordStatus @default(ACTIVE)
+  version     Int @default(1)
+  createdById String @map("created_by_id") @db.Uuid
+  updatedById String @map("updated_by_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  space       FinancialSpace @relation(fields: [spaceId], references: [id])
+  category    TaxonomyTerm @relation("ExpenseCategory", fields: [categoryId], references: [id])
+  creator     User @relation("ExpenseRecordCreator", fields: [createdById], references: [id])
+  updater     User @relation("ExpenseRecordUpdater", fields: [updatedById], references: [id])
+  tags        ExpenseRecordTag[]
+  @@index([spaceId, status, occurredOn, id])
+  @@map("expense_records")
+}
+model ExpenseRecordTag {
+  expenseId String @map("expense_id") @db.Uuid
+  tagId     String @map("tag_id") @db.Uuid
+  expense   ExpenseRecord @relation(fields: [expenseId], references: [id])
+  tag       TaxonomyTerm @relation(fields: [tagId], references: [id])
+  @@id([expenseId, tagId])
+  @@map("expense_record_tags")
+}
+model ExpenseMutationReceipt {
+  id          String @id @default(uuid()) @db.Uuid
+  spaceId     String @map("space_id") @db.Uuid
+  actorUserId String @map("actor_user_id") @db.Uuid
+  requestId   String @map("request_id") @db.Uuid
+  action      ExpenseMutationAction
+  payloadHash String @map("payload_hash") @db.VarChar(64)
+  response    Json
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  space       FinancialSpace @relation(fields: [spaceId], references: [id])
+  actor       User @relation("ExpenseReceiptActor", fields: [actorUserId], references: [id])
+  @@unique([spaceId, actorUserId, requestId])
+  @@map("expense_mutation_receipts")
 }

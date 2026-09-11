@@ -2,7 +2,7 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": "..",
   "testEnvironment": "node",
-  "testMatch": ["**/test/financial-spaces.e2e-spec.ts", "**/test/financial-spaces-concurrency.e2e-spec.ts"],
+  "testMatch": ["**/test/financial-spaces.e2e-spec.ts", "**/test/financial-spaces-concurrency.e2e-spec.ts", "**/test/personal-expenses.e2e-spec.ts", "**/test/personal-expenses-concurrency.e2e-spec.ts", "**/test/taxonomy.e2e-spec.ts"],
   "testTimeout": 30000,
   "transform": {"^.+\\.(t|j)s$": "ts-jest"}
 }

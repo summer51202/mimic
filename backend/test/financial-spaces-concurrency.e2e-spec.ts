@@ -4,13 +4,9 @@ import { FinancialSpacesService } from '../src/modules/financial-spaces/financia
 import { SpaceParticipantsService } from '../src/modules/financial-spaces/space-participants.service';
 import { GroupsService } from '../src/modules/groups/groups.service';
 import { generateMimicId } from '../src/modules/users/mimic-id';
+import { assertSpacesTestDatabase } from './helpers/financial-spaces-db';
 
-const rawUrl = process.env.DATABASE_URL;
-if (!rawUrl) throw new Error('LOCAL_SPACES_TEST_DATABASE_REQUIRED');
-const url = new URL(rawUrl);
-if (!['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) ||
-    !['postgres:', 'postgresql:'].includes(url.protocol) ||
-    url.pathname !== '/mimic_financial_spaces_test') throw new Error('LOCAL_SPACES_TEST_DATABASE_REQUIRED');
+assertSpacesTestDatabase(process.env.DATABASE_URL);
 
 describe('financial space concurrent transactions', () => {
   const first = new PrismaService();

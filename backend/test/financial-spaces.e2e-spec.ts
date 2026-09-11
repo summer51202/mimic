@@ -7,15 +7,9 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { RequestValidationPipe } from '../src/common/pipes/request-validation.pipe';
 import { seedFinancialSpaces } from '../prisma/seed-financial-spaces';
+import { assertSpacesTestDatabase } from './helpers/financial-spaces-db';
 
-const rawUrl = process.env.DATABASE_URL;
-if (!rawUrl) throw new Error('LOCAL_SPACES_TEST_DATABASE_REQUIRED');
-const url = new URL(rawUrl);
-if (!['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) ||
-    !['postgres:', 'postgresql:'].includes(url.protocol) ||
-    url.pathname !== '/mimic_financial_spaces_test') {
-  throw new Error('LOCAL_SPACES_TEST_DATABASE_REQUIRED');
-}
+assertSpacesTestDatabase(process.env.DATABASE_URL);
 
 describe('financial space database invariants', () => {
   const prisma = new PrismaClient();
