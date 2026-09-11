@@ -127,6 +127,10 @@ enum AuditAction {
 }
 
 model User {
+  personalSpaces FinancialSpace[] @relation("PersonalSpaceOwner")
+  createdSpaces FinancialSpace[] @relation("SpaceCreator")
+  spaceParticipations SpaceParticipant[]
+  spaceAuditEvents SpaceAuditEvent[] @relation("SpaceAuditActor")
   id            String   @id @default(uuid()) @db.Uuid
   email         String   @unique @db.VarChar(255)
   passwordHash  String   @map("password_hash") @db.VarChar(255)
@@ -162,6 +166,7 @@ model User {
 }
 
 model Group {
+  financialSpaces FinancialSpace[]
   id              String      @id @default(uuid()) @db.Uuid
   name            String      @db.VarChar(100)
   groupType       GroupType   @map("group_type")
@@ -434,3 +439,87 @@ model AuditLog {
   @@index([groupId, createdAt])
   @@index([fundId, createdAt])
 }
+
+enum FinancialSpaceMode {
+  PERSONAL_EXPENSES
+  SHARED_EXPENSES
+  POOLED_FUND
+}
+
+enum FinancialSpaceStatus {
+  ACTIVE
+  ARCHIVED
+}
+
+enum SpaceParticipantRole {
+  MANAGER
+  PARTICIPANT
+}
+
+enum SpaceAuditAction {
+  CREATE
+  UPDATE
+  PARTICIPANT_ADDED
+  PARTICIPANT_ENDED
+  ROLE_CHANGED
+  ARCHIVE
+}
+
+model FinancialSpace {
+  id                  String               @id @default(uuid()) @db.Uuid
+  name                String               @db.VarChar(100)
+  mode                FinancialSpaceMode
+  currency            String               @db.VarChar(3)
+  timezone            String               @default("Asia/Taipei") @db.VarChar(100)
+  openedOn            DateTime             @map("opened_on") @db.Date
+  groupId             String?              @map("group_id") @db.Uuid
+  ownerUserId         String?              @map("owner_user_id") @db.Uuid
+  createdById         String               @map("created_by_id") @db.Uuid
+  status              FinancialSpaceStatus @default(ACTIVE)
+  firstFormalRecordAt DateTime?            @map("first_formal_record_at") @db.Timestamptz(6)
+  archivedAt          DateTime?            @map("archived_at") @db.Timestamptz(6)
+  version             Int                  @default(1)
+  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+  group               Group?               @relation(fields: [groupId], references: [id])
+  owner               User?                @relation("PersonalSpaceOwner", fields: [ownerUserId], references: [id])
+  creator             User                 @relation("SpaceCreator", fields: [createdById], references: [id])
+  participants        SpaceParticipant[]
+  auditEvents         SpaceAuditEvent[]
+
+  @@index([groupId, status])
+  @@index([ownerUserId, status])
+  @@map("financial_spaces")
+}
+
+model SpaceParticipant {
+  id            String               @id @default(uuid()) @db.Uuid
+  spaceId       String               @map("space_id") @db.Uuid
+  userId        String               @map("user_id") @db.Uuid
+  role          SpaceParticipantRole @default(PARTICIPANT)
+  effectiveFrom DateTime             @map("effective_from") @db.Date
+  effectiveTo   DateTime?            @map("effective_to") @db.Date
+  createdAt     DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  space         FinancialSpace       @relation(fields: [spaceId], references: [id])
+  user          User                 @relation(fields: [userId], references: [id])
+
+  @@index([spaceId, userId, effectiveFrom])
+  @@index([userId, effectiveTo])
+  @@map("space_participants")
+}
+
+model SpaceAuditEvent {
+  id          String           @id @default(uuid()) @db.Uuid
+  spaceId     String           @map("space_id") @db.Uuid
+  actorUserId String           @map("actor_user_id") @db.Uuid
+  action      SpaceAuditAction
+  before      Json?
+  after       Json
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  space       FinancialSpace   @relation(fields: [spaceId], references: [id])
+  actor       User             @relation("SpaceAuditActor", fields: [actorUserId], references: [id])
+
+  @@index([spaceId, createdAt])
+  @@map("space_audit_events")
+}
+

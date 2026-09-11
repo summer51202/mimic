@@ -1,0 +1,8 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "..",
+  "testEnvironment": "node",
+  "testMatch": ["**/test/financial-spaces.e2e-spec.ts", "**/test/financial-spaces-concurrency.e2e-spec.ts"],
+  "testTimeout": 30000,
+  "transform": {"^.+\\.(t|j)s$": "ts-jest"}
+}
