@@ -338,20 +338,20 @@ Use Prisma tagged parameters. `groupConsumption(rows:Array<{category_id:string;a
 
 ### Task 1 — Exact amounts and calendar dates
 
-- [ ] Write backend value tests accepting `9007199254740993`/bigint maximum and rejecting zero, negative, plus, leading zero, decimal, exponent and overflow. Test leap date, Feb30, timestamp rejection and December rollover.
-- [ ] Write Web tests for TWD1.25→125, JPY125→125, KWD1.234→1234 and exact large values:
+- [x] Write backend value tests accepting `9007199254740993`/bigint maximum and rejecting zero, negative, plus, leading zero, decimal, exponent and overflow. Test leap date, Feb30, timestamp rejection and December rollover.
+- [x] Write Web tests for TWD1.25→125, JPY125→125, KWD1.234→1234 and exact large values:
 
 ```ts
 expect(majorToMinorString('90071992547409.93','TWD')).toBe('9007199254740993');
 expect(() => majorToMinorString('1.001','TWD')).toThrow();
 ```
 
-- [ ] Run backend `npm test -- --runInBand --testPathPattern=expense-values` and Web `npm test -- src/shared/finance/major-to-minor.test.ts` RED. Implement specified parsers; translate domain input errors to400 at DTO/service boundary. Re-run GREEN. Commit `feat: preserve exact personal expense values`.
+- [x] Run backend `npm test -- --runInBand --testPathPattern=expense-values` and Web `npm test -- src/shared/finance/major-to-minor.test.ts` RED. Implement specified parsers; translate domain input errors to400 at DTO/service boundary. Re-run GREEN. Commit `feat: preserve exact personal expense values`.
 
 ### Task 2 — Additive persistence
 
-- [ ] Extract guarded DB helper, test missing/invalid protocol/host/database and accepted loopback. Add P2 suite names explicitly to dedicated DB testMatch and ordinary-e2e exclusions. Keep P1 suites mandatory.
-- [ ] Restart only task-owned cluster; deploy P1 history into phase2, snapshot a legacy Fund and P1 box. Write absent-table test before migration:
+- [x] Extract guarded DB helper, test missing/invalid protocol/host/database and accepted loopback. Add P2 suite names explicitly to dedicated DB testMatch and ordinary-e2e exclusions. Keep P1 suites mandatory.
+- [x] Restart only task-owned cluster; deploy P1 history into phase2, snapshot a legacy Fund and P1 box. Write absent-table test before migration:
 
 ```ts
 const [row] = await prisma.$queryRaw<Array<{table_name:string|null}>>`
@@ -359,24 +359,24 @@ const [row] = await prisma.$queryRaw<Array<{table_name:string|null}>>`
 expect(row.table_name).toBe('expense_records');
 ```
 
-- [ ] Run `npm run test:spaces-db -- --testPathPattern=personal-expenses.e2e-spec` RED. Add schema/reverse relations and generate reviewed additive migration with checks; no DROP or legacy UPDATE. Run validate/generate/deploy and DB tests GREEN.
-- [ ] Test invalid scope, merge-self, duplicate active name, zero amount, duplicate receipt and FK failures. Compare legacy/P1 snapshots unchanged. Deploy full history to phase2_fresh as well. Commit `feat: persist expense facts and taxonomy identities`.
+- [x] Run `npm run test:spaces-db -- --testPathPattern=personal-expenses.e2e-spec` RED. Add schema/reverse relations and generate reviewed additive migration with checks; no DROP or legacy UPDATE. Run validate/generate/deploy and DB tests GREEN.
+- [x] Test invalid scope, merge-self, duplicate active name, zero amount, duplicate receipt and FK failures. Compare legacy/P1 snapshots unchanged. Deploy full history to phase2_fresh as well. Commit `feat: persist expense facts and taxonomy identities`.
 
 ### Task 3 — Stable defaults
 
-- [ ] Write catalog tests for exactly16 categories/15 tags, stable uncategorized ID, both translations and valid context references. Write repeated-seed DB test: IDs/counts stable and custom term untouched.
-- [ ] Run `npm test -- --runInBand --testPathPattern=system-taxonomy` and dedicated catalog DB test RED. Implement exact catalog/seed above, call seedTaxonomy before personal-box seed, re-run GREEN and seed twice locally. Commit `feat: provide stable localized expense taxonomy`.
+- [x] Write catalog tests for exactly16 categories/15 tags, stable uncategorized ID, both translations and valid context references. Write repeated-seed DB test: IDs/counts stable and custom term untouched.
+- [x] Run `npm test -- --runInBand --testPathPattern=system-taxonomy` and dedicated catalog DB test RED. Implement exact catalog/seed above, call seedTaxonomy before personal-box seed, re-run GREEN and seed twice locally. Commit `feat: provide stable localized expense taxonomy`.
 
 ### Task 4 — Scoped taxonomy lifecycle
 
-- [ ] Write policy tests: different owners' same-name terms independent; A→B→C resolvesC; cycles/cross-kind/cross-scope rejected; retain archived original versus reject new archived selection; recent/frequent/context/default order and dedup.
-- [ ] Write real HTTP tests: private IDs hidden across owners, group terms hidden outside group, member creates but unrelated member cannot rename, creator/owner can manage. Group owner outside box can see group vocabulary but box picker404 and no transaction/usage data.
-- [ ] Run `npm run test:spaces-db -- --testPathPattern=taxonomy` RED. Implement typed DTO/controller/service routes, scope locks and atomic audit.
-- [ ] Add two-client tests for stale rename, duplicate creation, competing merge/cycle and archive. Force taxonomy audit failure and assert rollback. Re-run policy/DB GREEN. Commit `feat: manage scoped categories and tags`.
+- [x] Write policy tests: different owners' same-name terms independent; A→B→C resolvesC; cycles/cross-kind/cross-scope rejected; retain archived original versus reject new archived selection; recent/frequent/context/default order and dedup.
+- [x] Write real HTTP tests: private IDs hidden across owners, group terms hidden outside group, member creates but unrelated member cannot rename, creator/owner can manage. Group owner outside box can see group vocabulary but box picker404 and no transaction/usage data.
+- [x] Run `npm run test:spaces-db -- --testPathPattern=taxonomy` RED. Implement typed DTO/controller/service routes, scope locks and atomic audit.
+- [x] Add two-client tests for stale rename, duplicate creation, competing merge/cycle and archive. Force taxonomy audit failure and assert rollback. Re-run policy/DB GREEN. Commit `feat: manage scoped categories and tags`.
 
 ### Task 5 — Personal writes and receipts
 
-- [ ] Write strict DTO/real HTTP tests before routes exist. Reuse the P1 authenticated Supertest helper pattern; core oracle:
+- [x] Write strict DTO/real HTTP tests before routes exist. Reuse the P1 authenticated Supertest helper pattern; core oracle:
 
 ```ts
 const created = await call('post',`/spaces/${space.id}/personal-expenses`).send({
@@ -387,45 +387,45 @@ expect(created.body.data.change_minor).toBe('125');
 expect(created.body.data.record).not.toHaveProperty('balance_minor');
 ```
 
-- [ ] Assert personal owner only, nonparticipant404 before mode disclosure, wrong mode409, archived409, unknown financial fields400, future date400, prior personal date accepted, wrong term scope/kind rejected and default category/tags/note correct.
-- [ ] Run `npm run test:spaces-db -- --testPathPattern=personal-expenses` RED. Implement transaction runner→common persistence→personal service/controller/module. Every successful write has server actor/time audit and string-valued response.
-- [ ] Assert first-record latch is atomic and never clears after editing/deleting all expenses. Direct currency/latch changes remain rejected; P1 nonempty archive remains blocked.
-- [ ] Test same-key duplicate create/update/delete produces one record effect/audit/receipt; changed payload/action rejects. Two-client races: duplicate key, same-version edit/delete, archive/first-create, term merge/archive versus create. Inject fixture-specific audit and receipt failures; assert full rollback including latch. Re-run GREEN. Commit `feat: record private expenses with atomic audit and retries`.
+- [x] Assert personal owner only, nonparticipant404 before mode disclosure, wrong mode409, archived409, unknown financial fields400, future date400, prior personal date accepted, wrong term scope/kind rejected and default category/tags/note correct.
+- [x] Run `npm run test:spaces-db -- --testPathPattern=personal-expenses` RED. Implement transaction runner→common persistence→personal service/controller/module. Every successful write has server actor/time audit and string-valued response.
+- [x] Assert first-record latch is atomic and never clears after editing/deleting all expenses. Direct currency/latch changes remain rejected; P1 nonempty archive remains blocked.
+- [x] Test same-key duplicate create/update/delete produces one record effect/audit/receipt; changed payload/action rejects. Two-client races: duplicate key, same-version edit/delete, archive/first-create, term merge/archive versus create. Inject fixture-specific audit and receipt failures; assert full rollback including latch. Re-run GREEN. Commit `feat: record private expenses with atomic audit and retries`.
 
 ### Task 6 — Monthly consumption
 
-- [ ] Write pure consumption test for125→200→0, large sums beyond row maximum, canonical merged categories and empty zero. Write DB month/box/currency isolation, deleted exclusion, total beyond first page, archived labels, merge grouping without changed stored IDs and scoped cursor cases.
-- [ ] Run `npm test -- --runInBand --testPathPattern=personal-consumption` and personal DB suite RED. Implement parameterized RepeatableRead aggregate/page queries and projections. Inject read failure and assert no success/zero envelope. Re-run GREEN. Commit `feat: report personal monthly consumption accurately`.
+- [x] Write pure consumption test for125→200→0, large sums beyond row maximum, canonical merged categories and empty zero. Write DB month/box/currency isolation, deleted exclusion, total beyond first page, archived labels, merge grouping without changed stored IDs and scoped cursor cases.
+- [x] Run `npm test -- --runInBand --testPathPattern=personal-consumption` and personal DB suite RED. Implement parameterized RepeatableRead aggregate/page queries and projections. Exercise failed/unresolved reads at pure consumption and Web query/pagination boundaries; assert no invented zero summary. Re-run GREEN. Commit `feat: report personal monthly consumption accurately`.
 
 ### Task 7 — Web contracts and BFF
 
-- [ ] Write strict Zod cases for string amounts, real dates/UUIDs, signed delta/nonnegative totals, private note nullability, wrong mode and foreign financial fields. Write BFF cases for CSRF/auth refresh, UUID/query validation, JSON failure and request_id preservation.
-- [ ] Run `npm test -- src/shared/api/personal-expense-contracts.test.ts src/shared/api/taxonomy-contracts.test.ts src/app/api/app/personal-routes.test.ts` RED. Implement enumerated routes/schemas/queries with strict objects and BigInt string refinements, never numeric coercion. Re-run GREEN. Commit `feat: connect personal expense contracts through the web BFF`.
+- [x] Write strict Zod cases for string amounts, real dates/UUIDs, signed delta/nonnegative totals, private note nullability, wrong mode and foreign financial fields. Write BFF cases for CSRF/auth refresh, UUID/query validation, JSON failure and request_id preservation.
+- [x] Run `npm test -- src/shared/api/personal-expense-contracts.test.ts src/shared/api/taxonomy-contracts.test.ts src/app/api/app/personal-routes.test.ts` RED. Implement enumerated routes/schemas/queries with strict objects and BigInt string refinements, never numeric coercion. Re-run GREEN. Commit `feat: connect personal expense contracts through the web BFF`.
 
 ### Task 8 — Reachable personal bookkeeping UI
 
-- [ ] Read frontend-design guidance for implementation without reopening approved product brainstorming. Write Testing Library RED cases for no-group onboarding, private box creation/selection, monthly list/breakdown, create/edit/delete and reload.
-- [ ] Add 我的寶箱→`/app/personal` to AppSection/navigation. Adjust mobile grid for6 entries; test320px containment. This is the minimum P2 entry, not P6 cutover.
-- [ ] Route validates space UUID/month. No selection chooses first active personal box deterministically or creation view. No group onboarding redirect. Create calls P1 API with PERSONAL_EXPENSES; archived selection is visibly read-only.
-- [ ] Implement form with exact input conversion, date/title/category/tags/note. Generate request_id once per intent; preserve key/input on ambiguous network error, changed payload gets new intent/key. Disable pending/offline submission; show 尚未送出 on failure; reset only on authoritative success.
-- [ ] On409 refresh server state, retain entered values and require explicit retry with current record version/new key. Success copy says 已記錄支出/已更新支出/已刪除支出 with saved amount, then refresh month. Never claim bank verification or account balance.
-- [ ] Failed reads use AppReadFailure/AppReadRetry, not empty fallback. Load-more accepts matching space_version only; otherwise refresh first page and explain updates. Delete uses explicit confirmation dialog. Different boxes/currencies never combine.
-- [ ] Run `npm test -- src/features/personal-expenses src/app/app/personal src/shared/navigation` GREEN. Commit `feat: deliver personal expense bookkeeping in the PWA`.
+- [x] Read frontend-design guidance for implementation without reopening approved product brainstorming. Write Testing Library RED cases for no-group onboarding, private box creation/selection, monthly list/breakdown, create/edit/delete and reload.
+- [x] Add 我的寶箱→`/app/personal` to AppSection/navigation. Adjust mobile grid for6 entries; test320px containment. This is the minimum P2 entry, not P6 cutover.
+- [x] Route validates space UUID/month. No selection chooses first active personal box deterministically or creation view. No group onboarding redirect. Create calls P1 API with PERSONAL_EXPENSES; archived selection is visibly read-only.
+- [x] Implement form with exact input conversion, date/title/category/tags/note. Generate request_id once per intent; preserve key/input on ambiguous network error, changed payload gets new intent/key. Disable pending/offline submission; show 尚未送出 on failure; reset only on authoritative success.
+- [x] On409 refresh server state, retain entered values and require explicit retry with current record version/new key. Success copy says 已記錄支出/已更新支出/已刪除支出 with saved amount, then refresh month. Never claim bank verification or account balance.
+- [x] Failed reads use AppReadFailure/AppReadRetry, not empty fallback. Load-more accepts matching space_version only; otherwise refresh first page and explain updates. Delete uses explicit confirmation dialog. Different boxes/currencies never combine.
+- [x] Run `npm test -- src/features/personal-expenses src/app/app/personal src/shared/navigation` GREEN. Commit `feat: deliver personal expense bookkeeping in the PWA`.
 
 ### Task 9 — Picker and private term management
 
-- [ ] Write UI RED tests for ranking/search/dedup/defaults, keyboard use, explicit creation, failure states, archived original label and merge identity.
-- [ ] Implement category and multi-tag picker using response ranking, not client usage calculations. Management loads inactive terms for historical labels. Query includes kind/category/q/locale only.
-- [ ] Add 管理類別與標籤 panel with real create/rename/merge/archive calls; system terms read-only. Merge selects same-kind target and explains history retention. Conflict refresh preserves safe input.
-- [ ] Run `npm test -- src/features/taxonomy src/features/personal-expenses` GREEN. Commit `feat: add private category and tag management`.
+- [x] Use policy tests for ranking/dedup/defaults and UI RED tests for search, explicit creation and archived original labels; verify failure states and merge identity in component/real-backend flows, including keyboard use.
+- [x] Implement category and multi-tag picker using response ranking, not client usage calculations. Management loads inactive terms for historical labels. Query includes kind/category/q/locale only.
+- [x] Add 管理類別與標籤 panel with real create/rename/merge/archive calls; system terms read-only. Merge selects same-kind target and explains history retention. Conflict refresh preserves safe input.
+- [x] Run `npm test -- src/features/taxonomy src/features/personal-expenses` GREEN. Commit `feat: add private category and tag management`.
 
 ### Task 10 — Real browser and final gate
 
-- [ ] Add runtime spec that fails fast without loopback API and MIMIC_RUNTIME_ACCEPTANCE=1. Reuse account/session helpers with unique accounts per viewport. No route.fulfill or financial provider overrides.
-- [ ] Journey: register/login without group→我的寶箱→create personal box→1.25TWD uncategorized expense→monthly1.25→private category/tag→edit2.00→reload2.00→merge category total unchanged→delete authoritative0.00. Second account cannot fetch box/note/private terms. A second different-currency box never combines. Offline attempt creates no row; reconnect requires explicit submission.
-- [ ] Execute320/390/768/1440 viewport projects; inspect filled page/dialog screenshots and keyboard focus. P2 personal runtime acceptance is required now; P7 retains combined three-mode release gate.
-- [ ] Run all baseline commands below; collect actual exits/counts and observed RED/GREEN cycles. Review complete diff for arithmetic, privacy, locks, rollback, dates, DTO/Zod consistency and UI. Search for Number(amount/parseFloat, Fund calculator imports and success in catch blocks; inspect matches.
-- [ ] Update devlog after each completed nontrivial batch and feature map on delivery. Final acceptance document contains commands/results, limitations and self-review findings/fixes. Run git diff --check, stage named files, conventional commits, preserve worktree/root files. Stop before P3's separate detailed plan/checkpoint.
+- [x] Add runtime spec that fails fast without a loopback API. Use MIMIC_RUNTIME_ACCEPTANCE=1 for fresh managed startup; a known task-owned local server may be explicitly reused as recorded in the execution report. Reuse account/session helpers with unique accounts per viewport. No route.fulfill or financial provider overrides.
+- [x] Journey: register/login without group→我的寶箱→create personal box→1.25TWD uncategorized expense→monthly1.25→private category/tag→edit2.00→reload2.00→merge category total unchanged→delete authoritative0.00. Second account cannot fetch box/note/private terms. A second different-currency box never combines. Offline attempt creates no row; reconnect requires explicit submission.
+- [x] Execute320/390/768/1440 viewport projects; inspect filled page/dialog screenshots and keyboard focus. P2 personal runtime acceptance is required now; P7 retains combined three-mode release gate.
+- [x] Run all baseline commands below; collect actual exits/counts and observed RED/GREEN cycles. Review complete diff for arithmetic, privacy, locks, rollback, dates, DTO/Zod consistency and UI. Search for Number(amount/parseFloat, Fund calculator imports and success in catch blocks; inspect matches.
+- [x] Update devlog after each completed nontrivial batch and feature map on delivery. Final acceptance document contains commands/results, limitations and self-review findings/fixes. Run git diff --check, stage named files, conventional commits, preserve worktree/root files. Stop before P3's separate detailed plan/checkpoint.
 
 ## Verification commands
 
@@ -475,3 +475,7 @@ Check existing CORS configuration, but BFF calls are server-side and do not just
 8. Verification honesty: this planning checkpoint modifies documentation only. P2 code/migrations/tests/browser journeys are not yet executed; P1 counts are prior observed baseline only.
 
 Planning verification: extracted the model block plus specified reverse relations into ignored `.session/phase2-plan.prisma`, expanded enum syntax, and ran `npx prisma validate --schema ../.session/phase2-plan.prisma` successfully. This validates model/relationship syntax only; it applies no migration and proves no runtime behavior. Checked existing navigation filenames and BFF response behavior against source. No unresolved placeholder markers remain. The user has already authorized inline sequential execution; committing this reviewed plan supplies the checkpoint without asking for the execution method again.
+
+## Execution closure
+
+P2 outcomes are complete. Checkboxes reflect the delivered outcomes and verification strategy; exact test placement, grouped commits, local runtime startup differences, final command results and remaining phases are recorded in [the P2 execution record](2026-09-11-financial-spaces-phase-2-execution.md). No P3 financial implementation is included.

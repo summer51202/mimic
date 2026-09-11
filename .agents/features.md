@@ -3,7 +3,7 @@ _Last updated: 2026-09-11. Refresh with `/feature-map`._
 
 > The PWA in `web/` is the only active client. Current implementation work targets `web/` and `backend/`; previous clients remain available only through Git history.
 
-## Financial spaces redesign — Phase 1
+## Financial spaces redesign — Phases 1 and 2
 
 The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md` supersedes the universal Fund model and its accounting assumptions. The legacy capability entries below describe existing disconnected Fund behavior, not the new modes' accounting rules.
 
@@ -14,14 +14,17 @@ The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-d
 | done | Participant add, delegation, empty-box exit/rejoin/archive, atomic audit and version concurrency | Participant/role/end/archive routes; real PostgreSQL HTTP and concurrency suites |
 | done | Group departure/archive guards | `backend/src/modules/groups/groups.service.ts` |
 | done | Strict Web contract and local repeatable fixtures | `web/src/shared/api/financial-space-contracts.ts`, `backend/prisma/seed-financial-spaces.ts` |
-| planned | Personal daily expenses and common categories/tags | P2; first new posting UI |
+| done | Private daily expense create/edit/soft-delete with idempotent receipts and atomic actor/time audit | `backend/src/modules/personal-expenses/`, `backend/src/modules/expense-records/` |
+| done | Common stable categories/tags, personal/group vocabulary, rename/merge/archive and participant-scoped picker | `backend/src/modules/taxonomy/`, `backend/prisma/seed-taxonomy.ts` |
+| done | Exact selected-box monthly consumption and canonical category totals, independent of pagination | `personal-expense-queries.service.ts`, `personal-consumption.ts` |
+| done | No-group personal box onboarding, monthly bookkeeping, taxonomy management and offline submission prevention | `/app/personal`, `web/src/features/personal-expenses/`, `web/src/features/taxonomy/` |
 | planned | Shared payer/allocation service, batch settlement and locks | P3 |
 | planned | Personal references to shared expenses | P4 |
 | planned | Pooled commitments, book/available balances, advances, reimbursements and returns | P5 |
 | planned | 寶箱 navigation, homepage, quick entry and task center | P6 |
 | planned | Offline drafts, full three-mode real-backend browser acceptance and legacy removal | P7 |
 
-P1 has no monetary summary or financial posting API. Nonempty exit/archive is conservatively rejected until the owning mode phase implements its obligations. See `docs/superpowers/plans/2026-09-11-financial-spaces-phase-1.md` for acceptance evidence and scope.
+P2 enables personal daily expense posting and consumption only. Shared/pooled monetary services and full navigation cutover are later phases. Nonempty exit/archive remains conservatively rejected until the owning mode lifecycle implements its obligations. Durable local drafts are P7; P2 retains input only while its form stays open and never posts automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
 
 ## Backend Capability Map
 
@@ -69,9 +72,9 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 | status | slug | description | PWA entry | backend entry |
 |--------|------|-------------|----------------|---------------|
-| todo | create-category | Create an expense category for a group | — | missing module entirely |
-| todo | list-categories | List available expense categories | — | missing module entirely |
-| todo | archive-category | Archive an unused category | — | missing module entirely |
+| done | create-category | Create private or group vocabulary for new financial spaces | `/app/personal` (private) | `taxonomy.controller.ts POST /me/taxonomy`, `POST /groups/:groupId/taxonomy` |
+| done | list-categories | Localized stable defaults and scoped custom categories/tags | `taxonomy-picker.tsx` | `GET /spaces/:spaceId/taxonomy` requires participation |
+| done | taxonomy-lifecycle | Rename, merge or archive custom terms while retaining historical IDs | `taxonomy-manager.tsx` (private) | `taxonomy.service.ts`; system terms are immutable |
 
 ### Contributions
 
@@ -185,8 +188,9 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 - [ ] `POST /funds/:id/archive` and `/unarchive`
 
 ### Categories
-- [ ] Entire categories module (NestJS module + controller + service + DTOs)
-- [ ] PWA UI for category selection on expense creation
+- [x] Neutral taxonomy module with private/group scope, stable system defaults and historical merge/archive semantics
+- [x] Personal PWA category/tag picker and private term management
+- [ ] Connect the same vocabulary to P3 shared and P5 pooled expense forms
 
 ### Contributions
 - [x] PWA create/list loop for regular and one-time contributions
