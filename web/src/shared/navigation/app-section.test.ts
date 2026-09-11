@@ -5,6 +5,7 @@ import { currentAppSection } from "./app-section";
 describe("currentAppSection", () => {
   it.each([
     ["/app", "/app"],
+    ["/app/personal", "/app/personal"],
     ["/app/groups", "/app/groups"],
     ["/app/groups/g1", "/app/groups"],
     ["/app/funds", "/app/funds"],

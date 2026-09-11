@@ -1,0 +1,23 @@
+.personal-page { display: grid; gap: 1.5rem; max-width: 68rem; margin: 0 auto; padding: 1rem; min-width: 0; }
+.personal-page h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.3; }
+.personal-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.personal-eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .06em; color: var(--mimic-color-ink-soft); }
+.personal-controls, .personal-summary { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); }
+.personal-total { background: var(--mimic-color-coin); }
+.personal-total > strong { display: block; font-size: clamp(1.8rem, 4vw, 3rem); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; margin: 1rem 0; }
+.personal-breakdown, .personal-records { list-style: none; padding: 0; margin: 0; }
+.personal-breakdown li { display: flex; justify-content: space-between; gap: 1rem; padding: .4rem 0; overflow-wrap: anywhere; }
+.personal-records li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; border-bottom: 2px solid var(--mimic-color-line); }
+.personal-records li > div { min-width: 0; overflow-wrap: anywhere; }
+.personal-records time, .personal-records p { font-size: .875rem; color: var(--mimic-color-ink-soft); }
+.personal-record-actions { text-align: right; margin-left: auto; }
+.personal-record-actions strong { font-variant-numeric: tabular-nums; }
+.personal-form { display: grid; gap: 1rem; min-width: 0; }
+.personal-taxonomy { border: 0; padding: 0; display: grid; gap: .75rem; min-width: 0; }
+.personal-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+.personal-tags label { display: flex; align-items: center; gap: .4rem; min-height: 2.75rem; padding: .35rem .6rem; background: var(--mimic-color-surface-raised); border: 1px solid var(--mimic-color-line); }
+.personal-tags input { width: 1rem; height: 1rem; }
+.personal-page select, .personal-page input { min-width: 0; max-width: 100%; }
+.personal-page .pixel-dialog { margin: auto; max-height: calc(100dvh - 2rem); overflow: auto; }
+.personal-notice { border-left: 4px solid var(--mimic-color-ink); padding: .75rem; background: var(--mimic-color-surface-raised); }
+@media (min-width: 60rem) { .personal-controls { grid-template-columns: 2fr 1fr; } .personal-summary { grid-template-columns: 1fr 1fr; } .personal-page { padding: 2rem; } }

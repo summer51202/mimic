@@ -13,6 +13,7 @@ type AppNavigationProps = {
 };
 
 const navigationItems = [
+  { icon: "P", href: "/app/personal", label: "我的寶箱", status: "available" },
   {
     icon: "O",
     href: "/app",
