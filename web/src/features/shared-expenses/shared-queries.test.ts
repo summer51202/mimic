@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { authenticatedServerApi } from '@/shared/api/authenticated-server-api';
-import { ApiError } from '@/shared/api/errors';
 import { listGroupSharedSpaces, loadSharedWorkspace } from './shared-queries';
 
 vi.mock('server-only', () => ({}));

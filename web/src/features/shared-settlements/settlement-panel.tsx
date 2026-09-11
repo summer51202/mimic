@@ -9,12 +9,17 @@ import { PixelField } from '@/shared/ui/pixel-field';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
 
-export function SettlementPanel({ spaceId, spaceVersion, currency, currentUserId, manager, batches, nameFor, onChanged }: {
-  spaceId: string; spaceVersion: number; currency: string; currentUserId: string; manager: boolean; batches: SharedBatch[];
+function today(timezone: string) {
+  const parts = new Intl.DateTimeFormat('en', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
+  return ['year', 'month', 'day'].map(key => parts.find(part => part.type === key)!.value).join('-');
+}
+
+export function SettlementPanel({ spaceId, spaceVersion, currency, timezone, currentUserId, manager, batches, nameFor, onChanged }: {
+  spaceId: string; spaceVersion: number; currency: string; timezone: string; currentUserId: string; manager: boolean; batches: SharedBatch[];
   nameFor: (id: string) => string; onChanged: (batch: SharedBatch) => void | Promise<void>;
 }) {
   const [starting, setStarting] = useState(false);
-  const [periodEnd, setPeriodEnd] = useState(new Date().toISOString().slice(0, 10));
+  const [periodEnd, setPeriodEnd] = useState(today(timezone));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const attempts = useRef(new Map<string, string>());

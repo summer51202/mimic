@@ -5,6 +5,8 @@ import '@/features/shared-expenses/shared.css';
 
 export default async function Page({ params }: { params: Promise<{ spaceId: string }> }) {
   const { spaceId } = await params;
-  try { return <SharedWorkspace initial={await loadSharedWorkspace(spaceId)} />; }
+  let initial;
+  try { initial = await loadSharedWorkspace(spaceId); }
   catch (error) { return <AppReadFailure error={error} />; }
+  return <SharedWorkspace initial={initial} />;
 }

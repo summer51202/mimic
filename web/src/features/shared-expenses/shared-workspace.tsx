@@ -94,7 +94,7 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
         const amount = value < BigInt(0) ? (-value).toString() : value.toString();
         return <li key={position.user_id}>{nameFor(position.user_id)} · {state} {money(amount)}</li>;
       })}</ul></PixelPanel></section>
-    <SettlementPanel spaceId={space.id} spaceVersion={space.version} currency={space.currency} currentUserId={group.current_user_id}
+    <SettlementPanel spaceId={space.id} spaceVersion={space.version} currency={space.currency} timezone={space.timezone} currentUserId={group.current_user_id}
       manager={manager} batches={data.batches.items} nameFor={nameFor} onChanged={async () => { await refresh(); setNotice('結算狀態已更新。'); }} />
     <PixelPanel><div className="shared-section-heading"><h2>共同支出</h2></div>
       <SharedExpenseList expenses={data.expenses.items} currency={space.currency} currentUserId={group.current_user_id} manager={manager} nameFor={nameFor}

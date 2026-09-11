@@ -3,6 +3,7 @@ import { getGroup, listMembers } from "@/features/groups/group-queries";
 import { GroupDetailView } from "@/features/groups/group-detail";
 import { listGroupSharedSpaces } from "@/features/shared-expenses/shared-queries";
 import { AppReadFailure } from "@/shared/ui/app-read-failure";
+import '@/features/shared-expenses/shared.css';
 
 interface GroupDetailPageProps {
   params: Promise<{ groupId: string }>;

@@ -256,7 +256,7 @@ feat(web): close settled shared boxes safely
 
 ### Task 6: Responsive pixel-world and accessibility acceptance
 
-- [ ] **Step 1: Write visual behavior RED tests**
+- [x] **Step 1: Write visual behavior RED tests**
 
 Add component assertions and `web/e2e/shared-expenses.runtime.spec.ts` geometry helpers for:
 
@@ -267,11 +267,11 @@ Add component assertions and `web/e2e/shared-expenses.runtime.spec.ts` geometry 
 - dialog width stays centered and height `<= viewport - 32px`, with internal scrolling;
 - loading UI contains no fabricated totals; empty/error states identify the next action; `prefers-reduced-motion` removes nonessential transitions.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 Run shared component tests and Playwright in one viewport against a development server; expect missing selectors/layout assertions to fail before CSS.
 
-- [ ] **Step 3: Implement scoped CSS**
+- [x] **Step 3: Implement scoped CSS**
 
 Create `shared.css` using existing brand tokens and primitives. Keep the signature element a “settlement trail” connecting payer → recipient states; surrounding cards remain quiet. Use CSS grid/minmax, logical properties, safe-area padding, `overflow-wrap:anywhere`, visible `:focus-visible`, and reduced-motion query. Do not introduce remote fonts, emoji icons, raw one-off palette or animation dependencies.
 

@@ -57,10 +57,10 @@ export function SharedExpenseForm({ spaceId, currency, timezone, currentUserId, 
     setError(''); setLocked(false);
     try {
       const amount_minor = majorToMinorString(amount, currency);
-      const payers = payerIds.sort().map(user_id => ({ user_id, amount_minor: majorToMinorString(
+      const payers = [...payerIds].sort().map(user_id => ({ user_id, amount_minor: majorToMinorString(
         payerIds.length === 1 && !payerValues[user_id] ? amount : payerValues[user_id] ?? '', currency) }));
       const allocations = allocationMode === 'EQUAL' ? equalAllocations(amount_minor, allocationIds)
-        : allocationIds.sort().map(user_id => ({ user_id, amount_minor: majorToMinorString(allocationValues[user_id] ?? '', currency) }));
+        : [...allocationIds].sort().map(user_id => ({ user_id, amount_minor: majorToMinorString(allocationValues[user_id] ?? '', currency) }));
       if (!payers.length || !allocations.length || sumMinor(payers.map(row => row.amount_minor)) !== amount_minor || sumMinor(allocations.map(row => row.amount_minor)) !== amount_minor) {
         throw new Error('SHARED_TOTAL_MISMATCH');
       }

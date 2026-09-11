@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import type { SharedBatch } from '@/shared/api/shared-finance-contracts';
@@ -19,11 +19,21 @@ function batch(status: 'AWAITING_PAYMENT' | 'SENT' | 'COMPLETED' = 'AWAITING_PAY
       received_by: received ? a : null, received_at: received ? '2026-01-31T01:00:00.000Z' : null }] };
 }
 beforeEach(() => { mocks.request.mockReset(); Object.defineProperty(navigator, 'onLine', { configurable: true, value: true }); });
-afterEach(cleanup);
+afterEach(() => { cleanup(); vi.useRealTimers(); });
+
+it('defaults the settlement cutoff to today in the financial-space timezone', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date('2026-09-11T00:30:00.000Z'));
+  render(<SettlementPanel spaceId={a} spaceVersion={2} currency="TWD" timezone="America/Los_Angeles" currentUserId={a} manager batches={[]} nameFor={() => '阿明'} onChanged={vi.fn()} />);
+
+  fireEvent.click(screen.getByRole('button', { name: '開始結算批次' }));
+
+  expect(screen.getByLabelText('結算截止日')).toHaveValue('2026-09-10');
+});
 
 it('shows manager batch controls and payer-owned sent confirmation', async () => {
   mocks.request.mockResolvedValue({ data: batch() });
-  render(<SettlementPanel spaceId={a} spaceVersion={2} currency="TWD" currentUserId={b} manager batches={[batch()]} nameFor={id => id === a ? '阿明' : '阿美'} onChanged={vi.fn()} />);
+  render(<SettlementPanel spaceId={a} spaceVersion={2} currency="TWD" timezone="Asia/Taipei" currentUserId={b} manager batches={[batch()]} nameFor={id => id === a ? '阿明' : '阿美'} onChanged={vi.fn()} />);
   expect(screen.getByText(/使用者自行確認/)).toBeVisible();
   expect(screen.getByRole('button', { name: '開始結算批次' })).toBeVisible();
   expect(screen.getByRole('button', { name: '取消批次' })).toBeVisible();
@@ -35,7 +45,7 @@ it('shows manager batch controls and payer-owned sent confirmation', async () =>
 });
 
 it('shows received only to the recipient after sent and hides manager actions from participants', () => {
-  render(<SettlementPanel spaceId={a} spaceVersion={2} currency="TWD" currentUserId={a} manager={false} batches={[batch('SENT')]} nameFor={id => id === a ? '阿明' : '阿美'} onChanged={vi.fn()} />);
+  render(<SettlementPanel spaceId={a} spaceVersion={2} currency="TWD" timezone="Asia/Taipei" currentUserId={a} manager={false} batches={[batch('SENT')]} nameFor={id => id === a ? '阿明' : '阿美'} onChanged={vi.fn()} />);
   expect(screen.getByRole('button', { name: '確認已收款' })).toBeVisible();
   expect(screen.queryByRole('button', { name: '確認已付款' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: '開始結算批次' })).not.toBeInTheDocument();
