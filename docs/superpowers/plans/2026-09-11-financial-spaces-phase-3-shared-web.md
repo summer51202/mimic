@@ -134,7 +134,7 @@ feat(web): open participant-private shared boxes
 
 ### Task 3: Exact shared expense editor, list and positions
 
-- [ ] **Step 1: Write exact amount/allocation RED tests**
+- [x] **Step 1: Write exact amount/allocation RED tests**
 
 Create `web/src/features/shared-expenses/shared-money.test.ts` for pure helpers. Required examples:
 
@@ -148,15 +148,15 @@ expect(() => sumMinor(['1.2'])).toThrow();
 
 No helper may call `Number`, `parseInt`, `parseFloat`, unary `+`, or floating arithmetic on money.
 
-- [ ] **Step 2: Run RED, implement and run GREEN**
+- [x] **Step 2: Run RED, implement and run GREEN**
 
 Create `shared-money.ts` with canonical string/`BigInt` addition, deterministic equal remainder allocation, exact major/minor conversion through the existing currency helper and display through `formatMinorUnit`. Run the focused test to PASS.
 
-- [ ] **Step 3: Write expense form RED tests**
+- [x] **Step 3: Write expense form RED tests**
 
 Create `shared-expense-form.test.tsx`. Cover single/multiple payer rows, EQUAL and explicit allocation modes, each side summing exactly to total, duplicate/missing participant errors, effective-date eligibility, huge exact values, offline no-post, same UUID retry, edit version conflict preserving inputs, and pending/permanent lock messages derived from `AppClientError.code`.
 
-- [ ] **Step 4: Run RED and implement form**
+- [x] **Step 4: Run RED and implement form**
 
 Run the form test; expected missing component failure. Create `shared-expense-form.tsx`, reuse `TaxonomyPicker`, `PixelField`, `PixelButton` and `useOnline`. Build canonical payloads only after string validation:
 
@@ -172,15 +172,15 @@ Run the form test; expected missing component failure. Create `shared-expense-fo
 
 Map `SHARED_PERIOD_LOCKED` to a correction invitation, version conflicts to refresh/review, and uncertain failures to safe retry copy. Never claim transfer verification by a bank.
 
-- [ ] **Step 5: Write workspace/list/summary RED tests**
+- [x] **Step 5: Write workspace/list/summary RED tests**
 
 Create `shared-workspace.test.tsx`. Assert zero/positive/negative current-user positions display as settled/receive/pay, all participant names resolve without leaking group nonparticipants, empty/loading/error/stale pagination states are explicit, and stale `space_version` discards appended pages and refreshes authoritative first pages. Assert participant can create/edit own-created expense, manager can edit any, and unauthorized actions are absent.
 
-- [ ] **Step 6: Run RED and implement workspace**
+- [x] **Step 6: Run RED and implement workspace**
 
 Create `shared-expense-list.tsx` and `shared-workspace.tsx`; create the route page and `loading.tsx`. Refresh all financial panels after a mutation and retain prior authoritative values on refresh failure with `role="alert"` plus retry. Use stable member display names and exact format helpers.
 
-- [ ] **Step 7: Run GREEN and commit**
+- [x] **Step 7: Run GREEN and commit**
 
 Run all shared expense tests and personal expense regressions. Commit:
 
