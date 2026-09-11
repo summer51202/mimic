@@ -42,10 +42,10 @@ Files:
 
 ## Task 2 — Define exact reference DTOs and pure projection rules
 
-- [ ] Add RED DTO tests for UUID request/source ids, versions, note length, tag uniqueness/count, whitelist behavior, and no client-supplied money/source content.
-- [ ] Add RED pure unit tests for authoritative owner-allocation selection, zero/absent allocation rejection, exact bigint delta math, canonical category projection, source-lock flag, and stable cross-kind sort/cursor behavior.
-- [ ] Implement the smallest DTO, types, and pure helpers to make the tests GREEN.
-- [ ] Commit: `feat: define private reference contracts`
+- [x] Add RED DTO tests for UUID request/source ids, versions, note length, tag uniqueness/count, whitelist behavior, and no client-supplied money/source content.
+- [x] Add RED pure unit tests for authoritative owner-allocation selection, zero/absent allocation rejection, exact bigint delta math, canonical category projection, source-lock flag, and stable cross-kind sort/cursor behavior.
+- [x] Implement the smallest DTO, types, and pure helpers to make the tests GREEN.
+- [x] Commit: `feat: define private reference contracts`
 
 Files:
 
