@@ -23,9 +23,10 @@ function valuesFrom(rows: SharedExpense['payers'] | SharedExpense['allocations']
   return Object.fromEntries(rows.map(row => [row.user_id, majorFromMinor(row.amount_minor, currency)]));
 }
 
-export function SharedExpenseForm({ spaceId, currency, timezone, currentUserId, participants, terms, record, onSaved, onReload, onCorrection }: {
+export function SharedExpenseForm({ spaceId, currency, timezone, currentUserId, participants, terms, record, lockKind, onSaved, onReload, onCorrection }: {
   spaceId: string; currency: string; timezone: string; currentUserId: string; participants: SharedParticipant[]; terms: TaxonomyTerm[];
   record?: SharedExpense; onSaved: (result: SharedExpenseMutation) => void; onReload?: () => Promise<SharedExpense | undefined>;
+  lockKind?: 'PENDING' | 'PERMANENT';
   onCorrection?: (record: SharedExpense) => void;
 }) {
   const [title, setTitle] = useState(record?.title ?? '');
@@ -76,7 +77,9 @@ export function SharedExpenseForm({ spaceId, currency, timezone, currentUserId, 
     } catch (failure) {
       if (failure instanceof AppClientError && failure.status === 409) {
         if (failure.code === 'SHARED_PERIOD_LOCKED') {
-          setLocked(true); setError('這個期間已鎖定，原紀錄不能再改寫。請在下一個開放期間建立更正。');
+          setLocked(true); setError(lockKind === 'PENDING'
+            ? '進行中的結算批次暫時鎖定這個期間。付款前可由管理者取消；否則請完成批次。'
+            : '這個期間已永久鎖定，原紀錄不能再改寫。請在下一個開放期間建立更正。');
         } else {
           setConflict(true); setError('資料版本已變更。請重新讀取最新內容；目前輸入仍保留。');
         }
@@ -114,7 +117,7 @@ export function SharedExpenseForm({ spaceId, currency, timezone, currentUserId, 
     {!online && <p role="status">目前離線，尚未入帳。輸入只暫留在這個表單。</p>}
     {error && <p role="alert">{error}</p>}
     {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void refreshVersion()} disabled={busy || !online}>重新讀取最新資料</PixelButton>}
-    {locked && record && onCorrection && <PixelButton type="button" emphasis="secondary" onClick={() => onCorrection(record)}>建立不可變更的更正</PixelButton>}
+    {locked && lockKind !== 'PENDING' && record && onCorrection && <PixelButton type="button" emphasis="secondary" onClick={() => onCorrection(record)}>建立不可變更的更正</PixelButton>}
     <PixelButton disabled={!online || busy || conflict}>{busy ? '確認中…' : record ? '儲存修改' : '確認記帳'}</PixelButton>
   </form>;
 }

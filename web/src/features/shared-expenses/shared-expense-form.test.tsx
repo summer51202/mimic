@@ -43,14 +43,26 @@ describe('SharedExpenseForm', () => {
       category_id: a, tag_ids: [], status: 'ACTIVE' as const, version: 1, created_by: a, updated_by: a,
       created_at: '2026-01-01T00:00:00.000Z', updated_at: '2026-01-01T00:00:00.000Z',
       payers: [{ user_id: a, amount_minor: '100' }], allocations: [{ user_id: a, amount_minor: '50' }, { user_id: b, amount_minor: '50' }] };
-    render(<SharedExpenseForm spaceId={a} currency="TWD" timezone="Asia/Taipei" currentUserId={a} participants={participants} terms={[]} record={record} onSaved={vi.fn()} onCorrection={correction} />);
+    render(<SharedExpenseForm spaceId={a} currency="TWD" timezone="Asia/Taipei" currentUserId={a} participants={participants} terms={[]} record={record} lockKind="PERMANENT" onSaved={vi.fn()} onCorrection={correction} />);
     await userEvent.clear(screen.getByLabelText('支出名稱'));
     await userEvent.type(screen.getByLabelText('支出名稱'), '車票');
     await userEvent.click(screen.getByRole('button', { name: '儲存修改' }));
-    expect(await screen.findByRole('alert')).toHaveTextContent('期間已鎖定');
+    expect(await screen.findByRole('alert')).toHaveTextContent('期間已永久鎖定');
     expect(screen.getByLabelText('支出名稱')).toHaveValue('車票');
     await userEvent.click(screen.getByRole('button', { name: '建立不可變更的更正' }));
     expect(correction).toHaveBeenCalled();
+  });
+
+  it('distinguishes a pending batch lock and does not offer a correction yet', async () => {
+    mocks.request.mockRejectedValue(new AppClientError(409, 'SHARED_PERIOD_LOCKED'));
+    const record = { id: a, space_id: a, amount_minor: '100', currency: 'TWD', occurred_on: '2026-01-01', title: '車票', note: null,
+      category_id: a, tag_ids: [], status: 'ACTIVE' as const, version: 1, created_by: a, updated_by: a,
+      created_at: '2026-01-01T00:00:00.000Z', updated_at: '2026-01-01T00:00:00.000Z',
+      payers: [{ user_id: a, amount_minor: '100' }], allocations: [{ user_id: a, amount_minor: '50' }, { user_id: b, amount_minor: '50' }] };
+    render(<SharedExpenseForm spaceId={a} currency="TWD" timezone="Asia/Taipei" currentUserId={a} participants={participants} terms={[]} record={record} lockKind="PENDING" onSaved={vi.fn()} onCorrection={vi.fn()} />);
+    await userEvent.click(screen.getByRole('button', { name: '儲存修改' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('結算批次暫時鎖定');
+    expect(screen.queryByRole('button', { name: '建立不可變更的更正' })).not.toBeInTheDocument();
   });
 
   it('never posts while offline', async () => {

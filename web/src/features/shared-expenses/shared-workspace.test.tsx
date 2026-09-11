@@ -54,6 +54,12 @@ it('shows an actionable empty state without a fabricated balance', () => {
   expect(screen.queryByText('帳戶餘額')).not.toBeInTheDocument();
 });
 
+it('integrates manager settlement controls with the authoritative workspace version', () => {
+  render(<SharedWorkspace initial={data()} />);
+  expect(screen.getByRole('heading', { name: '結算批次' })).toBeVisible();
+  expect(screen.getByRole('button', { name: '開始結算批次' })).toBeVisible();
+});
+
 it('discards a paged read from a stale space version and refreshes authoritative first pages', async () => {
   const initial = data(); initial.expenses.next_cursor = b;
   const latestExpense = { ...initial.expenses.items[0], id: groupId, title: '最新住宿', version: 2 };

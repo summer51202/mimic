@@ -190,31 +190,31 @@ feat(web): manage exact shared expenses and positions
 
 ### Task 4: Settlement batches and two-party confirmation
 
-- [ ] **Step 1: Write settlement RED tests**
+- [x] **Step 1: Write settlement RED tests**
 
 Create `web/src/features/shared-settlements/settlement-panel.test.tsx`. Assert manager-only start/cancel, period-end input, pending/completed/canceled lists and detail, transfer direction/name/amount, payer-only “確認已付款”, recipient-only “確認已收款”, user-confirmed-not-bank-verified copy, and no receive action before SENT. Assert same request UUID retry and versions use batch version for cancel and transfer version for confirmations.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 Run the test; expected missing component failure.
 
-- [ ] **Step 3: Implement minimal settlement panel**
+- [x] **Step 3: Implement minimal settlement panel**
 
 Create `settlement-panel.tsx`. Parse every mutation response with `sharedBatchSchema`; replace the matching batch atomically. Use `PixelDialog` for start/cancel/confirmation, keep high-impact actions disabled offline/busy, and show actionable error text for pending batch, invalid period, cancel-after-send, stale batch/transfer, wrong actor and uncertain results.
 
-- [ ] **Step 4: Run GREEN**
+- [x] **Step 4: Run GREEN**
 
 Run the focused test and shared workspace integration test; expected PASS.
 
-- [ ] **Step 5: Add lock conflict integration RED tests**
+- [x] **Step 5: Add lock conflict integration RED tests**
 
 Extend `shared-workspace.test.tsx`: an expense save receiving `SHARED_PERIOD_LOCKED` preserves fields, shows whether a pending batch may be canceled by a manager, and offers immutable correction only for completed-period sources; after refresh, no stale edit/delete action silently retries.
 
-- [ ] **Step 6: Implement and verify GREEN**
+- [x] **Step 6: Implement and verify GREEN**
 
 Wire settlement state into the workspace conflict presentation and rerun the two focused suites.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```text
 feat(web): confirm shared settlement batches

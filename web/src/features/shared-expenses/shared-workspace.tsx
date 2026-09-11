@@ -12,6 +12,7 @@ import { useOnline } from '../personal-expenses/use-online';
 import { SharedExpenseForm } from './shared-expense-form';
 import { SharedExpenseList } from './shared-expense-list';
 import type { SharedWorkspaceData } from './shared-queries';
+import { SettlementPanel } from '../shared-settlements/settlement-panel';
 
 export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
   const [data, setData] = useState(initial);
@@ -26,6 +27,11 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
   const manager = space.role === 'MANAGER';
   const nameFor = (id: string) => data.participants.find(person => person.user_id === id)?.display_name ?? '已離開的參與者';
   const money = (minor: string) => formatMinorUnit(minor, space.currency, 'zh-TW');
+  const lockKind = (record: SharedExpense | undefined) => {
+    if (!record) return undefined;
+    const batch = data.batches.items.find(item => item.status !== 'CANCELED' && item.period_start <= record.occurred_on && item.period_end >= record.occurred_on);
+    return batch?.status === 'PENDING' ? 'PENDING' as const : batch?.status === 'COMPLETED' ? 'PERMANENT' as const : undefined;
+  };
   async function refresh() {
     const [spaceResponse, participantResponse, expenseResponse, summaryResponse, batchResponse, correctionResponse] = await Promise.all([
       appFetch<{ data: unknown }>(`/api/app/spaces/${space.id}`, { method: 'GET' }),
@@ -86,6 +92,8 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
         const amount = value < BigInt(0) ? (-value).toString() : value.toString();
         return <li key={position.user_id}>{nameFor(position.user_id)} · {state} {money(amount)}</li>;
       })}</ul></PixelPanel></section>
+    <SettlementPanel spaceId={space.id} spaceVersion={space.version} currency={space.currency} currentUserId={group.current_user_id}
+      manager={manager} batches={data.batches.items} nameFor={nameFor} onChanged={async () => { await refresh(); setNotice('結算狀態已更新。'); }} />
     <PixelPanel><div className="shared-section-heading"><h2>共同支出</h2></div>
       <SharedExpenseList expenses={data.expenses.items} currency={space.currency} currentUserId={group.current_user_id} manager={manager} nameFor={nameFor}
         onEdit={record => { setEditing(record); setDialog('expense'); }} onDelete={record => { setEditing(record); setDialog('delete'); setError(''); }} />
@@ -94,6 +102,7 @@ export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
     <PixelDialog open={dialog === 'expense'} title={editing ? '編輯共同支出' : '新增共同支出'} closeLabel="關閉" onClose={() => setDialog(null)} closeDisabled={busy}>
       {dialog === 'expense' && <SharedExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'} spaceId={space.id} currency={space.currency} timezone={space.timezone}
         currentUserId={group.current_user_id} participants={data.participants} terms={data.terms} record={editing}
+        lockKind={lockKind(editing)}
         onSaved={async result => { setDialog(null); setEditing(undefined); setNotice(`已確認「${result.record.title}」${money(result.record.amount_minor)}。`); try { await refresh(); } catch { setError('已確認儲存，但摘要更新失敗；請重新讀取。'); } }}
         onReload={async () => (await refresh()).expenses.items.find(item => item.id === editing?.id)} />}
     </PixelDialog>
