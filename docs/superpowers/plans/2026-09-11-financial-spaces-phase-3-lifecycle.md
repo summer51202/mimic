@@ -44,10 +44,10 @@ Existing participation remains half-open DATE intervals. Ending a participant is
 
 Create `backend/test/shared-lifecycle.e2e-spec.ts`; register it in `backend/test/jest-financial-spaces-db.json` and exclude it in `backend/test/jest-e2e.json`. Reuse `createSpaceTestApp`, `sharedSettlementCase`, `finishBatch`. Tests use the real Nest app and task-local database.
 
-- [ ] Write test: create1000 paid by A, allocations400/600; complete batch; end B with latest space version. Expect200, effective_to=today, version+1, one PARTICIPANT_ENDED audit. B's shared summary/expense/batch/correction/participant reads now404, own repeated end returns unchanged interval. Archive by A succeeds, repeat unchanged, actor/timestamp retained, all financial writes409 and current participant history readable.
-- [ ] Run `npm run test:spaces-db -- --testPathPattern=shared-lifecycle` with explicit local phase2 DATABASE_URL. Observe expected200 versus current409 SPACE_HAS_FINANCIAL_HISTORY before production changes.
-- [ ] Add manager-only archive and removal tests; unresolved position, incomplete transfer, zero-position unfinalized expense/correction, canceled batch and unrelated obligations cases. Assert exact409 codes and no version/audit changes. Completed empty batch and deleted-only history can archive. Archived last manager cannot exit; nonshared nonempty guards remain.
-- [ ] Implement the shared lifecycle function and two call sites; run the suite GREEN. No schema or legacy Fund formula changes.
+- [x] Write test: create1000 paid by A, allocations400/600; complete batch; end B with latest space version. Expect200, effective_to=today, version+1, one PARTICIPANT_ENDED audit. B's shared summary/expense/batch/correction/participant reads now404, own repeated end returns unchanged interval. Archive by A succeeds, repeat unchanged, actor/timestamp retained, all financial writes409 and current participant history readable.
+- [x] Run `npm run test:spaces-db -- --testPathPattern=shared-lifecycle` with explicit local phase2 DATABASE_URL. Observe expected200 versus current409 SPACE_HAS_FINANCIAL_HISTORY before production changes.
+- [x] Add manager-only archive and removal tests; unresolved position, incomplete transfer, zero-position unfinalized expense/correction, canceled batch and unrelated obligations cases. Assert exact409 codes and no version/audit changes. Completed empty batch and deleted-only history can archive. Archived last manager cannot exit; nonshared nonempty guards remain.
+- [x] Implement the shared lifecycle function and two call sites; run the suite GREEN. No schema or legacy Fund formula changes.
 
 Representative successful path:
 
@@ -62,22 +62,22 @@ await f.call('post', `${c.root}/archive`)
 
 ### 2. Historical eligibility and manager handoff
 
-- [ ] Write failing regression: expense on exit DATE is settled; end B on that date (test controls spaces.today only for this boundary), restore current date, rejoin B, then correct the locked source in the open period. Expect201 with original B responsibility preserved. An unrelated newcomer still400 and an ended non-rejoined target remains rejected. Implement source-fact evidence plus existing interval check, then GREEN.
-- [ ] Write failing last-manager regression: promote B, disable B's user, attempt A's end/demotion. Expect409 SPACE_MANAGER_REQUIRED. Implement active user/group membership filters on surviving managers; restore fixture user in finally. Verify valid handoff permits manager exit with all financial history retained.
+- [x] Write failing regression: expense on exit DATE is settled; end B on that date (test controls spaces.today only for this boundary), restore current date, rejoin B, then correct the locked source in the open period. Expect201 with original B responsibility preserved. An unrelated newcomer still400 and an ended non-rejoined target remains rejected. Implement source-fact evidence plus existing interval check, then GREEN.
+- [x] Write failing last-manager regression: promote B, disable B's user, attempt A's end/demotion. Expect409 SPACE_MANAGER_REQUIRED. Implement active user/group membership filters on surviving managers; restore fixture user in finally. Verify valid handoff permits manager exit with all financial history retained.
 
 ### 3. Concurrency and rollback
 
 Create `backend/test/shared-lifecycle-concurrency.e2e-spec.ts`, register/exclude with the other realDB suite. Use an independent PrismaService and FinancialSpacesService/SpaceParticipantsService connection alongside the Nest service.
 
-- [ ] Race new expense versus archive after prior settlement; exactly one succeeds, archived box has no new expense. Race new expense or source correction versus target exit; exactly one succeeds, no departed participant receives a new obligation. Race duplicate archive and duplicate self-exit; single version/audit transition. Race manager exits after valid handoff; at least one active manager remains.
-- [ ] Add fixture-specific NOT VALID CHECK on space_audit_events to reject new ARCHIVE/PARTICIPANT_ENDED rows. Failed writes preserve status/archivedAt/effectiveTo/version and financial facts. Drop constraint in finally. No production mocks or test-only production methods.
-- [ ] Run narrow suites; for any newly discovered defect observe RED before minimum fix and GREEN after.
+- [x] Race new expense versus archive after prior settlement; exactly one succeeds, archived box has no new expense. Race new expense or source correction versus target exit; exactly one succeeds, no departed participant receives a new obligation. Race duplicate archive and duplicate self-exit; single version/audit transition. Race manager exits after valid handoff; at least one active manager remains.
+- [x] Add fixture-specific NOT VALID CHECK on space_audit_events to reject new ARCHIVE/PARTICIPANT_ENDED rows. Failed writes preserve status/archivedAt/effectiveTo/version and financial facts. Drop constraint in finally. No production mocks or test-only production methods.
+- [x] Run narrow suites; for any newly discovered defect observe RED before minimum fix and GREEN after.
 
 ### 4. Verification and commits
 
-- [ ] Backend `npm run build`, `npm test -- --runInBand`, `npm run test:e2e -- --runInBand`, `npm run test:spaces-db` with explicit `postgresql://mimic_test@127.0.0.1:55439/mimic_financial_spaces_test?schema=phase2`. All exit0. No migration command is required.
-- [ ] Web `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` with local MIMIC_API_BASE_URL. Record any existing standalone packaging warning separately; no shared browser acceptance claim before shared Web implementation.
-- [ ] Self-review new functions and changed sections, including corrections/read/lock/group departure integration; check no type/placeholder contradictions. Update `.agents/devlog.md`, `.agents/features.md` and lifecycle execution record. Commit plan, lifecycle behavior/tests and acceptance docs with conventional messages. `git diff --check`, clean implementation worktree, preserve unrelated root files, stop task PostgreSQL.
+- [x] Backend `npm run build`, `npm test -- --runInBand`, `npm run test:e2e -- --runInBand`, `npm run test:spaces-db` with explicit `postgresql://mimic_test@127.0.0.1:55439/mimic_financial_spaces_test?schema=phase2`. All exit0. No migration command is required.
+- [x] Web `npm run lint`, `npm run typecheck`, `npm test`, `npm run build` with local MIMIC_API_BASE_URL. Record any existing standalone packaging warning separately; no shared browser acceptance claim before shared Web implementation.
+- [x] Self-review new functions and changed sections, including corrections/read/lock/group departure integration; check no type/placeholder contradictions. Update `.agents/devlog.md`, `.agents/features.md` and lifecycle execution record. Commit plan, lifecycle behavior/tests and acceptance docs with conventional messages. `git diff --check`, clean implementation worktree, preserve unrelated root files, stop task PostgreSQL.
 
 ## Plan self-review
 

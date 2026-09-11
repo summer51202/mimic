@@ -1098,3 +1098,16 @@
 **Known gaps / follow-ups:** P3 is not yet complete: settled participant exit/archive and shared Web/browser acceptance follow. Three-mode final browser acceptance remains mandatory before overall completion. No external database, merge or push was used.
 
 **Web verification:** Unchanged Web lint/typecheck passed;79 files/498 tests passed after retrying sandbox spawn EPERM with local process permission. Build exited0 with the existing standalone public manifest-copy ENOENT warning. No shared browser journey is claimed by this backend checkpoint.
+
+## 2026-09-11 — P3 settled shared lifecycle checkpoint
+
+**Task:** Allow settled shared participants to exit and fully settled shared boxes to archive without reopening obligations or exposing history.
+**Scope:** Shared lifecycle guard, financial-space archive/participant end integration, historical correction eligibility, manager survival, real PostgreSQL lifecycle/concurrency tests and checkpoint docs.
+**What changed:**
+- Shared archive now requires no pending batch, zero authoritative positions and completed coverage for every active expense/correction; participant exit applies the same rules only to that participant's obligations.
+- Ended participants lose all financial reads, while authorized retries remain idempotent and archived history stays immutable.
+- Exit-day source parties may be used in later corrections only after rejoining; unrelated newcomers and ended non-current parties remain ineligible.
+- Surviving-manager checks count only other current managers with ACTIVE users and ACTIVE group memberships.
+- Independent connections verify write/archive and write/exit races, duplicate lifecycle requests, concurrent manager exits and audit-failure rollback.
+**Decisions:** Pooled mode keeps the conservative nonempty guard. Shared lifecycle reuses the authoritative bigint read model and existing group-to-space mutation lock; no schema, money formula or legacy Fund compatibility layer was added.
+**Known gaps / follow-ups:** P3 still requires shared Web delivery and a real-backend browser journey. P4 references, P5 pooled lifecycle and later navigation/draft/cleanup phases remain planned.
