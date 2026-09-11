@@ -127,104 +127,106 @@ enum AuditAction {
 }
 
 model User {
-  sharedBatchesCreated SharedSettlementBatch[] @relation("SharedBatchCreator")
-  sharedBatchesCompleted SharedSettlementBatch[] @relation("SharedBatchCompleter")
-  sharedBatchesCanceled SharedSettlementBatch[] @relation("SharedBatchCanceler")
-  sharedTransfersFrom SharedSettlementTransfer[] @relation("SharedTransferFrom")
-  sharedTransfersTo SharedSettlementTransfer[] @relation("SharedTransferTo")
-  sharedTransfersSent SharedSettlementTransfer[] @relation("SharedTransferSender")
-  sharedTransfersReceived SharedSettlementTransfer[] @relation("SharedTransferReceiver")
-  sharedCorrections SharedCorrection[] @relation("SharedCorrectionCreator")
-  sharedCorrectionPayers SharedCorrectionPayer[]
+  sharedBatchesCreated        SharedSettlementBatch[]      @relation("SharedBatchCreator")
+  sharedBatchesCompleted      SharedSettlementBatch[]      @relation("SharedBatchCompleter")
+  sharedBatchesCanceled       SharedSettlementBatch[]      @relation("SharedBatchCanceler")
+  sharedTransfersFrom         SharedSettlementTransfer[]   @relation("SharedTransferFrom")
+  sharedTransfersTo           SharedSettlementTransfer[]   @relation("SharedTransferTo")
+  sharedTransfersSent         SharedSettlementTransfer[]   @relation("SharedTransferSender")
+  sharedTransfersReceived     SharedSettlementTransfer[]   @relation("SharedTransferReceiver")
+  sharedCorrections           SharedCorrection[]           @relation("SharedCorrectionCreator")
+  sharedCorrectionPayers      SharedCorrectionPayer[]
   sharedCorrectionAllocations SharedCorrectionAllocation[]
-  sharedOperationReceipts SharedOperationReceipt[]
-  sharedPayers SharedExpensePayer[]
-  sharedAllocations SharedExpenseAllocation[]
-  ownedTaxonomyTerms TaxonomyTerm[] @relation("TaxonomyOwner")
-  createdTaxonomyTerms TaxonomyTerm[] @relation("TaxonomyCreator")
-  taxonomyAuditEvents TaxonomyAuditEvent[] @relation("TaxonomyAuditActor")
-  createdExpenseRecords ExpenseRecord[] @relation("ExpenseRecordCreator")
-  updatedExpenseRecords ExpenseRecord[] @relation("ExpenseRecordUpdater")
-  expenseMutationReceipts ExpenseMutationReceipt[] @relation("ExpenseReceiptActor")
-  personalSpaces FinancialSpace[] @relation("PersonalSpaceOwner")
-  createdSpaces FinancialSpace[] @relation("SpaceCreator")
-  spaceParticipations SpaceParticipant[]
-  spaceAuditEvents SpaceAuditEvent[] @relation("SpaceAuditActor")
-  id            String   @id @default(uuid()) @db.Uuid
-  email         String   @unique @db.VarChar(255)
-  passwordHash  String   @map("password_hash") @db.VarChar(255)
-  displayName   String   @map("display_name") @db.VarChar(100)
-  mimicId       String   @unique @map("mimic_id") @db.VarChar(15)
-  avatarUrl     String?  @map("avatar_url") @db.VarChar(500)
-  locale        String   @default("zh-TW") @db.VarChar(20)
-  timezone      String   @default("Asia/Taipei") @db.VarChar(100)
-  status        UserStatus @default(ACTIVE)
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  sharedOperationReceipts     SharedOperationReceipt[]
+  sharedPayers                SharedExpensePayer[]
+  sharedAllocations           SharedExpenseAllocation[]
+  ownedTaxonomyTerms          TaxonomyTerm[]               @relation("TaxonomyOwner")
+  createdTaxonomyTerms        TaxonomyTerm[]               @relation("TaxonomyCreator")
+  taxonomyAuditEvents         TaxonomyAuditEvent[]         @relation("TaxonomyAuditActor")
+  createdExpenseRecords       ExpenseRecord[]              @relation("ExpenseRecordCreator")
+  updatedExpenseRecords       ExpenseRecord[]              @relation("ExpenseRecordUpdater")
+  expenseMutationReceipts     ExpenseMutationReceipt[]     @relation("ExpenseReceiptActor")
+  personalExpenseReferences   PersonalExpenseReference[]   @relation("PersonalReferenceOwner")
+  personalReferenceReceipts   PersonalReferenceReceipt[]   @relation("PersonalReferenceReceiptActor")
+  personalSpaces              FinancialSpace[]             @relation("PersonalSpaceOwner")
+  createdSpaces               FinancialSpace[]             @relation("SpaceCreator")
+  spaceParticipations         SpaceParticipant[]
+  spaceAuditEvents            SpaceAuditEvent[]            @relation("SpaceAuditActor")
+  id                          String                       @id @default(uuid()) @db.Uuid
+  email                       String                       @unique @db.VarChar(255)
+  passwordHash                String                       @map("password_hash") @db.VarChar(255)
+  displayName                 String                       @map("display_name") @db.VarChar(100)
+  mimicId                     String                       @unique @map("mimic_id") @db.VarChar(15)
+  avatarUrl                   String?                      @map("avatar_url") @db.VarChar(500)
+  locale                      String                       @default("zh-TW") @db.VarChar(20)
+  timezone                    String                       @default("Asia/Taipei") @db.VarChar(100)
+  status                      UserStatus                   @default(ACTIVE)
+  createdAt                   DateTime                     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                   DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  createdGroups        Group[]                   @relation("GroupCreatedBy")
+  createdGroups        Group[]                     @relation("GroupCreatedBy")
   memberships          GroupMember[]
-  sentInvites          GroupInvite[]             @relation("InviteCreatedBy")
-  acceptedInvites      GroupInvite[]             @relation("InviteAcceptedBy")
-  createdFunds         Fund[]                    @relation("FundCreatedBy")
-  contributions        Contribution[]            @relation("ContributionUser")
-  createdContributions Contribution[]            @relation("ContributionCreatedBy")
-  updatedContributions Contribution[]            @relation("ContributionUpdatedBy")
-  deletedContributions Contribution[]            @relation("ContributionDeletedBy")
-  createdExpenses      Expense[]                 @relation("ExpenseCreatedBy")
-  updatedExpenses      Expense[]                 @relation("ExpenseUpdatedBy")
-  deletedExpenses      Expense[]                 @relation("ExpenseDeletedBy")
+  sentInvites          GroupInvite[]               @relation("InviteCreatedBy")
+  acceptedInvites      GroupInvite[]               @relation("InviteAcceptedBy")
+  createdFunds         Fund[]                      @relation("FundCreatedBy")
+  contributions        Contribution[]              @relation("ContributionUser")
+  createdContributions Contribution[]              @relation("ContributionCreatedBy")
+  updatedContributions Contribution[]              @relation("ContributionUpdatedBy")
+  deletedContributions Contribution[]              @relation("ContributionDeletedBy")
+  createdExpenses      Expense[]                   @relation("ExpenseCreatedBy")
+  updatedExpenses      Expense[]                   @relation("ExpenseUpdatedBy")
+  deletedExpenses      Expense[]                   @relation("ExpenseDeletedBy")
   expensePayers        ExpensePayer[]
   expenseSplits        ExpenseSplit[]
-  settlementsFrom      Settlement[]              @relation("SettlementFromUser")
-  settlementsTo        Settlement[]              @relation("SettlementToUser")
-  settlementsCreated   Settlement[]              @relation("SettlementCreatedBy")
+  settlementsFrom      Settlement[]                @relation("SettlementFromUser")
+  settlementsTo        Settlement[]                @relation("SettlementToUser")
+  settlementsCreated   Settlement[]                @relation("SettlementCreatedBy")
   recurringRuleUsers   RecurringContributionRule[] @relation("RecurringRuleUser")
   recurringRuleCreated RecurringContributionRule[] @relation("RecurringRuleCreatedBy")
-  auditLogs            AuditLog[]                @relation("AuditActor")
+  auditLogs            AuditLog[]                  @relation("AuditActor")
 }
 
 model Group {
-  taxonomyTerms TaxonomyTerm[]
+  taxonomyTerms   TaxonomyTerm[]
   financialSpaces FinancialSpace[]
-  id              String      @id @default(uuid()) @db.Uuid
-  name            String      @db.VarChar(100)
-  groupType       GroupType   @map("group_type")
-  defaultCurrency String      @map("default_currency") @db.VarChar(3)
-  status          GroupStatus @default(ACTIVE)
-  createdById     String      @map("created_by") @db.Uuid
-  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id              String           @id @default(uuid()) @db.Uuid
+  name            String           @db.VarChar(100)
+  groupType       GroupType        @map("group_type")
+  defaultCurrency String           @map("default_currency") @db.VarChar(3)
+  status          GroupStatus      @default(ACTIVE)
+  createdById     String           @map("created_by") @db.Uuid
+  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  createdBy       User        @relation("GroupCreatedBy", fields: [createdById], references: [id])
-  members         GroupMember[]
-  invites         GroupInvite[]
-  funds           Fund[]
-  categories      Category[]
-  auditLogs       AuditLog[]
+  createdBy  User          @relation("GroupCreatedBy", fields: [createdById], references: [id])
+  members    GroupMember[]
+  invites    GroupInvite[]
+  funds      Fund[]
+  categories Category[]
+  auditLogs  AuditLog[]
 
-  @@map("groups")
   @@index([createdById])
+  @@map("groups")
 }
 
 model GroupMember {
-  id         String       @id @default(uuid()) @db.Uuid
-  groupId    String       @map("group_id") @db.Uuid
-  userId     String       @map("user_id") @db.Uuid
-  role       MemberRole
-  status     MemberStatus @default(ACTIVE)
-  joinedAt   DateTime     @default(now()) @map("joined_at") @db.Timestamptz(6)
-  createdAt  DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id        String       @id @default(uuid()) @db.Uuid
+  groupId   String       @map("group_id") @db.Uuid
+  userId    String       @map("user_id") @db.Uuid
+  role      MemberRole
+  status    MemberStatus @default(ACTIVE)
+  joinedAt  DateTime     @default(now()) @map("joined_at") @db.Timestamptz(6)
+  createdAt DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  group      Group        @relation(fields: [groupId], references: [id])
-  user       User         @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
 
-  @@map("group_members")
   @@unique([groupId, userId])
   @@index([groupId])
   @@index([userId])
   @@index([groupId, role, status])
+  @@map("group_members")
 }
 
 model GroupInvite {
@@ -239,53 +241,53 @@ model GroupInvite {
   acceptedAt   DateTime?    @map("accepted_at") @db.Timestamptz(6)
   createdAt    DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  group        Group        @relation(fields: [groupId], references: [id])
-  invitedBy    User         @relation("InviteCreatedBy", fields: [invitedById], references: [id])
-  acceptedBy   User?        @relation("InviteAcceptedBy", fields: [acceptedById], references: [id])
+  group      Group @relation(fields: [groupId], references: [id])
+  invitedBy  User  @relation("InviteCreatedBy", fields: [invitedById], references: [id])
+  acceptedBy User? @relation("InviteAcceptedBy", fields: [acceptedById], references: [id])
 
-  @@map("group_invites")
   @@index([groupId, status])
+  @@map("group_invites")
 }
 
 model Fund {
-  id           String     @id @default(uuid()) @db.Uuid
-  groupId      String     @map("group_id") @db.Uuid
-  name         String     @db.VarChar(100)
-  currency     String     @db.VarChar(3)
-  status       FundStatus @default(ACTIVE)
-  archivedAt   DateTime?  @map("archived_at") @db.Timestamptz(6)
-  createdById  String     @map("created_by") @db.Uuid
-  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          String     @id @default(uuid()) @db.Uuid
+  groupId     String     @map("group_id") @db.Uuid
+  name        String     @db.VarChar(100)
+  currency    String     @db.VarChar(3)
+  status      FundStatus @default(ACTIVE)
+  archivedAt  DateTime?  @map("archived_at") @db.Timestamptz(6)
+  createdById String     @map("created_by") @db.Uuid
+  createdAt   DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  group        Group      @relation(fields: [groupId], references: [id])
-  createdBy    User       @relation("FundCreatedBy", fields: [createdById], references: [id])
-  contributions Contribution[]
-  expenses     Expense[]
-  settlements  Settlement[]
+  group          Group                       @relation(fields: [groupId], references: [id])
+  createdBy      User                        @relation("FundCreatedBy", fields: [createdById], references: [id])
+  contributions  Contribution[]
+  expenses       Expense[]
+  settlements    Settlement[]
   recurringRules RecurringContributionRule[]
-  auditLogs    AuditLog[]
+  auditLogs      AuditLog[]
 
-  @@map("funds")
   @@index([groupId, status])
+  @@map("funds")
 }
 
 model Category {
-  id         String         @id @default(uuid()) @db.Uuid
-  groupId    String?        @map("group_id") @db.Uuid
-  name       String         @db.VarChar(100)
-  type       CategoryType   @default(EXPENSE)
-  sortOrder  Int            @default(0) @map("sort_order")
-  isDefault  Boolean        @default(false) @map("is_default")
-  status     CategoryStatus @default(ACTIVE)
-  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id        String         @id @default(uuid()) @db.Uuid
+  groupId   String?        @map("group_id") @db.Uuid
+  name      String         @db.VarChar(100)
+  type      CategoryType   @default(EXPENSE)
+  sortOrder Int            @default(0) @map("sort_order")
+  isDefault Boolean        @default(false) @map("is_default")
+  status    CategoryStatus @default(ACTIVE)
+  createdAt DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  group      Group?         @relation(fields: [groupId], references: [id])
-  expenses   Expense[]
+  group    Group?    @relation(fields: [groupId], references: [id])
+  expenses Expense[]
 
-  @@map("categories")
   @@index([groupId, status, sortOrder])
+  @@map("categories")
 }
 
 model Contribution {
@@ -304,47 +306,47 @@ model Contribution {
   createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt         DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  fund              Fund             @relation(fields: [fundId], references: [id])
-  contributor       User             @relation("ContributionUser", fields: [contributorUserId], references: [id])
-  createdBy         User             @relation("ContributionCreatedBy", fields: [createdById], references: [id])
-  updatedBy         User             @relation("ContributionUpdatedBy", fields: [updatedById], references: [id])
-  deletedBy         User?            @relation("ContributionDeletedBy", fields: [deletedById], references: [id])
+  fund        Fund  @relation(fields: [fundId], references: [id])
+  contributor User  @relation("ContributionUser", fields: [contributorUserId], references: [id])
+  createdBy   User  @relation("ContributionCreatedBy", fields: [createdById], references: [id])
+  updatedBy   User  @relation("ContributionUpdatedBy", fields: [updatedById], references: [id])
+  deletedBy   User? @relation("ContributionDeletedBy", fields: [deletedById], references: [id])
 
-  @@map("contributions")
   @@index([fundId, occurredOn, status])
   @@index([contributorUserId, status])
+  @@map("contributions")
 }
 
 model Expense {
-  id           String           @id @default(uuid()) @db.Uuid
-  fundId       String           @map("fund_id") @db.Uuid
-  categoryId   String?          @map("category_id") @db.Uuid
-  title        String           @db.VarChar(200)
-  note         String?          @db.Text
-  amountMinor  BigInt           @map("amount_minor")
-  splitMode    ExpenseSplitMode @map("split_mode")
-  expenseType  ExpenseType      @map("expense_type")
-  occurredOn   DateTime         @map("occurred_on") @db.Date
-  status       RecordStatus     @default(ACTIVE)
-  createdById  String           @map("created_by") @db.Uuid
-  updatedById  String           @map("updated_by") @db.Uuid
-  deletedById  String?          @map("deleted_by") @db.Uuid
-  deletedAt    DateTime?        @map("deleted_at") @db.Timestamptz(6)
-  createdAt    DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          String           @id @default(uuid()) @db.Uuid
+  fundId      String           @map("fund_id") @db.Uuid
+  categoryId  String?          @map("category_id") @db.Uuid
+  title       String           @db.VarChar(200)
+  note        String?          @db.Text
+  amountMinor BigInt           @map("amount_minor")
+  splitMode   ExpenseSplitMode @map("split_mode")
+  expenseType ExpenseType      @map("expense_type")
+  occurredOn  DateTime         @map("occurred_on") @db.Date
+  status      RecordStatus     @default(ACTIVE)
+  createdById String           @map("created_by") @db.Uuid
+  updatedById String           @map("updated_by") @db.Uuid
+  deletedById String?          @map("deleted_by") @db.Uuid
+  deletedAt   DateTime?        @map("deleted_at") @db.Timestamptz(6)
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  fund         Fund             @relation(fields: [fundId], references: [id])
-  category     Category?        @relation(fields: [categoryId], references: [id])
-  createdBy    User             @relation("ExpenseCreatedBy", fields: [createdById], references: [id])
-  updatedBy    User             @relation("ExpenseUpdatedBy", fields: [updatedById], references: [id])
-  deletedBy    User?            @relation("ExpenseDeletedBy", fields: [deletedById], references: [id])
-  payers       ExpensePayer[]
-  splits       ExpenseSplit[]
+  fund      Fund           @relation(fields: [fundId], references: [id])
+  category  Category?      @relation(fields: [categoryId], references: [id])
+  createdBy User           @relation("ExpenseCreatedBy", fields: [createdById], references: [id])
+  updatedBy User           @relation("ExpenseUpdatedBy", fields: [updatedById], references: [id])
+  deletedBy User?          @relation("ExpenseDeletedBy", fields: [deletedById], references: [id])
+  payers    ExpensePayer[]
+  splits    ExpenseSplit[]
 
-  @@map("expenses")
   @@index([fundId, occurredOn, status])
   @@index([categoryId])
   @@index([expenseType, status])
+  @@map("expenses")
 }
 
 model ExpensePayer {
@@ -355,12 +357,12 @@ model ExpensePayer {
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  expense     Expense  @relation(fields: [expenseId], references: [id], onDelete: Cascade)
-  payer       User     @relation(fields: [payerUserId], references: [id])
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  payer   User    @relation(fields: [payerUserId], references: [id])
 
-  @@map("expense_payers")
   @@index([expenseId])
   @@index([payerUserId])
+  @@map("expense_payers")
 }
 
 model ExpenseSplit {
@@ -375,12 +377,12 @@ model ExpenseSplit {
   createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  expense              Expense   @relation(fields: [expenseId], references: [id], onDelete: Cascade)
-  user                 User      @relation(fields: [userId], references: [id])
+  expense Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id])
 
-  @@map("expense_splits")
   @@index([expenseId, sortOrder])
   @@index([userId])
+  @@map("expense_splits")
 }
 
 model Settlement {
@@ -400,16 +402,16 @@ model Settlement {
   createdAt      DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime         @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  fund           Fund             @relation(fields: [fundId], references: [id])
-  fromUser       User             @relation("SettlementFromUser", fields: [fromUserId], references: [id])
-  toUser         User             @relation("SettlementToUser", fields: [toUserId], references: [id])
-  createdBy      User             @relation("SettlementCreatedBy", fields: [createdById], references: [id])
+  fund      Fund @relation(fields: [fundId], references: [id])
+  fromUser  User @relation("SettlementFromUser", fields: [fromUserId], references: [id])
+  toUser    User @relation("SettlementToUser", fields: [toUserId], references: [id])
+  createdBy User @relation("SettlementCreatedBy", fields: [createdById], references: [id])
 
-  @@map("settlements")
   @@index([fundId, status])
   @@index([fundId, periodStart, periodEnd])
   @@index([fromUserId, status])
   @@index([toUserId, status])
+  @@map("settlements")
 }
 
 model RecurringContributionRule {
@@ -427,13 +429,13 @@ model RecurringContributionRule {
   createdAt      DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  fund           Fund                @relation(fields: [fundId], references: [id])
-  user           User                @relation("RecurringRuleUser", fields: [userId], references: [id])
-  createdBy      User                @relation("RecurringRuleCreatedBy", fields: [createdById], references: [id])
+  fund      Fund @relation(fields: [fundId], references: [id])
+  user      User @relation("RecurringRuleUser", fields: [userId], references: [id])
+  createdBy User @relation("RecurringRuleCreatedBy", fields: [createdById], references: [id])
 
-  @@map("recurring_contribution_rules")
   @@index([fundId, status])
   @@index([userId, status])
+  @@map("recurring_contribution_rules")
 }
 
 model AuditLog {
@@ -449,15 +451,15 @@ model AuditLog {
   metadata       Json?
   createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  group          Group?          @relation(fields: [groupId], references: [id])
-  fund           Fund?           @relation(fields: [fundId], references: [id])
-  actor          User            @relation("AuditActor", fields: [actorUserId], references: [id])
+  group Group? @relation(fields: [groupId], references: [id])
+  fund  Fund?  @relation(fields: [fundId], references: [id])
+  actor User   @relation("AuditActor", fields: [actorUserId], references: [id])
 
-  @@map("audit_logs")
   @@index([entityType, entityId])
   @@index([actorUserId, createdAt])
   @@index([groupId, createdAt])
   @@index([fundId, createdAt])
+  @@map("audit_logs")
 }
 
 enum FinancialSpaceMode {
@@ -477,6 +479,9 @@ enum SpaceParticipantRole {
 }
 
 enum SpaceAuditAction {
+  PERSONAL_REFERENCE_CREATED
+  PERSONAL_REFERENCE_UPDATED
+  PERSONAL_REFERENCE_REMOVED
   SHARED_BATCH_STARTED
   SHARED_BATCH_CANCELED
   SHARED_BATCH_COMPLETED
@@ -495,31 +500,33 @@ enum SpaceAuditAction {
 }
 
 model FinancialSpace {
-  sharedBatches SharedSettlementBatch[]
-  sharedCorrections SharedCorrection[]
-  sharedOperationReceipts SharedOperationReceipt[]
-  expenseRecords ExpenseRecord[]
-  expenseReceipts ExpenseMutationReceipt[]
-  id                  String               @id @default(uuid()) @db.Uuid
-  name                String               @db.VarChar(100)
-  mode                FinancialSpaceMode
-  currency            String               @db.VarChar(3)
-  timezone            String               @default("Asia/Taipei") @db.VarChar(100)
-  openedOn            DateTime             @map("opened_on") @db.Date
-  groupId             String?              @map("group_id") @db.Uuid
-  ownerUserId         String?              @map("owner_user_id") @db.Uuid
-  createdById         String               @map("created_by_id") @db.Uuid
-  status              FinancialSpaceStatus @default(ACTIVE)
-  firstFormalRecordAt DateTime?            @map("first_formal_record_at") @db.Timestamptz(6)
-  archivedAt          DateTime?            @map("archived_at") @db.Timestamptz(6)
-  version             Int                  @default(1)
-  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt           DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
-  group               Group?               @relation(fields: [groupId], references: [id])
-  owner               User?                @relation("PersonalSpaceOwner", fields: [ownerUserId], references: [id])
-  creator             User                 @relation("SpaceCreator", fields: [createdById], references: [id])
-  participants        SpaceParticipant[]
-  auditEvents         SpaceAuditEvent[]
+  personalReferences        PersonalExpenseReference[] @relation("PersonalReferenceSpace")
+  personalReferenceReceipts PersonalReferenceReceipt[]
+  sharedBatches             SharedSettlementBatch[]
+  sharedCorrections         SharedCorrection[]
+  sharedOperationReceipts   SharedOperationReceipt[]
+  expenseRecords            ExpenseRecord[]
+  expenseReceipts           ExpenseMutationReceipt[]
+  id                        String                     @id @default(uuid()) @db.Uuid
+  name                      String                     @db.VarChar(100)
+  mode                      FinancialSpaceMode
+  currency                  String                     @db.VarChar(3)
+  timezone                  String                     @default("Asia/Taipei") @db.VarChar(100)
+  openedOn                  DateTime                   @map("opened_on") @db.Date
+  groupId                   String?                    @map("group_id") @db.Uuid
+  ownerUserId               String?                    @map("owner_user_id") @db.Uuid
+  createdById               String                     @map("created_by_id") @db.Uuid
+  status                    FinancialSpaceStatus       @default(ACTIVE)
+  firstFormalRecordAt       DateTime?                  @map("first_formal_record_at") @db.Timestamptz(6)
+  archivedAt                DateTime?                  @map("archived_at") @db.Timestamptz(6)
+  version                   Int                        @default(1)
+  createdAt                 DateTime                   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                 DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  group                     Group?                     @relation(fields: [groupId], references: [id])
+  owner                     User?                      @relation("PersonalSpaceOwner", fields: [ownerUserId], references: [id])
+  creator                   User                       @relation("SpaceCreator", fields: [createdById], references: [id])
+  participants              SpaceParticipant[]
+  auditEvents               SpaceAuditEvent[]
 
   @@index([groupId, status])
   @@index([ownerUserId, status])
@@ -561,22 +568,26 @@ enum TaxonomyKind {
   CATEGORY
   TAG
 }
+
 enum TaxonomyScope {
   SYSTEM
   PERSONAL
   GROUP
 }
+
 enum TaxonomyStatus {
   ACTIVE
   ARCHIVED
   MERGED
 }
+
 enum TaxonomyAction {
   CREATE
   RENAME
   MERGE
   ARCHIVE
 }
+
 enum ExpenseMutationAction {
   CREATE
   UPDATE
@@ -584,114 +595,187 @@ enum ExpenseMutationAction {
 }
 
 model TaxonomyTerm {
-  id             String @id @default(uuid()) @db.Uuid
-  kind           TaxonomyKind
-  scope          TaxonomyScope
-  scopeKey       String @map("scope_key") @db.VarChar(64)
-  ownerUserId    String? @map("owner_user_id") @db.Uuid
-  groupId        String? @map("group_id") @db.Uuid
-  systemKey      String? @unique @map("system_key") @db.VarChar(64)
-  name           String @db.VarChar(60)
-  normalizedName String @map("normalized_name") @db.VarChar(120)
-  translations   Json @default("{}")
-  categoryKeys   String[] @default([]) @map("category_keys")
-  status         TaxonomyStatus @default(ACTIVE)
-  mergedIntoId   String? @map("merged_into_id") @db.Uuid
-  createdById    String? @map("created_by_id") @db.Uuid
-  version        Int @default(1)
-  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
-  owner          User? @relation("TaxonomyOwner", fields: [ownerUserId], references: [id])
-  group          Group? @relation(fields: [groupId], references: [id])
-  creator        User? @relation("TaxonomyCreator", fields: [createdById], references: [id])
-  mergedInto     TaxonomyTerm? @relation("TaxonomyMerge", fields: [mergedIntoId], references: [id])
-  mergedSources  TaxonomyTerm[] @relation("TaxonomyMerge")
-  expenseRecords ExpenseRecord[] @relation("ExpenseCategory")
-  expenseTags    ExpenseRecordTag[]
-  auditEvents    TaxonomyAuditEvent[]
+  id                    String                        @id @default(uuid()) @db.Uuid
+  kind                  TaxonomyKind
+  scope                 TaxonomyScope
+  scopeKey              String                        @map("scope_key") @db.VarChar(64)
+  ownerUserId           String?                       @map("owner_user_id") @db.Uuid
+  groupId               String?                       @map("group_id") @db.Uuid
+  systemKey             String?                       @unique @map("system_key") @db.VarChar(64)
+  name                  String                        @db.VarChar(60)
+  normalizedName        String                        @map("normalized_name") @db.VarChar(120)
+  translations          Json                          @default("{}")
+  categoryKeys          String[]                      @default([]) @map("category_keys")
+  status                TaxonomyStatus                @default(ACTIVE)
+  mergedIntoId          String?                       @map("merged_into_id") @db.Uuid
+  createdById           String?                       @map("created_by_id") @db.Uuid
+  version               Int                           @default(1)
+  createdAt             DateTime                      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime                      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  owner                 User?                         @relation("TaxonomyOwner", fields: [ownerUserId], references: [id])
+  group                 Group?                        @relation(fields: [groupId], references: [id])
+  creator               User?                         @relation("TaxonomyCreator", fields: [createdById], references: [id])
+  mergedInto            TaxonomyTerm?                 @relation("TaxonomyMerge", fields: [mergedIntoId], references: [id])
+  mergedSources         TaxonomyTerm[]                @relation("TaxonomyMerge")
+  expenseRecords        ExpenseRecord[]               @relation("ExpenseCategory")
+  expenseTags           ExpenseRecordTag[]
+  personalReferenceTags PersonalExpenseReferenceTag[]
+  auditEvents           TaxonomyAuditEvent[]
+
   @@index([scopeKey, kind, status])
   @@map("taxonomy_terms")
 }
+
 model TaxonomyAuditEvent {
-  id          String @id @default(uuid()) @db.Uuid
-  termId      String @map("term_id") @db.Uuid
-  actorUserId String @map("actor_user_id") @db.Uuid
+  id          String         @id @default(uuid()) @db.Uuid
+  termId      String         @map("term_id") @db.Uuid
+  actorUserId String         @map("actor_user_id") @db.Uuid
   action      TaxonomyAction
   before      Json?
   after       Json
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  term        TaxonomyTerm @relation(fields: [termId], references: [id])
-  actor       User @relation("TaxonomyAuditActor", fields: [actorUserId], references: [id])
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  term        TaxonomyTerm   @relation(fields: [termId], references: [id])
+  actor       User           @relation("TaxonomyAuditActor", fields: [actorUserId], references: [id])
+
   @@index([termId, createdAt])
   @@map("taxonomy_audit_events")
 }
+
 model ExpenseRecord {
-  sharedCorrections SharedCorrection[]
-  sharedPayers SharedExpensePayer[]
-  sharedAllocations SharedExpenseAllocation[]
-  id          String @id @default(uuid()) @db.Uuid
-  spaceId     String @map("space_id") @db.Uuid
-  amountMinor BigInt @map("amount_minor")
-  occurredOn  DateTime @map("occurred_on") @db.Date
-  title       String @db.VarChar(200)
-  note        String? @db.VarChar(2000)
-  categoryId  String @map("category_id") @db.Uuid
-  status      RecordStatus @default(ACTIVE)
-  version     Int @default(1)
-  createdById String @map("created_by_id") @db.Uuid
-  updatedById String @map("updated_by_id") @db.Uuid
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
-  space       FinancialSpace @relation(fields: [spaceId], references: [id])
-  category    TaxonomyTerm @relation("ExpenseCategory", fields: [categoryId], references: [id])
-  creator     User @relation("ExpenseRecordCreator", fields: [createdById], references: [id])
-  updater     User @relation("ExpenseRecordUpdater", fields: [updatedById], references: [id])
-  tags        ExpenseRecordTag[]
+  personalReferences PersonalExpenseReference[]
+  sharedCorrections  SharedCorrection[]
+  sharedPayers       SharedExpensePayer[]
+  sharedAllocations  SharedExpenseAllocation[]
+  id                 String                     @id @default(uuid()) @db.Uuid
+  spaceId            String                     @map("space_id") @db.Uuid
+  amountMinor        BigInt                     @map("amount_minor")
+  occurredOn         DateTime                   @map("occurred_on") @db.Date
+  title              String                     @db.VarChar(200)
+  note               String?                    @db.VarChar(2000)
+  categoryId         String                     @map("category_id") @db.Uuid
+  status             RecordStatus               @default(ACTIVE)
+  version            Int                        @default(1)
+  createdById        String                     @map("created_by_id") @db.Uuid
+  updatedById        String                     @map("updated_by_id") @db.Uuid
+  createdAt          DateTime                   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime                   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  space              FinancialSpace             @relation(fields: [spaceId], references: [id])
+  category           TaxonomyTerm               @relation("ExpenseCategory", fields: [categoryId], references: [id])
+  creator            User                       @relation("ExpenseRecordCreator", fields: [createdById], references: [id])
+  updater            User                       @relation("ExpenseRecordUpdater", fields: [updatedById], references: [id])
+  tags               ExpenseRecordTag[]
+
   @@index([spaceId, status, occurredOn, id])
   @@map("expense_records")
 }
+
 model ExpenseRecordTag {
-  expenseId String @map("expense_id") @db.Uuid
-  tagId     String @map("tag_id") @db.Uuid
+  expenseId String        @map("expense_id") @db.Uuid
+  tagId     String        @map("tag_id") @db.Uuid
   expense   ExpenseRecord @relation(fields: [expenseId], references: [id])
-  tag       TaxonomyTerm @relation(fields: [tagId], references: [id])
+  tag       TaxonomyTerm  @relation(fields: [tagId], references: [id])
+
   @@id([expenseId, tagId])
   @@map("expense_record_tags")
 }
 
 model SharedExpensePayer {
-  expenseId String @map("expense_id") @db.Uuid
-  userId String @map("user_id") @db.Uuid
-  amountMinor BigInt @map("amount_minor")
-  expense ExpenseRecord @relation(fields: [expenseId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id])
+  expenseId   String        @map("expense_id") @db.Uuid
+  userId      String        @map("user_id") @db.Uuid
+  amountMinor BigInt        @map("amount_minor")
+  expense     ExpenseRecord @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id])
+
   @@id([expenseId, userId])
   @@index([userId])
   @@map("shared_expense_payers")
 }
+
 model SharedExpenseAllocation {
-  expenseId String @map("expense_id") @db.Uuid
-  userId String @map("user_id") @db.Uuid
-  amountMinor BigInt @map("amount_minor")
-  expense ExpenseRecord @relation(fields: [expenseId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id])
+  expenseId   String        @map("expense_id") @db.Uuid
+  userId      String        @map("user_id") @db.Uuid
+  amountMinor BigInt        @map("amount_minor")
+  expense     ExpenseRecord @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id])
+
   @@id([expenseId, userId])
   @@index([userId])
   @@map("shared_expense_allocations")
 }
+
 model ExpenseMutationReceipt {
-  id          String @id @default(uuid()) @db.Uuid
-  spaceId     String @map("space_id") @db.Uuid
-  actorUserId String @map("actor_user_id") @db.Uuid
-  requestId   String @map("request_id") @db.Uuid
+  id          String                @id @default(uuid()) @db.Uuid
+  spaceId     String                @map("space_id") @db.Uuid
+  actorUserId String                @map("actor_user_id") @db.Uuid
+  requestId   String                @map("request_id") @db.Uuid
   action      ExpenseMutationAction
-  payloadHash String @map("payload_hash") @db.VarChar(64)
+  payloadHash String                @map("payload_hash") @db.VarChar(64)
   response    Json
-  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  space       FinancialSpace @relation(fields: [spaceId], references: [id])
-  actor       User @relation("ExpenseReceiptActor", fields: [actorUserId], references: [id])
+  createdAt   DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  space       FinancialSpace        @relation(fields: [spaceId], references: [id])
+  actor       User                  @relation("ExpenseReceiptActor", fields: [actorUserId], references: [id])
+
   @@unique([spaceId, actorUserId, requestId])
   @@map("expense_mutation_receipts")
+}
+
+enum PersonalReferenceStatus {
+  ACTIVE
+  REMOVED
+}
+
+enum PersonalReferenceAction {
+  CREATE
+  UPDATE
+  REMOVE
+}
+
+model PersonalExpenseReference {
+  id              String                        @id @default(uuid()) @db.Uuid
+  personalSpaceId String                        @map("personal_space_id") @db.Uuid
+  sourceExpenseId String                        @map("source_expense_id") @db.Uuid
+  ownerUserId     String                        @map("owner_user_id") @db.Uuid
+  privateNote     String?                       @map("private_note") @db.VarChar(2000)
+  status          PersonalReferenceStatus       @default(ACTIVE)
+  version         Int                           @default(1)
+  createdAt       DateTime                      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime                      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  personalSpace   FinancialSpace                @relation("PersonalReferenceSpace", fields: [personalSpaceId], references: [id], onDelete: Restrict)
+  sourceExpense   ExpenseRecord                 @relation(fields: [sourceExpenseId], references: [id], onDelete: Restrict)
+  owner           User                          @relation("PersonalReferenceOwner", fields: [ownerUserId], references: [id], onDelete: Restrict)
+  tags            PersonalExpenseReferenceTag[]
+
+  @@unique([personalSpaceId, sourceExpenseId, ownerUserId])
+  @@index([personalSpaceId, status])
+  @@index([sourceExpenseId, status])
+  @@index([ownerUserId, status])
+  @@map("personal_expense_references")
+}
+
+model PersonalExpenseReferenceTag {
+  referenceId String                   @map("reference_id") @db.Uuid
+  tagId       String                   @map("tag_id") @db.Uuid
+  reference   PersonalExpenseReference @relation(fields: [referenceId], references: [id], onDelete: Cascade)
+  tag         TaxonomyTerm             @relation(fields: [tagId], references: [id], onDelete: Restrict)
+
+  @@id([referenceId, tagId])
+  @@map("personal_expense_reference_tags")
+}
+
+model PersonalReferenceReceipt {
+  id          String                  @id @default(uuid()) @db.Uuid
+  spaceId     String                  @map("space_id") @db.Uuid
+  actorUserId String                  @map("actor_user_id") @db.Uuid
+  requestId   String                  @map("request_id") @db.Uuid
+  action      PersonalReferenceAction
+  payloadHash String                  @map("payload_hash") @db.VarChar(64)
+  response    Json
+  createdAt   DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  space       FinancialSpace          @relation(fields: [spaceId], references: [id], onDelete: Restrict)
+  actor       User                    @relation("PersonalReferenceReceiptActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@unique([spaceId, actorUserId, requestId])
+  @@map("personal_reference_receipts")
 }
 
 enum SharedBatchStatus {
@@ -699,11 +783,13 @@ enum SharedBatchStatus {
   COMPLETED
   CANCELED
 }
+
 enum SharedTransferStatus {
   AWAITING_PAYMENT
   SENT
   COMPLETED
 }
+
 enum SharedOperationAction {
   BATCH_START
   BATCH_CANCEL
@@ -712,101 +798,113 @@ enum SharedOperationAction {
   EXPENSE_CORRECTION
   TRANSFER_CORRECTION
 }
+
 model SharedSettlementBatch {
-  id String @id @default(uuid()) @db.Uuid
-  spaceId String @map("space_id") @db.Uuid
-  periodStart DateTime @map("period_start") @db.Date
-  periodEnd DateTime @map("period_end") @db.Date
-  status SharedBatchStatus @default(PENDING)
-  version Int @default(1)
-  snapshot Json
-  createdById String @map("created_by_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  completedById String? @map("completed_by_id") @db.Uuid
-  completedAt DateTime? @map("completed_at") @db.Timestamptz(6)
-  canceledById String? @map("canceled_by_id") @db.Uuid
-  canceledAt DateTime? @map("canceled_at") @db.Timestamptz(6)
-  space FinancialSpace @relation(fields: [spaceId], references: [id])
-  creator User @relation("SharedBatchCreator", fields: [createdById], references: [id])
-  completer User? @relation("SharedBatchCompleter", fields: [completedById], references: [id], onDelete: Restrict)
-  canceler User? @relation("SharedBatchCanceler", fields: [canceledById], references: [id], onDelete: Restrict)
-  transfers SharedSettlementTransfer[]
+  id            String                     @id @default(uuid()) @db.Uuid
+  spaceId       String                     @map("space_id") @db.Uuid
+  periodStart   DateTime                   @map("period_start") @db.Date
+  periodEnd     DateTime                   @map("period_end") @db.Date
+  status        SharedBatchStatus          @default(PENDING)
+  version       Int                        @default(1)
+  snapshot      Json
+  createdById   String                     @map("created_by_id") @db.Uuid
+  createdAt     DateTime                   @default(now()) @map("created_at") @db.Timestamptz(6)
+  completedById String?                    @map("completed_by_id") @db.Uuid
+  completedAt   DateTime?                  @map("completed_at") @db.Timestamptz(6)
+  canceledById  String?                    @map("canceled_by_id") @db.Uuid
+  canceledAt    DateTime?                  @map("canceled_at") @db.Timestamptz(6)
+  space         FinancialSpace             @relation(fields: [spaceId], references: [id])
+  creator       User                       @relation("SharedBatchCreator", fields: [createdById], references: [id])
+  completer     User?                      @relation("SharedBatchCompleter", fields: [completedById], references: [id], onDelete: Restrict)
+  canceler      User?                      @relation("SharedBatchCanceler", fields: [canceledById], references: [id], onDelete: Restrict)
+  transfers     SharedSettlementTransfer[]
+
   @@index([spaceId, periodEnd])
   @@map("shared_settlement_batches")
 }
+
 model SharedSettlementTransfer {
-  id String @id @default(uuid()) @db.Uuid
-  batchId String @map("batch_id") @db.Uuid
-  fromUserId String @map("from_user_id") @db.Uuid
-  toUserId String @map("to_user_id") @db.Uuid
-  amountMinor Decimal @map("amount_minor") @db.Decimal(65, 0)
-  status SharedTransferStatus @default(AWAITING_PAYMENT)
-  version Int @default(1)
-  sentById String? @map("sent_by_id") @db.Uuid
-  sentAt DateTime? @map("sent_at") @db.Timestamptz(6)
-  receivedById String? @map("received_by_id") @db.Uuid
-  receivedAt DateTime? @map("received_at") @db.Timestamptz(6)
-  batch SharedSettlementBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
-  fromUser User @relation("SharedTransferFrom", fields: [fromUserId], references: [id])
-  toUser User @relation("SharedTransferTo", fields: [toUserId], references: [id])
-  sender User? @relation("SharedTransferSender", fields: [sentById], references: [id], onDelete: Restrict)
-  receiver User? @relation("SharedTransferReceiver", fields: [receivedById], references: [id], onDelete: Restrict)
-  corrections SharedCorrection[]
+  id           String                @id @default(uuid()) @db.Uuid
+  batchId      String                @map("batch_id") @db.Uuid
+  fromUserId   String                @map("from_user_id") @db.Uuid
+  toUserId     String                @map("to_user_id") @db.Uuid
+  amountMinor  Decimal               @map("amount_minor") @db.Decimal(65, 0)
+  status       SharedTransferStatus  @default(AWAITING_PAYMENT)
+  version      Int                   @default(1)
+  sentById     String?               @map("sent_by_id") @db.Uuid
+  sentAt       DateTime?             @map("sent_at") @db.Timestamptz(6)
+  receivedById String?               @map("received_by_id") @db.Uuid
+  receivedAt   DateTime?             @map("received_at") @db.Timestamptz(6)
+  batch        SharedSettlementBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  fromUser     User                  @relation("SharedTransferFrom", fields: [fromUserId], references: [id])
+  toUser       User                  @relation("SharedTransferTo", fields: [toUserId], references: [id])
+  sender       User?                 @relation("SharedTransferSender", fields: [sentById], references: [id], onDelete: Restrict)
+  receiver     User?                 @relation("SharedTransferReceiver", fields: [receivedById], references: [id], onDelete: Restrict)
+  corrections  SharedCorrection[]
+
   @@index([batchId, status])
   @@map("shared_settlement_transfers")
 }
+
 model SharedCorrection {
-  id String @id @default(uuid()) @db.Uuid
-  spaceId String @map("space_id") @db.Uuid
-  sourceExpenseId String? @map("source_expense_id") @db.Uuid
-  sourceTransferId String? @map("source_transfer_id") @db.Uuid
-  revision Int
-  occurredOn DateTime @map("occurred_on") @db.Date
-  reason String @db.VarChar(2000)
-  amountMinor Decimal @map("amount_minor") @db.Decimal(65, 0)
-  targetAmountMinor Decimal @map("target_amount_minor") @db.Decimal(65, 0)
-  createdById String @map("created_by_id") @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  space FinancialSpace @relation(fields: [spaceId], references: [id])
-  sourceExpense ExpenseRecord? @relation(fields: [sourceExpenseId], references: [id], onDelete: Restrict)
-  sourceTransfer SharedSettlementTransfer? @relation(fields: [sourceTransferId], references: [id], onDelete: Restrict)
-  creator User @relation("SharedCorrectionCreator", fields: [createdById], references: [id])
-  payers SharedCorrectionPayer[]
-  allocations SharedCorrectionAllocation[]
+  id                String                       @id @default(uuid()) @db.Uuid
+  spaceId           String                       @map("space_id") @db.Uuid
+  sourceExpenseId   String?                      @map("source_expense_id") @db.Uuid
+  sourceTransferId  String?                      @map("source_transfer_id") @db.Uuid
+  revision          Int
+  occurredOn        DateTime                     @map("occurred_on") @db.Date
+  reason            String                       @db.VarChar(2000)
+  amountMinor       Decimal                      @map("amount_minor") @db.Decimal(65, 0)
+  targetAmountMinor Decimal                      @map("target_amount_minor") @db.Decimal(65, 0)
+  createdById       String                       @map("created_by_id") @db.Uuid
+  createdAt         DateTime                     @default(now()) @map("created_at") @db.Timestamptz(6)
+  space             FinancialSpace               @relation(fields: [spaceId], references: [id])
+  sourceExpense     ExpenseRecord?               @relation(fields: [sourceExpenseId], references: [id], onDelete: Restrict)
+  sourceTransfer    SharedSettlementTransfer?    @relation(fields: [sourceTransferId], references: [id], onDelete: Restrict)
+  creator           User                         @relation("SharedCorrectionCreator", fields: [createdById], references: [id])
+  payers            SharedCorrectionPayer[]
+  allocations       SharedCorrectionAllocation[]
+
   @@unique([sourceExpenseId, revision])
   @@unique([sourceTransferId, revision])
   @@index([spaceId, occurredOn, id])
   @@map("shared_corrections")
 }
+
 model SharedCorrectionPayer {
-  correctionId String @map("correction_id") @db.Uuid
-  userId String @map("user_id") @db.Uuid
-  amountMinor Decimal @map("amount_minor") @db.Decimal(65, 0)
-  correction SharedCorrection @relation(fields: [correctionId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id])
+  correctionId String           @map("correction_id") @db.Uuid
+  userId       String           @map("user_id") @db.Uuid
+  amountMinor  Decimal          @map("amount_minor") @db.Decimal(65, 0)
+  correction   SharedCorrection @relation(fields: [correctionId], references: [id], onDelete: Cascade)
+  user         User             @relation(fields: [userId], references: [id])
+
   @@id([correctionId, userId])
   @@map("shared_correction_payers")
 }
+
 model SharedCorrectionAllocation {
-  correctionId String @map("correction_id") @db.Uuid
-  userId String @map("user_id") @db.Uuid
-  amountMinor Decimal @map("amount_minor") @db.Decimal(65, 0)
-  correction SharedCorrection @relation(fields: [correctionId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id])
+  correctionId String           @map("correction_id") @db.Uuid
+  userId       String           @map("user_id") @db.Uuid
+  amountMinor  Decimal          @map("amount_minor") @db.Decimal(65, 0)
+  correction   SharedCorrection @relation(fields: [correctionId], references: [id], onDelete: Cascade)
+  user         User             @relation(fields: [userId], references: [id])
+
   @@id([correctionId, userId])
   @@map("shared_correction_allocations")
 }
+
 model SharedOperationReceipt {
-  id String @id @default(uuid()) @db.Uuid
-  spaceId String @map("space_id") @db.Uuid
-  actorUserId String @map("actor_user_id") @db.Uuid
-  requestId String @map("request_id") @db.Uuid
-  action SharedOperationAction
-  payloadHash String @map("payload_hash") @db.VarChar(64)
-  response Json
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  space FinancialSpace @relation(fields: [spaceId], references: [id])
-  actor User @relation(fields: [actorUserId], references: [id])
+  id          String                @id @default(uuid()) @db.Uuid
+  spaceId     String                @map("space_id") @db.Uuid
+  actorUserId String                @map("actor_user_id") @db.Uuid
+  requestId   String                @map("request_id") @db.Uuid
+  action      SharedOperationAction
+  payloadHash String                @map("payload_hash") @db.VarChar(64)
+  response    Json
+  createdAt   DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  space       FinancialSpace        @relation(fields: [spaceId], references: [id])
+  actor       User                  @relation(fields: [actorUserId], references: [id])
+
   @@unique([spaceId, actorUserId, requestId])
   @@map("shared_operation_receipts")
 }

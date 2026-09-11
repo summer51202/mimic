@@ -29,10 +29,10 @@
 
 ## Task 1 — Persist private references, receipts, and audits
 
-- [ ] Add RED migration-contract/schema tests for private reference ownership, unique `(personal_space_id, source_expense_id, owner_user_id)`, private tags, soft status/version, dedicated request receipts, relations, indexes, and audit actions.
-- [ ] Add Prisma enums/models/relations and migration `20260912000100_personal_shared_references`.
-- [ ] Generate the Prisma client and run the focused migration contract tests GREEN.
-- [ ] Commit: `feat: persist private shared expense references`
+- [x] Add RED migration-contract/schema tests for private reference ownership, unique `(personal_space_id, source_expense_id, owner_user_id)`, private tags, soft status/version, dedicated request receipts, relations, indexes, and audit actions.
+- [x] Add Prisma enums/models/relations and migration `20260912000100_personal_shared_references`.
+- [x] Generate the Prisma client and run the focused migration contract tests GREEN.
+- [x] Commit: `feat: persist private shared expense references`
 
 Files:
 
