@@ -17,11 +17,6 @@ export type CreatedGroup = {
   name: string;
 };
 
-export type CreatedFund = {
-  id: string;
-  name: string;
-};
-
 export type CreatedInvite = {
   inviteCode: string;
   inviteUrl: string;
@@ -247,95 +242,6 @@ export async function createGroupByApi(
   return { id: body.data!.id, name };
 }
 
-export async function createFundByApi(
-  session: AuthPayload,
-  groupId: string,
-  name: string,
-  currency = "TWD",
-): Promise<CreatedFund> {
-  const response = await fetch(
-    `${apiBaseUrl.replace(/\/+$/, "")}/groups/${groupId}/funds`,
-    {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${session.access_token}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({ name, currency }),
-    },
-  );
-
-  expect(response.ok).toBeTruthy();
-
-  const body = (await response.json()) as { data?: CreatedFund };
-  expect(body.data?.id).toBeTruthy();
-
-  return { id: body.data!.id, name };
-}
-
-export async function createContributionByApi(
-  session: AuthPayload,
-  fundId: string,
-  contributorUserId: string,
-  amountMinor: number,
-): Promise<void> {
-  const response = await fetch(
-    `${apiBaseUrl.replace(/\/+$/, "")}/funds/${fundId}/contributions`,
-    {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${session.access_token}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        amount_minor: amountMinor,
-        contribution_type: "one_time",
-        contributor_user_id: contributorUserId,
-        occurred_on: new Date().toISOString().slice(0, 10),
-      }),
-    },
-  );
-
-  expect(response.ok).toBeTruthy();
-}
-
-export async function createExpenseByApi(
-  session: AuthPayload,
-  fundId: string,
-  payerUserId: string,
-  splitUserId: string,
-  amountMinor: number,
-): Promise<void> {
-  const response = await fetch(
-    `${apiBaseUrl.replace(/\/+$/, "")}/funds/${fundId}/expenses`,
-    {
-      method: "POST",
-      headers: {
-        authorization: `Bearer ${session.access_token}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        amount_minor: amountMinor,
-        expense_type: "fund_expense",
-        occurred_on: new Date().toISOString().slice(0, 10),
-        payers: [{ amount_minor: amountMinor, payer_user_id: payerUserId }],
-        split_mode: "fixed",
-        splits: [
-          {
-            fixed_amount_minor: amountMinor,
-            sort_order: 0,
-            split_type: "fixed",
-            user_id: splitUserId,
-          },
-        ],
-        title: "X".repeat(100),
-      }),
-    },
-  );
-
-  expect(response.ok).toBeTruthy();
-}
-
 export async function createGroup(
   page: Page,
   name: string,
@@ -388,26 +294,6 @@ export async function registerFromInvite(page: Page, account: TestAccount) {
   await expect(page).toHaveURL(/\/invite\/[A-Za-z0-9_-]{12}$/, {
     timeout: 15_000,
   });
-}
-
-export async function createFund(
-  page: Page,
-  groupId: string,
-  name: string,
-  currency = "TWD",
-): Promise<CreatedFund> {
-  await page.goto(`/app/groups/${groupId}/funds/new`);
-  await page.getByLabel("Fund name").fill(name);
-  await page.getByLabel("Currency").fill(currency);
-  await Promise.all([
-    page.waitForURL(/\/app\/funds\/[^/]+$/, { timeout: 15_000 }),
-    page.getByRole("button", { name: "Create fund" }).click(),
-  ]);
-
-  const id = new URL(page.url()).pathname.split("/").at(-1);
-  expect(id).toBeTruthy();
-
-  return { id: id!, name };
 }
 
 export async function cacheKeys(page: Page): Promise<string[]> {

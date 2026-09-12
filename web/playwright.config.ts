@@ -27,7 +27,7 @@ export default defineConfig({
   projects: [
     {
       name: "phone-small",
-      use: { viewport: { height: 720, width: 320 } },
+      use: { viewport: { height: 568, width: 320 } },
     },
     {
       name: "phone",

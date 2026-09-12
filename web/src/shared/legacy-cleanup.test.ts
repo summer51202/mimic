@@ -13,6 +13,10 @@ it('ships no legacy Fund product routes, BFF handlers, or feature modules', () =
     'src/features/funds/fund-list.tsx',
     'src/features/activity/activity-page.tsx',
     'src/features/groups/treasury-dashboard.tsx',
+    'e2e/authenticated-geometry.spec.ts',
+    'e2e/authenticated-navigation.spec.ts',
+    'e2e/groups-funds-flow.spec.ts',
+    'e2e/runtime-acceptance.spec.ts',
   ];
   expect(removed.filter(path => existsSync(join(root, path)))).toEqual([]);
 });
