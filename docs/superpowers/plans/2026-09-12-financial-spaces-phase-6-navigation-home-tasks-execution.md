@@ -48,7 +48,7 @@ Port 3000 was neither reused nor stopped. No external database was accessed.
 | Backend `npm run build` | exit 0 |
 | Backend `npm test -- --runInBand` | 42 suites / 443 tests passed |
 | Backend `npm run test:e2e -- --runInBand` | 5 suites / 54 tests passed |
-| Backend `npm run test:spaces-db`, explicit loopback phase2 URL | 20 suites / 150 tests passed |
+| Backend `npm run test:spaces-db`, explicit loopback phase2 URL | 20 suites / 151 tests passed |
 | Web `npm run lint` | exit 0 |
 | Web `npm run typecheck` | exit 0 |
 | Web `npm test` | 108 files / 597 tests passed |
@@ -69,6 +69,7 @@ The production build retains the existing standalone trace-copy warning for `(pu
 - `52bb4bb test(web): cover P6 navigation with real backend`
 - `ce9d311 fix: harden P6 task and quick-entry boundaries`
 - `d7a7a5b test: isolate financial space database suites`
+- `a9c781c test: cover all P6 task actors`
 
 ## Remaining P7 scope
 
