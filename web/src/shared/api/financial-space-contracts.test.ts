@@ -15,6 +15,7 @@ describe('financial space contracts', () => {
   it('parses minimal governance and full participant metadata', () => {
     expect(financialSpaceSchema.parse(governance)).toEqual(governance);
     expect(financialSpaceSchema.parse(participant)).toEqual(participant);
+    expect(financialSpaceSchema.parse({ ...participant, mode: 'POOLED_FUND', status: 'CLOSING' }).status).toBe('CLOSING');
   });
   it.each(['balance_minor', 'participants', 'currency', 'note'])('rejects governance leakage: %s', key => {
     expect(financialSpaceSchema.safeParse({ ...governance, [key]: 'private' }).success).toBe(false);

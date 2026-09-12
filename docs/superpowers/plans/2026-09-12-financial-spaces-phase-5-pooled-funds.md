@@ -122,10 +122,10 @@ Web additions:
 
 ### Task 6: Strict Web contracts and BFF routes
 
-- [ ] Write failing Zod tests for every workspace/resource variant, canonical signed/unsigned money, derived timing, shortfall, lifecycle and malformed/float rejection.
-- [ ] Write failing BFF tests for all routes, UUID paths, CSRF/session forwarding, same request UUID reuse by retry, and upstream stale/idempotency errors.
-- [ ] Implement strict contracts, queries and thin routes; run focused Vitest suites GREEN.
-- [ ] Commit `feat(web): add pooled finance boundary`.
+- [x] Write failing Zod tests for every workspace/resource variant, canonical signed/unsigned money, derived timing, shortfall, lifecycle and malformed/float rejection.
+- [x] Write failing BFF tests for all routes, UUID paths, CSRF/session forwarding, same request UUID reuse by retry, and upstream stale/idempotency errors.
+- [x] Implement strict contracts, queries and thin routes; run focused Vitest suites GREEN.
+- [x] Commit `feat(web): add pooled finance boundary`.
 
 ### Task 7: Responsive pooled workspace
 

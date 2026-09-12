@@ -3,7 +3,7 @@ import { currencySchema } from "./domain-contracts";
 
 const uuid = z.string().uuid();
 const mode = z.enum(["PERSONAL_EXPENSES", "SHARED_EXPENSES", "POOLED_FUND"]);
-const status = z.enum(["ACTIVE", "ARCHIVED"]);
+const status = z.enum(["ACTIVE", "CLOSING", "ARCHIVED"]);
 const base = { id: uuid, name: z.string().min(1).max(100), mode, status };
 const governance = z.object({
   ...base, mode: z.enum(["SHARED_EXPENSES", "POOLED_FUND"]),
