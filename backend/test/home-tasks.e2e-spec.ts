@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { createSpaceTestApp } from './helpers/space-test-app';
 import { assertSpacesTestDatabase } from './helpers/financial-spaces-db';
+import { sharedSettlementCase } from './helpers/shared-settlement-case';
 
 assertSpacesTestDatabase(process.env.DATABASE_URL);
 
@@ -85,5 +86,33 @@ describe('participant-private home and task projections', () => {
       id: personal.id, mode: 'PERSONAL_EXPENSES', spending_minor: '9007199254740992',
       recent_activity: [expect.objectContaining({ title: 'Exact linked expense', amount_minor: '9007199254740992' })],
     })]));
+  });
+
+  it('maps reimbursement and shared-transfer send/receive tasks to the responsible actor', async () => {
+    const advance = (await f.call('post', `/spaces/${spaceId}/pooled-funds/expenses`).send({
+      request_id: randomUUID(), amount_minor: '300', occurred_on: today, title: 'Member advance',
+      payment_source: 'PARTICIPANT_ADVANCED', advanced_by_user_id: f.users[1].id,
+    }).expect(201)).body.data;
+    expect((await f.call('get', '/tasks').expect(200)).body.data.items).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: `POOLED_REIMBURSEMENT_SEND:${advance.reimbursement.id}`, kind: 'POOLED_REIMBURSEMENT_SEND' }),
+    ]));
+    await f.call('post', `/spaces/${spaceId}/pooled-funds/reimbursements/${advance.reimbursement.id}/sent`)
+      .send({ request_id: randomUUID(), version: 1 }).expect(200);
+    expect((await f.call('get', '/tasks', 1).expect(200)).body.data.items).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: `POOLED_REIMBURSEMENT_RECEIVE:${advance.reimbursement.id}`, kind: 'POOLED_REIMBURSEMENT_RECEIVE' }),
+    ]));
+
+    const shared = await sharedSettlementCase(f);
+    await f.call('post', `${shared.root}/shared-expenses`).send(shared.expense()).expect(201);
+    const batch = (await f.call('post', `${shared.root}/shared-settlements`).send(await shared.batchInput()).expect(201)).body.data;
+    const transfer = batch.transfers[0];
+    expect((await f.call('get', '/tasks', 1).expect(200)).body.data.items).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: `SHARED_TRANSFER_SEND:${transfer.id}`, kind: 'SHARED_TRANSFER_SEND' }),
+    ]));
+    await f.call('post', `${shared.root}/shared-settlements/${batch.id}/transfers/${transfer.id}/sent`, 1)
+      .send({ request_id: randomUUID(), version: 1 }).expect(200);
+    expect((await f.call('get', '/tasks').expect(200)).body.data.items).toEqual(expect.arrayContaining([
+      expect.objectContaining({ id: `SHARED_TRANSFER_RECEIVE:${transfer.id}`, kind: 'SHARED_TRANSFER_RECEIVE' }),
+    ]));
   });
 });
