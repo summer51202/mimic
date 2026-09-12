@@ -20,7 +20,7 @@ it('shows only a scoped count in a non-writable workspace and discards every exa
   saveExpenseDraft({ ...base, operation: 'UPDATE', resourceId: resource, recordVersion: 1 }, payload);
 
   render(<BlockedExpenseDrafts actorUserId={actor} groupId={group} spaceId={space} mode="SHARED_EXPENSES" spaceVersion={4} />);
-  expect(screen.getByRole('status')).toHaveTextContent('2 份未提交草稿');
+  expect(await screen.findByRole('status')).toHaveTextContent('2 份未提交草稿');
   expect(screen.getByRole('status')).not.toHaveTextContent('不可外洩標題');
   expect(screen.getByRole('status')).not.toHaveTextContent('不可外洩備註');
   await userEvent.click(screen.getByRole('button', { name: '丟棄這個寶箱的草稿' }));

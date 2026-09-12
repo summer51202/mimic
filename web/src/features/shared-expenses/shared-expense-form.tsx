@@ -54,13 +54,14 @@ export function SharedExpenseForm({ groupId, spaceId, spaceVersion, writable, cu
     operation: record ? 'UPDATE' as const : 'CREATE' as const, resourceId: record?.id ?? null,
     spaceVersion, recordVersion: record?.version ?? null, writable }), [currentUserId, groupId, record, spaceId, spaceVersion, writable]);
   const draft = useExpenseDraft(context);
+  const persistDraft = draft.persist;
   const recoveryPending = draft.load.state !== 'MISSING' && !draft.reviewed;
   const eligible = participants.filter(row => row.effective_to === null && row.effective_from <= date);
   const draftPayload = useMemo<SharedExpenseDraftPayload>(() => ({ title, amount, occurred_on: date, note, category_id: category,
     tag_ids: [...tags].sort(), payer_ids: [...payerIds].sort(), payer_values: payerValues, allocation_mode: allocationMode,
     allocation_ids: [...allocationIds].sort(), allocation_values: allocationValues,
   }), [allocationIds, allocationMode, allocationValues, amount, category, date, note, payerIds, payerValues, tags, title]);
-  useEffect(() => { if (dirty) draft.persist(draftPayload); }, [dirty, draft.persist, draftPayload]);
+  useEffect(() => { if (dirty) persistDraft(draftPayload); }, [dirty, persistDraft, draftPayload]);
   function change<T>(setter: (next: T) => void, value: T) { setDirty(true); setter(value); }
   function toggle(id: string, values: string[], setter: (next: string[]) => void) {
     change(setter, values.includes(id) ? values.filter(value => value !== id) : [...values, id]);

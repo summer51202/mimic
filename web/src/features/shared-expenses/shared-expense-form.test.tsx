@@ -91,10 +91,10 @@ describe('SharedExpenseForm', () => {
     first.unmount();
 
     render(<SharedExpenseForm groupId={b} spaceId={a} spaceVersion={2} writable currency="TWD" timezone="Asia/Taipei" currentUserId={a} participants={participants} terms={[]} onSaved={vi.fn()} />);
-    expect(screen.getByText(/找到這個寶箱的未提交草稿/)).toBeVisible();
+    expect(await screen.findByText(/找到這個寶箱的未提交草稿/)).toBeVisible();
     expect(screen.getByLabelText('支出名稱')).toBeDisabled();
     expect(mocks.request).toHaveBeenCalledTimes(1);
-    await userEvent.click(screen.getByRole('button', { name: '檢視草稿' }));
+    await userEvent.click(await screen.findByRole('button', { name: '檢視草稿' }));
     expect(screen.getByLabelText('支出名稱')).toHaveValue('晚餐');
     await userEvent.click(screen.getByRole('button', { name: '重新送出草稿' }));
     await waitFor(() => expect(mocks.request).toHaveBeenCalledTimes(2));
@@ -109,7 +109,7 @@ describe('SharedExpenseForm', () => {
     });
     render(<SharedExpenseForm groupId={b} spaceId={a} spaceVersion={2} writable currency="TWD" timezone="Asia/Taipei" currentUserId={a}
       participants={[participants[0], { ...participants[1], effective_to: '2026-09-13' }]} terms={[]} onSaved={vi.fn()} />);
-    await userEvent.click(screen.getByRole('button', { name: '檢視草稿' }));
+    await userEvent.click(await screen.findByRole('button', { name: '檢視草稿' }));
     expect(screen.getByRole('alert')).toHaveTextContent('參與權限已變更');
     expect(screen.getByRole('button', { name: '確認記帳' })).toBeDisabled();
     expect(screen.getByLabelText('支出名稱')).toHaveValue('');

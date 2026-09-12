@@ -11,15 +11,20 @@ import {
 } from './expense-draft';
 
 export function useExpenseDraft(context: DraftContext) {
-  const stableContext = useMemo(() => ({ ...context }), [context.actorUserId, context.groupId, context.mode, context.operation,
-    context.recordVersion, context.resourceId, context.spaceId, context.spaceVersion, context.writable]);
+  const { actorUserId, groupId, mode, operation, recordVersion, resourceId, spaceId, spaceVersion, writable } = context;
+  const stableContext = useMemo(() => ({ actorUserId, groupId, mode, operation, recordVersion, resourceId, spaceId, spaceVersion, writable }),
+    [actorUserId, groupId, mode, operation, recordVersion, resourceId, spaceId, spaceVersion, writable]);
   const [load, setLoad] = useState<DraftLoadResult>({ state: 'MISSING' });
   const [reviewed, setReviewed] = useState(false);
   const [storageError, setStorageError] = useState(false);
 
   useEffect(() => {
-    setLoad(loadExpenseDraft(stableContext));
-    setReviewed(false);
+    let active = true;
+    const hydrated = loadExpenseDraft(stableContext);
+    queueMicrotask(() => {
+      if (active) { setLoad(hydrated); setReviewed(false); }
+    });
+    return () => { active = false; };
   }, [stableContext]);
 
   const persist = useCallback((payload: ExpenseDraftPayload) => {

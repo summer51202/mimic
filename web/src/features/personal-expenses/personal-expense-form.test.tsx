@@ -77,7 +77,7 @@ describe('PersonalExpenseForm', () => {
     first.unmount();
 
     render(<PersonalExpenseForm {...draftProps} spaceId={spaceId} currency="TWD" timezone="Asia/Taipei" onSaved={vi.fn()} />);
-    expect(screen.getByText(/找到這個寶箱的未提交草稿/)).toBeVisible();
+    expect(await screen.findByText(/找到這個寶箱的未提交草稿/)).toBeVisible();
     expect(screen.getByLabelText('支出名稱')).toHaveValue('');
     await user.click(screen.getByRole('button', { name: '檢視草稿' }));
     expect(screen.getByLabelText('支出名稱')).toHaveValue('離線保留午餐');
@@ -87,12 +87,13 @@ describe('PersonalExpenseForm', () => {
     expect(JSON.parse(mocks.write.mock.calls[1][1].body).request_id).toBe(firstRequestId);
   });
 
-  it('does not let blank fields overwrite a draft before explicit review or discard', () => {
+  it('does not let blank fields overwrite a draft before explicit review or discard', async () => {
     saveExpenseDraft({
       actorUserId: spaceId, groupId: null, spaceId, mode: 'PERSONAL_EXPENSES', operation: 'CREATE',
       resourceId: null, spaceVersion: 2, recordVersion: null, writable: true,
     }, { title: '不可覆寫', amount: '88', occurred_on: '2026-09-12', note: '', category_id: '', tag_ids: [] });
     render(<PersonalExpenseForm {...draftProps} spaceId={spaceId} currency="TWD" timezone="Asia/Taipei" onSaved={vi.fn()} />);
+    await screen.findByText(/找到這個寶箱的未提交草稿/);
     expect(screen.getByLabelText('支出名稱')).toBeDisabled();
     expect(screen.getByRole('button', { name: '確認記帳' })).toBeDisabled();
   });

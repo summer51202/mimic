@@ -48,13 +48,14 @@ export function PersonalExpenseForm({ actorUserId, spaceId, spaceVersion, writab
     resourceId: record?.id ?? null, spaceVersion, recordVersion: record?.version ?? null, writable,
   }), [actorUserId, record, spaceId, spaceVersion, writable]);
   const draft = useExpenseDraft(context);
+  const persistDraft = draft.persist;
   const recoveryPending = draft.load.state !== 'MISSING' && !draft.reviewed;
   const draftPayload = useMemo<PersonalExpenseDraftPayload>(() => ({
     title, amount, occurred_on: date, note, category_id: category, tag_ids: [...tags].sort(),
   }), [amount, category, date, note, tags, title]);
   useEffect(() => {
-    if (dirty) draft.persist(draftPayload);
-  }, [dirty, draftPayload, draft.persist]);
+    if (dirty) persistDraft(draftPayload);
+  }, [dirty, draftPayload, persistDraft]);
   function change<T>(setter: (value: T) => void, value: T) {
     setDirty(true);
     setter(value);

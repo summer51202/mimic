@@ -26,11 +26,12 @@ export function PooledExpenseForm({ actorUserId, groupId, spaceId, spaceVersion,
     resourceId: null, spaceVersion, recordVersion: null, writable,
   }), [actorUserId, groupId, spaceId, spaceVersion, writable]);
   const draft = useExpenseDraft(context);
+  const persistDraft = draft.persist;
   const recoveryPending = draft.load.state !== 'MISSING' && !draft.reviewed;
   const draftPayload = useMemo<PooledExpenseDraftPayload>(() => ({ title, amount, occurred_on: date, payment_source: source,
     advanced_by_user_id: source === 'PARTICIPANT_ADVANCED' ? advancedBy : '',
   }), [advancedBy, amount, date, source, title]);
-  useEffect(() => { if (dirty) draft.persist(draftPayload); }, [dirty, draft.persist, draftPayload]);
+  useEffect(() => { if (dirty) persistDraft(draftPayload); }, [dirty, persistDraft, draftPayload]);
   function change<T>(setter: (next: T) => void, value: T) { setDirty(true); setter(value); }
   function reviewDraft() {
     const value = (draft.load.state === 'READY' || draft.load.state === 'STALE'

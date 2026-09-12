@@ -25,9 +25,9 @@ it('restores a failed pooled expense only after review and retries with the dura
 
   render(<PooledExpenseForm actorUserId={actor} groupId={group} spaceId={space} spaceVersion={3} writable currency="TWD"
     openedOn="2026-09-01" participants={participants} busy={false} onSubmit={submit} />);
-  expect(screen.getByText(/未提交草稿/)).toBeVisible();
+  expect(await screen.findByText(/未提交草稿/)).toBeVisible();
   expect(screen.getByLabelText('支出名稱')).toBeDisabled();
-  await userEvent.click(screen.getByRole('button', { name: '檢視草稿' }));
+  await userEvent.click(await screen.findByRole('button', { name: '檢視草稿' }));
   expect(screen.getByLabelText('支出名稱')).toHaveValue('車資');
   await userEvent.click(screen.getByRole('button', { name: '重新送出草稿' }));
   await waitFor(() => expect(submit).toHaveBeenCalledTimes(2));
@@ -47,7 +47,7 @@ it('preserves an advanced expense draft but blocks recovery for a former partici
 
   render(<PooledExpenseForm actorUserId={actor} groupId={group} spaceId={space} spaceVersion={3} writable currency="TWD"
     openedOn="2026-09-01" participants={[{ ...participants[0], effective_to: '2026-09-11' }]} busy={false} onSubmit={vi.fn()} />);
-  await userEvent.click(screen.getByRole('button', { name: '檢視草稿' }));
+  await userEvent.click(await screen.findByRole('button', { name: '檢視草稿' }));
   expect(screen.getByRole('alert')).toHaveTextContent('參與權限已變更');
   expect(screen.getByLabelText('支出名稱')).toHaveValue('');
 });
@@ -63,7 +63,7 @@ it('never auto-submits after reconnect and allows explicit discard', async () =>
   render(<PooledExpenseForm actorUserId={actor} groupId={group} spaceId={space} spaceVersion={3} writable currency="TWD"
     openedOn="2026-09-01" participants={participants} busy={false} onSubmit={submit} />);
   expect(submit).not.toHaveBeenCalled();
-  await userEvent.click(screen.getByRole('button', { name: '丟棄草稿' }));
+  await userEvent.click(await screen.findByRole('button', { name: '丟棄草稿' }));
   expect(screen.queryByText(/未提交草稿/)).not.toBeInTheDocument();
   expect(localStorage.length).toBe(0);
 });

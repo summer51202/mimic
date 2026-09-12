@@ -40,7 +40,7 @@ describe('expense draft recovery', () => {
   beforeEach(() => window.localStorage.clear());
   afterEach(() => cleanup());
 
-  it('does not restore or submit when connectivity returns', () => {
+  it('does not restore or submit when connectivity returns', async () => {
     saveExpenseDraft(context, payload);
     const review = vi.fn();
     render(<Harness onReview={review} />);
@@ -49,21 +49,21 @@ describe('expense draft recovery', () => {
       window.dispatchEvent(new Event('online'));
     });
     expect(review).not.toHaveBeenCalled();
-    expect(screen.getByText('READY:ok:pending')).toBeInTheDocument();
+    expect(await screen.findByText('READY:ok:pending')).toBeInTheDocument();
   });
 
-  it('requires explicit review and offers exact discard', () => {
+  it('requires explicit review and offers exact discard', async () => {
     saveExpenseDraft(context, payload);
     const review = vi.fn();
     render(<Harness onReview={review} />);
-    fireEvent.click(screen.getByRole('button', { name: '檢視草稿' }));
+    fireEvent.click(await screen.findByRole('button', { name: '檢視草稿' }));
     expect(review).toHaveBeenCalledWith(payload);
     expect(screen.getByText('READY:ok:reviewed')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '丟棄草稿' }));
     expect(screen.getByText('MISSING:ok:pending')).toBeInTheDocument();
   });
 
-  it('shows stale and blocked drafts without claiming submission', () => {
+  it('shows stale and blocked drafts without claiming submission', async () => {
     saveExpenseDraft(context, payload);
     const stale = render(<Harness />);
     stale.unmount();
@@ -73,15 +73,15 @@ describe('expense draft recovery', () => {
       return <DraftRecovery load={draft.load} reviewed={draft.reviewed} onReview={draft.review} onDiscard={draft.discard} />;
     }
     const view = render(<Stale />);
-    expect(screen.getByText(/伺服器狀態已有變更/)).toBeInTheDocument();
+    expect(await screen.findByText(/伺服器狀態已有變更/)).toBeInTheDocument();
     view.unmount();
     function Blocked() {
       const draft = useExpenseDraft({ ...context, writable: false });
       return <DraftRecovery load={draft.load} reviewed={draft.reviewed} onReview={draft.review} onDiscard={draft.discard} />;
     }
     render(<Blocked />);
+    expect(await screen.findByText(/目前不可寫入/)).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: '檢視草稿' })).not.toBeInTheDocument();
-    expect(screen.getByText(/目前不可寫入/)).toBeInTheDocument();
   });
 
   it('reports storage failures instead of promising a durable save', () => {
