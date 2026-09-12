@@ -16,10 +16,11 @@ import AppLoading from "./loading";
 import AppNotFound from "./not-found";
 import AppPage from "./page";
 
+vi.mock("server-only", () => ({}));
+
 const {
   cookiesMock,
   getFundSummaryMock,
-  getGroupDashboardMock,
   getGroupMock,
   getSettingsProfileMock,
   listFundsMock,
@@ -30,14 +31,13 @@ const {
   notFoundMock,
   refreshMock,
   captureExceptionMock,
-  treasuryOpeningMock,
+  loadHomeMock,
   authenticatedServerApiMock,
   loadSharedWorkspaceMock,
   loadPooledWorkspaceMock,
 } = vi.hoisted(() => ({
   cookiesMock: vi.fn(),
   getFundSummaryMock: vi.fn(),
-  getGroupDashboardMock: vi.fn(),
   getGroupMock: vi.fn(),
   getSettingsProfileMock: vi.fn(),
   listFundsMock: vi.fn(),
@@ -50,25 +50,11 @@ const {
   }),
   refreshMock: vi.fn(),
   captureExceptionMock: vi.fn(),
-  treasuryOpeningMock: vi.fn(),
+  loadHomeMock: vi.fn(),
   authenticatedServerApiMock: vi.fn(),
   loadSharedWorkspaceMock: vi.fn(),
   loadPooledWorkspaceMock: vi.fn(),
 }));
-
-function deferred<T>() {
-  let resolve!: (value: T | PromiseLike<T>) => void;
-  const promise = new Promise<T>((resolvePromise) => {
-    resolve = resolvePromise;
-  });
-  return { promise, resolve };
-}
-
-async function flushMicrotasks() {
-  await Promise.resolve();
-  await Promise.resolve();
-  await Promise.resolve();
-}
 
 vi.mock("@sentry/nextjs", () => ({ captureException: captureExceptionMock }));
 
@@ -84,12 +70,12 @@ vi.mock("@/features/groups/group-selection", () => ({
 }));
 vi.mock("@/features/groups/group-queries", () => ({
   getGroup: getGroupMock,
-  getGroupDashboard: getGroupDashboardMock,
   listGroups: listGroupsMock,
   listMembers: listMembersMock,
 }));
-vi.mock("@/features/groups/treasury-opening-delay", () => ({
-  waitForTreasuryOpening: treasuryOpeningMock,
+vi.mock("@/features/home/home-queries", () => ({ loadHome: loadHomeMock }));
+vi.mock("@/features/home/home-page", () => ({
+  HomePage: ({ data, openQuick }: { data: { context: { kind: string } }; openQuick: boolean }) => <div>home:{data.context.kind}:{String(openQuick)}</div>,
 }));
 vi.mock("@/features/funds/fund-queries", () => ({
   getFundSummary: getFundSummaryMock,
@@ -125,8 +111,8 @@ vi.mock("@/features/groups/group-list", () => ({
   ),
 }));
 vi.mock("@/features/groups/group-detail", () => ({
-  GroupDetailView: ({ funds, members }: { funds: unknown[]; members: unknown[] }) => (
-    <div>group detail:{members.length}:{funds.length}</div>
+  GroupDetailView: ({ members, sharedSpaces, pooledSpaces }: { members: unknown[]; sharedSpaces: unknown[]; pooledSpaces: unknown[] }) => (
+    <div>group detail:{members.length}:{sharedSpaces.length}:{pooledSpaces.length}</div>
   ),
 }));
 vi.mock("@/features/funds/fund-summary", () => ({
@@ -140,7 +126,6 @@ afterEach(() => {
 beforeEach(() => {
   cookiesMock.mockReset();
   getFundSummaryMock.mockReset();
-  getGroupDashboardMock.mockReset();
   getGroupMock.mockReset();
   getSettingsProfileMock.mockReset();
   listFundsMock.mockReset();
@@ -153,7 +138,7 @@ beforeEach(() => {
   });
   refreshMock.mockReset();
   captureExceptionMock.mockReset();
-  treasuryOpeningMock.mockReset().mockResolvedValue(undefined);
+  loadHomeMock.mockReset();
   authenticatedServerApiMock.mockReset();
   loadSharedWorkspaceMock.mockReset();
   loadPooledWorkspaceMock.mockReset();
@@ -227,76 +212,34 @@ describe("authenticated route boundaries", () => {
     expect(state).not.toHaveTextContent(/group-private|fund-private/i);
   });
 
-  it("holds successful dashboard output until the opening boundary resolves", async () => {
-    const opening = deferred<void>();
+  it("loads the personal treasure home by default", async () => {
     listGroupsMock.mockResolvedValue([{ id: "group-1" }]);
-    getGroupDashboardMock.mockResolvedValue({ group: { id: "group-1" } });
-    treasuryOpeningMock.mockReturnValue(opening.promise);
-
-    let settled = false;
-    const pagePromise = AppPage({ searchParams: Promise.resolve({}) }).then((page) => {
-      settled = true;
-      return page;
-    });
-    await flushMicrotasks();
-
-    expect(settled).toBe(false);
-    expect(treasuryOpeningMock.mock.invocationCallOrder[0]).toBeLessThan(
-      listGroupsMock.mock.invocationCallOrder[0],
-    );
-    expect(listGroupsMock).toHaveBeenCalledTimes(1);
-    expect(getGroupDashboardMock).toHaveBeenCalledWith("group-1");
-    expect(treasuryOpeningMock).toHaveBeenCalledTimes(1);
-
-    opening.resolve();
-    render(await pagePromise);
-    expect(screen.getByText("dashboard:group-1")).toBeInTheDocument();
+    loadHomeMock.mockResolvedValue({ context: { kind: "PERSONAL" } });
+    render(await AppPage({ searchParams: Promise.resolve({}) }));
+    expect(screen.getByText("home:PERSONAL:false")).toBeInTheDocument();
+    expect(loadHomeMock).toHaveBeenCalledWith(undefined);
   });
 
-  it("holds a list-groups failure until the opening boundary resolves", async () => {
-    const opening = deferred<void>();
+  it("renders a list-groups outage without attempting the private home read", async () => {
     listGroupsMock.mockRejectedValue(new ApiUnavailableError());
-    treasuryOpeningMock.mockReturnValue(opening.promise);
-
-    let settled = false;
-    const pagePromise = AppPage({ searchParams: Promise.resolve({}) }).then((page) => {
-      settled = true;
-      return page;
-    });
-    await flushMicrotasks();
-
-    expect(settled).toBe(false);
-    opening.resolve();
-    render(await pagePromise);
+    render(await AppPage({ searchParams: Promise.resolve({}) }));
     expect(screen.getByRole("alert")).toHaveTextContent(
       "Mimiku cannot reach the treasury right now.",
     );
+    expect(loadHomeMock).not.toHaveBeenCalled();
   });
 
-  it("holds a dashboard failure until the opening boundary resolves", async () => {
-    const opening = deferred<void>();
+  it("passes the selected group context to the private home projection", async () => {
     listGroupsMock.mockResolvedValue([{ id: "group-1" }]);
-    getGroupDashboardMock.mockRejectedValue(new ApiUnavailableError());
-    treasuryOpeningMock.mockReturnValue(opening.promise);
-
-    let settled = false;
-    const pagePromise = AppPage({ searchParams: Promise.resolve({}) }).then((page) => {
-      settled = true;
-      return page;
-    });
-    await flushMicrotasks();
-
-    expect(settled).toBe(false);
-    opening.resolve();
-    render(await pagePromise);
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      "Mimiku cannot reach the treasury right now.",
-    );
+    loadHomeMock.mockResolvedValue({ context: { kind: "GROUP" } });
+    render(await AppPage({ searchParams: Promise.resolve({ group: "group-1", quick: "1" }) }));
+    expect(screen.getByText("home:GROUP:true")).toBeInTheDocument();
+    expect(loadHomeMock).toHaveBeenCalledWith("group-1");
   });
 
-  it("wires a dashboard second-stage outage to recovery", async () => {
+  it("wires a home projection outage to recovery", async () => {
     listGroupsMock.mockResolvedValue([{ id: "group-1" }]);
-    getGroupDashboardMock.mockRejectedValue(new ApiUnavailableError());
+    loadHomeMock.mockRejectedValue(new ApiUnavailableError());
 
     render(await AppPage({ searchParams: Promise.resolve({}) }));
 
@@ -358,13 +301,14 @@ describe("authenticated route boundaries", () => {
   it("keeps group-detail parallel reads and rethrows unknown failures", async () => {
     getGroupMock.mockResolvedValue({ id: "group-1" });
     listMembersMock.mockResolvedValue([{ id: "member-1" }]);
-    listFundsMock.mockResolvedValue([{ id: "fund-1" }]);
+    listGroupSharedSpacesMock.mockResolvedValue([{ id: "shared-1" }]);
+    listGroupPooledSpacesMock.mockResolvedValue([{ id: "pooled-1" }]);
 
     render(await GroupDetailPage({ params: Promise.resolve({ groupId: "group-1" }) }));
-    expect(screen.getByText("group detail:1:1")).toBeInTheDocument();
+    expect(screen.getByText("group detail:1:1:1")).toBeInTheDocument();
     expect(getGroupMock).toHaveBeenCalledWith("group-1");
     expect(listMembersMock).toHaveBeenCalledWith("group-1");
-    expect(listFundsMock).toHaveBeenCalledWith("group-1");
+    expect(listFundsMock).not.toHaveBeenCalled();
     expect(listGroupSharedSpacesMock).toHaveBeenCalledWith("group-1");
     expect(listGroupPooledSpacesMock).toHaveBeenCalledWith("group-1");
 

@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { useId, useState } from "react";
 
-import { FundList } from "@/features/funds/fund-list";
 import { SharedSpaceList } from "@/features/shared-expenses/shared-space-list";
 import { PooledSpaceList } from "@/features/pooled-funds/pooled-space-list";
 import type { FinancialSpace } from "@/shared/api/financial-space-contracts";
-import type { Fund, GroupDetail, Member } from "@/shared/api/domain-contracts";
+import type { GroupDetail, Member } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelFrame } from "@/shared/ui/pixel-frame";
 
@@ -18,7 +17,6 @@ import { MemberRoster } from "./member-roster";
 import styles from "./group-management.module.css";
 
 interface GroupDetailViewProps {
-  funds?: Fund[];
   group: GroupDetail;
   members: Member[];
   sharedSpaces?: FinancialSpace[];
@@ -27,7 +25,6 @@ interface GroupDetailViewProps {
 }
 
 export function GroupDetailView({
-  funds = [],
   group,
   members,
   sharedSpaces = [],
@@ -80,7 +77,6 @@ export function GroupDetailView({
           <h2>Members</h2>
           <MemberRoster members={members} />
         </PixelFrame>
-        <FundList funds={funds} groupId={group.id} />
         <SharedSpaceList groupId={group.id} spaces={sharedSpaces} defaultCurrency={group.default_currency} />
         <PooledSpaceList groupId={group.id} spaces={pooledSpaces} defaultCurrency={group.default_currency} />
         {renaming ? (

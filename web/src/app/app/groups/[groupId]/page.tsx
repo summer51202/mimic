@@ -1,4 +1,3 @@
-import { listFunds } from "@/features/funds/fund-queries";
 import { getGroup, listMembers } from "@/features/groups/group-queries";
 import { GroupDetailView } from "@/features/groups/group-detail";
 import { listGroupSharedSpaces } from "@/features/shared-expenses/shared-queries";
@@ -21,7 +20,6 @@ export default async function GroupDetailPage({
     reads = await Promise.all([
       getGroup(groupId),
       listMembers(groupId),
-      listFunds(groupId),
       listGroupSharedSpaces(groupId),
       listGroupPooledSpaces(groupId),
     ]);
@@ -29,7 +27,7 @@ export default async function GroupDetailPage({
     return <AppReadFailure error={error} />;
   }
 
-  const [group, members, funds, sharedSpaces, pooledSpaces] = reads;
+  const [group, members, sharedSpaces, pooledSpaces] = reads;
 
-  return <GroupDetailView funds={funds} group={group} members={members} sharedSpaces={sharedSpaces} pooledSpaces={pooledSpaces} />;
+  return <GroupDetailView group={group} members={members} sharedSpaces={sharedSpaces} pooledSpaces={pooledSpaces} />;
 }
