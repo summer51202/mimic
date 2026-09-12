@@ -2,15 +2,13 @@ export type AppSection =
   | "/app"
   | "/app/personal"
   | "/app/groups"
-  | "/app/funds"
-  | "/app/activity"
+  | "/app/tasks"
   | "/app/settings";
 
 const appSections: AppSection[] = [
   "/app/personal",
   "/app/groups",
-  "/app/funds",
-  "/app/activity",
+  "/app/tasks",
   "/app/settings",
   "/app",
 ];

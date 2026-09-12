@@ -13,35 +13,29 @@ type AppNavigationProps = {
 };
 
 const navigationItems = [
-  { icon: "P", href: "/app/personal", label: "我的寶箱", status: "available" },
   {
-    icon: "O",
+    icon: "H",
     href: "/app",
-    label: "Overview",
+    label: "首頁",
     status: "available",
   },
+  { icon: "P", href: "/app/personal", label: "我的寶箱", status: "available" },
   {
     icon: "G",
     href: "/app/groups",
-    label: "Groups",
+    label: "共同群組",
     status: "available",
   },
   {
-    icon: "F",
-    href: "/app/funds",
-    label: "Funds",
-    status: "available",
-  },
-  {
-    icon: "A",
-    href: "/app/activity",
-    label: "Activity",
+    icon: "!",
+    href: "/app/tasks",
+    label: "任務",
     status: "available",
   },
   {
     icon: "S",
     href: "/app/settings",
-    label: "Settings",
+    label: "設定",
     status: "available",
   },
 ] as const;
