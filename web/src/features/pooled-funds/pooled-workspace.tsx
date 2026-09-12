@@ -17,6 +17,7 @@ import { PixelField } from '@/shared/ui/pixel-field';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
 import type { PooledWorkspaceData } from './pooled-queries';
+import { PooledExpenseForm } from './pooled-expense-form';
 
 type Dialog = 'commitment' | 'expense' | 'returns' | null;
 
@@ -81,12 +82,12 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
     return messages[failure.code] ?? '目前不能完成此操作；請檢查狀態並重新讀取。';
   }
 
-  async function mutation(path: string, payload: object, fingerprint: string, parse: (value: unknown) => unknown, success: string) {
+  async function mutation(path: string, payload: object, fingerprint: string, parse: (value: unknown) => unknown, success: string, durableRequestId?: string) {
     if (!online || busy) return false;
     setBusy(true); setError('');
     try {
       const response = await appFetch<{ data: unknown }>(path, { method: 'POST', body: JSON.stringify({
-        request_id: requestId(fingerprint), ...payload,
+        request_id: durableRequestId ?? requestId(fingerprint), ...payload,
       }) });
       parse(response.data); attempts.current.delete(fingerprint);
       await refresh(); setNotice(success); return true;
@@ -218,9 +219,10 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
         }} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'expense'} title="新增基金支出" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
-      {dialog === 'expense' && <ExpenseForm currency={space.currency} openedOn={space.opened_on} participants={data.participants} busy={busy || !online}
-        onSubmit={async (payload, fingerprint) => { const ok = await mutation(`/api/app/spaces/${space.id}/pooled-funds/expenses`, payload, fingerprint,
-          pooledExpenseMutationSchema.parse, '基金支出已記錄。'); if (ok) setDialog(null); }} />}
+      {dialog === 'expense' && <PooledExpenseForm actorUserId={currentUserId} groupId={group.id} spaceId={space.id} spaceVersion={space.version} writable={active}
+        currency={space.currency} openedOn={space.opened_on} participants={data.participants} busy={busy}
+        onSubmit={async (payload, durableRequestId) => { const ok = await mutation(`/api/app/spaces/${space.id}/pooled-funds/expenses`, payload, 'pooled-expense-draft',
+          pooledExpenseMutationSchema.parse, '基金支出已記錄。', durableRequestId); if (ok) setDialog(null); return ok; }} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'returns'} title="指定基金退回" description="逐一指定收款人與金額；系統不會自動平分。" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
       {dialog === 'returns' && <ReturnPlanForm currency={space.currency} participants={data.participants} total={workspace.summary.book_balance_minor} busy={busy || !online}
@@ -267,31 +269,6 @@ function CommitmentForm({ space, participants, commitment, busy, onSubmit }: {
     <fieldset><legend>指定金額（留白使用預設）</legend>{participants.filter((person) => person.effective_to === null).map((person) => <PixelField key={person.user_id}
       label={`${person.display_name}的指定金額`} inputMode="decimal" value={overrides[person.user_id] ?? ''} onChange={(event) => setOverrides((current) => ({ ...current, [person.user_id]: event.target.value }))} />)}</fieldset>
     {error && <p role="alert">{error}</p>}<PixelButton disabled={busy}>{busy ? '儲存中…' : '儲存投入排程'}</PixelButton>
-  </form>;
-}
-
-function ExpenseForm({ currency, openedOn, participants, busy, onSubmit }: {
-  currency: string; openedOn: string; participants: PooledWorkspaceData['participants']; busy: boolean;
-  onSubmit: (payload: Record<string, unknown>, fingerprint: string) => Promise<void>;
-}) {
-  const [title, setTitle] = useState(''); const [amount, setAmount] = useState(''); const [date, setDate] = useState(openedOn);
-  const [source, setSource] = useState<'FUND_PAID' | 'PARTICIPANT_ADVANCED'>('FUND_PAID');
-  const [advancedBy, setAdvancedBy] = useState(''); const [error, setError] = useState('');
-  async function submit(event: FormEvent) {
-    event.preventDefault(); setError('');
-    try { const payload = { amount_minor: majorToMinorString(amount, currency), occurred_on: date, title: title.trim(),
-      payment_source: source, ...(source === 'PARTICIPANT_ADVANCED' ? { advanced_by_user_id: advancedBy } : {}) };
-      await onSubmit(payload, `expense:${JSON.stringify(payload)}`); }
-    catch { setError('請填寫名稱、日期、正數金額與代墊參與者。'); }
-  }
-  return <form className="pooled-form" onSubmit={submit}><PixelField label="支出名稱" value={title} onChange={(event) => setTitle(event.target.value)} required />
-    <PixelField label="金額" inputMode="decimal" value={amount} onChange={(event) => setAmount(event.target.value)} required />
-    <PixelField label="支出日期" type="date" value={date} onChange={(event) => setDate(event.target.value)} required />
-    <fieldset><legend>付款來源</legend><label><input type="radio" name="source" checked={source === 'FUND_PAID'} onChange={() => setSource('FUND_PAID')} />基金直接支付</label>
-      <label><input type="radio" name="source" checked={source === 'PARTICIPANT_ADVANCED'} onChange={() => setSource('PARTICIPANT_ADVANCED')} />參與者先代墊</label></fieldset>
-    {source === 'PARTICIPANT_ADVANCED' && <label className="pixel-field">代墊參與者<select aria-label="代墊參與者" required className="pixel-field__input" value={advancedBy} onChange={(event) => setAdvancedBy(event.target.value)}>
-      <option value="">選擇參與者</option>{participants.filter((person) => person.effective_to === null).map((person) => <option key={person.user_id} value={person.user_id}>{person.display_name}</option>)}</select></label>}
-    {error && <p role="alert">{error}</p>}<PixelButton disabled={busy || !title.trim() || !amount || (source === 'PARTICIPANT_ADVANCED' && !advancedBy)}>記錄基金支出</PixelButton>
   </form>;
 }
 

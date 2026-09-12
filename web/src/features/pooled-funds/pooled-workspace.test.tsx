@@ -53,6 +53,8 @@ const initial = {
 beforeEach(() => {
   appFetchMock.mockReset();
   replaceMock.mockReset();
+  localStorage.clear();
+  Object.defineProperty(navigator, 'onLine', { configurable: true, value: true });
   Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value() { this.setAttribute('open', ''); } });
   Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value() { this.removeAttribute('open'); } });
 });
