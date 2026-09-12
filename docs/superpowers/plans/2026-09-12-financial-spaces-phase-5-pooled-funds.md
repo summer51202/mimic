@@ -129,11 +129,11 @@ Web additions:
 
 ### Task 7: Responsive pooled workspace
 
-- [ ] Use `frontend-design` and `ui-ux-pro-max` before UI implementation. Write failing component tests for box creation/opening, manager schedule/override editing, participant occurrence actions, pooled expense source selection, advance participant, exact balance cards, shortfall warning, reimbursement actions, closing/return/archive, and role-specific visibility.
-- [ ] Add failure-state REDs for loading, empty, error, offline prevention, stale-version refresh with preserved safe input, same UUID retry, focus restoration, keyboard operation, action wrapping, dialog bounds and no horizontal overflow.
-- [ ] Implement the minimal pixel-world workspace using existing typography, buttons, dialogs, tickets, coin/vault motifs and responsive primitives; never add pooled expenses to personal records.
-- [ ] Run focused and full Web component tests GREEN.
-- [ ] Commit `feat(web): manage pooled fund journeys`.
+- [x] Use `frontend-design` and `ui-ux-pro-max` before UI implementation. Write failing component tests for box creation/opening, manager schedule/override editing, participant occurrence actions, pooled expense source selection, advance participant, exact balance cards, shortfall warning, reimbursement actions, closing/return/archive, and role-specific visibility.
+- [x] Add failure-state REDs for loading, empty, error, offline prevention, stale-version refresh with preserved safe input, same UUID retry, focus restoration, keyboard operation, action wrapping, dialog bounds and no horizontal overflow.
+- [x] Implement the minimal pixel-world workspace using existing typography, buttons, dialogs, tickets, coin/vault motifs and responsive primitives; never add pooled expenses to personal records.
+- [x] Run focused and full Web component tests GREEN.
+- [x] Commit `feat(web): manage pooled fund journeys`.
 
 ### Task 8: Real-backend browser acceptance
 

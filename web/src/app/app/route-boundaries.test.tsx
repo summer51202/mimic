@@ -11,6 +11,7 @@ import GroupDetailPage from "./groups/[groupId]/page";
 import JoinGroupPage from "./groups/join/page";
 import GroupsPage from "./groups/page";
 import SettingsPage from "./settings/page";
+import SpacePage from "./spaces/[spaceId]/page";
 import AppLoading from "./loading";
 import AppNotFound from "./not-found";
 import AppPage from "./page";
@@ -24,11 +25,15 @@ const {
   listFundsMock,
   listGroupsMock,
   listGroupSharedSpacesMock,
+  listGroupPooledSpacesMock,
   listMembersMock,
   notFoundMock,
   refreshMock,
   captureExceptionMock,
   treasuryOpeningMock,
+  authenticatedServerApiMock,
+  loadSharedWorkspaceMock,
+  loadPooledWorkspaceMock,
 } = vi.hoisted(() => ({
   cookiesMock: vi.fn(),
   getFundSummaryMock: vi.fn(),
@@ -38,6 +43,7 @@ const {
   listFundsMock: vi.fn(),
   listGroupsMock: vi.fn(),
   listGroupSharedSpacesMock: vi.fn(),
+  listGroupPooledSpacesMock: vi.fn(),
   listMembersMock: vi.fn(),
   notFoundMock: vi.fn(() => {
     throw new Error("NEXT_NOT_FOUND");
@@ -45,6 +51,9 @@ const {
   refreshMock: vi.fn(),
   captureExceptionMock: vi.fn(),
   treasuryOpeningMock: vi.fn(),
+  authenticatedServerApiMock: vi.fn(),
+  loadSharedWorkspaceMock: vi.fn(),
+  loadPooledWorkspaceMock: vi.fn(),
 }));
 
 function deferred<T>() {
@@ -88,7 +97,15 @@ vi.mock("@/features/funds/fund-queries", () => ({
 }));
 vi.mock("@/features/shared-expenses/shared-queries", () => ({
   listGroupSharedSpaces: listGroupSharedSpacesMock,
+  loadSharedWorkspace: loadSharedWorkspaceMock,
 }));
+vi.mock("@/features/pooled-funds/pooled-queries", () => ({
+  listGroupPooledSpaces: listGroupPooledSpacesMock,
+  loadPooledWorkspace: loadPooledWorkspaceMock,
+}));
+vi.mock("@/shared/api/authenticated-server-api", () => ({ authenticatedServerApi: authenticatedServerApiMock }));
+vi.mock("@/features/shared-expenses/shared-workspace", () => ({ SharedWorkspace: () => <div>shared workspace</div> }));
+vi.mock("@/features/pooled-funds/pooled-workspace", () => ({ PooledWorkspace: () => <div>pooled workspace</div> }));
 vi.mock("@/features/settings/settings-queries", () => ({
   getSettingsProfile: getSettingsProfileMock,
 }));
@@ -129,6 +146,7 @@ beforeEach(() => {
   listFundsMock.mockReset();
   listGroupsMock.mockReset();
   listGroupSharedSpacesMock.mockReset().mockResolvedValue([]);
+  listGroupPooledSpacesMock.mockReset().mockResolvedValue([]);
   listMembersMock.mockReset();
   notFoundMock.mockReset().mockImplementation(() => {
     throw new Error("NEXT_NOT_FOUND");
@@ -136,6 +154,9 @@ beforeEach(() => {
   refreshMock.mockReset();
   captureExceptionMock.mockReset();
   treasuryOpeningMock.mockReset().mockResolvedValue(undefined);
+  authenticatedServerApiMock.mockReset();
+  loadSharedWorkspaceMock.mockReset();
+  loadPooledWorkspaceMock.mockReset();
   cookiesMock.mockResolvedValue({ get: vi.fn() });
 });
 
@@ -345,6 +366,7 @@ describe("authenticated route boundaries", () => {
     expect(listMembersMock).toHaveBeenCalledWith("group-1");
     expect(listFundsMock).toHaveBeenCalledWith("group-1");
     expect(listGroupSharedSpacesMock).toHaveBeenCalledWith("group-1");
+    expect(listGroupPooledSpacesMock).toHaveBeenCalledWith("group-1");
 
     cleanup();
     const unknown = new Error("parallel read failed");
@@ -362,6 +384,23 @@ describe("authenticated route boundaries", () => {
 
     expect(screen.getByText("fund summary")).toBeInTheDocument();
     expect(getFundSummaryMock).toHaveBeenCalledWith("fund-1");
+  });
+
+  it("dispatches a participant space to its mode-specific workspace", async () => {
+    const base = { id: "10000000-0000-4000-8000-000000000001", name: "Box", access: "PARTICIPANT", status: "ACTIVE",
+      currency: "TWD", timezone: "Asia/Taipei", opened_on: "2026-09-01", group_id: "10000000-0000-4000-8000-000000000002",
+      owner_user_id: null, role: "MANAGER", version: 1, first_formal_record_at: null };
+    authenticatedServerApiMock.mockResolvedValueOnce({ ...base, mode: "POOLED_FUND" });
+    loadPooledWorkspaceMock.mockResolvedValueOnce({});
+    render(await SpacePage({ params: Promise.resolve({ spaceId: base.id }) }));
+    expect(screen.getByText("pooled workspace")).toBeVisible();
+    expect(loadPooledWorkspaceMock).toHaveBeenCalledWith(base.id);
+
+    cleanup();
+    authenticatedServerApiMock.mockResolvedValueOnce({ ...base, mode: "SHARED_EXPENSES" });
+    loadSharedWorkspaceMock.mockResolvedValueOnce({});
+    render(await SpacePage({ params: Promise.resolve({ spaceId: base.id }) }));
+    expect(screen.getByText("shared workspace")).toBeVisible();
   });
 
   it("wires a fund summary outage to recovery", async () => {

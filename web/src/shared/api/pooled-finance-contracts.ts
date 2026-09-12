@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { expenseRecordSchema } from './personal-expense-contracts';
+import { financialSpaceSchema } from './financial-space-contracts';
 
 const uuid = z.string().uuid();
 const iso = z.iso.datetime({ offset: true });
@@ -122,6 +123,7 @@ export const pooledOccurrenceMutationSchema = z.object({
 export const pooledReimbursementMutationSchema = z.object({ reimbursement: pooledReimbursementSchema, summary: pooledSummarySchema }).strict();
 export const pooledCorrectionMutationSchema = z.object({ correction: pooledCorrectionSchema, summary: pooledSummarySchema }).strict();
 export const pooledReturnMutationSchema = z.object({ plan: pooledReturnPlanSchema, summary: pooledSummarySchema }).strict();
+export const pooledLifecycleMutationSchema = z.object({ space: financialSpaceSchema, summary: pooledSummarySchema }).strict();
 
 export type PooledCommitment = z.infer<typeof pooledCommitmentSchema>;
 export type PooledExpense = z.infer<typeof pooledExpenseSchema>;
