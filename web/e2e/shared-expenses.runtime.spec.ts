@@ -231,9 +231,11 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
       await restrictedPage.goto(`/app/spaces/${spaceId}`);
       await expect(restrictedPage.locator('body')).not.toContainText('旅行分帳');
       await expect(restrictedPage.locator('body')).not.toContainText('住宿（已檢視）');
-      const oldRoute = await restrictedPage.goto(`/app/funds/${spaceId}`);
-      expect(oldRoute?.status()).toBe(404);
-      await expect(restrictedPage.locator('body')).not.toContainText('旅行分帳');
+      for (const legacyPath of [`/app/funds/${spaceId}`, `/app/activity?fund=${spaceId}`, `/app/groups/${group.id}/funds/new`]) {
+        const oldRoute = await restrictedPage.goto(legacyPath);
+        expect(oldRoute?.status(), legacyPath).toBe(404);
+        await expect(restrictedPage.locator('body')).not.toContainText('旅行分帳');
+      }
       const oldBff = await restrictedPage.request.get(`/api/app/funds/${spaceId}`);
       expect(oldBff.status()).toBe(404);
       expect(await oldBff.text()).not.toContain('旅行分帳');
