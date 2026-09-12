@@ -12,6 +12,7 @@ import { PersonalExpensesModule } from './modules/personal-expenses/personal-exp
 import { SharedExpensesModule } from './modules/shared-expenses/shared-expenses.module';
 import { SharedSettlementsModule } from './modules/shared-settlements/shared-settlements.module';
 import { PooledFundsModule } from './modules/pooled-funds/pooled-funds.module';
+import { HomeModule } from './modules/home/home.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { SettlementsModule } from './modules/settlements/settlements.module';
@@ -32,6 +33,7 @@ import { UsersModule } from './modules/users/users.module';
     SharedExpensesModule,
     SharedSettlementsModule,
     PooledFundsModule,
+    HomeModule,
     ContributionsModule,
     ExpensesModule,
     SettlementsModule,
