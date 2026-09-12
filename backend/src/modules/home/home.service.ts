@@ -73,7 +73,7 @@ export class HomeService {
     const sharedIds = spaces.filter((space) => space.mode === 'SHARED_EXPENSES').map((space) => space.id);
     const managers = new Set(spaces.filter((space) => space.participants[0].role === 'MANAGER').map((space) => space.id));
     const [occurrences, reimbursements, transfers, summaries] = await Promise.all([
-      tx.pooledContributionOccurrence.findMany({ where: { participantUserId: actorId, status: 'EXPECTED', commitment: { spaceId: { in: pooledIds } } },
+      tx.pooledContributionOccurrence.findMany({ where: { participantUserId: actorId, status: 'EXPECTED', commitment: { spaceId: { in: pooledIds }, status: 'ACTIVE' } },
         select: { id: true, dueOn: true, amountMinor: true, commitment: { select: { spaceId: true } } } }),
       tx.pooledReimbursement.findMany({ where: { spaceId: { in: pooledIds }, OR: [
         { status: 'AWAITING_PAYMENT', spaceId: { in: [...managers] } }, { status: 'SENT', participantUserId: actorId },

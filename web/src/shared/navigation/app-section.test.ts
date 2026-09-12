@@ -22,6 +22,7 @@ describe('quickExpenseHref', () => {
     expect(quickExpenseHref(`/app/spaces/${id}`, '')).toBe(`/app/spaces/${id}?quick=1`);
     expect(quickExpenseHref('/app/personal', `space=${id}`)).toBe(`/app/personal?space=${id}&quick=1`);
     expect(quickExpenseHref('/app', `group=${id}`)).toBe(`/app?group=${id}&quick=1`);
+    expect(quickExpenseHref(`/app/groups/${id}`, '')).toBe(`/app?group=${id}&quick=1`);
     expect(quickExpenseHref('/app/tasks', '')).toBe('/app?quick=1');
   });
 });

@@ -29,12 +29,14 @@ export const homeResponseSchema = z.object({
 }).strict();
 
 const taskSchema = z.object({
-  id: z.string().regex(/^(POOLED_CONTRIBUTION|POOLED_REIMBURSEMENT_SEND|POOLED_REIMBURSEMENT_RECEIVE|SHARED_TRANSFER_SEND|SHARED_TRANSFER_RECEIVE|POOLED_SHORTFALL):[0-9a-f-]{36}$/i),
+  id: z.string().regex(/^(POOLED_CONTRIBUTION|POOLED_REIMBURSEMENT_SEND|POOLED_REIMBURSEMENT_RECEIVE|SHARED_TRANSFER_SEND|SHARED_TRANSFER_RECEIVE|POOLED_SHORTFALL):.+$/),
   kind: z.enum(['POOLED_CONTRIBUTION', 'POOLED_REIMBURSEMENT_SEND', 'POOLED_REIMBURSEMENT_RECEIVE', 'SHARED_TRANSFER_SEND', 'SHARED_TRANSFER_RECEIVE', 'POOLED_SHORTFALL']),
   urgency: z.enum(['ACTION_REQUIRED', 'OVERDUE', 'ATTENTION']),
   space: z.object({ id: uuid, name: z.string().min(1).max(100), mode: z.enum(['SHARED_EXPENSES', 'POOLED_FUND']), currency: currencySchema }).strict(),
   amount_minor: unsigned, due_on: z.iso.date().nullable(), href: z.string().regex(/^\/app\/spaces\/[0-9a-f-]{36}$/i),
 }).strict().superRefine((value, ctx) => {
+  const [idKind, entityId] = value.id.split(':');
+  if (idKind !== value.kind || !uuid.safeParse(entityId).success) ctx.addIssue({ code: 'custom', message: 'TASK_ID_INVALID' });
   if (value.href !== `/app/spaces/${value.space.id}`) ctx.addIssue({ code: 'custom', message: 'TASK_HREF_INVALID' });
   if (value.kind.startsWith('SHARED_') !== (value.space.mode === 'SHARED_EXPENSES')) ctx.addIssue({ code: 'custom', message: 'TASK_MODE_INVALID' });
 });

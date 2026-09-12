@@ -25,4 +25,12 @@ describe('P6 home contracts', () => {
       href: 'https://attacker.test/private',
     }] })).toThrow();
   });
+
+  it('rejects malformed UUIDs inside composite task identifiers', () => {
+    expect(() => taskCenterSchema.parse({ count: 1, generated_at: '2026-09-12T00:00:00.000Z', items: [{
+      id: `POOLED_SHORTFALL:${'a'.repeat(36)}`, kind: 'POOLED_SHORTFALL', urgency: 'ATTENTION',
+      space: { id: base.id, name: 'Pool', mode: 'POOLED_FUND', currency: 'TWD' }, amount_minor: '1', due_on: null,
+      href: `/app/spaces/${base.id}`,
+    }] })).toThrow();
+  });
 });

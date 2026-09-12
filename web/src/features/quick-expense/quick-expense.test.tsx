@@ -4,7 +4,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 import type { HomeCard } from '@/shared/api/home-contracts';
 import { QuickExpense } from './quick-expense';
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  Object.defineProperty(window.navigator, 'onLine', { configurable: true, value: true });
+});
 const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
 const card = (mode: 'PERSONAL_EXPENSES' | 'SHARED_EXPENSES' | 'POOLED_FUND', n: number): Extract<HomeCard, { access: 'PARTICIPANT' }> => {
   const base = { access: 'PARTICIPANT' as const, id: id(n), name: `${mode}-${n}`, currency: 'TWD', status: 'ACTIVE' as const, recent_activity: [] };
@@ -14,6 +17,13 @@ const card = (mode: 'PERSONAL_EXPENSES' | 'SHARED_EXPENSES' | 'POOLED_FUND', n: 
 };
 
 describe('quick expense routing', () => {
+  it('remains visibly disabled offline without a fake hash navigation', () => {
+    Object.defineProperty(window.navigator, 'onLine', { configurable: true, value: false });
+    render(<QuickExpense cards={[card('PERSONAL_EXPENSES', 1)]} />);
+    const action = screen.getByText('記一筆支出');
+    expect(action).toHaveAttribute('aria-disabled', 'true');
+    expect(action).not.toHaveAttribute('href');
+  });
   it('skips selection for one box and routes to that mode form', () => {
     render(<QuickExpense cards={[card('POOLED_FUND', 1)]} />);
     expect(screen.getByRole('link', { name: '記一筆支出' })).toHaveAttribute('href', `/app/spaces/${id(1)}?quick=1`);

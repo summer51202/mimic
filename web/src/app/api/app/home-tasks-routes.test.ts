@@ -12,10 +12,17 @@ beforeEach(() => forward.mockReset());
 
 describe('home and tasks BFF routes', () => {
   it('rejects unknown query fields and malformed UUIDs before forwarding', async () => {
-    for (const url of ['http://localhost/api/app/home?expand=private', `http://localhost/api/app/home?group_id=${'a'.repeat(36)}`]) {
+    for (const url of ['http://localhost/api/app/home?expand=private', `http://localhost/api/app/home?group_id=${'a'.repeat(36)}`,
+      'http://localhost/api/app/home?group_id=00000000-0000-4000-8000-000000000001&group_id=00000000-0000-4000-8000-000000000002']) {
       const response = await getHome(new Request(url));
       expect(response.status).toBe(400);
     }
+    expect(forward).not.toHaveBeenCalled();
+  });
+
+  it('rejects all task projection query controls', async () => {
+    const response = await getTasks(new Request('http://localhost/api/app/tasks?expand=private'));
+    expect(response.status).toBe(400);
     expect(forward).not.toHaveBeenCalled();
   });
 
