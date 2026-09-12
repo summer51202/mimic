@@ -142,7 +142,7 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
       <div className="pooled-hero-actions">{active && <PixelButton type="button" disabled={!online || busy} onClick={() => setDialog('expense')}>新增基金支出</PixelButton>}
         {active && manager && <PixelButton type="button" emphasis="secondary" disabled={!online || busy} onClick={() => { setEditingCommitment(undefined); setDialog('commitment'); }}>建立投入排程</PixelButton>}</div>
     </header>
-    {!online && <p role="status" className="pooled-offline">目前離線，所有變更按鈕已停用；畫面保留最後確認的資料。</p>}
+    {!online && <p role="status" className="pooled-offline">目前離線；已確認資料維持不變。已開啟的支出表單會保存未提交草稿，重新連線後仍需手動檢視與送出。</p>}
     {notice && <p role="status" className="pooled-notice">{notice}</p>}
     {error && <div role="alert" className="pooled-alert"><p>{error}</p><PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void refresh()}>重新讀取</PixelButton></div>}
 

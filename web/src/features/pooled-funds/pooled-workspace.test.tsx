@@ -178,6 +178,6 @@ describe('PooledWorkspace', () => {
     render(<PooledWorkspace initial={initial} />);
     window.dispatchEvent(new Event('offline'));
     expect(screen.getByRole('button', { name: '新增基金支出' })).toBeDisabled();
-    expect(screen.getByText(/目前離線/)).toBeVisible();
+    expect(screen.getByText('目前離線；已確認資料維持不變。已開啟的支出表單會保存未提交草稿，重新連線後仍需手動檢視與送出。')).toBeVisible();
   });
 });
