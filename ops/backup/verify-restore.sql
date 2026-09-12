@@ -12,12 +12,23 @@
 \endif
 WITH required(name) AS (
   VALUES ('_prisma_migrations'), ('User'), ('groups'), ('group_members'),
-         ('group_invites'), ('funds'), ('categories'), ('contributions'),
-         ('expenses'), ('expense_payers'), ('expense_splits'), ('settlements'),
-         ('recurring_contribution_rules'), ('audit_logs')
+         ('group_invites'), ('audit_logs'), ('financial_spaces'),
+         ('space_participants'), ('space_audit_events'), ('taxonomy_terms'),
+         ('taxonomy_audit_events'), ('expense_records'), ('expense_record_tags'),
+         ('shared_expense_payers'), ('shared_expense_allocations'),
+         ('expense_mutation_receipts'), ('personal_expense_references'),
+         ('personal_expense_reference_tags'), ('personal_reference_receipts'),
+         ('shared_settlement_batches'), ('shared_settlement_transfers'),
+         ('shared_corrections'), ('shared_correction_payers'),
+         ('shared_correction_allocations'), ('shared_operation_receipts'),
+         ('pooled_commitments'), ('pooled_commitment_assignments'),
+         ('pooled_contribution_occurrences'), ('pooled_contributions'),
+         ('pooled_expense_payments'), ('pooled_reimbursements'),
+         ('pooled_corrections'), ('pooled_return_plans'), ('pooled_returns'),
+         ('pooled_transition_postings'), ('pooled_operation_receipts')
 )
 SELECT bool_and(to_regclass(format('%I.%I', 'public', name)) IS NOT NULL)
-       AND count(*) = 14 AS required_tables_ok
+       AND count(*) = 36 AS required_tables_ok
 FROM required
 \gset
 \if :required_tables_ok

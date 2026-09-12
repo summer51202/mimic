@@ -157,7 +157,7 @@ test("restore verification records migrations and exact public table counts", as
   assert.match(sql, /expected_release/);
   assert.match(sql, /required_tables_ok/);
   assert.match(sql, /group_members/);
-  assert.match(sql, /settlements/);
+  assert.match(sql, /shared_settlement_batches/);
   assert.match(sql, /\\quit 3/);
 });
 
