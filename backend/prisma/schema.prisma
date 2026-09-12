@@ -127,42 +127,61 @@ enum AuditAction {
 }
 
 model User {
-  sharedBatchesCreated        SharedSettlementBatch[]      @relation("SharedBatchCreator")
-  sharedBatchesCompleted      SharedSettlementBatch[]      @relation("SharedBatchCompleter")
-  sharedBatchesCanceled       SharedSettlementBatch[]      @relation("SharedBatchCanceler")
-  sharedTransfersFrom         SharedSettlementTransfer[]   @relation("SharedTransferFrom")
-  sharedTransfersTo           SharedSettlementTransfer[]   @relation("SharedTransferTo")
-  sharedTransfersSent         SharedSettlementTransfer[]   @relation("SharedTransferSender")
-  sharedTransfersReceived     SharedSettlementTransfer[]   @relation("SharedTransferReceiver")
-  sharedCorrections           SharedCorrection[]           @relation("SharedCorrectionCreator")
-  sharedCorrectionPayers      SharedCorrectionPayer[]
-  sharedCorrectionAllocations SharedCorrectionAllocation[]
-  sharedOperationReceipts     SharedOperationReceipt[]
-  sharedPayers                SharedExpensePayer[]
-  sharedAllocations           SharedExpenseAllocation[]
-  ownedTaxonomyTerms          TaxonomyTerm[]               @relation("TaxonomyOwner")
-  createdTaxonomyTerms        TaxonomyTerm[]               @relation("TaxonomyCreator")
-  taxonomyAuditEvents         TaxonomyAuditEvent[]         @relation("TaxonomyAuditActor")
-  createdExpenseRecords       ExpenseRecord[]              @relation("ExpenseRecordCreator")
-  updatedExpenseRecords       ExpenseRecord[]              @relation("ExpenseRecordUpdater")
-  expenseMutationReceipts     ExpenseMutationReceipt[]     @relation("ExpenseReceiptActor")
-  personalExpenseReferences   PersonalExpenseReference[]   @relation("PersonalReferenceOwner")
-  personalReferenceReceipts   PersonalReferenceReceipt[]   @relation("PersonalReferenceReceiptActor")
-  personalSpaces              FinancialSpace[]             @relation("PersonalSpaceOwner")
-  createdSpaces               FinancialSpace[]             @relation("SpaceCreator")
-  spaceParticipations         SpaceParticipant[]
-  spaceAuditEvents            SpaceAuditEvent[]            @relation("SpaceAuditActor")
-  id                          String                       @id @default(uuid()) @db.Uuid
-  email                       String                       @unique @db.VarChar(255)
-  passwordHash                String                       @map("password_hash") @db.VarChar(255)
-  displayName                 String                       @map("display_name") @db.VarChar(100)
-  mimicId                     String                       @unique @map("mimic_id") @db.VarChar(15)
-  avatarUrl                   String?                      @map("avatar_url") @db.VarChar(500)
-  locale                      String                       @default("zh-TW") @db.VarChar(20)
-  timezone                    String                       @default("Asia/Taipei") @db.VarChar(100)
-  status                      UserStatus                   @default(ACTIVE)
-  createdAt                   DateTime                     @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt                   DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  pooledCommitmentsCreated     PooledCommitment[]             @relation("PooledCommitmentCreator")
+  pooledAssignments            PooledCommitmentAssignment[]
+  pooledOccurrences            PooledContributionOccurrence[] @relation("PooledOccurrenceParticipant")
+  pooledOccurrencesConfirmed   PooledContributionOccurrence[] @relation("PooledOccurrenceConfirmer")
+  pooledOccurrencesSkipped     PooledContributionOccurrence[] @relation("PooledOccurrenceSkipper")
+  pooledOccurrencesCanceled    PooledContributionOccurrence[] @relation("PooledOccurrenceCanceler")
+  pooledContributions          PooledContribution[]           @relation("PooledContributionParticipant")
+  pooledContributionsConfirmed PooledContribution[]           @relation("PooledContributionConfirmer")
+  pooledExpenseAdvances        PooledExpensePayment[]         @relation("PooledExpenseAdvancer")
+  pooledReimbursements         PooledReimbursement[]          @relation("PooledReimbursementParticipant")
+  pooledReimbursementsSent     PooledReimbursement[]          @relation("PooledReimbursementSender")
+  pooledReimbursementsReceived PooledReimbursement[]          @relation("PooledReimbursementReceiver")
+  pooledCorrections            PooledCorrection[]             @relation("PooledCorrectionCreator")
+  pooledReturnPlansCreated     PooledReturnPlan[]             @relation("PooledReturnPlanCreator")
+  pooledReturns                PooledReturn[]                 @relation("PooledReturnRecipient")
+  pooledReturnsSent            PooledReturn[]                 @relation("PooledReturnSender")
+  pooledReturnsReceived        PooledReturn[]                 @relation("PooledReturnReceiver")
+  pooledTransitionPostings     PooledTransitionPosting[]      @relation("PooledPostingActor")
+  pooledOperationReceipts      PooledOperationReceipt[]
+  sharedBatchesCreated         SharedSettlementBatch[]        @relation("SharedBatchCreator")
+  sharedBatchesCompleted       SharedSettlementBatch[]        @relation("SharedBatchCompleter")
+  sharedBatchesCanceled        SharedSettlementBatch[]        @relation("SharedBatchCanceler")
+  sharedTransfersFrom          SharedSettlementTransfer[]     @relation("SharedTransferFrom")
+  sharedTransfersTo            SharedSettlementTransfer[]     @relation("SharedTransferTo")
+  sharedTransfersSent          SharedSettlementTransfer[]     @relation("SharedTransferSender")
+  sharedTransfersReceived      SharedSettlementTransfer[]     @relation("SharedTransferReceiver")
+  sharedCorrections            SharedCorrection[]             @relation("SharedCorrectionCreator")
+  sharedCorrectionPayers       SharedCorrectionPayer[]
+  sharedCorrectionAllocations  SharedCorrectionAllocation[]
+  sharedOperationReceipts      SharedOperationReceipt[]
+  sharedPayers                 SharedExpensePayer[]
+  sharedAllocations            SharedExpenseAllocation[]
+  ownedTaxonomyTerms           TaxonomyTerm[]                 @relation("TaxonomyOwner")
+  createdTaxonomyTerms         TaxonomyTerm[]                 @relation("TaxonomyCreator")
+  taxonomyAuditEvents          TaxonomyAuditEvent[]           @relation("TaxonomyAuditActor")
+  createdExpenseRecords        ExpenseRecord[]                @relation("ExpenseRecordCreator")
+  updatedExpenseRecords        ExpenseRecord[]                @relation("ExpenseRecordUpdater")
+  expenseMutationReceipts      ExpenseMutationReceipt[]       @relation("ExpenseReceiptActor")
+  personalExpenseReferences    PersonalExpenseReference[]     @relation("PersonalReferenceOwner")
+  personalReferenceReceipts    PersonalReferenceReceipt[]     @relation("PersonalReferenceReceiptActor")
+  personalSpaces               FinancialSpace[]               @relation("PersonalSpaceOwner")
+  createdSpaces                FinancialSpace[]               @relation("SpaceCreator")
+  spaceParticipations          SpaceParticipant[]
+  spaceAuditEvents             SpaceAuditEvent[]              @relation("SpaceAuditActor")
+  id                           String                         @id @default(uuid()) @db.Uuid
+  email                        String                         @unique @db.VarChar(255)
+  passwordHash                 String                         @map("password_hash") @db.VarChar(255)
+  displayName                  String                         @map("display_name") @db.VarChar(100)
+  mimicId                      String                         @unique @map("mimic_id") @db.VarChar(15)
+  avatarUrl                    String?                        @map("avatar_url") @db.VarChar(500)
+  locale                       String                         @default("zh-TW") @db.VarChar(20)
+  timezone                     String                         @default("Asia/Taipei") @db.VarChar(100)
+  status                       UserStatus                     @default(ACTIVE)
+  createdAt                    DateTime                       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                    DateTime                       @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   createdGroups        Group[]                     @relation("GroupCreatedBy")
   memberships          GroupMember[]
@@ -470,6 +489,7 @@ enum FinancialSpaceMode {
 
 enum FinancialSpaceStatus {
   ACTIVE
+  CLOSING
   ARCHIVED
 }
 
@@ -479,6 +499,18 @@ enum SpaceParticipantRole {
 }
 
 enum SpaceAuditAction {
+  POOLED_COMMITMENT_CREATED
+  POOLED_COMMITMENT_UPDATED
+  POOLED_OCCURRENCE_CONFIRMED
+  POOLED_OCCURRENCE_SKIPPED
+  POOLED_OCCURRENCE_CANCELED
+  POOLED_REIMBURSEMENT_SENT
+  POOLED_REIMBURSEMENT_RECEIVED
+  POOLED_CORRECTION_CREATED
+  POOLED_CLOSING_STARTED
+  POOLED_RETURN_PLAN_CREATED
+  POOLED_RETURN_SENT
+  POOLED_RETURN_RECEIVED
   PERSONAL_REFERENCE_CREATED
   PERSONAL_REFERENCE_UPDATED
   PERSONAL_REFERENCE_REMOVED
@@ -500,6 +532,13 @@ enum SpaceAuditAction {
 }
 
 model FinancialSpace {
+  pooledCommitments         PooledCommitment[]
+  pooledContributions       PooledContribution[]
+  pooledReimbursements      PooledReimbursement[]
+  pooledCorrections         PooledCorrection[]
+  pooledReturnPlans         PooledReturnPlan[]
+  pooledTransitionPostings  PooledTransitionPosting[]
+  pooledOperationReceipts   PooledOperationReceipt[]
   personalReferences        PersonalExpenseReference[] @relation("PersonalReferenceSpace")
   personalReferenceReceipts PersonalReferenceReceipt[]
   sharedBatches             SharedSettlementBatch[]
@@ -642,6 +681,7 @@ model TaxonomyAuditEvent {
 }
 
 model ExpenseRecord {
+  pooledPayment      PooledExpensePayment?
   personalReferences PersonalExpenseReference[]
   sharedCorrections  SharedCorrection[]
   sharedPayers       SharedExpensePayer[]
@@ -907,4 +947,272 @@ model SharedOperationReceipt {
 
   @@unique([spaceId, actorUserId, requestId])
   @@map("shared_operation_receipts")
+}
+
+enum PooledCadence {
+  WEEKLY
+  MONTHLY
+}
+
+enum PooledCommitmentStatus {
+  ACTIVE
+  CANCELED
+}
+
+enum PooledOccurrenceStatus {
+  EXPECTED
+  CONFIRMED
+  SKIPPED
+  CANCELED
+}
+
+enum PooledPaymentSource {
+  FUND_PAID
+  PARTICIPANT_ADVANCED
+}
+
+enum PooledWorkflowStatus {
+  AWAITING_PAYMENT
+  SENT
+  COMPLETED
+}
+
+enum PooledCorrectionSourceKind {
+  EXPENSE
+  REIMBURSEMENT
+  RETURN
+  CONTRIBUTION
+}
+
+enum PooledReturnPlanStatus {
+  ACTIVE
+  COMPLETED
+}
+
+enum PooledPostingEntityType {
+  CONTRIBUTION
+  REIMBURSEMENT
+  RETURN
+}
+
+enum PooledPostingTransition {
+  CONFIRMED
+  SENT
+  RECEIVED
+}
+
+enum PooledOperationAction {
+  COMMITMENT_CREATE
+  COMMITMENT_UPDATE
+  OCCURRENCE_CONFIRM
+  OCCURRENCE_SKIP
+  OCCURRENCE_CANCEL
+  EXPENSE_CREATE
+  EXPENSE_UPDATE
+  EXPENSE_DELETE
+  REIMBURSEMENT_SENT
+  REIMBURSEMENT_RECEIVED
+  CORRECTION_CREATE
+  CLOSING_START
+  RETURN_PLAN_CREATE
+  RETURN_SENT
+  RETURN_RECEIVED
+  ARCHIVE
+}
+
+model PooledCommitment {
+  id               String                         @id @default(uuid()) @db.Uuid
+  spaceId          String                         @map("space_id") @db.Uuid
+  name             String                         @db.VarChar(100)
+  cadence          PooledCadence
+  interval         Int                            @default(1)
+  startsOn         DateTime                       @map("starts_on") @db.Date
+  endsOn           DateTime?                      @map("ends_on") @db.Date
+  generatedThrough DateTime                       @map("generated_through") @db.Date
+  status           PooledCommitmentStatus         @default(ACTIVE)
+  version          Int                            @default(1)
+  createdById      String                         @map("created_by_id") @db.Uuid
+  createdAt        DateTime                       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime                       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  space            FinancialSpace                 @relation(fields: [spaceId], references: [id], onDelete: Restrict)
+  creator          User                           @relation("PooledCommitmentCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  assignments      PooledCommitmentAssignment[]
+  occurrences      PooledContributionOccurrence[]
+
+  @@index([spaceId, status])
+  @@map("pooled_commitments")
+}
+
+model PooledCommitmentAssignment {
+  commitmentId      String           @map("commitment_id") @db.Uuid
+  participantUserId String           @map("participant_user_id") @db.Uuid
+  amountMinor       Decimal          @map("amount_minor") @db.Decimal(65, 0)
+  commitment        PooledCommitment @relation(fields: [commitmentId], references: [id], onDelete: Cascade)
+  participant       User             @relation(fields: [participantUserId], references: [id], onDelete: Restrict)
+
+  @@id([commitmentId, participantUserId])
+  @@map("pooled_commitment_assignments")
+}
+
+model PooledContributionOccurrence {
+  id                String                 @id @default(uuid()) @db.Uuid
+  commitmentId      String                 @map("commitment_id") @db.Uuid
+  participantUserId String                 @map("participant_user_id") @db.Uuid
+  dueOn             DateTime               @map("due_on") @db.Date
+  amountMinor       Decimal                @map("amount_minor") @db.Decimal(65, 0)
+  status            PooledOccurrenceStatus @default(EXPECTED)
+  version           Int                    @default(1)
+  confirmedById     String?                @map("confirmed_by_id") @db.Uuid
+  confirmedAt       DateTime?              @map("confirmed_at") @db.Timestamptz(6)
+  skippedById       String?                @map("skipped_by_id") @db.Uuid
+  skippedAt         DateTime?              @map("skipped_at") @db.Timestamptz(6)
+  canceledById      String?                @map("canceled_by_id") @db.Uuid
+  canceledAt        DateTime?              @map("canceled_at") @db.Timestamptz(6)
+  commitment        PooledCommitment       @relation(fields: [commitmentId], references: [id], onDelete: Restrict)
+  participant       User                   @relation("PooledOccurrenceParticipant", fields: [participantUserId], references: [id], onDelete: Restrict)
+  confirmer         User?                  @relation("PooledOccurrenceConfirmer", fields: [confirmedById], references: [id], onDelete: Restrict)
+  skipper           User?                  @relation("PooledOccurrenceSkipper", fields: [skippedById], references: [id], onDelete: Restrict)
+  canceler          User?                  @relation("PooledOccurrenceCanceler", fields: [canceledById], references: [id], onDelete: Restrict)
+  contribution      PooledContribution?
+
+  @@unique([commitmentId, participantUserId, dueOn])
+  @@index([participantUserId, status, dueOn])
+  @@map("pooled_contribution_occurrences")
+}
+
+model PooledContribution {
+  id                String                       @id @default(uuid()) @db.Uuid
+  spaceId           String                       @map("space_id") @db.Uuid
+  occurrenceId      String                       @unique @map("occurrence_id") @db.Uuid
+  participantUserId String                       @map("participant_user_id") @db.Uuid
+  amountMinor       Decimal                      @map("amount_minor") @db.Decimal(65, 0)
+  confirmedById     String                       @map("confirmed_by_id") @db.Uuid
+  confirmedAt       DateTime                     @map("confirmed_at") @db.Timestamptz(6)
+  space             FinancialSpace               @relation(fields: [spaceId], references: [id], onDelete: Restrict)
+  occurrence        PooledContributionOccurrence @relation(fields: [occurrenceId], references: [id], onDelete: Restrict)
+  participant       User                         @relation("PooledContributionParticipant", fields: [participantUserId], references: [id], onDelete: Restrict)
+  confirmer         User                         @relation("PooledContributionConfirmer", fields: [confirmedById], references: [id], onDelete: Restrict)
+
+  @@index([spaceId, confirmedAt])
+  @@map("pooled_contributions")
+}
+
+model PooledExpensePayment {
+  expenseId     String               @id @map("expense_id") @db.Uuid
+  source        PooledPaymentSource
+  advancedById  String?              @map("advanced_by_id") @db.Uuid
+  expense       ExpenseRecord        @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  advancer      User?                @relation("PooledExpenseAdvancer", fields: [advancedById], references: [id], onDelete: Restrict)
+  reimbursement PooledReimbursement?
+
+  @@index([advancedById])
+  @@map("pooled_expense_payments")
+}
+
+model PooledReimbursement {
+  id                String               @id @default(uuid()) @db.Uuid
+  spaceId           String               @map("space_id") @db.Uuid
+  expenseId         String               @unique @map("expense_id") @db.Uuid
+  participantUserId String               @map("participant_user_id") @db.Uuid
+  amountMinor       Decimal              @map("amount_minor") @db.Decimal(65, 0)
+  status            PooledWorkflowStatus @default(AWAITING_PAYMENT)
+  version           Int                  @default(1)
+  sentById          String?              @map("sent_by_id") @db.Uuid
+  sentAt            DateTime?            @map("sent_at") @db.Timestamptz(6)
+  receivedById      String?              @map("received_by_id") @db.Uuid
+  receivedAt        DateTime?            @map("received_at") @db.Timestamptz(6)
+  space             FinancialSpace       @relation(fields: [spaceId], references: [id], onDelete: Restrict)
+  payment           PooledExpensePayment @relation(fields: [expenseId], references: [expenseId], onDelete: Restrict)
+  participant       User                 @relation("PooledReimbursementParticipant", fields: [participantUserId], references: [id], onDelete: Restrict)
+  sender            User?                @relation("PooledReimbursementSender", fields: [sentById], references: [id], onDelete: Restrict)
+  receiver          User?                @relation("PooledReimbursementReceiver", fields: [receivedById], references: [id], onDelete: Restrict)
+
+  @@index([spaceId, status])
+  @@map("pooled_reimbursements")
+}
+
+model PooledCorrection {
+  id          String                     @id @default(uuid()) @db.Uuid
+  spaceId     String                     @map("space_id") @db.Uuid
+  sourceKind  PooledCorrectionSourceKind @map("source_kind")
+  sourceId    String                     @map("source_id") @db.Uuid
+  amountMinor Decimal                    @map("amount_minor") @db.Decimal(65, 0)
+  occurredOn  DateTime                   @map("occurred_on") @db.Date
+  reason      String                     @db.VarChar(2000)
+  createdById String                     @map("created_by_id") @db.Uuid
+  createdAt   DateTime                   @default(now()) @map("created_at") @db.Timestamptz(6)
+  space       FinancialSpace             @relation(fields: [spaceId], references: [id], onDelete: Restrict)
+  creator     User                       @relation("PooledCorrectionCreator", fields: [createdById], references: [id], onDelete: Restrict)
+
+  @@index([spaceId, occurredOn, id])
+  @@map("pooled_corrections")
+}
+
+model PooledReturnPlan {
+  id          String                 @id @default(uuid()) @db.Uuid
+  spaceId     String                 @map("space_id") @db.Uuid
+  status      PooledReturnPlanStatus @default(ACTIVE)
+  version     Int                    @default(1)
+  createdById String                 @map("created_by_id") @db.Uuid
+  createdAt   DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
+  space       FinancialSpace         @relation(fields: [spaceId], references: [id], onDelete: Restrict)
+  creator     User                   @relation("PooledReturnPlanCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  returns     PooledReturn[]
+
+  @@index([spaceId, status])
+  @@map("pooled_return_plans")
+}
+
+model PooledReturn {
+  id              String               @id @default(uuid()) @db.Uuid
+  planId          String               @map("plan_id") @db.Uuid
+  recipientUserId String               @map("recipient_user_id") @db.Uuid
+  amountMinor     Decimal              @map("amount_minor") @db.Decimal(65, 0)
+  status          PooledWorkflowStatus @default(AWAITING_PAYMENT)
+  version         Int                  @default(1)
+  sentById        String?              @map("sent_by_id") @db.Uuid
+  sentAt          DateTime?            @map("sent_at") @db.Timestamptz(6)
+  receivedById    String?              @map("received_by_id") @db.Uuid
+  receivedAt      DateTime?            @map("received_at") @db.Timestamptz(6)
+  plan            PooledReturnPlan     @relation(fields: [planId], references: [id], onDelete: Restrict)
+  recipient       User                 @relation("PooledReturnRecipient", fields: [recipientUserId], references: [id], onDelete: Restrict)
+  sender          User?                @relation("PooledReturnSender", fields: [sentById], references: [id], onDelete: Restrict)
+  receiver        User?                @relation("PooledReturnReceiver", fields: [receivedById], references: [id], onDelete: Restrict)
+
+  @@unique([planId, recipientUserId])
+  @@index([planId, status])
+  @@map("pooled_returns")
+}
+
+model PooledTransitionPosting {
+  id          String                  @id @default(uuid()) @db.Uuid
+  spaceId     String                  @map("space_id") @db.Uuid
+  entityType  PooledPostingEntityType @map("entity_type")
+  entityId    String                  @map("entity_id") @db.Uuid
+  transition  PooledPostingTransition
+  amountMinor Decimal                 @map("amount_minor") @db.Decimal(65, 0)
+  actorUserId String                  @map("actor_user_id") @db.Uuid
+  postedAt    DateTime                @map("posted_at") @db.Timestamptz(6)
+  space       FinancialSpace          @relation(fields: [spaceId], references: [id], onDelete: Restrict)
+  actor       User                    @relation("PooledPostingActor", fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@unique([entityType, entityId, transition])
+  @@index([spaceId, postedAt])
+  @@map("pooled_transition_postings")
+}
+
+model PooledOperationReceipt {
+  id          String                @id @default(uuid()) @db.Uuid
+  spaceId     String                @map("space_id") @db.Uuid
+  actorUserId String                @map("actor_user_id") @db.Uuid
+  requestId   String                @map("request_id") @db.Uuid
+  action      PooledOperationAction
+  payloadHash String                @map("payload_hash") @db.VarChar(64)
+  response    Json
+  createdAt   DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  space       FinancialSpace        @relation(fields: [spaceId], references: [id], onDelete: Restrict)
+  actor       User                  @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
+
+  @@unique([spaceId, actorUserId, requestId])
+  @@map("pooled_operation_receipts")
 }

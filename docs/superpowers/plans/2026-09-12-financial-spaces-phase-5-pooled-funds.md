@@ -85,10 +85,10 @@ Web additions:
 
 ### Task 1: Exact domain values and persistence
 
-- [ ] Write failing pure tests for canonical bigint parsing (including beyond `2^53`), signed corrections, recurrence date generation, month-end/leap-year behavior, one-year bound, and timezone-derived occurrence timing. Run the focused Jest file and record the expected missing-module/assertion RED.
-- [ ] Write a failing migration contract for every new enum/table/relation/index/check and for `FinancialSpaceStatus.CLOSING`; verify the task-local schema lacks the tables.
-- [ ] Add the Prisma models/migration and minimal pure helpers; generate the client, deploy to explicit loopback schema `phase2`, install all migrations on fresh `phase5_fresh`, seed twice, and rerun focused tests GREEN.
-- [ ] Commit `feat: persist pooled fund accounting`.
+- [x] Write failing pure tests for canonical bigint parsing (including beyond `2^53`), signed corrections, recurrence date generation, month-end/leap-year behavior, one-year bound, and timezone-derived occurrence timing. Run the focused Jest file and record the expected missing-module/assertion RED.
+- [x] Write a failing migration contract for every new enum/table/relation/index/check and for `FinancialSpaceStatus.CLOSING`; verify the task-local schema lacks the tables.
+- [x] Add the Prisma models/migration and minimal pure helpers; generate the client, deploy to explicit loopback schema `phase2`, install all migrations on fresh `phase5_fresh`, seed twice, and rerun focused tests GREEN.
+- [x] Commit `feat: persist pooled fund accounting`.
 
 ### Task 2: Commitments and occurrence state machine
 

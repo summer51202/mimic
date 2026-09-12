@@ -39,4 +39,29 @@ describe('Prisma migration contracts', () => {
     );
     expect(migration).not.toContain('INSERT INTO "expense_records"');
   });
+
+  it('persists pooled commitments, money facts, workflows, and transition uniqueness', () => {
+    const migration = readFileSync(
+      join(__dirname, '20260912000200_pooled_funds', 'migration.sql'),
+      'utf8',
+    );
+
+    expect(migration).toContain('ALTER TYPE "FinancialSpaceStatus" ADD VALUE \'CLOSING\'');
+    expect(migration).toContain('CREATE TABLE "pooled_commitments"');
+    expect(migration).toContain('CREATE TABLE "pooled_commitment_assignments"');
+    expect(migration).toContain('CREATE TABLE "pooled_contribution_occurrences"');
+    expect(migration).toContain('CREATE TABLE "pooled_contributions"');
+    expect(migration).toContain('CREATE TABLE "pooled_expense_payments"');
+    expect(migration).toContain('CREATE TABLE "pooled_reimbursements"');
+    expect(migration).toContain('CREATE TABLE "pooled_corrections"');
+    expect(migration).toContain('CREATE TABLE "pooled_return_plans"');
+    expect(migration).toContain('CREATE TABLE "pooled_returns"');
+    expect(migration).toContain('CREATE TABLE "pooled_transition_postings"');
+    expect(migration).toContain('CREATE TABLE "pooled_operation_receipts"');
+    expect(migration).toContain('UNIQUE ("commitment_id", "participant_user_id", "due_on")');
+    expect(migration).toContain('UNIQUE ("occurrence_id")');
+    expect(migration).toContain('UNIQUE ("expense_id")');
+    expect(migration).toContain('UNIQUE ("entity_type", "entity_id", "transition")');
+    expect(migration).toContain('WHERE "status" = \'ACTIVE\'');
+  });
 });
