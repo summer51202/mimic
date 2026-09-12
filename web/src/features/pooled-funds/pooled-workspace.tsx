@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import { financialSpaceSchema } from '@/shared/api/financial-space-contracts';
@@ -20,6 +21,7 @@ import type { PooledWorkspaceData } from './pooled-queries';
 type Dialog = 'commitment' | 'expense' | 'returns' | null;
 
 export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
+  const router = useRouter();
   const [data, setData] = useState(initial);
   const [dialog, setDialog] = useState<Dialog>(null);
   const [editingCommitment, setEditingCommitment] = useState<PooledCommitment>();
@@ -99,6 +101,17 @@ export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
     finally { setBusy(false); }
   }
 
+  async function leave() {
+    if (!current || !online || busy) return;
+    setBusy(true); setError('');
+    try {
+      await appFetch(`/api/app/spaces/${space.id}/participants/${current.id}/end`, {
+        method: 'POST', body: JSON.stringify({ version: space.version }),
+      });
+      router.replace(`/app/groups/${group.id}`);
+    } catch (failure) { setError(explain(failure)); setBusy(false); }
+  }
+
   async function occurrenceAction(id: string, action: 'confirm' | 'skip' | 'cancel', version: number) {
     await mutation(`/api/app/spaces/${space.id}/pooled-funds/occurrences/${id}/${action}`, { version },
       `occurrence:${id}:${action}:${version}`, pooledOccurrenceMutationSchema.parse, action === 'confirm' ? '已確認實際投入。' : '投入狀態已更新。');
@@ -164,7 +177,7 @@ export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
       {active && manager && candidates.length > 0 && <div className="pooled-add"><label className="pixel-field">加入參與者<select aria-label="加入參與者" className="pixel-field__input" value={selectedParticipant} onChange={(event) => setSelectedParticipant(event.target.value)}>
         <option value="">選擇群組成員</option>{candidates.map((member) => <option value={member.user_id} key={member.user_id}>{member.display_name} · {member.mimic_id}</option>)}</select></label>
         <PixelButton disabled={!selectedParticipant || busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants`, { user_id: selectedParticipant, version: space.version }, '已加入寶箱參與者。')}>加入寶箱</PixelButton></div>}
-      {current && <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants/${current.id}/end`, { version: space.version }, '已離開寶箱。')}>離開這個寶箱</PixelButton>}
+      {current && <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void leave()}>離開這個寶箱</PixelButton>}
     </PixelPanel>
 
     <PixelPanel className="pooled-closing"><div className="pooled-section-heading"><div><p>CLOSE THE VAULT</p><h2>{active ? '準備結清' : closing ? '基金退回' : '已封存'}</h2></div></div>

@@ -5,6 +5,8 @@ import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import type { PooledWorkspaceData } from './pooled-queries';
 import { PooledWorkspace } from './pooled-workspace';
 
+const { replaceMock } = vi.hoisted(() => ({ replaceMock: vi.fn() }));
+vi.mock('next/navigation', () => ({ useRouter: () => ({ replace: replaceMock }) }));
 vi.mock('@/shared/api/app-fetch', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/shared/api/app-fetch')>()), appFetch: vi.fn(),
 }));
@@ -47,6 +49,7 @@ const initial = {
 
 beforeEach(() => {
   appFetchMock.mockReset();
+  replaceMock.mockReset();
   Object.defineProperty(HTMLDialogElement.prototype, 'showModal', { configurable: true, value() { this.setAttribute('open', ''); } });
   Object.defineProperty(HTMLDialogElement.prototype, 'close', { configurable: true, value() { this.removeAttribute('open'); } });
 });
@@ -73,6 +76,20 @@ describe('PooledWorkspace', () => {
     expect(screen.queryByRole('button', { name: '建立投入排程' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: '開始結清' })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: '確認已投入' })).not.toBeInTheDocument();
+  });
+
+  it('leaves without rereading private financial data and returns to the group', async () => {
+    appFetchMock.mockResolvedValueOnce({ data: {} });
+    render(<PooledWorkspace initial={initial} />);
+
+    await userEvent.click(screen.getByRole('button', { name: '離開這個寶箱' }));
+
+    expect(appFetchMock).toHaveBeenCalledTimes(1);
+    expect(appFetchMock).toHaveBeenCalledWith(
+      `/api/app/spaces/${spaceId}/participants/${owner}/end`,
+      expect.objectContaining({ method: 'POST' }),
+    );
+    expect(replaceMock).toHaveBeenCalledWith(`/app/groups/${groupId}`);
   });
 
   it('keeps schedule form fields and exposes per-participant overrides', async () => {
