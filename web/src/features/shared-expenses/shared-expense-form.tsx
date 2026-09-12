@@ -69,8 +69,8 @@ export function SharedExpenseForm({ groupId, spaceId, spaceVersion, writable, cu
     const value = (draft.load.state === 'READY' || draft.load.state === 'STALE'
       ? draft.load.draft.payload : undefined) as SharedExpenseDraftPayload | undefined;
     if (!value) return;
-    const validIds = new Set(participants.filter(person => person.effective_from <= value.occurred_on
-      && (person.effective_to === null || person.effective_to >= value.occurred_on)).map(person => person.user_id));
+    const validIds = new Set(participants.filter(person => person.effective_to === null
+      && person.effective_from <= value.occurred_on).map(person => person.user_id));
     if ([...value.payer_ids, ...value.allocation_ids].some(id => !validIds.has(id))) {
       setError('參與權限已變更，這份草稿不能直接恢復。請丟棄草稿後依目前參與者重新輸入。');
       return;

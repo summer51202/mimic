@@ -108,7 +108,7 @@ describe('SharedExpenseForm', () => {
       allocation_mode: 'EQUAL', allocation_ids: [a, b], allocation_values: {},
     });
     render(<SharedExpenseForm groupId={b} spaceId={a} spaceVersion={2} writable currency="TWD" timezone="Asia/Taipei" currentUserId={a}
-      participants={[participants[0], { ...participants[1], effective_to: '2026-09-11' }]} terms={[]} onSaved={vi.fn()} />);
+      participants={[participants[0], { ...participants[1], effective_to: '2026-09-13' }]} terms={[]} onSaved={vi.fn()} />);
     await userEvent.click(screen.getByRole('button', { name: '檢視草稿' }));
     expect(screen.getByRole('alert')).toHaveTextContent('參與權限已變更');
     expect(screen.getByRole('button', { name: '確認記帳' })).toBeDisabled();
