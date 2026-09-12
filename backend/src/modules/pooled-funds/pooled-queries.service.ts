@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { FinancialSpacesService } from '../financial-spaces/financial-spaces.service';
 import { pooledSummary } from './pooled-values';
-import { commitmentInclude, projectCommitment } from './pooled-projection';
+import { commitmentInclude, pooledExpenseInclude, projectCommitment, projectPooledExpense } from './pooled-projection';
 
 @Injectable()
 export class PooledQueriesService {
@@ -34,9 +34,13 @@ export class PooledQueriesService {
     return this.prisma.$transaction(async (tx) => {
       const { space } = await this.spaces.requireParticipant(tx, spaceId, actorId);
       if (space.mode !== 'POOLED_FUND') throw new ConflictException('SPACE_MODE_MISMATCH');
-      const commitments = await tx.pooledCommitment.findMany({ where: { spaceId }, include: commitmentInclude, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+      const [commitments, expenses] = await Promise.all([
+        tx.pooledCommitment.findMany({ where: { spaceId }, include: commitmentInclude, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] }),
+        tx.expenseRecord.findMany({ where: { spaceId }, include: pooledExpenseInclude, orderBy: [{ occurredOn: 'desc' }, { id: 'desc' }] }),
+      ]);
       const today = this.spaces.today(space.timezone).toISOString().slice(0, 10);
-      return { summary: await this.summaryTx(tx, spaceId), commitments: commitments.map((row) => projectCommitment(row, today)) };
+      return { summary: await this.summaryTx(tx, spaceId), commitments: commitments.map((row) => projectCommitment(row, today)),
+        expenses: expenses.map((row) => projectPooledExpense(row, space.currency)) };
     }, { isolationLevel: 'RepeatableRead' });
   }
 }

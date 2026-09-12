@@ -99,10 +99,10 @@ Web additions:
 
 ### Task 3: Pooled expenses and independent summary
 
-- [ ] Write failing exact summary tests for the roadmap oracle: confirm 1000; advance 300; fund-paid 800; negative available/shortfall; extra contribution; and no expected money in totals.
-- [ ] Add HTTP REDs for both payment sources, participant-advanced actor validation, forbidden shared allocation fields, category/tags, list/detail projection, negative balance acceptance, creator/manager open edits/deletes, and pending reimbursement replacement.
-- [ ] Implement pooled expense CRUD and the RepeatableRead workspace/summary query without importing shared-accounting, settlements, contributions, or Fund normalization. Keep all API money as strings.
-- [ ] Commit `feat: record pooled expenses and balances`.
+- [x] Write failing exact summary tests for the roadmap oracle: confirm 1000; advance 300; fund-paid 800; negative available/shortfall; extra contribution; and no expected money in totals.
+- [x] Add HTTP REDs for both payment sources, participant-advanced actor validation, forbidden shared allocation fields, category/tags, list/detail projection, negative balance acceptance, creator/manager open edits/deletes, and pending reimbursement replacement.
+- [x] Implement pooled expense CRUD and the RepeatableRead workspace/summary query without importing shared-accounting, settlements, contributions, or Fund normalization. Keep all API money as strings.
+- [x] Commit `feat: record pooled expenses and balances`.
 
 ### Task 4: Reimbursement confirmations and immutable corrections
 

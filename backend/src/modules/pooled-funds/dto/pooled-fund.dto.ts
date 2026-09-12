@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { ArrayMaxSize, IsArray, IsIn, IsInt, IsOptional, IsString, IsUUID, Matches, Max, MaxLength, Min, ValidateNested } from 'class-validator';
 import { SpaceRequestDto } from '../../financial-spaces/dto/space-request.dto';
+import { ExpenseInputDto } from '../../expense-records/expense-input.dto';
 
 export class PooledOverrideDto {
   @IsUUID() user_id: string;
@@ -26,5 +27,12 @@ export class UpdatePooledCommitmentDto extends SpaceRequestDto {
 }
 export class PooledVersionDto extends SpaceRequestDto {
   @IsUUID() request_id: string;
+  @IsInt() @Min(1) @Max(Number.MAX_SAFE_INTEGER) version: number;
+}
+export class CreatePooledExpenseDto extends ExpenseInputDto {
+  @IsIn(['FUND_PAID', 'PARTICIPANT_ADVANCED']) payment_source: 'FUND_PAID' | 'PARTICIPANT_ADVANCED';
+  @IsOptional() @IsUUID() advanced_by_user_id?: string;
+}
+export class UpdatePooledExpenseDto extends CreatePooledExpenseDto {
   @IsInt() @Min(1) @Max(Number.MAX_SAFE_INTEGER) version: number;
 }

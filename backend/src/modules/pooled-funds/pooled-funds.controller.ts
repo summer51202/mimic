@@ -1,14 +1,16 @@
 import { Body, Controller, Get, HttpCode, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
-import { CreatePooledCommitmentDto, PooledVersionDto, UpdatePooledCommitmentDto } from './dto/pooled-fund.dto';
+import { CreatePooledCommitmentDto, CreatePooledExpenseDto, PooledVersionDto, UpdatePooledCommitmentDto, UpdatePooledExpenseDto } from './dto/pooled-fund.dto';
 import { PooledCommitmentsService } from './pooled-commitments.service';
+import { PooledExpensesService } from './pooled-expenses.service';
 import { PooledQueriesService } from './pooled-queries.service';
 
 @Controller('spaces/:spaceId/pooled-funds')
 @UseGuards(JwtAuthGuard)
 export class PooledFundsController {
-  constructor(private readonly commitments: PooledCommitmentsService, private readonly queries: PooledQueriesService) {}
+  constructor(private readonly commitments: PooledCommitmentsService, private readonly expenses: PooledExpensesService,
+    private readonly queries: PooledQueriesService) {}
   @Get('workspace') workspace(@Param('spaceId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser) {
     return this.queries.workspace(id, user.userId).then((data) => ({ data }));
   }
@@ -33,5 +35,17 @@ export class PooledFundsController {
   cancel(@Param('spaceId', ParseUUIDPipe) id: string, @Param('occurrenceId', ParseUUIDPipe) occurrenceId: string,
     @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
     return this.commitments.transition(id, occurrenceId, user.userId, dto, 'cancel').then((data) => ({ data }));
+  }
+  @Post('expenses') createExpense(@Param('spaceId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser, @Body() dto: CreatePooledExpenseDto) {
+    return this.expenses.create(id, user.userId, dto).then((data) => ({ data }));
+  }
+  @Patch('expenses/:expenseId') updateExpense(@Param('spaceId', ParseUUIDPipe) id: string, @Param('expenseId', ParseUUIDPipe) expenseId: string,
+    @CurrentUser() user: RequestUser, @Body() dto: UpdatePooledExpenseDto) {
+    return this.expenses.update(id, expenseId, user.userId, dto).then((data) => ({ data }));
+  }
+  @Post('expenses/:expenseId/delete') @HttpCode(200)
+  deleteExpense(@Param('spaceId', ParseUUIDPipe) id: string, @Param('expenseId', ParseUUIDPipe) expenseId: string,
+    @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
+    return this.expenses.delete(id, expenseId, user.userId, dto).then((data) => ({ data }));
   }
 }
