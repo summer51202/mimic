@@ -137,7 +137,7 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
       <PixelButton emphasis="secondary" onClick={() => setDialog('taxonomy')}>管理類別與標籤</PixelButton>
     </>}
     <PixelDialog open={dialog === 'box'} title="新增個人寶箱" onClose={() => setDialog(null)} closeLabel="關閉">
-      {dialog === 'box' && <PersonalBoxForm onCreated={created => { setDialog(null); router.push(`/app/personal?space=${created.id}`); router.refresh(); }} />}
+      {dialog === 'box' && <PersonalBoxForm onCreated={created => { setDialog(null); router.push(`/app/personal?space=${created.id}`); }} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'expense'} title={editing ? '編輯支出' : '記一筆支出'} onClose={() => setDialog(null)} closeLabel="關閉">
       {dialog === 'expense' && space && <PersonalExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'}

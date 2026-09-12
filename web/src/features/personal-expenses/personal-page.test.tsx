@@ -3,10 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { PersonalPage } from './personal-page';
 import type { PersonalPageData } from './personal-queries';
-const calls = vi.hoisted(() => ({ request: vi.fn() }));
+const calls = vi.hoisted(() => ({ request: vi.fn(), push: vi.fn(), refresh: vi.fn() }));
 vi.mock('@/shared/api/app-fetch', async original => ({ ...await original<object>(), appFetch: calls.request }));
-vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn(), refresh: vi.fn() }) }));
-beforeEach(() => { calls.request.mockReset(); });
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push: calls.push, refresh: calls.refresh }) }));
+beforeEach(() => { calls.request.mockReset(); calls.push.mockReset(); calls.refresh.mockReset(); });
 afterEach(cleanup);
 it('offers a usable personal box without requiring a group', async () => {
   render(<PersonalPage data={{ spaces: [], selected: null, monthData: null, terms: [] }} />);
@@ -15,6 +15,19 @@ it('offers a usable personal box without requiring a group', async () => {
   expect(screen.getByRole('button', { name: '建立個人寶箱' })).toBeVisible();
   expect(screen.queryByText('建立群組')).not.toBeInTheDocument();
   expect(screen.queryByText('本月支出')).not.toBeInTheDocument();
+});
+
+it('navigates to a newly created box without refreshing the stale route', async () => {
+  const id = '30000000-0000-4000-8000-000000000009';
+  calls.request.mockResolvedValue({ data: { id, name: '新生活', access: 'PARTICIPANT', mode: 'PERSONAL_EXPENSES', status: 'ACTIVE',
+    currency: 'TWD', timezone: 'Asia/Taipei', opened_on: '2026-09-12', group_id: null, owner_user_id: id,
+    role: 'MANAGER', version: 1, first_formal_record_at: null } });
+  render(<PersonalPage data={{ spaces: [], selected: null, monthData: null, terms: [] }} />);
+  await userEvent.click(screen.getByRole('button', { name: '新增寶箱' }));
+  await userEvent.type(screen.getByLabelText('寶箱名稱'), '新生活');
+  await userEvent.click(screen.getByRole('button', { name: '建立個人寶箱' }));
+  expect(calls.push).toHaveBeenCalledWith(`/app/personal?space=${id}`);
+  expect(calls.refresh).not.toHaveBeenCalled();
 });
 
 function pageData(): PersonalPageData {
