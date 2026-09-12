@@ -1,4 +1,4 @@
-import { expect as baseExpect, test, type BrowserContext, type Page, type TestInfo } from '@playwright/test';
+import { expect as baseExpect, test, type BrowserContext, type Locator, type Page, type TestInfo } from '@playwright/test';
 import {
   acceptInviteByApi,
   createGroupByApi,
@@ -58,6 +58,11 @@ async function assertNoOverflow(page: Page) {
 
 async function settleHydration(page: Page) {
   await page.waitForLoadState('networkidle');
+}
+
+async function clickHydrated(locator: Locator) {
+  await expect.poll(() => locator.evaluate(node => Object.keys(node).some(key => key.startsWith('__reactProps')))).toBe(true);
+  await locator.click();
 }
 
 function companionAccount(base: TestAccount, kind: string): TestAccount {
@@ -153,11 +158,8 @@ test('pooled fund completes the real private lifecycle and accounting journey', 
     await expect(participantHydrationProbe).toBeFocused();
     const confirmButton = partnerPage.getByRole('button', { name: '確認已投入' });
     await expect(confirmButton).toBeEnabled();
-    const confirmResponsePromise = partnerPage.waitForResponse(response =>
-      response.url().includes('/pooled-funds/occurrences/') && response.url().endsWith('/confirm'));
-    await confirmButton.click();
-    const confirmResponse = await confirmResponsePromise;
-    expect(confirmResponse.ok(), `confirm response: ${confirmResponse.status()} ${await confirmResponse.text()}`).toBe(true);
+    await clickHydrated(confirmButton);
+    await expect(partnerPage.getByRole('status')).toContainText('已確認實際投入');
     await expect(partnerPage.getByTestId('pooled-book')).toHaveText('$10.00');
     await page.reload();
     await settleHydration(page);
@@ -195,6 +197,25 @@ test('pooled fund completes the real private lifecycle and accounting journey', 
 
     await page.reload();
     await settleHydration(page);
+    await page.getByRole('button', { name: '新增基金支出' }).click();
+    await page.getByLabel('支出名稱').fill('離線基金草稿');
+    await page.getByLabel('金額').fill('0.01');
+    await context.setOffline(true);
+    await expect(page.getByRole('button', { name: '記錄基金支出' })).toBeDisabled();
+    await expect(page.getByText(/目前離線，尚未入帳/)).toBeVisible();
+    await context.setOffline(false);
+    await page.reload();
+    await settleHydration(page);
+    await page.getByRole('button', { name: '新增基金支出' }).click();
+    await expect(page.getByText(/未提交草稿/)).toBeVisible();
+    await expect(page.getByLabel('支出名稱')).toBeDisabled();
+    await page.getByRole('button', { name: '檢視草稿' }).click();
+    await expect(page.getByLabel('支出名稱')).toHaveValue('離線基金草稿');
+    await page.getByRole('button', { name: '丟棄草稿' }).click();
+    await expect(page.getByText(/未提交草稿/)).toHaveCount(0);
+    await page.getByRole('button', { name: '關閉', exact: true }).click();
+    await expect(page.getByTestId('pooled-book')).toHaveText('$1.00');
+
     await page.getByRole('button', { name: '開始結清' }).click();
     await expect(page.getByRole('heading', { name: '基金退回' })).toBeVisible();
     const returnTrigger = page.getByRole('button', { name: '指定基金退回' });

@@ -166,7 +166,10 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
     await page.getByLabel('分攤方式').selectOption('FIXED');
     await page.getByLabel(`分攤金額－${accounts.owner.displayName}`).fill('4.00');
     await page.getByLabel(`分攤金額－${accounts.partner.displayName}`).fill('6.00');
-    await page.getByRole('button', { name: '確認記帳' }).click();
+    const createResponsePromise = page.waitForResponse(response => response.url().endsWith(`/spaces/${spaceId}/shared-expenses`) && response.request().method() === 'POST');
+    await clickHydrated(page.getByRole('button', { name: '確認記帳' }));
+    const createResponse = await createResponsePromise;
+    expect(createResponse.ok(), `${createResponse.status()} ${await createResponse.text()}`).toBe(true);
     await expect(page.getByText(new RegExp(`${accounts.owner.displayName}.*應收.*6`))).toBeVisible();
     await expect(page.getByText(new RegExp(`${accounts.partner.displayName}.*應付.*6`))).toBeVisible();
     expect((await data<SummaryProjection>(ownerSession, `/spaces/${spaceId}/shared-expenses/summary`)).positions).toEqual(expect.arrayContaining([
@@ -198,12 +201,50 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
     expect(expenses.items.filter(item => item.title === '冪等收據')).toHaveLength(1);
     await page.reload();
 
+    await page.getByRole('button', { name: '新增共同支出' }).click();
+    await page.getByLabel('支出名稱').fill('離線晚餐');
+    await page.getByLabel('總金額（TWD）').fill('3.00');
+    await page.getByLabel('支出日期').fill(yesterday);
+    await page.getByLabel(`付款金額－${accounts.owner.displayName}`).fill('3.00');
+    await context.setOffline(true);
+    await expect(page.getByRole('button', { name: '確認記帳', exact: true })).toBeDisabled();
+    await expect(page.getByText(/目前離線，尚未入帳/)).toBeVisible();
+    await context.setOffline(false);
+    await page.reload();
+    await page.getByRole('button', { name: '新增共同支出' }).click();
+    await expect(page.getByText(/未提交草稿/)).toBeVisible();
+    await expect(page.getByLabel('支出名稱')).toBeDisabled();
+    expect((await data<ExpensePage>(ownerSession, `/spaces/${spaceId}/shared-expenses`)).items.some(item => item.title === '離線晚餐')).toBe(false);
+    await page.getByRole('button', { name: '檢視草稿', exact: true }).click();
+    await expect(page.getByLabel('支出名稱')).toHaveValue('離線晚餐');
+    await page.getByRole('button', { name: '重新送出草稿', exact: true }).click();
+    await expect(page.getByRole('heading', { name: '離線晚餐' })).toBeVisible();
+
+    const outsiderPage = await outsiderContext.newPage();
+    for (const restrictedPage of [governorPage, outsiderPage]) {
+      await restrictedPage.goto('/app');
+      await expect(restrictedPage.locator('body')).not.toContainText('住宿（已檢視）');
+      await expect(restrictedPage.locator('body')).not.toContainText('離線晚餐');
+      await restrictedPage.goto('/app/tasks');
+      await expect(restrictedPage.locator('body')).not.toContainText('旅行分帳');
+      await expect(restrictedPage.locator('body')).not.toContainText('離線晚餐');
+      await restrictedPage.goto(`/app/spaces/${spaceId}`);
+      await expect(restrictedPage.locator('body')).not.toContainText('旅行分帳');
+      await expect(restrictedPage.locator('body')).not.toContainText('住宿（已檢視）');
+      const oldRoute = await restrictedPage.goto(`/app/funds/${spaceId}`);
+      expect(oldRoute?.status()).toBe(404);
+      await expect(restrictedPage.locator('body')).not.toContainText('旅行分帳');
+      const oldBff = await restrictedPage.request.get(`/api/app/funds/${spaceId}`);
+      expect(oldBff.status()).toBe(404);
+      expect(await oldBff.text()).not.toContain('旅行分帳');
+    }
+
     await page.getByRole('button', { name: '開始結算批次' }).click();
     await page.getByLabel('結算截止日').fill(yesterday);
     await page.getByRole('button', { name: '建立批次並鎖定期間' }).click();
     await expect(page.getByText(`${yesterday} → ${yesterday}`)).toBeVisible();
     const batches = await data<BatchPage>(ownerSession, `/spaces/${spaceId}/shared-settlements`);
-    expect(batches.items[0].snapshot.expenses.map(item => item.title)).toEqual(expect.arrayContaining(['住宿（已檢視）', '冪等收據']));
+    expect(batches.items[0].snapshot.expenses.map(item => item.title)).toEqual(expect.arrayContaining(['住宿（已檢視）', '冪等收據', '離線晚餐']));
 
     await page.getByRole('button', { name: '編輯 住宿（已檢視）' }).click();
     await page.getByLabel('支出名稱').fill('暫存標題');
@@ -224,7 +265,9 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
 
     source = expenseNamed(await data<ExpensePage>(ownerSession, `/spaces/${spaceId}/shared-expenses`), '住宿（已檢視）');
     await page.getByRole('button', { name: '編輯 住宿（已檢視）' }).click();
-    await page.getByRole('button', { name: '儲存修改' }).click();
+    await expect(page.getByText(/伺服器狀態已有變更/)).toBeVisible();
+    await page.getByRole('button', { name: '檢視草稿' }).click();
+    await page.getByRole('button', { name: '重新送出草稿' }).click();
     await expect(page.getByRole('dialog', { name: '編輯共同支出' }).getByRole('alert')).toContainText('期間已永久鎖定');
     await page.getByRole('button', { name: '建立不可變更的更正' }).click();
     await expect(page.getByRole('dialog', { name: '建立不可變更的更正' })).toContainText('原始紀錄');
