@@ -183,34 +183,6 @@ describe("explicit app route handlers", () => {
       undefined,
       "/group-invites/accept",
     ],
-    [
-      "GET funds",
-      () => import("@/app/api/app/groups/[groupId]/funds/route"),
-      "GET",
-      { groupId: "group_1" },
-      "/groups/group_1/funds",
-    ],
-    [
-      "POST funds",
-      () => import("@/app/api/app/groups/[groupId]/funds/route"),
-      "POST",
-      { groupId: "group_1" },
-      "/groups/group_1/funds",
-    ],
-    [
-      "GET dashboard",
-      () => import("@/app/api/app/groups/[groupId]/dashboard/route"),
-      "GET",
-      { groupId: "group_1" },
-      "/groups/group_1/dashboard",
-    ],
-    [
-      "GET fund summary",
-      () => import("@/app/api/app/funds/[fundId]/summary/route"),
-      "GET",
-      { fundId: "fund_1" },
-      "/funds/fund_1/summary",
-    ],
   ])("%s forwards to the expected upstream path", async (_name, load, method, params, path) => {
     const route = await load();
     const routeHandlers = route as unknown as Record<

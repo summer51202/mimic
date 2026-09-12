@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import type { Group } from "@/shared/api/domain-contracts";
 
-import styles from "./treasury-dashboard.module.css";
+import styles from "./group-switcher.module.css";
 
 interface GroupSwitcherProps {
   groups: Group[];

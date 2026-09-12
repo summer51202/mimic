@@ -6,7 +6,6 @@ import { ApiError, ApiUnavailableError } from "@/shared/api/errors";
 import { AppReadFailure } from "@/shared/ui/app-read-failure";
 
 import AppError from "./error";
-import FundPage from "./funds/[fundId]/page";
 import GroupDetailPage from "./groups/[groupId]/page";
 import JoinGroupPage from "./groups/join/page";
 import GroupsPage from "./groups/page";
@@ -20,7 +19,6 @@ vi.mock("server-only", () => ({}));
 
 const {
   cookiesMock,
-  getFundSummaryMock,
   getGroupMock,
   getSettingsProfileMock,
   listFundsMock,
@@ -37,7 +35,6 @@ const {
   loadPooledWorkspaceMock,
 } = vi.hoisted(() => ({
   cookiesMock: vi.fn(),
-  getFundSummaryMock: vi.fn(),
   getGroupMock: vi.fn(),
   getSettingsProfileMock: vi.fn(),
   listFundsMock: vi.fn(),
@@ -77,10 +74,6 @@ vi.mock("@/features/home/home-queries", () => ({ loadHome: loadHomeMock }));
 vi.mock("@/features/home/home-page", () => ({
   HomePage: ({ data, openQuick }: { data: { context: { kind: string } }; openQuick: boolean }) => <div>home:{data.context.kind}:{String(openQuick)}</div>,
 }));
-vi.mock("@/features/funds/fund-queries", () => ({
-  getFundSummary: getFundSummaryMock,
-  listFunds: listFundsMock,
-}));
 vi.mock("@/features/shared-expenses/shared-queries", () => ({
   listGroupSharedSpaces: listGroupSharedSpacesMock,
   loadSharedWorkspace: loadSharedWorkspaceMock,
@@ -100,11 +93,6 @@ vi.mock("@/features/settings/settings-form", () => ({
     <div>settings:{profile.mimic_id}</div>
   ),
 }));
-vi.mock("@/features/groups/treasury-dashboard", () => ({
-  TreasuryDashboard: ({ selectedGroupId }: { selectedGroupId: string | null }) => (
-    <div>dashboard:{selectedGroupId}</div>
-  ),
-}));
 vi.mock("@/features/groups/group-list", () => ({
   GroupList: ({ groups }: { groups: unknown[] }) => (
     <div>groups:{groups.length}</div>
@@ -115,9 +103,6 @@ vi.mock("@/features/groups/group-detail", () => ({
     <div>group detail:{members.length}:{sharedSpaces.length}:{pooledSpaces.length}</div>
   ),
 }));
-vi.mock("@/features/funds/fund-summary", () => ({
-  FundSummary: () => <div>fund summary</div>,
-}));
 
 afterEach(() => {
   cleanup();
@@ -125,7 +110,6 @@ afterEach(() => {
 
 beforeEach(() => {
   cookiesMock.mockReset();
-  getFundSummaryMock.mockReset();
   getGroupMock.mockReset();
   getSettingsProfileMock.mockReset();
   listFundsMock.mockReset();
@@ -321,15 +305,6 @@ describe("authenticated route boundaries", () => {
     expect(() => render(failedGroup)).toThrow(unknown);
   });
 
-  it("keeps the fund page success path intact", async () => {
-    getFundSummaryMock.mockResolvedValue({ fund: { id: "fund-1" } });
-
-    render(await FundPage({ params: Promise.resolve({ fundId: "fund-1" }) }));
-
-    expect(screen.getByText("fund summary")).toBeInTheDocument();
-    expect(getFundSummaryMock).toHaveBeenCalledWith("fund-1");
-  });
-
   it("dispatches a participant space to its mode-specific workspace", async () => {
     const base = { id: "10000000-0000-4000-8000-000000000001", name: "Box", access: "PARTICIPANT", status: "ACTIVE",
       currency: "TWD", timezone: "Asia/Taipei", opened_on: "2026-09-01", group_id: "10000000-0000-4000-8000-000000000002",
@@ -347,14 +322,4 @@ describe("authenticated route boundaries", () => {
     expect(screen.getByText("shared workspace")).toBeVisible();
   });
 
-  it("wires a fund summary outage to recovery", async () => {
-    getFundSummaryMock.mockRejectedValue(new ApiUnavailableError());
-
-    render(await FundPage({ params: Promise.resolve({ fundId: "fund-1" }) }));
-
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      "Mimiku cannot reach the treasury right now.",
-    );
-    expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
-  });
 });

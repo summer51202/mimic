@@ -35,8 +35,6 @@ const transparentCharacterConsumers = [
   "src/features/invitations/invite-create-panel.tsx",
   "src/features/invitations/invite-accept-panel.tsx",
   "src/shared/ui/app-route-state.tsx",
-  "src/features/funds/funds-overview.tsx",
-  "src/features/groups/treasury-dashboard.tsx",
 ] as const;
 
 it.each(assets)("ships %s as a valid %ix%i PNG", async (file, width, height) => {

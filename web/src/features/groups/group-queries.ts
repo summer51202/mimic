@@ -1,10 +1,8 @@
 import {
-  groupDashboardSchema,
   groupDetailSchema,
   groupSchema,
   memberSchema,
   type Group,
-  type GroupDashboard,
   type GroupDetail,
   type Member,
 } from "@/shared/api/domain-contracts";
@@ -17,7 +15,6 @@ export async function listGroups(): Promise<Group[]> {
 
   return groupSchema.array().parse(data);
 }
-
 export async function getGroup(groupId: string): Promise<GroupDetail> {
   const data = await authenticatedServerApi<unknown>(
     `/groups/${encodeURIComponent(groupId)}`,
@@ -34,15 +31,4 @@ export async function listMembers(groupId: string): Promise<Member[]> {
   );
 
   return memberSchema.array().parse(data);
-}
-
-export async function getGroupDashboard(
-  groupId: string,
-): Promise<GroupDashboard> {
-  const data = await authenticatedServerApi<unknown>(
-    `/groups/${encodeURIComponent(groupId)}/dashboard`,
-    { method: "GET" },
-  );
-
-  return groupDashboardSchema.parse(data);
 }

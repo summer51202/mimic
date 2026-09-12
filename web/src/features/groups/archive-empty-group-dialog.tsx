@@ -132,7 +132,7 @@ export function ArchiveEmptyGroupDialog({
       title={`Delete ${groupName}`}
     >
       <p className={styles.archiveExplanation}>
-        The group and its empty funds will be removed from view and archived.
+        The empty group will be removed from view and archived.
         Historical membership, invites, and audit records are retained. There
         is currently no self-service restore.
       </p>

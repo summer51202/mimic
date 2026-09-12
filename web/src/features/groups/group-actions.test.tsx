@@ -2,9 +2,8 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { FundList } from "@/features/funds/fund-list";
 import { AppClientError, appFetch } from "@/shared/api/app-fetch";
-import type { Fund, GroupDetail, Member } from "@/shared/api/domain-contracts";
+import type { GroupDetail, Member } from "@/shared/api/domain-contracts";
 
 import { ArchiveEmptyGroupDialog } from "./archive-empty-group-dialog";
 import { GroupDetailView } from "./group-detail";
@@ -116,23 +115,6 @@ describe("group detail actions", () => {
     expect(title.closest("[data-frame]")).toHaveAttribute(
       "data-frame",
       "group-detail-header",
-    );
-  });
-
-  it("owns fund list text inside a named frame", () => {
-    const fund: Fund = {
-      balance_minor: "0",
-      currency: "TWD",
-      id: "f1",
-      name: "Shared fund",
-      status: "active",
-    };
-
-    render(<FundList funds={[fund]} groupId={group.id} />);
-
-    expect(screen.getByText(fund.name).closest("[data-frame]")).toHaveAttribute(
-      "data-frame",
-      "fund-list",
     );
   });
 
