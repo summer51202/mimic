@@ -9,14 +9,12 @@ import {
 import {
   AuditAction,
   AuditEntityType,
-  FundStatus,
   GroupStatus,
   GroupType,
   InviteStatus,
   MemberRole,
   MemberStatus,
   Prisma,
-  SettlementStatus,
 } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { lockGroupMutation } from '../prisma/group-mutation-lock';
@@ -310,46 +308,6 @@ export class GroupsService {
       });
       if (activeSpace) throw new ConflictException('GROUP_HAS_ACTIVE_SPACES');
 
-      const historyWhere = { fund: { groupId } };
-      const history = await Promise.all([
-        tx.contribution.findFirst({
-          where: historyWhere,
-          select: { id: true },
-        }),
-        tx.expense.findFirst({
-          where: historyWhere,
-          select: { id: true },
-        }),
-        tx.settlement.findFirst({
-          where: historyWhere,
-          select: { id: true },
-        }),
-        tx.recurringContributionRule.findFirst({
-          where: historyWhere,
-          select: { id: true },
-        }),
-      ]);
-      if (history.some(Boolean)) {
-        throw new ConflictException('GROUP_HAS_FINANCIAL_HISTORY');
-      }
-
-      const activeFunds = await tx.fund.findMany({
-        where: { groupId, status: FundStatus.ACTIVE },
-        select: { id: true },
-        orderBy: { createdAt: 'asc' },
-      });
-      const archivedAt = new Date();
-      const archivedFundIds = activeFunds.map((fund) => fund.id);
-
-      if (archivedFundIds.length > 0) {
-        await tx.fund.updateMany({
-          where: {
-            id: { in: archivedFundIds },
-            status: FundStatus.ACTIVE,
-          },
-          data: { status: FundStatus.ARCHIVED, archivedAt },
-        });
-      }
 
       const revokedInvites = await tx.groupInvite.updateMany({
         where: { groupId, status: InviteStatus.PENDING },
@@ -374,8 +332,6 @@ export class GroupsService {
           afterSnapshot: { status: 'archived' },
           metadata: {
             operation: 'archive_empty_group',
-            archived_fund_count: archivedFundIds.length,
-            archived_fund_ids: archivedFundIds,
             revoked_invite_count: revokedInvites.count,
           },
         },
@@ -431,76 +387,6 @@ export class GroupsService {
     });
     if (participation) throw new ConflictException('GROUP_HAS_SPACE_PARTICIPATION');
 
-    const openPositions = await tx.$queryRaw<
-      Array<{ fund_id: string; position_minor: bigint }>
-    >(Prisma.sql`
-      WITH input AS (
-        SELECT ${groupId}::uuid AS group_id, ${userId}::uuid AS user_id
-      ),
-      entries AS (
-        SELECT c.fund_id, c.amount_minor
-        FROM contributions c
-        JOIN input i ON c.contributor_user_id = i.user_id
-        WHERE c.status = 'ACTIVE'
-
-        UNION ALL
-
-        SELECT e.fund_id,
-          CASE WHEN e.expense_type = 'REFUND'
-            THEN -p.amount_minor ELSE p.amount_minor END AS amount_minor
-        FROM expense_payers p
-        JOIN expenses e ON e.id = p.expense_id
-        JOIN input i ON p.payer_user_id = i.user_id
-        WHERE e.status = 'ACTIVE'
-
-        UNION ALL
-
-        SELECT e.fund_id,
-          CASE WHEN e.expense_type = 'REFUND'
-            THEN s.allocated_amount_minor ELSE -s.allocated_amount_minor END AS amount_minor
-        FROM expense_splits s
-        JOIN expenses e ON e.id = s.expense_id
-        JOIN input i ON s.user_id = i.user_id
-        WHERE e.status = 'ACTIVE'
-
-        UNION ALL
-
-        SELECT st.fund_id, -st.amount_minor AS amount_minor
-        FROM settlements st
-        JOIN input i ON st.from_user_id = i.user_id
-        WHERE st.status = 'COMPLETED' AND st.from_user_id = i.user_id
-
-        UNION ALL
-
-        SELECT st.fund_id, st.amount_minor
-        FROM settlements st
-        JOIN input i ON st.to_user_id = i.user_id
-        WHERE st.status = 'COMPLETED' AND st.to_user_id = i.user_id
-      )
-      SELECT f.id AS fund_id,
-        SUM(entries.amount_minor)::bigint AS position_minor
-      FROM funds f
-      JOIN input i ON f.group_id = i.group_id
-      LEFT JOIN entries ON entries.fund_id = f.id
-      GROUP BY f.id
-      HAVING SUM(entries.amount_minor) <> 0::bigint
-    `);
-
-    if (openPositions.length > 0) {
-      throw new ConflictException('MEMBER_HAS_OPEN_BALANCE');
-    }
-
-    const pendingSettlement = await tx.settlement.findFirst({
-      where: {
-        fund: { groupId },
-        status: SettlementStatus.PENDING,
-        OR: [{ fromUserId: userId }, { toUserId: userId }],
-      },
-      select: { id: true },
-    });
-    if (pendingSettlement) {
-      throw new ConflictException('MEMBER_HAS_PENDING_SETTLEMENT');
-    }
   }
 
   private auditMemberDeparture(

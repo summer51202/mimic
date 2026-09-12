@@ -47,7 +47,7 @@ describe('financial space database invariants', () => {
         ${actorId}::uuid, ${actorId}::uuid, NOW())`;
   }
 
-  it('persists the neutral core separately from legacy funds', async () => {
+  it('persists the neutral financial-space core', async () => {
     const [table] = await prisma.$queryRaw<Array<{ name: string | null }>>`
       SELECT to_regclass('financial_spaces')::text AS name`;
     expect(table.name).toBe('financial_spaces');
@@ -287,7 +287,6 @@ describe('financial space authenticated management', () => {
     expect(await prisma.spaceAuditEvent.count({ where: { spaceId: { in: ids } } })).toBe(3);
     expect(await prisma.financialSpace.findUnique({ where: { id: spaceIds.shared } }))
       .toMatchObject({ mode: 'POOLED_FUND', firstFormalRecordAt: recordedAt });
-    expect(await prisma.fund.count({ where: { groupId } })).toBe(0);
   });
 
   it('rejects an unsupported inherited group currency', async () => {

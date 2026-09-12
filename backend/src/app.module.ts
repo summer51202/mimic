@@ -3,9 +3,6 @@ import { APP_FILTER } from '@nestjs/core';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { HealthModule } from './health/health.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { ContributionsModule } from './modules/contributions/contributions.module';
-import { ExpensesModule } from './modules/expenses/expenses.module';
-import { FundsModule } from './modules/funds/funds.module';
 import { FinancialSpacesModule } from './modules/financial-spaces/financial-spaces.module';
 import { TaxonomyModule } from './modules/taxonomy/taxonomy.module';
 import { PersonalExpensesModule } from './modules/personal-expenses/personal-expenses.module';
@@ -15,7 +12,6 @@ import { PooledFundsModule } from './modules/pooled-funds/pooled-funds.module';
 import { HomeModule } from './modules/home/home.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
-import { SettlementsModule } from './modules/settlements/settlements.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -26,7 +22,6 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
     AuthModule,
     GroupsModule,
-    FundsModule,
     FinancialSpacesModule,
     TaxonomyModule,
     PersonalExpensesModule,
@@ -34,9 +29,6 @@ import { UsersModule } from './modules/users/users.module';
     SharedSettlementsModule,
     PooledFundsModule,
     HomeModule,
-    ContributionsModule,
-    ExpensesModule,
-    SettlementsModule,
   ],
   providers: [
     {

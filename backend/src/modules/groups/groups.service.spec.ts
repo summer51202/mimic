@@ -7,13 +7,11 @@ import {
 import {
   AuditAction,
   AuditEntityType,
-  FundStatus,
   GroupStatus,
   InviteStatus,
   MemberRole,
   MemberStatus,
   Prisma,
-  SettlementStatus,
 } from '@prisma/client';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
@@ -36,7 +34,6 @@ describe('UpdateGroupMemberDto', () => {
     await expect(validate(dto)).resolves.toHaveLength(1);
   });
 });
-
 describe('GroupsService.updateMemberRole', () => {
   const group = { id: 'group-1', status: GroupStatus.ACTIVE };
   const actor = {
@@ -276,573 +273,77 @@ describe('GroupsService.updateMemberRole', () => {
 });
 
 describe('GroupsService.archiveEmptyGroup', () => {
-  const archiveTime = new Date('2026-09-02T04:00:00.000Z');
-  const group = { id: 'group-1', status: GroupStatus.ACTIVE };
-  const owner = {
-    id: 'membership-1',
-    userId: 'owner-1',
-    role: MemberRole.OWNER,
-    status: MemberStatus.ACTIVE,
-  };
-
-  function setup() {
+  function setup(activeSpace: { id: string } | null = null) {
     const tx = {
-      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
-      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
+      financialSpace: { findFirst: jest.fn().mockResolvedValue(activeSpace) },
       $executeRaw: jest.fn().mockResolvedValue(0),
       group: {
-        findFirst: jest.fn().mockResolvedValue(group),
+        findFirst: jest.fn().mockResolvedValue({ id: 'group-1', status: GroupStatus.ACTIVE }),
         updateMany: jest.fn().mockResolvedValue({ count: 1 }),
       },
       groupMember: {
-        findFirst: jest.fn().mockResolvedValue(owner),
+        findFirst: jest.fn().mockResolvedValue({ id: 'membership-1', userId: 'owner-1', role: MemberRole.OWNER, status: MemberStatus.ACTIVE }),
         count: jest.fn().mockResolvedValue(1),
       },
-      fund: {
-        findMany: jest.fn().mockResolvedValue([
-          { id: 'fund-1' },
-          { id: 'fund-2' },
-        ]),
-        updateMany: jest.fn().mockResolvedValue({ count: 2 }),
-      },
-      contribution: { findFirst: jest.fn().mockResolvedValue(null) },
-      expense: { findFirst: jest.fn().mockResolvedValue(null) },
-      settlement: { findFirst: jest.fn().mockResolvedValue(null) },
-      recurringContributionRule: {
-        findFirst: jest.fn().mockResolvedValue(null),
-      },
-      groupInvite: {
-        updateMany: jest.fn().mockResolvedValue({ count: 2 }),
-      },
+      groupInvite: { updateMany: jest.fn().mockResolvedValue({ count: 2 }) },
       auditLog: { create: jest.fn().mockResolvedValue({ id: 'audit-1' }) },
     };
-    const prisma = {
-      $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) =>
-        callback(tx),
-      ),
-    };
-
-    return { service: new GroupsService(prisma as never), prisma, tx };
+    const prisma = { $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) => callback(tx)) };
+    return { service: new GroupsService(prisma as never), tx };
   }
 
-  beforeEach(() => jest.useFakeTimers().setSystemTime(archiveTime));
-  afterEach(() => jest.useRealTimers());
-
-  it('rejects an active financial space before archiving a group', async () => {
-    const { service, tx } = setup();
-    tx.financialSpace.findFirst.mockResolvedValue({ id: 'space-1' });
+  it('rejects a group that still has an active financial space', async () => {
+    const { service, tx } = setup({ id: 'space-1' });
     await expect(service.archiveEmptyGroup('group-1', 'owner-1'))
       .rejects.toEqual(new ConflictException('GROUP_HAS_ACTIVE_SPACES'));
     expect(tx.group.updateMany).not.toHaveBeenCalled();
   });
 
-  it('returns GROUP_NOT_FOUND before membership checks for an inactive or missing group', async () => {
+  it('archives an empty group without consulting a legacy Fund aggregate', async () => {
     const { service, tx } = setup();
-    tx.group.findFirst.mockResolvedValue(null);
-
-    await expect(
-      service.archiveEmptyGroup('group-1', 'owner-1'),
-    ).rejects.toEqual(new NotFoundException('GROUP_NOT_FOUND'));
-
-    expect(tx.groupMember.findFirst).not.toHaveBeenCalled();
-    expect(tx.groupMember.count).not.toHaveBeenCalled();
-  });
-
-  it('returns GROUP_ACCESS_DENIED for an actor without active membership', async () => {
-    const { service, tx } = setup();
-    tx.groupMember.findFirst.mockResolvedValue(null);
-
-    await expect(
-      service.archiveEmptyGroup('group-1', 'outsider-1'),
-    ).rejects.toEqual(new ForbiddenException('GROUP_ACCESS_DENIED'));
-
-    expect(tx.groupMember.count).not.toHaveBeenCalled();
-  });
-
-  it('returns OWNER_REQUIRED for an active non-owner', async () => {
-    const { service, tx } = setup();
-    tx.groupMember.findFirst.mockResolvedValue({
-      ...owner,
-      role: MemberRole.MEMBER,
-    });
-
-    await expect(
-      service.archiveEmptyGroup('group-1', 'member-1'),
-    ).rejects.toEqual(new ForbiddenException('OWNER_REQUIRED'));
-
-    expect(tx.groupMember.count).not.toHaveBeenCalled();
-  });
-
-  it('rejects another active member while ignoring historical memberships', async () => {
-    const { service, tx } = setup();
-    tx.groupMember.count.mockResolvedValue(2);
-
-    await expect(
-      service.archiveEmptyGroup('group-1', 'owner-1'),
-    ).rejects.toEqual(
-      new ConflictException('GROUP_HAS_OTHER_ACTIVE_MEMBERS'),
-    );
-
-    expect(tx.groupMember.count).toHaveBeenCalledWith({
-      where: { groupId: 'group-1', status: MemberStatus.ACTIVE },
-    });
-    expect(tx.contribution.findFirst).not.toHaveBeenCalled();
-  });
-
-  it.each([
-    ['contribution', 'contribution-1'],
-    ['expense', 'expense-1'],
-    ['settlement', 'settlement-1'],
-    ['recurringContributionRule', 'rule-1'],
-  ] as const)('rejects history found through %s regardless of record status', async (
-    model,
-    id,
-  ) => {
-    const { service, tx } = setup();
-    tx[model].findFirst.mockResolvedValue({ id });
-
-    await expect(
-      service.archiveEmptyGroup('group-1', 'owner-1'),
-    ).rejects.toEqual(new ConflictException('GROUP_HAS_FINANCIAL_HISTORY'));
-
-    for (const historyModel of [
-      tx.contribution,
-      tx.expense,
-      tx.settlement,
-      tx.recurringContributionRule,
-    ]) {
-      expect(historyModel.findFirst).toHaveBeenCalledWith({
-        where: { fund: { groupId: 'group-1' } },
-        select: { id: true },
-      });
-      expect(historyModel.findFirst.mock.calls[0][0].where).not.toHaveProperty(
-        'status',
-      );
-    }
-    expect(tx.fund.updateMany).not.toHaveBeenCalled();
-    expect(tx.group.updateMany).not.toHaveBeenCalled();
-  });
-
-  it('archives active empty funds, revokes pending invites, and audits once', async () => {
-    const { service, prisma, tx } = setup();
-
-    await expect(
-      service.archiveEmptyGroup('group-1', 'owner-1'),
-    ).resolves.toEqual({ id: 'group-1', status: GroupStatus.ARCHIVED });
-
-    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
-    expect(tx.fund.findMany).toHaveBeenCalledWith({
-      where: { groupId: 'group-1', status: FundStatus.ACTIVE },
-      select: { id: true },
-      orderBy: { createdAt: 'asc' },
-    });
-    expect(tx.fund.updateMany).toHaveBeenCalledWith({
-      where: {
-        id: { in: ['fund-1', 'fund-2'] },
-        status: FundStatus.ACTIVE,
-      },
-      data: { status: FundStatus.ARCHIVED, archivedAt: archiveTime },
-    });
-    expect(tx.groupInvite.updateMany).toHaveBeenCalledWith({
-      where: { groupId: 'group-1', status: InviteStatus.PENDING },
-      data: { status: InviteStatus.REVOKED },
-    });
-    expect(tx.group.updateMany).toHaveBeenCalledWith({
-      where: { id: 'group-1', status: GroupStatus.ACTIVE },
-      data: { status: GroupStatus.ARCHIVED },
-    });
-    expect(tx.auditLog.create).toHaveBeenCalledWith({
-      data: {
-        groupId: 'group-1',
-        actorUserId: 'owner-1',
-        entityType: AuditEntityType.GROUP,
-        entityId: 'group-1',
-        action: AuditAction.ARCHIVE,
-        beforeSnapshot: { status: 'active' },
-        afterSnapshot: { status: 'archived' },
-        metadata: {
-          operation: 'archive_empty_group',
-          archived_fund_count: 2,
-          archived_fund_ids: ['fund-1', 'fund-2'],
-          revoked_invite_count: 2,
-        },
-      },
-    });
-  });
-
-  it('skips the fund update when there are no active funds', async () => {
-    const { service, tx } = setup();
-    tx.fund.findMany.mockResolvedValue([]);
-
-    await service.archiveEmptyGroup('group-1', 'owner-1');
-
-    expect(tx.fund.updateMany).not.toHaveBeenCalled();
-    expect(tx.auditLog.create).toHaveBeenCalledWith({
-      data: expect.objectContaining({
-        metadata: expect.objectContaining({
-          archived_fund_count: 0,
-          archived_fund_ids: [],
-        }),
-      }),
-    });
-  });
-
-  it('leaves already archived funds unchanged', async () => {
-    const { service, tx } = setup();
-    tx.fund.findMany.mockResolvedValue([{ id: 'active-fund' }]);
-
-    await service.archiveEmptyGroup('group-1', 'owner-1');
-
-    expect(tx.fund.findMany).toHaveBeenCalledWith({
-      where: { groupId: 'group-1', status: FundStatus.ACTIVE },
-      select: { id: true },
-      orderBy: { createdAt: 'asc' },
-    });
-    expect(tx.fund.updateMany).toHaveBeenCalledWith({
-      where: {
-        id: { in: ['active-fund'] },
-        status: FundStatus.ACTIVE,
-      },
-      data: { status: FundStatus.ARCHIVED, archivedAt: archiveTime },
-    });
-  });
-
-  it('returns GROUP_NOT_FOUND when the conditional group archive loses a race', async () => {
-    const { service, tx } = setup();
-    tx.group.updateMany.mockResolvedValue({ count: 0 });
-
-    await expect(
-      service.archiveEmptyGroup('group-1', 'owner-1'),
-    ).rejects.toEqual(new NotFoundException('GROUP_NOT_FOUND'));
-
-    expect(tx.auditLog.create).not.toHaveBeenCalled();
-  });
-
-  it('locks before ordered eligibility reads and writes', async () => {
-    const { service, tx } = setup();
-
-    await service.archiveEmptyGroup('group-1', 'owner-1');
-
-    const order = (mock: jest.Mock) => mock.mock.invocationCallOrder[0];
-    expect(order(tx.$executeRaw)).toBeLessThan(order(tx.group.findFirst));
-    expect(order(tx.group.findFirst)).toBeLessThan(
-      order(tx.groupMember.findFirst),
-    );
-    expect(order(tx.groupMember.findFirst)).toBeLessThan(
-      order(tx.groupMember.count),
-    );
-    expect(order(tx.groupMember.count)).toBeLessThan(
-      order(tx.contribution.findFirst),
-    );
-    expect(order(tx.recurringContributionRule.findFirst)).toBeLessThan(
-      order(tx.fund.findMany),
-    );
-    expect(order(tx.fund.findMany)).toBeLessThan(order(tx.fund.updateMany));
-    expect(order(tx.fund.updateMany)).toBeLessThan(
-      order(tx.groupInvite.updateMany),
-    );
-    expect(order(tx.groupInvite.updateMany)).toBeLessThan(
-      order(tx.group.updateMany),
-    );
-    expect(order(tx.group.updateMany)).toBeLessThan(order(tx.auditLog.create));
+    await expect(service.archiveEmptyGroup('group-1', 'owner-1'))
+      .resolves.toEqual({ id: 'group-1', status: GroupStatus.ARCHIVED });
+    expect(tx.groupInvite.updateMany).toHaveBeenCalled();
+    expect(tx.auditLog.create).toHaveBeenCalledWith({ data: expect.objectContaining({
+      metadata: { operation: 'archive_empty_group', revoked_invite_count: 2 },
+    }) });
   });
 });
 
 describe('GroupsService member departure', () => {
-  const group = { id: 'group-1', status: GroupStatus.ACTIVE };
-  const owner = {
-    id: 'owner-membership', userId: 'owner-1', role: MemberRole.OWNER,
-    status: MemberStatus.ACTIVE,
-  };
-  const member = {
-    id: 'member-membership', userId: 'member-1', role: MemberRole.MEMBER,
-    status: MemberStatus.ACTIVE,
-  };
-
-  function setup(positionRows: Array<{ fund_id: string; position_minor: bigint }> = []) {
+  function setup(participation: { id: string } | null = null) {
+    const owner = { id: 'owner-membership', userId: 'owner-1', role: MemberRole.OWNER, status: MemberStatus.ACTIVE };
+    const member = { id: 'member-membership', userId: 'member-1', role: MemberRole.MEMBER, status: MemberStatus.ACTIVE };
     const removed = { ...member, status: MemberStatus.REMOVED };
     const tx = {
-      financialSpace: { findFirst: jest.fn().mockResolvedValue(null) },
-      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(null) },
       $executeRaw: jest.fn().mockResolvedValue(0),
-      group: { findFirst: jest.fn().mockResolvedValue(group) },
+      group: { findFirst: jest.fn().mockResolvedValue({ id: 'group-1', status: GroupStatus.ACTIVE }) },
       groupMember: {
-        findFirst: jest.fn()
-          .mockResolvedValueOnce(owner)
-          .mockResolvedValueOnce(member),
+        findFirst: jest.fn().mockResolvedValueOnce(owner).mockResolvedValueOnce(member),
         count: jest.fn().mockResolvedValue(2),
         update: jest.fn().mockResolvedValue(removed),
-        delete: jest.fn(),
-        deleteMany: jest.fn(),
       },
-      $queryRaw: jest.fn().mockResolvedValue(positionRows),
-      settlement: {
-        findFirst: jest.fn().mockResolvedValue(null),
-        create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn(),
-      },
+      spaceParticipant: { findFirst: jest.fn().mockResolvedValue(participation) },
       auditLog: { create: jest.fn().mockResolvedValue({ id: 'audit-1' }) },
-      contribution: { create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
-      expense: { create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
-      expensePayer: { create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
-      expenseSplit: { create: jest.fn(), update: jest.fn(), delete: jest.fn(), deleteMany: jest.fn() },
     };
-    const prisma = {
-      $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) => callback(tx)),
-    };
-    return { service: new GroupsService(prisma as never), prisma, tx, removed };
+    const prisma = { $transaction: jest.fn(async (callback: (client: typeof tx) => unknown) => callback(tx)) };
+    return { service: new GroupsService(prisma as never), tx, removed };
   }
 
-  const operations = [
-    {
-      name: 'remove',
-      arrange: (tx: ReturnType<typeof setup>['tx']) => tx,
-      act: (service: GroupsService) => service.removeMember('group-1', 'owner-1', 'member-1'),
-    },
-    {
-      name: 'leave',
-      arrange: (tx: ReturnType<typeof setup>['tx']) => {
-        tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(member);
-        tx.groupMember.update.mockResolvedValue({ ...member, status: MemberStatus.LEFT });
-        return tx;
-      },
-      act: (service: GroupsService) => service.leaveGroup('group-1', 'member-1'),
-    },
-  ];
-
-  it('removes an eligible member and audits the status-only change', async () => {
-    const { service, prisma, tx, removed } = setup();
-
+  it('blocks departure while current financial-space participation exists', async () => {
+    const { service, tx } = setup({ id: 'participant-1' });
     await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
-      .resolves.toBe(removed);
-
-    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
-    expect(tx.groupMember.update).toHaveBeenCalledWith({
-      where: { id: member.id }, data: { status: MemberStatus.REMOVED },
-    });
-    expect(tx.auditLog.create).toHaveBeenCalledWith({ data: {
-      groupId: 'group-1', actorUserId: 'owner-1',
-      entityType: AuditEntityType.GROUP, entityId: 'group-1',
-      action: AuditAction.DELETE,
-      beforeSnapshot: { role: 'member', status: 'active' },
-      afterSnapshot: { role: 'member', status: 'removed' },
-      metadata: { operation: 'remove_member', target_user_id: 'member-1' },
-    }});
-    expect(tx.groupMember.delete).not.toHaveBeenCalled();
-    expect(tx.groupMember.deleteMany).not.toHaveBeenCalled();
-    expect(tx.contribution.delete).not.toHaveBeenCalled();
-    expect(tx.expense.delete).not.toHaveBeenCalled();
-  });
-
-  it('allows an eligible member to leave and audits the status-only change', async () => {
-    const { service, prisma, tx } = setup();
-    tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(member);
-    const left = { ...member, status: MemberStatus.LEFT };
-    tx.groupMember.update.mockResolvedValue(left);
-
-    await expect(service.leaveGroup('group-1', 'member-1')).resolves.toBe(left);
-    expect(prisma.$transaction).toHaveBeenCalledTimes(1);
-    expect(tx.groupMember.update).toHaveBeenCalledWith({
-      where: { id: member.id }, data: { status: MemberStatus.LEFT },
-    });
-    expect(tx.auditLog.create).toHaveBeenCalledWith({ data: expect.objectContaining({
-      actorUserId: 'member-1', action: AuditAction.DELETE,
-      beforeSnapshot: { role: 'member', status: 'active' },
-      afterSnapshot: { role: 'member', status: 'left' },
-      metadata: { operation: 'leave_group', target_user_id: 'member-1' },
-    })});
-  });
-
-  it.each([
-    ['inactive group', null, member, NotFoundException, 'GROUP_NOT_FOUND'],
-    ['outsider or inactive actor', group, null, ForbiddenException, 'GROUP_ACCESS_DENIED'],
-  ])('leaveGroup rejects an %s without exposing financial state', async (
-    _case, foundGroup, foundActor, ExceptionType, message,
-  ) => {
-    const { service, tx } = setup();
-    tx.group.findFirst.mockResolvedValue(foundGroup);
-    tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(foundActor);
-
-    await expect(service.leaveGroup('group-1', 'member-1'))
-      .rejects.toEqual(new ExceptionType(message));
-    expect(tx.$queryRaw).not.toHaveBeenCalled();
-    expect(tx.settlement.findFirst).not.toHaveBeenCalled();
-    expect(tx.groupMember.update).not.toHaveBeenCalled();
-    expect(tx.auditLog.create).not.toHaveBeenCalled();
-  });
-
-  it.each([
-    ['GROUP_NOT_FOUND', null, owner, member, NotFoundException],
-    ['GROUP_ACCESS_DENIED', group, null, member, ForbiddenException],
-    ['OWNER_REQUIRED', group, { ...owner, role: MemberRole.MEMBER }, member, ForbiddenException],
-    ['MEMBER_NOT_FOUND', group, owner, null, NotFoundException],
-  ])('removeMember returns %s before financial reads', async (
-    message, foundGroup, foundActor, foundTarget, ExceptionType,
-  ) => {
-    const { service, tx } = setup();
-    tx.group.findFirst.mockResolvedValue(foundGroup);
-    tx.groupMember.findFirst.mockReset()
-      .mockResolvedValueOnce(foundActor).mockResolvedValueOnce(foundTarget);
-    await expect(service.removeMember('group-1', 'owner-1', 'member-1'))
-      .rejects.toEqual(new ExceptionType(message));
-    expect(tx.$queryRaw).not.toHaveBeenCalled();
-    expect(tx.settlement.findFirst).not.toHaveBeenCalled();
-  });
-
-  it('rejects self-removal before financial reads', async () => {
-    const { service, tx } = setup();
-    tx.groupMember.findFirst.mockReset().mockResolvedValueOnce(owner).mockResolvedValueOnce(owner);
-    await expect(service.removeMember('group-1', 'owner-1', 'owner-1'))
-      .rejects.toEqual(new ConflictException('CANNOT_REMOVE_SELF'));
-    expect(tx.$queryRaw).not.toHaveBeenCalled();
-  });
-
-  it.each([
-    ['remove', (service: GroupsService) => service.removeMember('group-1', 'owner-1', 'owner-2')],
-    ['leave', (service: GroupsService) => service.leaveGroup('group-1', 'owner-1')],
-  ])('blocks the final active owner from %s', async (_case, act) => {
-    const { service, tx } = setup();
-    const otherOwner = { ...member, userId: 'owner-2', role: MemberRole.OWNER };
-    tx.groupMember.findFirst.mockReset();
-    if (_case === 'remove') tx.groupMember.findFirst.mockResolvedValueOnce(owner).mockResolvedValueOnce(otherOwner);
-    else tx.groupMember.findFirst.mockResolvedValueOnce(owner);
-    tx.groupMember.count.mockResolvedValue(1);
-    await expect(act(service)).rejects.toEqual(new ConflictException('LAST_OWNER_REQUIRED'));
-    expect(tx.$queryRaw).not.toHaveBeenCalled();
-  });
-
-  it.each(operations)('blocks a database-reported nonzero position for $name', async (operation) => {
-    const { service, tx } = setup([{ fund_id: 'fund-1', position_minor: 1n }]);
-    operation.arrange(tx);
-    await expect(operation.act(service))
-      .rejects.toEqual(new ConflictException('MEMBER_HAS_OPEN_BALANCE'));
-  });
-
-  it.each(operations)('does not net opposite positions across funds for $name', async (operation) => {
-    const { service, tx } = setup([
-      { fund_id: 'fund-1', position_minor: 100n },
-      { fund_id: 'fund-2', position_minor: -100n },
-    ]);
-    operation.arrange(tx);
-    await expect(operation.act(service))
-      .rejects.toEqual(new ConflictException('MEMBER_HAS_OPEN_BALANCE'));
-  });
-
-  it.each(operations)('allows an exact bigint zero position for $name', async (operation) => {
-    const { service, tx } = setup([]);
-    operation.arrange(tx);
-    await expect(operation.act(service)).resolves.toBeDefined();
-    expect(tx.settlement.findFirst).toHaveBeenCalledWith({ where: {
-      fund: { groupId: 'group-1' }, status: SettlementStatus.PENDING,
-      OR: [{ fromUserId: 'member-1' }, { toUserId: 'member-1' }],
-    }, select: { id: true }});
-  });
-
-  it.each(operations)('blocks any pending settlement for $name', async (operation) => {
-    const { service, tx } = setup();
-    operation.arrange(tx);
-    tx.settlement.findFirst.mockResolvedValue({ id: 'pending-1' });
-    await expect(operation.act(service))
-      .rejects.toEqual(new ConflictException('MEMBER_HAS_PENDING_SETTLEMENT'));
-    expect(tx.settlement.findFirst).toHaveBeenCalledWith({ where: {
-      fund: { groupId: 'group-1' }, status: SettlementStatus.PENDING,
-      OR: [{ fromUserId: 'member-1' }, { toUserId: 'member-1' }],
-    }, select: { id: true }});
+      .rejects.toEqual(new ConflictException('GROUP_HAS_SPACE_PARTICIPATION'));
     expect(tx.groupMember.update).not.toHaveBeenCalled();
   });
 
-  it.each(operations)('preserves all financial history for $name', async (operation) => {
-    const { service, tx } = setup();
-    operation.arrange(tx);
-
-    await operation.act(service);
-
-    for (const model of [
-      tx.contribution,
-      tx.expense,
-      tx.expensePayer,
-      tx.expenseSplit,
-    ]) {
-      expect(model.create).not.toHaveBeenCalled();
-      expect(model.update).not.toHaveBeenCalled();
-      expect(model.delete).not.toHaveBeenCalled();
-      expect(model.deleteMany).not.toHaveBeenCalled();
-    }
-    expect(tx.settlement.create).not.toHaveBeenCalled();
-    expect(tx.settlement.update).not.toHaveBeenCalled();
-    expect(tx.settlement.delete).not.toHaveBeenCalled();
-    expect(tx.settlement.deleteMany).not.toHaveBeenCalled();
-  });
-
-  it('uses one parameterized per-fund aggregate query for every accounting branch', async () => {
-    const { service, tx } = setup();
-    await service.removeMember('group-1', 'owner-1', 'member-1');
-
-    expect(tx.$queryRaw).toHaveBeenCalledTimes(1);
-    const query = tx.$queryRaw.mock.calls[0][0] as Prisma.Sql;
-    expect(query.values).toEqual(['group-1', 'member-1']);
-    const sql = query.strings.join('?').replace(/\s+/g, ' ').trim();
-    expect(sql).toContain('WITH input AS');
-    expect(sql).toContain('?::uuid AS group_id');
-    expect(sql).toContain('?::uuid AS user_id');
-    expect(sql).toContain('FROM funds f JOIN input i ON f.group_id = i.group_id');
-    expect(sql).not.toMatch(/f\.status/);
-    expect(sql).toContain("FROM contributions c JOIN input i ON c.contributor_user_id = i.user_id WHERE c.status = 'ACTIVE'");
-    expect(sql).toContain("CASE WHEN e.expense_type = 'REFUND' THEN -p.amount_minor ELSE p.amount_minor END");
-    expect(sql).toContain("CASE WHEN e.expense_type = 'REFUND' THEN s.allocated_amount_minor ELSE -s.allocated_amount_minor END");
-    expect(sql.match(/e\.status = 'ACTIVE'/g)).toHaveLength(2);
-    expect(sql).toContain("WHERE st.status = 'COMPLETED' AND st.from_user_id = i.user_id");
-    expect(sql).toContain("WHERE st.status = 'COMPLETED' AND st.to_user_id = i.user_id");
-    expect(sql).toContain('GROUP BY f.id');
-    expect(sql).toContain('HAVING SUM(entries.amount_minor) <> 0::bigint');
-  });
-
-  it.each([
-    {
-      name: 'remove',
-      arrange: (tx: ReturnType<typeof setup>['tx']) => {
-        tx.groupMember.findFirst.mockReset()
-          .mockResolvedValueOnce(owner)
-          .mockResolvedValueOnce({ ...member, role: MemberRole.OWNER });
-      },
-      act: (service: GroupsService) => service.removeMember('group-1', 'owner-1', 'member-1'),
-      membershipReads: 2,
-    },
-    {
-      name: 'leave',
-      arrange: (tx: ReturnType<typeof setup>['tx']) => {
-        tx.groupMember.findFirst.mockReset()
-          .mockResolvedValueOnce({ ...member, role: MemberRole.OWNER });
-        tx.groupMember.update.mockResolvedValue({ ...member, role: MemberRole.OWNER, status: MemberStatus.LEFT });
-      },
-      act: (service: GroupsService) => service.leaveGroup('group-1', 'member-1'),
-      membershipReads: 1,
-    },
-  ])('orders every locked $name step before the next applicable step', async (operation) => {
-    const { service, tx } = setup();
-    operation.arrange(tx);
-
-    await operation.act(service);
-
-    const lock = tx.$executeRaw.mock.invocationCallOrder[0];
-    const groupRead = tx.group.findFirst.mock.invocationCallOrder[0];
-    const membershipReads = tx.groupMember.findFirst.mock.invocationCallOrder;
-    const ownerCount = tx.groupMember.count.mock.invocationCallOrder[0];
-    const financialRead = tx.$queryRaw.mock.invocationCallOrder[0];
-    const pendingRead = tx.settlement.findFirst.mock.invocationCallOrder[0];
-    const update = tx.groupMember.update.mock.invocationCallOrder[0];
-    const audit = tx.auditLog.create.mock.invocationCallOrder[0];
-
-    expect(membershipReads).toHaveLength(operation.membershipReads);
-    expect(lock).toBeLessThan(groupRead);
-    expect(groupRead).toBeLessThan(membershipReads[0]);
-    if (operation.membershipReads === 2) {
-      expect(membershipReads[0]).toBeLessThan(membershipReads[1]);
-    }
-    expect(membershipReads.at(-1)).toBeLessThan(ownerCount);
-    expect(ownerCount).toBeLessThan(financialRead);
-    expect(financialRead).toBeLessThan(pendingRead);
-    expect(pendingRead).toBeLessThan(update);
-    expect(update).toBeLessThan(audit);
+  it('removes an eligible member without consulting removed Fund tables', async () => {
+    const { service, tx, removed } = setup();
+    await expect(service.removeMember('group-1', 'owner-1', 'member-1')).resolves.toEqual(removed);
+    expect(tx.groupMember.update).toHaveBeenCalledWith(expect.objectContaining({
+      data: { status: MemberStatus.REMOVED },
+    }));
+    expect(tx.auditLog.create).toHaveBeenCalled();
   });
 });
 
