@@ -64,23 +64,6 @@ async function main() {
     },
   });
 
-  await prisma.fund.upsert({
-    where: { id: '00000000-0000-4000-8000-000000000101' },
-    update: {
-      name: 'Date Fund',
-      currency: 'TWD',
-      groupId: group.id,
-      createdById: user.id,
-    },
-    create: {
-      id: '00000000-0000-4000-8000-000000000101',
-      groupId: group.id,
-      name: 'Date Fund',
-      currency: 'TWD',
-      createdById: user.id,
-    },
-  });
-
   const otherUsers = [];
   for (const [email, displayName, role] of [
     ['blair@mimic.local', 'Blair', MemberRole.MEMBER],
