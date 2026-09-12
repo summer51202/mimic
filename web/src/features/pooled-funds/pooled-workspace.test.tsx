@@ -29,7 +29,10 @@ const initial = {
     { id: owner, user_id: owner, display_name: '小明', role: 'MANAGER', effective_from: '2026-09-01', effective_to: null },
     { id: member, user_id: member, display_name: '小美', role: 'PARTICIPANT', effective_from: '2026-09-01', effective_to: null },
   ],
-  terms: [],
+  terms: [
+    { id: owner, canonical_id: owner, kind: 'CATEGORY', scope: 'SYSTEM', name: '餐飲', status: 'ACTIVE', version: 1 },
+    { id: groupId, canonical_id: groupId, kind: 'TAG', scope: 'SYSTEM', name: '晚餐', status: 'ACTIVE', version: 1 },
+  ],
   workspace: {
     summary: { book_balance_minor: '200', pending_reimbursement_minor: '300', available_balance_minor: '-100', sent_awaiting_receipt_minor: '300', shortfall_minor: '100' },
     commitments: [{ id: groupId, space_id: spaceId, name: '每月投入', cadence: 'MONTHLY', interval: 1, starts_on: '2026-09-01',
@@ -38,8 +41,8 @@ const initial = {
       occurrences: [{ id: owner, commitment_id: groupId, participant_user_id: owner, due_on: '2026-10-01', amount_minor: '500',
         status: 'EXPECTED', timing: 'UPCOMING', version: 1, confirmed_by: null, confirmed_at: null,
         skipped_by: null, skipped_at: null, canceled_by: null, canceled_at: null }] }],
-    expenses: [{ record: { id: member, space_id: spaceId, amount_minor: '300', currency: 'TWD', occurred_on: '2026-09-12', title: '代墊', note: null,
-      category_id: owner, tag_ids: [], status: 'ACTIVE', version: 1, created_by: owner, updated_by: owner, created_at: at, updated_at: at },
+    expenses: [{ record: { id: member, space_id: spaceId, amount_minor: '300', currency: 'TWD', occurred_on: '2026-09-12', title: '代墊', note: '聚餐收據已留存',
+      category_id: owner, tag_ids: [groupId], status: 'ACTIVE', version: 1, created_by: owner, updated_by: owner, created_at: at, updated_at: at },
       payment_source: 'PARTICIPANT_ADVANCED', advanced_by_user_id: member,
       reimbursement: { id: groupId, expense_id: member, participant_user_id: member, amount_minor: '300', status: 'SENT', version: 2,
         sent_by: owner, sent_at: at, received_by: null, received_at: null } }],
@@ -68,6 +71,8 @@ describe('PooledWorkspace', () => {
     expect(screen.getByRole('button', { name: '開始結清' })).toBeVisible();
     expect(screen.getByRole('button', { name: '確認已投入' })).toBeVisible();
     expect(screen.getByRole('button', { name: '略過這次' })).toBeVisible();
+    expect(screen.getByText('2026-09-12 · 餐飲 · #晚餐')).toBeVisible();
+    expect(screen.getByText('聚餐收據已留存')).toBeVisible();
   });
 
   it('shows recipient confirmation but hides manager actions for participants', () => {

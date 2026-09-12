@@ -101,8 +101,10 @@ export class PooledCommitmentsService {
     }
     return result;
   }
-  private commitment(tx: Prisma.TransactionClient, spaceId: string, id: string) {
-    return tx.pooledCommitment.findFirstOrThrow({ where: { id, spaceId }, include: commitmentInclude });
+  private async commitment(tx: Prisma.TransactionClient, spaceId: string, id: string) {
+    const row = await tx.pooledCommitment.findFirst({ where: { id, spaceId }, include: commitmentInclude });
+    if (!row) throw new NotFoundException('POOLED_COMMITMENT_NOT_FOUND');
+    return row;
   }
   private today(timezone: string) { return this.spaces.today(timezone).toISOString().slice(0, 10); }
 }

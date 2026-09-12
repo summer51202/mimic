@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { ArrayMaxSize, IsArray, IsIn, IsInt, IsOptional, IsString, IsUUID, Matches, Max, MaxLength, Min, MinLength, ValidateNested } from 'class-validator';
 import { SpaceRequestDto } from '../../financial-spaces/dto/space-request.dto';
 import { ExpenseInputDto } from '../../expense-records/expense-input.dto';
@@ -43,6 +43,7 @@ export class CreatePooledCorrectionDto extends SpaceRequestDto {
   @IsUUID() source_id: string;
   @IsString() @Matches(/^-?[1-9]\d*$/) @MaxLength(66) amount_minor: string;
   @IsString() @Matches(/^\d{4}-\d{2}-\d{2}$/) occurred_on: string;
+  @Transform(({ value }: { value: unknown }) => typeof value === 'string' ? value.trim() : value)
   @IsString() @MinLength(1) @MaxLength(2000) reason: string;
 }
 export class PooledReturnDto {

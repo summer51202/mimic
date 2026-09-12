@@ -102,6 +102,9 @@ describe('pooled commitment and occurrence HTTP lifecycle', () => {
     await f.call('post', `${path()}/commitments`).send({ ...commitment(), version: 1 }).expect(409);
     await f.call('post', `${path()}/commitments`).send({ ...commitment(), interval: 0 }).expect(400);
     await f.call('post', `${path()}/commitments`).send({ ...commitment(), payers: [] }).expect(400);
+    await f.call('patch', `${path()}/commitments/${randomUUID()}`).send({
+      request_id: randomUUID(), version: 1, default_amount_minor: '1000', overrides: [],
+    }).expect(404);
     await f.call('get', `${path()}/workspace`, 2).expect(404);
   });
 });

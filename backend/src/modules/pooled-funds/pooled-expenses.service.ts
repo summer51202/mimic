@@ -68,14 +68,14 @@ export class PooledExpensesService {
           ? await tx.pooledContribution.findFirst({ where: { id: dto.source_id, spaceId }, select: { id: true } })
           : dto.source_kind === 'RETURN'
             ? await tx.pooledReturn.findFirst({ where: { id: dto.source_id, plan: { spaceId }, status: { in: ['SENT', 'COMPLETED'] } }, select: { id: true } })
-            : await tx.expenseRecord.findFirst({ where: { id: dto.source_id, spaceId, pooledPayment: { source: 'FUND_PAID' } }, select: { id: true } });
+            : await tx.expenseRecord.findFirst({ where: { id: dto.source_id, spaceId, status: 'ACTIVE', pooledPayment: { source: 'FUND_PAID' } }, select: { id: true } });
       if (!sourceExists) throw new NotFoundException('POOLED_CORRECTION_SOURCE_NOT_FOUND');
       const row = await tx.pooledCorrection.create({ data: { spaceId, sourceKind: dto.source_kind, sourceId: dto.source_id,
         amountMinor: dto.amount_minor, occurredOn, reason: dto.reason.trim(), createdById: actorId } });
       const projected = projectCorrection(row);
       await this.operations.changed(tx, space, actorId, 'POOLED_CORRECTION_CREATED', null, projected);
       return { correction: projected, summary: await this.queries.summaryTx(tx, spaceId) };
-    });
+    }, ['ACTIVE', 'CLOSING']);
   }
 
   private async write(tx: Prisma.TransactionClient, space: FinancialSpace, id: string | null, actorId: string, dto: CreatePooledExpenseDto) {

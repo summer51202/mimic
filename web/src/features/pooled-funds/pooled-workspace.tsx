@@ -38,6 +38,7 @@ export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
   const currentUserId = group.current_user_id;
   const money = (minor: string) => formatMinorUnit(minor, space.currency, 'zh-TW');
   const nameFor = (id: string) => data.participants.find((person) => person.user_id === id)?.display_name ?? '已離開的參與者';
+  const termName = (id: string) => data.terms.find((term) => term.id === id)?.name ?? '已封存項目';
   const current = data.participants.find((person) => person.user_id === currentUserId && person.effective_to === null);
   const activeIds = new Set(data.participants.filter((person) => person.effective_to === null).map((person) => person.user_id));
   const candidates = data.members.filter((member) => member.status.toLowerCase() === 'active' && !activeIds.has(member.user_id));
@@ -167,6 +168,8 @@ export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
       {!workspace.expenses.length ? <p>還沒有基金支出。</p> : <ul className="pooled-ledger">{workspace.expenses.map((expense) => <li key={expense.record.id}>
         <div className="pooled-row-heading"><div><strong>{expense.record.title}</strong><span>{money(expense.record.amount_minor)} · {expense.payment_source === 'FUND_PAID' ? '基金直接支付' : `${nameFor(expense.advanced_by_user_id!)}先代墊`}</span></div>
           {expense.reimbursement && <span className="pooled-status">{workflowLabel(expense.reimbursement.status)}</span>}</div>
+        <span>{expense.record.occurred_on} · {termName(expense.record.category_id)}{expense.record.tag_ids.map((id) => ` · #${termName(id)}`).join('')}</span>
+        {expense.record.note && <span>{expense.record.note}</span>}
         {expense.reimbursement?.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, false)}>確認送出代墊款</PixelButton>}
         {expense.reimbursement?.status === 'SENT' && expense.reimbursement.participant_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, true)}>確認收到代墊款</PixelButton>}
       </li>)}</ul>}

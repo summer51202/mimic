@@ -47,8 +47,19 @@ describe('pooled expenses and independent balances', () => {
       amount_minor: '450', payment_source: 'PARTICIPANT_ADVANCED', advanced_by_user_id: f.users[1].id }).expect(200);
     expect(edit.body.data).toMatchObject({ reimbursement: { amount_minor: '450', version: 2 }, summary: { pending_reimbursement_minor: '450', available_balance_minor: '-450' } });
     await f.call('post', `${path()}/expenses/${created.record.id}/delete`).send({ request_id: randomUUID(), version: 2 }).expect(200);
-    expect((await f.call('get', `${path()}/workspace`).expect(200)).body.data.summary.pending_reimbursement_minor).toBe('0');
+    const workspace = (await f.call('get', `${path()}/workspace`).expect(200)).body.data;
+    expect(workspace.summary.pending_reimbursement_minor).toBe('0');
+    expect(workspace.expenses).toEqual([]);
     await f.call('post', `${path()}/expenses`).send({ ...base(), payers: [], payment_source: 'FUND_PAID' }).expect(400);
     expect(await f.prisma.sharedExpenseAllocation.count({ where: { expenseId: created.record.id } })).toBe(0);
+  });
+
+  it('rejects whitespace-only correction reasons', async () => {
+    const expense = (await f.call('post', `${path()}/expenses`).send({ ...base(), payment_source: 'FUND_PAID' }).expect(201)).body.data;
+    await f.call('post', `${path()}/corrections`).send({ request_id: randomUUID(), source_kind: 'EXPENSE', source_id: expense.record.id,
+      amount_minor: '1', occurred_on: today, reason: '   ' }).expect(400);
+    await f.call('post', `${path()}/expenses/${expense.record.id}/delete`).send({ request_id: randomUUID(), version: 1 }).expect(200);
+    await f.call('post', `${path()}/corrections`).send({ request_id: randomUUID(), source_kind: 'EXPENSE', source_id: expense.record.id,
+      amount_minor: '1', occurred_on: today, reason: 'Deleted facts do not affect the ledger' }).expect(404);
   });
 });

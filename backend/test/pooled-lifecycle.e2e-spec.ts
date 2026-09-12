@@ -68,11 +68,17 @@ describe('pooled closing, returns, exit and archive', () => {
       returns: [{ recipient_user_id: f.users[0].id, amount_minor: '500' }, { recipient_user_id: f.users[1].id, amount_minor: '500' }] }).expect(201);
     await f.call('post', `${root}/return-plans`, 1).send({ request_id: randomUUID(), version: closing.body.data.space.version,
       returns: [{ recipient_user_id: f.users[1].id, amount_minor: '1000' }] }).expect(403);
-    for (const item of plan.body.data.returns) {
+    for (const [index, item] of plan.body.data.returns.entries()) {
       await f.call('post', `${root}/returns/${item.id}/sent`, 1).send({ request_id: randomUUID(), version: 1 }).expect(403);
       await f.call('post', `${root}/returns/${item.id}/received`, item.recipient_user_id === f.users[0].id ? 0 : 1)
         .send({ request_id: randomUUID(), version: 1 }).expect(409);
       await f.call('post', `${root}/returns/${item.id}/sent`).send({ request_id: randomUUID(), version: 1 }).expect(200);
+      if (index === 0) {
+        await f.call('post', `${root}/corrections`).send({ request_id: randomUUID(), source_kind: 'RETURN', source_id: item.id,
+          amount_minor: '1', occurred_on: space.opened_on, reason: 'Recorded return was one cent too high' }).expect(201);
+        await f.call('post', `${root}/corrections`).send({ request_id: randomUUID(), source_kind: 'RETURN', source_id: item.id,
+          amount_minor: '-1', occurred_on: space.opened_on, reason: 'Reconciled against the receipt' }).expect(201);
+      }
       const beforeReceipt = (await f.call('get', `/spaces/${space.id}`).expect(200)).body.data;
       await f.call('post', `${root}/archive`).send({ request_id: randomUUID(), version: beforeReceipt.version }).expect(409);
       const actor = item.recipient_user_id === f.users[0].id ? 0 : 1;

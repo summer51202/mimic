@@ -36,7 +36,7 @@ export class PooledQueriesService {
       if (space.mode !== 'POOLED_FUND') throw new ConflictException('SPACE_MODE_MISMATCH');
       const [commitments, expenses, corrections, returnPlan] = await Promise.all([
         tx.pooledCommitment.findMany({ where: { spaceId }, include: commitmentInclude, orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] }),
-        tx.expenseRecord.findMany({ where: { spaceId }, include: pooledExpenseInclude, orderBy: [{ occurredOn: 'desc' }, { id: 'desc' }] }),
+        tx.expenseRecord.findMany({ where: { spaceId, status: 'ACTIVE' }, include: pooledExpenseInclude, orderBy: [{ occurredOn: 'desc' }, { id: 'desc' }] }),
         tx.pooledCorrection.findMany({ where: { spaceId }, orderBy: [{ occurredOn: 'desc' }, { id: 'desc' }] }),
         tx.pooledReturnPlan.findFirst({ where: { spaceId }, include: returnPlanInclude, orderBy: { createdAt: 'desc' } }),
       ]);
