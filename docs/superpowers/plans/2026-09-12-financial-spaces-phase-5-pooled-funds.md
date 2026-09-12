@@ -144,11 +144,11 @@ Web additions:
 
 ### Task 9: Review, documentation, verification, and cleanup
 
-- [ ] Run `self-review` over every P5 production function and state/authorization path; create regression REDs for all critical/important findings, fix them, and rerun affected suites.
-- [ ] Check every requirement above, remove placeholders, verify backend/Web type-name symmetry, mark this plan's completed boxes, update `.agents/features.md`, append `.agents/devlog.md`, and add `2026-09-12-financial-spaces-phase-5-pooled-funds-execution.md` with exact evidence and remaining P6/P7 work.
-- [ ] Run backend `npm run build`, `npm test -- --runInBand`, `npm run test:e2e -- --runInBand`, and explicit task-local `npm run test:spaces-db`.
-- [ ] Run Web `npm run lint`, `npm run typecheck`, `npm test`, production build with `MIMIC_API_BASE_URL=http://127.0.0.1:3101/api/v1`, and the real-backend pooled Playwright suite.
-- [ ] Stop only task-owned PostgreSQL/API/Web processes, run `git diff --check`, confirm the worktree is clean, and preserve root `.codex-remote-attachments/` and `reference/` unchanged. Commit `docs: record pooled fund checkpoint verification`.
+- [x] Run `self-review` over every P5 production function and state/authorization path; create regression REDs for all critical/important findings, fix them, and rerun affected suites.
+- [x] Check every requirement above, remove placeholders, verify backend/Web type-name symmetry, mark this plan's completed boxes, update `.agents/features.md`, append `.agents/devlog.md`, and add `2026-09-12-financial-spaces-phase-5-pooled-funds-execution.md` with exact evidence and remaining P6/P7 work.
+- [x] Run backend `npm run build`, `npm test -- --runInBand`, `npm run test:e2e -- --runInBand`, and explicit task-local `npm run test:spaces-db`.
+- [x] Run Web `npm run lint`, `npm run typecheck`, `npm test`, production build with `MIMIC_API_BASE_URL=http://127.0.0.1:3101/api/v1`, and the real-backend pooled Playwright suite.
+- [x] Stop only task-owned PostgreSQL/API/Web processes, run `git diff --check`, confirm the worktree is clean, and preserve root `.codex-remote-attachments/` and `reference/` unchanged. Commit `docs: record pooled fund checkpoint verification`.
 
 ## Plan self-review
 

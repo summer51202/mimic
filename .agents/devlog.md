@@ -1136,3 +1136,15 @@
 - Added real-backend acceptance for phone-small, phone, tablet and desktop, including source updates, settlement, transfer exclusion, remove/reactivate, exit, archive and foreign/pool rejection.
 **Decisions:** References derive amount/title/date/category from the shared source and never copy financial facts. Settlement transfers are not personal spending. Completed-source corrections remain separate next-period shared records. Omitted and explicit-null metadata are distinct idempotency payloads.
 **Known gaps / follow-ups:** P5 pooled accounting, P6 navigation/home/tasks and P7 drafts/cleanup/full three-mode acceptance remain. The existing standalone public manifest-copy ENOENT warning persists.
+
+## 2026-09-12 — P5 pooled-fund vertical
+
+**Task:** Deliver the complete pooled-fund backend, participant-private Web workspace and real-backend browser lifecycle.
+**Scope:** Prisma pooled models/migration; `backend/src/modules/pooled-funds/`; financial-space lifecycle integration; pooled Web contracts/BFF/workspace; real DB and four-viewport Playwright suites; feature and execution documentation.
+**What changed:**
+- Added bounded scheduled commitments with persisted participant occurrences and self-confirmed formal contributions.
+- Added independent exact book/pending/sent-awaiting/available/shortfall accounting, fund-paid and advanced expenses, two-party reimbursements and immutable signed corrections.
+- Added CLOSING, explicit fund returns, settled participant exit, archive guards, participant-first privacy and serialized idempotent audit/posting mutations.
+- Added strict pooled Web creation, management, failure states and 320/390/768/1440 responsive real-backend acceptance without financial mocks.
+**Decisions:** Expected occurrences never affect money; real negative balances remain visible; sent facts are corrected by new events; closing never invents return recipients; pooled accounting does not import shared formulas or legacy Fund normalization.
+**Known gaps / follow-ups:** P6 navigation/home/quick-entry/tasks and P7 durable drafts/legacy removal/full three-mode acceptance remain. The existing standalone public manifest-copy ENOENT warning persists. No merge or push was performed.

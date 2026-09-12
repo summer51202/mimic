@@ -3,7 +3,7 @@ _Last updated: 2026-09-12. Refresh with `/feature-map`._
 
 > The PWA in `web/` is the only active client. Current implementation work targets `web/` and `backend/`; previous clients remain available only through Git history.
 
-## Financial spaces redesign — Phases 1–4 complete, Phase 5 planned
+## Financial spaces redesign — Phases 1–5 complete
 
 The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md` supersedes the universal Fund model and its accounting assumptions. The legacy capability entries below describe existing disconnected Fund behavior, not the new modes' accounting rules.
 
@@ -24,11 +24,11 @@ The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-d
 | done | Safe settled shared lifecycle with obligation, manager-survival and privacy guards | `shared-lifecycle.ts`; real HTTP and independent-connection concurrency suites |
 | done | Participant-private shared Web journey, exact payer/allocation editor, positions, batch confirmations, immutable corrections and settled lifecycle | `/app/spaces/:spaceId`, `web/src/features/shared-expenses/`, `web/src/features/shared-settlements/`; four-viewport real-backend acceptance |
 | done | Private personal references to authoritative shared allocations, including private metadata, source-lock cues, access rechecks, and responsive real-backend acceptance | `backend/src/modules/personal-expenses/personal-references.service.ts`, `/app/personal`, `/app/spaces/:spaceId` |
-| planned | Pooled commitments, book/available balances, advances, reimbursements and returns | P5 |
+| done | Pooled commitments and persisted occurrences, exact book/available balances, fund-paid and advanced expenses, two-party reimbursements, signed corrections, explicit returns, settled exit/archive and participant-private responsive Web acceptance | `backend/src/modules/pooled-funds/`, `web/src/features/pooled-funds/`, `/app/spaces/:spaceId`; four-viewport real-backend acceptance |
 | planned | 寶箱 navigation, homepage, quick entry and task center | P6 |
 | planned | Offline drafts, full three-mode real-backend browser acceptance and legacy removal | P7 |
 
-P2 enables personal daily expense posting and consumption. P3 delivers shared expense HTTP and Web CRUD, exact positions, batch settlements, two-party confirmation, immutable corrections, settled exit/archive and a four-viewport real-backend browser journey. P4 links only the current participant's authoritative shared allocation into an owned personal ledger, keeps note/tags private, follows unlocked source edits, preserves locked facts, and removes inaccessible sources from consumption without copying a transaction. Shared spaces have a 16-current-participant limit matching bounded exact settlement search. P5 pooled monetary services and P6 navigation cutover remain later phases. Nonempty pooled exit/archive remains conservatively rejected until that mode owns its lifecycle obligations. Durable local drafts are P7; current forms retain input only while open and never post automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
+P2 enables personal daily expense posting and consumption. P3 delivers shared expense HTTP and Web CRUD, exact positions, batch settlements, two-party confirmation, immutable corrections, settled exit/archive and a four-viewport real-backend browser journey. P4 links only the current participant's authoritative shared allocation into an owned personal ledger without copying a transaction. P5 delivers the independent pooled ledger: explicit occurrence confirmation, fund-paid/advanced expenses, reimbursement and return confirmations, corrections, closing, settled departure, archival, strict Web boundaries and four-viewport real-backend acceptance. Shared spaces retain the 16-current-participant limit matching bounded exact settlement search. P6 navigation/home/quick-entry/tasks and P7 durable drafts/legacy cleanup/full three-mode acceptance remain. Current forms retain input only while open and never post automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
 
 ## Backend Capability Map
 
@@ -195,7 +195,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 - [x] Neutral taxonomy module with private/group scope, stable system defaults and historical merge/archive semantics
 - [x] Personal PWA category/tag picker and private term management
 - [x] Connect group vocabulary to the P3 shared expense form
-- [ ] Connect the same vocabulary to P5 pooled expense forms
+- [x] Connect the same vocabulary to P5 pooled expense forms
 
 ### Contributions
 - [x] PWA create/list loop for regular and one-time contributions
