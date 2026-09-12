@@ -21,7 +21,13 @@
     "shared-corrections.e2e-spec.ts",
     "shared-settlements-concurrency.e2e-spec.ts",
     "shared-lifecycle.e2e-spec.ts",
-    "shared-lifecycle-concurrency.e2e-spec.ts"
+    "shared-lifecycle-concurrency.e2e-spec.ts",
+    "pooled-commitments.e2e-spec.ts",
+    "pooled-expenses.e2e-spec.ts",
+    "pooled-reimbursements.e2e-spec.ts",
+    "pooled-lifecycle.e2e-spec.ts",
+    "pooled-lifecycle-concurrency.e2e-spec.ts",
+    "home-tasks.e2e-spec.ts"
   ],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
