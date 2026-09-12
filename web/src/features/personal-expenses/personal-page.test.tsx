@@ -29,6 +29,11 @@ function pageData(): PersonalPageData {
   return { spaces: [space], selected: space, terms: [], monthData: { space_id: id, mode: 'PERSONAL_EXPENSES', currency: 'TWD', month: '2026-01', space_version: 2,
     view_version: 'a'.repeat(64), spending_minor: '250', categories: [], items: [record], next_cursor: id } };
 }
+it('opens the personal expense form from quick entry', () => {
+  render(<PersonalPage data={pageData()} quick />);
+  expect(screen.getByRole('dialog', { name: '記一筆支出' })).toBeVisible();
+  expect(screen.queryByText('誰先付款')).not.toBeInTheDocument();
+});
 it('discards pagination from a different financial version and reloads the first page', async () => {
   const data = pageData();
   const latest = { ...data.monthData!, space_version: 3, view_version: 'b'.repeat(64), spending_minor: '200', next_cursor: null,

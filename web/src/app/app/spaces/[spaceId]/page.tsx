@@ -8,8 +8,9 @@ import { AppReadFailure } from '@/shared/ui/app-read-failure';
 import '@/features/shared-expenses/shared.css';
 import '@/features/pooled-funds/pooled.css';
 
-export default async function Page({ params }: { params: Promise<{ spaceId: string }> }) {
+export default async function Page({ params, searchParams = Promise.resolve({}) }: { params: Promise<{ spaceId: string }>; searchParams?: Promise<{ quick?: string }> }) {
   const { spaceId } = await params;
+  const quick = (await searchParams).quick === '1';
   let workspace:
     | { mode: 'POOLED_FUND'; initial: Awaited<ReturnType<typeof loadPooledWorkspace>> }
     | { mode: 'SHARED_EXPENSES'; initial: Awaited<ReturnType<typeof loadSharedWorkspace>> };
@@ -23,6 +24,6 @@ export default async function Page({ params }: { params: Promise<{ spaceId: stri
   }
   catch (error) { return <AppReadFailure error={error} />; }
 
-  if (workspace.mode === 'POOLED_FUND') return <PooledWorkspace initial={workspace.initial} />;
-  return <SharedWorkspace initial={workspace.initial} />;
+  if (workspace.mode === 'POOLED_FUND') return <PooledWorkspace initial={workspace.initial} quick={quick} />;
+  return <SharedWorkspace initial={workspace.initial} quick={quick} />;
 }

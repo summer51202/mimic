@@ -20,10 +20,10 @@ import type { PooledWorkspaceData } from './pooled-queries';
 
 type Dialog = 'commitment' | 'expense' | 'returns' | null;
 
-export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
+export function PooledWorkspace({ initial, quick = false }: { initial: PooledWorkspaceData; quick?: boolean }) {
   const router = useRouter();
   const [data, setData] = useState(initial);
-  const [dialog, setDialog] = useState<Dialog>(null);
+  const [dialog, setDialog] = useState<Dialog>(quick && initial.space.status === 'ACTIVE' ? 'expense' : null);
   const [editingCommitment, setEditingCommitment] = useState<PooledCommitment>();
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState('');

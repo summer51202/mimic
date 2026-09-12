@@ -15,11 +15,13 @@ import { PersonalReferenceForm } from './personal-reference-form';
 import type { PersonalPageData } from './personal-queries';
 import { useOnline } from './use-online';
 
-export function PersonalPage({ data }: { data: PersonalPageData }) {
+export function PersonalPage({ data, quick = false }: { data: PersonalPageData; quick?: boolean }) {
   const router = useRouter();
   const [monthData, setMonthData] = useState(data.monthData);
   const [terms, setTerms] = useState(data.terms);
-  const [dialog, setDialog] = useState<'box' | 'expense' | 'reference' | 'taxonomy' | 'delete' | 'remove-reference' | null>(null);
+  const [dialog, setDialog] = useState<'box' | 'expense' | 'reference' | 'taxonomy' | 'delete' | 'remove-reference' | null>(
+    quick && data.selected?.status === 'ACTIVE' ? 'expense' : null,
+  );
   const [editing, setEditing] = useState<PersonalMonthEntry>();
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');

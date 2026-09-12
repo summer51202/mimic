@@ -10,6 +10,28 @@
     var(--mimic-color-surface);
 }
 
+.quickAction {
+  position: fixed;
+  z-index: 40;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(84px, calc(env(safe-area-inset-bottom) + 76px));
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border: 3px solid var(--mimic-color-hud-dark);
+  background: var(--mimic-color-coin-action);
+  color: var(--mimic-color-hud-dark);
+  box-shadow: 4px 4px 0 var(--mimic-color-hud-dark);
+  text-decoration: none;
+}
+
+.quickAction:focus-visible { outline: 3px solid var(--mimic-color-focus); outline-offset: 3px; }
+
+@media (min-width: 768px) {
+  .quickAction { bottom: 24px; }
+}
+
 .topBar {
   position: sticky;
   top: 0;

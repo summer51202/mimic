@@ -59,6 +59,13 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe('PooledWorkspace', () => {
+  it('opens fund-versus-advancer source fields from quick entry', () => {
+    render(<PooledWorkspace initial={initial} quick />);
+    expect(screen.getByRole('dialog', { name: '新增基金支出' })).toBeVisible();
+    expect(screen.getByRole('group', { name: '付款來源' })).toBeVisible();
+    expect(screen.queryByText('如何分攤')).not.toBeInTheDocument();
+  });
+
   it('shows exact fund states, shortfall and manager-only controls', () => {
     render(<PooledWorkspace initial={initial} />);
     expect(screen.getByTestId('pooled-book')).toHaveTextContent('$2.00');

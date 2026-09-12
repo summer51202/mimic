@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -26,6 +27,7 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
         </div>
         <main className={styles.main}>{children}</main>
       </div>
+      <Link className={styles.quickAction} href="/app?quick=1">記一筆支出</Link>
       <div className={styles.mobileOnly}>
         <AppNavigation currentSection={currentSection} variant="mobile" />
       </div>

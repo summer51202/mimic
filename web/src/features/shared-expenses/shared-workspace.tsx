@@ -18,9 +18,11 @@ import { CorrectionForm } from '../shared-settlements/correction-form';
 import { SharedLifecyclePanel } from '../shared-settlements/shared-lifecycle-panel';
 import { PersonalReferenceForm } from './personal-reference-form';
 
-export function SharedWorkspace({ initial }: { initial: SharedWorkspaceData }) {
+export function SharedWorkspace({ initial, quick = false }: { initial: SharedWorkspaceData; quick?: boolean }) {
   const [data, setData] = useState(initial);
-  const [dialog, setDialog] = useState<'expense' | 'delete' | 'correction' | 'reference' | null>(null);
+  const [dialog, setDialog] = useState<'expense' | 'delete' | 'correction' | 'reference' | null>(
+    quick && initial.space.status === 'ACTIVE' ? 'expense' : null,
+  );
   const [editing, setEditing] = useState<SharedExpense>();
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');

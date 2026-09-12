@@ -34,6 +34,13 @@ function data(role: 'MANAGER' | 'PARTICIPANT' = 'MANAGER'): SharedWorkspaceData 
 beforeEach(() => { mocks.request.mockReset(); });
 afterEach(cleanup);
 
+it('opens payer and allocation fields from quick entry', () => {
+  render(<SharedWorkspace initial={data()} quick />);
+  expect(screen.getByRole('dialog', { name: '新增共同支出' })).toBeVisible();
+  expect(screen.getByText('誰先付款')).toBeVisible();
+  expect(screen.getByText('如何分攤')).toBeVisible();
+});
+
 it('explains exact positions and opens shared expense creation', async () => {
   render(<SharedWorkspace initial={data()} />);
   expect(screen.getByTestId('shared-spending')).toHaveTextContent('$10');
