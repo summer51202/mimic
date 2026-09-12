@@ -20,14 +20,14 @@ export async function createSpaceTestApp() {
   const prisma = app.get(PrismaService);
   await seedTaxonomy(prisma);
   const users: Array<{ id: string; token: string }> = [];
-  for (const display_name of ['Owner', 'Member', 'Group governor']) {
+  for (const display_name of ['Owner', 'Member', 'Group governor', 'Outsider']) {
     const response = await request(app.getHttpServer()).post('/api/v1/auth/register')
       .send({ email: `${randomUUID()}@phase2.test`, password: 'Test-phase2-123!', display_name }).expect(201);
     users.push({ id: response.body.data.user.id, token: response.body.data.access_token });
   }
   const group = await prisma.group.create({ data: {
     name: 'P2 fixture', groupType: 'GROUP', defaultCurrency: 'TWD', createdById: users[2].id,
-    members: { create: users.map((user, i) => ({ userId: user.id, role: i === 2 ? 'OWNER' : 'MEMBER' })) },
+    members: { create: users.slice(0, 3).map((user, i) => ({ userId: user.id, role: i === 2 ? 'OWNER' : 'MEMBER' })) },
   } });
   const call = (method: 'get' | 'post' | 'patch', path: string, actor = 0) =>
     request(app.getHttpServer())[method](`/api/v1${path}`).set('Authorization', `Bearer ${users[actor].token}`);

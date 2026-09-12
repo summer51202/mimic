@@ -5,6 +5,7 @@ import { AddParticipantDto } from './dto/add-participant.dto';
 import { UpdateParticipantRoleDto } from './dto/update-participant-role.dto';
 import { requireSharedParticipantLimit } from './shared-participant-limit';
 import { requireSharedLifecycleReady } from '../shared-settlements/shared-lifecycle';
+import { requirePooledParticipantReady } from '../pooled-funds/pooled-lifecycle';
 
 @Injectable()
 export class SpaceParticipantsService {
@@ -65,6 +66,7 @@ export class SpaceParticipantsService {
       if (space.version !== version) throw new ConflictException('SPACE_VERSION_CONFLICT');
       if (!space.groupId) throw new ConflictException('SPACE_SCOPE_IMMUTABLE');
       if (space.mode === 'SHARED_EXPENSES') await requireSharedLifecycleReady(tx, spaceId, target.userId);
+      else if (space.mode === 'POOLED_FUND') await requirePooledParticipantReady(tx, spaceId, target.userId);
       else this.spaces.requireEmpty(space);
       const today = this.spaces.today(space.timezone);
       await this.requireOtherManager(tx, target, today, space.groupId);

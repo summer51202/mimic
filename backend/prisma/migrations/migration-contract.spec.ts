@@ -64,4 +64,15 @@ describe('Prisma migration contracts', () => {
     expect(migration).toContain('UNIQUE ("entity_type", "entity_id", "transition")');
     expect(migration).toContain('WHERE "status" = \'ACTIVE\'');
   });
+
+  it('allows closing pooled spaces without marking them archived', () => {
+    const migration = readFileSync(
+      join(__dirname, '20260912000300_pooled_closing_constraint', 'migration.sql'),
+      'utf8',
+    );
+
+    expect(migration).toContain('DROP CONSTRAINT "space_archive_check"');
+    expect(migration).toContain("status IN ('ACTIVE', 'CLOSING')");
+    expect(migration).toContain("status = 'ARCHIVED'");
+  });
 });

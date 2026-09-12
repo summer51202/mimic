@@ -1,8 +1,9 @@
 import { Body, Controller, Get, HttpCode, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
-import { CreatePooledCommitmentDto, CreatePooledCorrectionDto, CreatePooledExpenseDto, PooledVersionDto, UpdatePooledCommitmentDto, UpdatePooledExpenseDto } from './dto/pooled-fund.dto';
+import { CreatePooledCommitmentDto, CreatePooledCorrectionDto, CreatePooledExpenseDto, CreatePooledReturnPlanDto, PooledVersionDto, UpdatePooledCommitmentDto, UpdatePooledExpenseDto } from './dto/pooled-fund.dto';
 import { PooledCommitmentsService } from './pooled-commitments.service';
+import { PooledClosingService } from './pooled-closing.service';
 import { PooledExpensesService } from './pooled-expenses.service';
 import { PooledQueriesService } from './pooled-queries.service';
 
@@ -10,6 +11,7 @@ import { PooledQueriesService } from './pooled-queries.service';
 @UseGuards(JwtAuthGuard)
 export class PooledFundsController {
   constructor(private readonly commitments: PooledCommitmentsService, private readonly expenses: PooledExpensesService,
+    private readonly closing: PooledClosingService,
     private readonly queries: PooledQueriesService) {}
   @Get('workspace') workspace(@Param('spaceId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser) {
     return this.queries.workspace(id, user.userId).then((data) => ({ data }));
@@ -61,5 +63,27 @@ export class PooledFundsController {
   @Post('corrections')
   createCorrection(@Param('spaceId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser, @Body() dto: CreatePooledCorrectionDto) {
     return this.expenses.correction(id, user.userId, dto).then((data) => ({ data }));
+  }
+  @Post('closing') @HttpCode(200)
+  startClosing(@Param('spaceId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
+    return this.closing.start(id, user.userId, dto).then((data) => ({ data }));
+  }
+  @Post('return-plans')
+  createReturnPlan(@Param('spaceId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser, @Body() dto: CreatePooledReturnPlanDto) {
+    return this.closing.createPlan(id, user.userId, dto).then((data) => ({ data }));
+  }
+  @Post('returns/:returnId/sent') @HttpCode(200)
+  sendReturn(@Param('spaceId', ParseUUIDPipe) id: string, @Param('returnId', ParseUUIDPipe) returnId: string,
+    @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
+    return this.closing.transition(id, returnId, user.userId, dto, false).then((data) => ({ data }));
+  }
+  @Post('returns/:returnId/received') @HttpCode(200)
+  receiveReturn(@Param('spaceId', ParseUUIDPipe) id: string, @Param('returnId', ParseUUIDPipe) returnId: string,
+    @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
+    return this.closing.transition(id, returnId, user.userId, dto, true).then((data) => ({ data }));
+  }
+  @Post('archive') @HttpCode(200)
+  archive(@Param('spaceId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
+    return this.closing.archive(id, user.userId, dto).then((data) => ({ data }));
   }
 }

@@ -101,6 +101,7 @@ export class FinancialSpacesService {
     return this.mutate(spaceId, async tx => {
       const { space, role } = await this.requireParticipant(tx, spaceId, actorId, true);
       if (space.status === 'ARCHIVED') return this.project(space, role);
+      if (space.mode === 'POOLED_FUND') throw new ConflictException('POOLED_LIFECYCLE_REQUIRED');
       this.requireWritable(space, version);
       if (space.mode === 'SHARED_EXPENSES') await requireSharedLifecycleReady(tx, spaceId);
       else this.requireEmpty(space);

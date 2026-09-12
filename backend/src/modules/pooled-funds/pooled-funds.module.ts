@@ -7,7 +7,8 @@ import { PooledFundsController } from './pooled-funds.controller';
 import { PooledOperationsService } from './pooled-operations.service';
 import { PooledQueriesService } from './pooled-queries.service';
 import { PooledExpensesService } from './pooled-expenses.service';
+import { PooledClosingService } from './pooled-closing.service';
 
 @Module({ imports: [AuthModule, FinancialSpacesModule, TaxonomyModule], controllers: [PooledFundsController],
-  providers: [PooledCommitmentsService, PooledExpensesService, PooledOperationsService, PooledQueriesService], exports: [PooledQueriesService] })
+  providers: [PooledCommitmentsService, PooledExpensesService, PooledClosingService, PooledOperationsService, PooledQueriesService], exports: [PooledQueriesService] })
 export class PooledFundsModule {}

@@ -8,6 +8,8 @@ export const commitmentInclude = Prisma.validator<Prisma.PooledCommitmentInclude
 export type CommitmentRow = Prisma.PooledCommitmentGetPayload<{ include: typeof commitmentInclude }>;
 export const pooledExpenseInclude = { tags: true, pooledPayment: { include: { reimbursement: true } } } as const;
 export type PooledExpenseRow = Prisma.ExpenseRecordGetPayload<{ include: typeof pooledExpenseInclude }>;
+export const returnPlanInclude = { returns: { orderBy: { recipientUserId: 'asc' as const } } } as const;
+export type ReturnPlanRow = Prisma.PooledReturnPlanGetPayload<{ include: typeof returnPlanInclude }>;
 const amount = (value: { toFixed(digits: number): string }) => value.toFixed(0);
 export function projectOccurrence(row: CommitmentRow['occurrences'][number], today: string) {
   return { id: row.id, commitment_id: row.commitmentId, participant_user_id: row.participantUserId,
@@ -46,4 +48,13 @@ export function projectCorrection(row: Prisma.PooledCorrectionGetPayload<Record<
   return { id: row.id, space_id: row.spaceId, source_kind: row.sourceKind, source_id: row.sourceId,
     amount_minor: amount(row.amountMinor), occurred_on: row.occurredOn.toISOString().slice(0, 10), reason: row.reason,
     created_by: row.createdById, created_at: row.createdAt.toISOString() };
+}
+export function projectReturn(row: ReturnPlanRow['returns'][number]) {
+  return { id: row.id, plan_id: row.planId, recipient_user_id: row.recipientUserId, amount_minor: amount(row.amountMinor),
+    status: row.status, version: row.version, sent_by: row.sentById, sent_at: row.sentAt?.toISOString() ?? null,
+    received_by: row.receivedById, received_at: row.receivedAt?.toISOString() ?? null };
+}
+export function projectReturnPlan(row: ReturnPlanRow) {
+  return { id: row.id, space_id: row.spaceId, status: row.status, version: row.version, created_by: row.createdById,
+    created_at: row.createdAt.toISOString(), returns: row.returns.map(projectReturn) };
 }

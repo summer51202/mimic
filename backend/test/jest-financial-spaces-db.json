@@ -23,7 +23,9 @@
     "**/test/shared-lifecycle-concurrency.e2e-spec.ts",
     "**/test/pooled-commitments.e2e-spec.ts",
     "**/test/pooled-expenses.e2e-spec.ts",
-    "**/test/pooled-reimbursements.e2e-spec.ts"
+    "**/test/pooled-reimbursements.e2e-spec.ts",
+    "**/test/pooled-lifecycle.e2e-spec.ts",
+    "**/test/pooled-lifecycle-concurrency.e2e-spec.ts"
   ],
   "testTimeout": 30000,
   "transform": {

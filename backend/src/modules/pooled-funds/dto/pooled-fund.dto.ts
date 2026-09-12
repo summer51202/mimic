@@ -45,3 +45,10 @@ export class CreatePooledCorrectionDto extends SpaceRequestDto {
   @IsString() @Matches(/^\d{4}-\d{2}-\d{2}$/) occurred_on: string;
   @IsString() @MinLength(1) @MaxLength(2000) reason: string;
 }
+export class PooledReturnDto {
+  @IsUUID() recipient_user_id: string;
+  @IsString() @Matches(/^[1-9]\d*$/) @MaxLength(65) amount_minor: string;
+}
+export class CreatePooledReturnPlanDto extends PooledVersionDto {
+  @IsArray() @ArrayMaxSize(100) @ValidateNested({ each: true }) @Type(() => PooledReturnDto) returns: PooledReturnDto[];
+}

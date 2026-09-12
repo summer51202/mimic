@@ -114,11 +114,11 @@ Web additions:
 
 ### Task 5: Closing, explicit returns, exit, and archive
 
-- [ ] Add lifecycle REDs for `ACTIVE -> CLOSING -> ARCHIVED`, unresolved EXPECTED/reimbursement/shortfall guards, zero-balance closing, explicit return totals, no automatic recipient computation, single active plan, manager SENT, recipient RECEIVED, and archive prerequisites.
-- [ ] Add actor/privacy REDs for participant, manager, group governor outside the box, outsider, and former participant; assert rejected bodies contain no currency, balance, expense, note, commitment, reimbursement, or return facts.
-- [ ] Add independent-connection REDs for competing return plans, send/plan, final receipts/archive, and participant-exit races; verify no double distribution.
-- [ ] Implement pooled lifecycle delegation in financial-space archive and participant end, return transitions/postings, and immutable projection. Rerun focused suites GREEN.
-- [ ] Commit `feat: close pooled funds safely`.
+- [x] Add lifecycle REDs for `ACTIVE -> CLOSING -> ARCHIVED`, unresolved EXPECTED/reimbursement/shortfall guards, zero-balance closing, explicit return totals, no automatic recipient computation, single active plan, manager SENT, recipient RECEIVED, and archive prerequisites.
+- [x] Add actor/privacy REDs for participant, manager, group governor outside the box, outsider, and former participant; assert rejected bodies contain no currency, balance, expense, note, commitment, reimbursement, or return facts.
+- [x] Add independent-connection REDs for competing return plans, send/plan, final receipts/archive, and participant-exit races; verify no double distribution.
+- [x] Implement pooled lifecycle delegation in financial-space archive and participant end, return transitions/postings, and immutable projection. Rerun focused suites GREEN.
+- [x] Commit `feat: close pooled funds safely`.
 
 ### Task 6: Strict Web contracts and BFF routes
 
