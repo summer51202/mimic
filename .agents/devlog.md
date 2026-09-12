@@ -1159,3 +1159,15 @@
 - Added deterministic SSR timestamps, offline-disabled quick actions, strict query/composite-ID contracts and real-backend 320/390/768/1440 acceptance.
 **Decisions:** Dedicated task projection avoids N+1 full-workspace composition; personal home includes authorized private shared references, while pooled expenses never enter personal consumption. P7 still owns durable drafts and complete legacy removal.
 **Known gaps / follow-ups:** Recent-activity projection uses a fixed query set but does not yet apply per-space SQL window limits. P7 retains durable offline drafts, legacy routes/code cleanup and combined three-mode beta acceptance. The existing standalone public manifest-copy ENOENT warning persists.
+
+## 2026-09-13 — P7 durable drafts, legacy cleanup and three-mode acceptance
+
+**Task:** Complete durable offline expense drafts, remove the legacy universal Fund product, and run combined real-backend acceptance for all financial-space modes.
+**Scope:** Browser draft storage/recovery and three expense forms; PWA registration; legacy Web/BFF/backend/schema removal; generic route 404 privacy; real-backend acceptance; repository guidance and P7 records.
+**What changed:**
+- Added strict actor/group/space/mode/operation/version-bound drafts with reload persistence, explicit review/retry/discard, stale/blocked handling, and durable request UUID reuse.
+- Removed legacy Fund pages, BFF/API modules, tables/enums, tests, and fixtures while retaining current-mode primitives and a Prisma-independent bigint accounting calculator.
+- Added old-bookmark/error privacy, archived/closing draft discard, SSR-safe hydration, current-participant revalidation, and initial service-worker claim stability.
+- Extended the five real-backend vertical specs across four viewports and updated the feature map, README, and AGENTS guidance.
+**Decisions:** Drafts remain device-local and are never background-synchronized or auto-submitted. Framework not-found is used for old Web URLs; unmatched backend routes use a generic non-reflecting 404. Existing mutation request IDs are the duplicate-submit boundary.
+**Known gaps / follow-ups:** Browser local storage is not encryption and assumes the same-origin application is not compromised. Next production build still exits 0 with the existing standalone public manifest trace-copy warning; standalone packaging remains a separate release-tooling follow-up.
