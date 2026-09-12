@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { ArrayMaxSize, IsArray, IsIn, IsInt, IsOptional, IsString, IsUUID, Matches, Max, MaxLength, Min, ValidateNested } from 'class-validator';
+import { ArrayMaxSize, IsArray, IsIn, IsInt, IsOptional, IsString, IsUUID, Matches, Max, MaxLength, Min, MinLength, ValidateNested } from 'class-validator';
 import { SpaceRequestDto } from '../../financial-spaces/dto/space-request.dto';
 import { ExpenseInputDto } from '../../expense-records/expense-input.dto';
 
@@ -35,4 +35,13 @@ export class CreatePooledExpenseDto extends ExpenseInputDto {
 }
 export class UpdatePooledExpenseDto extends CreatePooledExpenseDto {
   @IsInt() @Min(1) @Max(Number.MAX_SAFE_INTEGER) version: number;
+}
+export class CreatePooledCorrectionDto extends SpaceRequestDto {
+  @IsUUID() request_id: string;
+  @IsIn(['EXPENSE', 'REIMBURSEMENT', 'RETURN', 'CONTRIBUTION'])
+  source_kind: 'EXPENSE' | 'REIMBURSEMENT' | 'RETURN' | 'CONTRIBUTION';
+  @IsUUID() source_id: string;
+  @IsString() @Matches(/^-?[1-9]\d*$/) @MaxLength(66) amount_minor: string;
+  @IsString() @Matches(/^\d{4}-\d{2}-\d{2}$/) occurred_on: string;
+  @IsString() @MinLength(1) @MaxLength(2000) reason: string;
 }

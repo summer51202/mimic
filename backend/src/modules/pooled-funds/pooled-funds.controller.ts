@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
-import { CreatePooledCommitmentDto, CreatePooledExpenseDto, PooledVersionDto, UpdatePooledCommitmentDto, UpdatePooledExpenseDto } from './dto/pooled-fund.dto';
+import { CreatePooledCommitmentDto, CreatePooledCorrectionDto, CreatePooledExpenseDto, PooledVersionDto, UpdatePooledCommitmentDto, UpdatePooledExpenseDto } from './dto/pooled-fund.dto';
 import { PooledCommitmentsService } from './pooled-commitments.service';
 import { PooledExpensesService } from './pooled-expenses.service';
 import { PooledQueriesService } from './pooled-queries.service';
@@ -47,5 +47,19 @@ export class PooledFundsController {
   deleteExpense(@Param('spaceId', ParseUUIDPipe) id: string, @Param('expenseId', ParseUUIDPipe) expenseId: string,
     @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
     return this.expenses.delete(id, expenseId, user.userId, dto).then((data) => ({ data }));
+  }
+  @Post('reimbursements/:reimbursementId/sent') @HttpCode(200)
+  sendReimbursement(@Param('spaceId', ParseUUIDPipe) id: string, @Param('reimbursementId', ParseUUIDPipe) reimbursementId: string,
+    @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
+    return this.expenses.reimbursement(id, reimbursementId, user.userId, dto, false).then((data) => ({ data }));
+  }
+  @Post('reimbursements/:reimbursementId/received') @HttpCode(200)
+  receiveReimbursement(@Param('spaceId', ParseUUIDPipe) id: string, @Param('reimbursementId', ParseUUIDPipe) reimbursementId: string,
+    @CurrentUser() user: RequestUser, @Body() dto: PooledVersionDto) {
+    return this.expenses.reimbursement(id, reimbursementId, user.userId, dto, true).then((data) => ({ data }));
+  }
+  @Post('corrections')
+  createCorrection(@Param('spaceId', ParseUUIDPipe) id: string, @CurrentUser() user: RequestUser, @Body() dto: CreatePooledCorrectionDto) {
+    return this.expenses.correction(id, user.userId, dto).then((data) => ({ data }));
   }
 }

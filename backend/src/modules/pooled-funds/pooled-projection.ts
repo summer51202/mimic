@@ -42,3 +42,8 @@ export function projectPooledExpense(row: PooledExpenseRow, currency: string) {
     payment_source: row.pooledPayment.source, advanced_by_user_id: row.pooledPayment.advancedById,
     reimbursement: row.pooledPayment.reimbursement ? projectReimbursement(row.pooledPayment.reimbursement) : null };
 }
+export function projectCorrection(row: Prisma.PooledCorrectionGetPayload<Record<string, never>>) {
+  return { id: row.id, space_id: row.spaceId, source_kind: row.sourceKind, source_id: row.sourceId,
+    amount_minor: amount(row.amountMinor), occurred_on: row.occurredOn.toISOString().slice(0, 10), reason: row.reason,
+    created_by: row.createdById, created_at: row.createdAt.toISOString() };
+}

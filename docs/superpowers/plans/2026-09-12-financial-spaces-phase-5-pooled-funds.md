@@ -106,11 +106,11 @@ Web additions:
 
 ### Task 4: Reimbursement confirmations and immutable corrections
 
-- [ ] Add REDs for manager-only SENT, advancing-participant-only RECEIVED, out-of-order/wrong actor, duplicate/new-key repeat, stale version, payload conflict, unique transition posting, immutable actor/time, and exact book/pending/available consequences.
-- [ ] Add concurrency and rollback REDs using two Prisma clients and temporary task-local CHECK constraints for duplicate sends/receipts, edit-vs-send, audit failure, and receipt failure.
-- [ ] Add REDs proving a SENT/COMPLETED source cannot be edited and a new signed correction adjusts book once without rewriting source facts.
-- [ ] Implement reimbursement transitions, posting uniqueness, correction API, and atomic audit/receipt behavior; run focused DB suites GREEN.
-- [ ] Commit `feat: confirm pooled reimbursements`.
+- [x] Add REDs for manager-only SENT, advancing-participant-only RECEIVED, out-of-order/wrong actor, duplicate/new-key repeat, stale version, payload conflict, unique transition posting, immutable actor/time, and exact book/pending/available consequences.
+- [x] Add concurrency and rollback REDs using two Prisma clients and temporary task-local CHECK constraints for duplicate sends/receipts, edit-vs-send, audit failure, and receipt failure.
+- [x] Add REDs proving a SENT/COMPLETED source cannot be edited and a new signed correction adjusts book once without rewriting source facts.
+- [x] Implement reimbursement transitions, posting uniqueness, correction API, and atomic audit/receipt behavior; run focused DB suites GREEN.
+- [x] Commit `feat: confirm pooled reimbursements`.
 
 ### Task 5: Closing, explicit returns, exit, and archive
 

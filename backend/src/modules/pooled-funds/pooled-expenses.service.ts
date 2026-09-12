@@ -3,9 +3,10 @@ import { FinancialSpace, Prisma } from '@prisma/client';
 import { parseExpenseDate, parseExpenseMinor } from '../expense-records/expense-values';
 import { FinancialSpacesService } from '../financial-spaces/financial-spaces.service';
 import { TaxonomyService } from '../taxonomy/taxonomy.service';
-import { CreatePooledExpenseDto, PooledVersionDto, UpdatePooledExpenseDto } from './dto/pooled-fund.dto';
+import { CreatePooledCorrectionDto, CreatePooledExpenseDto, PooledVersionDto, UpdatePooledExpenseDto } from './dto/pooled-fund.dto';
 import { PooledOperationsService } from './pooled-operations.service';
-import { pooledExpenseInclude, PooledExpenseRow, projectPooledExpense } from './pooled-projection';
+import { pooledExpenseInclude, PooledExpenseRow, projectCorrection, projectPooledExpense, projectReimbursement } from './pooled-projection';
+import { parsePooledSigned } from './pooled-values';
 import { PooledQueriesService } from './pooled-queries.service';
 
 @Injectable()
@@ -30,6 +31,50 @@ export class PooledExpensesService {
       const before = projectPooledExpense(row, space.currency); const projected = projectPooledExpense(deleted, space.currency);
       await this.operations.changed(tx, space, actorId, 'EXPENSE_DELETED', before, projected);
       return { ...projected, summary: await this.queries.summaryTx(tx, space.id) };
+    });
+  }
+
+  reimbursement(spaceId: string, id: string, actorId: string, dto: PooledVersionDto, received: boolean) {
+    return this.operations.run(spaceId, actorId, dto.request_id, received ? 'REIMBURSEMENT_RECEIVED' : 'REIMBURSEMENT_SENT',
+      { id, version: dto.version }, !received, async (tx, space) => {
+        const row = await tx.pooledReimbursement.findFirst({ where: { id, spaceId } });
+        if (!row) throw new NotFoundException('POOLED_REIMBURSEMENT_NOT_FOUND');
+        if (received && row.participantUserId !== actorId) throw new ForbiddenException('POOLED_REIMBURSEMENT_ACTOR_REQUIRED');
+        if ((!received && (row.status === 'SENT' || row.status === 'COMPLETED')) || (received && row.status === 'COMPLETED')) {
+          return { reimbursement: projectReimbursement(row), summary: await this.queries.summaryTx(tx, spaceId) };
+        }
+        if ((received && row.status !== 'SENT') || (!received && row.status !== 'AWAITING_PAYMENT')) throw new ConflictException('POOLED_REIMBURSEMENT_STATE_CONFLICT');
+        if (row.version !== dto.version) throw new ConflictException('POOLED_REIMBURSEMENT_VERSION_CONFLICT');
+        const now = new Date();
+        const updated = await tx.pooledReimbursement.update({ where: { id }, data: { status: received ? 'COMPLETED' : 'SENT', version: { increment: 1 },
+          ...(received ? { receivedById: actorId, receivedAt: now } : { sentById: actorId, sentAt: now }) } });
+        await tx.pooledTransitionPosting.create({ data: { spaceId, entityType: 'REIMBURSEMENT', entityId: id,
+          transition: received ? 'RECEIVED' : 'SENT', amountMinor: row.amountMinor, actorUserId: actorId, postedAt: now } });
+        const projected = projectReimbursement(updated);
+        await this.operations.changed(tx, space, actorId, received ? 'POOLED_REIMBURSEMENT_RECEIVED' : 'POOLED_REIMBURSEMENT_SENT', projectReimbursement(row), projected);
+        return { reimbursement: projected, summary: await this.queries.summaryTx(tx, spaceId) };
+      });
+  }
+
+  correction(spaceId: string, actorId: string, dto: CreatePooledCorrectionDto) {
+    return this.operations.run(spaceId, actorId, dto.request_id, 'CORRECTION_CREATE', dto, true, async (tx, space) => {
+      let amountMinor: bigint; let occurredOn: Date;
+      try { amountMinor = parsePooledSigned(dto.amount_minor); occurredOn = parseExpenseDate(dto.occurred_on); }
+      catch { throw new BadRequestException('POOLED_CORRECTION_INVALID'); }
+      if (amountMinor === 0n || occurredOn < space.openedOn || occurredOn > this.spaces.today(space.timezone)) throw new BadRequestException('POOLED_CORRECTION_INVALID');
+      const sourceExists = dto.source_kind === 'REIMBURSEMENT'
+        ? await tx.pooledReimbursement.findFirst({ where: { id: dto.source_id, spaceId, status: { in: ['SENT', 'COMPLETED'] } }, select: { id: true } })
+        : dto.source_kind === 'CONTRIBUTION'
+          ? await tx.pooledContribution.findFirst({ where: { id: dto.source_id, spaceId }, select: { id: true } })
+          : dto.source_kind === 'RETURN'
+            ? await tx.pooledReturn.findFirst({ where: { id: dto.source_id, plan: { spaceId }, status: { in: ['SENT', 'COMPLETED'] } }, select: { id: true } })
+            : await tx.expenseRecord.findFirst({ where: { id: dto.source_id, spaceId, pooledPayment: { source: 'FUND_PAID' } }, select: { id: true } });
+      if (!sourceExists) throw new NotFoundException('POOLED_CORRECTION_SOURCE_NOT_FOUND');
+      const row = await tx.pooledCorrection.create({ data: { spaceId, sourceKind: dto.source_kind, sourceId: dto.source_id,
+        amountMinor: dto.amount_minor, occurredOn, reason: dto.reason.trim(), createdById: actorId } });
+      const projected = projectCorrection(row);
+      await this.operations.changed(tx, space, actorId, 'POOLED_CORRECTION_CREATED', null, projected);
+      return { correction: projected, summary: await this.queries.summaryTx(tx, spaceId) };
     });
   }
 
