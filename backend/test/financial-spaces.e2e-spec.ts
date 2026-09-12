@@ -250,7 +250,7 @@ describe('financial space authenticated management', () => {
     expect(last.body.message).toBe('SPACE_MANAGER_REQUIRED');
   });
 
-  it('rejects personal invitations, foreign interval IDs and nonempty pooled exits', async () => {
+  it('rejects invalid invitations while allowing settled pooled exits only through pooled lifecycle rules', async () => {
     const personal = await create('PERSONAL_EXPENSES');
     await call('post', `/spaces/${personal.id}/participants`).send({ version: 1, user_id: users[1].id }).expect(409);
     const space = await create('POOLED_FUND');
@@ -259,10 +259,10 @@ describe('financial space authenticated management', () => {
       .send({ version: 1, role: 'MANAGER' }).expect(404);
     const added = await call('post', `/spaces/${space.id}/participants`).send({ version: 1, user_id: users[1].id }).expect(201);
     await prisma.financialSpace.update({ where: { id: space.id }, data: { firstFormalRecordAt: new Date() } });
-    const denied = await call('post', `/spaces/${space.id}/participants/${added.body.data.id}/end`)
-      .send({ version: 2 }).expect(409);
-    expect(denied.body.message).toBe('SPACE_HAS_FINANCIAL_HISTORY');
-    await call('post', `/spaces/${space.id}/archive`).send({ version: 2 }).expect(409);
+    const ended = await call('post', `/spaces/${space.id}/participants/${added.body.data.id}/end`)
+      .send({ version: 2 }).expect(200);
+    expect(ended.body.data.effective_to).not.toBeNull();
+    await call('post', `/spaces/${space.id}/archive`).send({ version: 3 }).expect(409);
   });
 
   it('does not let group departure bypass box participation', async () => {
