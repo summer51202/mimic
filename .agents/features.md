@@ -3,7 +3,7 @@ _Last updated: 2026-09-12. Refresh with `/feature-map`._
 
 > The PWA in `web/` is the only active client. Current implementation work targets `web/` and `backend/`; previous clients remain available only through Git history.
 
-## Financial spaces redesign — Phases 1–5 complete
+## Financial spaces redesign — Phases 1–6 complete
 
 The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md` supersedes the universal Fund model and its accounting assumptions. The legacy capability entries below describe existing disconnected Fund behavior, not the new modes' accounting rules.
 
@@ -25,10 +25,10 @@ The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-d
 | done | Participant-private shared Web journey, exact payer/allocation editor, positions, batch confirmations, immutable corrections and settled lifecycle | `/app/spaces/:spaceId`, `web/src/features/shared-expenses/`, `web/src/features/shared-settlements/`; four-viewport real-backend acceptance |
 | done | Private personal references to authoritative shared allocations, including private metadata, source-lock cues, access rechecks, and responsive real-backend acceptance | `backend/src/modules/personal-expenses/personal-references.service.ts`, `/app/personal`, `/app/spaces/:spaceId` |
 | done | Pooled commitments and persisted occurrences, exact book/available balances, fund-paid and advanced expenses, two-party reimbursements, signed corrections, explicit returns, settled exit/archive and participant-private responsive Web acceptance | `backend/src/modules/pooled-funds/`, `web/src/features/pooled-funds/`, `/app/spaces/:spaceId`; four-viewport real-backend acceptance |
-| planned | 寶箱 navigation, homepage, quick entry and task center | P6 |
+| done | 寶箱 navigation, personal/group homepage, mode-safe quick expense and actor-scoped task center | `backend/src/modules/home/`, `/api/v1/home`, `/api/v1/tasks`, `/app`, `/app/tasks`; four-viewport real-backend acceptance |
 | planned | Offline drafts, full three-mode real-backend browser acceptance and legacy removal | P7 |
 
-P2 enables personal daily expense posting and consumption. P3 delivers shared expense HTTP and Web CRUD, exact positions, batch settlements, two-party confirmation, immutable corrections, settled exit/archive and a four-viewport real-backend browser journey. P4 links only the current participant's authoritative shared allocation into an owned personal ledger without copying a transaction. P5 delivers the independent pooled ledger: explicit occurrence confirmation, fund-paid/advanced expenses, reimbursement and return confirmations, corrections, closing, settled departure, archival, strict Web boundaries and four-viewport real-backend acceptance. Shared spaces retain the 16-current-participant limit matching bounded exact settlement search. P6 navigation/home/quick-entry/tasks and P7 durable drafts/legacy cleanup/full three-mode acceptance remain. Current forms retain input only while open and never post automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
+P2 enables personal daily expense posting and consumption. P3 delivers shared expense HTTP and Web CRUD, exact positions, batch settlements, two-party confirmation, immutable corrections, settled exit/archive and a four-viewport real-backend browser journey. P4 links only the current participant's authoritative shared allocation into an owned personal ledger without copying a transaction. P5 delivers the independent pooled ledger. P6 replaces the active Fund-oriented entry with mode-discriminated treasure home cards, current-context quick expense routing and actor-private tasks; personal home consumption includes authorized private shared references. Shared spaces retain the 16-current-participant limit matching bounded exact settlement search. P7 durable drafts, complete legacy route/code removal and the combined three-mode beta acceptance remain. Current forms retain input only while open and never post automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
 
 ## Backend Capability Map
 
@@ -117,6 +117,8 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 |--------|------|-------------|----------------|---------------|
 | done | fund-summary | View current/all-time fund totals, settlement period, and member positions | `—` | `funds.controller.ts GET /funds/:id/summary` |
 | done | group-dashboard | View cross-fund totals grouped by currency without FX conversion | `—` | `funds.controller.ts GET /groups/:id/dashboard` |
+| done | financial-space-home | Personal/group-context mode-specific cards with governance-only metadata projection | `/app` | `home.controller.ts GET /home` |
+| done | actor-task-center | Due pooled occurrences, reimbursements, shared transfers and shortfalls scoped to the current participant | `/app/tasks` | `home.controller.ts GET /tasks` |
 
 ### Web / PWA
 
@@ -125,7 +127,10 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 | done | pwa-auth-shell | Public mimic landing, login/register, protected app shell, and PWA cache boundary | `web/src/app` | `auth.controller.ts`, BFF auth routes |
 | done | pwa-group-list | List available groups and no-group onboarding | `web/src/app/app/page.tsx`, `web/src/app/app/groups/page.tsx` | `GET /groups`, `GET /groups/:id/dashboard` |
 | done | pwa-group-create | Create a group from the PWA | `web/src/app/app/groups/new/page.tsx` | `POST /groups` |
-| done | pwa-group-detail | View group detail and fund list | `web/src/app/app/groups/[groupId]/page.tsx` | `GET /groups/:id`, `GET /groups/:id/members`, `GET /groups/:id/funds` |
+| done | pwa-group-detail | View group governance plus shared-expense and pooled-fund treasure-box entries without a legacy Fund panel | `web/src/app/app/groups/[groupId]/page.tsx` | `GET /groups/:id`, `GET /groups/:id/members`, `GET /groups/:id/spaces` |
+| done | pwa-treasure-home | Switch personal/group context and open privacy-safe mode-specific status cards without a universal balance | `web/src/app/app/page.tsx`, `web/src/features/home/` | `GET /home` |
+| done | pwa-quick-expense | Always-visible, current-context expense entry that skips or offers eligible box selection and opens the mode-specific form | `web/src/features/quick-expense/`, `pixel-app-shell.tsx` | Existing personal/shared/pooled expense routes |
+| done | pwa-task-center | Show only current-user actionable contribution, reimbursement, settlement-transfer and shortfall tasks | `web/src/app/app/tasks/page.tsx`, `web/src/features/tasks/` | `GET /tasks` |
 | done | pwa-group-rename | Rename a group from the PWA | `web/src/features/groups/group-detail.tsx` | `PATCH /groups/:id` |
 | done | pwa-group-leave | Leave a group and reconcile selected-group preference | `web/src/features/groups/leave-group-dialog.tsx` | `POST /groups/:id/leave` |
 | done | pwa-empty-group-archive | The sole active owner can use an exact-name confirmation to archive an unused group and its empty Funds; any Contribution, Expense, Settlement, or RecurringRule financial history blocks archival | `web/src/features/groups/archive-empty-group-dialog.tsx`, `web/src/features/groups/group-detail.tsx` | `POST /groups/:id/archive` through the Web BFF |

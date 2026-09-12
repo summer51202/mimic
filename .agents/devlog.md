@@ -1148,3 +1148,14 @@
 - Added strict pooled Web creation, management, failure states and 320/390/768/1440 responsive real-backend acceptance without financial mocks.
 **Decisions:** Expected occurrences never affect money; real negative balances remain visible; sent facts are corrected by new events; closing never invents return recipients; pooled accounting does not import shared formulas or legacy Fund normalization.
 **Known gaps / follow-ups:** P6 navigation/home/quick-entry/tasks and P7 durable drafts/legacy removal/full three-mode acceptance remain. The existing standalone public manifest-copy ENOENT warning persists. No merge or push was performed.
+
+## 2026-09-12 — P6 treasure navigation, home, quick entry and tasks
+
+**Task:** Replace the active Fund-oriented entry experience with three-mode treasure navigation, home cards, adaptive expense entry and actor-scoped tasks.
+**Scope:** `backend/src/modules/home/`, home/tasks DB acceptance, strict Web contracts/BFF, app shell/navigation, home/quick-expense/task UI, group space entry, Playwright acceptance and verification config.
+**What changed:**
+- Added read-only personal/group home and task projections with current-participant predicates, governance-only metadata, exact bigint strings and no read mutations.
+- Added five-item treasure navigation, separate mode summaries, current-context quick expense routing and task center actions; removed the legacy Fund panel from group detail.
+- Added deterministic SSR timestamps, offline-disabled quick actions, strict query/composite-ID contracts and real-backend 320/390/768/1440 acceptance.
+**Decisions:** Dedicated task projection avoids N+1 full-workspace composition; personal home includes authorized private shared references, while pooled expenses never enter personal consumption. P7 still owns durable drafts and complete legacy removal.
+**Known gaps / follow-ups:** Recent-activity projection uses a fixed query set but does not yet apply per-space SQL window limits. P7 retains durable offline drafts, legacy routes/code cleanup and combined three-mode beta acceptance. The existing standalone public manifest-copy ENOENT warning persists.
