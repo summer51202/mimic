@@ -19,7 +19,7 @@ export function useExpenseDraft(context: DraftContext) {
     const result = saveExpenseDraft(context, payload);
     setStorageError(!result.ok);
     if (result.ok) {
-      setLoad(loadExpenseDraft(context));
+      setLoad((current) => current.state === 'MISSING' ? current : loadExpenseDraft(context));
       return result.draft;
     }
     return undefined;

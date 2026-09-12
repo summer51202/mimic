@@ -140,7 +140,11 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
       {dialog === 'box' && <PersonalBoxForm onCreated={created => { setDialog(null); router.push(`/app/personal?space=${created.id}`); router.refresh(); }} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'expense'} title={editing ? '編輯支出' : '記一筆支出'} onClose={() => setDialog(null)} closeLabel="關閉">
-      {dialog === 'expense' && space && <PersonalExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'} spaceId={space.id} currency={space.currency} timezone={space.timezone} record={editing?.entry_type === 'MANUAL' ? editing : undefined} terms={terms} onSaved={result => void saved(result)} onReload={async () => (await refresh())?.items.find(item => item.id === editing?.id && item.entry_type === 'MANUAL') as Extract<PersonalMonthEntry, { entry_type: 'MANUAL' }> | undefined} />}
+      {dialog === 'expense' && space && <PersonalExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'}
+        actorUserId={space.owner_user_id!} spaceId={space.id} spaceVersion={monthData?.space_version ?? space.version}
+        writable={space.status === 'ACTIVE'} currency={space.currency} timezone={space.timezone}
+        record={editing?.entry_type === 'MANUAL' ? editing : undefined} terms={terms} onSaved={result => void saved(result)}
+        onReload={async () => (await refresh())?.items.find(item => item.id === editing?.id && item.entry_type === 'MANUAL') as Extract<PersonalMonthEntry, { entry_type: 'MANUAL' }> | undefined} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'reference'} title="編輯共同分帳的私人資訊" onClose={() => setDialog(null)} closeLabel="關閉">
       {dialog === 'reference' && space && editing?.entry_type === 'SHARED_REFERENCE' && <PersonalReferenceForm key={`${editing.id}:${editing.version}`} spaceId={space.id} reference={editing} terms={terms} onSaved={result => void referenceSaved(result)} onReload={async () => (await refresh())?.items.find((item): item is PersonalReferenceEntry => item.id === editing.id && item.entry_type === 'SHARED_REFERENCE')} />}
