@@ -58,7 +58,8 @@ export class HomeService {
 
   private async currentSpaces(tx: Tx, actorId: string, modes: Array<'SHARED_EXPENSES' | 'POOLED_FUND'>) {
     const candidates = await tx.financialSpace.findMany({ where: {
-      mode: { in: modes }, participants: { some: { userId: actorId, effectiveTo: null, user: { status: 'ACTIVE' } } },
+      mode: { in: modes }, status: { in: ['ACTIVE', 'CLOSING'] },
+      participants: { some: { userId: actorId, effectiveTo: null, user: { status: 'ACTIVE' } } },
       OR: [{ groupId: null }, { group: { status: 'ACTIVE', members: { some: { userId: actorId, status: 'ACTIVE' } } } }],
     }, include: { participants: { where: { userId: actorId, effectiveTo: null }, select: { role: true, effectiveFrom: true } } } });
     return candidates.filter((space) => space.participants[0]
@@ -110,8 +111,17 @@ export class HomeService {
   private async participantCards(tx: Tx, actorId: string, spaces: ParticipantSpace[]): Promise<ParticipantHomeCard[]> {
     const ids = spaces.map((space) => space.id);
     if (!ids.length) return [];
-    const [expenses, pendingBatches, pooled] = await Promise.all([
+    const [expenses, references, pendingBatches, pooled] = await Promise.all([
       tx.expenseRecord.findMany({ where: { spaceId: { in: ids }, status: 'ACTIVE' }, include: { category: true }, orderBy: [{ occurredOn: 'desc' }, { id: 'desc' }] }),
+      tx.personalExpenseReference.findMany({ where: {
+        personalSpaceId: { in: ids }, ownerUserId: actorId, status: 'ACTIVE', sourceExpense: { status: 'ACTIVE' },
+      }, include: { sourceExpense: { include: {
+        category: true, sharedAllocations: { where: { userId: actorId }, select: { amountMinor: true } },
+        space: { include: {
+          participants: { where: { userId: actorId, effectiveTo: null }, include: { user: { select: { status: true } } } },
+          group: { include: { members: { where: { userId: actorId, status: 'ACTIVE' }, select: { id: true } } } },
+        } },
+      } } } }),
       tx.sharedSettlementBatch.findMany({ where: { spaceId: { in: ids }, status: 'PENDING' }, select: { id: true, spaceId: true, periodEnd: true } }),
       this.pooledSummaries(tx, spaces.filter((space) => space.mode === 'POOLED_FUND').map((space) => space.id)),
     ]);
@@ -121,11 +131,25 @@ export class HomeService {
       select: { id: true, dueOn: true, amountMinor: true, commitment: { select: { spaceId: true } } }, orderBy: [{ dueOn: 'asc' }, { id: 'asc' }] });
     return spaces.map((space) => {
       const rows = expenses.filter((row) => row.spaceId === space.id);
-      const recent = rows.slice(0, 3).map((row) => ({ id: row.id, title: row.title,
+      let recent = rows.slice(0, 3).map((row) => ({ id: row.id, title: row.title,
         occurred_on: row.occurredOn.toISOString().slice(0, 10), amount_minor: row.amountMinor.toString() }));
       if (space.mode === 'PERSONAL_EXPENSES') {
         const now = this.spaces.today(space.timezone).toISOString().slice(0, 10);
-        const month = now.slice(0, 7); const current = rows.filter((row) => row.occurredOn.toISOString().slice(0, 7) === month);
+        const month = now.slice(0, 7);
+        const linked = references.filter((reference) => {
+          if (reference.personalSpaceId !== space.id) return false;
+          const source = reference.sourceExpense.space;
+          const participant = source.participants[0];
+          return source.mode === 'SHARED_EXPENSES' && source.currency === space.currency
+            && participant?.user.status === 'ACTIVE' && participant.effectiveFrom <= this.spaces.today(source.timezone)
+            && source.group?.members.length === 1;
+        }).map((reference) => ({ id: reference.id, title: reference.sourceExpense.title,
+          occurredOn: reference.sourceExpense.occurredOn, amountMinor: reference.sourceExpense.sharedAllocations[0]?.amountMinor ?? 0n,
+          categoryId: reference.sourceExpense.categoryId, category: reference.sourceExpense.category }));
+        const personalRows = [...rows, ...linked].sort((a, b) => b.occurredOn.getTime() - a.occurredOn.getTime() || b.id.localeCompare(a.id));
+        recent = personalRows.slice(0, 3).map((row) => ({ id: row.id, title: row.title,
+          occurred_on: row.occurredOn.toISOString().slice(0, 10), amount_minor: row.amountMinor.toString() }));
+        const current = personalRows.filter((row) => row.occurredOn.toISOString().slice(0, 7) === month);
         const categories = new Map<string, { category_name: string; spending: bigint }>();
         for (const row of current) { const old = categories.get(row.categoryId); categories.set(row.categoryId,
           { category_name: row.category.name, spending: (old?.spending ?? 0n) + row.amountMinor }); }
