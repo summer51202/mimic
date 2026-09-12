@@ -10,6 +10,8 @@ describe('pooled responsive and accessible layout contract', () => {
     expect(css).toContain('max-width: calc(100vw - 1rem)');
     expect(css).toContain('grid-template-columns: minmax(0, 1fr)');
     expect(css).toContain('min-width: 0');
+    expect(css).toContain('.pooled-page > *');
+    expect(css).toContain('.pooled-add .pixel-field__input { width: 100%; }');
   });
   it('honors reduced motion', () => {
     expect(css).toContain('@media (prefers-reduced-motion: reduce)');

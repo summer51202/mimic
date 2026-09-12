@@ -132,16 +132,17 @@ export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
   return <main className="pooled-page">
     <header className="pooled-hero"><div><p className="pooled-eyebrow">POOLED FUND · 共同基金</p><h1>{space.name}</h1>
       <p>{group.name} · {space.currency} · {manager ? '寶箱管理者' : '參與者'}</p></div>
-      <div className="pooled-hero-actions">{active && <PixelButton disabled={!online || busy} onClick={() => setDialog('expense')}>新增基金支出</PixelButton>}
-        {active && manager && <PixelButton emphasis="secondary" disabled={!online || busy} onClick={() => { setEditingCommitment(undefined); setDialog('commitment'); }}>建立投入排程</PixelButton>}</div>
+      <div className="pooled-hero-actions">{active && <PixelButton type="button" disabled={!online || busy} onClick={() => setDialog('expense')}>新增基金支出</PixelButton>}
+        {active && manager && <PixelButton type="button" emphasis="secondary" disabled={!online || busy} onClick={() => { setEditingCommitment(undefined); setDialog('commitment'); }}>建立投入排程</PixelButton>}</div>
     </header>
     {!online && <p role="status" className="pooled-offline">目前離線，所有變更按鈕已停用；畫面保留最後確認的資料。</p>}
     {notice && <p role="status" className="pooled-notice">{notice}</p>}
-    {error && <div role="alert" className="pooled-alert"><p>{error}</p><PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void refresh()}>重新讀取</PixelButton></div>}
+    {error && <div role="alert" className="pooled-alert"><p>{error}</p><PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void refresh()}>重新讀取</PixelButton></div>}
 
     <section className="pooled-vault" aria-labelledby="pooled-balance-title">
       <PixelPanel className="pooled-balance-card pooled-balance-card--book"><p id="pooled-balance-title">帳面餘額</p><strong data-testid="pooled-book">{money(workspace.summary.book_balance_minor)}</strong><span>只含已確認的金流</span></PixelPanel>
-      <PixelPanel className="pooled-balance-card"><p>待付代墊</p><strong>{money(workspace.summary.pending_reimbursement_minor)}</strong><span>尚未由管理者送出</span></PixelPanel>
+      <PixelPanel className="pooled-balance-card"><p>待付代墊</p><strong data-testid="pooled-pending">{money(workspace.summary.pending_reimbursement_minor)}</strong><span>尚未由管理者送出</span></PixelPanel>
+      <PixelPanel className="pooled-balance-card"><p>已送出待收款</p><strong data-testid="pooled-sent-awaiting">{money(workspace.summary.sent_awaiting_receipt_minor)}</strong><span>已扣帳面餘額，不再保留</span></PixelPanel>
       <PixelPanel className="pooled-balance-card"><p>可用餘額</p><strong data-testid="pooled-available">{money(workspace.summary.available_balance_minor)}</strong><span>帳面餘額扣除待付代墊</span></PixelPanel>
     </section>
     {workspace.summary.shortfall_minor !== '0' && <div role="alert" className="pooled-shortfall"><strong>資金缺口 {money(workspace.summary.shortfall_minor)}</strong><span>真實支出已保留。請補一筆投入或調整未來排程。</span></div>}
@@ -150,13 +151,13 @@ export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
       {!workspace.commitments.length ? <p>還沒有排程。管理者可建立規則；只有參與者本人能確認自己的實際投入。</p> : <ul className="pooled-ledger">
         {workspace.commitments.map((commitment) => <li key={commitment.id}><div className="pooled-row-heading"><div><strong>{commitment.name}</strong>
           <span>{commitment.cadence === 'MONTHLY' ? '每月' : '每週'} · 每 {commitment.interval} 期</span></div>
-          {active && manager && commitment.status === 'ACTIVE' && <PixelButton emphasis="ghost" onClick={() => { setEditingCommitment(commitment); setDialog('commitment'); }}>編輯投入金額</PixelButton>}</div>
+          {active && manager && commitment.status === 'ACTIVE' && <PixelButton type="button" emphasis="ghost" onClick={() => { setEditingCommitment(commitment); setDialog('commitment'); }}>編輯投入金額</PixelButton>}</div>
           <ul className="pooled-occurrences">{commitment.occurrences.map((item) => <li key={item.id}><div><strong>{nameFor(item.participant_user_id)}</strong>
             <span>{item.due_on} · {money(item.amount_minor)} · {item.status === 'EXPECTED' ? timingLabel(item.timing) : occurrenceLabel(item.status)}</span></div>
             {active && item.status === 'EXPECTED' && <div className="pooled-row-actions">
-              {item.participant_user_id === currentUserId && <><PixelButton disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'confirm', item.version)}>確認已投入</PixelButton>
-                <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'skip', item.version)}>略過這次</PixelButton></>}
-              {manager && <PixelButton emphasis="ghost" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'cancel', item.version)}>取消這次</PixelButton>}
+              {item.participant_user_id === currentUserId && <><PixelButton type="button" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'confirm', item.version)}>確認已投入</PixelButton>
+                <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'skip', item.version)}>略過這次</PixelButton></>}
+              {manager && <PixelButton type="button" emphasis="ghost" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'cancel', item.version)}>取消這次</PixelButton>}
             </div>}
           </li>)}</ul></li>)}
       </ul>}
@@ -166,28 +167,28 @@ export function PooledWorkspace({ initial }: { initial: PooledWorkspaceData }) {
       {!workspace.expenses.length ? <p>還沒有基金支出。</p> : <ul className="pooled-ledger">{workspace.expenses.map((expense) => <li key={expense.record.id}>
         <div className="pooled-row-heading"><div><strong>{expense.record.title}</strong><span>{money(expense.record.amount_minor)} · {expense.payment_source === 'FUND_PAID' ? '基金直接支付' : `${nameFor(expense.advanced_by_user_id!)}先代墊`}</span></div>
           {expense.reimbursement && <span className="pooled-status">{workflowLabel(expense.reimbursement.status)}</span>}</div>
-        {expense.reimbursement?.status === 'AWAITING_PAYMENT' && manager && <PixelButton disabled={busy || !online} onClick={() => void reimbursementAction(expense, false)}>確認送出代墊款</PixelButton>}
-        {expense.reimbursement?.status === 'SENT' && expense.reimbursement.participant_user_id === currentUserId && <PixelButton disabled={busy || !online} onClick={() => void reimbursementAction(expense, true)}>確認收到代墊款</PixelButton>}
+        {expense.reimbursement?.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, false)}>確認送出代墊款</PixelButton>}
+        {expense.reimbursement?.status === 'SENT' && expense.reimbursement.participant_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, true)}>確認收到代墊款</PixelButton>}
       </li>)}</ul>}
     </PixelPanel>
 
     <PixelPanel><div className="pooled-section-heading"><div><p>PARTICIPANTS</p><h2>寶箱參與者</h2></div></div>
       <ul className="pooled-participants">{data.participants.filter((person) => person.effective_to === null).map((person) => <li key={person.id}><span>{person.display_name} · {person.role === 'MANAGER' ? '管理者' : '參與者'}</span>
-        {manager && person.user_id !== currentUserId && <PixelButton emphasis="ghost" disabled={busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants/${person.id}/end`, { version: space.version }, `已結束 ${person.display_name} 的參與。`)}>結束參與</PixelButton>}</li>)}</ul>
+        {manager && person.user_id !== currentUserId && <PixelButton type="button" emphasis="ghost" disabled={busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants/${person.id}/end`, { version: space.version }, `已結束 ${person.display_name} 的參與。`)}>結束參與</PixelButton>}</li>)}</ul>
       {active && manager && candidates.length > 0 && <div className="pooled-add"><label className="pixel-field">加入參與者<select aria-label="加入參與者" className="pixel-field__input" value={selectedParticipant} onChange={(event) => setSelectedParticipant(event.target.value)}>
         <option value="">選擇群組成員</option>{candidates.map((member) => <option value={member.user_id} key={member.user_id}>{member.display_name} · {member.mimic_id}</option>)}</select></label>
-        <PixelButton disabled={!selectedParticipant || busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants`, { user_id: selectedParticipant, version: space.version }, '已加入寶箱參與者。')}>加入寶箱</PixelButton></div>}
-      {current && <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void leave()}>離開這個寶箱</PixelButton>}
+        <PixelButton type="button" disabled={!selectedParticipant || busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants`, { user_id: selectedParticipant, version: space.version }, '已加入寶箱參與者。')}>加入寶箱</PixelButton></div>}
+      {current && <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void leave()}>離開這個寶箱</PixelButton>}
     </PixelPanel>
 
     <PixelPanel className="pooled-closing"><div className="pooled-section-heading"><div><p>CLOSE THE VAULT</p><h2>{active ? '準備結清' : closing ? '基金退回' : '已封存'}</h2></div></div>
-      {active && manager && <PixelButton emphasis="danger" disabled={busy || !online} onClick={() => void mutation(`/api/app/spaces/${space.id}/pooled-funds/closing`, { version: space.version },
+      {active && manager && <PixelButton type="button" emphasis="danger" disabled={busy || !online} onClick={() => void mutation(`/api/app/spaces/${space.id}/pooled-funds/closing`, { version: space.version },
         `closing:${space.version}`, pooledLifecycleMutationSchema.parse, '寶箱已進入結清；不再接受新金流。')}>開始結清</PixelButton>}
-      {closing && !workspace.return_plan && workspace.summary.book_balance_minor !== '0' && manager && <PixelButton onClick={() => setDialog('returns')}>指定基金退回</PixelButton>}
+      {closing && !workspace.return_plan && workspace.summary.book_balance_minor !== '0' && manager && <PixelButton type="button" onClick={() => setDialog('returns')}>指定基金退回</PixelButton>}
       {workspace.return_plan && <ul className="pooled-ledger">{workspace.return_plan.returns.map((item) => <li key={item.id}><div><strong>{nameFor(item.recipient_user_id)}</strong><span>{money(item.amount_minor)} · {workflowLabel(item.status)}</span></div>
-        {item.status === 'AWAITING_PAYMENT' && manager && <PixelButton disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, false)}>確認送出退回款</PixelButton>}
-        {item.status === 'SENT' && item.recipient_user_id === currentUserId && <PixelButton disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, true)}>確認收到退回款</PixelButton>}</li>)}</ul>}
-      {closing && manager && <PixelButton emphasis="danger" disabled={busy || !online} onClick={() => void mutation(`/api/app/spaces/${space.id}/pooled-funds/archive`, { version: space.version },
+        {item.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, false)}>確認送出退回款</PixelButton>}
+        {item.status === 'SENT' && item.recipient_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, true)}>確認收到退回款</PixelButton>}</li>)}</ul>}
+      {closing && manager && <PixelButton type="button" emphasis="danger" disabled={busy || !online} onClick={() => void mutation(`/api/app/spaces/${space.id}/pooled-funds/archive`, { version: space.version },
         `archive:${space.version}`, pooledLifecycleMutationSchema.parse, '共同基金已封存。')}>封存共同基金</PixelButton>}
     </PixelPanel>
 

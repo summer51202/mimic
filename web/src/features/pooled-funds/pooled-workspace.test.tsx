@@ -59,6 +59,8 @@ describe('PooledWorkspace', () => {
   it('shows exact fund states, shortfall and manager-only controls', () => {
     render(<PooledWorkspace initial={initial} />);
     expect(screen.getByTestId('pooled-book')).toHaveTextContent('$2.00');
+    expect(screen.getByTestId('pooled-pending')).toHaveTextContent('$3.00');
+    expect(screen.getByTestId('pooled-sent-awaiting')).toHaveTextContent('$3.00');
     expect(screen.getByTestId('pooled-available')).toHaveTextContent('-$1.00');
     expect(screen.getByRole('alert')).toHaveTextContent('資金缺口');
     expect(screen.getByRole('button', { name: '新增基金支出' })).toBeVisible();

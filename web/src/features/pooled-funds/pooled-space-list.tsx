@@ -15,7 +15,7 @@ export function PooledSpaceList({ groupId, spaces, defaultCurrency = 'TWD' }: {
   const router = useRouter();
   return <PixelFrame>
     <div className="pooled-section-heading"><div><p>共同寶箱</p><h2>共同基金</h2></div>
-      <PixelButton onClick={() => setCreating(true)}>建立共同基金寶箱</PixelButton></div>
+      <PixelButton type="button" onClick={() => setCreating(true)}>建立共同基金寶箱</PixelButton></div>
     {!spaces.length ? <p>還沒有共同基金。建立後，加入參與者並設定投入排程。</p> : <ul className="pooled-space-list">
       {spaces.map((space) => <li key={space.id}>{space.access === 'PARTICIPANT' ? <Link href={`/app/spaces/${space.id}`}>
         <strong>{space.name}</strong><span>{space.currency} · {space.role === 'MANAGER' ? '管理者' : '參與者'}{space.status === 'CLOSING' ? ' · 結清中' : space.status === 'ARCHIVED' ? ' · 已封存' : ''}</span>

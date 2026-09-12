@@ -1,11 +1,13 @@
 .pooled-page { display: grid; gap: var(--mimic-space-5); min-width: 0; }
+.pooled-page > *, .pooled-page :where(.pixel-panel, .pixel-field, .pixel-field__input) { max-width: 100%; min-width: 0; }
+.pooled-add .pixel-field__input { width: 100%; }
 .pooled-page :where(p, span, strong, h1, h2, label) { overflow-wrap: anywhere; }
 .pooled-page .pixel-button { min-height: 2.75rem; touch-action: manipulation; }
 .pooled-page .pixel-dialog { margin: auto; max-height: calc(100dvh - 2rem); max-width: min(42rem, calc(100vw - 2rem)); overflow: auto; overscroll-behavior: contain; }
 .pooled-hero, .pooled-section-heading, .pooled-row-heading, .pooled-participants > li { align-items: center; display: flex; gap: var(--mimic-space-4); justify-content: space-between; min-width: 0; }
 .pooled-hero-actions, .pooled-row-actions { display: flex; flex-wrap: wrap; gap: var(--mimic-space-2); }
 .pooled-eyebrow, .pooled-section-heading p { font-size: .875rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-.pooled-vault { display: grid; gap: var(--mimic-space-3); grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pooled-vault { display: grid; gap: var(--mimic-space-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .pooled-balance-card { position: relative; }
 .pooled-balance-card::after { background: var(--mimic-color-line); bottom: .5rem; content: ''; height: 4px; image-rendering: pixelated; position: absolute; right: .5rem; width: 28%; }
 .pooled-balance-card--book { border-color: var(--mimic-color-coin-action); }

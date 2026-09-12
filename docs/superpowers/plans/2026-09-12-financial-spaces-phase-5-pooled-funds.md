@@ -137,10 +137,10 @@ Web additions:
 
 ### Task 8: Real-backend browser acceptance
 
-- [ ] Add one Playwright journey with no `page.route`, `route.fulfill`, or financial mocks: create pooled box; add participant; create/materialize commitment; assigned self-confirm; verify summary; add advance and fund-paid shortfall; add contribution; send/receive reimbursement; resolve occurrences; close; create explicit return; send/receive; reach zero; settled participant exits; archive; former/governor/outsider financial reads denied.
-- [ ] Exercise `320x568`, `390x844`, `768x1024`, and `1440x900`; assert keyboard reachability, focus restoration, dialog containment, action wrapping and no horizontal overflow.
-- [ ] Run only task-owned PostgreSQL `127.0.0.1:55439` schema `phase2`, API `127.0.0.1:3101`, and Web `127.0.0.1:3110`. Use systematic debugging for every unexpected RED until 4/4 GREEN.
-- [ ] Commit `test: cover pooled fund browser lifecycle`.
+- [x] Add one Playwright journey with no `page.route`, `route.fulfill`, or financial mocks: create pooled box; add participant; create/materialize commitment; assigned self-confirm; verify summary; add advance and fund-paid shortfall; add contribution; send/receive reimbursement; resolve occurrences; close; create explicit return; send/receive; reach zero; settled participant exits; archive; former/governor/outsider financial reads denied.
+- [x] Exercise `320x568`, `390x844`, `768x1024`, and `1440x900`; assert keyboard reachability, focus restoration, dialog containment, action wrapping and no horizontal overflow.
+- [x] Run only task-owned PostgreSQL `127.0.0.1:55439` schema `phase2`, API `127.0.0.1:3101`, and Web `127.0.0.1:3110`. Use systematic debugging for every unexpected RED until 4/4 GREEN.
+- [x] Commit `test: cover pooled fund browser lifecycle`.
 
 ### Task 9: Review, documentation, verification, and cleanup
 
