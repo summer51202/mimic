@@ -5,6 +5,7 @@ import { appFetch } from '@/shared/api/app-fetch';
 import { expenseMutationSchema, personalMonthSchema, personalReferenceMutationSchema, type ExpenseMutation, type PersonalMonthEntry, type PersonalReferenceEntry, type PersonalReferenceMutation } from '@/shared/api/personal-expense-contracts';
 import { taxonomyTermSchema } from '@/shared/api/taxonomy-contracts';
 import { formatMinorUnit } from '@/shared/finance/minor-unit';
+import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
@@ -113,6 +114,8 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
   return <div className="personal-page">
     <header className="personal-heading"><div><p className="personal-eyebrow">PERSONAL EXPENSES · 個人記帳</p><h1>我的寶箱</h1><p>把日常花費記下來，慢慢看懂自己的生活。</p></div>
       <PixelButton onClick={() => setDialog('box')}>新增寶箱</PixelButton></header>
+    {space && space.status !== 'ACTIVE' && <BlockedExpenseDrafts actorUserId={space.owner_user_id!} groupId={null} spaceId={space.id}
+      mode="PERSONAL_EXPENSES" spaceVersion={space.version} />}
     {notice && <p role="status" className="personal-notice">{notice}</p>}
     {error && <div role="alert"><p>{error}</p><PixelButton emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>重新讀取</PixelButton></div>}
     {!space || !monthData ? <PixelPanel><h2>你的第一個個人寶箱</h2><p>不需要群組。建立寶箱後，就能記錄每天的支出。</p></PixelPanel> : <>

@@ -5,6 +5,7 @@ import { financialSpaceSchema } from '@/shared/api/financial-space-contracts';
 import { sharedBatchPageSchema, sharedCorrectionPageSchema, sharedExpenseMutationSchema, sharedExpensePageSchema,
   sharedParticipantSchema, sharedSummarySchema, type SharedExpense } from '@/shared/api/shared-finance-contracts';
 import { formatMinorUnit, parseMinorUnit } from '@/shared/finance/minor-unit';
+import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
@@ -97,6 +98,8 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
     <header className="shared-hero"><div><p className="shared-eyebrow">SHARED EXPENSES · 共同分帳</p><h1>{space.name}</h1><p>{group.name} · {space.currency} · {manager ? '寶箱管理者' : '參與者'}</p>
       {!active && <p className="shared-archive-state">已封存 · 唯讀</p>}</div>
       {active && <PixelButton onClick={() => { setEditing(undefined); setDialog('expense'); }}>新增共同支出</PixelButton>}</header>
+    {!active && <BlockedExpenseDrafts actorUserId={group.current_user_id} groupId={group.id} spaceId={space.id}
+      mode="SHARED_EXPENSES" spaceVersion={space.version} />}
     {notice && <p role="status" className="shared-notice">{notice}</p>}
     {error && <div role="alert"><p>{error}</p><PixelButton emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>重新讀取</PixelButton></div>}
     <section className="shared-summary" aria-labelledby="shared-summary-title"><PixelPanel><p>共同支出總額</p><strong data-testid="shared-spending">{money(data.summary.spending_minor)}</strong><p>這不是帳戶餘額。</p></PixelPanel>

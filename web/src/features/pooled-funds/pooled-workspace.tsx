@@ -10,6 +10,7 @@ import {
 } from '@/shared/api/pooled-finance-contracts';
 import { sharedParticipantSchema } from '@/shared/api/shared-finance-contracts';
 import { formatMinorUnit } from '@/shared/finance/minor-unit';
+import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
 import { majorToMinorString } from '@/shared/finance/major-to-minor';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
@@ -142,6 +143,8 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
       <div className="pooled-hero-actions">{active && <PixelButton type="button" disabled={!online || busy} onClick={() => setDialog('expense')}>新增基金支出</PixelButton>}
         {active && manager && <PixelButton type="button" emphasis="secondary" disabled={!online || busy} onClick={() => { setEditingCommitment(undefined); setDialog('commitment'); }}>建立投入排程</PixelButton>}</div>
     </header>
+    {!active && <BlockedExpenseDrafts actorUserId={currentUserId} groupId={group.id} spaceId={space.id}
+      mode="POOLED_FUND" spaceVersion={space.version} />}
     {!online && <p role="status" className="pooled-offline">目前離線；已確認資料維持不變。已開啟的支出表單會保存未提交草稿，重新連線後仍需手動檢視與送出。</p>}
     {notice && <p role="status" className="pooled-notice">{notice}</p>}
     {error && <div role="alert" className="pooled-alert"><p>{error}</p><PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void refresh()}>重新讀取</PixelButton></div>}
