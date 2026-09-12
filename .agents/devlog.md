@@ -1171,3 +1171,14 @@
 - Extended the five real-backend vertical specs across four viewports and updated the feature map, README, and AGENTS guidance.
 **Decisions:** Drafts remain device-local and are never background-synchronized or auto-submitted. Framework not-found is used for old Web URLs; unmatched backend routes use a generic non-reflecting 404. Existing mutation request IDs are the duplicate-submit boundary.
 **Known gaps / follow-ups:** Browser local storage is not encryption and assumes the same-origin application is not compromised. Next production build still exits 0 with the existing standalone public manifest trace-copy warning; standalone packaging remains a separate release-tooling follow-up.
+
+## 2026-09-13 — Repair post-P7 GitHub CI contracts
+
+**Task:** Fix the Web typecheck and Production containers failures reported by the first P7 `main` CI run.
+**Scope:** `.github/workflows/ci.yml`, parsed workflow regression coverage, and PostgreSQL restore verification contracts.
+**What changed:**
+- Provisioned and generated the Backend Prisma client before the Web job type-checks real-backend Playwright specs.
+- Replaced the restore verifier's legacy Fund table manifest with the complete current financial-space schema and updated its exact table count.
+- Updated the backup contract's settlement-table assertion and added a workflow-order regression test.
+**Decisions:** Kept the real-backend specs in the Web typecheck boundary; CI now supplies their explicit Backend client dependency instead of weakening TypeScript coverage or adding a duplicate Prisma schema.
+**Known gaps / follow-ups:** The Web job performs a second Backend dependency install because GitHub jobs do not share files; this is deliberate and can later be optimized with a reviewed artifact or workspace design.
