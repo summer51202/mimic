@@ -13,6 +13,7 @@ import { HomeModule } from './modules/home/home.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
 import { UsersModule } from './modules/users/users.module';
+import { RouteNotFoundFilter } from './common/filters/route-not-found.filter';
 
 @Module({
   imports: [
@@ -34,6 +35,10 @@ import { UsersModule } from './modules/users/users.module';
     {
       provide: APP_FILTER,
       useClass: SentryGlobalFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: RouteNotFoundFilter,
     },
   ],
 })

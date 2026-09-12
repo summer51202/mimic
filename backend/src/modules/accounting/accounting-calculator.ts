@@ -1,8 +1,9 @@
-import { ExpenseType, SettlementStatus } from '@prisma/client';
+export type AccountingExpenseKind = 'EXPENSE' | 'REFUND';
+export type AccountingSettlementStatus = 'PENDING' | 'COMPLETED' | 'CANCELED';
 
 export interface MemberPosition {
   userId: string;
-  positionMinor: number;
+  positionMinor: bigint;
 }
 
 export interface AccountingCalculatorInput {
@@ -12,7 +13,7 @@ export interface AccountingCalculatorInput {
     amountMinor: bigint;
   }>;
   expenses: Array<{
-    expenseType: ExpenseType;
+    expenseType: AccountingExpenseKind;
     amountMinor: bigint;
     payers: Array<{ payerUserId: string; amountMinor: bigint }>;
     splits: Array<{ userId: string; allocatedAmountMinor: bigint }>;
@@ -21,44 +22,44 @@ export interface AccountingCalculatorInput {
     fromUserId: string;
     toUserId: string;
     amountMinor: bigint;
-    status: SettlementStatus;
+    status: AccountingSettlementStatus;
   }>;
 }
 
-export function expenseDirection(type: ExpenseType): 1 | -1 {
-  return type === ExpenseType.REFUND ? -1 : 1;
+export function expenseDirection(type: AccountingExpenseKind): 1n | -1n {
+  return type === 'REFUND' ? -1n : 1n;
 }
 
 export function calculateMemberPositions(
   input: AccountingCalculatorInput,
 ): MemberPosition[] {
-  const positionByUser = new Map<string, number>();
-  input.memberIds.forEach((userId) => positionByUser.set(userId, 0));
+  const positionByUser = new Map<string, bigint>();
+  input.memberIds.forEach((userId) => positionByUser.set(userId, 0n));
 
-  const addPosition = (userId: string, amount: number) => {
-    positionByUser.set(userId, (positionByUser.get(userId) ?? 0) + amount);
+  const addPosition = (userId: string, amount: bigint) => {
+    positionByUser.set(userId, (positionByUser.get(userId) ?? 0n) + amount);
   };
 
   input.contributions.forEach((contribution) => {
-    addPosition(contribution.contributorUserId, Number(contribution.amountMinor));
+    addPosition(contribution.contributorUserId, contribution.amountMinor);
   });
 
   input.expenses.forEach((expense) => {
     const sign = expenseDirection(expense.expenseType);
 
     expense.payers.forEach((payer) => {
-      addPosition(payer.payerUserId, Number(payer.amountMinor) * sign);
+      addPosition(payer.payerUserId, payer.amountMinor * sign);
     });
     expense.splits.forEach((split) => {
-      addPosition(split.userId, -Number(split.allocatedAmountMinor) * sign);
+      addPosition(split.userId, -split.allocatedAmountMinor * sign);
     });
   });
 
   input.settlements
-    .filter((settlement) => settlement.status === SettlementStatus.COMPLETED)
+    .filter((settlement) => settlement.status === 'COMPLETED')
     .forEach((settlement) => {
-      addPosition(settlement.fromUserId, -Number(settlement.amountMinor));
-      addPosition(settlement.toUserId, Number(settlement.amountMinor));
+      addPosition(settlement.fromUserId, -settlement.amountMinor);
+      addPosition(settlement.toUserId, settlement.amountMinor);
     });
 
   return Array.from(positionByUser.entries()).map(([userId, positionMinor]) => ({
@@ -69,20 +70,20 @@ export function calculateMemberPositions(
 
 export function buildSettlementSuggestions(positions: MemberPosition[]) {
   const creditors = positions
-    .filter((position) => position.positionMinor > 0)
+    .filter((position) => position.positionMinor > 0n)
     .map((position) => ({ ...position }))
-    .sort((a, b) => b.positionMinor - a.positionMinor);
+    .sort((a, b) => a.positionMinor === b.positionMinor ? 0 : a.positionMinor > b.positionMinor ? -1 : 1);
   const debtors = positions
-    .filter((position) => position.positionMinor < 0)
+    .filter((position) => position.positionMinor < 0n)
     .map((position) => ({
       userId: position.userId,
       debtMinor: -position.positionMinor,
     }))
-    .sort((a, b) => b.debtMinor - a.debtMinor);
+    .sort((a, b) => a.debtMinor === b.debtMinor ? 0 : a.debtMinor > b.debtMinor ? -1 : 1);
   const suggestions: Array<{
     from_user_id: string;
     to_user_id: string;
-    amount_minor: number;
+    amount_minor: bigint;
   }> = [];
 
   let debtorIndex = 0;
@@ -91,9 +92,9 @@ export function buildSettlementSuggestions(positions: MemberPosition[]) {
   while (debtorIndex < debtors.length && creditorIndex < creditors.length) {
     const debtor = debtors[debtorIndex];
     const creditor = creditors[creditorIndex];
-    const amount = Math.min(debtor.debtMinor, creditor.positionMinor);
+    const amount = debtor.debtMinor < creditor.positionMinor ? debtor.debtMinor : creditor.positionMinor;
 
-    if (amount > 0) {
+    if (amount > 0n) {
       suggestions.push({
         from_user_id: debtor.userId,
         to_user_id: creditor.userId,
@@ -104,10 +105,10 @@ export function buildSettlementSuggestions(positions: MemberPosition[]) {
     debtor.debtMinor -= amount;
     creditor.positionMinor -= amount;
 
-    if (debtor.debtMinor === 0) {
+    if (debtor.debtMinor === 0n) {
       debtorIndex += 1;
     }
-    if (creditor.positionMinor === 0) {
+    if (creditor.positionMinor === 0n) {
       creditorIndex += 1;
     }
   }
@@ -124,16 +125,18 @@ export function normalizeAgainstEqualFundShare(
 
   const totalPosition = positions.reduce(
     (sum, position) => sum + position.positionMinor,
-    0,
+    0n,
   );
-  const baseTargetShare = Math.floor(totalPosition / positions.length);
-  let remainingRemainder = totalPosition - baseTargetShare * positions.length;
-  let normalizedTotal = 0;
+  const memberCount = BigInt(positions.length);
+  const baseTargetShare = totalPosition / memberCount;
+  let remainingRemainder = totalPosition - baseTargetShare * memberCount;
+  let normalizedTotal = 0n;
 
   return positions.map((position, index) => {
-    const targetShare = baseTargetShare + (remainingRemainder > 0 ? 1 : 0);
-    if (remainingRemainder > 0) {
-      remainingRemainder -= 1;
+    const remainderShare = remainingRemainder > 0n ? 1n : remainingRemainder < 0n ? -1n : 0n;
+    const targetShare = baseTargetShare + remainderShare;
+    if (remainingRemainder !== 0n) {
+      remainingRemainder -= remainderShare;
     }
 
     const isLast = index === positions.length - 1;

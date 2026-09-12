@@ -1,4 +1,3 @@
-import { ExpenseType, SettlementStatus } from '@prisma/client';
 import {
   buildSettlementSuggestions,
   calculateMemberPositions,
@@ -23,8 +22,8 @@ describe('accounting calculator', () => {
         ],
       }),
     ).toEqual([
-      { userId: 'user-a', positionMinor: 1000 },
-      { userId: 'user-b', positionMinor: 0 },
+      { userId: 'user-a', positionMinor: 1000n },
+      { userId: 'user-b', positionMinor: 0n },
     ]);
   });
 
@@ -34,7 +33,7 @@ describe('accounting calculator', () => {
         ...baseInput(),
         expenses: [
           {
-            expenseType: ExpenseType.FUND_EXPENSE,
+            expenseType: 'EXPENSE',
             amountMinor: BigInt(600),
             payers: [
               { payerUserId: 'user-a', amountMinor: BigInt(600) },
@@ -47,19 +46,19 @@ describe('accounting calculator', () => {
         ],
       }),
     ).toEqual([
-      { userId: 'user-a', positionMinor: 300 },
-      { userId: 'user-b', positionMinor: -300 },
+      { userId: 'user-a', positionMinor: 300n },
+      { userId: 'user-b', positionMinor: -300n },
     ]);
   });
 
   it('reverses payer and split allocation directions for refunds', () => {
-    expect(expenseDirection(ExpenseType.REFUND)).toBe(-1);
+    expect(expenseDirection('REFUND')).toBe(-1n);
     expect(
       calculateMemberPositions({
         ...baseInput(),
         expenses: [
           {
-            expenseType: ExpenseType.REFUND,
+            expenseType: 'REFUND',
             amountMinor: BigInt(200),
             payers: [
               { payerUserId: 'user-a', amountMinor: BigInt(200) },
@@ -72,8 +71,8 @@ describe('accounting calculator', () => {
         ],
       }),
     ).toEqual([
-      { userId: 'user-a', positionMinor: -150 },
-      { userId: 'user-b', positionMinor: 150 },
+      { userId: 'user-a', positionMinor: -150n },
+      { userId: 'user-b', positionMinor: 150n },
     ]);
   });
 
@@ -86,25 +85,25 @@ describe('accounting calculator', () => {
             fromUserId: 'user-a',
             toUserId: 'user-b',
             amountMinor: BigInt(100),
-            status: SettlementStatus.COMPLETED,
+            status: 'COMPLETED',
           },
           {
             fromUserId: 'user-a',
             toUserId: 'user-b',
             amountMinor: BigInt(200),
-            status: SettlementStatus.PENDING,
+            status: 'PENDING',
           },
           {
             fromUserId: 'user-a',
             toUserId: 'user-b',
             amountMinor: BigInt(300),
-            status: SettlementStatus.CANCELED,
+            status: 'CANCELED',
           },
         ],
       }),
     ).toEqual([
-      { userId: 'user-a', positionMinor: -100 },
-      { userId: 'user-b', positionMinor: 100 },
+      { userId: 'user-a', positionMinor: -100n },
+      { userId: 'user-b', positionMinor: 100n },
     ]);
   });
 
@@ -116,7 +115,7 @@ describe('accounting calculator', () => {
       ],
       expenses: [
         {
-          expenseType: ExpenseType.FUND_EXPENSE,
+          expenseType: 'EXPENSE',
           amountMinor: BigInt(600),
           payers: [{ payerUserId: 'user-a', amountMinor: BigInt(600) }],
           splits: [
@@ -128,24 +127,24 @@ describe('accounting calculator', () => {
     });
 
     expect(positions).toEqual([
-      { userId: 'user-a', positionMinor: 1300 },
-      { userId: 'user-b', positionMinor: -300 },
+      { userId: 'user-a', positionMinor: 1300n },
+      { userId: 'user-b', positionMinor: -300n },
     ]);
 
     const normalized = normalizeAgainstEqualFundShare(positions);
     expect(normalized).toEqual([
-      { userId: 'user-a', positionMinor: 800 },
-      { userId: 'user-b', positionMinor: -800 },
+      { userId: 'user-a', positionMinor: 800n },
+      { userId: 'user-b', positionMinor: -800n },
     ]);
     expect(buildSettlementSuggestions(normalized)).toEqual([
-      { from_user_id: 'user-b', to_user_id: 'user-a', amount_minor: 800 },
+      { from_user_id: 'user-b', to_user_id: 'user-a', amount_minor: 800n },
     ]);
   });
 
   it('does not mutate member positions while building suggestions', () => {
     const positions = [
-      { userId: 'creditor', positionMinor: 800 },
-      { userId: 'debtor', positionMinor: -800 },
+      { userId: 'creditor', positionMinor: 800n },
+      { userId: 'debtor', positionMinor: -800n },
     ];
     const originalPositions = positions.map((position) => ({ ...position }));
 
@@ -157,26 +156,26 @@ describe('accounting calculator', () => {
   it('matches multiple debtors to multiple creditors in balance order', () => {
     expect(
       buildSettlementSuggestions([
-        { userId: 'creditor-a', positionMinor: 700 },
-        { userId: 'creditor-b', positionMinor: 300 },
-        { userId: 'debtor-c', positionMinor: -600 },
-        { userId: 'debtor-d', positionMinor: -400 },
+        { userId: 'creditor-a', positionMinor: 700n },
+        { userId: 'creditor-b', positionMinor: 300n },
+        { userId: 'debtor-c', positionMinor: -600n },
+        { userId: 'debtor-d', positionMinor: -400n },
       ]),
     ).toEqual([
       {
         from_user_id: 'debtor-c',
         to_user_id: 'creditor-a',
-        amount_minor: 600,
+        amount_minor: 600n,
       },
       {
         from_user_id: 'debtor-d',
         to_user_id: 'creditor-a',
-        amount_minor: 100,
+        amount_minor: 100n,
       },
       {
         from_user_id: 'debtor-d',
         to_user_id: 'creditor-b',
-        amount_minor: 300,
+        amount_minor: 300n,
       },
     ]);
   });

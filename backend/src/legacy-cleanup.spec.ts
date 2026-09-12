@@ -10,5 +10,6 @@ describe('legacy Fund backend cleanup', () => {
     expect(existsSync(join(root, 'src', 'modules', 'financial-spaces'))).toBe(true);
     expect(existsSync(join(root, 'src', 'modules', 'pooled-funds'))).toBe(true);
     expect(existsSync(join(root, 'src', 'modules', 'accounting', 'accounting-calculator.ts'))).toBe(true);
+    expect(existsSync(join(root, 'src', 'modules', 'accounting', 'settlement-period-lock.ts'))).toBe(false);
   });
 });
