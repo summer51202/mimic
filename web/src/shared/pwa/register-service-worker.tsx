@@ -13,6 +13,10 @@ declare global {
 
 const isProduction = process.env.NODE_ENV === "production";
 
+export function shouldReloadForControllerChange(wasControlled: boolean, dirty: boolean) {
+  return wasControlled && !dirty;
+}
+
 function isFormDirty() {
   for (const form of Array.from(document.forms)) {
     if (form.matches('[data-dirty="true"]')) {
@@ -70,6 +74,7 @@ export function RegisterServiceWorker() {
       return;
     }
 
+    const wasControlled = Boolean(navigator.serviceWorker.controller);
     const serwist =
       window.serwist ?? new Serwist("/sw.js", { scope: "/", type: "module" });
     window.serwist = serwist;
@@ -80,9 +85,10 @@ export function RegisterServiceWorker() {
     };
 
     const onControlling = () => {
-      if (!isFormDirty()) {
+      const dirty = isFormDirty();
+      if (shouldReloadForControllerChange(wasControlled, dirty)) {
         window.location.reload();
-      } else {
+      } else if (wasControlled && dirty) {
         setIsDirty(true);
         setIsUpdateWaiting(true);
       }
