@@ -188,7 +188,9 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
     await expect(page.getByRole('dialog', { name: '編輯共同支出' }).getByRole('alert')).toContainText('資料版本已變更');
     await expect(page.getByLabel('支出名稱')).toHaveValue('住宿（已檢視）');
     await page.getByRole('button', { name: '重新讀取最新資料' }).click();
-    await page.getByRole('button', { name: '儲存修改' }).click();
+    await expect(page.getByText(/伺服器狀態已有變更/)).toBeVisible();
+    await page.getByRole('button', { name: '檢視草稿' }).click();
+    await page.getByRole('button', { name: '重新送出草稿' }).click();
     await expect(page.getByRole('heading', { name: '住宿（已檢視）' })).toBeVisible();
 
     const receiptId = crypto.randomUUID();
