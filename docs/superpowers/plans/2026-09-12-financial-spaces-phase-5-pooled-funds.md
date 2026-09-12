@@ -92,10 +92,10 @@ Web additions:
 
 ### Task 2: Commitments and occurrence state machine
 
-- [ ] Write failing DTO/policy tests for strict recurrence fields, equal defaults/overrides, current-participant assignment, unique occurrence keys, and rejected money/date/foreign fields.
-- [ ] Add real HTTP REDs for manager create/update, persisted occurrences, assigned self-confirm, one contribution only, assigned skip, manager cancel, wrong actor, out-of-order/duplicate/stale transition, request replay/conflict, and confirmed occurrence immutability under schedule changes.
-- [ ] Implement the operation runner, projections, commitment materialization, terminal transitions, posting/audit/receipt transaction, and first-formal-record latch. Rerun focused unit and DB suites GREEN.
-- [ ] Commit `feat: schedule pooled contributions`.
+- [x] Write failing DTO/policy tests for strict recurrence fields, equal defaults/overrides, current-participant assignment, unique occurrence keys, and rejected money/date/foreign fields.
+- [x] Add real HTTP REDs for manager create/update, persisted occurrences, assigned self-confirm, one contribution only, assigned skip, manager cancel, wrong actor, out-of-order/duplicate/stale transition, request replay/conflict, and confirmed occurrence immutability under schedule changes.
+- [x] Implement the operation runner, projections, commitment materialization, terminal transitions, posting/audit/receipt transaction, and first-formal-record latch. Rerun focused unit and DB suites GREEN.
+- [x] Commit `feat: schedule pooled contributions`.
 
 ### Task 3: Pooled expenses and independent summary
 

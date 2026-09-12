@@ -34,6 +34,16 @@ export async function createSpaceTestApp() {
   const close = async () => {
     const ids = users.map(user => user.id);
     const spaceWhere = { createdById: { in: ids } };
+    await prisma.pooledOperationReceipt.deleteMany({ where: { space: spaceWhere } });
+    await prisma.pooledTransitionPosting.deleteMany({ where: { space: spaceWhere } });
+    await prisma.pooledCorrection.deleteMany({ where: { space: spaceWhere } });
+    await prisma.pooledReturn.deleteMany({ where: { plan: { space: spaceWhere } } });
+    await prisma.pooledReturnPlan.deleteMany({ where: { space: spaceWhere } });
+    await prisma.pooledReimbursement.deleteMany({ where: { space: spaceWhere } });
+    await prisma.pooledContribution.deleteMany({ where: { space: spaceWhere } });
+    await prisma.pooledContributionOccurrence.deleteMany({ where: { commitment: { space: spaceWhere } } });
+    await prisma.pooledCommitmentAssignment.deleteMany({ where: { commitment: { space: spaceWhere } } });
+    await prisma.pooledCommitment.deleteMany({ where: { space: spaceWhere } });
     await prisma.personalReferenceReceipt.deleteMany({ where: { space: spaceWhere } });
     await prisma.personalExpenseReferenceTag.deleteMany({ where: { reference: { personalSpace: spaceWhere } } });
     await prisma.personalExpenseReference.deleteMany({ where: { personalSpace: spaceWhere } });
