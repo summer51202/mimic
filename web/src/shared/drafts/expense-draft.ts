@@ -134,6 +134,7 @@ function matchesContext(draft: StoredExpenseDraft, context: DraftContext) {
 }
 
 function readIndex(context: DraftContext): string[] {
+  if (typeof window === 'undefined') return [];
   try {
     const parsed = z.array(z.string().startsWith(`${prefix}:`)).safeParse(
       JSON.parse(window.localStorage.getItem(scopeKey(context)) ?? '[]'),
@@ -145,6 +146,7 @@ function readIndex(context: DraftContext): string[] {
 }
 
 export function loadExpenseDraft(context: DraftContext): DraftLoadResult {
+  if (typeof window === 'undefined') return { state: 'MISSING' };
   const raw = window.localStorage.getItem(storageKey(context));
   if (raw === null) return { state: 'MISSING' };
   const draft = parseStored(raw);
@@ -158,6 +160,7 @@ export function loadExpenseDraft(context: DraftContext): DraftLoadResult {
 }
 
 export function listExpenseDrafts(context: DraftContext): StoredExpenseDraft[] {
+  if (typeof window === 'undefined') return [];
   return readIndex(context).flatMap((key) => {
     const draft = parseStored(window.localStorage.getItem(key));
     return draft
@@ -174,6 +177,7 @@ export function saveExpenseDraft(
   context: DraftContext,
   rawPayload: unknown,
 ): { ok: true; draft: StoredExpenseDraft } | { ok: false; reason: 'INVALID_PAYLOAD' | 'STORAGE_UNAVAILABLE' } {
+  if (typeof window === 'undefined') return { ok: false, reason: 'STORAGE_UNAVAILABLE' };
   const payloadResult = payloadSchemas[context.mode].safeParse(rawPayload);
   if (!payloadResult.success) return { ok: false, reason: 'INVALID_PAYLOAD' };
   const contextResult = z.object({
@@ -220,6 +224,7 @@ export function saveExpenseDraft(
 }
 
 export function discardExpenseDraft(context: DraftContext): void {
+  if (typeof window === 'undefined') return;
   const key = storageKey(context);
   try {
     window.localStorage.removeItem(key);

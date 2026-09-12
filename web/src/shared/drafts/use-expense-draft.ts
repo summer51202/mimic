@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   discardExpenseDraft,
   loadExpenseDraft,
@@ -11,19 +11,26 @@ import {
 } from './expense-draft';
 
 export function useExpenseDraft(context: DraftContext) {
-  const [load, setLoad] = useState<DraftLoadResult>(() => loadExpenseDraft(context));
+  const stableContext = useMemo(() => ({ ...context }), [context.actorUserId, context.groupId, context.mode, context.operation,
+    context.recordVersion, context.resourceId, context.spaceId, context.spaceVersion, context.writable]);
+  const [load, setLoad] = useState<DraftLoadResult>({ state: 'MISSING' });
   const [reviewed, setReviewed] = useState(false);
   const [storageError, setStorageError] = useState(false);
 
+  useEffect(() => {
+    setLoad(loadExpenseDraft(stableContext));
+    setReviewed(false);
+  }, [stableContext]);
+
   const persist = useCallback((payload: ExpenseDraftPayload) => {
-    const result = saveExpenseDraft(context, payload);
+    const result = saveExpenseDraft(stableContext, payload);
     setStorageError(!result.ok);
     if (result.ok) {
-      setLoad((current) => current.state === 'MISSING' ? current : loadExpenseDraft(context));
+      setLoad((current) => current.state === 'MISSING' ? current : loadExpenseDraft(stableContext));
       return result.draft;
     }
     return undefined;
-  }, [context]);
+  }, [stableContext]);
 
   const review = useCallback(() => {
     if (load.state !== 'READY' && load.state !== 'STALE') return undefined;
@@ -32,11 +39,11 @@ export function useExpenseDraft(context: DraftContext) {
   }, [load]);
 
   const discard = useCallback(() => {
-    discardExpenseDraft(context);
+    discardExpenseDraft(stableContext);
     setLoad({ state: 'MISSING' });
     setReviewed(false);
     setStorageError(false);
-  }, [context]);
+  }, [stableContext]);
 
   return { load, reviewed, storageError, persist, review, discard };
 }

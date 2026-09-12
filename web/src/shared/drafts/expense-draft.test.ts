@@ -118,4 +118,13 @@ describe('durable expense drafts', () => {
     expect(loadExpenseDraft(context()).state).toBe('MISSING');
     expect(loadExpenseDraft(context({ operation: 'UPDATE', resourceId: otherSpace, recordVersion: 1 })).state).toBe('READY');
   });
+
+  it('does not access browser storage during server rendering', () => {
+    vi.stubGlobal('window', undefined);
+    expect(loadExpenseDraft(context())).toEqual({ state: 'MISSING' });
+    expect(listExpenseDrafts(context())).toEqual([]);
+    expect(saveExpenseDraft(context(), personal)).toEqual({ ok: false, reason: 'STORAGE_UNAVAILABLE' });
+    expect(() => discardExpenseDraft(context())).not.toThrow();
+    vi.unstubAllGlobals();
+  });
 });
