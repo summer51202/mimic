@@ -62,6 +62,28 @@ test("the parsed CI workflow satisfies the complete release contract", () => {
   assert.doesNotThrow(() => validateCiWorkflow(workflow));
 });
 
+test("web CI generates the backend Prisma client before type-checking real-backend specs", () => {
+  const workflow = parseWorkflowYaml(workflowSource);
+  const steps = workflow.jobs.web.steps;
+  const installAt = steps.findIndex(
+    (step) =>
+      step.name === "Install backend dependencies for acceptance types" &&
+      step["working-directory"] === "backend" &&
+      step.run === "npm ci",
+  );
+  const generateAt = steps.findIndex(
+    (step) =>
+      step.name === "Generate backend Prisma client for acceptance types" &&
+      step["working-directory"] === "backend" &&
+      step.run === "npm run prisma:generate",
+  );
+  const typecheckAt = steps.findIndex((step) => step.name === "Type-check");
+
+  assert.ok(installAt >= 0, "web CI must install backend dependencies");
+  assert.ok(generateAt > installAt, "web CI must generate Prisma after installing backend dependencies");
+  assert.ok(typecheckAt > generateAt, "web CI must generate Prisma before type-checking");
+});
+
 test("the parsed containers job has a deterministic reviewed execution hash", () => {
   const first = parseWorkflowYaml(workflowSource);
   const second = parseWorkflowYaml(workflowSource);

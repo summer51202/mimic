@@ -87,6 +87,12 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - name: Install dependencies
         run: npm ci
+      - name: Install backend dependencies for acceptance types
+        working-directory: backend
+        run: npm ci
+      - name: Generate backend Prisma client for acceptance types
+        working-directory: backend
+        run: npm run prisma:generate
       - name: Test parsed CI workflow contract
         run: node --test ../scripts/verify-ci-workflow.test.mjs
       - name: Lint
