@@ -3,9 +3,9 @@ _Last updated: 2026-09-12. Refresh with `/feature-map`._
 
 > The PWA in `web/` is the only active client. Current implementation work targets `web/` and `backend/`; previous clients remain available only through Git history.
 
-## Financial spaces redesign — Phases 1–6 complete
+## Financial spaces redesign — Phases 1–7 complete
 
-The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md` supersedes the universal Fund model and its accounting assumptions. The legacy capability entries below describe existing disconnected Fund behavior, not the new modes' accounting rules.
+The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md` supersedes the universal Fund model and its accounting assumptions. P7 removed that legacy product, API, and persistence surface without a compatibility layer.
 
 | status | capability | entry / acceptance |
 |--------|------------|--------------------|
@@ -26,9 +26,11 @@ The approved `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-d
 | done | Private personal references to authoritative shared allocations, including private metadata, source-lock cues, access rechecks, and responsive real-backend acceptance | `backend/src/modules/personal-expenses/personal-references.service.ts`, `/app/personal`, `/app/spaces/:spaceId` |
 | done | Pooled commitments and persisted occurrences, exact book/available balances, fund-paid and advanced expenses, two-party reimbursements, signed corrections, explicit returns, settled exit/archive and participant-private responsive Web acceptance | `backend/src/modules/pooled-funds/`, `web/src/features/pooled-funds/`, `/app/spaces/:spaceId`; four-viewport real-backend acceptance |
 | done | 寶箱 navigation, personal/group homepage, mode-safe quick expense and actor-scoped task center | `backend/src/modules/home/`, `/api/v1/home`, `/api/v1/tasks`, `/app`, `/app/tasks`; four-viewport real-backend acceptance |
-| planned | Offline drafts, full three-mode real-backend browser acceptance and legacy removal | P7 |
+| done | Context-isolated durable expense drafts with reload recovery, review/retry/discard, stale/blocked states and durable request UUIDs | `web/src/shared/drafts/`, all three expense forms; unit and real-backend acceptance |
+| done | Legacy Fund Web/API/schema removal with generic old-route 404s and retained bigint accounting primitive | removal migration, source-boundary tests, legacy HTTP/old-bookmark acceptance |
+| done | Combined three-mode acceptance over real PostgreSQL/API/Web at 320/390/768/1440 | five real-backend Playwright specs across four viewport projects |
 
-P2 enables personal daily expense posting and consumption. P3 delivers shared expense HTTP and Web CRUD, exact positions, batch settlements, two-party confirmation, immutable corrections, settled exit/archive and a four-viewport real-backend browser journey. P4 links only the current participant's authoritative shared allocation into an owned personal ledger without copying a transaction. P5 delivers the independent pooled ledger. P6 replaces the active Fund-oriented entry with mode-discriminated treasure home cards, current-context quick expense routing and actor-private tasks; personal home consumption includes authorized private shared references. Shared spaces retain the 16-current-participant limit matching bounded exact settlement search. P7 durable drafts, complete legacy route/code removal and the combined three-mode beta acceptance remain. Current forms retain input only while open and never post automatically after reconnecting. See the phase plans and execution records under `docs/superpowers/plans/`.
+P2 enables personal daily expense posting and consumption. P3 delivers shared expense HTTP and Web CRUD, exact positions, batch settlements, two-party confirmation, immutable corrections, settled exit/archive and a four-viewport real-backend browser journey. P4 links only the current participant's authoritative shared allocation into an owned personal ledger without copying a transaction. P5 delivers the independent pooled ledger. P6 delivers mode-discriminated treasure home cards, current-context quick expense routing and actor-private tasks. P7 makes expense drafts durable and context-bound, removes the legacy universal Fund surface, and combines all modes in real-backend acceptance. Shared spaces retain the 16-current-participant limit matching bounded exact settlement search. See the phase plans and execution records under `docs/superpowers/plans/`.
 
 ## Backend Capability Map
 
@@ -52,7 +54,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 |--------|------|-------------|----------------|---------------|
 | done | create-group | Create a new group (COUPLE or GROUP type) | `—` | `groups.service.ts createGroup()` |
 | done | list-groups | List groups the current user belongs to | `—` | `groups.controller.ts GET /groups` |
-| done | view-group-detail | View group name, type, members, and funds | `—` | `groups.controller.ts GET /groups/:id` |
+| done | view-group-detail | View group name, type, members, and governed financial spaces | `—` | `groups.controller.ts GET /groups/:id` |
 | done | update-group | Owner can rename a group | `—` | `groups.controller.ts PATCH /groups/:id` |
 | done | list-members | View all active members with their display names, stable Mimic IDs, and roles | `web/src/features/groups/member-roster.tsx` | `groups.service.ts listMembers()` |
 | done | update-member-role | Owner promotes/demotes another active member | `—` | `groups.controller.ts PATCH /groups/:id/members/:memberId` |
@@ -60,17 +62,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 | done | leave-group | Active member leaves a group and reconciles the selected group | `—` | `groups.controller.ts POST /groups/:id/leave` |
 | done | invite-member | Owner generates an invite code | `—` | `groups.controller.ts POST /groups/:id/invites` |
 | done | accept-invite | User joins group via invite code | `—` | `group-invites.controller.ts POST /group-invites/accept` |
-| done | archive-empty-group | The sole active owner can archive an unused group and its empty Funds; any Contribution, Expense, Settlement, or RecurringRule financial history blocks archival | `web/src/features/groups/archive-empty-group-dialog.tsx` | `groups.controller.ts POST /groups/:id/archive`, `groups.service.ts archiveEmptyGroup()` |
-
-### Funds
-
-| status | slug | description | PWA entry | backend entry |
-|--------|------|-------------|----------------|---------------|
-| done | create-fund | Create a fund within a group | `—` | `funds.service.ts createFund()` |
-| done | list-funds | List all funds in a group | `—` | `funds.controller.ts GET /groups/:groupId/funds` |
-| done | view-fund-detail | View fund balance, contributions, expenses | `—` | `funds.service.ts getFundDetail()` |
-| todo | update-fund | Edit fund name or description | — | missing `PATCH /funds/:id` |
-| todo | archive-fund | Archive an inactive fund | — | missing `POST /funds/:id/archive` |
+| done | archive-empty-group | The sole active owner can archive a group only when current financial-space lifecycle guards allow it | `web/src/features/groups/archive-empty-group-dialog.tsx` | `groups.controller.ts POST /groups/:id/archive`, `groups.service.ts archiveEmptyGroup()` |
 
 ### Categories
 
@@ -80,43 +72,10 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 | done | list-categories | Localized stable defaults and scoped custom categories/tags | `taxonomy-picker.tsx` | `GET /spaces/:spaceId/taxonomy` requires participation |
 | done | taxonomy-lifecycle | Rename, merge or archive custom terms while retaining historical IDs | `taxonomy-manager.tsx` (private) | `taxonomy.service.ts`; system terms are immutable |
 
-### Contributions
-
-| status | slug | description | PWA entry | backend entry |
-|--------|------|-------------|----------------|---------------|
-| done | create-contribution | Add a regular or one-time contribution to a fund | `web/src/features/activity/contribution-form.tsx` | `contributions.service.ts createContribution()` |
-| done | list-contributions | List contributions for a fund | `web/src/features/activity/activity-queries.ts` | `contributions.controller.ts GET /funds/:id/contributions` |
-| todo | update-contribution | Edit an unlocked contribution | — | missing `PATCH /contributions/:id` |
-| todo | delete-contribution | Soft-delete an unlocked contribution | — | missing `DELETE /contributions/:id` |
-
-### Expenses
-
-| status | slug | description | PWA entry | backend entry |
-|--------|------|-------------|----------------|---------------|
-| done | create-expense | Record an expense with payers and EQUAL/RATIO/FIXED/HYBRID splits; the PWA currently exposes EQUAL and FIXED | `web/src/features/activity/expense-form.tsx` | `expenses.service.ts createExpense()` |
-| done | list-expenses | List expenses for a fund | `web/src/features/activity/activity-queries.ts` | `expenses.controller.ts GET /funds/:id/expenses` |
-| done | create-correction | Add correction transaction for a past error (new record, no edit) | `—` | `expenses.service.ts` (expense_type=CORRECTION) |
-| todo | update-expense | Edit an unlocked expense | — | missing `PATCH /expenses/:id` |
-| todo | delete-expense | Soft-delete an unlocked expense | — | missing `DELETE /expenses/:id` |
-| todo | restore-expense | Restore a soft-deleted expense | — | missing `POST /expenses/:id/restore` |
-
-### Settlements
-
-| status | slug | description | PWA entry | backend entry |
-|--------|------|-------------|----------------|---------------|
-| done | get-settlement-suggestion | Get minimum-transfer suggestion based on member positions | `—` | `settlements.service.ts getSettlementSuggestion()` |
-| done | create-settlement | Create a settlement record (PENDING state) | `—` | `settlements.service.ts createSettlement()` |
-| done | list-settlements | List settlements for a fund | `—` | `settlements.controller.ts GET /funds/:id/settlements` |
-| done | view-settlement | View a single settlement's details | `—` | `settlements.controller.ts GET /settlements/:id` |
-| done | complete-settlement | Mark settlement as completed, locking the period | `—` | `settlements.service.ts completeSettlement()` |
-| done | cancel-settlement | Cancel a pending settlement | `—` | `settlements.service.ts cancelSettlement()` |
-
 ### Dashboard & Read Models
 
 | status | slug | description | PWA entry | backend entry |
 |--------|------|-------------|----------------|---------------|
-| done | fund-summary | View current/all-time fund totals, settlement period, and member positions | `—` | `funds.controller.ts GET /funds/:id/summary` |
-| done | group-dashboard | View cross-fund totals grouped by currency without FX conversion | `—` | `funds.controller.ts GET /groups/:id/dashboard` |
 | done | financial-space-home | Personal/group-context mode-specific cards with governance-only metadata projection | `/app` | `home.controller.ts GET /home` |
 | done | actor-task-center | Due pooled occurrences, reimbursements, shared transfers and shortfalls scoped to the current participant | `/app/tasks` | `home.controller.ts GET /tasks` |
 
@@ -125,7 +84,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 | status | slug | description | PWA entry | backend entry |
 |--------|------|-------------|----------------|---------------|
 | done | pwa-auth-shell | Public mimic landing, login/register, protected app shell, and PWA cache boundary | `web/src/app` | `auth.controller.ts`, BFF auth routes |
-| done | pwa-group-list | List available groups and no-group onboarding | `web/src/app/app/page.tsx`, `web/src/app/app/groups/page.tsx` | `GET /groups`, `GET /groups/:id/dashboard` |
+| done | pwa-group-list | List available groups and no-group onboarding | `web/src/app/app/page.tsx`, `web/src/app/app/groups/page.tsx` | `GET /groups`, `GET /home` |
 | done | pwa-group-create | Create a group from the PWA | `web/src/app/app/groups/new/page.tsx` | `POST /groups` |
 | done | pwa-group-detail | View group governance plus shared-expense and pooled-fund treasure-box entries without a legacy Fund panel | `web/src/app/app/groups/[groupId]/page.tsx` | `GET /groups/:id`, `GET /groups/:id/members`, `GET /groups/:id/spaces` |
 | done | pwa-treasure-home | Switch personal/group context and open privacy-safe mode-specific status cards without a universal balance | `web/src/app/app/page.tsx`, `web/src/features/home/` | `GET /home` |
@@ -133,36 +92,21 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 | done | pwa-task-center | Show only current-user actionable contribution, reimbursement, settlement-transfer and shortfall tasks | `web/src/app/app/tasks/page.tsx`, `web/src/features/tasks/` | `GET /tasks` |
 | done | pwa-group-rename | Rename a group from the PWA | `web/src/features/groups/group-detail.tsx` | `PATCH /groups/:id` |
 | done | pwa-group-leave | Leave a group and reconcile selected-group preference | `web/src/features/groups/leave-group-dialog.tsx` | `POST /groups/:id/leave` |
-| done | pwa-empty-group-archive | The sole active owner can use an exact-name confirmation to archive an unused group and its empty Funds; any Contribution, Expense, Settlement, or RecurringRule financial history blocks archival | `web/src/features/groups/archive-empty-group-dialog.tsx`, `web/src/features/groups/group-detail.tsx` | `POST /groups/:id/archive` through the Web BFF |
+| done | pwa-empty-group-archive | The sole active owner can use exact-name confirmation when current financial-space lifecycle guards allow archival | `web/src/features/groups/archive-empty-group-dialog.tsx`, `web/src/features/groups/group-detail.tsx` | `POST /groups/:id/archive` through the Web BFF |
 | done | pwa-member-roster | Display active members with stable Mimic IDs and role labels | `web/src/features/groups/member-roster.tsx` | `GET /groups/:id/members` |
 | done | pwa-invitation-loop | Create, share, open, authenticate for, and explicitly accept invites | `web/src/features/invitations` | `POST /groups/:id/invites`, `POST /group-invites/accept` |
 | done | pwa-join-group-entry | Open a dedicated Join group page, enter a raw invite code or complete invite link, and continue through explicit invitation confirmation | `web/src/app/app/groups/join/page.tsx`, `web/src/features/invitations` | `POST /group-invites/accept` through the existing confirmation flow |
-| done | pwa-fund-list | Display group funds and dashboard fund cards | `web/src/features/funds/fund-list.tsx`, `web/src/features/groups/treasury-dashboard.tsx` | `GET /groups/:id/funds`, `GET /groups/:id/dashboard` |
-| done | pwa-fund-create | Create a fund from the PWA | `web/src/app/app/groups/[groupId]/funds/new/page.tsx` | `POST /groups/:id/funds` |
-| done | pwa-fund-summary | View fund balance, current period, all-time totals, and member positions | `web/src/app/app/funds/[fundId]/page.tsx` | `GET /funds/:id/summary` |
 | done | pwa-pixel-responsive-shell | Responsive pixel UI foundation for public and authenticated routes across phone, tablet, and desktop viewports | `web/src/shared/brand`, `web/src/shared/ui`, `web/src/app/app-shell.module.css` | n/a |
 | done | pwa-account-settings | View account identity, edit display name, copy Mimic ID, and sign out | `web/src/app/app/settings/page.tsx`, `web/src/features/settings/settings-form.tsx` | `GET /me`, `PATCH /me`, `POST /auth/logout` |
 | todo | pwa-public-pixel-world | Bring landing, authentication, and feature pages to the approved full-screen deep-navy pixel-world composition | `web/src/app/(public)`, `web/src/features/auth` | n/a |
-| done | pwa-contributions | Create regular or one-time contributions and list them in the selected fund's Activity ledger | `web/src/features/activity/contribution-form.tsx`, `web/src/app/app/activity/page.tsx` | `contributions.controller.ts` |
-| in-progress | pwa-expenses | Create multi-payer EQUAL or FIXED expenses and list them in the selected fund's Activity ledger; RATIO and HYBRID creation remain deferred | `web/src/features/activity/expense-form.tsx`, `web/src/app/app/activity/page.tsx` | `expenses.controller.ts` |
-| in-progress | pwa-activity | Fund-scoped merged contribution/expense timeline with fund switching, filters, current balance, and create dialogs; corrections and settlements are not yet included | `web/src/features/activity`, `web/src/app/app/activity/page.tsx` | `GET /funds/:id/contributions`, `GET /funds/:id/expenses`, settlement routes |
-| todo | pwa-settlements | Suggest, create, complete, cancel, and view settlements in the PWA | missing PWA settlement UI | `settlements.controller.ts` |
 | todo | pwa-role-changes | Promote or demote group members in the PWA | missing PWA governance UI | `PATCH /groups/:id/members/:memberId` |
 | todo | pwa-member-removal | Remove another member from a group in the PWA | missing PWA governance UI | `DELETE /groups/:id/members/:memberId` |
-| todo | pwa-fund-archive | Archive, restore, or edit funds in the PWA | missing PWA fund management UI | missing archive/update endpoints |
 
 ### Audit Logs
 
 | status | slug | description | PWA entry | backend entry |
 |--------|------|-------------|----------------|---------------|
 | todo | list-audit-logs | View history of all mutations in a group | — | missing module entirely |
-
-### Recurring Rules
-
-| status | slug | description | PWA entry | backend entry |
-|--------|------|-------------|----------------|---------------|
-| todo | create-recurring-rule | Set up automatic recurring contribution | — | missing module entirely |
-| todo | manage-recurring-rule | Pause, resume, or end a recurring rule | — | missing module entirely |
 
 ---
 
@@ -190,11 +134,7 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 
 ### Groups & Membership
 - [x] Role promotion/demotion, settled-member removal, and self-leave governance flows
-- [x] Sole-active-owner safe archive for unused groups, including empty Fund archival and rejection of any Contribution, Expense, Settlement, or RecurringRule financial history
-
-### Funds
-- [ ] `PATCH /funds/:id` — update fund name/description
-- [ ] `POST /funds/:id/archive` and `/unarchive`
+- [x] Sole-active-owner safe archive using current financial-space participation and lifecycle guards
 
 ### Categories
 - [x] Neutral taxonomy module with private/group scope, stable system defaults and historical merge/archive semantics
@@ -202,45 +142,20 @@ The statuses in this section describe backend availability. The **Web / PWA** se
 - [x] Connect group vocabulary to the P3 shared expense form
 - [x] Connect the same vocabulary to P5 pooled expense forms
 
-### Contributions
-- [x] PWA create/list loop for regular and one-time contributions
-- [ ] `GET /contributions/:id` — individual contribution detail
-- [ ] `PATCH /contributions/:id` — edit unlocked contribution
-- [ ] `DELETE /contributions/:id` — soft-delete unlocked contribution
-
-### Expenses
-- [x] PWA create/list loop for multi-payer EQUAL and FIXED expenses
-- [ ] PWA RATIO and HYBRID split creation
-- [ ] `GET /expenses/:id` — individual expense detail
-- [ ] `PATCH /expenses/:id` — edit unlocked expense
-- [ ] `DELETE /expenses/:id` — soft-delete
-- [ ] `POST /expenses/:id/restore`
-- [ ] Lock check validation in PATCH/DELETE handlers
-
-### Settlements
-- [ ] PWA settlement UI, including the cancel action
-
 ### Dashboard & Read Models
-- [x] `GET /funds/:id/summary` — dedicated current/all-time summary with balance, period, and positions
-- [x] `GET /groups/:id/dashboard` — cross-fund totals grouped by currency
+- [x] Actor-scoped personal/group home and task projections without a universal balance
 
 ### Audit Logs
 - [ ] Entire audit module (NestJS module + controller)
-- [ ] Extend the PWA Activity ledger with corrections, settlements, and an audit-log endpoint
-
-### Recurring Rules
-- [ ] [out-of-scope] Recurring contribution rules — post-MVP per PRD
+- [ ] Add an actor-scoped audit history projection without exposing another participant's private metadata
 
 ### Database
-- [x] Initial Prisma migration exists and has been applied to the local PostgreSQL development database
+- [x] Financial-space migrations, legacy table removal, and explicit task-owned PostgreSQL suites
 
 ### Stabilization
-- [x] PWA: authenticated group/fund routes, narrow-layout text containment, pixel-frame fill, and Mimiku transparency regression coverage
-- [ ] PWA: real-backend Playwright acceptance for the stabilized route and visual suite
-- [x] Backend: contribution and expense create handlers reject every transaction type, including corrections, when `occurred_on` is inside a completed settlement period
-- [x] Backend: settlement boundaries accept only real `YYYY-MM-DD` dates; inverted new or legacy-pending periods cannot be created or completed, and a database check protects future direct writes
-- [ ] Operations: audit legacy settlement rows for inverted bounded periods, resolve any findings without rewriting accounting history, then validate `settlements_period_order_check`
-- [ ] Backend: apply the shared settlement-period guard when future PATCH/DELETE transaction endpoints are implemented
+- [x] PWA: four-viewport real-backend Playwright acceptance for all three modes, durable drafts, privacy and retired bookmarks
+- [x] Backend: shared writes reject temporary/permanent locked periods and preserve corrections as later signed records
+- [x] Backend/Web: retired Fund endpoints and pages are absent and return privacy-safe not-found responses
 - [x] PWA: the public invite page derives its session-present acceptance UI state from the optional access-token cookie boundary; acceptance authorization remains backend-enforced
 - [x] Backend: authenticated group and invite integration tests cover route wiring, validation, and authorization
-- [ ] Settlement suggestion algorithm: verify normalization logic against PRD position formula
+- [x] Shared settlement minimum-transfer algorithm verified against bounded exact accounting invariants

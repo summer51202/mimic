@@ -4,7 +4,7 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 
 ## Project Overview
 
-**Mimic** — a shared-finance Web PWA for couples and small groups. Users manage shared virtual funds, track contributions and expenses, and settle balances. Key invariant: **settled periods are locked and cannot be edited retroactively**; corrections must be new transactions.
+**Mimic** — a financial-space Web PWA for individuals, couples, and small groups. Users keep a private personal ledger, split shared expenses, or operate a pooled fund. Key invariant: **settled periods are locked and cannot be edited retroactively**; corrections must be new transactions.
 
 Run repository commands from the cloned repository root unless a section names a subdirectory. The root `README.md` provides the public project overview; detailed design specs live in `docs/`.
 
@@ -19,7 +19,8 @@ npm run start:dev          # Dev server with hot reload (port 3000)
 npm run build              # Compile TypeScript → dist/
 npm run test               # Jest unit tests
 npm run test:e2e           # Supertest e2e tests
-npm run test -- --testPathPattern=settlements  # Run a single test file
+npm run test -- --runInBand <test-file>  # Run a focused test file
+npm run test:spaces-db     # Explicit real-PostgreSQL financial-space suites
 
 npx prisma generate        # Regenerate Prisma client after schema changes
 npx prisma migrate dev     # Apply pending migrations (creates new migration)
@@ -44,23 +45,28 @@ Module layout under `backend/src/modules/`:
 | `auth` | Register/login, JWT access + refresh tokens |
 | `users` | User profile management |
 | `groups` | Group + member lifecycle, invite codes |
-| `funds` | Fund CRUD within a group |
-| `contributions` | Money added to a fund (REGULAR, ONE_TIME, ADJUSTMENT, CORRECTION types) |
-| `expenses` | Expenses with flexible split modes (EQUAL, RATIO, FIXED, HYBRID) and multi-payer support |
-| `settlements` | Balance calculations, settlement suggestions, lock enforcement |
+| `financial-spaces` | Three-mode space metadata, participation, lifecycle, and privacy |
+| `personal-expenses` | Private ledger expenses and authorized shared references |
+| `shared-expenses` | Multi-payer expenses, exact allocations, and participant-private reads |
+| `shared-settlements` | Batch locks, minimum transfers, confirmations, and immutable corrections |
+| `pooled-funds` | Commitments, occurrences, pooled expenses, reimbursements, returns, and closing |
+| `home` | Actor-scoped home and task projections |
+| `taxonomy` | Private/group categories and tags |
+| `expense-records` | Neutral expense persistence primitive shared by all modes |
 | `prisma` | Shared `PrismaService` singleton |
 
 Each module follows: `*.module.ts` → `*.controller.ts` (HTTP) → `*.service.ts` (logic) → `dto/` (class-validator DTOs).
 
-Global pipes in `main.ts`: `ValidationPipe({ whitelist: true, transform: true })`.
+Global request validation is configured in `main.ts` through `RequestValidationPipe`.
 
 ### Data model key points
 
 - **Money stored in minor units** (`bigint` — cents, not dollars) throughout schema and API
 - **Soft deletes**: records have a `status` field (ACTIVE/DELETED), never hard-deleted
 - **Audit trail**: `AuditLog` table records all mutations (CREATE, UPDATE, DELETE, COMPLETE, etc.)
-- **Settlement locking**: completing a settlement locks its date range; contributions/expenses within a locked range cannot be modified
-- **Multi-payer expenses**: `ExpensePayer` + `ExpenseSplit` are separate models — an expense can have multiple payers and flexible allocation per member
+- **Mode isolation**: personal, shared, and pooled facts have distinct accounting rules and never collapse into a universal balance
+- **Settlement locking**: completing a shared settlement batch permanently locks its covered date range
+- **Multi-payer expenses**: shared payer and allocation facts remain separate and exact
 
 Schema source of truth: `backend/prisma/schema.prisma`.
 
@@ -76,21 +82,22 @@ Use `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build` as the 
 
 ## Accounting Rules (critical domain logic)
 
-These rules are enforced in `settlements.service.ts` and are documented in `docs/design/mimic-backend-accounting-module-map-v0.2.md`:
+The approved source is `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md`:
 
-1. A member's **position** = total contributions − total expense splits allocated to them
-2. **Settlement suggestion**: calculate net positions for all members, then generate minimum transfers to balance them
-3. **Lock check**: before any write (contribution, expense, correction), verify no completed settlement covers that date range for that fund
-4. Corrections are never edits — they are new `Contribution` records of type `CORRECTION`
+1. Personal expenses belong only to their owner, including private metadata on authorized shared references.
+2. Shared positions equal paid amounts minus allocated amounts plus completed transfers and signed corrections.
+3. Pooled book, available, reimbursement, occurrence, and shortfall states are independent of shared positions.
+4. Completed shared periods are immutable; corrections are new signed records in a later period.
+5. Money stays as canonical decimal strings at Web boundaries and `bigint`/exact database integers in accounting code.
 
 ---
 
 ## Key Documentation
 
-For deep context on business rules, read these in order:
-1. `docs/design/mimic-prd-v0.2-final.md` — product rules, MVP scope, accounting invariants
-2. `docs/design/mimic-backend-accounting-module-map-v0.2.md` — backend module responsibilities
-3. `docs/design/mimic-web-ui-v0.2.md` — Web PWA screens, states, and interaction model
+For current financial-space work, read these in order:
+1. `docs/superpowers/specs/2026-09-11-financial-spaces-product-model-design.md`
+2. `docs/superpowers/plans/2026-09-11-financial-spaces-roadmap.md`
+3. `.agents/features.md`
 
 ---
 
