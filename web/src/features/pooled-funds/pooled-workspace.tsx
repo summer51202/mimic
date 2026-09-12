@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import { financialSpaceSchema } from '@/shared/api/financial-space-contracts';
 import {
@@ -30,8 +30,13 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
   const [error, setError] = useState('');
   const [selectedParticipant, setSelectedParticipant] = useState('');
   const attempts = useRef(new Map<string, string>());
+  const previousQuick = useRef(quick);
   const online = useOnline();
   const { space, group, workspace } = data;
+  useEffect(() => {
+    if (quick && !previousQuick.current && space.status === 'ACTIVE') setDialog('expense');
+    previousQuick.current = quick;
+  }, [quick, space.status]);
   const manager = space.role === 'MANAGER';
   const active = space.status === 'ACTIVE';
   const closing = space.status === 'CLOSING';

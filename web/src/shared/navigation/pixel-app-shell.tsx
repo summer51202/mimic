@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { AppNavigation } from "./app-navigation";
-import { currentAppSection } from "./app-section";
+import { currentAppSection, quickExpenseHref } from "./app-section";
 import styles from "./pixel-app-shell.module.css";
 
 interface PixelAppShellProps {
@@ -13,7 +13,9 @@ interface PixelAppShellProps {
 }
 
 export function PixelAppShell({ children }: PixelAppShellProps) {
-  const currentSection = currentAppSection(usePathname());
+  const pathname = usePathname();
+  const currentSection = currentAppSection(pathname);
+  const quickHref = quickExpenseHref(pathname, useSearchParams().toString());
 
   return (
     <div className={styles.shell}>
@@ -27,7 +29,7 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
         </div>
         <main className={styles.main}>{children}</main>
       </div>
-      <Link className={styles.quickAction} href="/app?quick=1">記一筆支出</Link>
+      <Link className={styles.quickAction} href={quickHref}>記一筆支出</Link>
       <div className={styles.mobileOnly}>
         <AppNavigation currentSection={currentSection} variant="mobile" />
       </div>

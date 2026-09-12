@@ -66,6 +66,13 @@ describe('PooledWorkspace', () => {
     expect(screen.queryByText('如何分攤')).not.toBeInTheDocument();
   });
 
+  it('opens quick entry when a same-route query navigation updates the prop', () => {
+    const { rerender } = render(<PooledWorkspace initial={initial} />);
+    expect(screen.queryByRole('dialog', { name: '新增基金支出' })).not.toBeInTheDocument();
+    rerender(<PooledWorkspace initial={initial} quick />);
+    expect(screen.getByRole('dialog', { name: '新增基金支出' })).toBeVisible();
+  });
+
   it('shows exact fund states, shortfall and manager-only controls', () => {
     render(<PooledWorkspace initial={initial} />);
     expect(screen.getByTestId('pooled-book')).toHaveTextContent('$2.00');

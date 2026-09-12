@@ -1,6 +1,6 @@
 "use client";
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import type { HomeCard } from '@/shared/api/home-contracts';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
@@ -17,9 +17,9 @@ export function QuickExpense({ cards, initiallyOpen = false }: { cards: HomeCard
     (card): card is Extract<HomeCard, { access: 'PARTICIPANT' }> => card.access === 'PARTICIPANT' && card.status === 'ACTIVE',
   ), [cards]);
   const [open, setOpen] = useState(initiallyOpen && eligible.length > 1);
-  const [recent, setRecent] = useState('');
+  const recent = useSyncExternalStore(() => () => undefined,
+    () => window.localStorage.getItem(recentKey) ?? '', () => '');
   const online = useOnline();
-  useEffect(() => { setRecent(window.localStorage.getItem(recentKey) ?? ''); }, []);
   const ordered = [...eligible].sort((left, right) => Number(right.id === recent) - Number(left.id === recent));
   if (!eligible.length) return <Link className="quick-expense quick-expense--empty" href={cards.some((card) => card.mode !== 'PERSONAL_EXPENSES') ? '/app/groups' : '/app/personal'}>先建立可記帳的寶箱</Link>;
   if (eligible.length === 1) return <Link aria-disabled={!online} className="quick-expense" href={online ? destination(eligible[0]) : '#'}

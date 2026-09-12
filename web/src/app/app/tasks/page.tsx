@@ -4,6 +4,8 @@ import { AppReadFailure } from '@/shared/ui/app-read-failure';
 import '@/features/tasks/tasks.css';
 
 export default async function Page() {
-  try { return <TaskCenter data={await loadTasks()} />; }
+  let tasks;
+  try { tasks = await loadTasks(); }
   catch (error) { return <AppReadFailure error={error} />; }
+  return <TaskCenter data={tasks} />;
 }

@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { appFetch } from '@/shared/api/app-fetch';
 import { financialSpaceSchema } from '@/shared/api/financial-space-contracts';
 import { sharedBatchPageSchema, sharedCorrectionPageSchema, sharedExpenseMutationSchema, sharedExpensePageSchema,
@@ -28,8 +28,13 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const deleteAttempt = useRef({ fingerprint: '', id: '' });
+  const previousQuick = useRef(quick);
   const online = useOnline();
   const { space, group } = data;
+  useEffect(() => {
+    if (quick && !previousQuick.current && space.status === 'ACTIVE') setDialog('expense');
+    previousQuick.current = quick;
+  }, [quick, space.status]);
   const manager = space.role === 'MANAGER';
   const active = space.status === 'ACTIVE';
   const nameFor = (id: string) => data.participants.find(person => person.user_id === id)?.display_name ?? '已離開的參與者';

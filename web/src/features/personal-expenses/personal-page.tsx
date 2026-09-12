@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { appFetch } from '@/shared/api/app-fetch';
 import { expenseMutationSchema, personalMonthSchema, personalReferenceMutationSchema, type ExpenseMutation, type PersonalMonthEntry, type PersonalReferenceEntry, type PersonalReferenceMutation } from '@/shared/api/personal-expense-contracts';
@@ -28,8 +28,13 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
   const [busy, setBusy] = useState(false);
   const deleteAttempt = useRef({ fingerprint: '', id: '' });
   const referenceRemoveAttempt = useRef({ fingerprint: '', id: '' });
+  const previousQuick = useRef(quick);
   const online = useOnline();
   const space = data.selected;
+  useEffect(() => {
+    if (quick && !previousQuick.current && space?.status === 'ACTIVE') setDialog('expense');
+    previousQuick.current = quick;
+  }, [quick, space?.status]);
   const money = (minor: string) => formatMinorUnit(minor, monthData?.currency ?? 'TWD', 'zh-TW');
   function termName(id: string) {
     const term = terms.find(item => item.id === id);

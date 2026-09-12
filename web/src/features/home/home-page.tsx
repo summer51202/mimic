@@ -4,6 +4,7 @@ import type { Group } from '@/shared/api/domain-contracts';
 import type { HomeCard, HomeResponse } from '@/shared/api/home-contracts';
 import { formatMinorUnit, parseMinorUnit } from '@/shared/finance/minor-unit';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
+import { formatGeneratedAt } from '@/shared/ui/format-generated-at';
 import { useOnline } from '../personal-expenses/use-online';
 import { QuickExpense } from '../quick-expense/quick-expense';
 
@@ -43,6 +44,6 @@ export function HomePage({ data, groups, openQuick }: { data: HomeResponse; grou
         : <Link className={`space-card space-card--${card.mode.toLowerCase()}`} href={participantHref(card)} key={card.id}>
           <span>{modeLabel[card.mode]} · {card.currency}</span><h2>{card.name}</h2><CardSummary card={card} />
           {card.recent_activity[0] && <small>最近：{card.recent_activity[0].title} · {card.recent_activity[0].occurred_on}</small>}</Link>)}</section>}
-    <small className="space-home-generated">狀態時間：{new Date(data.generated_at).toLocaleString('zh-TW')}</small>
+    <small className="space-home-generated">狀態時間：{formatGeneratedAt(data.generated_at)}</small>
   </main>;
 }

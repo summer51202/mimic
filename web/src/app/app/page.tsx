@@ -30,6 +30,8 @@ export default async function AppPage({ searchParams }: AppPageProps) {
   const quick = (Array.isArray(params.quick) ? params.quick[0] : params.quick) === '1';
   const selectedGroupId = urlGroup ? selectGroupId(urlGroup, undefined, groups)
     : quick ? selectGroupId(undefined, cookieStore.get(groupPreferenceCookie)?.value, groups) : null;
-  try { return <HomePage data={await loadHome(selectedGroupId ?? undefined)} groups={groups} openQuick={quick} />; }
+  let home;
+  try { home = await loadHome(selectedGroupId ?? undefined); }
   catch (error) { return <AppReadFailure error={error} />; }
+  return <HomePage data={home} groups={groups} openQuick={quick} />;
 }

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { HomeTask, TaskCenter as TaskCenterData } from '@/shared/api/home-contracts';
 import { formatMinorUnit } from '@/shared/finance/minor-unit';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
+import { formatGeneratedAt } from '@/shared/ui/format-generated-at';
 import { useOnline } from '../personal-expenses/use-online';
 
 const taskCopy: Record<HomeTask['kind'], { title: string; detail: string }> = {
@@ -34,6 +35,6 @@ export function TaskCenter({ data }: { data: TaskCenterData }) {
           <strong>{formatMinorUnit(task.amount_minor, task.space.currency, 'zh-TW')}</strong><span aria-hidden="true">開啟寶箱 →</span>
         </Link>;
       })}</section>}
-    <small className="task-center__generated">狀態時間：{new Date(data.generated_at).toLocaleString('zh-TW')}</small>
+    <small className="task-center__generated">狀態時間：{formatGeneratedAt(data.generated_at)}</small>
   </main>;
 }
