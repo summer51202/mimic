@@ -68,8 +68,8 @@ Priority order:
 4. record detail affordance
 5. correction CTA on locked records
 
-Wireframe: [activity-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/activity-wireframe.svg)
-Mockup: [activity-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/activity-mockup.svg)
+Wireframe: [activity-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/activity-wireframe.svg)
+Mockup: [activity-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/activity-mockup.svg)
 
 ### 2. Confirmations
 
@@ -86,8 +86,8 @@ Priority order:
 3. completed tasks toggle
 4. CTA into the related screen
 
-Wireframe: [confirmations-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/confirmations-wireframe.svg)
-Mockup: [confirmations-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/confirmations-mockup.svg)
+Wireframe: [confirmations-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/confirmations-wireframe.svg)
+Mockup: [confirmations-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/confirmations-mockup.svg)
 
 ### 3. Settings
 
@@ -104,8 +104,8 @@ Priority order:
 3. app preferences
 4. support and sign-out
 
-Wireframe: [settings-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/settings-wireframe.svg)
-Mockup: [settings-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/settings-mockup.svg)
+Wireframe: [settings-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/settings-wireframe.svg)
+Mockup: [settings-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/settings-mockup.svg)
 
 ### 4. Correction Flow
 
@@ -123,8 +123,8 @@ Priority order:
 4. explanation note
 5. submit CTA
 
-Wireframe: [correction-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/correction-wireframe.svg)
-Mockup: [correction-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/correction-mockup.svg)
+Wireframe: [correction-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/correction-wireframe.svg)
+Mockup: [correction-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/correction-mockup.svg)
 
 ## Shared Interaction Principles
 
@@ -168,17 +168,17 @@ Avoid language that sounds punitive or system-centric.
 
 ### Wireframes
 
-* [activity-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/activity-wireframe.svg)
-* [confirmations-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/confirmations-wireframe.svg)
-* [settings-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/settings-wireframe.svg)
-* [correction-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/correction-wireframe.svg)
+* [activity-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/activity-wireframe.svg)
+* [confirmations-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/confirmations-wireframe.svg)
+* [settings-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/settings-wireframe.svg)
+* [correction-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/correction-wireframe.svg)
 
 ### Mockups
 
-* [activity-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/activity-mockup.svg)
-* [confirmations-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/confirmations-mockup.svg)
-* [settings-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/settings-mockup.svg)
-* [correction-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/correction-mockup.svg)
+* [activity-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/activity-mockup.svg)
+* [confirmations-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/confirmations-mockup.svg)
+* [settings-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/settings-mockup.svg)
+* [correction-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/correction-mockup.svg)
 
 ## Next UI Steps
 

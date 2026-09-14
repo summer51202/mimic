@@ -100,8 +100,8 @@ Priority order:
 4. recent activity
 5. pending items
 
-Wireframe: [dashboard-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/dashboard-wireframe.svg)
-Mockup: [dashboard-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/dashboard-mockup.svg)
+Wireframe: [dashboard-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/dashboard-wireframe.svg)
+Mockup: [dashboard-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/dashboard-mockup.svg)
 
 ### 2. Fund Detail
 
@@ -119,8 +119,8 @@ Priority order:
 4. timeline of transactions
 5. locked-period explanation if relevant
 
-Wireframe: [fund-detail-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/fund-detail-wireframe.svg)
-Mockup: [fund-detail-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/fund-detail-mockup.svg)
+Wireframe: [fund-detail-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/fund-detail-wireframe.svg)
+Mockup: [fund-detail-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/fund-detail-mockup.svg)
 
 ### 3. Create Expense
 
@@ -139,8 +139,8 @@ Priority order:
 5. participants and allocations
 6. save action
 
-Wireframe: [expense-create-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/expense-create-wireframe.svg)
-Mockup: [expense-create-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/expense-create-mockup.svg)
+Wireframe: [expense-create-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/expense-create-wireframe.svg)
+Mockup: [expense-create-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/expense-create-mockup.svg)
 
 ### 4. Settlement
 
@@ -158,8 +158,8 @@ Priority order:
 4. warning about lock behavior
 5. complete settlement action
 
-Wireframe: [settlement-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/settlement-wireframe.svg)
-Mockup: [settlement-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/settlement-mockup.svg)
+Wireframe: [settlement-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/settlement-wireframe.svg)
+Mockup: [settlement-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/settlement-mockup.svg)
 
 ## Interaction Notes
 
@@ -192,17 +192,17 @@ Correction is a first-class transaction type in the form flow:
 
 ### Wireframes
 
-* [dashboard-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/dashboard-wireframe.svg)
-* [fund-detail-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/fund-detail-wireframe.svg)
-* [expense-create-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/expense-create-wireframe.svg)
-* [settlement-wireframe.svg](/d:/Project/mimic/docs/design/assets/mobile-wireframes/settlement-wireframe.svg)
+* [dashboard-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/dashboard-wireframe.svg)
+* [fund-detail-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/fund-detail-wireframe.svg)
+* [expense-create-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/expense-create-wireframe.svg)
+* [settlement-wireframe.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/settlement-wireframe.svg)
 
 ### Mockups
 
-* [dashboard-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/dashboard-mockup.svg)
-* [fund-detail-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/fund-detail-mockup.svg)
-* [expense-create-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/expense-create-mockup.svg)
-* [settlement-mockup.svg](/d:/Project/mimic/docs/design/assets/mobile-mockups/settlement-mockup.svg)
+* [dashboard-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/dashboard-mockup.svg)
+* [fund-detail-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/fund-detail-mockup.svg)
+* [expense-create-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/expense-create-mockup.svg)
+* [settlement-mockup.svg](/d:/Project/mimic/docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/settlement-mockup.svg)
 
 ## Next UI Steps
 
