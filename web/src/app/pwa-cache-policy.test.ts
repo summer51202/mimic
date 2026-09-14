@@ -68,4 +68,13 @@ describe("PWA cache policy", () => {
     expect(privateRoutePattern.test("/invite/abcDEF123_-4")).toBe(true);
     expect(serviceWorker).toContain("invite|invites");
   });
+
+  it("caches only the canonical public character paths", () => {
+    const serviceWorker = readProjectFile("src/app/sw.ts");
+
+    expect(serviceWorker).toContain(
+      "^\\/pixel-ui\\/characters\\/mimiku-(?:happy|idle)\\.png$",
+    );
+    expect(serviceWorker).not.toContain("/brand/mimiku-");
+  });
 });

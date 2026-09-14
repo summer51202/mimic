@@ -99,9 +99,10 @@ const runtimeCaching: RuntimeCaching[] = [
   },
   {
     matcher: ({ sameOrigin, url }) =>
-      sameOrigin && /^\/brand\/mimiku-(?:happy|idle)\.png$/.test(url.pathname),
+      sameOrigin &&
+      /^\/pixel-ui\/characters\/mimiku-(?:happy|idle)\.png$/.test(url.pathname),
     handler: new CacheFirst({
-      cacheName: "mimic-public-brand",
+      cacheName: "mimic-runtime-characters",
       plugins: [
         new ExpirationPlugin({
           maxEntries: 4,
