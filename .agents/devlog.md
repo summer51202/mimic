@@ -1182,3 +1182,15 @@
 - Updated the backup contract's settlement-table assertion and added a workflow-order regression test.
 **Decisions:** Kept the real-backend specs in the Web typecheck boundary; CI now supplies their explicit Backend client dependency instead of weakening TypeScript coverage or adding a duplicate Prisma schema.
 **Known gaps / follow-ups:** The Web job performs a second Backend dependency install because GitHub jobs do not share files; this is deliberate and can later be optimized with a reviewed artifact or workspace design.
+
+## 2026-09-14 — Establish visual asset hierarchy
+
+**Task:** Separate Mimic visual sources, runtime assets, documentation art, and legacy mockups without changing rendered visuals.
+**Scope:** `web/public`, `web/src/shared/brand`, asset scripts and tests, service-worker asset paths, `docs/design`
+**What changed:**
+- Moved master and source sheets out of the browser-delivered public tree.
+- Replaced six duplicate role-named Mimiku files with one canonical six-state runtime set and semantic aliases.
+- Published the visual asset catalogue and enforced public-tree boundaries in tests.
+- Archived superseded PairFund mockups under an explicit legacy path.
+**Decisions:** Runtime palette tokens are authoritative; image optimization and screen-level visual changes remain deferred.
+**Known gaps / follow-ups:** Review responsive image variants, scene decomposition, exported UI icons, state coverage, and effects one screen at a time.
