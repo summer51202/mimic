@@ -7,57 +7,64 @@ import { promisify } from "node:util";
 import { PNG } from "pngjs";
 import { describe, expect, it } from "vitest";
 
-import { pixelUiAssetPolicy, pixelUiAssets } from "./pixel-ui-assets";
+import { pixelUiFiles, pixelUiRoles } from "./pixel-ui-assets";
 import { inspectPng } from "./png-inspection";
 
 const pngSignature = "89504e470d0a1a0a";
 const execFileAsync = promisify(execFile);
 
 const expectedDimensions = new Map<string, readonly [number, number]>([
-  ["mimiku-dashboard.png", [512, 512]],
-  ["mimiku-empty-group.png", [512, 512]],
-  ["mimiku-empty-fund.png", [512, 512]],
-  ["mimiku-invite.png", [512, 512]],
-  ["mimiku-success.png", [512, 512]],
+  ["mimiku-idle.png", [512, 512]],
+  ["mimiku-happy.png", [512, 512]],
+  ["mimiku-thinking.png", [512, 512]],
+  ["mimiku-reminder.png", [512, 512]],
   ["mimiku-serious.png", [512, 512]],
+  ["mimiku-lost.png", [512, 512]],
   ["treasury-mobile.png", [512, 1024]],
   ["treasury-desktop.png", [1024, 620]],
   ["avatar-01.png", [96, 96]],
   ["avatar-02.png", [96, 96]],
   ["avatar-03.png", [96, 96]],
   ["avatar-04.png", [96, 96]],
-  ["icons-ui.png", [1536, 1024]],
   ["frames-ui.png", [256, 166]],
 ]);
 
+const expectedCharacterHashes = new Map([
+  ["mimiku-idle.png", "1cc0e72cd73f12f8dbe75a00c2253aec08fd8a27e9ab92430be41ec958eeaea2"],
+  ["mimiku-happy.png", "397431082776b3ec037c90b8bfd5a7c144a0dbc730f6b753c782b3836b6727f3"],
+  ["mimiku-thinking.png", "d9d60a813500188f95e0391192c34e3943d1dfda2983eb8228baaebb37907b3b"],
+  ["mimiku-reminder.png", "2fa3d8b6d27a08b4f98ddfd6f30786c9f0a4fd9757a5ad244c2c56f35484aaec"],
+  ["mimiku-serious.png", "2c89947f952dd76aa55c5ddf1f79dc4a501c530458b10355a5214ff6c8d1a442"],
+  ["mimiku-lost.png", "4d107876216acac17aa14c80e545e29700373ed5f6c9ac8ae52023991f4e5284"],
+]);
+
 describe("pixelUiAssets", () => {
-  it("exposes stable public paths for Mimiku and avatars", () => {
-    expect(pixelUiAssets.mimiku.dashboard).toBe(
-      "/pixel-ui/mimiku-dashboard.png",
-    );
-    expect(pixelUiAssets.avatars).toHaveLength(4);
-    expect(pixelUiAssets.avatars).toEqual([
-      "/pixel-ui/avatar-01.png",
-      "/pixel-ui/avatar-02.png",
-      "/pixel-ui/avatar-03.png",
-      "/pixel-ui/avatar-04.png",
+  it("exposes canonical physical files and semantic role aliases", () => {
+    expect(pixelUiFiles.characters).toEqual({
+      idle: "/pixel-ui/characters/mimiku-idle.png",
+      happy: "/pixel-ui/characters/mimiku-happy.png",
+      thinking: "/pixel-ui/characters/mimiku-thinking.png",
+      reminder: "/pixel-ui/characters/mimiku-reminder.png",
+      serious: "/pixel-ui/characters/mimiku-serious.png",
+      lost: "/pixel-ui/characters/mimiku-lost.png",
+    });
+    expect(pixelUiRoles).toEqual({
+      dashboard: pixelUiFiles.characters.idle,
+      emptyGroup: pixelUiFiles.characters.thinking,
+      emptyFund: pixelUiFiles.characters.lost,
+      invitation: pixelUiFiles.characters.reminder,
+      success: pixelUiFiles.characters.happy,
+      blockingError: pixelUiFiles.characters.serious,
+    });
+    expect(pixelUiFiles.avatars).toEqual([
+      "/pixel-ui/avatars/avatar-01.png",
+      "/pixel-ui/avatars/avatar-02.png",
+      "/pixel-ui/avatars/avatar-03.png",
+      "/pixel-ui/avatars/avatar-04.png",
     ]);
   });
 
-  it("keeps source sheets out of the first-screen runtime policy", () => {
-    expect(pixelUiAssetPolicy.sourceSheets).toEqual([
-      "/pixel-ui/icons-ui.png",
-      "/pixel-ui/frames-ui.png",
-    ]);
-    expect(pixelUiAssetPolicy.runtimeFirstScreen).not.toContain(
-      "/pixel-ui/icons-ui.png",
-    );
-    expect(pixelUiAssetPolicy.runtimeFirstScreen).not.toContain(
-      "/pixel-ui/frames-ui.png",
-    );
-  });
-
-  it.each([...allPixelUiPaths()])(
+  it.each([...allRuntimePixelUiPaths()])(
     "ships %s as the expected PNG under public",
     async (publicPath) => {
       const filename = path.basename(publicPath);
@@ -75,7 +82,7 @@ describe("pixelUiAssets", () => {
     },
   );
 
-  it.each(pixelUiAssets.avatars)(
+  it.each(pixelUiFiles.avatars)(
     "exports %s as clean transparent 2x avatar art",
     async (publicPath) => {
       const inspection = await inspectPng(publicFile(publicPath));
@@ -91,7 +98,7 @@ describe("pixelUiAssets", () => {
     },
   );
 
-  it.each(Object.values(pixelUiAssets.mimiku))(
+  it.each(Object.values(pixelUiFiles.characters))(
     "exports %s with a transparent exterior and no connected neutral matte",
     async (publicPath) => {
       const inspection = await inspectPng(publicFile(publicPath));
@@ -104,8 +111,16 @@ describe("pixelUiAssets", () => {
     },
   );
 
+  it.each(Object.values(pixelUiFiles.characters))(
+    "preserves the approved bytes for %s",
+    async (publicPath) => {
+      const image = await readFile(publicFile(publicPath));
+      expect(sha256(image)).toBe(expectedCharacterHashes.get(path.basename(publicPath)));
+    },
+  );
+
   it("exports a clean transparent frame without resampling", async () => {
-    const inspection = await inspectPng(publicFile(pixelUiAssets.sheets.frames));
+    const inspection = await inspectPng(publicFile(pixelUiFiles.deferred.frame));
 
     expect(inspection).toMatchObject({
       width: 256,
@@ -119,7 +134,7 @@ describe("pixelUiAssets", () => {
 
   it("keeps complete frame artwork away from every source crop edge", async () => {
     const exporter = await exporterSource();
-    const inspection = await inspectPng(publicFile(pixelUiAssets.sheets.frames));
+    const inspection = await inspectPng(publicFile(pixelUiFiles.deferred.frame));
     const bounds = inspection.nonTransparentBounds;
 
     expect(exporter).toContain(
@@ -132,7 +147,7 @@ describe("pixelUiAssets", () => {
   });
 
   it("preserves opaque near-neutral pixels in avatar eye artwork", async () => {
-    const inspection = await inspectPng(publicFile(pixelUiAssets.avatars[0]));
+    const inspection = await inspectPng(publicFile(pixelUiFiles.avatars[0]));
 
     expect(inspection.opaqueNearNeutralPixels).toBeGreaterThan(0);
   });
@@ -196,16 +211,22 @@ describe("pixelUiAssets", () => {
 
   it("reproduces committed assets twice without residual temp files", async () => {
     const outputDirectory = await mkdtemp(path.join(tmpdir(), "mimic-pixel-export-"));
-    const filenames = pixelUiAssets.avatars
-      .map((publicPath) => path.basename(publicPath))
-      .concat(path.basename(pixelUiAssets.sheets.frames));
+    const committedFiles = new Map([
+      ...pixelUiFiles.avatars.map((publicPath) => [
+        path.basename(publicPath),
+        path.join(process.cwd(), "public", publicPath),
+      ] as const),
+      [
+        path.basename(pixelUiFiles.deferred.frame),
+        path.join(process.cwd(), "public", pixelUiFiles.deferred.frame),
+      ] as const,
+    ]);
+    const filenames = [...committedFiles.keys()];
     const committedHashes = new Map(
       await Promise.all(
-        filenames.map(async (filename) => [
+        [...committedFiles].map(async ([filename, filenamePath]) => [
           filename,
-          sha256(
-            await readFile(path.join(process.cwd(), "public", "pixel-ui", filename)),
-          ),
+          sha256(await readFile(filenamePath)),
         ] as const),
       ),
     );
@@ -254,9 +275,9 @@ function publicFile(publicPath: string): string {
   return path.join(process.cwd(), "public", publicPath);
 }
 
-function* allPixelUiPaths(): Generator<string> {
-  yield* Object.values(pixelUiAssets.mimiku);
-  yield* Object.values(pixelUiAssets.scenes);
-  yield* pixelUiAssets.avatars;
-  yield* Object.values(pixelUiAssets.sheets);
+function* allRuntimePixelUiPaths(): Generator<string> {
+  yield* Object.values(pixelUiFiles.characters);
+  yield* pixelUiFiles.avatars;
+  yield* Object.values(pixelUiFiles.deferred.scenes);
+  yield pixelUiFiles.deferred.frame;
 }

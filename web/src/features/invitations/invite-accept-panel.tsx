@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { appFetch } from "@/shared/api/app-fetch";
-import { pixelUiAssets } from "@/shared/brand/pixel-ui-assets";
+import { pixelUiRoles } from "@/shared/brand/pixel-ui-assets";
 import type { InviteAcceptResult } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelFrame } from "@/shared/ui/pixel-frame";
@@ -77,7 +77,7 @@ export function InviteAcceptPanel({
           className="pixel-art"
           height={512}
           priority
-          src={error ? pixelUiAssets.mimiku.serious : pixelUiAssets.mimiku.invite}
+          src={error ? pixelUiRoles.blockingError : pixelUiRoles.invitation}
           unoptimized
           width={512}
         />

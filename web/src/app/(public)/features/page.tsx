@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { pixelUiFiles } from "@/shared/brand/pixel-ui-assets";
 import styles from "@/shared/brand/hero.module.css";
 import { publicCopy } from "@/shared/brand/public-copy";
 
@@ -23,7 +24,7 @@ export default function FeaturesPage() {
         </div>
         <Image
           className={`${styles.pageMascot} pixel-art`}
-          src="/brand/mimiku-thinking.png"
+          src={pixelUiFiles.characters.thinking}
           alt="咪咪庫正在整理共同基金與分帳紀錄"
           width={512}
           height={512}

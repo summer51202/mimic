@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { type FormEvent, useId, useMemo, useRef, useState } from "react";
 import { ZodError } from "zod";
 
+import { pixelUiFiles, pixelUiRoles } from "@/shared/brand/pixel-ui-assets";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelPanel } from "@/shared/ui/pixel-panel";
 import { safeReturnTo } from "@/shared/navigation/safe-return-to";
@@ -133,8 +134,8 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
             className={`${styles.characterImage} pixel-art`}
             src={
               hasAuthError
-                ? "/brand/mimiku-serious.png"
-                : "/brand/mimiku-idle.png"
+                ? pixelUiRoles.blockingError
+                : pixelUiFiles.characters.idle
             }
             alt={
               hasAuthError

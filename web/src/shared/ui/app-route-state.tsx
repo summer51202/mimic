@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { AppReadState } from "@/shared/api/read-state";
-import { pixelUiAssets } from "@/shared/brand/pixel-ui-assets";
+import { pixelUiRoles } from "@/shared/brand/pixel-ui-assets";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelFrame } from "@/shared/ui/pixel-frame";
 
@@ -60,7 +60,7 @@ export function AppRouteState({
           alt="Mimiku standing guard"
           className={styles.mimiku}
           height={512}
-          src={pixelUiAssets.mimiku.serious}
+          src={pixelUiRoles.blockingError}
           unoptimized
           width={512}
         />

@@ -5,7 +5,7 @@ import { type FormEvent, useState } from "react";
 import { ZodError } from "zod";
 
 import { appFetch } from "@/shared/api/app-fetch";
-import { pixelUiAssets } from "@/shared/brand/pixel-ui-assets";
+import { pixelUiRoles } from "@/shared/brand/pixel-ui-assets";
 import type { InviteCreated } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelField } from "@/shared/ui/pixel-field";
@@ -84,7 +84,7 @@ export function InviteCreatePanel({ groupId, onCreated }: InviteCreatePanelProps
             className="pixel-art"
             height={512}
             priority
-            src={pixelUiAssets.mimiku.invite}
+            src={pixelUiRoles.invitation}
             unoptimized
             width={512}
           />

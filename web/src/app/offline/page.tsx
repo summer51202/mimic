@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { pixelUiFiles } from "@/shared/brand/pixel-ui-assets";
+
 export default function OfflinePage() {
   return (
     <main
@@ -28,7 +30,7 @@ export default function OfflinePage() {
           className="pixel-art"
           height={128}
           priority
-          src="/brand/mimiku-idle.png"
+          src={pixelUiFiles.characters.idle}
           unoptimized
           width={128}
         />

@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import type { Member } from "@/shared/api/domain-contracts";
-import { pixelUiAssets } from "@/shared/brand/pixel-ui-assets";
+import { pixelUiFiles } from "@/shared/brand/pixel-ui-assets";
 
 import styles from "./group-management.module.css";
 
@@ -18,7 +18,7 @@ export function MemberRoster({ members }: MemberRosterProps) {
             alt={`Avatar for ${member.display_name}`}
             data-pixel-avatar
             height={48}
-            src={pixelUiAssets.avatars[index % pixelUiAssets.avatars.length]}
+            src={pixelUiFiles.avatars[index % pixelUiFiles.avatars.length]}
             unoptimized
             width={48}
           />
