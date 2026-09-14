@@ -10,25 +10,25 @@ import {
 } from "./export-pixel-runtime-assets.mjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
-const publicDirectory = path.resolve(scriptDirectory, "..", "public");
+const characterDirectory = path.resolve(
+  scriptDirectory,
+  "..",
+  "public",
+  "pixel-ui",
+  "characters",
+);
 
 const characterFiles = [
-  "brand/mimiku-idle.png",
-  "brand/mimiku-happy.png",
-  "brand/mimiku-thinking.png",
-  "brand/mimiku-reminder.png",
-  "brand/mimiku-serious.png",
-  "brand/mimiku-lost.png",
-  "pixel-ui/mimiku-dashboard.png",
-  "pixel-ui/mimiku-empty-group.png",
-  "pixel-ui/mimiku-empty-fund.png",
-  "pixel-ui/mimiku-invite.png",
-  "pixel-ui/mimiku-success.png",
-  "pixel-ui/mimiku-serious.png",
+  "mimiku-idle.png",
+  "mimiku-happy.png",
+  "mimiku-thinking.png",
+  "mimiku-reminder.png",
+  "mimiku-serious.png",
+  "mimiku-lost.png",
 ];
 
 for (const relativePath of characterFiles) {
-  const filename = path.join(publicDirectory, relativePath);
+  const filename = path.join(characterDirectory, relativePath);
   const png = PNG.sync.read(await readFile(filename));
   clearConnectedNeutralBackground(png);
   await writePngAtomic(filename, png);

@@ -1,4 +1,4 @@
-import { open, readFile, rename, rm } from "node:fs/promises";
+import { mkdir, open, readFile, rename, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -6,8 +6,17 @@ import { PNG } from "pngjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const webDirectory = path.resolve(scriptDirectory, "..");
-const assetDirectory = path.join(webDirectory, "public", "pixel-ui");
-const sourcePath = path.join(assetDirectory, "icons-ui.png");
+const repositoryDirectory = path.resolve(webDirectory, "..");
+const runtimeDirectory = path.join(webDirectory, "public", "pixel-ui");
+const sourcePath = path.join(
+  repositoryDirectory,
+  "docs",
+  "design",
+  "assets",
+  "sources",
+  "pixel-ui",
+  "icons-ui.png",
+);
 
 const avatarExports = [
   ["avatar-01.png", 85, 360, 170, 180],
@@ -21,8 +30,12 @@ if (isMainModule()) {
   await exportRuntimeAssets(outputDirectoryFromArguments(process.argv.slice(2)));
 }
 
-export async function exportRuntimeAssets(outputDirectory = assetDirectory) {
+export async function exportRuntimeAssets(outputDirectory) {
   const source = PNG.sync.read(await readFile(sourcePath));
+  const avatarDirectory = outputDirectory ?? path.join(runtimeDirectory, "avatars");
+  const frameDirectory = outputDirectory ?? path.join(runtimeDirectory, "frames");
+  await mkdir(avatarDirectory, { recursive: true });
+  await mkdir(frameDirectory, { recursive: true });
   const pendingWrites = [];
 
   for (const [filename, x, y, width, height] of avatarExports) {
@@ -31,7 +44,7 @@ export async function exportRuntimeAssets(outputDirectory = assetDirectory) {
     const bounds = nonTransparentBounds(avatarCrop);
     const contained = resizeContainNearest(avatarCrop, bounds, 88, 88);
     pendingWrites.push([
-      path.join(outputDirectory, filename),
+      path.join(avatarDirectory, filename),
       centerWithoutResampling(contained, 96, 96),
     ]);
   }
@@ -41,7 +54,7 @@ export async function exportRuntimeAssets(outputDirectory = assetDirectory) {
   clearConnectedNeutralBackground(frameCrop);
   nonTransparentBounds(frameCrop);
   pendingWrites.push([
-    path.join(outputDirectory, frameFilename),
+    path.join(frameDirectory, frameFilename),
     centerWithoutResampling(frameCrop, 256, 166),
   ]);
 
@@ -198,7 +211,7 @@ function nearestSourceCoordinate(coordinate, destinationSize, sourceSize) {
 }
 
 function outputDirectoryFromArguments(arguments_) {
-  if (arguments_.length === 0) return assetDirectory;
+  if (arguments_.length === 0) return undefined;
   if (arguments_.length === 2 && arguments_[0] === "--output-dir") {
     return path.resolve(arguments_[1]);
   }
