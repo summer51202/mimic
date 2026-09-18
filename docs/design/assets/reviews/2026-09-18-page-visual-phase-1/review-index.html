@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Page Visual Phase 1 calibration</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --navy: #17213a;
+        --cave: #0d1324;
+        --ink: #17213a;
+        --soft-ink: #31405f;
+        --gold: #f4b83f;
+        --gold-deep: #b87918;
+        --wood: #8a5a35;
+        --parchment: #fff7df;
+        --line: #d9c7a8;
+        --focus: #6fb7df;
+        --danger: #d74f4f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--cave);
+      }
+
+      body {
+        min-width: 0;
+        margin: 0;
+        background:
+          radial-gradient(circle at 50% 0, #26375e 0, transparent 44rem),
+          var(--cave);
+        color: #fffaf0;
+        font: 16px/1.55 system-ui, sans-serif;
+      }
+
+      header,
+      main,
+      footer {
+        width: min(100%, 1440px);
+        margin: 0 auto;
+        padding-inline: clamp(16px, 4vw, 48px);
+      }
+
+      header {
+        padding-block: 40px 24px;
+      }
+
+      header p {
+        max-width: 78ch;
+        color: #dce5f7;
+      }
+
+      .metadata {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .metadata li {
+        padding: 6px 10px;
+        border: 2px solid #5b6c91;
+        background: #111a31;
+      }
+
+      main {
+        display: grid;
+        gap: 24px;
+        padding-bottom: 48px;
+      }
+
+      [data-family] {
+        min-width: 0;
+        padding: clamp(16px, 3vw, 32px);
+        border: 4px solid var(--gold-deep);
+        background: color-mix(in srgb, var(--navy) 94%, black);
+        box-shadow: 0 6px 0 #050915;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-block-start: 0;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.05;
+      }
+
+      h2 {
+        font-size: clamp(1.5rem, 3vw, 2.25rem);
+      }
+
+      h3 {
+        font-size: 1rem;
+      }
+
+      [data-family-description],
+      [data-live-caption] {
+        max-width: 78ch;
+        color: #dce5f7;
+      }
+
+      .review-status {
+        display: inline-block;
+        margin-bottom: 16px;
+        padding: 6px 10px;
+        border: 2px solid #5b6c91;
+        color: #fffaf0;
+        font-weight: 700;
+      }
+
+      .sample-error .review-status {
+        border-color: var(--danger);
+      }
+
+      .backdrops {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        margin-block: 18px;
+      }
+
+      .backdrop {
+        display: grid;
+        min-width: 0;
+        min-height: 180px;
+        margin: 0;
+        padding: 12px;
+        place-items: center;
+        border: 3px solid var(--line);
+      }
+
+      .backdrop img {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 70vh;
+        object-fit: contain;
+        image-rendering: pixelated;
+      }
+
+      [data-backdrop="navy"] {
+        background: var(--navy);
+      }
+
+      [data-backdrop="parchment"] {
+        background: var(--parchment);
+      }
+
+      .scene-sample {
+        margin-block: 18px;
+        border: 3px solid var(--line);
+        background: var(--cave);
+      }
+
+      .scene-sample img {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+      }
+
+      .motion-frame {
+        width: 100%;
+        min-height: 800px;
+        margin-block: 18px;
+        border: 3px solid var(--line);
+        background: var(--cave);
+      }
+
+      [data-fallback] {
+        width: 100%;
+        max-width: 78ch;
+        min-height: 48px;
+        padding: 12px;
+        border: 2px dashed var(--focus);
+        background: #111a31;
+        color: #fffaf0;
+      }
+
+      .sample-error [data-fallback] {
+        border-color: var(--danger);
+      }
+
+      .boundaries {
+        display: grid;
+        gap: 8px;
+        padding-left: 20px;
+      }
+
+      footer {
+        padding-block: 0 48px;
+        color: #dce5f7;
+      }
+
+      @media (min-width: 720px) {
+        .backdrops {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 430px) {
+        header {
+          padding-top: 24px;
+        }
+
+        [data-family] {
+          border-width: 3px;
+        }
+
+        .backdrop {
+          min-height: 120px;
+          padding: 8px;
+        }
+
+        .motion-frame {
+          min-height: 1100px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Page Visual Phase 1 calibration</h1>
+      <p>
+        Review-only samples for Gate A. No sample is a runtime asset, no decision is
+        recorded yet, and all product facts and operations remain live HTML.
+      </p>
+      <ul class="metadata" aria-label="Review metadata">
+        <li>Baseline a157a83</li>
+        <li>Viewports 320 · 390 · 768 · 1440</li>
+        <li>Status awaiting calibration</li>
+      </ul>
+    </header>
+
+    <main>
+      <section data-family="wordmark">
+        <h2>Wordmark</h2>
+        <p data-family-description>
+          Mismatched wood-and-metal MIMIC construction with eyes in the first M
+          and mouth/heart-coin identity on the final C.
+        </p>
+        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <div class="backdrops">
+          <figure class="backdrop" data-backdrop="navy">
+            <img src="samples/wordmark-calibration.png" alt="MIMIC wordmark calibration on navy" onerror="markUnavailable(this)" />
+          </figure>
+          <figure class="backdrop" data-backdrop="parchment">
+            <img src="samples/wordmark-calibration.png" alt="MIMIC wordmark calibration on parchment" onerror="markUnavailable(this)" />
+          </figure>
+        </div>
+        <p data-live-caption>
+          Future consumers: Landing, Home, public header, authenticated top rail,
+          and compact brand link. Motion is decorative.
+        </p>
+        <div data-fallback><strong>Fallback:</strong> render the live MIMIC brand name with one accessible name.</div>
+      </section>
+
+      <section data-family="icons">
+        <h2>Icons</h2>
+        <p data-family-description>
+          Install/face scaling, five navigation silhouettes, and three mode cues
+          that remain distinct without hue.
+        </p>
+        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <div class="backdrops">
+          <figure class="backdrop" data-backdrop="navy">
+            <img src="samples/icons-calibration.png" alt="Icon family calibration on navy" onerror="markUnavailable(this)" />
+          </figure>
+          <figure class="backdrop" data-backdrop="parchment">
+            <img src="samples/icons-calibration.png" alt="Icon family calibration on parchment" onerror="markUnavailable(this)" />
+          </figure>
+        </div>
+        <p data-live-caption>
+          Future consumers: PWA icons, favicon, primary navigation, record-expense,
+          mode badges, and typed financial events/statuses.
+        </p>
+        <div data-fallback><strong>Fallback:</strong> visible action, mode, event, and status labels remain present.</div>
+      </section>
+
+      <section data-family="mimiku-states">
+        <h2>Mimiku states and actions</h2>
+        <p data-family-description>
+          Six semantic states plus separate record-ledger and adventure-completion
+          key poses, preserving approved treasure-chest anatomy.
+        </p>
+        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <div class="backdrops">
+          <figure class="backdrop" data-backdrop="navy">
+            <img src="samples/mimiku-states-calibration.png" alt="Mimiku state calibration on navy" onerror="markUnavailable(this)" />
+          </figure>
+          <figure class="backdrop" data-backdrop="parchment">
+            <img src="samples/mimiku-states-calibration.png" alt="Mimiku state calibration on parchment" onerror="markUnavailable(this)" />
+          </figure>
+        </div>
+        <p data-live-caption>
+          Future consumers: auth, invite, shared route states, loading/empty/error/
+          offline/success, Home dialogue, and action sequences.
+        </p>
+        <div data-fallback><strong>Fallback:</strong> show the complete live message and action or recovery controls.</div>
+      </section>
+
+      <section data-family="avatar-classes">
+        <h2>Avatar classes</h2>
+        <p data-family-description>
+          Eight cosmetic portrait/full-body pairs. Class conveys neither identity,
+          governance, permission, nor accounting meaning.
+        </p>
+        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <div class="backdrops">
+          <figure class="backdrop" data-backdrop="navy">
+            <img src="samples/avatar-classes-calibration.png" alt="Eight avatar class pairs on navy" onerror="markUnavailable(this)" />
+          </figure>
+          <figure class="backdrop" data-backdrop="parchment">
+            <img src="samples/avatar-classes-calibration.png" alt="Eight avatar class pairs on parchment" onerror="markUnavailable(this)" />
+          </figure>
+        </div>
+        <p data-live-caption>
+          Future consumers: registration, Settings, party and balance rosters,
+          payer/participant formation, and activity actors.
+        </p>
+        <div data-fallback><strong>Fallback:</strong> identify each person with live name and role text.</div>
+      </section>
+
+      <section data-family="scenes">
+        <h2>Scenes</h2>
+        <p data-family-description>
+          Landing central cave with passage interfaces and a separate Home secret-
+          base interior centered on the campfire.
+        </p>
+        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <figure class="scene-sample">
+          <img src="samples/scenes-calibration.png" alt="Landing cave and Home secret-base scene calibration" onerror="markUnavailable(this)" />
+        </figure>
+        <p data-live-caption>
+          Future consumers: Landing and Home only. CTA, recent adventure,
+          navigation, greeting, and financial facts remain outside the pixels.
+        </p>
+        <div data-fallback><strong>Fallback:</strong> retain the same live content and actions on a bounded static background.</div>
+      </section>
+
+      <section data-family="frames">
+        <h2>Frames</h2>
+        <p data-family-description>
+          Parchment, wood, stone, dialogue, and notebook 9-slice directions with
+          generous quiet interiors.
+        </p>
+        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <div class="backdrops">
+          <figure class="backdrop" data-backdrop="navy">
+            <img src="samples/frames-calibration.png" alt="Frame calibration on navy" onerror="markUnavailable(this)" />
+          </figure>
+          <figure class="backdrop" data-backdrop="parchment">
+            <img src="samples/frames-calibration.png" alt="Frame calibration on parchment" onerror="markUnavailable(this)" />
+          </figure>
+        </div>
+        <p data-live-caption>
+          Future consumers: shared panels, legal reading, dialogue, notebook,
+          guild board, and settlement board.
+        </p>
+        <div data-fallback><strong>Fallback:</strong> semantic landmarks, content order, padding, controls, and status remain.</div>
+      </section>
+
+      <section data-family="props">
+        <h2>Props</h2>
+        <p data-family-description>
+          Seven Landing environment props plus separate personal, shared, pooled,
+          and task chapter cues with no reward or balance meaning.
+        </p>
+        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <div class="backdrops">
+          <figure class="backdrop" data-backdrop="navy">
+            <img src="samples/props-calibration.png" alt="Prop family calibration on navy" onerror="markUnavailable(this)" />
+          </figure>
+          <figure class="backdrop" data-backdrop="parchment">
+            <img src="samples/props-calibration.png" alt="Prop family calibration on parchment" onerror="markUnavailable(this)" />
+          </figure>
+        </div>
+        <p data-live-caption>
+          Future consumers: named Landing object buttons, feature chapters, and
+          decoration beside live mode/event labels.
+        </p>
+        <div data-fallback><strong>Fallback:</strong> remove decoration while retaining named controls and live labels.</div>
+      </section>
+
+      <section data-family="motion">
+        <h2>Motion</h2>
+        <p data-family-description>
+          Infrequent wordmark, base idle, one-shot action, skippable completion,
+          and typewriter-final behavior with reduced-motion equivalents.
+        </p>
+        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <iframe class="motion-frame" src="samples/motion-calibration.html" title="Motion calibration sample" onerror="markUnavailable(this)"></iframe>
+        <p data-live-caption>
+          Future consumers: wordmark, character states/actions, cave props,
+          dialogue, and one-time completion. One primary animation maximum.
+        </p>
+        <div data-fallback><strong>Fallback:</strong> show final states and complete dialogue immediately without motion.</div>
+      </section>
+    </main>
+
+    <footer>
+      Gate A remains pending. This page contains no approval controls and performs
+      no runtime or product operation.
+    </footer>
+
+    <script>
+      function markUnavailable(element) {
+        const family = element.closest("[data-family]");
+        if (!family) return;
+        family.classList.add("sample-error");
+        family.querySelector("[data-review-status]").textContent =
+          "Sample unavailable — review live boundaries and fallback.";
+      }
+    </script>
+  </body>
+</html>

@@ -86,11 +86,73 @@ test("reduced motion exposes every final state without animation", async ({
   await expectNoHorizontalOverflow(page);
 });
 
-async function installReviewRoutes(page: Page) {
+test("review index is deterministic at the native project viewport", async ({
+  page,
+}, testInfo) => {
+  await installReviewRoutes(page);
+  await page.goto("https://asset-review.local/review-index.html");
+
+  const expectedWidths: Record<string, number> = {
+    "phone-small": 320,
+    phone: 390,
+    tablet: 768,
+    desktop: 1440,
+  };
+  expect(page.viewportSize()?.width).toBe(expectedWidths[testInfo.project.name]);
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Page Visual Phase 1 calibration",
+    }),
+  ).toBeVisible();
+  await expect(page.locator("main > [data-family]")).toHaveCount(8);
+  await page.locator("img").evaluateAll(async (images) => {
+    await Promise.all(images.map((image) => (image as HTMLImageElement).decode()));
+  });
+  await expectNoHorizontalOverflow(page);
+
+  await expect(page).toHaveScreenshot(
+    `asset-style-gate-${testInfo.project.name}.png`,
+    {
+      animations: "disabled",
+      fullPage: true,
+    },
+  );
+});
+
+test("a broken sample keeps its live review boundary visible", async ({ page }) => {
+  await installReviewRoutes(page, "samples/icons-calibration.png");
+  await page.goto("https://asset-review.local/review-index.html");
+
+  const family = page.locator('[data-family="icons"]');
+  await expect(family.getByRole("heading", { name: "Icons" })).toBeVisible();
+  await expect(family.locator("[data-family-description]")).toBeVisible();
+  await expect(family.locator("[data-review-status]")).toHaveText(
+    "Sample unavailable — review live boundaries and fallback.",
+  );
+  await expect(family.locator("[data-fallback]")).toBeVisible();
+
+  const [familyBox, fallbackBox] = await Promise.all([
+    family.boundingBox(),
+    family.locator("[data-fallback]").boundingBox(),
+  ]);
+  expect(familyBox).not.toBeNull();
+  expect(fallbackBox).not.toBeNull();
+  expect(fallbackBox!.width).toBeLessThanOrEqual(familyBox!.width);
+  expect(fallbackBox!.height).toBeGreaterThan(0);
+  await expectNoHorizontalOverflow(page);
+});
+
+async function installReviewRoutes(page: Page, abortedPath?: string) {
   await page.route("https://asset-review.local/**", async (route) => {
     const requestUrl = new URL(route.request().url());
     const relativePath = decodeURIComponent(requestUrl.pathname).replace(/^\/+/, "");
     const filename = path.resolve(reviewRoot, relativePath);
+
+    if (relativePath === abortedPath) {
+      await route.abort("failed");
+      return;
+    }
 
     if (!filename.startsWith(`${reviewRoot}${path.sep}`)) {
       await route.fulfill({ status: 403, body: "Forbidden" });
