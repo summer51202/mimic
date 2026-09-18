@@ -1241,3 +1241,15 @@
 - Locked rejected, derived, and final sample hashes in the focused contract and refreshed the review-only screenshots.
 **Decisions:** The lineage baseline remains authoritative. The replacement is `awaiting-calibration` and is not approved for complete-family generation or runtime promotion.
 **Known gaps / follow-ups:** Await explicit visual approval or corrections for the replacement Mimiku sample before reviewing another family.
+
+## 2026-09-18 — Rebuild wordmark in canonical Mimiku pixel style
+
+**Task:** Replace the smooth illustrated Wordmark calibration with a review-only sample that matches the existing Mimiku hand-drawn pixel language.
+**Scope:** Wordmark source derivation, rejected-sample archive, deterministic composer, lineage audit, Gate A manifest/decision/review records, contract test, and four viewport screenshots.
+**What changed:**
+- Archived the rejected smooth-rendered Wordmark by exact hash and excluded it from replacement style references.
+- Generated one source-constrained `MIMIC` wordmark from the canonical Mimiku master and model sheet, preserving the approved first-`M` eyes and final-`C` mouth/heart-coin structure.
+- Added deterministic display and compact-inset composition with nearest-neighbor scaling and clean transparent RGB.
+- Updated the review page and regression baselines for 320, 390, 768, and 1440 viewports.
+**Decisions:** Canonical Mimiku stepped navy outlines, clustered pixels, limited color ramps, restrained dithering, and handmade asymmetry are the Wordmark style authority. The replacement remains `awaiting-calibration`.
+**Known gaps / follow-ups:** Await explicit Wordmark visual approval or further correction. No complete family, runtime promotion, page composition, or next-family work is authorized.

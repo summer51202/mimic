@@ -13,7 +13,7 @@ Changing a sample changes its hash, invalidates any prior approval, and returns 
 
 | Family | Sample SHA-256 | Decision | Requested correction | Decision date |
 |---|---|---|---|---|
-| wordmark | `e1dde795ca8873543d44cd7735477cc7766459790ecd10a8dac3eec1927a365e` | awaiting recalibration | Original sample rejected: heavy metal edging harmed distance and compact-size legibility. Revised to wood-led letter silhouettes with sparse secondary join hardware and both eyes in the first `M` left half; revised sample awaits review. | 2026-09-18 |
+| wordmark | `4a9c037db30e1cfe69db702ab473efccc08f9278d93e6d167252c34f41b38f14` | awaiting recalibration | Earlier revisions rejected: even after reducing metal, the smooth high-resolution cartoon rendering did not match canonical Mimiku. Current replacement derives its stepped outlines, pixel clusters, limited ramps, wood, brass, teeth, and heart coin from the approved Mimiku master/model sources. | 2026-09-18 |
 | icons |  |  |  |  |
 | mimiku-states | `c09d051730df12848e8b142b425382da7cd6473bb4b456c10d4e91dff9f223c7` | awaiting recalibration | Lineage baseline accepted. Replacement reuses canonical Idle, Happy, Reminder, and Serious; derives Working, Concerned, record-ledger, and adventure-complete from the approved sources. Visual approval remains pending. | 2026-09-18 |
 | avatar-classes |  |  |  |  |

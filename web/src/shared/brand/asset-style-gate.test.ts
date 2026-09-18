@@ -23,6 +23,10 @@ const assetLineageAuditPath = path.resolve(
   path.dirname(reviewManifestPath),
   "asset-lineage-audit.md",
 );
+const wordmarkLineageAuditPath = path.resolve(
+  path.dirname(reviewManifestPath),
+  "wordmark-lineage-audit.md",
+);
 
 const expectedFamilyIds = [
   "wordmark",
@@ -113,7 +117,7 @@ describe("page visual asset style gate", () => {
         hasTransparentPixel(png),
         `${familyId} transparency expectation`,
       ).toBe(family!.sample.alpha);
-      if (familyId === "mimiku-states") {
+      if (familyId === "wordmark" || familyId === "mimiku-states") {
         expect(hasNonzeroTransparentPixel(png)).toBe(false);
       }
       expect(family!.sample.sha256).toMatch(/^[a-f0-9]{64}$/);
@@ -263,6 +267,56 @@ describe("page visual asset style gate", () => {
     expect(composer).toContain("mimiku-derived-poses.png");
     expect(composer).toContain("mimiku-concerned-pose.png");
     expect(composer).toContain("mimiku-states-calibration.png");
+  });
+
+  it("rebuilds the wordmark from the canonical Mimiku pixel lineage", async () => {
+    const reviewDirectory = path.dirname(reviewManifestPath);
+    const audit = await readFile(wordmarkLineageAuditPath, "utf8");
+    const reviewIndex = await readFile(reviewIndexPath, "utf8");
+    const rejectedSample = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "rejected",
+        "wordmark-calibration-e1dde795.png",
+      ),
+    );
+    const composer = await readFile(
+      path.join(reviewDirectory, "compose-wordmark-calibration.mjs"),
+      "utf8",
+    );
+    const derivedSourceBytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "derivations",
+        "wordmark-pixel-source.png",
+      ),
+    );
+    const derivedSource = PNG.sync.read(derivedSourceBytes);
+
+    expect(createHash("sha256").update(rejectedSample).digest("hex")).toBe(
+      "e1dde795ca8873543d44cd7735477cc7766459790ecd10a8dac3eec1927a365e",
+    );
+    expect(audit).toContain(
+      "docs/design/assets/sources/mimiku/mimiku-master.png",
+    );
+    expect(audit).toContain(
+      "docs/design/assets/sources/mimiku/mimiku-model-sheet.png",
+    );
+    expect(audit).toContain("pixel-art style authority");
+    expect(audit).toContain("rejected/superseded");
+    expect(derivedSource.width).toBe(2172);
+    expect(derivedSource.height).toBe(724);
+    expect(hasTransparentPixel(derivedSource)).toBe(true);
+    expect(createHash("sha256").update(derivedSourceBytes).digest("hex")).toBe(
+      "74c2c21e1dcf78732528f205987f572fce96fb5305b7ebd1a4da586157368fa2",
+    );
+    expect(composer).toContain("wordmark-pixel-source.png");
+    expect(composer).toContain("wordmark-calibration.png");
+    expect(reviewIndex).toContain(
+      "Wordmark replacement awaiting review — canonical Mimiku pixel lineage.",
+    );
   });
 });
 
