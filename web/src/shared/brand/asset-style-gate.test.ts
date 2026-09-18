@@ -33,6 +33,7 @@ const rasterFamiliesUnderReview = [
   "mimiku-states",
   "avatar-classes",
   "scenes",
+  "frames",
 ] as const;
 const pngSignature = "89504e470d0a1a0a";
 
