@@ -111,6 +111,34 @@ describe("page visual asset style gate", () => {
       );
     },
   );
+
+  it("defines the accessible motion and reduced-motion calibration contract", async () => {
+    const manifest = JSON.parse(
+      await readFile(reviewManifestPath, "utf8"),
+    ) as ReviewManifest;
+    const motion = manifest.families.find(({ id }) => id === "motion");
+
+    expect(motion).toBeDefined();
+
+    const samplePath = path.resolve(process.cwd(), "..", motion!.sample.path);
+    const html = await readFile(samplePath, "utf8");
+
+    for (const example of [
+      "wordmark-glance",
+      "base-idle",
+      "action-once",
+      "celebration-once",
+      "typewriter-final",
+    ]) {
+      expect(html).toContain(`data-motion-example="${example}"`);
+    }
+
+    expect(html).toContain("@media (prefers-reduced-motion: reduce)");
+    expect(html).not.toMatch(/pointermove|mousemove|clientX|clientY/);
+    expect(html).toMatch(
+      /role="status"[^>]*data-accessible-dialogue[^>]*>[^<]+<\/[^>]+>/,
+    );
+  });
 });
 
 function hasTransparentPixel(png: PNG): boolean {

@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Motion calibration</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --navy: #17213a;
+        --cave: #0d1324;
+        --gold: #f4b83f;
+        --gold-deep: #b87918;
+        --wood: #8a5a35;
+        --parchment: #fff7df;
+        --ink: #17213a;
+        --focus: #6fb7df;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--cave);
+      }
+
+      body {
+        min-width: 0;
+        margin: 0;
+        background:
+          radial-gradient(circle at 50% 10%, #243458 0, transparent 38rem),
+          var(--cave);
+        color: #fffaf0;
+        font: 16px/1.5 system-ui, sans-serif;
+      }
+
+      main {
+        width: min(100%, 1200px);
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      h1,
+      h2,
+      p {
+        margin-block-start: 0;
+      }
+
+      .intro {
+        max-width: 70ch;
+        color: #dce5f7;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .example {
+        min-width: 0;
+        min-height: 250px;
+        padding: 16px;
+        overflow: clip;
+        border: 3px solid var(--gold-deep);
+        background: color-mix(in srgb, var(--navy) 90%, black);
+        box-shadow: 0 4px 0 #050915;
+      }
+
+      .example:last-child {
+        grid-column: 1 / -1;
+      }
+
+      .stage {
+        display: grid;
+        min-height: 130px;
+        place-items: center;
+        overflow: hidden;
+      }
+
+      .wordmark {
+        width: min(100%, 440px);
+        height: auto;
+        image-rendering: pixelated;
+      }
+
+      .character-still {
+        width: min(100%, 420px);
+        height: 130px;
+        object-fit: contain;
+        image-rendering: pixelated;
+      }
+
+      button {
+        min-width: 44px;
+        min-height: 44px;
+        margin: 4px 8px 0 0;
+        border: 3px solid var(--gold-deep);
+        background: var(--gold);
+        color: var(--ink);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 3px;
+      }
+
+      .state {
+        min-height: 24px;
+        color: #dce5f7;
+      }
+
+      [data-motion-example="wordmark-glance"] {
+        animation: wordmark-glance 10s steps(3, end) infinite;
+        transform-origin: center;
+      }
+
+      [data-motion-example="base-idle"] {
+        animation: base-idle 750ms steps(3, end) infinite;
+      }
+
+      [data-motion-example="action-once"][data-state="running"] {
+        animation: action-once 900ms steps(5, end) 1;
+      }
+
+      [data-motion-example="celebration-once"][data-state="running"] {
+        animation: celebration-once 1800ms steps(6, end) 1;
+      }
+
+      [data-motion-example="typewriter-final"] {
+        animation: typewriter-final 1600ms steps(16, end) 1;
+      }
+
+      .typewriter-visual {
+        width: 100%;
+        min-height: 56px;
+        padding: 14px;
+        overflow: hidden;
+        border: 3px solid var(--gold-deep);
+        background: var(--parchment);
+        color: var(--ink);
+        white-space: nowrap;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      @keyframes wordmark-glance {
+        0%, 92%, 100% { transform: translateX(0); }
+        94% { transform: translateX(-2px); }
+        97% { transform: translateX(2px); }
+      }
+
+      @keyframes base-idle {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+      }
+
+      @keyframes action-once {
+        0% { transform: translateX(0); }
+        40% { transform: translateX(-8px); }
+        70% { transform: translateX(6px); }
+        100% { transform: translateX(0); }
+      }
+
+      @keyframes celebration-once {
+        0% { transform: translateY(0) scale(1); }
+        45% { transform: translateY(-12px) scale(1.02); }
+        70% { transform: translateY(0) scale(1.02); }
+        100% { transform: translateY(0) scale(1); }
+      }
+
+      @keyframes typewriter-final {
+        from { clip-path: inset(0 100% 0 0); }
+        to { clip-path: inset(0); }
+      }
+
+      @media (max-width: 700px) {
+        main {
+          padding: 16px;
+        }
+
+        .grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .example:last-child {
+          grid-column: auto;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        [data-motion-example] {
+          animation-name: none !important;
+          transform: none !important;
+        }
+
+        .typewriter-visual {
+          clip-path: none !important;
+          white-space: normal;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Motion calibration</h1>
+      <p class="intro">
+        Review-only timing samples. Motion never carries financial meaning, delays
+        navigation, or replaces a live state.
+      </p>
+      <div class="grid">
+        <section class="example" data-motion-example="wordmark-glance">
+          <h2>Infrequent wordmark glance</h2>
+          <div class="stage">
+            <img
+              class="wordmark"
+              src="wordmark-calibration.png"
+              alt="MIMIC calibration wordmark"
+            />
+          </div>
+        </section>
+
+        <section class="example" data-motion-example="base-idle">
+          <h2>Base idle loop</h2>
+          <div class="stage">
+            <img
+              class="character-still"
+              src="mimiku-states-calibration.png"
+              alt="Mimiku state calibration stills"
+            />
+          </div>
+        </section>
+
+        <section
+          class="example"
+          data-motion-example="action-once"
+          data-state="idle"
+        >
+          <h2>Action plays once</h2>
+          <div class="stage" aria-hidden="true">
+            <img
+              class="character-still"
+              src="mimiku-states-calibration.png"
+              alt=""
+            />
+          </div>
+          <button type="button" data-play="action">Play action</button>
+          <span class="state" data-state-copy>Ready</span>
+        </section>
+
+        <section
+          class="example"
+          data-motion-example="celebration-once"
+          data-state="idle"
+        >
+          <h2>Skippable completion</h2>
+          <div class="stage" aria-hidden="true">
+            <img
+              class="character-still"
+              src="mimiku-states-calibration.png"
+              alt=""
+            />
+          </div>
+          <button type="button" data-play="celebration">Play celebration</button>
+          <button type="button" data-skip="celebration">Skip celebration</button>
+          <span class="state" data-state-copy>Ready</span>
+        </section>
+
+        <section class="example" data-motion-example="typewriter-final">
+          <h2>Typewriter with one complete announcement</h2>
+          <p class="typewriter-visual" aria-hidden="true">咪咪庫已整理好今天的冒險紀錄。</p>
+          <span class="sr-only" role="status" data-accessible-dialogue>咪咪庫已整理好今天的冒險紀錄。</span>
+        </section>
+      </div>
+    </main>
+    <script>
+      (() => {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let current = null;
+        let timer = null;
+
+        const finish = (section) => {
+          if (!section) return;
+          window.clearTimeout(timer);
+          timer = null;
+          section.removeAttribute("data-primary-animation");
+          section.dataset.state = "final";
+          section.querySelector("[data-state-copy]").textContent = "Final state";
+          if (current === section) current = null;
+        };
+
+        const start = (section, duration) => {
+          finish(current);
+          if (reduced.matches) {
+            finish(section);
+            return;
+          }
+          current = section;
+          section.dataset.primaryAnimation = "running";
+          section.dataset.state = "running";
+          section.querySelector("[data-state-copy]").textContent = "Playing";
+          timer = window.setTimeout(() => finish(section), duration);
+        };
+
+        const action = document.querySelector('[data-motion-example="action-once"]');
+        const celebration = document.querySelector('[data-motion-example="celebration-once"]');
+
+        document.querySelector('[data-play="action"]').addEventListener("click", () => {
+          start(action, 900);
+        });
+        document.querySelector('[data-play="celebration"]').addEventListener("click", () => {
+          start(celebration, 1800);
+        });
+        document.querySelector('[data-skip="celebration"]').addEventListener("click", () => {
+          finish(celebration);
+        });
+
+        if (reduced.matches) {
+          finish(action);
+          finish(celebration);
+        }
+      })();
+    </script>
+  </body>
+</html>
