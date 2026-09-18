@@ -1206,3 +1206,14 @@
 - Added exact PNG signature/dimension/alpha/hash checks, immutable-source coverage, broken-image fallback checks, and motion hash verification.
 **Decisions:** Kept every sample under the review directory, left every family `awaiting-calibration`, and made no changes to production assets, runtime registries, pages, tokens, manifest, or service-worker policy. Image-generator canvases were deterministically normalized to the plan's exact review dimensions without changing the approved source assets.
 **Known gaps / follow-ups:** Gate A is awaiting explicit per-family approval/correction/rejection and acceptance or revision of proposed staged filenames/canvas choices. Complete-family generation, `docs/design/assets/approved/page-visual-v1/`, runtime promotion, page composition, and Phase 2 remain forbidden. Last verification: 75/75 focused unit/contract tests, 16/16 focused Playwright checks across 320/390/768/1440, changed-file ESLint and Web typecheck passed; immutable `icon.png` hash remained `f69a20b714799566fbe21734419e7480655c37f6417cbd224c1e240b448c40ac`.
+
+## 2026-09-18 — Revise Gate A wordmark calibration
+
+**Task:** Revise the rejected Wordmark sample so metal details no longer damage distance or compact-size legibility.
+**Scope:** Wordmark review sample, review manifest and decision log, and four deterministic review screenshots.
+**What changed:**
+- Replaced heavy perimeter metal and repeated straps with wood-led letter silhouettes and sparse secondary join hardware.
+- Preserved the display/compact calibration sheet, transparent 1200 × 400 contract, first-`M` eyes, and final-`C` mouth/heart-coin identity.
+- Recorded the rejected original direction, updated the exact sample hash, and regenerated only the four review-page screenshot baselines.
+**Decisions:** The revised sample remains `awaiting-calibration`; no complete-family generation or runtime integration is authorized.
+**Known gaps / follow-ups:** Gate A still needs explicit approval of the revised Wordmark, including eye placement and the final `C` silhouette at compact size. Focused contract tests passed 10/10 and Playwright passed 16/16 across 320/390/768/1440.

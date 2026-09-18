@@ -13,7 +13,7 @@ Changing a sample changes its hash, invalidates any prior approval, and returns 
 
 | Family | Sample SHA-256 | Decision | Requested correction | Decision date |
 |---|---|---|---|---|
-| wordmark |  |  |  |  |
+| wordmark | `e1dde795ca8873543d44cd7735477cc7766459790ecd10a8dac3eec1927a365e` | awaiting recalibration | Original sample rejected: heavy metal edging harmed distance and compact-size legibility. Revised to wood-led letter silhouettes with sparse secondary join hardware and both eyes in the first `M` left half; revised sample awaits review. | 2026-09-18 |
 | icons |  |  |  |  |
 | mimiku-states |  |  |  |  |
 | avatar-classes |  |  |  |  |
