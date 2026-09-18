@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "phase": "page-visual-phase-1-asset-style-gate",
+  "baseline_commit": "a157a83",
+  "planning_commit": "20a6696",
+  "immutable_icon_sha256": "f69a20b714799566fbe21734419e7480655c37f6417cbd224c1e240b448c40ac",
+  "runtime_policy": "review-only-no-runtime-promotion",
+  "families": [
+    {
+      "id": "wordmark",
+      "consumers": ["Landing", "Home", "public header", "authenticated top rail", "compact brand link"],
+      "live_html_boundaries": ["MIMIC text alternative", "live-text fallback"],
+      "fallback": "Render the live MIMIC brand name without image motion.",
+      "accessibility": "Expose one accessible MIMIC name; treat motion as decorative.",
+      "sample": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/wordmark-calibration.png",
+        "width": 1200,
+        "height": 400,
+        "alpha": true,
+        "sha256": null
+      },
+      "decision": "awaiting-calibration"
+    },
+    {
+      "id": "icons",
+      "consumers": ["PWA install icons", "favicon", "five primary navigation entries", "record-expense action", "three mode badges", "financial event and status types"],
+      "live_html_boundaries": ["visible control labels", "visible event labels", "visible mode and status text"],
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "sample": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icons-calibration.png",
+        "width": 1024,
+        "height": 1024,
+        "alpha": true,
+        "sha256": null
+      },
+      "decision": "awaiting-calibration"
+    },
+    {
+      "id": "mimiku-states",
+      "consumers": ["Auth", "invite", "shared route states", "loading", "empty", "error", "offline", "success", "Home dialogue", "record/invite/settle/pooled/guide/complete actions"],
+      "live_html_boundaries": ["complete live message", "live action and recovery controls"],
+      "fallback": "Show the full state message and actions without character art.",
+      "accessibility": "Use contextual alternative text only when the pose adds information.",
+      "sample": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-calibration.png",
+        "width": 1536,
+        "height": 1024,
+        "alpha": true,
+        "sha256": null
+      },
+      "decision": "awaiting-calibration"
+    },
+    {
+      "id": "avatar-classes",
+      "consumers": ["registration follow-up", "Settings", "party roster", "payer/participant formation", "balance roster", "activity actor"],
+      "live_html_boundaries": ["person name", "governance or financial role"],
+      "fallback": "Identify each person with their live name and role.",
+      "accessibility": "Never use class as identity, permission, or accounting meaning.",
+      "sample": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes-calibration.png",
+        "width": 2048,
+        "height": 1024,
+        "alpha": true,
+        "sha256": null
+      },
+      "decision": "awaiting-calibration"
+    },
+    {
+      "id": "scenes",
+      "consumers": ["Landing cave", "Home secret base"],
+      "live_html_boundaries": ["Landing CTA", "recent-adventure card", "navigation", "greeting", "all financial facts"],
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "sample": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/scenes-calibration.png",
+        "width": 2048,
+        "height": 1152,
+        "alpha": false,
+        "sha256": null
+      },
+      "decision": "awaiting-calibration"
+    },
+    {
+      "id": "frames",
+      "consumers": ["shared panels", "legal reading surface", "dialogue", "adventure notebook", "guild board", "settlement board"],
+      "live_html_boundaries": ["semantic landmarks", "content order", "headings", "controls", "status text"],
+      "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
+      "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
+      "sample": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-calibration.png",
+        "width": 1536,
+        "height": 1024,
+        "alpha": true,
+        "sha256": null
+      },
+      "decision": "awaiting-calibration"
+    },
+    {
+      "id": "props",
+      "consumers": ["Landing interactive props", "feature chapter cues", "financial-mode decoration", "event decoration"],
+      "live_html_boundaries": ["named Landing buttons", "live mode labels", "live financial event labels"],
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "sample": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration.png",
+        "width": 1536,
+        "height": 1024,
+        "alpha": true,
+        "sha256": null
+      },
+      "decision": "awaiting-calibration"
+    },
+    {
+      "id": "motion",
+      "consumers": ["wordmark glance/blink", "base-state loops", "action sequences", "cave props", "dialogue typewriter", "one-time celebration"],
+      "live_html_boundaries": ["final visual state", "complete dialogue sentence", "skip control", "navigation and action controls"],
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "sample": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration.html",
+        "width": 1200,
+        "height": 800,
+        "alpha": null,
+        "sha256": null
+      },
+      "decision": "awaiting-calibration"
+    }
+  ]
+}
