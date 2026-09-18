@@ -34,6 +34,7 @@ const rasterFamiliesUnderReview = [
   "avatar-classes",
   "scenes",
   "frames",
+  "props",
 ] as const;
 const pngSignature = "89504e470d0a1a0a";
 
