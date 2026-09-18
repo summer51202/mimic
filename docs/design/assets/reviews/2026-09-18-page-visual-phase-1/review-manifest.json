@@ -47,9 +47,9 @@
         "width": 1536,
         "height": 1024,
         "alpha": true,
-        "sha256": "1278f447346866922f2ae7512dfdea52d52106ef5d01d704bc611ae4b118bbe2"
+        "sha256": "c09d051730df12848e8b142b425382da7cd6473bb4b456c10d4e91dff9f223c7"
       },
-      "decision": "rejected/superseded"
+      "decision": "awaiting-calibration"
     },
     {
       "id": "avatar-classes",

@@ -3,7 +3,7 @@
 **Audit scope:** Mimiku visual companion only  
 **Design baseline:** `a157a83`  
 **Audit date:** 2026-09-18  
-**Gate state:** Mimiku calibration is `rejected/superseded`; no replacement sample has been generated.
+**Gate state:** lineage baseline confirmed; source-constrained replacement is `awaiting-calibration`.
 
 This audit restores the repository's existing Mimiku artwork as the visual
 authority for Phase 1. A text prompt may describe semantics, but it may not
@@ -63,11 +63,25 @@ whose character body remains source-derived.
 
 | Asset | Hash | Decision | Evidence |
 |---|---|---|---|
-| `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-calibration.png` | `1278f447346866922f2ae7512dfdea52d52106ef5d01d704bc611ae4b118bbe2` | `rejected/superseded` | Independently generated from textual traits instead of being built from the canonical state frames; introduced a dark baked background despite the transparent review contract; mixed established states with unapproved action reinterpretations. |
+| `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/rejected/mimiku-states-calibration-1278f447.png` | `1278f447346866922f2ae7512dfdea52d52106ef5d01d704bc611ae4b118bbe2` | `rejected/superseded` | Independently generated from textual traits instead of being built from the canonical state frames; introduced a dark baked background despite the transparent review contract; mixed established states with unapproved action reinterpretations. |
 
-The rejected file remains only as auditable review evidence. It is not an
+The archived rejected file remains only as auditable review evidence. It is not an
 approved visual reference, must not seed later image generation, and must not
 be promoted to runtime or complete-family staging.
+
+## Replacement calibration candidate
+
+| Artifact | Dimensions | SHA-256 | Role |
+|---|---:|---|---|
+| `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/mimiku-derived-poses.png` | 2172 × 724 RGBA | `58ae3b608fa60527014abc4db858b57b5a07efe364fd30916702ec156f9bb8da` | Source-constrained Working, record-ledger, and adventure-complete derivations |
+| `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/mimiku-concerned-pose.png` | 1254 × 1254 RGBA | `8e633a8ce64dc36162eff875c702ec0d2ce6fb18e654c662ad3efb4fbf76ab6c` | Concerned derivative from canonical Lost/Idle references |
+| `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/compose-mimiku-calibration.mjs` | deterministic script | n/a | Reuses canonical runtime pixels, removes export-edge artifacts, clears transparent RGB, and composes the review sheet |
+| `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-calibration.png` | 1536 × 1024 RGBA | `c09d051730df12848e8b142b425382da7cd6473bb4b456c10d4e91dff9f223c7` | Current replacement candidate; `awaiting-calibration` |
+
+Contact-sheet order is fixed. Row one is Idle (`reuse`), Working (`derive`),
+Happy (`reuse`), Reminder (`reuse`). Row two is Serious (`reuse`), Concerned
+(`derive`), record-ledger (`derive`), and adventure-complete (`derive`). No text
+or operational/financial fact is baked into the image.
 
 ## Required comparison for the replacement sample
 
@@ -81,5 +95,6 @@ Before a replacement is eligible for review, its contact sheet must show:
 6. exact source paths, output dimensions, alpha result, and SHA-256;
 7. no baked labels, amounts, dates, names, statuses, or action text.
 
-Replacement generation remains blocked until this lineage is accepted as the
-correct calibration baseline.
+The lineage baseline was confirmed on 2026-09-18. Complete-family generation
+remains blocked until the replacement calibration sample receives explicit
+visual approval.

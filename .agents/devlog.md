@@ -1229,3 +1229,15 @@
 - Linked the audit from the review page with contrast-safe keyboard focus styling and updated the four viewport baselines.
 **Decisions:** Existing Mimiku master/model/state/runtime art remains the visual authority. No replacement image was generated and no production/runtime asset was changed.
 **Known gaps / follow-ups:** Await approval of the lineage baseline before producing a replacement Mimiku calibration. Wordmark and the other six families remain separately awaiting calibration.
+
+## 2026-09-18 — Rebuild Mimiku calibration from canonical sources
+
+**Task:** Produce one replacement Mimiku Gate A sample after approval of the existing visual-companion lineage.
+**Scope:** Review-only Mimiku archive, derived poses, deterministic composer, manifest/decision/audit records, review index, asset contract, and four viewport screenshots.
+**What changed:**
+- Archived the rejected independently generated sheet by exact hash instead of using it as an image-generation reference.
+- Reused canonical Idle, Happy, Reminder, and Serious pixels; derived Working, Concerned, record-ledger, and adventure-complete only from the approved master/model/state/runtime sources.
+- Added a deterministic 1536 × 1024 transparent contact-sheet composer that removes only small export-edge artifacts and clears RGB beneath fully transparent pixels.
+- Locked rejected, derived, and final sample hashes in the focused contract and refreshed the review-only screenshots.
+**Decisions:** The lineage baseline remains authoritative. The replacement is `awaiting-calibration` and is not approved for complete-family generation or runtime promotion.
+**Known gaps / follow-ups:** Await explicit visual approval or corrections for the replacement Mimiku sample before reviewing another family.

@@ -88,11 +88,7 @@ describe("page visual asset style gate", () => {
       expect(family.sample.path.replaceAll("\\", "/")).not.toMatch(
         /^web\/public\//,
       );
-      expect(family.decision).toBe(
-        family.id === "mimiku-states"
-          ? "rejected/superseded"
-          : "awaiting-calibration",
-      );
+      expect(family.decision).toBe("awaiting-calibration");
     }
   });
 
@@ -117,6 +113,9 @@ describe("page visual asset style gate", () => {
         hasTransparentPixel(png),
         `${familyId} transparency expectation`,
       ).toBe(family!.sample.alpha);
+      if (familyId === "mimiku-states") {
+        expect(hasNonzeroTransparentPixel(png)).toBe(false);
+      }
       expect(family!.sample.sha256).toMatch(/^[a-f0-9]{64}$/);
       expect(createHash("sha256").update(image).digest("hex")).toBe(
         family!.sample.sha256,
@@ -181,9 +180,40 @@ describe("page visual asset style gate", () => {
     expect(html).toContain("1440");
   });
 
-  it("records the canonical Mimiku lineage before recalibration", async () => {
+  it("records canonical Mimiku lineage and replacement provenance", async () => {
     const audit = await readFile(assetLineageAuditPath, "utf8");
     const reviewIndex = await readFile(reviewIndexPath, "utf8");
+    const reviewDirectory = path.dirname(reviewManifestPath);
+    const rejectedSample = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "rejected",
+        "mimiku-states-calibration-1278f447.png",
+      ),
+    );
+    const derivedPoseBytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "derivations",
+        "mimiku-derived-poses.png",
+      ),
+    );
+    const derivedPoses = PNG.sync.read(derivedPoseBytes);
+    const concernedPoseBytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "derivations",
+        "mimiku-concerned-pose.png",
+      ),
+    );
+    const concernedPose = PNG.sync.read(concernedPoseBytes);
+    const composer = await readFile(
+      path.join(reviewDirectory, "compose-mimiku-calibration.mjs"),
+      "utf8",
+    );
 
     for (const source of [
       "docs/design/assets/sources/mimiku/mimiku-master.png",
@@ -206,12 +236,33 @@ describe("page visual asset style gate", () => {
     expect(audit).toContain("derive");
     expect(audit).toContain("new");
     expect(reviewIndex).toContain('data-family="mimiku-states"');
-    expect(reviewIndex).toContain("Rejected/superseded");
+    expect(reviewIndex).toContain(
+      "Awaiting calibration review — lineage baseline confirmed.",
+    );
     expect(reviewIndex).toContain("[data-live-caption] a {");
     expect(reviewIndex).toContain("[data-live-caption] a:focus-visible {");
     expect(reviewIndex).toContain("Decisions are recorded per family");
-    expect(reviewIndex).toContain("Mimiku superseded");
+    expect(reviewIndex).toContain("Mimiku replacement awaiting review");
     expect(reviewIndex).not.toContain("no decision is recorded yet");
+    expect(createHash("sha256").update(rejectedSample).digest("hex")).toBe(
+      "1278f447346866922f2ae7512dfdea52d52106ef5d01d704bc611ae4b118bbe2",
+    );
+    expect(derivedPoses.width).toBe(2172);
+    expect(derivedPoses.height).toBe(724);
+    expect(hasTransparentPixel(derivedPoses)).toBe(true);
+    expect(createHash("sha256").update(derivedPoseBytes).digest("hex")).toBe(
+      "58ae3b608fa60527014abc4db858b57b5a07efe364fd30916702ec156f9bb8da",
+    );
+    expect(concernedPose.width).toBe(1254);
+    expect(concernedPose.height).toBe(1254);
+    expect(hasTransparentPixel(concernedPose)).toBe(true);
+    expect(createHash("sha256").update(concernedPoseBytes).digest("hex")).toBe(
+      "8e633a8ce64dc36162eff875c702ec0d2ce6fb18e654c662ad3efb4fbf76ab6c",
+    );
+    expect(composer).toContain("mimiku-idle.png");
+    expect(composer).toContain("mimiku-derived-poses.png");
+    expect(composer).toContain("mimiku-concerned-pose.png");
+    expect(composer).toContain("mimiku-states-calibration.png");
   });
 });
 
@@ -219,5 +270,20 @@ function hasTransparentPixel(png: PNG): boolean {
   for (let offset = 3; offset < png.data.length; offset += 4) {
     if (png.data[offset] < 255) return true;
   }
+  return false;
+}
+
+function hasNonzeroTransparentPixel(png: PNG): boolean {
+  for (let offset = 0; offset < png.data.length; offset += 4) {
+    if (
+      png.data[offset + 3] === 0 &&
+      (png.data[offset] !== 0 ||
+        png.data[offset + 1] !== 0 ||
+        png.data[offset + 2] !== 0)
+    ) {
+      return true;
+    }
+  }
+
   return false;
 }
