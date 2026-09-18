@@ -19,6 +19,10 @@ const reviewIndexPath = path.resolve(
   path.dirname(reviewManifestPath),
   "review-index.html",
 );
+const assetLineageAuditPath = path.resolve(
+  path.dirname(reviewManifestPath),
+  "asset-lineage-audit.md",
+);
 
 const expectedFamilyIds = [
   "wordmark",
@@ -84,7 +88,11 @@ describe("page visual asset style gate", () => {
       expect(family.sample.path.replaceAll("\\", "/")).not.toMatch(
         /^web\/public\//,
       );
-      expect(family.decision).toBe("awaiting-calibration");
+      expect(family.decision).toBe(
+        family.id === "mimiku-states"
+          ? "rejected/superseded"
+          : "awaiting-calibration",
+      );
     }
   });
 
@@ -171,6 +179,39 @@ describe("page visual asset style gate", () => {
     expect(html).toContain("390");
     expect(html).toContain("768");
     expect(html).toContain("1440");
+  });
+
+  it("records the canonical Mimiku lineage before recalibration", async () => {
+    const audit = await readFile(assetLineageAuditPath, "utf8");
+    const reviewIndex = await readFile(reviewIndexPath, "utf8");
+
+    for (const source of [
+      "docs/design/assets/sources/mimiku/mimiku-master.png",
+      "docs/design/assets/sources/mimiku/mimiku-model-sheet.png",
+      "docs/design/assets/sources/mimiku/mimiku-states.png",
+      "web/public/brand/mimiku-hero.png",
+      "web/public/pixel-ui/characters/mimiku-idle.png",
+      "web/public/pixel-ui/characters/mimiku-happy.png",
+      "web/public/pixel-ui/characters/mimiku-thinking.png",
+      "web/public/pixel-ui/characters/mimiku-reminder.png",
+      "web/public/pixel-ui/characters/mimiku-serious.png",
+      "web/public/pixel-ui/characters/mimiku-lost.png",
+    ]) {
+      expect(audit).toContain(`\`${source}\``);
+    }
+
+    expect(audit).toContain("mimiku-states-calibration.png");
+    expect(audit).toContain("rejected/superseded");
+    expect(audit).toContain("reuse");
+    expect(audit).toContain("derive");
+    expect(audit).toContain("new");
+    expect(reviewIndex).toContain('data-family="mimiku-states"');
+    expect(reviewIndex).toContain("Rejected/superseded");
+    expect(reviewIndex).toContain("[data-live-caption] a {");
+    expect(reviewIndex).toContain("[data-live-caption] a:focus-visible {");
+    expect(reviewIndex).toContain("Decisions are recorded per family");
+    expect(reviewIndex).toContain("Mimiku superseded");
+    expect(reviewIndex).not.toContain("no decision is recorded yet");
   });
 });
 

@@ -109,6 +109,17 @@
         color: #dce5f7;
       }
 
+      [data-live-caption] a {
+        color: var(--gold);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+
+      [data-live-caption] a:focus-visible {
+        outline: 3px solid var(--focus);
+        outline-offset: 3px;
+      }
+
       .review-status {
         display: inline-block;
         margin-bottom: 16px;
@@ -243,13 +254,13 @@
     <header>
       <h1>Page Visual Phase 1 calibration</h1>
       <p>
-        Review-only samples for Gate A. No sample is a runtime asset, no decision is
-        recorded yet, and all product facts and operations remain live HTML.
+        Review-only samples for Gate A. Decisions are recorded per family, no sample
+        is a runtime asset, and all product facts and operations remain live HTML.
       </p>
       <ul class="metadata" aria-label="Review metadata">
         <li>Baseline a157a83</li>
         <li>Viewports 320 · 390 · 768 · 1440</li>
-        <li>Status awaiting calibration</li>
+        <li>Status Gate A pending · Mimiku superseded</li>
       </ul>
     </header>
 
@@ -301,10 +312,11 @@
       <section data-family="mimiku-states">
         <h2>Mimiku states and actions</h2>
         <p data-family-description>
-          Six semantic states plus separate record-ledger and adventure-completion
-          key poses, preserving approved treasure-chest anatomy.
+          This independently generated sheet is retained only as rejected review
+          evidence. The canonical model sheet and six runtime states remain the
+          visual authority for a future replacement.
         </p>
-        <p class="review-status" data-review-status>Awaiting calibration review.</p>
+        <p class="review-status" data-review-status>Rejected/superseded — do not use as a visual reference.</p>
         <div class="backdrops">
           <figure class="backdrop" data-backdrop="navy">
             <img src="samples/mimiku-states-calibration.png" alt="Mimiku state calibration on navy" onerror="markUnavailable(this)" />
@@ -316,6 +328,7 @@
         <p data-live-caption>
           Future consumers: auth, invite, shared route states, loading/empty/error/
           offline/success, Home dialogue, and action sequences.
+          <a href="asset-lineage-audit.md">Read the canonical asset-lineage audit.</a>
         </p>
         <div data-fallback><strong>Fallback:</strong> show the complete live message and action or recovery controls.</div>
       </section>

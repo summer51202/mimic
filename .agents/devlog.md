@@ -1217,3 +1217,15 @@
 - Recorded the rejected original direction, updated the exact sample hash, and regenerated only the four review-page screenshot baselines.
 **Decisions:** The revised sample remains `awaiting-calibration`; no complete-family generation or runtime integration is authorized.
 **Known gaps / follow-ups:** Gate A still needs explicit approval of the revised Wordmark, including eye placement and the final `C` silhouette at compact size. Focused contract tests passed 10/10 and Playwright passed 16/16 across 320/390/768/1440.
+
+## 2026-09-18 — Restore Mimiku visual lineage at Gate A
+
+**Task:** Audit and restore the previously approved visual companion assets as the authority before any Mimiku recalibration.
+**Scope:** Phase 1 lineage audit, Mimiku decision state, review index, focused asset contract, and deterministic review screenshots.
+**What changed:**
+- Recorded exact source, hero, state-sheet, and six runtime-state dimensions and SHA-256 values in a review-only lineage audit.
+- Classified established states as `reuse`, missing semantic states/actions as source-constrained `derive`, and prohibited `new` from introducing new character anatomy.
+- Marked the independently generated Mimiku calibration `rejected/superseded` while retaining it as auditable evidence.
+- Linked the audit from the review page with contrast-safe keyboard focus styling and updated the four viewport baselines.
+**Decisions:** Existing Mimiku master/model/state/runtime art remains the visual authority. No replacement image was generated and no production/runtime asset was changed.
+**Known gaps / follow-ups:** Await approval of the lineage baseline before producing a replacement Mimiku calibration. Wordmark and the other six families remain separately awaiting calibration.

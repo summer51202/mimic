@@ -49,7 +49,7 @@
         "alpha": true,
         "sha256": "1278f447346866922f2ae7512dfdea52d52106ef5d01d704bc611ae4b118bbe2"
       },
-      "decision": "awaiting-calibration"
+      "decision": "rejected/superseded"
     },
     {
       "id": "avatar-classes",

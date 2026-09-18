@@ -15,7 +15,7 @@ Changing a sample changes its hash, invalidates any prior approval, and returns 
 |---|---|---|---|---|
 | wordmark | `e1dde795ca8873543d44cd7735477cc7766459790ecd10a8dac3eec1927a365e` | awaiting recalibration | Original sample rejected: heavy metal edging harmed distance and compact-size legibility. Revised to wood-led letter silhouettes with sparse secondary join hardware and both eyes in the first `M` left half; revised sample awaits review. | 2026-09-18 |
 | icons |  |  |  |  |
-| mimiku-states |  |  |  |  |
+| mimiku-states | `1278f447346866922f2ae7512dfdea52d52106ef5d01d704bc611ae4b118bbe2` | rejected/superseded | Restore `docs/design/assets/sources/mimiku/` and the six canonical runtime states as the visual authority. Reuse established states; derive only missing Working, Concerned, and action poses from those exact sources. | 2026-09-18 |
 | avatar-classes |  |  |  |  |
 | scenes |  |  |  |  |
 | frames |  |  |  |  |
