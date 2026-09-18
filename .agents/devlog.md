@@ -1194,3 +1194,15 @@
 - Archived superseded PairFund mockups under an explicit legacy path.
 **Decisions:** Runtime palette tokens are authoritative; image optimization and screen-level visual changes remain deferred.
 **Known gaps / follow-ups:** Review responsive image variants, scene decomposition, exported UI icons, state coverage, and effects one screen at a time.
+
+## 2026-09-18 — Reach Page Visual Phase 1 Gate A
+
+**Task:** Execute the approved Asset Style Gate through the calibration approval checkpoint without production integration.
+**Scope:** `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/`, `web/src/shared/brand/asset-style-gate.test.ts`, `web/e2e/asset-style-gate.spec.ts`, and deterministic screenshot baselines.
+**What changed:**
+- Added the eight-family consumer matrix, calibration briefs, machine-readable manifest, and empty decision log.
+- Created one review-only sample each for wordmark, icons, Mimiku states/actions, avatar classes, Landing/Home scenes, frames, props, and motion.
+- Added a semantic review index with navy/parchment composites, bounded live fallbacks, four-viewport screenshot baselines, and normal/reduced-motion behavior coverage.
+- Added exact PNG signature/dimension/alpha/hash checks, immutable-source coverage, broken-image fallback checks, and motion hash verification.
+**Decisions:** Kept every sample under the review directory, left every family `awaiting-calibration`, and made no changes to production assets, runtime registries, pages, tokens, manifest, or service-worker policy. Image-generator canvases were deterministically normalized to the plan's exact review dimensions without changing the approved source assets.
+**Known gaps / follow-ups:** Gate A is awaiting explicit per-family approval/correction/rejection and acceptance or revision of proposed staged filenames/canvas choices. Complete-family generation, `docs/design/assets/approved/page-visual-v1/`, runtime promotion, page composition, and Phase 2 remain forbidden. Last verification: 75/75 focused unit/contract tests, 16/16 focused Playwright checks across 320/390/768/1440, changed-file ESLint and Web typecheck passed; immutable `icon.png` hash remained `f69a20b714799566fbe21734419e7480655c37f6417cbd224c1e240b448c40ac`.
