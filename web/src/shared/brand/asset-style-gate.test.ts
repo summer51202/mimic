@@ -27,7 +27,11 @@ const expectedFamilyIds = [
   "motion",
 ] as const;
 
-const rasterFamiliesUnderReview = ["wordmark", "icons"] as const;
+const rasterFamiliesUnderReview = [
+  "wordmark",
+  "icons",
+  "mimiku-states",
+] as const;
 const pngSignature = "89504e470d0a1a0a";
 
 interface ReviewFamily {
