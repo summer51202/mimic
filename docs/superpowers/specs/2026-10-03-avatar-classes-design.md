@@ -54,7 +54,9 @@ Characters may differ in silhouette weight. Heavy armor remains broader and chun
 - Role: young travelling physician with cleric-like support cues.
 - Identity: warm golden-brown skin, halo-like braided hair, white and muted teal clothing, wooden staff, open diagnostic hand gesture.
 - Character: capable and approachable rather than elderly or ceremonial.
-- Approved full-body source: `cleric-medium-pixel-grid-v2.png`.
+- Granularity: white robe, sleeves, lower panels, hair curls, and boots use the refined medium pixel-cluster scale rather than the earlier coarse garment blocks.
+- Presentation: the concept-sheet background uses the shared deep navy field so family comparisons are not biased by a warmer vignette.
+- Approved full-body source: `cleric-medium-pixel-grid-v4-navy.png`.
 
 ### 6. Bard
 
