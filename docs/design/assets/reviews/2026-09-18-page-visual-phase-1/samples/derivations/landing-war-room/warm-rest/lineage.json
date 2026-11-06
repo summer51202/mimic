@@ -1,0 +1,51 @@
+{
+  "architectureDesktop": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architecture-desktop-v01-source.png",
+    "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/architecture-solid-wall-v06-source.png",
+    "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architectureDesktop-v01-prompt.md",
+    "generator": "imagegen",
+    "transparent": false
+  },
+  "architecturePhone": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architecture-phone-v01-source.png",
+    "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/architecture-solid-wall-v06-source.png",
+    "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architecturePhone-v01-prompt.md",
+    "generator": "imagegen",
+    "transparent": false
+  },
+  "warrior": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/warrior-warm-v01-source.png",
+    "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/warrior-warming-v02-source.png",
+    "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/warrior-v01-prompt.md",
+    "generator": "imagegen",
+    "transparent": true
+  },
+  "mage": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/mage-warm-v01-source.png",
+    "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/mage-map-study-v02-source.png",
+    "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/mage-v01-prompt.md",
+    "generator": "imagegen",
+    "transparent": true
+  },
+  "ranger": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/ranger-inward-v02-source.png",
+    "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/ranger-inward-v01-source.png",
+    "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/ranger-v02-prompt.md",
+    "generator": "imagegen",
+    "transparent": true
+  },
+  "mimiku": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/mimiku-warm-v01-source.png",
+    "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/mimiku-rest-v01-source.png",
+    "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/mimiku-v01-prompt.md",
+    "generator": "imagegen",
+    "transparent": true
+  },
+  "groundLight": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/ground-light-v01-source.png",
+    "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/architecture-solid-wall-v06-source.png",
+    "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/groundLight-v01-prompt.md",
+    "generator": "imagegen",
+    "transparent": true
+  }
+}

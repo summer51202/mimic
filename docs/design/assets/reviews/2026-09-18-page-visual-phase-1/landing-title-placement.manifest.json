@@ -1,0 +1,545 @@
+{
+  "decision": "awaiting-calibration",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "baseVariant": "A",
+  "spec": "docs/superpowers/specs/2026-10-09-landing-a-party-staggered-wordmark-design.md",
+  "base": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-warm-rest.manifest.json",
+    "sha256": "1db896df38f84872ab5396d701acdee7edc84b6d58ba90c5ae8398cc66415ac3"
+  },
+  "wordmarkTone": {
+    "brightness": 0.82,
+    "saturation": 0.72
+  },
+  "sources": {
+    "architecture": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/architecture-solid-wall-v06-source.png",
+      "sha256": "4cd9c5d047f1d0fb12b8d7b79e28a25d392a721c4e2d297e747c12d06cd32c1e",
+      "width": 1671,
+      "height": 941
+    },
+    "warrior": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/warrior-warm-v01-source.png",
+      "sha256": "f0fe868ad855ed16b3abc14e598eae9dea8d1b6828bc1c2b2457b0702cbbfd86",
+      "width": 1254,
+      "height": 1254
+    },
+    "ranger": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/ranger-inward-v02-source.png",
+      "sha256": "675f68d0d7b5ee2ea94d8b10ccdcfe645b5e42c20769b9ffa095edc734163cdc",
+      "width": 1254,
+      "height": 1254
+    },
+    "mimiku": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/mimiku-warm-v01-source.png",
+      "sha256": "eb0d72bb4ce9a5079b6dfec51cf0f385423947caf82429c21e12e746b0b29458",
+      "width": 1254,
+      "height": 1254
+    },
+    "fire": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/campfire-v01-source.png",
+      "sha256": "c520756878800221720d79b350adc148b04b7ea5b389cef765d13372a72377af",
+      "width": 1374,
+      "height": 1145
+    },
+    "mapCrate": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/map-crate-angle-v02-source.png",
+      "sha256": "d05d03c0dfeb2b449ef4e78140ff50a44a02cf9acefed9eb3b47a09f613cb993",
+      "width": 1536,
+      "height": 1024
+    },
+    "chest": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/ordinary-chest-v01-source.png",
+      "sha256": "8308b9bf28f164f3b6f37b190eb6330345d6787794f9e8e1b20af899c2f96011",
+      "width": 1402,
+      "height": 1122
+    },
+    "sign": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/blank-sign-v01-source.png",
+      "sha256": "5bcb3f0d1af78f7c8af429a77a856f6fe962b2e51fb25c5682277db72b91dbbe",
+      "width": 1402,
+      "height": 1122
+    },
+    "torchHigh": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/wall-torch-high-v01-source.png",
+      "sha256": "3424163ebeb8708e0c91b55c882f05490e7411a84661a70fc87a9772209cd143",
+      "width": 1024,
+      "height": 1536
+    },
+    "torchLow": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/wall-torch-low-v01-source.png",
+      "sha256": "fd1ed336c8c67d5a63c77569c274531e9fb717755db530cbcc501754fe3cf781",
+      "width": 1199,
+      "height": 1312
+    },
+    "bats": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/bats-rest-v01-source.png",
+      "sha256": "bbaf9a47295b04310f5bd844d02d23056f37ef029aea932c284e6a891f3c4819",
+      "width": 1536,
+      "height": 1024
+    },
+    "carving": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/carving-v03-source.png",
+      "sha256": "14915907596610b4ad2d9a17c40b99f4d8d6addf356ff277ad2a5f3185ca9d33",
+      "width": 1774,
+      "height": 887
+    },
+    "pressurePlate": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/pressure-plate-v02-source.png",
+      "sha256": "1da221b2bf1f39eb21d4aded36781da50478a1478493e5b3275e9ca5f48a155b",
+      "width": 1536,
+      "height": 1024
+    },
+    "architectureDesktop": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architecture-desktop-v01-source.png",
+      "sha256": "a71491b85b4293c845bd09d0b97173ed90b35ef96a8fb54d277e673b27f2ae70",
+      "width": 1672,
+      "height": 941
+    },
+    "architecturePhone": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architecture-phone-v01-source.png",
+      "sha256": "0d3ce1014c30d700d2a1d7315ba90ada44ffd9ac9019be0d91c2d7dc27d7d0f9",
+      "width": 1011,
+      "height": 1556
+    },
+    "groundLight": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/ground-light-v01-source.png",
+      "sha256": "126ff6aa09c7440ecd99d1fe3fa0e27c69f7bbd9cad042f45d1c2fb077f36c44",
+      "width": 2172,
+      "height": 724
+    }
+  },
+  "references": {
+    "warrior": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/warrior.png",
+      "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447",
+      "width": 512,
+      "height": 512
+    },
+    "ranger": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/ranger.png",
+      "sha256": "cd2e91826ef580f98272d3923f6e30375894e37f11989c62927605460a619c9a",
+      "width": 512,
+      "height": 512
+    },
+    "mimiku": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-idle.png",
+      "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68",
+      "width": 512,
+      "height": 512
+    }
+  },
+  "lineage": {
+    "record": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-a-title/lineage.json",
+      "sha256": "8e99f68035b67d92340a7247e909791458a14129090eac5a6a08bc9efd6e60cc"
+    },
+    "parent": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-war-room/wordmark.png",
+      "sha256": "5a1cfc2a7d96c15a467c8fa2f3c869d23a3811a096edd121a76a9f952b59760c",
+      "width": 256,
+      "height": 75
+    },
+    "prompt": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-a-title/wordmark-staggered-v02-prompt.md",
+      "sha256": "22b381ea2c5e46be305d585353e02a109c2b2014b486aaac936e226fbeee32d7"
+    },
+    "generator": "imagegen",
+    "transparent": true
+  },
+  "wordmarks": {
+    "single": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-war-room/wordmark.png",
+        "sha256": "5a1cfc2a7d96c15a467c8fa2f3c869d23a3811a096edd121a76a9f952b59760c",
+        "width": 256,
+        "height": 75
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/single.png",
+        "sha256": "40292ed6c2d12383b4eaf255e5023b21bc0ab716eda1044acc17a1a90448cec7",
+        "width": 256,
+        "height": 75
+      },
+      "lines": [
+        "MIMIC"
+      ]
+    },
+    "staggered": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-a-title/wordmark-staggered-v02-source.png",
+        "sha256": "bf6a6596dd8f978e4a34b751f49ef3687d2eb74a94ea57d8fe5f40e715ae3f90",
+        "width": 1536,
+        "height": 1024
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/staggered.png",
+        "sha256": "c992e21f8b8821ec508cb6998ed940a078ac18c3df7abd161c543bb99ce002ca",
+        "width": 256,
+        "height": 170
+      },
+      "lines": [
+        "MI",
+        "MIC"
+      ]
+    }
+  },
+  "scenes": {
+    "desktop": {
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/scene-desktop-logical.png",
+        "sha256": "ce0d33c06d816ec5c77aa07dcbf846d6d481d83076988cf00f40ff6b42e0f48e",
+        "width": 960,
+        "height": 540
+      },
+      "layers": [
+        {
+          "id": "carving",
+          "x": 205,
+          "y": 190,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/carving.png",
+          "sha256": "9000a5cfe66ddbe6d6ffb4601d0e1eeff34f10d5a471fe3d3b57993f5667c579",
+          "width": 95,
+          "height": 26
+        },
+        {
+          "id": "torchHigh",
+          "x": 260,
+          "y": 129,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchHigh.png",
+          "sha256": "59733789a12b4da07217835369b033000b27561dc75ebdf1fc6e23c486744903",
+          "width": 26,
+          "height": 55
+        },
+        {
+          "id": "torchLow",
+          "x": 837,
+          "y": 213,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchLow.png",
+          "sha256": "f44a406f22bb657f8a9bb41df947d77d025df8dc335fdfff2cccc8677dc767c0",
+          "width": 31,
+          "height": 44
+        },
+        {
+          "id": "bats",
+          "x": 681,
+          "y": 46,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/bats.png",
+          "sha256": "1e2d48012feb4391337e369d54b4f4079232529c0a2977b87402c2df2fe091e2",
+          "width": 78,
+          "height": 72
+        },
+        {
+          "id": "chest",
+          "x": 105,
+          "y": 284,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/chest.png",
+          "sha256": "c3026375ca3821478a822030dda1c8463e8750d09048f791e40449b7dda12753",
+          "width": 78,
+          "height": 66
+        },
+        {
+          "id": "pressurePlate",
+          "x": 850,
+          "y": 339,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/pressurePlate.png",
+          "sha256": "75212a50c132fb18dc6b6b7ca817fd9bc24c3bf3772d88a87152035d0973d6c2",
+          "width": 67,
+          "height": 14
+        },
+        {
+          "id": "groundLight",
+          "x": 374,
+          "y": 326,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/groundLight.png",
+          "sha256": "1a934ff25c1585f3805e8bc08504761e50e7ed28ff41b375fbcb2589f10d7a63",
+          "width": 326,
+          "height": 53
+        },
+        {
+          "id": "ranger",
+          "x": 598,
+          "y": 187,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/ranger.png",
+          "sha256": "fdad776716166112bea51ee254c0bff41e3f8173d60ba00f8c488d12c55ac9ec",
+          "width": 153,
+          "height": 133
+        },
+        {
+          "id": "mapCrate",
+          "x": 235,
+          "y": 281,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/mapCrate.png",
+          "sha256": "86f71eba9906e19209060a56723b4ddac2de80f248812af50b4737c1a4926125",
+          "width": 113,
+          "height": 63
+        },
+        {
+          "id": "warrior",
+          "x": 350,
+          "y": 196,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/warrior.png",
+          "sha256": "fa155d31d7668e7d3660f89f4a90de865ca978abd725aa8bc5f591342eb252e1",
+          "width": 132,
+          "height": 149
+        },
+        {
+          "id": "fire",
+          "x": 486,
+          "y": 272,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/fire.png",
+          "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b",
+          "width": 103,
+          "height": 104
+        },
+        {
+          "id": "mimiku",
+          "x": 610,
+          "y": 282,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/mimiku.png",
+          "sha256": "b7b39f4a4cde431623ff6e76d99476f66b02c4f06e6b95ac251647478c29eec0",
+          "width": 123,
+          "height": 120
+        },
+        {
+          "id": "sign",
+          "x": 742,
+          "y": 327,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/sign.png",
+          "sha256": "69b3caae590795ce5866570611fd039c9c1ed337c8a33f301f85a9aa70d7d26d",
+          "width": 70,
+          "height": 67
+        }
+      ],
+      "visitor": [
+        409,
+        380,
+        190,
+        34
+      ]
+    },
+    "phone": {
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/scene-phone-logical.png",
+        "sha256": "7573dceb82c484c223164d26e4fc6514f65ee2149d65001bba0e9a2a824f693d",
+        "width": 390,
+        "height": 600
+      },
+      "layers": [
+        {
+          "id": "bats",
+          "x": 275,
+          "y": 56,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+          "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+          "width": 54,
+          "height": 50
+        },
+        {
+          "id": "groundLight",
+          "x": 132,
+          "y": 346,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/groundLight.png",
+          "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7",
+          "width": 215,
+          "height": 35
+        },
+        {
+          "id": "ranger",
+          "x": 245,
+          "y": 198,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/ranger.png",
+          "sha256": "fd2297f9f7cf17d3bdd187a981cdf79987642a732d49caa5d46f546d0d8c5ca9",
+          "width": 122,
+          "height": 106
+        },
+        {
+          "id": "mapCrate",
+          "x": 20,
+          "y": 286,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mapCrate.png",
+          "sha256": "7d09f589534d7ebb842d1ab4c537f90d8feef101c6e68128907869aa07952b18",
+          "width": 79,
+          "height": 44
+        },
+        {
+          "id": "warrior",
+          "x": 101,
+          "y": 235,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/warrior.png",
+          "sha256": "fede3c20ad2f3f96a1f909a379019daeee1f85e1417cced2736420cd554cb85b",
+          "width": 104,
+          "height": 117
+        },
+        {
+          "id": "fire",
+          "x": 212,
+          "y": 306,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/fire.png",
+          "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+          "width": 75,
+          "height": 76
+        },
+        {
+          "id": "mimiku",
+          "x": 289,
+          "y": 316,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mimiku.png",
+          "sha256": "1c3cd662a4bf6df2ef7e1567f20d805370d0f96b48ea17666af8d469f71a8693",
+          "width": 95,
+          "height": 93
+        },
+        {
+          "id": "sign",
+          "x": 15,
+          "y": 355,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/sign.png",
+          "sha256": "8d40ae39e9ebb21e886b1782d48b63d0e97acc7fb0eddb478e95df144e487845",
+          "width": 62,
+          "height": 59
+        }
+      ],
+      "visitor": [
+        120,
+        386,
+        155,
+        36
+      ]
+    }
+  },
+  "frames": {
+    "desktop-single": {
+      "view": "desktop",
+      "wordmark": "single",
+      "wall": [
+        376,
+        100,
+        288,
+        84
+      ],
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-logical.png",
+        "sha256": "08dca5cb9f13c0a4ede1322f4e8f93295cae7b39a36438509a1286f12f87643f",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-color.png",
+        "sha256": "3208e934a247796a438f029458a4e82fe1a229dd8c8c5208d8a8a903c60923c4",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-gray.png",
+        "sha256": "60461e78796adb24ca9fe64d1981447cfd280d8537dbddab2200bfd07e344093",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "desktop-staggered": {
+      "view": "desktop",
+      "wordmark": "staggered",
+      "wall": [
+        420,
+        80,
+        175,
+        104
+      ],
+      "title": {
+        "id": "wordmark",
+        "x": 429,
+        "y": 80,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-staggered.png",
+        "sha256": "1897d9b9fb2345a5cb890333f5e76fb7cfda9df59f5d3f3a5cf98ba0978b5dee",
+        "width": 157,
+        "height": 104
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/desktop-staggered-logical.png",
+        "sha256": "37b13aad4fd0148592f51e681c879deeeef37f6e1c9f78f677ea38d08e52e9fb",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/desktop-staggered.png",
+        "sha256": "c510c247b7c1642d646f5cd1528268ddab06967cd0ab0dc61a313fd7edabd446",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/desktop-staggered-gray.png",
+        "sha256": "4da2414b16a3044676fb5d9e45c390282efc69960d861268f919015a296aec1f",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "phone-staggered": {
+      "view": "phone",
+      "wordmark": "staggered",
+      "wall": [
+        130,
+        59,
+        148,
+        98
+      ],
+      "title": {
+        "id": "wordmark",
+        "x": 130,
+        "y": 59,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/phone-staggered.png",
+        "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c",
+        "width": 148,
+        "height": 98
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-logical.png",
+        "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+        "width": 390,
+        "height": 600
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-color.png",
+        "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+        "width": 390,
+        "height": 600
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-gray.png",
+        "sha256": "317ad09e18904b7bca29496418a59a0aa5f9c72f611c4d23c83661fbe536c2ac",
+        "width": 390,
+        "height": 600
+      }
+    }
+  },
+  "placement": {
+    "schema": "mimic-landing-title-placement/v1",
+    "authorization": "position-application-only",
+    "parent": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-a-title.manifest.json",
+      "sha256": "ce0a48d0786e6b4762c81bd5619379e3d2ef0bffec29248d87d4364eef4374d7"
+    },
+    "receipts": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement.receipts.json",
+      "sha256": "a2a124d5aa3e4f25cbea904b79eaffabbe26f3f5e5bd029e8ec82a2c457516e9"
+    },
+    "generator": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/compose-landing-title-placement.mjs",
+      "sha256": "5a32da2945ce7036c6f6e5cdc45da6b00d299cb09cd90acd28ca617b98b4565f"
+    },
+    "plan": "docs/superpowers/plans/2026-10-14-landing-title-placement-application.md",
+    "review": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement-review.html",
+      "sha256": "da5a81e41a8b3f5bda76732ac6c611731d87f386819883816250b5542c515c71"
+    }
+  }
+}

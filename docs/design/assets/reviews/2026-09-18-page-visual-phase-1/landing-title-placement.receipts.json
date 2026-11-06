@@ -1,0 +1,61 @@
+{
+  "schema": "mimic-landing-title-placement/v1",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "positions": {
+    "desktop-single": {
+      "schema": "mimic-landing-title-position/v1",
+      "reviewOnly": true,
+      "frame": {
+        "id": "desktop-single",
+        "width": 960,
+        "height": 540
+      },
+      "scene": {
+        "path": "samples/landing-a-title/scene-desktop-logical.png",
+        "sha256": "ce0d33c06d816ec5c77aa07dcbf846d6d481d83076988cf00f40ff6b42e0f48e"
+      },
+      "title": {
+        "path": "samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "x": 376,
+        "y": 100,
+        "width": 288,
+        "height": 84
+      },
+      "anchor": "top-left",
+      "unit": "logical-px",
+      "centerPercent": {
+        "x": 54.17,
+        "y": 26.3
+      }
+    },
+    "phone-staggered": {
+      "schema": "mimic-landing-title-position/v1",
+      "reviewOnly": true,
+      "frame": {
+        "id": "phone-staggered",
+        "width": 390,
+        "height": 600
+      },
+      "scene": {
+        "path": "samples/landing-a-title/scene-phone-logical.png",
+        "sha256": "7573dceb82c484c223164d26e4fc6514f65ee2149d65001bba0e9a2a824f693d"
+      },
+      "title": {
+        "path": "samples/landing-a-title/wordmarks/phone-staggered.png",
+        "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c",
+        "x": 130,
+        "y": 59,
+        "width": 148,
+        "height": 98
+      },
+      "anchor": "top-left",
+      "unit": "logical-px",
+      "centerPercent": {
+        "x": 52.31,
+        "y": 18
+      }
+    }
+  }
+}

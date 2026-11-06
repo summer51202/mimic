@@ -1,0 +1,8 @@
+Use case: precise-object-edit
+Asset type: separated architecture-only pixel RPG Landing review layer
+Input images: Image 1 edit target, the existing broad natural-rock room; Image 2 and 3 pixel-cluster references only, no characters to insert.
+Primary request: preserve the close enclosed warm cave treasure room converted into a temporary party war room, its broad quiet upper-center intact natural rock face, low ceiling and asymmetric side entrances. Change only the central foreground into one continuous shallow ground plane extending toward the visitor. Remove the central cliff/platform edge, distant pointed vista and dark central void. Preserve side rock depth.
+Style/medium: deliberate hand-drawn fine pixel clusters matching the warrior and Mimiku, 2D side-scroller with slight downward view, two to three warm brown material bands, broken highlights and meaningful rock bedding. No smooth painting or noisy texture.
+Composition/framing: desktop 16:9 room reference for a 960x540 logical review; clear ground through the lower edge, broad title-safe rock face above the party, left old stone entrance and right natural passage still distinct. No blank UI-shaped area. The central ground is calm and free for a group added as separate layers.
+Lighting/mood: safe, dim but warmly welcoming. No baked campfire glow, light fixture or person. Lower background contrast than the separate resting party.
+Constraints: architecture only; no characters, fire, crates, chest, map, sign, bats, torches, glyphs, lettering, UI, chair, visitor avatar, flags, coin piles, bridge or extra story props. Do not redesign the upper wall or introduce threatening darkness. No text or watermark.

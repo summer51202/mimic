@@ -1,0 +1,1 @@
+export default [{ files:["**/*.mjs"], languageOptions:{ ecmaVersion:2022, sourceType:"module" }, rules:{ "no-unreachable":"error", "no-constant-condition":"error", "no-dupe-keys":"error", "constructor-super":"error", "valid-typeof":"error" } }];

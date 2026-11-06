@@ -1,7 +1,7 @@
 # Landing war room visual design
 
 **Date:** 2026-10-05
-**Status:** Visual direction agreed in conversation; written-spec review pending
+**Status:** Visual direction and written spec approved in conversation; scene-art review pending
 **Scope:** Page Visual Optimization Phase 1, Scenes family, Landing composition and its adventure-record continuation. This document defines the visual brief for review assets. It does not approve the Scenes family or authorize runtime promotion.
 
 ## Relationship to the existing design
@@ -23,7 +23,9 @@ The visual reading order is: campfire and party; small Start Adventure sign; map
 
 ## Room architecture
 
-The room is a modest, enclosed space inside a cave. Natural rock forms most of its shell. Partial old masonry, a stone entrance, worn floor sections, and one ordinary treasure chest explain its earlier use. The party has cleared the center and brought in a few portable supplies. The space looks safe and maintained, not ruined or lavish.
+The room is a modest, enclosed space inside a cave. The user's 2026-10-06 refinement retains B's close enclosed geometry but replaces the central masonry rear wall with relatively flat, broad warm-brown natural rock faces. The old built stone entrance remains on the left, with natural rock at the ceiling and right passage. The old entrance, worn floor sections, and one ordinary treasure chest explain its earlier use. The party has cleared the center and brought in a few portable supplies. The space looks safe and maintained, not ruined or lavish.
+
+The rear wall has broad quiet irregular rock faces and a few shallow natural seams, not regular brick courses or mortar joints. Remove the central distant cavern vista, pointed formations, and deep black gaps. Reserve depth for the left and right passages. Use two or three warm material value bands and selective pixel-cluster edge detail rather than scattered noise or highlights on every face. This background refinement preserves the party and semantic-prop positions; the resulting art still requires visual review.
 
 - A low, visible ceiling rises slightly above the central campfire and slopes down toward the sides. Only a few short cave formations break its silhouette.
 - The left edge is a frequently used old stone entrance with subdued warm light, partial steps or a turn, and signs of foot traffic. An ordinary closed chest sits nearby without blocking passage.
@@ -81,11 +83,13 @@ Use a 960 × 540 logical-pixel desktop review composition with a nearest-neighbo
 
 No text or controls are baked into scene images. The wordmark, sign lettering, dialogue, CTA, login/menu, chapter headings, body copy, and links remain live and accessible.
 
+The 2026-10-07 title-tone refinement keeps the approved wood source and upper-center geometry unchanged. In the review presentation only, brightness is 0.82 and saturation is 0.72, with full opacity and the shallow contact shadow retained. The slightly subdued wood/brass should integrate with the warm rock wall without becoming transparent or competing with the campfire.
+
 ## First-viewport UI and responsive composition
 
 The environment fills the viewport to the bottom; no plain dark rectangle is reserved within the image. A bottom RPG dialogue panel overlays the foreground. On desktop its approximate height is 18–22% of the viewport; phone composition may use about 25–30%, with a compact or collapsible state as needed. The panel cannot cover faces, the central fire, Mimiku, or the principal sign. Its initial Mimiku line is a short, relaxed invitation; product capabilities are explained in the following journal.
 
-The `MIMIC` wordmark is visually integrated near the left old-stone lintel but remains a separate accessible element. A quiet, recognizable login/menu entry remains available. The primary live CTA stays visible in the dialogue area independent of horizontal scene position. Its existing destinations remain: authentication choice for an unauthenticated visitor, Home for an authenticated user.
+Following the user's latest 2026-10-06 refinement, the approved wooden `MIMIC` wordmark is reduced by 20% from the two-thirds-wall version, preserving its aspect ratio: 288 logical pixels on desktop and 208 on phone. It sits wholly within one broad continuous rear rock face, horizontally centered on the broad rock face, with its visual center approximately 35% down the safe face height (upper-center placement), with no stone seam passing behind it. Remove exposed hooks and cords; a shallow contact shadow makes the unchanged wooden lettering read as flush-mounted into the rock surface rather than suspended across a gap. It remains a separate accessible element, with clear separation from the mage's hat and right-ceiling bats. A quiet, recognizable login/menu entry remains available. The primary live CTA stays visible in the dialogue area independent of horizontal scene position. Its existing destinations remain: authentication choice for an unauthenticated visitor, Home for an authenticated user.
 
 Desktop initially shows the complete central party and partial side discoveries. Phone initially centers the entire fire-and-party group, map, and sign; the left and right discoveries come into view through horizontal exploration. Use the same separated visual assets with responsive positions rather than cropping a single desktop illustration. Phone/tablet movement, desktop drag/controls, keyboard access, normal vertical wheel scrolling, focusable named discoveries, and reduced-motion handling retain the existing product-design requirements.
 
@@ -105,3 +109,17 @@ Each chapter contains a heading, concise product explanation, a small already-ca
 Visual review should include the complete first viewport, the transition into the journal, a representative four-chapter view, and desktop/phone crops. Assess party completeness, natural poses, warm hierarchy, pixel-grain consistency, object construction, negative space, passage continuation, dialogue overlap, and whether Landing remains distinct from Home. Compare against approved warrior and Mimiku references at intended on-screen size.
 
 This spec authorizes a review concept, not a production scene, runtime installation, Scenes-family approval, or a Phase 2 transition. Exact interaction responses, animation timing, full horizontal navigation behavior, journal copy, and final asset exports remain follow-up design and implementation decisions.
+
+## Element review refinement — 2026-10-08
+
+The user selected the B stone/wood junction with smaller, more widely spaced lettering and the third (lighter/C) v11 brightness concept. This direction is retained for later separated-layer integration; the current review still uses the v08 live wordmark rather than promoting a full-scene generated concept.
+
+Keep the campfire as-is for now. Refine the low map crate from a frontal view to a gentle three-quarter view, showing the front and right side. Increase its displayed width by approximately 20% (94 to 113 desktop logical pixels, 66 to 79 phone pixels), preserve the new source's proportions, and place it left of the fire with no fire or warrior occlusion. Desktop warrior moves 60 logical pixels left to make room while keeping the crate on the floor; other character positions and the dialogue remain unchanged. The result awaits element-level visual judgment, not Scenes-family approval.
+
+The subsequent placement request moves this same crate slightly upper-left of the campfire, close to the warrior and mage. Keep the angled source, displayed widths and v02 character placements intact. The map remains clear of the fire and warrior; the low box may sit in front of the mage's lower robe but cannot cover her face or upper body. This remains a review-only placement refinement awaiting user judgment.
+
+## Approved party-role refinement — 2026-10-08
+
+The user approved a loose position exchange on the left: the warrior sits nearer the campfire, with relaxed hands warming toward it and the shield resting on the outer side. The mage sits farther left by the map crate, looking down-right at the map with only a slight forward lean; one hand gently rests on the crate edge rather than pointing as though briefing the party. The staff rests leaned at her side instead of being held upright. This supersedes the earlier mage resting pose and fixed left-party arrangement, not the quiet resting mood.
+
+Preserve approved character identities, costumes, skin tones, underlying 2.25-head proportions and fine pixel grain. Keep the angled crate source and enlarged widths intact; small placement adjustments may align her hand with its edge. The map stays upper-left of the fire and unobscured by flames. Do not change ranger, Mimiku, architecture, fire, title, dialogue or product runtime. New independent ImageGen role-pose sources and actual desktop/phone reviews remain subject to visual judgment.

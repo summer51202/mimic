@@ -1,0 +1,19 @@
+{
+  "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-a-title/wordmark-staggered-v02-source.png",
+  "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-war-room/wordmark.png",
+  "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-a-title/wordmark-staggered-v02-prompt.md",
+  "generator": "imagegen",
+  "transparent": true,
+  "inputs": [
+    {
+      "role": "identity/edit-target",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-war-room/wordmark.png",
+      "sha256": "5a1cfc2a7d96c15a467c8fa2f3c869d23a3811a096edd121a76a9f952b59760c"
+    },
+    {
+      "role": "layout-only-reference",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-a-title/wordmark-staggered-v01-source.png",
+      "sha256": "bc7ae8966e888d395dc3cc10cad60039c56e6a4663139fe2e853d27e292c866a"
+    }
+  ]
+}

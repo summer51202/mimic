@@ -1,0 +1,277 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Landing A — 無法師與標題排列</title><style>
+*{box-sizing:border-box}body{margin:0;background:#211b18;color:#ecd9b7;font:15px/1.6 system-ui,"Microsoft JhengHei",sans-serif}main{max-width:1440px;margin:auto;padding:24px}a{color:inherit}a:focus-visible{outline:3px solid #eabc62;outline-offset:3px}h1{font-size:clamp(22px,3vw,34px)}h2{margin-top:32px}.status,.notes{padding:12px;background:#30271f}.candidates{display:grid;grid-template-columns:1fr;gap:20px}.candidate{min-width:0}.scene{position:relative;container-type:inline-size;overflow:hidden;background:#30231b;border:2px solid #6c5036}.scene>img,.scene picture>img{display:block;width:100%;height:auto;image-rendering:pixelated}.phone{max-width:390px;width:100%;margin:auto}.overlay{position:absolute;inset:0;pointer-events:none}.overlay>*{position:absolute}.mobile-overlay{display:none}.sign-label{pointer-events:auto;display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;font-weight:800;font-size:1.12cqw;line-height:1.15;color:#ffe8ac;text-shadow:1px 1px #3e2316}.phone-overlay .sign-label{font-size:3.3cqw}.login{position:absolute;right:3%;top:4%;padding:3px 10px;background:#211a17d9;border:1px solid #a78953;text-decoration:none}.dialogue{position:absolute;left:2%;right:2%;bottom:3%;height:19%;padding:10px 16px;border:2px solid #b79556;background:#211a18f2;display:flex;align-items:center;justify-content:space-between;gap:12px}.speaker{color:#efc56c;font-weight:700}.dialogue p{margin:3px 0;font-size:clamp(12px,1.6cqw,18px);line-height:1.35}.cta{display:inline-block;white-space:nowrap;padding:7px 12px;border:2px solid #f0ce80;background:#b68137;color:#211a18;font-weight:800;text-decoration:none}.phone .dialogue{bottom:2%;height:26%;padding:8px;display:block}.phone .speaker{font-size:11px;line-height:1.3}.phone .dialogue p{font-size:12px}.phone .cta{margin-top:4px;font-size:12px;padding:4px 10px}.raws,.refs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.raws img{width:100%;height:auto;image-rendering:pixelated}.refs figure{margin:0;text-align:center}.refs img{max-width:100%;width:128px;image-rendering:pixelated}.wordmark-reference{max-width:100%;image-rendering:pixelated}code{overflow-wrap:anywhere;font-size:12px}table{table-layout:fixed;width:100%;border-collapse:collapse}td{padding:8px;border-bottom:1px solid #685440;vertical-align:top}td:first-child{width:25%}.journal{margin-top:32px;padding:clamp(16px,4vw,56px);background:#e5cc9e;color:#3a2a20}.journal-intro,.closing{display:flex;gap:16px;align-items:center}.journal-intro img,.closing img{width:76px;image-rendering:pixelated}.chapter{display:grid;grid-template-columns:100px minmax(0,1fr);gap:24px;padding:24px 0;border-bottom:1px solid #a68a64}.chapter img{width:100%;height:110px;object-fit:contain;image-rendering:pixelated}.journal footer,.closing{display:flex;gap:16px;flex-wrap:wrap;margin-top:24px}
+@media(min-width:1400px){.candidates{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){main{padding:12px}.desktop-overlay{display:none}.mobile-overlay{display:block}.responsive .sign-label{font-size:3.3cqw}.responsive .dialogue{bottom:2%;height:26%;padding:8px;display:block}.responsive .speaker{font-size:11px;line-height:1.3}.responsive .dialogue p{font-size:12px}.responsive .cta{margin-top:4px;font-size:12px;padding:4px 10px}.raws,.refs{grid-template-columns:repeat(2,minmax(0,1fr))}.chapter{grid-template-columns:65px minmax(0,1fr);gap:16px}.chapter img{height:80px}.login{font-size:12px}}
+</style></head><body><main><h1>Landing A — 無法師與標題排列</h1><p class="status">awaiting-calibration · reviewOnly: true · runtimePromotion: false</p><p>A 為唯一基準：只移除法師，其餘人物、道具、火光與地面不動。桌機只比較字標排列與容納排列所需的等比尺寸／牆面落點；五個字在兩行內同尺度，不要求兩個候選的字高相同。</p><p>手機統一使用交錯版：窄螢幕下兩個桌機候選會顯示相同手機圖，不是兩種手機方案。B 石壁結合／第三 C 亮度精修仍留待後續，這輪不是新 logo 或亮度選擇。</p><p><a href="landing-warm-rest-review.html">原 A／B 頁面（保留）</a> · <a href="landing-a-title.manifest.json">manifest 與來源紀錄</a></p>
+<!--landing-title-position-tool:start-->
+<style>
+.position-tool{margin:24px 0;padding:16px;background:#30271f;border:1px solid #806644}
+.position-tool h2{margin:0 0 8px}.position-tool p{margin:8px 0}
+.position-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.position-controls button,.position-controls label{min-width:44px;min-height:44px;padding:8px 12px;border:1px solid #aa8956;background:#241d18;color:#ecd9b7;display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit}
+.position-controls button:disabled{opacity:.55}.position-controls input{accent-color:#d7aa56}
+.position-viewport{max-width:960px;margin:auto;outline:2px solid #6c5036}
+.position-stage{position:relative;container-type:inline-size;margin:0;padding:0;border:0;overflow:hidden;background:#30231b}
+.position-background{display:block;width:100%;height:auto;image-rendering:pixelated;user-select:none}
+.position-title{position:absolute;z-index:2;padding:0;margin:0;border:0;background:transparent;line-height:0;cursor:grab;touch-action:none;opacity:1}
+.position-title img{display:block;width:100%;height:100%;image-rendering:pixelated;pointer-events:none}
+.position-title:disabled{cursor:default;pointer-events:none;opacity:1}
+.position-title:focus-visible{outline:3px solid #eabc62;outline-offset:-3px}
+.position-controls button:focus-visible,.position-controls input:focus-visible,.position-json:focus-visible{outline:3px solid #eabc62;outline-offset:2px}
+.position-tool[data-dragging] .position-title{cursor:grabbing}
+.position-tool:not([data-ready="true"]) .position-title{visibility:hidden}
+.position-guides{position:absolute;inset:0;z-index:6;pointer-events:none}
+.position-guides[hidden]{display:none}.position-guide-box{position:absolute;border:1px dashed #ffe3a0}
+.position-guide-v{position:absolute;top:0;bottom:0;border-left:1px dashed #ffe3a0}
+.position-guide-h{position:absolute;left:0;right:0;border-top:1px dashed #ffe3a0}
+.position-sign{position:absolute;z-index:3;display:flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;font-weight:800;font-size:1.12cqw;line-height:1.15;color:#ffe8ac;text-shadow:1px 1px #3e2316}
+.position-login{position:absolute;z-index:4;right:3%;top:4%;padding:.4cqw 1.2cqw;background:#211a17d9;border:1px solid #a78953;text-decoration:none;font-size:1.6cqw}
+.position-dialogue{position:absolute;z-index:4;left:2%;right:2%;bottom:3%;height:19%;padding:1.1cqw 1.7cqw;border:2px solid #b79556;background:#211a18f2;display:flex;align-items:center;justify-content:space-between;gap:1.2cqw;font-size:1.6cqw;line-height:1.35}
+.position-dialogue .position-speaker{color:#efc56c;font-weight:700}.position-dialogue p{margin:.3cqw 0;font-size:1.6cqw}
+.position-cta{white-space:nowrap;padding:.7cqw 1.3cqw;border:2px solid #f0ce80;background:#b68137;color:#211a18;font-weight:800;text-decoration:none}
+.position-json{display:block;width:100%;height:220px;margin-top:8px;padding:10px;resize:vertical;background:#211a18;color:#ecd9b7;border:1px solid #aa8956;font:12px/1.5 ui-monospace,monospace;white-space:pre;overflow:auto}
+.position-tool [data-position-status]{min-height:24px}
+@media(max-width:600px){.position-tool{padding:10px}.position-controls{gap:6px}.position-controls button,.position-controls label{padding:8px}.position-json{font-size:11px}}
+
+.position-family-controls button[aria-pressed="true"]{background:#80603a;border-color:#efc56c}
+.position-family-controls button:focus-visible{outline:3px solid #eabc62;outline-offset:2px}
+.position-phone .position-viewport{max-width:390px}
+.position-phone .position-sign{font-size:3.3cqw}
+.position-phone .position-login{font-size:12px;padding:3px 10px}
+.position-phone .position-dialogue{bottom:2%;height:26%;padding:8px;display:block}
+.position-phone .position-speaker{font-size:11px;line-height:1.3}
+.position-phone .position-dialogue p{font-size:12px;margin:3px 0}
+.position-phone .position-cta{display:inline-block;margin-top:4px;font-size:12px;padding:4px 10px}
+</style>
+<div data-position-family>
+<div class="position-controls position-family-controls" role="group" aria-label="選擇定位版本">
+<button type="button" data-position-frame="desktop-single" aria-controls="position-heading-desktop-single" aria-pressed="true">桌機單行</button>
+<button type="button" data-position-frame="phone-staggered" aria-controls="position-heading-phone-staggered" aria-pressed="false">手機兩行</button>
+</div>
+<section class="position-tool" data-title-position-tool data-frame="desktop-single" data-ready="loading" aria-labelledby="position-heading-desktop-single">
+<h2 id="position-heading-desktop-single">桌機單行 MIMIC：標題定位</h2>
+<p>只有標題可移動，尺寸／亮度／其餘素材鎖定。目前使用桌機橫向構圖；切換版本會保留本次載入的各自位置。</p>
+<div class="position-controls">
+<label><input type="checkbox" data-position-mode checked disabled>啟用定位</label>
+<label><input type="checkbox" data-position-guide-toggle checked disabled>顯示輔助線</label>
+<button type="button" data-position-nudge="-1,0" aria-label="向左微調" disabled>←</button>
+<button type="button" data-position-nudge="0,-1" aria-label="向上微調" disabled>↑</button>
+<button type="button" data-position-nudge="0,1" aria-label="向下微調" disabled>↓</button>
+<button type="button" data-position-nudge="1,0" aria-label="向右微調" disabled>→</button>
+<button type="button" data-position-reset disabled>還原位置</button>
+<button type="button" data-position-copy disabled>複製位置</button>
+</div>
+<p>拖動標題；聚焦後方向鍵移動 1 logical px，Shift＋方向鍵移動 10。關閉定位看乾淨預覽。重整不保存，請先複製位置。</p>
+<div class="position-viewport"><div class="position-stage">
+<img class="position-background" data-position-background src="samples/landing-a-title/scene-desktop-logical.png" width="960" height="540" alt="無法師 A 桌機場景，標題另層定位" draggable="false">
+<button type="button" class="position-title" data-position-title aria-label="可移動的 MIMIC 標題" tabindex="-1" disabled><img data-position-sprite src="samples/landing-a-title/wordmarks/desktop-single.png" width="288" height="84" alt="" draggable="false"></button>
+<a class="position-sign" href="#journal" style="left:78.45833333333334%;top:62.66481481481482%;width:5.104166666666667%;height:5.955555555555555%">開始<br>冒險</a>
+<a class="position-login" href="#review-notes">登入</a>
+<div class="position-dialogue"><div><span class="position-speaker">Mimiku</span><p>先在火邊歇一會兒。下一段冒險，我陪你。</p></div><a class="position-cta" href="#journal">開始冒險 ↓</a></div>
+<div class="position-guides" data-position-guides aria-hidden="true" hidden><span class="position-guide-box" data-position-guide-box></span><span class="position-guide-v" data-position-guide-v></span><span class="position-guide-h" data-position-guide-h></span></div>
+</div></div>
+<p data-position-coordinates>圖片載入中。</p><p data-position-status role="status" aria-live="polite">圖片載入中。</p>
+<label for="position-json-desktop-single">位置 JSON（可手動選取複製）</label><textarea id="position-json-desktop-single" class="position-json" data-position-json readonly spellcheck="false"></textarea>
+<p>只限制在場景內以防裁切；是否跨洞口／岩縫或遮住伙伴仍需目視。貼回 JSON 後才另行套用，不會自動修改檔案或核准。</p>
+<script type="application/json" data-position-config>{"frame":{"id":"desktop-single","width":960,"height":540},"scene":{"path":"samples/landing-a-title/scene-desktop-logical.png","sha256":"ce0d33c06d816ec5c77aa07dcbf846d6d481d83076988cf00f40ff6b42e0f48e","width":960,"height":540},"title":{"id":"wordmark","x":385,"y":84,"path":"samples/landing-a-title/wordmarks/desktop-single.png","sha256":"4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31","width":288,"height":84}}</script>
+<noscript>定位工具需要 JavaScript；下方原比較頁仍可閱讀。</noscript>
+</section>
+<section class="position-tool position-phone" data-title-position-tool data-frame="phone-staggered" data-ready="loading" aria-labelledby="position-heading-phone-staggered" hidden inert>
+<h2 id="position-heading-phone-staggered">手機兩行 MI／MIC：標題定位</h2>
+<p>只有標題可移動，尺寸／亮度／其餘素材鎖定。目前使用手機直向構圖，不是桌機裁切；切換版本會保留本次載入的各自位置。</p>
+<div class="position-controls">
+<label><input type="checkbox" data-position-mode checked disabled>啟用定位</label>
+<label><input type="checkbox" data-position-guide-toggle checked disabled>顯示輔助線</label>
+<button type="button" data-position-nudge="-1,0" aria-label="向左微調" disabled>←</button>
+<button type="button" data-position-nudge="0,-1" aria-label="向上微調" disabled>↑</button>
+<button type="button" data-position-nudge="0,1" aria-label="向下微調" disabled>↓</button>
+<button type="button" data-position-nudge="1,0" aria-label="向右微調" disabled>→</button>
+<button type="button" data-position-reset disabled>還原位置</button>
+<button type="button" data-position-copy disabled>複製位置</button>
+</div>
+<p>拖動標題；聚焦後方向鍵移動 1 logical px，Shift＋方向鍵移動 10。關閉定位看乾淨預覽。重整不保存，請先複製位置。</p>
+<div class="position-viewport"><div class="position-stage">
+<img class="position-background" data-position-background src="samples/landing-a-title/scene-phone-logical.png" width="390" height="600" alt="無法師 A 手機場景，標題另層定位" draggable="false">
+<button type="button" class="position-title" data-position-title aria-label="可移動的 MIMIC 標題" tabindex="-1" disabled><img data-position-sprite src="samples/landing-a-title/wordmarks/phone-staggered.png" width="148" height="98" alt="" draggable="false"></button>
+<a class="position-sign" href="#journal" style="left:6.38974358974359%;top:60.838333333333324%;width:11.128205128205128%;height:4.72%">開始<br>冒險</a>
+<a class="position-login" href="#review-notes">登入</a>
+<div class="position-dialogue"><div><span class="position-speaker">Mimiku</span><p>先在火邊歇一會兒。下一段冒險，我陪你。</p></div><a class="position-cta" href="#journal">開始冒險 ↓</a></div>
+<div class="position-guides" data-position-guides aria-hidden="true" hidden><span class="position-guide-box" data-position-guide-box></span><span class="position-guide-v" data-position-guide-v></span><span class="position-guide-h" data-position-guide-h></span></div>
+</div></div>
+<p data-position-coordinates>圖片載入中。</p><p data-position-status role="status" aria-live="polite">圖片載入中。</p>
+<label for="position-json-phone-staggered">位置 JSON（可手動選取複製）</label><textarea id="position-json-phone-staggered" class="position-json" data-position-json readonly spellcheck="false"></textarea>
+<p>只限制在場景內以防裁切；是否跨洞口／岩縫或遮住伙伴仍需目視。貼回 JSON 後才另行套用，不會自動修改檔案或核准。</p>
+<script type="application/json" data-position-config>{"frame":{"id":"phone-staggered","width":390,"height":600},"scene":{"path":"samples/landing-a-title/scene-phone-logical.png","sha256":"7573dceb82c484c223164d26e4fc6514f65ee2149d65001bba0e9a2a824f693d","width":390,"height":600},"title":{"id":"wordmark","x":116,"y":93,"path":"samples/landing-a-title/wordmarks/phone-staggered.png","sha256":"8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c","width":148,"height":98}}</script>
+<noscript>定位工具需要 JavaScript；下方原比較頁仍可閱讀。</noscript>
+</section>
+
+</div>
+<script>(function mountPositionFamily(factory,mount,container) {
+  if(!container)return;
+  const panels=[...container.querySelectorAll("[data-title-position-tool]")];
+  const buttons=[...container.querySelectorAll("[data-position-frame]")];
+  let queue=Promise.resolve();
+  const writes={enqueue(task){const result=queue.catch(()=>{}).then(task);queue=result;return result;}};
+  const controllers=new Map(panels.map(panel=>[panel.dataset.frame,mount(factory,panel,writes)]));
+  function select(id){
+    if(!panels.some(panel=>panel.dataset.frame===id))return;
+    const active=container.ownerDocument.activeElement;
+    if(panels.some(panel=>panel.dataset.frame!==id&&panel.contains(active)))buttons.find(button=>button.dataset.positionFrame===id)?.focus({preventScroll:true});
+    for(const panel of panels)controllers.get(panel.dataset.frame)?.deactivate();
+    for(const panel of panels){
+      const selected=panel.dataset.frame===id;
+      panel.hidden=!selected;panel.inert=!selected;
+      if(selected)controllers.get(id)?.activate();
+    }
+    for(const button of buttons)button.setAttribute("aria-pressed",String(button.dataset.positionFrame===id));
+    container.dataset.selectedFrame=id;
+  }
+  for(const button of buttons)button.addEventListener("click",()=>select(button.dataset.positionFrame));
+  const query=new URLSearchParams(container.ownerDocument.defaultView.location.search);
+  select(query.get("position")==="phone"?"phone-staggered":"desktop-single");
+})(function createPositionModel(metadata) {
+  const scene={...metadata.scene},title={...metadata.title};
+  const id=metadata.frame?.id??"desktop-single";
+  const sizes={"desktop-single":[960,540,288,84],"phone-staggered":[390,600,148,98]};
+  const dimensions=sizes[id];
+  if(!dimensions||[scene.width,scene.height,title.width,title.height].some((n,i)=>n!==dimensions[i])||
+     (metadata.frame&&(metadata.frame.width!==scene.width||metadata.frame.height!==scene.height))||
+     ![title.x,title.y].every(Number.isInteger)||
+     ![scene,title].every(a=>typeof a.path==="string"&&/^[a-f0-9]{64}$/.test(a.sha256)))throw Error("Invalid positioning metadata");
+  const width=scene.width,height=scene.height,tw=title.width,th=title.height;
+  const finite=(...values)=>{if(!values.every(Number.isFinite))throw Error("Non-finite position");};
+  const position=(x,y)=>{finite(x,y);return {x:Math.max(0,Math.min(width-tw,Math.round(x))),y:Math.max(0,Math.min(height-th,Math.round(y)))};};
+  const initial=Object.freeze(position(title.x,title.y));
+  return Object.freeze({
+    initial,position,
+    point(x,y,rect){
+      finite(x,y,rect.left,rect.top,rect.width,rect.height);
+      if(rect.width<=0||rect.height<=0)throw Error("Image content has no size");
+      return {x:(x-rect.left)*width/rect.width,y:(y-rect.top)*height/rect.height};
+    },
+    begin(p,q){finite(q.x,q.y);return {position:position(p.x,p.y),point:{...q}};},
+    drag(a,q){return position(a.position.x+q.x-a.point.x,a.position.y+q.y-a.point.y);},
+    nudge(p,dx,dy,fast=false){finite(dx,dy);return position(p.x+dx*(fast?10:1),p.y+dy*(fast?10:1));},
+    payload(p){
+      const value=position(p.x,p.y);
+      return {schema:"mimic-landing-title-position/v1",reviewOnly:true,
+        frame:{id,width,height},
+        scene:{path:scene.path,sha256:scene.sha256},
+        title:{path:title.path,sha256:title.sha256,...value,width:tw,height:th},
+        anchor:"top-left",unit:"logical-px",
+        centerPercent:{x:Number(((value.x+tw/2)/width*100).toFixed(2)),y:Number(((value.y+th/2)/height*100).toFixed(2))}};
+    },
+  });
+},function mountPositionTool(factory,root,sharedWrites) {
+  if(!root)return;
+  const q=selector=>root.querySelector(selector),win=root.ownerDocument.defaultView;
+  const background=q("[data-position-background]"),sprite=q("[data-position-sprite]");
+  const title=q("[data-position-title]"),mode=q("[data-position-mode]"),guideToggle=q("[data-position-guide-toggle]");
+  const guides=q("[data-position-guides]"),box=q("[data-position-guide-box]"),vertical=q("[data-position-guide-v]"),horizontal=q("[data-position-guide-h]");
+  const output=q("[data-position-json]"),coordinates=q("[data-position-coordinates]"),status=q("[data-position-status]");
+  const reset=q("[data-position-reset]"),copy=q("[data-position-copy]"),nudges=[...root.querySelectorAll("[data-position-nudge]")];
+  const message=text=>{status.textContent=text;};
+  let model,meta,position,ready=false,drag=null,revision=0,request=0;
+  let queue=Promise.resolve();
+  const writes=sharedWrites??{enqueue(task){const result=queue.catch(()=>{}).then(task);queue=result;return result;}};
+  const available=()=>ready&&!root.hidden;
+  function endDrag(){
+    const old=drag;drag=null;
+    if(old&&title.hasPointerCapture(old.id))title.releasePointerCapture(old.id);
+    root.removeAttribute("data-dragging");
+  }
+  function fail(){
+    ready=false;endDrag();root.dataset.ready="error";guides.hidden=true;output.value="";
+    coordinates.textContent="無有效座標";
+    for(const element of [title,mode,guideToggle,reset,copy,...nudges])element.disabled=true;
+    title.tabIndex=-1;message("圖片或資料不符，無法使用定位；原比較頁仍可閱讀。");
+  }
+  try{meta=JSON.parse(q("[data-position-config]").textContent);model=factory(meta);position={...model.initial};}
+  catch{fail();return;}
+  function draw(){
+    const payload=model.payload(position),cx=payload.centerPercent.x,cy=payload.centerPercent.y;
+    const sw=meta.scene.width,sh=meta.scene.height,tw=meta.title.width,th=meta.title.height;
+    const rect={left:position.x/sw*100+"%",top:position.y/sh*100+"%",width:tw/sw*100+"%",height:th/sh*100+"%"};
+    Object.assign(title.style,rect);Object.assign(box.style,rect);
+    vertical.style.left=(position.x+tw/2)/sw*100+"%";horizontal.style.top=(position.y+th/2)/sh*100+"%";
+    guides.hidden=!(available()&&mode.checked&&guideToggle.checked);
+    title.disabled=!(available()&&mode.checked);title.tabIndex=available()&&mode.checked?0:-1;
+    for(const button of nudges)button.disabled=!(available()&&mode.checked);
+    mode.disabled=!available();guideToggle.disabled=!available();reset.disabled=!available();copy.disabled=!available();
+    output.value=JSON.stringify(payload,null,2);
+    coordinates.textContent="左上 X "+position.x+"／Y "+position.y+" logical px；中心 "+cx.toFixed(2)+"%／"+cy.toFixed(2)+"%；尺寸 "+tw+"×"+th+"（鎖定）";
+  }
+  function update(next,force=false){
+    if(!force&&next.x===position.x&&next.y===position.y)return;
+    position=next;revision++;draw();message("位置已變更，請重新複製。");
+  }
+  title.addEventListener("pointerdown",event=>{
+    if(!available()||!mode.checked||event.button!==0||drag)return;
+    const point=model.point(event.clientX,event.clientY,background.getBoundingClientRect());
+    title.focus({preventScroll:true});
+    try{title.setPointerCapture(event.pointerId);}catch{return;}
+    drag={id:event.pointerId,anchor:model.begin(position,point)};
+    root.dataset.dragging="true";event.preventDefault();
+  });
+  title.addEventListener("pointermove",event=>{
+    if(!drag||drag.id!==event.pointerId||!available()||!mode.checked)return;
+    update(model.drag(drag.anchor,model.point(event.clientX,event.clientY,background.getBoundingClientRect())));
+    event.preventDefault();
+  });
+  for(const name of ["pointerup","pointercancel","lostpointercapture"])title.addEventListener(name,event=>{
+    if(drag&&drag.id===event.pointerId)endDrag();
+  });
+  const steps={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};
+  title.addEventListener("keydown",event=>{
+    if(!available()||!mode.checked||root.ownerDocument.activeElement!==title||event.altKey||event.ctrlKey||event.metaKey||!steps[event.key])return;
+    event.preventDefault();const [dx,dy]=steps[event.key];
+    update(model.nudge(position,dx,dy,event.shiftKey));
+  });
+  for(const button of nudges)button.addEventListener("click",()=>{
+    if(!available()||!mode.checked)return;endDrag();
+    const [dx,dy]=button.dataset.positionNudge.split(",").map(Number);
+    update(model.nudge(position,dx,dy));
+  });
+  mode.addEventListener("change",()=>{
+    endDrag();if(!mode.checked&&root.ownerDocument.activeElement===title)mode.focus({preventScroll:true});
+    draw();
+  });
+  guideToggle.addEventListener("change",draw);
+  reset.addEventListener("click",()=>{if(!available())return;endDrag();update({...model.initial},true);});
+  copy.addEventListener("click",()=>{
+    if(!available())return;
+    const token=++request,version=revision,text=output.value;
+    message("正在複製位置…");
+    // Serializing writes keeps an older delayed write from overwriting the newest clipboard content.
+    writes.enqueue(async()=>{
+      if(token!==request||!ready)return;
+      try{
+        if(typeof win.navigator.clipboard?.writeText!=="function")throw Error("Clipboard unavailable");
+        await win.navigator.clipboard.writeText(text);
+        if(token!==request||!ready)return;
+        message(version===revision?"已複製目前位置":"剪貼簿為先前位置，請重新複製。");
+      }catch{
+        if(token!==request||!ready)return;
+        if(!root.hidden){output.focus();output.select();}
+        message("無法自動複製，請選取 JSON 並按 Ctrl+C。");
+      }
+    });
+  });
+  for(const element of [title,mode,guideToggle,reset,copy,...nudges])element.disabled=true;
+  title.tabIndex=-1;guides.hidden=true;
+  Promise.all([background.decode(),sprite.decode()]).then(()=>{
+    if(background.naturalWidth!==meta.scene.width||background.naturalHeight!==meta.scene.height||
+       sprite.naturalWidth!==meta.title.width||sprite.naturalHeight!==meta.title.height)throw Error("Wrong image dimensions");
+    ready=true;root.dataset.ready="true";draw();message("位置預覽，尚未套用；重整會回初始位置。");
+  }).catch(fail);
+  return {deactivate(){
+    endDrag();guides.hidden=true;title.tabIndex=-1;
+    for(const element of [title,mode,guideToggle,reset,copy,...nudges])element.disabled=true;
+  },activate(){if(ready)draw();}};
+},document.querySelector("[data-position-family]"));</script>
+<!--landing-title-position-tool:end-->
+<div class="candidates"><section class="candidate" data-candidate="desktop-single"><h2>桌機：單行 MIMIC</h2><p>字標 288 × 84 logical px；左上 385, 84；輸出 1920 × 1080。</p><div class="scene responsive" data-key="desktop-single" data-desktop-frame="desktop-single"><picture><source media="(max-width:600px)" srcset="samples/landing-a-title/phone-staggered.png"><img src="samples/landing-a-title/desktop-single.png" width="1920" height="1080" alt="桌機：單行 MIMIC，無法師 A 構圖"></picture><div class="overlay desktop-overlay"><a class="sign-label" href="#journal" style="left:78.45833333333334%;top:62.66481481481482%;width:5.104166666666667%;height:5.955555555555555%">開始<br>冒險</a><span class="visitor-region" aria-hidden="true" style="left:42.604166666666664%;top:70.37037037037037%;width:19.791666666666664%;height:6.296296296296296%"></span><span class="title-region" aria-hidden="true" style="left:40.10416666666667%;top:15.555555555555555%;width:30%;height:15.555555555555555%"></span></div><div class="overlay mobile-overlay"><a class="sign-label" href="#journal" style="left:6.38974358974359%;top:60.838333333333324%;width:11.128205128205128%;height:4.72%">開始<br>冒險</a><span class="visitor-region" aria-hidden="true" style="left:30.76923076923077%;top:64.33333333333333%;width:39.743589743589745%;height:6%"></span><span class="title-region" aria-hidden="true" style="left:29.743589743589745%;top:15.5%;width:37.94871794871795%;height:16.333333333333332%"></span></div><a class="login" href="#review-notes">登入</a><div class="dialogue"><div><span class="speaker">Mimiku</span><p>先在火邊歇一會兒。下一段冒險，我陪你。</p></div><a class="cta" href="#journal">開始冒險 ↓</a></div></div></section><section class="candidate" data-candidate="desktop-staggered"><h2>桌機：上左 MI／下右 MIC</h2><p>字標 157 × 104 logical px；左上 429, 80；輸出 1920 × 1080。</p><div class="scene responsive" data-key="desktop-staggered" data-desktop-frame="desktop-staggered"><picture><source media="(max-width:600px)" srcset="samples/landing-a-title/phone-staggered.png"><img src="samples/landing-a-title/desktop-staggered.png" width="1920" height="1080" alt="桌機：上左 MI／下右 MIC，無法師 A 構圖"></picture><div class="overlay desktop-overlay"><a class="sign-label" href="#journal" style="left:78.45833333333334%;top:62.66481481481482%;width:5.104166666666667%;height:5.955555555555555%">開始<br>冒險</a><span class="visitor-region" aria-hidden="true" style="left:42.604166666666664%;top:70.37037037037037%;width:19.791666666666664%;height:6.296296296296296%"></span><span class="title-region" aria-hidden="true" style="left:44.6875%;top:14.814814814814813%;width:16.354166666666668%;height:19.25925925925926%"></span></div><div class="overlay mobile-overlay"><a class="sign-label" href="#journal" style="left:6.38974358974359%;top:60.838333333333324%;width:11.128205128205128%;height:4.72%">開始<br>冒險</a><span class="visitor-region" aria-hidden="true" style="left:30.76923076923077%;top:64.33333333333333%;width:39.743589743589745%;height:6%"></span><span class="title-region" aria-hidden="true" style="left:29.743589743589745%;top:15.5%;width:37.94871794871795%;height:16.333333333333332%"></span></div><a class="login" href="#review-notes">登入</a><div class="dialogue"><div><span class="speaker">Mimiku</span><p>先在火邊歇一會兒。下一段冒險，我陪你。</p></div><a class="cta" href="#journal">開始冒險 ↓</a></div></div></section></div>
+<section><h2>手機：共用交錯兩行版</h2><p>字標 148 × 98 logical px；左上 116, 93；輸出 390 × 600。</p><div class="scene phone" data-key="phone-staggered" data-desktop-frame="phone-staggered"><img src="samples/landing-a-title/phone-staggered.png" width="390" height="600" alt="無法師 A：手機交錯字標"><div class="overlay phone-overlay"><a class="sign-label" href="#journal" style="left:6.38974358974359%;top:60.838333333333324%;width:11.128205128205128%;height:4.72%">開始<br>冒險</a><span class="visitor-region" aria-hidden="true" style="left:30.76923076923077%;top:64.33333333333333%;width:39.743589743589745%;height:6%"></span><span class="title-region" aria-hidden="true" style="left:29.743589743589745%;top:15.5%;width:37.94871794871795%;height:16.333333333333332%"></span></div><a class="login" href="#review-notes">登入</a><div class="dialogue"><div><span class="speaker">Mimiku</span><p>先在火邊歇一會兒。下一段冒險，我陪你。</p></div><a class="cta" href="#journal">開始冒險 ↓</a></div></div></section>
+<details><summary>三張真實灰階輸出</summary><div class="raws"><figure><img src="samples/landing-a-title/desktop-single-gray.png" alt="桌機：單行 MIMIC 灰階"><figcaption>桌機：單行 MIMIC</figcaption></figure><figure><img src="samples/landing-a-title/desktop-staggered-gray.png" alt="桌機：上左 MI／下右 MIC 灰階"><figcaption>桌機：上左 MI／下右 MIC</figcaption></figure><figure><img src="samples/landing-a-title/phone-staggered-gray.png" alt="手機：共用交錯兩行版 灰階"><figcaption>手機：共用交錯兩行版</figcaption></figure></div></details>
+<h2>既有字標參照與新來源</h2><p>下圖為未套用共同色調的來源；場景使用同一 brightness 0.82／saturation 0.72 整理，沒有 CSS 個別亮度差異。</p><img class="wordmark-reference" src="samples/landing-war-room/wordmark.png" width="256" height="75" alt="既有單行 MIMIC 字標參照"><p><a href="samples/derivations/landing-a-title/wordmark-staggered-v02-source.png">新交錯透明 ImageGen source</a> · <a href="samples/derivations/landing-a-title/wordmark-staggered-v02-prompt.md">實際 prompt</a></p>
+<h2>已核准身份與顆粒參照</h2><div class="refs"><figure><img src="samples/avatar-classes/masters/warrior.png" alt="warrior master"><figcaption>warrior</figcaption></figure><figure><img src="samples/avatar-classes/masters/ranger.png" alt="ranger master"><figcaption>ranger</figcaption></figure><figure><img src="samples/mimiku-states-actions/masters/state-idle.png" alt="mimiku master"><figcaption>mimiku</figcaption></figure></div>
+<div class="journal" id="journal"><div class="journal-intro"><img src="samples/mimiku-states-actions/masters/state-idle.png" alt="Mimiku"><div><small>冒險日誌</small><h2 style="margin:0">把每一步，都記得清楚。</h2><p>帳務各有自己的規則；旅程可以一起走。</p></div></div><article class="chapter" data-chapter><img src="samples/record-expense-action/record-expense-action-v01.png" alt=""><div><small>CHAPTER 01</small><h3>自己的冒險，自己的帳頁</h3><p>把日常支出記在私人帳本。金額、分類與備註，只屬於你。</p><a href="#review-notes">了解這一章</a></div></article><article class="chapter" data-chapter><img src="samples/event-status/event-settlement.png" alt=""><div><small>CHAPTER 02</small><h3>同行的花費，一起算清楚</h3><p>記錄誰先付款、每個人分攤多少。結算完成的期間會鎖定；後續更正另立新紀錄。</p><a href="#review-notes">了解這一章</a></div></article><article class="chapter" data-chapter><img src="samples/event-status/event-contribution.png" alt=""><div><small>CHAPTER 03</small><h3>共同補給，有自己的帳</h3><p>共同基金分開記錄投入、支出、報銷與返還，保持每一筆補給的來去清楚。</p><a href="#review-notes">了解這一章</a></div></article><article class="chapter" data-chapter><img src="samples/icon-optical-evidence/masters/nav-tasks.png" alt=""><div><small>CHAPTER 04</small><h3>下一個小任務，有 Mimiku 陪伴</h3><p>把待處理事項留在委託板，依自己的步調繼續旅程。</p><a href="#review-notes">了解這一章</a></div></article><div class="closing"><img src="samples/mimiku-states-actions/masters/state-idle.png" alt="Mimiku 陪你開始"><div><p>準備好了嗎？我們慢慢出發。</p><a class="cta" href="#review-notes">開始我的冒險</a></div></div><footer><a href="#review-notes">功能</a><a href="#review-notes">隱私</a><a href="#review-notes">條款</a></footer></div><section class="notes" id="review-notes"><h2>本輪判斷</h2><ol><li>移除法師後更鬆，仍是抵達有人陪伴的暖火休息處。</li><li>上左 MI／下右 MIC：字形等大、略微輪廓重疊，眼睛、愛心及筆畫沒有被遮住。</li><li>字標完整落在連續岩壁中，不跨洞口、岩縫、天花板、蝙蝠或人物。</li><li>火與伙伴仍是焦點，地圖、探索物件和可加入的地面仍清楚。</li><li>寶箱、地圖箱與陷阱位置這輪不調整，下一輪再逐項審核。</li></ol><p>登入／CTA 只保留 live review 錨點示範，不連接認證或互動。三種帳務語意、鎖定期間規則均未變動；Scenes 未核准，不提升 runtime。字形與岩壁融合必須目視確認，manifest 標籤與測試不能代替你的視覺判斷。</p></section><details><summary>exact SHA-256 與實際尺寸</summary><table><tbody><tr><td>base</td><td><code>1db896df38f84872ab5396d701acdee7edc84b6d58ba90c5ae8398cc66415ac3</code></td></tr><tr><td>lineage</td><td><code>8e99f68035b67d92340a7247e909791458a14129090eac5a6a08bc9efd6e60cc</code></td></tr><tr><td>prompt</td><td><code>22b381ea2c5e46be305d585353e02a109c2b2014b486aaac936e226fbeee32d7</code></td></tr><tr><td>single source<br>256 × 75</td><td><code>5a1cfc2a7d96c15a467c8fa2f3c869d23a3811a096edd121a76a9f952b59760c</code></td></tr><tr><td>single master<br>256 × 75</td><td><code>40292ed6c2d12383b4eaf255e5023b21bc0ab716eda1044acc17a1a90448cec7</code></td></tr><tr><td>staggered source<br>1536 × 1024</td><td><code>bf6a6596dd8f978e4a34b751f49ef3687d2eb74a94ea57d8fe5f40e715ae3f90</code></td></tr><tr><td>staggered master<br>256 × 170</td><td><code>c992e21f8b8821ec508cb6998ed940a078ac18c3df7abd161c543bb99ce002ca</code></td></tr><tr><td>desktop-single logical<br>960 × 540</td><td><code>af8b73f346729ed0c8a3a49dc59c90f0ccdd9c6c9f1d090ee2c0dce53b37e93c</code></td></tr><tr><td>desktop-single color<br>1920 × 1080</td><td><code>a2a75a28cbf12f8058357bf20b866092a295021ec95177d0543e5d96b09a4566</code></td></tr><tr><td>desktop-single gray<br>1920 × 1080</td><td><code>62374f6cc3d4611b7b7f301c7fba2fdd86c35d7aa04cdc12371a009534c0f93b</code></td></tr><tr><td>desktop-single title<br>288 × 84</td><td><code>4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31</code></td></tr><tr><td>desktop-staggered logical<br>960 × 540</td><td><code>37b13aad4fd0148592f51e681c879deeeef37f6e1c9f78f677ea38d08e52e9fb</code></td></tr><tr><td>desktop-staggered color<br>1920 × 1080</td><td><code>c510c247b7c1642d646f5cd1528268ddab06967cd0ab0dc61a313fd7edabd446</code></td></tr><tr><td>desktop-staggered gray<br>1920 × 1080</td><td><code>4da2414b16a3044676fb5d9e45c390282efc69960d861268f919015a296aec1f</code></td></tr><tr><td>desktop-staggered title<br>157 × 104</td><td><code>1897d9b9fb2345a5cb890333f5e76fb7cfda9df59f5d3f3a5cf98ba0978b5dee</code></td></tr><tr><td>phone-staggered logical<br>390 × 600</td><td><code>c7cdd3a370255054870dccf5b65939d228dacb8d790570884a0e64cbbd17997a</code></td></tr><tr><td>phone-staggered color<br>390 × 600</td><td><code>c7cdd3a370255054870dccf5b65939d228dacb8d790570884a0e64cbbd17997a</code></td></tr><tr><td>phone-staggered gray<br>390 × 600</td><td><code>9036fee6745fadbb09a18598853c9a4f656aa2c7fa32727c5c1b1fc2ad0ed3b2</code></td></tr><tr><td>phone-staggered title<br>148 × 98</td><td><code>8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c</code></td></tr></tbody></table></details></main></body></html>

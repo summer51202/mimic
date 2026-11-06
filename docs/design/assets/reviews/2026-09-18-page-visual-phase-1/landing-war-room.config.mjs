@@ -1,0 +1,91 @@
+const sourceRoot = "samples/derivations/landing-war-room/sources/";
+
+export const config = {
+  decision: "awaiting-calibration",
+  reviewOnly: true,
+  runtimePromotion: false,
+  logicalDesktop: { width: 960, height: 540 },
+  desktopScale: 2,
+  phone: { width: 390, height: 600 },
+  alphaPolicy: "immutable-raw-sources; threshold-200; zero-transparent-RGB-on-derived-layers",
+  architectureRevision: {
+    direction: "B geometry — continuous broad rock face with flush-mounted approved wordmark",
+    parentSource: "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/architecture-rock-v04-source.png",
+    parentSha256: "55d1debded47919418f084582b56281eedea90f2c0a1e4c7110d8dbc9a510aa3",
+    promptPath: "samples/derivations/landing-war-room/architecture-solid-wall-v06-prompt.md",
+    scope: "rear-wall material and wordmark mounting only; existing party/prop sources and placements preserved",
+  },
+  mapCrateRevision: {
+    direction: "gentle three-quarter low crate, 20-percent wider review scale, clear upper-left of fire near the left party",
+    parentSource: "samples/derivations/landing-war-room/sources/map-crate-v01-source.png",
+    parentSha256: "fc553d3719916f4009e7edaf867e90c923114860218f8c4600abc1c17ceec848",
+    promptPath: "samples/derivations/landing-war-room/map-crate-angle-v02-prompt.md",
+    layoutAdjustment: "desktop warrior shifts 60 logical pixels left to clear the larger map; other figures, fire, and dialogue unchanged",
+    placementRevision: "v03 moves only the map crate toward the warrior/mage; v02 character positions and all raster sources preserved",
+  },
+  partyRoleRevision: {
+    direction: "warrior warms hands near fire; mage quietly studies the map, staff resting at outer side",
+    promptPaths: ["samples/derivations/landing-war-room/warrior-warming-v02-prompt.md", "samples/derivations/landing-war-room/mage-map-study-v02-prompt.md"],
+    scope: "two role-pose sources and warrior/mage/map positions only; other sources, lighting, UI and placements preserved",
+  },
+  // Central rear rock-wall width, excluding desktop side passages.
+  wordmarkWallSpan: { desktop: [260, 800], phone: [0, 390] },
+  wordmarkPlacement: { desktop: [385, 84, 288], phone: [96, 130, 208] },
+  wordmarkAttachment: "flush-mounted-on-continuous-rock-face",
+  // Review-local tone only; approved wood source pixels and geometry stay intact.
+  wordmarkTone: { brightness: 0.82, saturation: 0.72 },
+  // Safe rectangle within the broad intact face; title center sits at ~35% height.
+  wordmarkSurface: { desktop: [286, 75, 486, 146], phone: [16, 105, 368, 155] },
+  references: {
+    warrior: "samples/avatar-classes/masters/warrior.png",
+    mage: "samples/avatar-classes/masters/mage.png",
+    ranger: "samples/avatar-classes/masters/ranger.png",
+    mimiku: "samples/mimiku-states-actions/masters/state-idle.png",
+  },
+  uiReferences: {
+    wordmark: "samples/wordmark-synthesis/wordmark-synthesis-v11.png",
+    recordExpense: "samples/record-expense-action/record-expense-action-v01.png",
+    settlement: "samples/event-status/event-settlement.png",
+    contribution: "samples/event-status/event-contribution.png",
+    tasks: "samples/icon-optical-evidence/masters/nav-tasks.png",
+  },
+  sources: {
+    architecture: sourceRoot + "architecture-solid-wall-v06-source.png",
+    warrior: sourceRoot + "warrior-warming-v02-source.png",
+    mage: sourceRoot + "mage-map-study-v02-source.png",
+    ranger: sourceRoot + "ranger-rest-v01-source.png",
+    mimiku: sourceRoot + "mimiku-rest-v01-source.png",
+    fire: sourceRoot + "campfire-v01-source.png",
+    mapCrate: sourceRoot + "map-crate-angle-v02-source.png",
+    chest: sourceRoot + "ordinary-chest-v01-source.png",
+    sign: sourceRoot + "blank-sign-v01-source.png",
+    torchHigh: sourceRoot + "wall-torch-high-v01-source.png",
+    torchLow: sourceRoot + "wall-torch-low-v01-source.png",
+    bats: sourceRoot + "bats-rest-v01-source.png",
+    carving: sourceRoot + "carving-v03-source.png",
+    pressurePlate: sourceRoot + "pressure-plate-v02-source.png",
+  },
+  // x/y describe the top-left of each tightly cropped source; width preserves aspect.
+  // Null phone placements are side discoveries outside the initial phone framing.
+  layers: [
+    { id: "carving", desktop: [205, 190, 95], phone: null, monochrome: [126, 105, 83], opacity: 0.35 },
+    { id: "torchHigh", desktop: [260, 129, 26], phone: null },
+    { id: "torchLow", desktop: [837, 213, 31], phone: null },
+    { id: "bats", desktop: [681, 46, 78], phone: [275, 56, 54], opacity: 0.78 },
+    { id: "chest", desktop: [105, 284, 78], phone: null },
+    { id: "pressurePlate", desktop: [850, 339, 67], phone: null, opacity: 0.85 },
+    { id: "mage", desktop: [229, 192, 105], phone: [15, 232, 88] },
+    { id: "ranger", desktop: [637, 210, 153], phone: [221, 238, 122] },
+    { id: "mapCrate", desktop: [232, 290, 113], phone: [22, 304, 79] },
+    { id: "warrior", desktop: [344, 180, 132], phone: [91, 254, 104] },
+    { id: "fire", desktop: [453, 280, 103], phone: [172, 345, 75] },
+    { id: "mimiku", desktop: [562, 274, 123], phone: [264, 299, 95] },
+    { id: "sign", desktop: [700, 327, 70], phone: [316, 366, 62] },
+  ],
+  lighting: {
+    desktop: { center: [510, 326], radius: [248, 155] },
+    phone: { center: [202, 347], radius: [205, 166] },
+    backgroundGain: 0.76,
+    bands: [0.23, 0.15, 0.08, 0.03],
+  },
+};

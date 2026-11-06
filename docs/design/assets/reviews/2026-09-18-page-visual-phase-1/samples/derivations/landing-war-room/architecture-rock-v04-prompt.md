@@ -1,0 +1,7 @@
+# architecture-rock-v04 — submitted ImageGen prompt
+
+Mode: built-in ImageGen. Review-only, awaiting-calibration.
+
+Parent/reference: architecture-b-v03-source.png · 52ff5a37ed6c8d4f1b4d51877227db758107d90056ac2a854b503cf4d1e8f2a1
+
+Use case: precise-object-edit. Asset type: layered pixel-art Landing room architecture, landscape 16:9. Image 1 is the edit target: the warm enclosed B old-vault room. Image 2 is only pixel-edge/grain reference (warrior), never insert the warrior. Change ONLY the large central rear wall from rectangular masonry blocks into a near, relatively flat NATURAL ROCK WALL: broad irregular quiet warm-brown rock faces with a few shallow seams, no uniform bricks, no pointed cones, no distant cave vista. Keep exact side-view framing, low rounded ceiling silhouette, left built masonry doorway and steps, right natural rock doorway and steps, level playable floor elevation and foreground cross-section. Room feels cozy, safe, inhabited, warm ochre campfire light, not scary. Central upper wall is quiet and suitable for a separate hanging sign above the party. Clean deliberately grouped small pixel clusters, limited material tones, stepped outlines, broken highlights, match the reference warrior pixel-art clarity, no painterly gradients, no noisy procedural texture. Preserve floor position and room proportions. No characters, fire, props, signs, hooks, cords, letters, text or UI: these are separate layers. Avoid deep black cracks, cathedral depth, spikes, distant stalactites, realism, excessive scattered rocks.
