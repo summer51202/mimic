@@ -1,0 +1,226 @@
+{
+  "schema": "mimic-landing-prop-position/v1",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "unit": "logical-px",
+  "frame": {
+    "id": "phone",
+    "width": 390,
+    "height": 600
+  },
+  "scene": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/phone-architecture.png",
+    "sha256": "8cc96d82481db4d6abc81efd4f22c1879d547ed9f7ae225ca90046d6bb958bd3",
+    "width": 390,
+    "height": 600
+  },
+  "guidance": {
+    "method": "conservative-review-rectangles/v1",
+    "floor": {
+      "x": 0,
+      "y": 290,
+      "width": 390,
+      "height": 210
+    },
+    "dialogue": {
+      "x": 0,
+      "y": 432,
+      "width": 390,
+      "height": 168.00000000000003
+    },
+    "forbidden": [
+      {
+        "id": "warrior-face",
+        "x": 135,
+        "y": 267,
+        "width": 34,
+        "height": 37
+      },
+      {
+        "id": "ranger-face",
+        "x": 276,
+        "y": 219,
+        "width": 37,
+        "height": 40
+      },
+      {
+        "id": "fire",
+        "x": 212,
+        "y": 306,
+        "width": 75,
+        "height": 76
+      },
+      {
+        "id": "mimiku",
+        "x": 289,
+        "y": 316,
+        "width": 95,
+        "height": 93
+      },
+      {
+        "id": "sign",
+        "x": 15,
+        "y": 355,
+        "width": 62,
+        "height": 59
+      },
+      {
+        "id": "wordmark",
+        "x": 130,
+        "y": 59,
+        "width": 148,
+        "height": 98
+      }
+    ]
+  },
+  "fixed": [
+    {
+      "id": "bats",
+      "x": 275,
+      "y": 56,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+      "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+      "width": 54,
+      "height": 50,
+      "depth": -100
+    },
+    {
+      "id": "groundLight",
+      "x": 132,
+      "y": 346,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/groundLight.png",
+      "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7",
+      "width": 215,
+      "height": 35,
+      "depth": -100
+    },
+    {
+      "id": "ranger",
+      "x": 245,
+      "y": 198,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/ranger.png",
+      "sha256": "fd2297f9f7cf17d3bdd187a981cdf79987642a732d49caa5d46f546d0d8c5ca9",
+      "width": 122,
+      "height": 106,
+      "depth": 304
+    },
+    {
+      "id": "warrior",
+      "x": 101,
+      "y": 235,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/warrior.png",
+      "sha256": "fede3c20ad2f3f96a1f909a379019daeee1f85e1417cced2736420cd554cb85b",
+      "width": 104,
+      "height": 117,
+      "depth": 352
+    },
+    {
+      "id": "fire",
+      "x": 212,
+      "y": 306,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/fire.png",
+      "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+      "width": 75,
+      "height": 76,
+      "depth": 382
+    },
+    {
+      "id": "mimiku",
+      "x": 289,
+      "y": 316,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mimiku.png",
+      "sha256": "1c3cd662a4bf6df2ef7e1567f20d805370d0f96b48ea17666af8d469f71a8693",
+      "width": 95,
+      "height": 93,
+      "depth": 409
+    },
+    {
+      "id": "sign",
+      "x": 15,
+      "y": 355,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/sign.png",
+      "sha256": "8d40ae39e9ebb21e886b1782d48b63d0e97acc7fb0eddb478e95df144e487845",
+      "width": 62,
+      "height": 59,
+      "depth": 414
+    },
+    {
+      "id": "wordmark",
+      "x": 130,
+      "y": 59,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/phone-staggered.png",
+      "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c",
+      "width": 148,
+      "height": 98,
+      "depth": -90
+    }
+  ],
+  "layerOrder": [
+    "bats",
+    "groundLight",
+    "wordmark",
+    "ranger",
+    "warrior",
+    "fire",
+    "mimiku",
+    "mapCrate",
+    "sign"
+  ],
+  "objects": [
+    {
+      "id": "mapCrate",
+      "anchor": "top-left",
+      "x": 157,
+      "y": 368,
+      "origin": {
+        "x": 157,
+        "y": 368
+      },
+      "ground": {
+        "x": 196.5,
+        "y": 412
+      },
+      "width": 79,
+      "height": 44,
+      "opacity": 1,
+      "variant": "default",
+      "source": {
+        "id": "mapCrate",
+        "x": 20,
+        "y": 286,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mapCrate.png",
+        "sha256": "7d09f589534d7ebb842d1ab4c537f90d8feef101c6e68128907869aa07952b18",
+        "width": 79,
+        "height": 44,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 79,
+          "height": 44
+        }
+      },
+      "variants": {
+        "default": {
+          "id": "mapCrate",
+          "x": 20,
+          "y": 286,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mapCrate.png",
+          "sha256": "7d09f589534d7ebb842d1ab4c537f90d8feef101c6e68128907869aa07952b18",
+          "width": 79,
+          "height": 44,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 79,
+            "height": 44
+          }
+        }
+      },
+      "depth": 412,
+      "layerIndex": 7,
+      "warnings": [
+        "occludes:fire"
+      ]
+    }
+  ]
+}

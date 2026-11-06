@@ -1,0 +1,98 @@
+{
+  "schema": "mimic-pressure-plate-stair-guide/v1",
+  "source": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architecture-desktop-v01-source.png",
+    "sha256": "a71491b85b4293c845bd09d0b97173ed90b35ef96a8fb54d277e673b27f2ae70",
+    "width": 1672,
+    "height": 941
+  },
+  "architectureCrop": {
+    "x": 0,
+    "y": 0,
+    "width": 1672,
+    "height": 941
+  },
+  "coordinateSpace": [
+    960,
+    540
+  ],
+  "method": "Manual left upper corner of each of the lowest three visible treads; least-squares x against upward y; positive means rightward on ascent. Pixel selection uncertainty approximately ±1 logical px.",
+  "points": [
+    [
+      857,
+      326
+    ],
+    [
+      871,
+      312
+    ],
+    [
+      883,
+      299
+    ]
+  ],
+  "adjacentSlopes": [
+    1,
+    0.9230769230769231
+  ],
+  "slope": 0.9634369287020111,
+  "guide": {
+    "canvas": [
+      96,
+      18
+    ],
+    "frontWidth": 80,
+    "depthRise": 17,
+    "rightShift": 16,
+    "slope": 0.9411764705882353,
+    "vertices": [
+      [
+        16,
+        0
+      ],
+      [
+        95,
+        0
+      ],
+      [
+        79,
+        17
+      ],
+      [
+        0,
+        17
+      ]
+    ],
+    "divisions": [
+      26,
+      53
+    ],
+    "texture": false
+  },
+  "outputs": {
+    "architecture": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/architecture.png",
+      "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931",
+      "width": 960,
+      "height": 540
+    },
+    "stairMeasurement": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/stairMeasurement.png",
+      "sha256": "e90abcf1d21706af374ef7b7da8ea64ed50c1f39528d3b690fa23ef89676e747",
+      "width": 600,
+      "height": 440
+    },
+    "outline": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/outline.png",
+      "sha256": "5b1167ddbaedfc4d8944e445a63fd41c7627fd93ee6a61c42e899237d2ce091a",
+      "width": 96,
+      "height": 18
+    },
+    "outline8x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/outline8x.png",
+      "sha256": "01fccba77d45426054d3e726ee525706c2cc230573f3fb96c53dd939209dbec0",
+      "width": 768,
+      "height": 144
+    }
+  }
+}

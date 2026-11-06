@@ -1,0 +1,7 @@
+Use case: precise-object-edit. Image1 is the pressure plate to redraw in a new shape. Image2 is a flat outline guide giving the REQUIRED outer shape and slab divisions. Image3 is the actual cave scene: copy the shape and angle of its FLOOR STONE TILES; do not reproduce the scene.
+
+Keep from Image1: the warm ochre/orange-umber stone colours and values, thin raised rim, harmless ancient-remnant character, pixel grammar and genuine transparent background.
+
+Change the SHAPE: the plate is a flat stone slab set into the floor in the same projection as the floor tiles in Image3: a wide, flat DIAMOND (rhombus) with a horizontal long diagonal, pointed left and right ends and pointed top and bottom vertices, left-right symmetric, about 2.5 times wider than tall, following Image2 exactly. All four edges are slanted; there are NO horizontal or vertical edges. Divide it into fitted stone pieces whose seams run parallel to the diamond's edges, like the floor tiles. Put one continuous dark recessed gap along BOTH lower edges facing the viewer (lower-left and lower-right), so the plate looks like it would sink when stepped on. Reduce the dark blotchy patches on the stone surface to a few subtle stone marks so it reads as worn stone, not rusty metal.
+
+No skulls, arrows, hearts, warning signs, runes, glow, text or extra props. Hard square pixel edges, fine deliberate clusters, 2-3 tones per material, no blur, antialiasing, gradients or noise.

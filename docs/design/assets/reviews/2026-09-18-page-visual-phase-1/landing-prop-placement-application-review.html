@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Landing 整體場景視覺審核</title>
+<style>
+*{box-sizing:border-box} body{margin:auto;max-width:1024px;padding:16px;color:#f6e8d0;background:#1a1411;font:16px/1.5 system-ui,sans-serif}
+img{display:block;max-width:100%;height:auto;image-rendering:pixelated}
+.scene{position:relative;container-type:inline-size}.scene svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.guides{display:none}body:has(#show-guides:checked) .guides{display:block}
+.dialogue-preview{position:absolute;left:2%;right:2%;bottom:3%;height:19%;padding:1.4cqw 1.7cqw;border:2px solid #b79556;background:#211a18f2;font-size:1.6cqw}
+body:has(#show-guides:checked) .dialogue-preview{display:flex;align-items:center;justify-content:space-between;gap:1cqw}
+.dialogue-preview strong{color:#efc56c}.dialogue-preview span{background:#b68137;color:#211a18;padding:.7cqw 1.3cqw;white-space:nowrap}
+.phone .dialogue-preview{bottom:2%;height:26%;font-size:3cqw}
+.dialogue{fill:#59baff40;stroke:#b6ddff}.warning{fill:#ff90552a;stroke:#ffad75}
+svg text{fill:#fff;stroke:#21150c;stroke-width:3;paint-order:stroke;font-size:13px}circle{fill:#caff89;stroke:#241910}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:end}
+figure{margin:0;padding:8px;background:#2b211b;border-radius:6px}figcaption{margin-top:6px}
+</style>
+<body>
+<h1>Landing 整體場景視覺審核</h1>
+<p>Phase 1 · 待視覺審核。寶箱與木箱皆由高解析來源重新取樣。</p>
+<label><input type="checkbox" id="show-guides"> 顯示對話框與警示</label>
+<section><h2>桌機 · 關箱</h2><div class="scene desktop" style="max-width:960px">
+      <img src="samples/landing-prop-placement-application/desktop-closed.png" alt="桌機 · 關箱" width="960" height="540">
+      <div class="guides dialogue-preview"><div><strong>Mimiku</strong><br>先在火邊歇一會兒。下一段冒險，我陪你。</div><span>開始冒險 ↓</span></div>
+      <svg class="guides" viewBox="0 0 960 540" aria-hidden="true">
+        <rect x="0" y="421.2" width="960" height="118.8" class="dialogue"/>
+        <g><rect x="400" y="224" width="45" height="50" class="warning"/><text x="402" y="236">warrior-face</text></g><g><rect x="640" y="211" width="47" height="48" class="warning"/><text x="642" y="223">ranger-face</text></g><g><rect x="486" y="272" width="103" height="104" class="warning"/><text x="488" y="284">fire</text></g><g><rect x="610" y="282" width="123" height="120" class="warning"/><text x="612" y="294">mimiku</text></g><g><rect x="742" y="327" width="70" height="67" class="warning"/><text x="744" y="339">sign</text></g><g><rect x="376" y="100" width="288" height="84" class="warning"/><text x="378" y="112">wordmark</text></g>
+        <text x="8" y="441.2">對話框範圍</text>
+        <circle cx="209.5" cy="371" r="4"/>
+      </svg></div>
+      
+    </section>
+<section><h2>桌機 · 開箱</h2><div class="scene desktop" style="max-width:960px">
+      <img src="samples/landing-prop-placement-application/desktop-open.png" alt="桌機 · 開箱" width="960" height="540">
+      <div class="guides dialogue-preview"><div><strong>Mimiku</strong><br>先在火邊歇一會兒。下一段冒險，我陪你。</div><span>開始冒險 ↓</span></div>
+      <svg class="guides" viewBox="0 0 960 540" aria-hidden="true">
+        <rect x="0" y="421.2" width="960" height="118.8" class="dialogue"/>
+        <g><rect x="400" y="224" width="45" height="50" class="warning"/><text x="402" y="236">warrior-face</text></g><g><rect x="640" y="211" width="47" height="48" class="warning"/><text x="642" y="223">ranger-face</text></g><g><rect x="486" y="272" width="103" height="104" class="warning"/><text x="488" y="284">fire</text></g><g><rect x="610" y="282" width="123" height="120" class="warning"/><text x="612" y="294">mimiku</text></g><g><rect x="742" y="327" width="70" height="67" class="warning"/><text x="744" y="339">sign</text></g><g><rect x="376" y="100" width="288" height="84" class="warning"/><text x="378" y="112">wordmark</text></g>
+        <text x="8" y="441.2">對話框範圍</text>
+        <circle cx="209.5" cy="371" r="4"/>
+      </svg></div>
+      
+    </section>
+<section><h2>手機</h2><div class="scene phone" style="max-width:390px">
+      <img src="samples/landing-prop-placement-application/phone.png" alt="手機" width="390" height="600">
+      <div class="guides dialogue-preview"><div><strong>Mimiku</strong><br>先在火邊歇一會兒。下一段冒險，我陪你。</div><span>開始冒險 ↓</span></div>
+      <svg class="guides" viewBox="0 0 390 600" aria-hidden="true">
+        <rect x="0" y="432" width="390" height="168.00000000000003" class="dialogue"/>
+        <g><rect x="135" y="267" width="34" height="37" class="warning"/><text x="137" y="279">warrior-face</text></g><g><rect x="276" y="219" width="37" height="40" class="warning"/><text x="278" y="231">ranger-face</text></g><g><rect x="212" y="306" width="75" height="76" class="warning"/><text x="214" y="318">fire</text></g><g><rect x="289" y="316" width="95" height="93" class="warning"/><text x="291" y="328">mimiku</text></g><g><rect x="15" y="355" width="62" height="59" class="warning"/><text x="17" y="367">sign</text></g><g><rect x="130" y="59" width="148" height="98" class="warning"/><text x="132" y="71">wordmark</text></g>
+        <text x="8" y="452">對話框範圍</text>
+        <circle cx="196.5" cy="412" r="4"/>
+      </svg></div>
+      <p class="guides">原擺位工具警示：occludes:fire（以保守矩形判斷）</p>
+    </section>
+<h2>寶箱八格 · v04 與新尺寸（最高 2× 顯示）</h2>
+<section><h3>closed</h3><div class="pair">
+    <figure><img src="samples/treasure-chest-states-v04/closed-sprite.png" alt="closed 原尺寸" width="208" height="240"><figcaption>原尺寸 104 × 120</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/chest-closed.png" alt="closed 套用後" width="312" height="360"><figcaption>套用後 156 × 180</figcaption></figure>
+  </div></section><section><h3>latch-release</h3><div class="pair">
+    <figure><img src="samples/treasure-chest-states-v04/latch-release-sprite.png" alt="latch-release 原尺寸" width="208" height="240"><figcaption>原尺寸 104 × 120</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/chest-latch-release.png" alt="latch-release 套用後" width="312" height="360"><figcaption>套用後 156 × 180</figcaption></figure>
+  </div></section><section><h3>unlatched</h3><div class="pair">
+    <figure><img src="samples/treasure-chest-states-v04/unlatched-sprite.png" alt="unlatched 原尺寸" width="208" height="240"><figcaption>原尺寸 104 × 120</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/chest-unlatched.png" alt="unlatched 套用後" width="312" height="360"><figcaption>套用後 156 × 180</figcaption></figure>
+  </div></section><section><h3>cracked</h3><div class="pair">
+    <figure><img src="samples/treasure-chest-states-v04/cracked-sprite.png" alt="cracked 原尺寸" width="208" height="240"><figcaption>原尺寸 104 × 120</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/chest-cracked.png" alt="cracked 套用後" width="312" height="360"><figcaption>套用後 156 × 180</figcaption></figure>
+  </div></section><section><h3>half-open</h3><div class="pair">
+    <figure><img src="samples/treasure-chest-states-v04/half-open-sprite.png" alt="half-open 原尺寸" width="208" height="240"><figcaption>原尺寸 104 × 120</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/chest-half-open.png" alt="half-open 套用後" width="312" height="360"><figcaption>套用後 156 × 180</figcaption></figure>
+  </div></section><section><h3>opening-wide</h3><div class="pair">
+    <figure><img src="samples/treasure-chest-states-v04/opening-wide-sprite.png" alt="opening-wide 原尺寸" width="208" height="240"><figcaption>原尺寸 104 × 120</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/chest-opening-wide.png" alt="opening-wide 套用後" width="312" height="360"><figcaption>套用後 156 × 180</figcaption></figure>
+  </div></section><section><h3>near-open</h3><div class="pair">
+    <figure><img src="samples/treasure-chest-states-v04/near-open-sprite.png" alt="near-open 原尺寸" width="208" height="240"><figcaption>原尺寸 104 × 120</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/chest-near-open.png" alt="near-open 套用後" width="312" height="360"><figcaption>套用後 156 × 180</figcaption></figure>
+  </div></section><section><h3>open</h3><div class="pair">
+    <figure><img src="samples/treasure-chest-states-v04/open-sprite.png" alt="open 原尺寸" width="208" height="240"><figcaption>原尺寸 104 × 120</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/chest-open.png" alt="open 套用後" width="312" height="360"><figcaption>套用後 156 × 180</figcaption></figure>
+  </div></section>
+<h2>地圖木箱 · 舊／新</h2>
+<section><h3>桌機</h3><div class="pair">
+    <figure><img src="samples/landing-warm-rest/layers/A-desktop/mapCrate.png" alt="桌機 原尺寸" width="226" height="126"><figcaption>原尺寸 113 × 63</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/desktop-crate.png" alt="桌機 套用後" width="170" height="94"><figcaption>套用後 85 × 47</figcaption></figure>
+  </div></section>
+<section><h3>手機</h3><div class="pair">
+    <figure><img src="samples/landing-warm-rest/layers/A-phone/mapCrate.png" alt="手機 原尺寸" width="158" height="88"><figcaption>原尺寸 79 × 44</figcaption></figure>
+    <figure><img src="samples/landing-prop-placement-application/phone-crate.png" alt="手機 套用後" width="118" height="66"><figcaption>套用後 59 × 33</figcaption></figure>
+  </div></section>
+</body></html>

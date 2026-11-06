@@ -1,0 +1,282 @@
+{
+  "schema": "mimic-pressure-plate-v02-attempt-04-review/v1",
+  "decision": "awaiting-calibration",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "stage": "C: pressure plate appearance only; stop before A",
+  "lineage": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/lineage-attempt-04.json",
+    "sha256": "d2269cc9943fa043443b6e7c366650fb5c3cfe01e6443e0442fd11c277a34614"
+  },
+  "inputs": {
+    "parent": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement.manifest.json",
+      "sha256": "df90822ccb7fdd671899f08ec70c0d1535f16393d5b0ca4007aac0642d7eb1b5"
+    },
+    "chest": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/ancient-treasure-chest-v04.manifest.json",
+      "sha256": "10125e1224a4f2ff24f92ca764e6a627ecf716c0370546422fd9d914a117061a"
+    },
+    "raster": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-chest-raster.mjs",
+      "sha256": "e65cabaefeba0532516c0d8ee9576c838e5eb40d53045871ff7dfdcc978cc08a"
+    },
+    "spec": {
+      "path": "docs/superpowers/specs/2026-11-02-landing-prop-placement-and-pressure-plate-design.md",
+      "sha256": "9cbe50450464e8781e95006e8c1c65199e0e290cd74c15d77e5a9e5d7c14fa37"
+    },
+    "v01": {
+      "id": "pressurePlate",
+      "x": 850,
+      "y": 339,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/pressurePlate.png",
+      "sha256": "75212a50c132fb18dc6b6b7ca817fd9bc24c3bf3772d88a87152035d0973d6c2",
+      "width": 67,
+      "height": 14
+    },
+    "phone": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-logical.png",
+      "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+      "width": 390,
+      "height": 600
+    },
+    "previous": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/pressure-plate-v02.manifest.json",
+      "sha256": "ac5fa85d6548eca0f401c0402afeb17479ab95ab183c4c7f500ebaf3b485acee"
+    },
+    "source": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-04-retry-01.png",
+      "sha256": "6186839b101bbad448f6fe22e181652a61ed3168942f3490226b413aab5fab16"
+    },
+    "referenceScene": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v04/closed-logical.png",
+      "sha256": "651306bb9bc6243402c2cca45161507092cf073b034277339c5682ac919d5e2d",
+      "width": 960,
+      "height": 540
+    },
+    "composer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/compose-pressure-plate-attempt-04.mjs",
+      "sha256": "8bcc539818d953c7a6c77131848cfa273b448470b7cd9e9d9966c811fddcba8b"
+    }
+  },
+  "geometry": {
+    "origin": [
+      850,
+      339
+    ],
+    "canvas": [
+      80,
+      18
+    ],
+    "sceneOpacity": 0.85,
+    "sourceBounds": {
+      "x": 76,
+      "y": 277,
+      "width": 1759,
+      "height": 337
+    },
+    "uniformScale": 0.04548038658328596,
+    "sampledHeight": 16,
+    "canvasOffset": [
+      0,
+      2
+    ],
+    "alphaThreshold": 200,
+    "crop": {
+      "x": 832,
+      "y": 323,
+      "width": 110,
+      "height": 46
+    }
+  },
+  "changedPixels": 1252,
+  "colorContract": {
+    "method": "fixed-inner-slabs-and-2px-floor-ring/v1",
+    "plateRect": [
+      854,
+      342,
+      72,
+      9
+    ],
+    "floorOuterRect": [
+      848,
+      337,
+      84,
+      22
+    ],
+    "floorExclusion": [
+      850,
+      339,
+      80,
+      18
+    ],
+    "thresholds": {
+      "saturationMin": 0.58,
+      "valueDelta": [
+        0.02,
+        0.08
+      ]
+    },
+    "candidate": {
+      "plate": {
+        "s": 0.6962084095832125,
+        "v": 0.6001936577099967,
+        "n": 648
+      },
+      "floor": {
+        "s": 0.7143483417139103,
+        "v": 0.5433583237216455,
+        "n": 408
+      },
+      "delta": 0.05683533398835117
+    },
+    "negativeControl": {
+      "plate": {
+        "s": 0.4614683439948425,
+        "v": 0.5732086661825224,
+        "n": 648
+      },
+      "floor": {
+        "s": 0.7143483417139103,
+        "v": 0.5433583237216455,
+        "n": 408
+      },
+      "delta": 0.029850342460876922
+    }
+  },
+  "frontGap": {
+    "row": 13,
+    "start": 4,
+    "length": 73,
+    "coverage": 0.9125,
+    "criteria": {
+      "rows": [
+        9,
+        14
+      ],
+      "maxRed": 65,
+      "warmOrder": "r>=g>=b",
+      "minCoverage": 0.8
+    }
+  },
+  "outputs": {
+    "sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/sprite.png",
+      "sha256": "e5d2ee7423fdd0c8bd75c99ca66ce245ec524d19d4325e901453a9d9175e3caf",
+      "width": 80,
+      "height": 18
+    },
+    "zoom": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/zoom.png",
+      "sha256": "40000479c0f60807c78b106e7eb1e35674f9600d89a0ca83a7617d901f4b31ea",
+      "width": 320,
+      "height": 72
+    },
+    "spriteGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/spriteGray.png",
+      "sha256": "64d7156de631bd1be45efe1172e89dae7950cebabec0ef400070fa3f239d9ae6",
+      "width": 80,
+      "height": 18
+    },
+    "zoomGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/zoomGray.png",
+      "sha256": "c442db43c61f77086ae8e24a116fcda1378af29f30a4cfb296a9d6cac699a541",
+      "width": 320,
+      "height": 72
+    },
+    "v01Zoom": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/v01Zoom.png",
+      "sha256": "a531a7cc98dd37f43f67ab15d5a61e0694218b68e50a3a6e6dcae6305b62b9e8",
+      "width": 268,
+      "height": 56
+    },
+    "v01Gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/v01Gray.png",
+      "sha256": "b62cef7b36813fe7af60ef9a18b6636eb07b41bd28b591bdc97e6e4448fda4fe",
+      "width": 67,
+      "height": 14
+    },
+    "scene": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/scene.png",
+      "sha256": "a74e302b42b063641d66290b8b38a18ec4a33b6d85de6d020904faa3d99b4e07",
+      "width": 960,
+      "height": 540
+    },
+    "sceneGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/sceneGray.png",
+      "sha256": "8525043a5a91da05f47539b1dd2b041ea0a4b981acacfe38de97014a24fef169",
+      "width": 960,
+      "height": 540
+    },
+    "context": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/context.png",
+      "sha256": "0e170b4319c1f388c70728b6981ae94b89c09239d7d4ee8e76fbe35339b92589",
+      "width": 110,
+      "height": 46
+    },
+    "contextZoom": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/contextZoom.png",
+      "sha256": "bb7a84b898f48b98ba9590c5c4d94ce3aaa3ce4bc008af8a040779cc8e86b8d0",
+      "width": 440,
+      "height": 184
+    },
+    "contextGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/contextGray.png",
+      "sha256": "45ffea1baa5920cf27a06ece48ecc51d0d9c1e57182a72f9ec510270bc7b81e9",
+      "width": 440,
+      "height": 184
+    },
+    "v01Context": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/v01Context.png",
+      "sha256": "343ef63c784d4e3d86deb79ab6e93fbb3aa5b876e7c103cd18925d6763fa9990",
+      "width": 440,
+      "height": 184
+    },
+    "attempt03Sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/attempt03Sprite.png",
+      "sha256": "66a5cd8301a5a739f9fa3bb256ffc2683eb4caecc1f1a7769dbf2eeb1e34ca51",
+      "width": 80,
+      "height": 18
+    },
+    "attempt03Zoom": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/attempt03Zoom.png",
+      "sha256": "76dd367fdaad6d2102061e5ff32a083c39e08f22fbce67396628666ed06eb831",
+      "width": 320,
+      "height": 72
+    },
+    "attempt03Gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/attempt03Gray.png",
+      "sha256": "b65697437b5873d126d09f599d159b8f025ed0782d4ac69b4997fea0b42ba2e2",
+      "width": 320,
+      "height": 72
+    },
+    "attempt03Context": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/attempt03Context.png",
+      "sha256": "5cc5df58c956cc47cd7f8146a06dafb0cd732fdd110b7665151250b4422b003d",
+      "width": 440,
+      "height": 184
+    },
+    "attempt03Scene": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/attempt03Scene.png",
+      "sha256": "639a23a54cc9e8cd0f66876db5986a5d475f768f6636a7e97b900a36689e7625",
+      "width": 960,
+      "height": 540
+    },
+    "frontEdge": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/frontEdge.png",
+      "sha256": "9a7c738395d60fd83205daf42aea1d96d15073e7e3b43cecadd5acb74b017872",
+      "width": 640,
+      "height": 64
+    },
+    "attempt03FrontEdge": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-v02-attempt-04/attempt03FrontEdge.png",
+      "sha256": "7e026834a96f1a4fc2789283105486d39f533a94c39d111a5dd0d82e5b5a168a",
+      "width": 640,
+      "height": 64
+    }
+  },
+  "review": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/pressure-plate-v02-attempt-04-review.html",
+    "sha256": "66325ab2a17e08973d417449c6fb06ec03efa8194aebae7b53a8026cfc8c8339"
+  }
+}

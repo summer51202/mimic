@@ -1,0 +1,43 @@
+{
+  "role": "ImageGen tone guide only, never applied as a pixel recolouring operation",
+  "colours": [
+    [
+      154,
+      86,
+      44
+    ],
+    [
+      172,
+      103,
+      55
+    ],
+    [
+      136,
+      73,
+      35
+    ],
+    [
+      149,
+      81,
+      40
+    ],
+    [
+      132,
+      74,
+      43
+    ],
+    [
+      32,
+      15,
+      6
+    ]
+  ],
+  "meaning": [
+    "main stone",
+    "worn edge highlight",
+    "stone shade",
+    "rim",
+    "subtle wear",
+    "near-black mechanism groove"
+  ]
+}

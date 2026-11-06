@@ -1,0 +1,6305 @@
+{
+  "schema": "mimic-pressure-plate-attempt-06-review/v1",
+  "decision": "awaiting-calibration",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "stage": "C: appearance review; stop before A",
+  "completionDate": "2026-11-03",
+  "resumedExistingOnly": true,
+  "newImageCallsOnResume": 0,
+  "lineage": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/lineage.json",
+    "sha256": "4bed94642541bb3f27d9e8f633283d20b25e1aed4736eb4fee8f056cc438ac2d"
+  },
+  "measurement": {
+    "schema": "mimic-pressure-plate-floor-diamond-guide/v1",
+    "source": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architecture-desktop-v01-source.png",
+      "sha256": "a71491b85b4293c845bd09d0b97173ed90b35ef96a8fb54d277e673b27f2ae70",
+      "width": 1672,
+      "height": 941
+    },
+    "architectureCrop": {
+      "x": 0,
+      "y": 0,
+      "width": 1672,
+      "height": 941
+    },
+    "coordinateSpace": [
+      960,
+      540
+    ],
+    "method": "Manual top/right/bottom/left endpoints of worn visible tile boundaries; straight chords, dy/dx for each edge; all 10 tiles and all 40 edges equally weighted. Approximate endpoint uncertainty ±2 logical px. No stair measurements.",
+    "tiles": [
+      {
+        "id": "N1",
+        "zone": "near",
+        "vertices": [
+          [
+            759,
+            407
+          ],
+          [
+            800,
+            420
+          ],
+          [
+            758,
+            441
+          ],
+          [
+            719,
+            424
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.425,
+          "upperRight": 0.3170731707317073,
+          "lowerRight": -0.5,
+          "lowerLeft": 0.4358974358974359
+        },
+        "width": 81,
+        "height": 34,
+        "ratio": 2.3823529411764706
+      },
+      {
+        "id": "N2",
+        "zone": "near",
+        "vertices": [
+          [
+            842,
+            426
+          ],
+          [
+            889,
+            440
+          ],
+          [
+            843,
+            457
+          ],
+          [
+            792,
+            438
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.24,
+          "upperRight": 0.2978723404255319,
+          "lowerRight": -0.3695652173913043,
+          "lowerLeft": 0.37254901960784315
+        },
+        "width": 97,
+        "height": 31,
+        "ratio": 3.129032258064516
+      },
+      {
+        "id": "N3",
+        "zone": "near",
+        "vertices": [
+          [
+            788,
+            376
+          ],
+          [
+            820,
+            389
+          ],
+          [
+            789,
+            403
+          ],
+          [
+            756,
+            390
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.4375,
+          "upperRight": 0.40625,
+          "lowerRight": -0.45161290322580644,
+          "lowerLeft": 0.3939393939393939
+        },
+        "width": 64,
+        "height": 27,
+        "ratio": 2.3703703703703702
+      },
+      {
+        "id": "N4",
+        "zone": "near",
+        "vertices": [
+          [
+            878,
+            371
+          ],
+          [
+            905,
+            381
+          ],
+          [
+            879,
+            395
+          ],
+          [
+            850,
+            384
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.4642857142857143,
+          "upperRight": 0.37037037037037035,
+          "lowerRight": -0.5384615384615384,
+          "lowerLeft": 0.3793103448275862
+        },
+        "width": 55,
+        "height": 24,
+        "ratio": 2.2916666666666665
+      },
+      {
+        "id": "N5",
+        "zone": "near",
+        "vertices": [
+          [
+            733,
+            369
+          ],
+          [
+            767,
+            381
+          ],
+          [
+            734,
+            398
+          ],
+          [
+            701,
+            385
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.5,
+          "upperRight": 0.35294117647058826,
+          "lowerRight": -0.5151515151515151,
+          "lowerLeft": 0.3939393939393939
+        },
+        "width": 66,
+        "height": 29,
+        "ratio": 2.2758620689655173
+      },
+      {
+        "id": "M1",
+        "zone": "middle",
+        "vertices": [
+          [
+            407,
+            373
+          ],
+          [
+            457,
+            384
+          ],
+          [
+            418,
+            399
+          ],
+          [
+            374,
+            387
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.42424242424242425,
+          "upperRight": 0.22,
+          "lowerRight": -0.38461538461538464,
+          "lowerLeft": 0.2727272727272727
+        },
+        "width": 83,
+        "height": 26,
+        "ratio": 3.1923076923076925
+      },
+      {
+        "id": "M2",
+        "zone": "middle",
+        "vertices": [
+          [
+            452,
+            411
+          ],
+          [
+            480,
+            419
+          ],
+          [
+            458,
+            432
+          ],
+          [
+            430,
+            421
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.45454545454545453,
+          "upperRight": 0.2857142857142857,
+          "lowerRight": -0.5909090909090909,
+          "lowerLeft": 0.39285714285714285
+        },
+        "width": 50,
+        "height": 21,
+        "ratio": 2.380952380952381
+      },
+      {
+        "id": "M3",
+        "zone": "middle",
+        "vertices": [
+          [
+            425,
+            428
+          ],
+          [
+            475,
+            443
+          ],
+          [
+            430,
+            462
+          ],
+          [
+            380,
+            444
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.35555555555555557,
+          "upperRight": 0.3,
+          "lowerRight": -0.4222222222222222,
+          "lowerLeft": 0.36
+        },
+        "width": 95,
+        "height": 34,
+        "ratio": 2.7941176470588234
+      },
+      {
+        "id": "M4",
+        "zone": "middle",
+        "vertices": [
+          [
+            499,
+            431
+          ],
+          [
+            519,
+            439
+          ],
+          [
+            502,
+            448
+          ],
+          [
+            485,
+            439
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.5714285714285714,
+          "upperRight": 0.4,
+          "lowerRight": -0.5294117647058824,
+          "lowerLeft": 0.5294117647058824
+        },
+        "width": 34,
+        "height": 17,
+        "ratio": 2
+      },
+      {
+        "id": "M5",
+        "zone": "middle",
+        "vertices": [
+          [
+            343,
+            408
+          ],
+          [
+            364,
+            418
+          ],
+          [
+            337,
+            429
+          ],
+          [
+            314,
+            417
+          ]
+        ],
+        "slopes": {
+          "upperLeft": -0.3103448275862069,
+          "upperRight": 0.47619047619047616,
+          "lowerRight": -0.4074074074074074,
+          "lowerLeft": 0.5217391304347826
+        },
+        "width": 50,
+        "height": 21,
+        "ratio": 2.380952380952381
+      }
+    ],
+    "aggregate": {
+      "count": 10,
+      "meanAbsoluteSlope": 0.40927605776434434,
+      "meanRatio": 2.5197614406514814,
+      "meanWidth": 67.5,
+      "meanHeight": 26.4,
+      "negativeSlope": -0.44461297958670387,
+      "positiveSlope": 0.3739391359419847
+    },
+    "zones": {
+      "near": {
+        "count": 5,
+        "meanAbsoluteSlope": 0.40808597673628644,
+        "meanRatio": 2.4898568610487084,
+        "meanWidth": 72.6,
+        "meanHeight": 29,
+        "negativeSlope": -0.4441576888515879,
+        "positiveSlope": 0.3720142646209851
+      },
+      "middle": {
+        "count": 5,
+        "meanAbsoluteSlope": 0.4104661387924022,
+        "meanRatio": 2.5496660202542554,
+        "meanWidth": 62.4,
+        "meanHeight": 23.8,
+        "negativeSlope": -0.44506827032182006,
+        "positiveSlope": 0.37586400726298425
+      }
+    },
+    "annotations": {
+      "near": {
+        "x": 690,
+        "y": 350,
+        "width": 230,
+        "height": 120
+      },
+      "middle": {
+        "x": 300,
+        "y": 355,
+        "width": 230,
+        "height": 120
+      }
+    },
+    "tileComparison": {
+      "id": "M2",
+      "crop": {
+        "x": 426,
+        "y": 407,
+        "width": 59,
+        "height": 30
+      }
+    },
+    "guide": {
+      "canvas": [
+        85,
+        35
+      ],
+      "vertices": [
+        [
+          42,
+          0
+        ],
+        [
+          84,
+          17
+        ],
+        [
+          42,
+          34
+        ],
+        [
+          0,
+          17
+        ]
+      ],
+      "divisions": [
+        [
+          [
+            21,
+            8.5
+          ],
+          [
+            63,
+            25.5
+          ]
+        ],
+        [
+          [
+            63,
+            8.5
+          ],
+          [
+            21,
+            25.5
+          ]
+        ]
+      ],
+      "layout": "2x2 fitted diamonds",
+      "slope": 0.40476190476190477,
+      "diagonals": [
+        84,
+        34
+      ],
+      "ratio": 2.4705882352941178,
+      "referenceCenter": [
+        898,
+        348
+      ],
+      "origin": [
+        856,
+        331
+      ]
+    },
+    "outputs": {
+      "architecture": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/architecture.png",
+        "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931",
+        "width": 960,
+        "height": 540
+      },
+      "outline": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/outline.png",
+        "sha256": "7387b16e81f4944a058795136c48dd0b48ede9386d4c0834d39a99f944a33cfa",
+        "width": 85,
+        "height": 35
+      },
+      "outline8x": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/outline8x.png",
+        "sha256": "a428111007a91c2cc9a92c90e272742e9c017fed4546327ed7dd08f108b995f8",
+        "width": 680,
+        "height": 280
+      },
+      "nearAnnotated": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/nearAnnotated.png",
+        "sha256": "a7cc3e4efb3bc0293312ecff9573968d662b9eac1b04ae64806dae5b6bd486e9",
+        "width": 920,
+        "height": 480
+      },
+      "middleAnnotated": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/middleAnnotated.png",
+        "sha256": "91e1d222489983a4d62a173696d144f3f1fb7e8850900d2911caa185f54140c8",
+        "width": 920,
+        "height": 480
+      },
+      "realTile": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/realTile.png",
+        "sha256": "1a7f78ffa352f3e7b7f384719d36768f5ac2063e9192740005c96c86065e916a",
+        "width": 59,
+        "height": 30
+      },
+      "realTile4x": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/realTile4x.png",
+        "sha256": "16d5a198deb6987f4801edb20f1b62fefdd3c045ad63c8625f326d244d4f940e",
+        "width": 236,
+        "height": 120
+      }
+    }
+  },
+  "inputs": {
+    "spec": {
+      "path": "docs/superpowers/specs/2026-11-02-landing-prop-placement-and-pressure-plate-design.md",
+      "sha256": "e19d09c45cfbb7b7ba1c53d2d402ef038487a43ee92772ad9f1bf3b23667159b"
+    },
+    "parent": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement.manifest.json",
+      "sha256": "df90822ccb7fdd671899f08ec70c0d1535f16393d5b0ca4007aac0642d7eb1b5"
+    },
+    "chest": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/ancient-treasure-chest-v04.manifest.json",
+      "sha256": "10125e1224a4f2ff24f92ca764e6a627ecf716c0370546422fd9d914a117061a"
+    },
+    "previous": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/pressure-plate-attempt-05.manifest.json",
+      "sha256": "702e702665c4859b43e4a3b8100c97f56de698644645fba25baf204e20e3d204"
+    },
+    "referenceScene": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v04/closed-logical.png",
+      "sha256": "651306bb9bc6243402c2cca45161507092cf073b034277339c5682ac919d5e2d",
+      "width": 960,
+      "height": 540
+    },
+    "phone": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-logical.png",
+      "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+      "width": 390,
+      "height": 600
+    },
+    "raster": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-chest-raster.mjs",
+      "sha256": "e65cabaefeba0532516c0d8ee9576c838e5eb40d53045871ff7dfdcc978cc08a"
+    },
+    "contracts": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/pressure-plate-attempt-06-contracts.mjs",
+      "sha256": "b5513b2ace533f73c2ad5b3b44ddb49d05fedc137e96b9454e45e654b6a2b1df"
+    },
+    "preparationScript": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/prepare-pressure-plate-attempt-06.mjs",
+      "sha256": "3333e13efdfcee8a6e991d4e27af3ed45d27fa796edb92604ef2d89d0a807ddf"
+    },
+    "paletteDescription": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/palette-guide.json",
+      "sha256": "f9c8bb98aa37cb7591b01e3f6264ffc392533e21d31cc0d96fd0c09650598e1b"
+    },
+    "source": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/attempt-06-retry-04.png",
+      "sha256": "f95a1a7b3db580c2baa1aeaf1bb7d2cd501674cb17ad7a5255e921aaf157abcc"
+    },
+    "composer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/compose-pressure-plate-attempt-06.mjs",
+      "sha256": "3b5b08ee079406b92e4383e5f4a0a32f334c08fbdf45f272cca0d03823c3cd33"
+    },
+    "renderer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/render-pressure-plate-attempt-06.mjs",
+      "sha256": "b35821d8bd6c9f6bdd0d5e7cdbe644b9866fa59ced30710a57463fd24498417a"
+    }
+  },
+  "geometry": {
+    "canvas": [
+      85,
+      35
+    ],
+    "origin": [
+      856,
+      331
+    ],
+    "center": [
+      898,
+      348
+    ],
+    "opacity": 0.85,
+    "sceneOpacity": 0.85,
+    "sourceBounds": {
+      "x": 95,
+      "y": 21,
+      "width": 1768,
+      "height": 775
+    },
+    "uniformScale": 0.04516129032258064,
+    "sampledSize": [
+      80,
+      35
+    ],
+    "canvasOffset": [
+      2,
+      0
+    ],
+    "alphaThreshold": 200,
+    "previousCanvasCenter": [
+      898,
+      348
+    ],
+    "allowedChangeRect": [
+      850,
+      331,
+      96,
+      35
+    ],
+    "crop": {
+      "x": 824,
+      "y": 300,
+      "width": 128,
+      "height": 80
+    }
+  },
+  "changedPixels": 1661,
+  "changedVsAttempt05": 1850,
+  "selection": {
+    "priority": [
+      "attempt-06-retry-04",
+      "attempt-06-retry-03",
+      "attempt-06-retry-02",
+      "attempt-06-retry-01",
+      "attempt-06"
+    ],
+    "selected": "attempt-06-retry-04",
+    "candidates": [
+      {
+        "name": "attempt-06",
+        "source": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/attempt-06.png",
+          "sha256": "637e8ed040d4e9201c745a6bd3a6bfa420d8c7039ee3d956f551a707f80de7c8"
+        },
+        "fit": {
+          "sourceBounds": {
+            "x": 68,
+            "y": 50,
+            "width": 1818,
+            "height": 725
+          },
+          "uniformScale": 0.046754675467546754,
+          "sampledSize": [
+            85,
+            34
+          ],
+          "canvasOffset": [
+            0,
+            0
+          ],
+          "alphaThreshold": 200
+        },
+        "shape": {
+          "slopes": {
+            "upperLeft": -0.3623931623931624,
+            "upperRight": 0.36769230769230776,
+            "lowerLeft": 0.37435897435897436,
+            "lowerRight": -0.3646153846153846
+          },
+          "parallelDifferences": [
+            0.006094702297233982,
+            0.01780821917808201
+          ],
+          "apexHorizontalDifference": 0,
+          "diagonalVerticalDifference": 0,
+          "passes": true,
+          "target": 0.40927605776434434,
+          "vertices": {
+            "top": {
+              "x": 42.5,
+              "y": 0,
+              "span": 2
+            },
+            "bottom": {
+              "x": 42.5,
+              "y": 33,
+              "span": 6
+            },
+            "left": [
+              0,
+              17
+            ],
+            "right": [
+              84,
+              17
+            ]
+          },
+          "topHorizontalSpan": 2,
+          "fits": {
+            "upperLeft": {
+              "slope": -0.3623931623931624,
+              "samples": [
+                [
+                  9,
+                  13
+                ],
+                [
+                  10,
+                  13
+                ],
+                [
+                  11,
+                  12
+                ],
+                [
+                  12,
+                  12
+                ],
+                [
+                  13,
+                  12
+                ],
+                [
+                  14,
+                  11
+                ],
+                [
+                  15,
+                  11
+                ],
+                [
+                  16,
+                  11
+                ],
+                [
+                  17,
+                  10
+                ],
+                [
+                  18,
+                  10
+                ],
+                [
+                  19,
+                  10
+                ],
+                [
+                  20,
+                  9
+                ],
+                [
+                  21,
+                  9
+                ],
+                [
+                  22,
+                  8
+                ],
+                [
+                  23,
+                  8
+                ],
+                [
+                  24,
+                  8
+                ],
+                [
+                  25,
+                  7
+                ],
+                [
+                  26,
+                  7
+                ],
+                [
+                  27,
+                  7
+                ],
+                [
+                  28,
+                  6
+                ],
+                [
+                  29,
+                  6
+                ],
+                [
+                  30,
+                  6
+                ],
+                [
+                  31,
+                  5
+                ],
+                [
+                  32,
+                  5
+                ],
+                [
+                  33,
+                  4
+                ],
+                [
+                  34,
+                  4
+                ]
+              ]
+            },
+            "upperRight": {
+              "slope": 0.36769230769230776,
+              "samples": [
+                [
+                  51,
+                  4
+                ],
+                [
+                  52,
+                  5
+                ],
+                [
+                  53,
+                  5
+                ],
+                [
+                  54,
+                  5
+                ],
+                [
+                  55,
+                  6
+                ],
+                [
+                  56,
+                  6
+                ],
+                [
+                  57,
+                  6
+                ],
+                [
+                  58,
+                  7
+                ],
+                [
+                  59,
+                  7
+                ],
+                [
+                  60,
+                  8
+                ],
+                [
+                  61,
+                  8
+                ],
+                [
+                  62,
+                  8
+                ],
+                [
+                  63,
+                  9
+                ],
+                [
+                  64,
+                  9
+                ],
+                [
+                  65,
+                  9
+                ],
+                [
+                  66,
+                  10
+                ],
+                [
+                  67,
+                  10
+                ],
+                [
+                  68,
+                  10
+                ],
+                [
+                  69,
+                  11
+                ],
+                [
+                  70,
+                  11
+                ],
+                [
+                  71,
+                  12
+                ],
+                [
+                  72,
+                  12
+                ],
+                [
+                  73,
+                  12
+                ],
+                [
+                  74,
+                  13
+                ],
+                [
+                  75,
+                  13
+                ]
+              ]
+            },
+            "lowerLeft": {
+              "slope": 0.37435897435897436,
+              "samples": [
+                [
+                  9,
+                  21
+                ],
+                [
+                  10,
+                  21
+                ],
+                [
+                  11,
+                  22
+                ],
+                [
+                  12,
+                  22
+                ],
+                [
+                  13,
+                  23
+                ],
+                [
+                  14,
+                  23
+                ],
+                [
+                  15,
+                  23
+                ],
+                [
+                  16,
+                  24
+                ],
+                [
+                  17,
+                  24
+                ],
+                [
+                  18,
+                  24
+                ],
+                [
+                  19,
+                  25
+                ],
+                [
+                  20,
+                  25
+                ],
+                [
+                  21,
+                  26
+                ],
+                [
+                  22,
+                  26
+                ],
+                [
+                  23,
+                  26
+                ],
+                [
+                  24,
+                  27
+                ],
+                [
+                  25,
+                  27
+                ],
+                [
+                  26,
+                  27
+                ],
+                [
+                  27,
+                  28
+                ],
+                [
+                  28,
+                  28
+                ],
+                [
+                  29,
+                  29
+                ],
+                [
+                  30,
+                  29
+                ],
+                [
+                  31,
+                  29
+                ],
+                [
+                  32,
+                  30
+                ],
+                [
+                  33,
+                  30
+                ],
+                [
+                  34,
+                  30
+                ]
+              ]
+            },
+            "lowerRight": {
+              "slope": -0.3646153846153846,
+              "samples": [
+                [
+                  51,
+                  30
+                ],
+                [
+                  52,
+                  30
+                ],
+                [
+                  53,
+                  30
+                ],
+                [
+                  54,
+                  29
+                ],
+                [
+                  55,
+                  29
+                ],
+                [
+                  56,
+                  29
+                ],
+                [
+                  57,
+                  28
+                ],
+                [
+                  58,
+                  28
+                ],
+                [
+                  59,
+                  27
+                ],
+                [
+                  60,
+                  27
+                ],
+                [
+                  61,
+                  27
+                ],
+                [
+                  62,
+                  26
+                ],
+                [
+                  63,
+                  26
+                ],
+                [
+                  64,
+                  26
+                ],
+                [
+                  65,
+                  25
+                ],
+                [
+                  66,
+                  25
+                ],
+                [
+                  67,
+                  24
+                ],
+                [
+                  68,
+                  24
+                ],
+                [
+                  69,
+                  24
+                ],
+                [
+                  70,
+                  23
+                ],
+                [
+                  71,
+                  23
+                ],
+                [
+                  72,
+                  23
+                ],
+                [
+                  73,
+                  22
+                ],
+                [
+                  74,
+                  22
+                ],
+                [
+                  75,
+                  22
+                ]
+              ]
+            }
+          },
+          "method": "alpha>=200 column extrema; least-squares dy/dx over central20–80% of each half-edge; opposite pairs compared relative to larger absolute slope",
+          "thresholds": {
+            "relativeSlopeTolerance": 0.2,
+            "parallelDifference": 0.15,
+            "apexHorizontalDifference": 2,
+            "diagonalVerticalDifference": 2
+          }
+        },
+        "colour": {
+          "plate": {
+            "s": 0.7962864862129525,
+            "v": 0.6617663817663815,
+            "n": 585
+          },
+          "floor": {
+            "s": 0.6990916313040096,
+            "v": 0.5399351676154337,
+            "n": 496
+          },
+          "delta": 0.12183121415094778
+        },
+        "gaps": {
+          "left": {
+            "start": 0,
+            "end": 43,
+            "longestColumns": 27,
+            "runStart": 17,
+            "coverage": 0.6046511627906976,
+            "points": [
+              [
+                17,
+                21
+              ],
+              [
+                18,
+                21
+              ],
+              [
+                19,
+                22
+              ],
+              [
+                20,
+                22
+              ],
+              [
+                21,
+                23
+              ],
+              [
+                22,
+                23
+              ],
+              [
+                23,
+                23
+              ],
+              [
+                24,
+                24
+              ],
+              [
+                25,
+                24
+              ],
+              [
+                26,
+                24
+              ],
+              [
+                27,
+                25
+              ],
+              [
+                28,
+                25
+              ],
+              [
+                29,
+                26
+              ],
+              [
+                30,
+                26
+              ],
+              [
+                31,
+                26
+              ],
+              [
+                32,
+                27
+              ],
+              [
+                33,
+                27
+              ],
+              [
+                34,
+                27
+              ],
+              [
+                35,
+                28
+              ],
+              [
+                36,
+                28
+              ],
+              [
+                37,
+                29
+              ],
+              [
+                38,
+                29
+              ],
+              [
+                39,
+                29
+              ],
+              [
+                40,
+                30
+              ],
+              [
+                41,
+                30
+              ],
+              [
+                42,
+                31
+              ],
+              [
+                43,
+                31
+              ]
+            ]
+          },
+          "right": {
+            "start": 43,
+            "end": 84,
+            "longestColumns": 40,
+            "runStart": 43,
+            "coverage": 0.9512195121951219,
+            "points": [
+              [
+                43,
+                31
+              ],
+              [
+                44,
+                30
+              ],
+              [
+                45,
+                30
+              ],
+              [
+                46,
+                29
+              ],
+              [
+                47,
+                29
+              ],
+              [
+                48,
+                29
+              ],
+              [
+                49,
+                28
+              ],
+              [
+                50,
+                28
+              ],
+              [
+                51,
+                27
+              ],
+              [
+                52,
+                27
+              ],
+              [
+                53,
+                27
+              ],
+              [
+                54,
+                26
+              ],
+              [
+                55,
+                26
+              ],
+              [
+                56,
+                26
+              ],
+              [
+                57,
+                25
+              ],
+              [
+                58,
+                25
+              ],
+              [
+                59,
+                24
+              ],
+              [
+                60,
+                24
+              ],
+              [
+                61,
+                24
+              ],
+              [
+                62,
+                23
+              ],
+              [
+                63,
+                23
+              ],
+              [
+                64,
+                23
+              ],
+              [
+                65,
+                22
+              ],
+              [
+                66,
+                22
+              ],
+              [
+                67,
+                21
+              ],
+              [
+                68,
+                21
+              ],
+              [
+                69,
+                20
+              ],
+              [
+                70,
+                20
+              ],
+              [
+                71,
+                20
+              ],
+              [
+                72,
+                19
+              ],
+              [
+                73,
+                19
+              ],
+              [
+                74,
+                19
+              ],
+              [
+                75,
+                18
+              ],
+              [
+                76,
+                18
+              ],
+              [
+                77,
+                18
+              ],
+              [
+                78,
+                17
+              ],
+              [
+                79,
+                17
+              ],
+              [
+                80,
+                17
+              ],
+              [
+                81,
+                15
+              ],
+              [
+                82,
+                15
+              ]
+            ]
+          },
+          "criteria": {
+            "innerOffsets": [
+              2,
+              5
+            ],
+            "maxRed": 65,
+            "warmOrder": "r>=g>=b",
+            "coverage": 0.8,
+            "method": "longest continuous x-interval with a warm opaque near-black pixel2–5px above lower alpha edge; same fraction as straight chord length"
+          }
+        },
+        "colourPass": false,
+        "passes": false
+      },
+      {
+        "name": "attempt-06-retry-01",
+        "source": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/attempt-06-retry-01.png",
+          "sha256": "6e6656b8ccf7513b52d9ade193e785893ccd7ee9d0b848747dbdb4a2fe537a19"
+        },
+        "fit": {
+          "sourceBounds": {
+            "x": 72,
+            "y": 45,
+            "width": 1813,
+            "height": 739
+          },
+          "uniformScale": 0.04688361831218974,
+          "sampledSize": [
+            85,
+            35
+          ],
+          "canvasOffset": [
+            0,
+            0
+          ],
+          "alphaThreshold": 200
+        },
+        "shape": {
+          "slopes": {
+            "upperLeft": -0.3982905982905982,
+            "upperRight": 0.39692307692307693,
+            "lowerLeft": 0.3764102564102564,
+            "lowerRight": -0.38153846153846155
+          },
+          "parallelDifferences": [
+            0.04206008583690965,
+            0.05167958656330759
+          ],
+          "apexHorizontalDifference": 0,
+          "diagonalVerticalDifference": 0,
+          "passes": true,
+          "target": 0.40927605776434434,
+          "vertices": {
+            "top": {
+              "x": 42.5,
+              "y": 0,
+              "span": 2
+            },
+            "bottom": {
+              "x": 42.5,
+              "y": 34,
+              "span": 4
+            },
+            "left": [
+              0,
+              17.5
+            ],
+            "right": [
+              84,
+              17.5
+            ]
+          },
+          "topHorizontalSpan": 2,
+          "fits": {
+            "upperLeft": {
+              "slope": -0.3982905982905982,
+              "samples": [
+                [
+                  9,
+                  14
+                ],
+                [
+                  10,
+                  13
+                ],
+                [
+                  11,
+                  13
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  12
+                ],
+                [
+                  14,
+                  12
+                ],
+                [
+                  15,
+                  11
+                ],
+                [
+                  16,
+                  11
+                ],
+                [
+                  17,
+                  11
+                ],
+                [
+                  18,
+                  10
+                ],
+                [
+                  19,
+                  10
+                ],
+                [
+                  20,
+                  10
+                ],
+                [
+                  21,
+                  9
+                ],
+                [
+                  22,
+                  9
+                ],
+                [
+                  23,
+                  8
+                ],
+                [
+                  24,
+                  8
+                ],
+                [
+                  25,
+                  8
+                ],
+                [
+                  26,
+                  7
+                ],
+                [
+                  27,
+                  7
+                ],
+                [
+                  28,
+                  6
+                ],
+                [
+                  29,
+                  6
+                ],
+                [
+                  30,
+                  6
+                ],
+                [
+                  31,
+                  5
+                ],
+                [
+                  32,
+                  4
+                ],
+                [
+                  33,
+                  4
+                ],
+                [
+                  34,
+                  4
+                ]
+              ]
+            },
+            "upperRight": {
+              "slope": 0.39692307692307693,
+              "samples": [
+                [
+                  51,
+                  4
+                ],
+                [
+                  52,
+                  4
+                ],
+                [
+                  53,
+                  4
+                ],
+                [
+                  54,
+                  5
+                ],
+                [
+                  55,
+                  6
+                ],
+                [
+                  56,
+                  6
+                ],
+                [
+                  57,
+                  6
+                ],
+                [
+                  58,
+                  7
+                ],
+                [
+                  59,
+                  7
+                ],
+                [
+                  60,
+                  8
+                ],
+                [
+                  61,
+                  8
+                ],
+                [
+                  62,
+                  8
+                ],
+                [
+                  63,
+                  9
+                ],
+                [
+                  64,
+                  9
+                ],
+                [
+                  65,
+                  10
+                ],
+                [
+                  66,
+                  10
+                ],
+                [
+                  67,
+                  10
+                ],
+                [
+                  68,
+                  11
+                ],
+                [
+                  69,
+                  11
+                ],
+                [
+                  70,
+                  11
+                ],
+                [
+                  71,
+                  12
+                ],
+                [
+                  72,
+                  12
+                ],
+                [
+                  73,
+                  13
+                ],
+                [
+                  74,
+                  13
+                ],
+                [
+                  75,
+                  13
+                ]
+              ]
+            },
+            "lowerLeft": {
+              "slope": 0.3764102564102564,
+              "samples": [
+                [
+                  9,
+                  22
+                ],
+                [
+                  10,
+                  22
+                ],
+                [
+                  11,
+                  22
+                ],
+                [
+                  12,
+                  22
+                ],
+                [
+                  13,
+                  23
+                ],
+                [
+                  14,
+                  23
+                ],
+                [
+                  15,
+                  24
+                ],
+                [
+                  16,
+                  24
+                ],
+                [
+                  17,
+                  24
+                ],
+                [
+                  18,
+                  25
+                ],
+                [
+                  19,
+                  25
+                ],
+                [
+                  20,
+                  26
+                ],
+                [
+                  21,
+                  26
+                ],
+                [
+                  22,
+                  27
+                ],
+                [
+                  23,
+                  27
+                ],
+                [
+                  24,
+                  27
+                ],
+                [
+                  25,
+                  28
+                ],
+                [
+                  26,
+                  28
+                ],
+                [
+                  27,
+                  28
+                ],
+                [
+                  28,
+                  29
+                ],
+                [
+                  29,
+                  29
+                ],
+                [
+                  30,
+                  29
+                ],
+                [
+                  31,
+                  30
+                ],
+                [
+                  32,
+                  30
+                ],
+                [
+                  33,
+                  30
+                ],
+                [
+                  34,
+                  31
+                ]
+              ]
+            },
+            "lowerRight": {
+              "slope": -0.38153846153846155,
+              "samples": [
+                [
+                  51,
+                  31
+                ],
+                [
+                  52,
+                  30
+                ],
+                [
+                  53,
+                  30
+                ],
+                [
+                  54,
+                  30
+                ],
+                [
+                  55,
+                  29
+                ],
+                [
+                  56,
+                  29
+                ],
+                [
+                  57,
+                  29
+                ],
+                [
+                  58,
+                  28
+                ],
+                [
+                  59,
+                  28
+                ],
+                [
+                  60,
+                  28
+                ],
+                [
+                  61,
+                  27
+                ],
+                [
+                  62,
+                  27
+                ],
+                [
+                  63,
+                  26
+                ],
+                [
+                  64,
+                  26
+                ],
+                [
+                  65,
+                  26
+                ],
+                [
+                  66,
+                  25
+                ],
+                [
+                  67,
+                  25
+                ],
+                [
+                  68,
+                  24
+                ],
+                [
+                  69,
+                  24
+                ],
+                [
+                  70,
+                  24
+                ],
+                [
+                  71,
+                  23
+                ],
+                [
+                  72,
+                  23
+                ],
+                [
+                  73,
+                  22
+                ],
+                [
+                  74,
+                  22
+                ],
+                [
+                  75,
+                  22
+                ]
+              ]
+            }
+          },
+          "method": "alpha>=200 column extrema; least-squares dy/dx over central20–80% of each half-edge; opposite pairs compared relative to larger absolute slope",
+          "thresholds": {
+            "relativeSlopeTolerance": 0.2,
+            "parallelDifference": 0.15,
+            "apexHorizontalDifference": 2,
+            "diagonalVerticalDifference": 2
+          }
+        },
+        "colour": {
+          "plate": {
+            "s": 0.8024152152879318,
+            "v": 0.6353678565443268,
+            "n": 585
+          },
+          "floor": {
+            "s": 0.6990916313040096,
+            "v": 0.5399351676154337,
+            "n": 496
+          },
+          "delta": 0.09543268892889312
+        },
+        "gaps": {
+          "left": {
+            "start": 0,
+            "end": 43,
+            "longestColumns": 43,
+            "runStart": 1,
+            "coverage": 0.9767441860465116,
+            "points": [
+              [
+                1,
+                16
+              ],
+              [
+                2,
+                16
+              ],
+              [
+                3,
+                15
+              ],
+              [
+                4,
+                17
+              ],
+              [
+                5,
+                17
+              ],
+              [
+                6,
+                17
+              ],
+              [
+                7,
+                18
+              ],
+              [
+                8,
+                18
+              ],
+              [
+                9,
+                18
+              ],
+              [
+                10,
+                19
+              ],
+              [
+                11,
+                19
+              ],
+              [
+                12,
+                20
+              ],
+              [
+                13,
+                20
+              ],
+              [
+                14,
+                20
+              ],
+              [
+                15,
+                21
+              ],
+              [
+                16,
+                21
+              ],
+              [
+                17,
+                22
+              ],
+              [
+                18,
+                22
+              ],
+              [
+                19,
+                22
+              ],
+              [
+                20,
+                23
+              ],
+              [
+                21,
+                23
+              ],
+              [
+                22,
+                23
+              ],
+              [
+                23,
+                24
+              ],
+              [
+                24,
+                24
+              ],
+              [
+                25,
+                24
+              ],
+              [
+                26,
+                25
+              ],
+              [
+                27,
+                25
+              ],
+              [
+                28,
+                26
+              ],
+              [
+                29,
+                26
+              ],
+              [
+                30,
+                26
+              ],
+              [
+                31,
+                27
+              ],
+              [
+                32,
+                27
+              ],
+              [
+                33,
+                27
+              ],
+              [
+                34,
+                28
+              ],
+              [
+                35,
+                28
+              ],
+              [
+                36,
+                29
+              ],
+              [
+                37,
+                29
+              ],
+              [
+                38,
+                29
+              ],
+              [
+                39,
+                30
+              ],
+              [
+                40,
+                30
+              ],
+              [
+                41,
+                31
+              ],
+              [
+                42,
+                32
+              ],
+              [
+                43,
+                31
+              ]
+            ]
+          },
+          "right": {
+            "start": 43,
+            "end": 84,
+            "longestColumns": 42,
+            "runStart": 43,
+            "coverage": 1,
+            "points": [
+              [
+                43,
+                31
+              ],
+              [
+                44,
+                30
+              ],
+              [
+                45,
+                30
+              ],
+              [
+                46,
+                30
+              ],
+              [
+                47,
+                29
+              ],
+              [
+                48,
+                29
+              ],
+              [
+                49,
+                29
+              ],
+              [
+                50,
+                28
+              ],
+              [
+                51,
+                28
+              ],
+              [
+                52,
+                27
+              ],
+              [
+                53,
+                27
+              ],
+              [
+                54,
+                27
+              ],
+              [
+                55,
+                26
+              ],
+              [
+                56,
+                26
+              ],
+              [
+                57,
+                25
+              ],
+              [
+                58,
+                25
+              ],
+              [
+                59,
+                25
+              ],
+              [
+                60,
+                24
+              ],
+              [
+                61,
+                24
+              ],
+              [
+                62,
+                24
+              ],
+              [
+                63,
+                23
+              ],
+              [
+                64,
+                23
+              ],
+              [
+                65,
+                23
+              ],
+              [
+                66,
+                22
+              ],
+              [
+                67,
+                22
+              ],
+              [
+                68,
+                21
+              ],
+              [
+                69,
+                21
+              ],
+              [
+                70,
+                21
+              ],
+              [
+                71,
+                20
+              ],
+              [
+                72,
+                20
+              ],
+              [
+                73,
+                19
+              ],
+              [
+                74,
+                19
+              ],
+              [
+                75,
+                19
+              ],
+              [
+                76,
+                18
+              ],
+              [
+                77,
+                18
+              ],
+              [
+                78,
+                18
+              ],
+              [
+                79,
+                17
+              ],
+              [
+                80,
+                17
+              ],
+              [
+                81,
+                18
+              ],
+              [
+                82,
+                15
+              ],
+              [
+                83,
+                16
+              ],
+              [
+                84,
+                16
+              ]
+            ]
+          },
+          "criteria": {
+            "innerOffsets": [
+              2,
+              5
+            ],
+            "maxRed": 65,
+            "warmOrder": "r>=g>=b",
+            "coverage": 0.8,
+            "method": "longest continuous x-interval with a warm opaque near-black pixel2–5px above lower alpha edge; same fraction as straight chord length"
+          }
+        },
+        "colourPass": false,
+        "passes": false
+      },
+      {
+        "name": "attempt-06-retry-02",
+        "source": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/attempt-06-retry-02.png",
+          "sha256": "a320c8f443f3edacd67d2fcc23ff3bfb50cc701b07c349ce003ff94e975ac79b"
+        },
+        "fit": {
+          "sourceBounds": {
+            "x": 68,
+            "y": 28,
+            "width": 1820,
+            "height": 760
+          },
+          "uniformScale": 0.046052631578947366,
+          "sampledSize": [
+            84,
+            35
+          ],
+          "canvasOffset": [
+            0,
+            0
+          ],
+          "alphaThreshold": 200
+        },
+        "shape": {
+          "slopes": {
+            "upperLeft": -0.393076923076923,
+            "upperRight": 0.38869565217391305,
+            "lowerLeft": 0.39000000000000007,
+            "lowerRight": -0.38956521739130434
+          },
+          "parallelDifferences": [
+            0.008933889219773472,
+            0.0033444816053513214
+          ],
+          "apexHorizontalDifference": 0,
+          "diagonalVerticalDifference": 0,
+          "passes": true,
+          "target": 0.40927605776434434,
+          "vertices": {
+            "top": {
+              "x": 42,
+              "y": 0,
+              "span": 1
+            },
+            "bottom": {
+              "x": 42,
+              "y": 34,
+              "span": 7
+            },
+            "left": [
+              0,
+              18
+            ],
+            "right": [
+              83,
+              18
+            ]
+          },
+          "topHorizontalSpan": 1,
+          "fits": {
+            "upperLeft": {
+              "slope": -0.393076923076923,
+              "samples": [
+                [
+                  9,
+                  14
+                ],
+                [
+                  10,
+                  13
+                ],
+                [
+                  11,
+                  13
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  12
+                ],
+                [
+                  14,
+                  12
+                ],
+                [
+                  15,
+                  11
+                ],
+                [
+                  16,
+                  11
+                ],
+                [
+                  17,
+                  11
+                ],
+                [
+                  18,
+                  10
+                ],
+                [
+                  19,
+                  10
+                ],
+                [
+                  20,
+                  9
+                ],
+                [
+                  21,
+                  9
+                ],
+                [
+                  22,
+                  9
+                ],
+                [
+                  23,
+                  8
+                ],
+                [
+                  24,
+                  8
+                ],
+                [
+                  25,
+                  7
+                ],
+                [
+                  26,
+                  7
+                ],
+                [
+                  27,
+                  7
+                ],
+                [
+                  28,
+                  6
+                ],
+                [
+                  29,
+                  6
+                ],
+                [
+                  30,
+                  6
+                ],
+                [
+                  31,
+                  5
+                ],
+                [
+                  32,
+                  5
+                ],
+                [
+                  33,
+                  4
+                ]
+              ]
+            },
+            "upperRight": {
+              "slope": 0.38869565217391305,
+              "samples": [
+                [
+                  51,
+                  4
+                ],
+                [
+                  52,
+                  5
+                ],
+                [
+                  53,
+                  5
+                ],
+                [
+                  54,
+                  6
+                ],
+                [
+                  55,
+                  6
+                ],
+                [
+                  56,
+                  6
+                ],
+                [
+                  57,
+                  7
+                ],
+                [
+                  58,
+                  7
+                ],
+                [
+                  59,
+                  8
+                ],
+                [
+                  60,
+                  8
+                ],
+                [
+                  61,
+                  8
+                ],
+                [
+                  62,
+                  9
+                ],
+                [
+                  63,
+                  9
+                ],
+                [
+                  64,
+                  10
+                ],
+                [
+                  65,
+                  10
+                ],
+                [
+                  66,
+                  10
+                ],
+                [
+                  67,
+                  11
+                ],
+                [
+                  68,
+                  11
+                ],
+                [
+                  69,
+                  11
+                ],
+                [
+                  70,
+                  12
+                ],
+                [
+                  71,
+                  12
+                ],
+                [
+                  72,
+                  13
+                ],
+                [
+                  73,
+                  13
+                ],
+                [
+                  74,
+                  13
+                ]
+              ]
+            },
+            "lowerLeft": {
+              "slope": 0.39000000000000007,
+              "samples": [
+                [
+                  9,
+                  22
+                ],
+                [
+                  10,
+                  22
+                ],
+                [
+                  11,
+                  23
+                ],
+                [
+                  12,
+                  23
+                ],
+                [
+                  13,
+                  24
+                ],
+                [
+                  14,
+                  24
+                ],
+                [
+                  15,
+                  24
+                ],
+                [
+                  16,
+                  25
+                ],
+                [
+                  17,
+                  25
+                ],
+                [
+                  18,
+                  25
+                ],
+                [
+                  19,
+                  26
+                ],
+                [
+                  20,
+                  26
+                ],
+                [
+                  21,
+                  27
+                ],
+                [
+                  22,
+                  27
+                ],
+                [
+                  23,
+                  27
+                ],
+                [
+                  24,
+                  28
+                ],
+                [
+                  25,
+                  28
+                ],
+                [
+                  26,
+                  29
+                ],
+                [
+                  27,
+                  29
+                ],
+                [
+                  28,
+                  29
+                ],
+                [
+                  29,
+                  30
+                ],
+                [
+                  30,
+                  30
+                ],
+                [
+                  31,
+                  31
+                ],
+                [
+                  32,
+                  31
+                ],
+                [
+                  33,
+                  31
+                ]
+              ]
+            },
+            "lowerRight": {
+              "slope": -0.38956521739130434,
+              "samples": [
+                [
+                  51,
+                  31
+                ],
+                [
+                  52,
+                  31
+                ],
+                [
+                  53,
+                  30
+                ],
+                [
+                  54,
+                  30
+                ],
+                [
+                  55,
+                  30
+                ],
+                [
+                  56,
+                  29
+                ],
+                [
+                  57,
+                  29
+                ],
+                [
+                  58,
+                  29
+                ],
+                [
+                  59,
+                  28
+                ],
+                [
+                  60,
+                  28
+                ],
+                [
+                  61,
+                  27
+                ],
+                [
+                  62,
+                  27
+                ],
+                [
+                  63,
+                  27
+                ],
+                [
+                  64,
+                  26
+                ],
+                [
+                  65,
+                  26
+                ],
+                [
+                  66,
+                  25
+                ],
+                [
+                  67,
+                  25
+                ],
+                [
+                  68,
+                  25
+                ],
+                [
+                  69,
+                  24
+                ],
+                [
+                  70,
+                  24
+                ],
+                [
+                  71,
+                  23
+                ],
+                [
+                  72,
+                  23
+                ],
+                [
+                  73,
+                  23
+                ],
+                [
+                  74,
+                  22
+                ]
+              ]
+            }
+          },
+          "method": "alpha>=200 column extrema; least-squares dy/dx over central20–80% of each half-edge; opposite pairs compared relative to larger absolute slope",
+          "thresholds": {
+            "relativeSlopeTolerance": 0.2,
+            "parallelDifference": 0.15,
+            "apexHorizontalDifference": 2,
+            "diagonalVerticalDifference": 2
+          }
+        },
+        "colour": {
+          "plate": {
+            "s": 0.7604894562597909,
+            "v": 0.5149254231607171,
+            "n": 585
+          },
+          "floor": {
+            "s": 0.6990916313040096,
+            "v": 0.5399351676154337,
+            "n": 496
+          },
+          "delta": -0.025009744454716598
+        },
+        "gaps": {
+          "left": {
+            "start": 0,
+            "end": 42,
+            "longestColumns": 41,
+            "runStart": 2,
+            "coverage": 0.9523809523809523,
+            "points": [
+              [
+                2,
+                16
+              ],
+              [
+                3,
+                16
+              ],
+              [
+                4,
+                18
+              ],
+              [
+                5,
+                17
+              ],
+              [
+                6,
+                18
+              ],
+              [
+                7,
+                18
+              ],
+              [
+                8,
+                18
+              ],
+              [
+                9,
+                19
+              ],
+              [
+                10,
+                19
+              ],
+              [
+                11,
+                20
+              ],
+              [
+                12,
+                20
+              ],
+              [
+                13,
+                20
+              ],
+              [
+                14,
+                21
+              ],
+              [
+                15,
+                21
+              ],
+              [
+                16,
+                22
+              ],
+              [
+                17,
+                22
+              ],
+              [
+                18,
+                22
+              ],
+              [
+                19,
+                23
+              ],
+              [
+                20,
+                23
+              ],
+              [
+                21,
+                23
+              ],
+              [
+                22,
+                24
+              ],
+              [
+                23,
+                24
+              ],
+              [
+                24,
+                25
+              ],
+              [
+                25,
+                25
+              ],
+              [
+                26,
+                25
+              ],
+              [
+                27,
+                26
+              ],
+              [
+                28,
+                26
+              ],
+              [
+                29,
+                27
+              ],
+              [
+                30,
+                27
+              ],
+              [
+                31,
+                27
+              ],
+              [
+                32,
+                28
+              ],
+              [
+                33,
+                28
+              ],
+              [
+                34,
+                28
+              ],
+              [
+                35,
+                29
+              ],
+              [
+                36,
+                29
+              ],
+              [
+                37,
+                30
+              ],
+              [
+                38,
+                30
+              ],
+              [
+                39,
+                30
+              ],
+              [
+                40,
+                31
+              ],
+              [
+                41,
+                31
+              ],
+              [
+                42,
+                32
+              ]
+            ]
+          },
+          "right": {
+            "start": 42,
+            "end": 83,
+            "longestColumns": 41,
+            "runStart": 42,
+            "coverage": 0.975609756097561,
+            "points": [
+              [
+                42,
+                32
+              ],
+              [
+                43,
+                31
+              ],
+              [
+                44,
+                31
+              ],
+              [
+                45,
+                30
+              ],
+              [
+                46,
+                30
+              ],
+              [
+                47,
+                29
+              ],
+              [
+                48,
+                29
+              ],
+              [
+                49,
+                29
+              ],
+              [
+                50,
+                28
+              ],
+              [
+                51,
+                28
+              ],
+              [
+                52,
+                27
+              ],
+              [
+                53,
+                27
+              ],
+              [
+                54,
+                27
+              ],
+              [
+                55,
+                26
+              ],
+              [
+                56,
+                26
+              ],
+              [
+                57,
+                26
+              ],
+              [
+                58,
+                25
+              ],
+              [
+                59,
+                25
+              ],
+              [
+                60,
+                25
+              ],
+              [
+                61,
+                24
+              ],
+              [
+                62,
+                24
+              ],
+              [
+                63,
+                23
+              ],
+              [
+                64,
+                23
+              ],
+              [
+                65,
+                23
+              ],
+              [
+                66,
+                22
+              ],
+              [
+                67,
+                22
+              ],
+              [
+                68,
+                21
+              ],
+              [
+                69,
+                21
+              ],
+              [
+                70,
+                21
+              ],
+              [
+                71,
+                20
+              ],
+              [
+                72,
+                20
+              ],
+              [
+                73,
+                19
+              ],
+              [
+                74,
+                19
+              ],
+              [
+                75,
+                19
+              ],
+              [
+                76,
+                18
+              ],
+              [
+                77,
+                18
+              ],
+              [
+                78,
+                18
+              ],
+              [
+                79,
+                17
+              ],
+              [
+                80,
+                18
+              ],
+              [
+                81,
+                16
+              ],
+              [
+                82,
+                16
+              ]
+            ]
+          },
+          "criteria": {
+            "innerOffsets": [
+              2,
+              5
+            ],
+            "maxRed": 65,
+            "warmOrder": "r>=g>=b",
+            "coverage": 0.8,
+            "method": "longest continuous x-interval with a warm opaque near-black pixel2–5px above lower alpha edge; same fraction as straight chord length"
+          }
+        },
+        "colourPass": false,
+        "passes": false
+      },
+      {
+        "name": "attempt-06-retry-03",
+        "source": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/attempt-06-retry-03.png",
+          "sha256": "4f01d2b12eafa8790fb7291f080e9ae2500d429da27b491c97ccefead503a06a"
+        },
+        "fit": {
+          "sourceBounds": {
+            "x": 72,
+            "y": 27,
+            "width": 1811,
+            "height": 761
+          },
+          "uniformScale": 0.045992115637319315,
+          "sampledSize": [
+            84,
+            35
+          ],
+          "canvasOffset": [
+            0,
+            0
+          ],
+          "alphaThreshold": 200
+        },
+        "shape": {
+          "slopes": {
+            "upperLeft": -0.40307692307692305,
+            "upperRight": 0.40304347826086956,
+            "lowerLeft": 0.38923076923076916,
+            "lowerRight": -0.3946153846153846
+          },
+          "parallelDifferences": [
+            0.02099236641221375,
+            0.03427101485353929
+          ],
+          "apexHorizontalDifference": 0.5,
+          "diagonalVerticalDifference": 0,
+          "passes": true,
+          "target": 0.40927605776434434,
+          "vertices": {
+            "top": {
+              "x": 42,
+              "y": 0,
+              "span": 1
+            },
+            "bottom": {
+              "x": 41.5,
+              "y": 34,
+              "span": 6
+            },
+            "left": [
+              0,
+              18
+            ],
+            "right": [
+              83,
+              18
+            ]
+          },
+          "topHorizontalSpan": 1,
+          "fits": {
+            "upperLeft": {
+              "slope": -0.40307692307692305,
+              "samples": [
+                [
+                  9,
+                  14
+                ],
+                [
+                  10,
+                  13
+                ],
+                [
+                  11,
+                  13
+                ],
+                [
+                  12,
+                  12
+                ],
+                [
+                  13,
+                  12
+                ],
+                [
+                  14,
+                  12
+                ],
+                [
+                  15,
+                  11
+                ],
+                [
+                  16,
+                  11
+                ],
+                [
+                  17,
+                  10
+                ],
+                [
+                  18,
+                  10
+                ],
+                [
+                  19,
+                  10
+                ],
+                [
+                  20,
+                  9
+                ],
+                [
+                  21,
+                  9
+                ],
+                [
+                  22,
+                  9
+                ],
+                [
+                  23,
+                  8
+                ],
+                [
+                  24,
+                  8
+                ],
+                [
+                  25,
+                  7
+                ],
+                [
+                  26,
+                  7
+                ],
+                [
+                  27,
+                  6
+                ],
+                [
+                  28,
+                  6
+                ],
+                [
+                  29,
+                  6
+                ],
+                [
+                  30,
+                  5
+                ],
+                [
+                  31,
+                  5
+                ],
+                [
+                  32,
+                  4
+                ],
+                [
+                  33,
+                  4
+                ]
+              ]
+            },
+            "upperRight": {
+              "slope": 0.40304347826086956,
+              "samples": [
+                [
+                  51,
+                  4
+                ],
+                [
+                  52,
+                  5
+                ],
+                [
+                  53,
+                  5
+                ],
+                [
+                  54,
+                  6
+                ],
+                [
+                  55,
+                  6
+                ],
+                [
+                  56,
+                  6
+                ],
+                [
+                  57,
+                  7
+                ],
+                [
+                  58,
+                  7
+                ],
+                [
+                  59,
+                  8
+                ],
+                [
+                  60,
+                  8
+                ],
+                [
+                  61,
+                  9
+                ],
+                [
+                  62,
+                  9
+                ],
+                [
+                  63,
+                  9
+                ],
+                [
+                  64,
+                  10
+                ],
+                [
+                  65,
+                  10
+                ],
+                [
+                  66,
+                  10
+                ],
+                [
+                  67,
+                  11
+                ],
+                [
+                  68,
+                  11
+                ],
+                [
+                  69,
+                  12
+                ],
+                [
+                  70,
+                  12
+                ],
+                [
+                  71,
+                  12
+                ],
+                [
+                  72,
+                  13
+                ],
+                [
+                  73,
+                  13
+                ],
+                [
+                  74,
+                  14
+                ]
+              ]
+            },
+            "lowerLeft": {
+              "slope": 0.38923076923076916,
+              "samples": [
+                [
+                  9,
+                  22
+                ],
+                [
+                  10,
+                  22
+                ],
+                [
+                  11,
+                  23
+                ],
+                [
+                  12,
+                  23
+                ],
+                [
+                  13,
+                  24
+                ],
+                [
+                  14,
+                  24
+                ],
+                [
+                  15,
+                  24
+                ],
+                [
+                  16,
+                  25
+                ],
+                [
+                  17,
+                  25
+                ],
+                [
+                  18,
+                  26
+                ],
+                [
+                  19,
+                  26
+                ],
+                [
+                  20,
+                  26
+                ],
+                [
+                  21,
+                  27
+                ],
+                [
+                  22,
+                  27
+                ],
+                [
+                  23,
+                  28
+                ],
+                [
+                  24,
+                  28
+                ],
+                [
+                  25,
+                  28
+                ],
+                [
+                  26,
+                  29
+                ],
+                [
+                  27,
+                  29
+                ],
+                [
+                  28,
+                  29
+                ],
+                [
+                  29,
+                  30
+                ],
+                [
+                  30,
+                  30
+                ],
+                [
+                  31,
+                  31
+                ],
+                [
+                  32,
+                  31
+                ],
+                [
+                  33,
+                  31
+                ]
+              ]
+            },
+            "lowerRight": {
+              "slope": -0.3946153846153846,
+              "samples": [
+                [
+                  50,
+                  31
+                ],
+                [
+                  51,
+                  31
+                ],
+                [
+                  52,
+                  31
+                ],
+                [
+                  53,
+                  30
+                ],
+                [
+                  54,
+                  30
+                ],
+                [
+                  55,
+                  30
+                ],
+                [
+                  56,
+                  29
+                ],
+                [
+                  57,
+                  29
+                ],
+                [
+                  58,
+                  28
+                ],
+                [
+                  59,
+                  28
+                ],
+                [
+                  60,
+                  28
+                ],
+                [
+                  61,
+                  27
+                ],
+                [
+                  62,
+                  27
+                ],
+                [
+                  63,
+                  26
+                ],
+                [
+                  64,
+                  26
+                ],
+                [
+                  65,
+                  26
+                ],
+                [
+                  66,
+                  25
+                ],
+                [
+                  67,
+                  25
+                ],
+                [
+                  68,
+                  24
+                ],
+                [
+                  69,
+                  24
+                ],
+                [
+                  70,
+                  24
+                ],
+                [
+                  71,
+                  23
+                ],
+                [
+                  72,
+                  23
+                ],
+                [
+                  73,
+                  22
+                ],
+                [
+                  74,
+                  22
+                ]
+              ]
+            }
+          },
+          "method": "alpha>=200 column extrema; least-squares dy/dx over central20–80% of each half-edge; opposite pairs compared relative to larger absolute slope",
+          "thresholds": {
+            "relativeSlopeTolerance": 0.2,
+            "parallelDifference": 0.15,
+            "apexHorizontalDifference": 2,
+            "diagonalVerticalDifference": 2
+          }
+        },
+        "colour": {
+          "plate": {
+            "s": 0.7127523685485813,
+            "v": 0.638404558404557,
+            "n": 585
+          },
+          "floor": {
+            "s": 0.6990916313040096,
+            "v": 0.5399351676154337,
+            "n": 496
+          },
+          "delta": 0.09846939078912331
+        },
+        "gaps": {
+          "left": {
+            "start": 0,
+            "end": 42,
+            "longestColumns": 38,
+            "runStart": 5,
+            "coverage": 0.8809523809523809,
+            "points": [
+              [
+                5,
+                17
+              ],
+              [
+                6,
+                18
+              ],
+              [
+                7,
+                18
+              ],
+              [
+                8,
+                18
+              ],
+              [
+                9,
+                19
+              ],
+              [
+                10,
+                19
+              ],
+              [
+                11,
+                20
+              ],
+              [
+                12,
+                20
+              ],
+              [
+                13,
+                20
+              ],
+              [
+                14,
+                21
+              ],
+              [
+                15,
+                21
+              ],
+              [
+                16,
+                22
+              ],
+              [
+                17,
+                22
+              ],
+              [
+                18,
+                22
+              ],
+              [
+                19,
+                23
+              ],
+              [
+                20,
+                23
+              ],
+              [
+                21,
+                23
+              ],
+              [
+                22,
+                24
+              ],
+              [
+                23,
+                24
+              ],
+              [
+                24,
+                25
+              ],
+              [
+                25,
+                25
+              ],
+              [
+                26,
+                25
+              ],
+              [
+                27,
+                26
+              ],
+              [
+                28,
+                26
+              ],
+              [
+                29,
+                27
+              ],
+              [
+                30,
+                27
+              ],
+              [
+                31,
+                27
+              ],
+              [
+                32,
+                28
+              ],
+              [
+                33,
+                28
+              ],
+              [
+                34,
+                29
+              ],
+              [
+                35,
+                29
+              ],
+              [
+                36,
+                29
+              ],
+              [
+                37,
+                30
+              ],
+              [
+                38,
+                30
+              ],
+              [
+                39,
+                30
+              ],
+              [
+                40,
+                31
+              ],
+              [
+                41,
+                31
+              ],
+              [
+                42,
+                31
+              ]
+            ]
+          },
+          "right": {
+            "start": 42,
+            "end": 83,
+            "longestColumns": 40,
+            "runStart": 42,
+            "coverage": 0.9512195121951219,
+            "points": [
+              [
+                42,
+                31
+              ],
+              [
+                43,
+                31
+              ],
+              [
+                44,
+                30
+              ],
+              [
+                45,
+                30
+              ],
+              [
+                46,
+                30
+              ],
+              [
+                47,
+                29
+              ],
+              [
+                48,
+                29
+              ],
+              [
+                49,
+                28
+              ],
+              [
+                50,
+                28
+              ],
+              [
+                51,
+                28
+              ],
+              [
+                52,
+                27
+              ],
+              [
+                53,
+                27
+              ],
+              [
+                54,
+                27
+              ],
+              [
+                55,
+                26
+              ],
+              [
+                56,
+                26
+              ],
+              [
+                57,
+                25
+              ],
+              [
+                58,
+                25
+              ],
+              [
+                59,
+                25
+              ],
+              [
+                60,
+                24
+              ],
+              [
+                61,
+                24
+              ],
+              [
+                62,
+                23
+              ],
+              [
+                63,
+                23
+              ],
+              [
+                64,
+                23
+              ],
+              [
+                65,
+                22
+              ],
+              [
+                66,
+                22
+              ],
+              [
+                67,
+                22
+              ],
+              [
+                68,
+                21
+              ],
+              [
+                69,
+                21
+              ],
+              [
+                70,
+                20
+              ],
+              [
+                71,
+                20
+              ],
+              [
+                72,
+                20
+              ],
+              [
+                73,
+                19
+              ],
+              [
+                74,
+                19
+              ],
+              [
+                75,
+                18
+              ],
+              [
+                76,
+                18
+              ],
+              [
+                77,
+                18
+              ],
+              [
+                78,
+                17
+              ],
+              [
+                79,
+                15
+              ],
+              [
+                80,
+                16
+              ],
+              [
+                81,
+                16
+              ]
+            ]
+          },
+          "criteria": {
+            "innerOffsets": [
+              2,
+              5
+            ],
+            "maxRed": 65,
+            "warmOrder": "r>=g>=b",
+            "coverage": 0.8,
+            "method": "longest continuous x-interval with a warm opaque near-black pixel2–5px above lower alpha edge; same fraction as straight chord length"
+          }
+        },
+        "colourPass": false,
+        "passes": false
+      },
+      {
+        "name": "attempt-06-retry-04",
+        "source": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/attempt-06-retry-04.png",
+          "sha256": "f95a1a7b3db580c2baa1aeaf1bb7d2cd501674cb17ad7a5255e921aaf157abcc"
+        },
+        "fit": {
+          "sourceBounds": {
+            "x": 95,
+            "y": 21,
+            "width": 1768,
+            "height": 775
+          },
+          "uniformScale": 0.04516129032258064,
+          "sampledSize": [
+            80,
+            35
+          ],
+          "canvasOffset": [
+            2,
+            0
+          ],
+          "alphaThreshold": 200
+        },
+        "shape": {
+          "slopes": {
+            "upperLeft": -0.4123076923076923,
+            "upperRight": 0.4121739130434783,
+            "lowerLeft": 0.3984615384615385,
+            "lowerRight": -0.39782608695652166
+          },
+          "parallelDifferences": [
+            0.0351232965606751,
+            0.033268419344368715
+          ],
+          "apexHorizontalDifference": 0,
+          "diagonalVerticalDifference": 0,
+          "passes": true,
+          "target": 0.40927605776434434,
+          "vertices": {
+            "top": {
+              "x": 42,
+              "y": 0,
+              "span": 1
+            },
+            "bottom": {
+              "x": 42,
+              "y": 34,
+              "span": 5
+            },
+            "left": [
+              2,
+              18
+            ],
+            "right": [
+              81,
+              18
+            ]
+          },
+          "topHorizontalSpan": 1,
+          "fits": {
+            "upperLeft": {
+              "slope": -0.4123076923076923,
+              "samples": [
+                [
+                  10,
+                  14
+                ],
+                [
+                  11,
+                  13
+                ],
+                [
+                  12,
+                  13
+                ],
+                [
+                  13,
+                  12
+                ],
+                [
+                  14,
+                  12
+                ],
+                [
+                  15,
+                  12
+                ],
+                [
+                  16,
+                  11
+                ],
+                [
+                  17,
+                  11
+                ],
+                [
+                  18,
+                  10
+                ],
+                [
+                  19,
+                  10
+                ],
+                [
+                  20,
+                  10
+                ],
+                [
+                  21,
+                  9
+                ],
+                [
+                  22,
+                  9
+                ],
+                [
+                  23,
+                  8
+                ],
+                [
+                  24,
+                  8
+                ],
+                [
+                  25,
+                  7
+                ],
+                [
+                  26,
+                  7
+                ],
+                [
+                  27,
+                  7
+                ],
+                [
+                  28,
+                  6
+                ],
+                [
+                  29,
+                  6
+                ],
+                [
+                  30,
+                  5
+                ],
+                [
+                  31,
+                  5
+                ],
+                [
+                  32,
+                  5
+                ],
+                [
+                  33,
+                  4
+                ],
+                [
+                  34,
+                  4
+                ]
+              ]
+            },
+            "upperRight": {
+              "slope": 0.4121739130434783,
+              "samples": [
+                [
+                  50,
+                  4
+                ],
+                [
+                  51,
+                  4
+                ],
+                [
+                  52,
+                  5
+                ],
+                [
+                  53,
+                  5
+                ],
+                [
+                  54,
+                  6
+                ],
+                [
+                  55,
+                  6
+                ],
+                [
+                  56,
+                  6
+                ],
+                [
+                  57,
+                  7
+                ],
+                [
+                  58,
+                  7
+                ],
+                [
+                  59,
+                  8
+                ],
+                [
+                  60,
+                  8
+                ],
+                [
+                  61,
+                  8
+                ],
+                [
+                  62,
+                  9
+                ],
+                [
+                  63,
+                  9
+                ],
+                [
+                  64,
+                  10
+                ],
+                [
+                  65,
+                  10
+                ],
+                [
+                  66,
+                  11
+                ],
+                [
+                  67,
+                  11
+                ],
+                [
+                  68,
+                  11
+                ],
+                [
+                  69,
+                  12
+                ],
+                [
+                  70,
+                  12
+                ],
+                [
+                  71,
+                  13
+                ],
+                [
+                  72,
+                  13
+                ],
+                [
+                  73,
+                  13
+                ]
+              ]
+            },
+            "lowerLeft": {
+              "slope": 0.3984615384615385,
+              "samples": [
+                [
+                  10,
+                  22
+                ],
+                [
+                  11,
+                  22
+                ],
+                [
+                  12,
+                  23
+                ],
+                [
+                  13,
+                  23
+                ],
+                [
+                  14,
+                  24
+                ],
+                [
+                  15,
+                  24
+                ],
+                [
+                  16,
+                  24
+                ],
+                [
+                  17,
+                  25
+                ],
+                [
+                  18,
+                  25
+                ],
+                [
+                  19,
+                  26
+                ],
+                [
+                  20,
+                  26
+                ],
+                [
+                  21,
+                  26
+                ],
+                [
+                  22,
+                  27
+                ],
+                [
+                  23,
+                  27
+                ],
+                [
+                  24,
+                  28
+                ],
+                [
+                  25,
+                  28
+                ],
+                [
+                  26,
+                  28
+                ],
+                [
+                  27,
+                  29
+                ],
+                [
+                  28,
+                  29
+                ],
+                [
+                  29,
+                  29
+                ],
+                [
+                  30,
+                  30
+                ],
+                [
+                  31,
+                  30
+                ],
+                [
+                  32,
+                  31
+                ],
+                [
+                  33,
+                  31
+                ],
+                [
+                  34,
+                  32
+                ]
+              ]
+            },
+            "lowerRight": {
+              "slope": -0.39782608695652166,
+              "samples": [
+                [
+                  50,
+                  31
+                ],
+                [
+                  51,
+                  31
+                ],
+                [
+                  52,
+                  31
+                ],
+                [
+                  53,
+                  30
+                ],
+                [
+                  54,
+                  30
+                ],
+                [
+                  55,
+                  29
+                ],
+                [
+                  56,
+                  29
+                ],
+                [
+                  57,
+                  29
+                ],
+                [
+                  58,
+                  28
+                ],
+                [
+                  59,
+                  28
+                ],
+                [
+                  60,
+                  27
+                ],
+                [
+                  61,
+                  27
+                ],
+                [
+                  62,
+                  27
+                ],
+                [
+                  63,
+                  26
+                ],
+                [
+                  64,
+                  26
+                ],
+                [
+                  65,
+                  25
+                ],
+                [
+                  66,
+                  25
+                ],
+                [
+                  67,
+                  25
+                ],
+                [
+                  68,
+                  24
+                ],
+                [
+                  69,
+                  24
+                ],
+                [
+                  70,
+                  23
+                ],
+                [
+                  71,
+                  23
+                ],
+                [
+                  72,
+                  23
+                ],
+                [
+                  73,
+                  22
+                ]
+              ]
+            }
+          },
+          "method": "alpha>=200 column extrema; least-squares dy/dx over central20–80% of each half-edge; opposite pairs compared relative to larger absolute slope",
+          "thresholds": {
+            "relativeSlopeTolerance": 0.2,
+            "parallelDifference": 0.15,
+            "apexHorizontalDifference": 2,
+            "diagonalVerticalDifference": 2
+          }
+        },
+        "colour": {
+          "plate": {
+            "s": 0.7417317653014218,
+            "v": 0.5638813474107587,
+            "n": 585
+          },
+          "floor": {
+            "s": 0.6990916313040096,
+            "v": 0.5399351676154337,
+            "n": 496
+          },
+          "delta": 0.023946179795324984
+        },
+        "gaps": {
+          "left": {
+            "start": 2,
+            "end": 42,
+            "longestColumns": 39,
+            "runStart": 4,
+            "coverage": 0.95,
+            "points": [
+              [
+                4,
+                16
+              ],
+              [
+                5,
+                16
+              ],
+              [
+                6,
+                17
+              ],
+              [
+                7,
+                17
+              ],
+              [
+                8,
+                18
+              ],
+              [
+                9,
+                18
+              ],
+              [
+                10,
+                19
+              ],
+              [
+                11,
+                19
+              ],
+              [
+                12,
+                19
+              ],
+              [
+                13,
+                20
+              ],
+              [
+                14,
+                20
+              ],
+              [
+                15,
+                21
+              ],
+              [
+                16,
+                21
+              ],
+              [
+                17,
+                21
+              ],
+              [
+                18,
+                22
+              ],
+              [
+                19,
+                22
+              ],
+              [
+                20,
+                23
+              ],
+              [
+                21,
+                23
+              ],
+              [
+                22,
+                24
+              ],
+              [
+                23,
+                24
+              ],
+              [
+                24,
+                24
+              ],
+              [
+                25,
+                25
+              ],
+              [
+                26,
+                25
+              ],
+              [
+                27,
+                25
+              ],
+              [
+                28,
+                26
+              ],
+              [
+                29,
+                26
+              ],
+              [
+                30,
+                27
+              ],
+              [
+                31,
+                27
+              ],
+              [
+                32,
+                27
+              ],
+              [
+                33,
+                28
+              ],
+              [
+                34,
+                28
+              ],
+              [
+                35,
+                29
+              ],
+              [
+                36,
+                29
+              ],
+              [
+                37,
+                29
+              ],
+              [
+                38,
+                30
+              ],
+              [
+                39,
+                30
+              ],
+              [
+                40,
+                30
+              ],
+              [
+                41,
+                31
+              ],
+              [
+                42,
+                32
+              ]
+            ]
+          },
+          "right": {
+            "start": 42,
+            "end": 81,
+            "longestColumns": 39,
+            "runStart": 42,
+            "coverage": 0.9743589743589743,
+            "points": [
+              [
+                42,
+                32
+              ],
+              [
+                43,
+                31
+              ],
+              [
+                44,
+                30
+              ],
+              [
+                45,
+                30
+              ],
+              [
+                46,
+                30
+              ],
+              [
+                47,
+                29
+              ],
+              [
+                48,
+                29
+              ],
+              [
+                49,
+                28
+              ],
+              [
+                50,
+                28
+              ],
+              [
+                51,
+                28
+              ],
+              [
+                52,
+                27
+              ],
+              [
+                53,
+                27
+              ],
+              [
+                54,
+                26
+              ],
+              [
+                55,
+                26
+              ],
+              [
+                56,
+                26
+              ],
+              [
+                57,
+                25
+              ],
+              [
+                58,
+                25
+              ],
+              [
+                59,
+                24
+              ],
+              [
+                60,
+                24
+              ],
+              [
+                61,
+                24
+              ],
+              [
+                62,
+                23
+              ],
+              [
+                63,
+                23
+              ],
+              [
+                64,
+                23
+              ],
+              [
+                65,
+                22
+              ],
+              [
+                66,
+                22
+              ],
+              [
+                67,
+                21
+              ],
+              [
+                68,
+                21
+              ],
+              [
+                69,
+                21
+              ],
+              [
+                70,
+                20
+              ],
+              [
+                71,
+                20
+              ],
+              [
+                72,
+                19
+              ],
+              [
+                73,
+                19
+              ],
+              [
+                74,
+                18
+              ],
+              [
+                75,
+                18
+              ],
+              [
+                76,
+                18
+              ],
+              [
+                77,
+                17
+              ],
+              [
+                78,
+                18
+              ],
+              [
+                79,
+                16
+              ],
+              [
+                80,
+                16
+              ]
+            ]
+          },
+          "criteria": {
+            "innerOffsets": [
+              2,
+              5
+            ],
+            "maxRed": 65,
+            "warmOrder": "r>=g>=b",
+            "coverage": 0.8,
+            "method": "longest continuous x-interval with a warm opaque near-black pixel2–5px above lower alpha edge; same fraction as straight chord length"
+          }
+        },
+        "colourPass": true,
+        "passes": true
+      }
+    ]
+  },
+  "diamondContract": {
+    "candidate": {
+      "slopes": {
+        "upperLeft": -0.4123076923076923,
+        "upperRight": 0.4121739130434783,
+        "lowerLeft": 0.3984615384615385,
+        "lowerRight": -0.39782608695652166
+      },
+      "parallelDifferences": [
+        0.0351232965606751,
+        0.033268419344368715
+      ],
+      "apexHorizontalDifference": 0,
+      "diagonalVerticalDifference": 0,
+      "passes": true,
+      "target": 0.40927605776434434,
+      "vertices": {
+        "top": {
+          "x": 42,
+          "y": 0,
+          "span": 1
+        },
+        "bottom": {
+          "x": 42,
+          "y": 34,
+          "span": 5
+        },
+        "left": [
+          2,
+          18
+        ],
+        "right": [
+          81,
+          18
+        ]
+      },
+      "topHorizontalSpan": 1,
+      "fits": {
+        "upperLeft": {
+          "slope": -0.4123076923076923,
+          "samples": [
+            [
+              10,
+              14
+            ],
+            [
+              11,
+              13
+            ],
+            [
+              12,
+              13
+            ],
+            [
+              13,
+              12
+            ],
+            [
+              14,
+              12
+            ],
+            [
+              15,
+              12
+            ],
+            [
+              16,
+              11
+            ],
+            [
+              17,
+              11
+            ],
+            [
+              18,
+              10
+            ],
+            [
+              19,
+              10
+            ],
+            [
+              20,
+              10
+            ],
+            [
+              21,
+              9
+            ],
+            [
+              22,
+              9
+            ],
+            [
+              23,
+              8
+            ],
+            [
+              24,
+              8
+            ],
+            [
+              25,
+              7
+            ],
+            [
+              26,
+              7
+            ],
+            [
+              27,
+              7
+            ],
+            [
+              28,
+              6
+            ],
+            [
+              29,
+              6
+            ],
+            [
+              30,
+              5
+            ],
+            [
+              31,
+              5
+            ],
+            [
+              32,
+              5
+            ],
+            [
+              33,
+              4
+            ],
+            [
+              34,
+              4
+            ]
+          ]
+        },
+        "upperRight": {
+          "slope": 0.4121739130434783,
+          "samples": [
+            [
+              50,
+              4
+            ],
+            [
+              51,
+              4
+            ],
+            [
+              52,
+              5
+            ],
+            [
+              53,
+              5
+            ],
+            [
+              54,
+              6
+            ],
+            [
+              55,
+              6
+            ],
+            [
+              56,
+              6
+            ],
+            [
+              57,
+              7
+            ],
+            [
+              58,
+              7
+            ],
+            [
+              59,
+              8
+            ],
+            [
+              60,
+              8
+            ],
+            [
+              61,
+              8
+            ],
+            [
+              62,
+              9
+            ],
+            [
+              63,
+              9
+            ],
+            [
+              64,
+              10
+            ],
+            [
+              65,
+              10
+            ],
+            [
+              66,
+              11
+            ],
+            [
+              67,
+              11
+            ],
+            [
+              68,
+              11
+            ],
+            [
+              69,
+              12
+            ],
+            [
+              70,
+              12
+            ],
+            [
+              71,
+              13
+            ],
+            [
+              72,
+              13
+            ],
+            [
+              73,
+              13
+            ]
+          ]
+        },
+        "lowerLeft": {
+          "slope": 0.3984615384615385,
+          "samples": [
+            [
+              10,
+              22
+            ],
+            [
+              11,
+              22
+            ],
+            [
+              12,
+              23
+            ],
+            [
+              13,
+              23
+            ],
+            [
+              14,
+              24
+            ],
+            [
+              15,
+              24
+            ],
+            [
+              16,
+              24
+            ],
+            [
+              17,
+              25
+            ],
+            [
+              18,
+              25
+            ],
+            [
+              19,
+              26
+            ],
+            [
+              20,
+              26
+            ],
+            [
+              21,
+              26
+            ],
+            [
+              22,
+              27
+            ],
+            [
+              23,
+              27
+            ],
+            [
+              24,
+              28
+            ],
+            [
+              25,
+              28
+            ],
+            [
+              26,
+              28
+            ],
+            [
+              27,
+              29
+            ],
+            [
+              28,
+              29
+            ],
+            [
+              29,
+              29
+            ],
+            [
+              30,
+              30
+            ],
+            [
+              31,
+              30
+            ],
+            [
+              32,
+              31
+            ],
+            [
+              33,
+              31
+            ],
+            [
+              34,
+              32
+            ]
+          ]
+        },
+        "lowerRight": {
+          "slope": -0.39782608695652166,
+          "samples": [
+            [
+              50,
+              31
+            ],
+            [
+              51,
+              31
+            ],
+            [
+              52,
+              31
+            ],
+            [
+              53,
+              30
+            ],
+            [
+              54,
+              30
+            ],
+            [
+              55,
+              29
+            ],
+            [
+              56,
+              29
+            ],
+            [
+              57,
+              29
+            ],
+            [
+              58,
+              28
+            ],
+            [
+              59,
+              28
+            ],
+            [
+              60,
+              27
+            ],
+            [
+              61,
+              27
+            ],
+            [
+              62,
+              27
+            ],
+            [
+              63,
+              26
+            ],
+            [
+              64,
+              26
+            ],
+            [
+              65,
+              25
+            ],
+            [
+              66,
+              25
+            ],
+            [
+              67,
+              25
+            ],
+            [
+              68,
+              24
+            ],
+            [
+              69,
+              24
+            ],
+            [
+              70,
+              23
+            ],
+            [
+              71,
+              23
+            ],
+            [
+              72,
+              23
+            ],
+            [
+              73,
+              22
+            ]
+          ]
+        }
+      },
+      "method": "alpha>=200 column extrema; least-squares dy/dx over central20–80% of each half-edge; opposite pairs compared relative to larger absolute slope",
+      "thresholds": {
+        "relativeSlopeTolerance": 0.2,
+        "parallelDifference": 0.15,
+        "apexHorizontalDifference": 2,
+        "diagonalVerticalDifference": 2
+      }
+    },
+    "attempt05Negative": {
+      "slopes": {
+        "upperLeft": -0.050133689839572185,
+        "upperRight": 0,
+        "lowerLeft": 0,
+        "lowerRight": -0.035093582887700536
+      },
+      "parallelDifferences": [
+        0.2999999999999999,
+        null
+      ],
+      "apexHorizontalDifference": 15,
+      "diagonalVerticalDifference": 15,
+      "passes": false,
+      "target": 0.40927605776434434,
+      "vertices": {
+        "top": {
+          "x": 54.5,
+          "y": 0,
+          "span": 80
+        },
+        "bottom": {
+          "x": 39.5,
+          "y": 17,
+          "span": 80
+        },
+        "left": [
+          0,
+          16
+        ],
+        "right": [
+          94,
+          1
+        ]
+      },
+      "topHorizontalSpan": 80,
+      "fits": {
+        "upperLeft": {
+          "slope": -0.050133689839572185,
+          "samples": [
+            [
+              11,
+              4
+            ],
+            [
+              12,
+              3
+            ],
+            [
+              13,
+              2
+            ],
+            [
+              14,
+              1
+            ],
+            [
+              15,
+              0
+            ],
+            [
+              16,
+              0
+            ],
+            [
+              17,
+              0
+            ],
+            [
+              18,
+              0
+            ],
+            [
+              19,
+              0
+            ],
+            [
+              20,
+              0
+            ],
+            [
+              21,
+              0
+            ],
+            [
+              22,
+              0
+            ],
+            [
+              23,
+              0
+            ],
+            [
+              24,
+              0
+            ],
+            [
+              25,
+              0
+            ],
+            [
+              26,
+              0
+            ],
+            [
+              27,
+              0
+            ],
+            [
+              28,
+              0
+            ],
+            [
+              29,
+              0
+            ],
+            [
+              30,
+              0
+            ],
+            [
+              31,
+              0
+            ],
+            [
+              32,
+              0
+            ],
+            [
+              33,
+              0
+            ],
+            [
+              34,
+              0
+            ],
+            [
+              35,
+              0
+            ],
+            [
+              36,
+              0
+            ],
+            [
+              37,
+              0
+            ],
+            [
+              38,
+              0
+            ],
+            [
+              39,
+              0
+            ],
+            [
+              40,
+              0
+            ],
+            [
+              41,
+              0
+            ],
+            [
+              42,
+              0
+            ],
+            [
+              43,
+              0
+            ]
+          ]
+        },
+        "upperRight": {
+          "slope": 0,
+          "samples": [
+            [
+              63,
+              0
+            ],
+            [
+              64,
+              0
+            ],
+            [
+              65,
+              0
+            ],
+            [
+              66,
+              0
+            ],
+            [
+              67,
+              0
+            ],
+            [
+              68,
+              0
+            ],
+            [
+              69,
+              0
+            ],
+            [
+              70,
+              0
+            ],
+            [
+              71,
+              0
+            ],
+            [
+              72,
+              0
+            ],
+            [
+              73,
+              0
+            ],
+            [
+              74,
+              0
+            ],
+            [
+              75,
+              0
+            ],
+            [
+              76,
+              0
+            ],
+            [
+              77,
+              0
+            ],
+            [
+              78,
+              0
+            ],
+            [
+              79,
+              0
+            ],
+            [
+              80,
+              0
+            ],
+            [
+              81,
+              0
+            ],
+            [
+              82,
+              0
+            ],
+            [
+              83,
+              0
+            ],
+            [
+              84,
+              0
+            ],
+            [
+              85,
+              0
+            ],
+            [
+              86,
+              0
+            ]
+          ]
+        },
+        "lowerLeft": {
+          "slope": 0,
+          "samples": [
+            [
+              8,
+              17
+            ],
+            [
+              9,
+              17
+            ],
+            [
+              10,
+              17
+            ],
+            [
+              11,
+              17
+            ],
+            [
+              12,
+              17
+            ],
+            [
+              13,
+              17
+            ],
+            [
+              14,
+              17
+            ],
+            [
+              15,
+              17
+            ],
+            [
+              16,
+              17
+            ],
+            [
+              17,
+              17
+            ],
+            [
+              18,
+              17
+            ],
+            [
+              19,
+              17
+            ],
+            [
+              20,
+              17
+            ],
+            [
+              21,
+              17
+            ],
+            [
+              22,
+              17
+            ],
+            [
+              23,
+              17
+            ],
+            [
+              24,
+              17
+            ],
+            [
+              25,
+              17
+            ],
+            [
+              26,
+              17
+            ],
+            [
+              27,
+              17
+            ],
+            [
+              28,
+              17
+            ],
+            [
+              29,
+              17
+            ],
+            [
+              30,
+              17
+            ],
+            [
+              31,
+              17
+            ]
+          ]
+        },
+        "lowerRight": {
+          "slope": -0.035093582887700536,
+          "samples": [
+            [
+              51,
+              17
+            ],
+            [
+              52,
+              17
+            ],
+            [
+              53,
+              17
+            ],
+            [
+              54,
+              17
+            ],
+            [
+              55,
+              17
+            ],
+            [
+              56,
+              17
+            ],
+            [
+              57,
+              17
+            ],
+            [
+              58,
+              17
+            ],
+            [
+              59,
+              17
+            ],
+            [
+              60,
+              17
+            ],
+            [
+              61,
+              17
+            ],
+            [
+              62,
+              17
+            ],
+            [
+              63,
+              17
+            ],
+            [
+              64,
+              17
+            ],
+            [
+              65,
+              17
+            ],
+            [
+              66,
+              17
+            ],
+            [
+              67,
+              17
+            ],
+            [
+              68,
+              17
+            ],
+            [
+              69,
+              17
+            ],
+            [
+              70,
+              17
+            ],
+            [
+              71,
+              17
+            ],
+            [
+              72,
+              17
+            ],
+            [
+              73,
+              17
+            ],
+            [
+              74,
+              17
+            ],
+            [
+              75,
+              17
+            ],
+            [
+              76,
+              17
+            ],
+            [
+              77,
+              17
+            ],
+            [
+              78,
+              17
+            ],
+            [
+              79,
+              17
+            ],
+            [
+              80,
+              16
+            ],
+            [
+              81,
+              16
+            ],
+            [
+              82,
+              15
+            ],
+            [
+              83,
+              14
+            ]
+          ]
+        }
+      },
+      "method": "alpha>=200 column extrema; least-squares dy/dx over central20–80% of each half-edge; opposite pairs compared relative to larger absolute slope",
+      "thresholds": {
+        "relativeSlopeTolerance": 0.2,
+        "parallelDifference": 0.15,
+        "apexHorizontalDifference": 2,
+        "diagonalVerticalDifference": 2
+      }
+    }
+  },
+  "colourContract": {
+    "method": "fixed-diamond-interior-and-2px-envelope-ring/v1",
+    "mask": {
+      "plate": "abs(x-898)/42 + abs(y-348)/17 <= 0.64",
+      "floorOuterRect": [
+        854,
+        329,
+        89,
+        39
+      ],
+      "floorExclusion": [
+        856,
+        331,
+        85,
+        35
+      ]
+    },
+    "thresholds": {
+      "saturationMin": 0.58,
+      "valueDelta": [
+        0.02,
+        0.08
+      ]
+    },
+    "candidate": {
+      "plate": {
+        "s": 0.7417317653014218,
+        "v": 0.5638813474107587,
+        "n": 585
+      },
+      "floor": {
+        "s": 0.6990916313040096,
+        "v": 0.5399351676154337,
+        "n": 496
+      },
+      "delta": 0.023946179795324984
+    }
+  },
+  "lowerGaps": {
+    "left": {
+      "start": 2,
+      "end": 42,
+      "longestColumns": 39,
+      "runStart": 4,
+      "coverage": 0.95,
+      "points": [
+        [
+          4,
+          16
+        ],
+        [
+          5,
+          16
+        ],
+        [
+          6,
+          17
+        ],
+        [
+          7,
+          17
+        ],
+        [
+          8,
+          18
+        ],
+        [
+          9,
+          18
+        ],
+        [
+          10,
+          19
+        ],
+        [
+          11,
+          19
+        ],
+        [
+          12,
+          19
+        ],
+        [
+          13,
+          20
+        ],
+        [
+          14,
+          20
+        ],
+        [
+          15,
+          21
+        ],
+        [
+          16,
+          21
+        ],
+        [
+          17,
+          21
+        ],
+        [
+          18,
+          22
+        ],
+        [
+          19,
+          22
+        ],
+        [
+          20,
+          23
+        ],
+        [
+          21,
+          23
+        ],
+        [
+          22,
+          24
+        ],
+        [
+          23,
+          24
+        ],
+        [
+          24,
+          24
+        ],
+        [
+          25,
+          25
+        ],
+        [
+          26,
+          25
+        ],
+        [
+          27,
+          25
+        ],
+        [
+          28,
+          26
+        ],
+        [
+          29,
+          26
+        ],
+        [
+          30,
+          27
+        ],
+        [
+          31,
+          27
+        ],
+        [
+          32,
+          27
+        ],
+        [
+          33,
+          28
+        ],
+        [
+          34,
+          28
+        ],
+        [
+          35,
+          29
+        ],
+        [
+          36,
+          29
+        ],
+        [
+          37,
+          29
+        ],
+        [
+          38,
+          30
+        ],
+        [
+          39,
+          30
+        ],
+        [
+          40,
+          30
+        ],
+        [
+          41,
+          31
+        ],
+        [
+          42,
+          32
+        ]
+      ]
+    },
+    "right": {
+      "start": 42,
+      "end": 81,
+      "longestColumns": 39,
+      "runStart": 42,
+      "coverage": 0.9743589743589743,
+      "points": [
+        [
+          42,
+          32
+        ],
+        [
+          43,
+          31
+        ],
+        [
+          44,
+          30
+        ],
+        [
+          45,
+          30
+        ],
+        [
+          46,
+          30
+        ],
+        [
+          47,
+          29
+        ],
+        [
+          48,
+          29
+        ],
+        [
+          49,
+          28
+        ],
+        [
+          50,
+          28
+        ],
+        [
+          51,
+          28
+        ],
+        [
+          52,
+          27
+        ],
+        [
+          53,
+          27
+        ],
+        [
+          54,
+          26
+        ],
+        [
+          55,
+          26
+        ],
+        [
+          56,
+          26
+        ],
+        [
+          57,
+          25
+        ],
+        [
+          58,
+          25
+        ],
+        [
+          59,
+          24
+        ],
+        [
+          60,
+          24
+        ],
+        [
+          61,
+          24
+        ],
+        [
+          62,
+          23
+        ],
+        [
+          63,
+          23
+        ],
+        [
+          64,
+          23
+        ],
+        [
+          65,
+          22
+        ],
+        [
+          66,
+          22
+        ],
+        [
+          67,
+          21
+        ],
+        [
+          68,
+          21
+        ],
+        [
+          69,
+          21
+        ],
+        [
+          70,
+          20
+        ],
+        [
+          71,
+          20
+        ],
+        [
+          72,
+          19
+        ],
+        [
+          73,
+          19
+        ],
+        [
+          74,
+          18
+        ],
+        [
+          75,
+          18
+        ],
+        [
+          76,
+          18
+        ],
+        [
+          77,
+          17
+        ],
+        [
+          78,
+          18
+        ],
+        [
+          79,
+          16
+        ],
+        [
+          80,
+          16
+        ]
+      ]
+    },
+    "criteria": {
+      "innerOffsets": [
+        2,
+        5
+      ],
+      "maxRed": 65,
+      "warmOrder": "r>=g>=b",
+      "coverage": 0.8,
+      "method": "longest continuous x-interval with a warm opaque near-black pixel2–5px above lower alpha edge; same fraction as straight chord length"
+    }
+  },
+  "outputs": {
+    "sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/sprite.png",
+      "sha256": "e398cd840975bd77dd2b6053476be2c1ab371107e5f6087f793052b08c883f7c",
+      "width": 85,
+      "height": 35
+    },
+    "zoom": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/zoom.png",
+      "sha256": "ea373c21a43c5b3ff671154aa86ab24a1da1c11a81b896f26ebe274385f7e06b",
+      "width": 340,
+      "height": 140
+    },
+    "spriteGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/spriteGray.png",
+      "sha256": "2c5de89bbcfb29e01f102177946579d4bb70beae24f7ee3c4c877f5a323281fc",
+      "width": 85,
+      "height": 35
+    },
+    "zoomGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/zoomGray.png",
+      "sha256": "ea47681a2de245a9eab31ba7bd0ddd1979deea1cbe8c6697511ff793bf656f03",
+      "width": 340,
+      "height": 140
+    },
+    "scene": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/scene.png",
+      "sha256": "06dc538009f20ffab52106331dad72965a868c6c831835d6ce91dbec2b6997cb",
+      "width": 960,
+      "height": 540
+    },
+    "sceneGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/sceneGray.png",
+      "sha256": "6ff07ea2e5e6aa93053722c2de5acb501516b701b7ef00085379ea504af71163",
+      "width": 960,
+      "height": 540
+    },
+    "context": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/context.png",
+      "sha256": "7b0075e2c7146eb259eb163f31f1fcbebd6988383b0321e1c1fd4ecae3bbc4ad",
+      "width": 128,
+      "height": 80
+    },
+    "contextZoom": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/contextZoom.png",
+      "sha256": "8e0ad3888ff12d3b2dff04ca2fb1168bdb5e7d5a8f1f7ebb675ff64d37d0eb6e",
+      "width": 512,
+      "height": 320
+    },
+    "contextGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/contextGray.png",
+      "sha256": "e5e8ae031493066d7dd55476916688f73a333c50a79ec89897427aed93152b58",
+      "width": 512,
+      "height": 320
+    },
+    "attempt05Context": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/attempt05Context.png",
+      "sha256": "cb6e9c1dc5026ff877057f585b63c85c7c15c3520db3973f24aee19fae9d2f65",
+      "width": 512,
+      "height": 320
+    },
+    "guideOverlay": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/guideOverlay.png",
+      "sha256": "78d1661a4b579b9f625aac9a86e565a92edd5c5ddcef4033fc19fc48250e3b08",
+      "width": 680,
+      "height": 280
+    },
+    "gapEvidence": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/gapEvidence.png",
+      "sha256": "979e506586169a14f302392d014f59acb624fc0b1136677bf6a312bc1004de38",
+      "width": 680,
+      "height": 280
+    },
+    "colourMask": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/pressure-plate-attempt-06/colourMask.png",
+      "sha256": "ae974ab8d7aa76c27042118155bae77e1a0225fdc215c79f05bb9f530ab8300f",
+      "width": 512,
+      "height": 192
+    }
+  },
+  "review": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/pressure-plate-attempt-06-review.html",
+    "sha256": "37b2ea74748af70a8a85956722da921e7dbc30cb8ce4c98d56bb62ad17ee3673"
+  }
+}

@@ -1,0 +1,489 @@
+{
+  "schema": "mimic-pressure-plate-floor-diamond-guide/v1",
+  "source": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/warm-rest/architecture-desktop-v01-source.png",
+    "sha256": "a71491b85b4293c845bd09d0b97173ed90b35ef96a8fb54d277e673b27f2ae70",
+    "width": 1672,
+    "height": 941
+  },
+  "architectureCrop": {
+    "x": 0,
+    "y": 0,
+    "width": 1672,
+    "height": 941
+  },
+  "coordinateSpace": [
+    960,
+    540
+  ],
+  "method": "Manual top/right/bottom/left endpoints of worn visible tile boundaries; straight chords, dy/dx for each edge; all 10 tiles and all 40 edges equally weighted. Approximate endpoint uncertainty ±2 logical px. No stair measurements.",
+  "tiles": [
+    {
+      "id": "N1",
+      "zone": "near",
+      "vertices": [
+        [
+          759,
+          407
+        ],
+        [
+          800,
+          420
+        ],
+        [
+          758,
+          441
+        ],
+        [
+          719,
+          424
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.425,
+        "upperRight": 0.3170731707317073,
+        "lowerRight": -0.5,
+        "lowerLeft": 0.4358974358974359
+      },
+      "width": 81,
+      "height": 34,
+      "ratio": 2.3823529411764706
+    },
+    {
+      "id": "N2",
+      "zone": "near",
+      "vertices": [
+        [
+          842,
+          426
+        ],
+        [
+          889,
+          440
+        ],
+        [
+          843,
+          457
+        ],
+        [
+          792,
+          438
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.24,
+        "upperRight": 0.2978723404255319,
+        "lowerRight": -0.3695652173913043,
+        "lowerLeft": 0.37254901960784315
+      },
+      "width": 97,
+      "height": 31,
+      "ratio": 3.129032258064516
+    },
+    {
+      "id": "N3",
+      "zone": "near",
+      "vertices": [
+        [
+          788,
+          376
+        ],
+        [
+          820,
+          389
+        ],
+        [
+          789,
+          403
+        ],
+        [
+          756,
+          390
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.4375,
+        "upperRight": 0.40625,
+        "lowerRight": -0.45161290322580644,
+        "lowerLeft": 0.3939393939393939
+      },
+      "width": 64,
+      "height": 27,
+      "ratio": 2.3703703703703702
+    },
+    {
+      "id": "N4",
+      "zone": "near",
+      "vertices": [
+        [
+          878,
+          371
+        ],
+        [
+          905,
+          381
+        ],
+        [
+          879,
+          395
+        ],
+        [
+          850,
+          384
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.4642857142857143,
+        "upperRight": 0.37037037037037035,
+        "lowerRight": -0.5384615384615384,
+        "lowerLeft": 0.3793103448275862
+      },
+      "width": 55,
+      "height": 24,
+      "ratio": 2.2916666666666665
+    },
+    {
+      "id": "N5",
+      "zone": "near",
+      "vertices": [
+        [
+          733,
+          369
+        ],
+        [
+          767,
+          381
+        ],
+        [
+          734,
+          398
+        ],
+        [
+          701,
+          385
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.5,
+        "upperRight": 0.35294117647058826,
+        "lowerRight": -0.5151515151515151,
+        "lowerLeft": 0.3939393939393939
+      },
+      "width": 66,
+      "height": 29,
+      "ratio": 2.2758620689655173
+    },
+    {
+      "id": "M1",
+      "zone": "middle",
+      "vertices": [
+        [
+          407,
+          373
+        ],
+        [
+          457,
+          384
+        ],
+        [
+          418,
+          399
+        ],
+        [
+          374,
+          387
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.42424242424242425,
+        "upperRight": 0.22,
+        "lowerRight": -0.38461538461538464,
+        "lowerLeft": 0.2727272727272727
+      },
+      "width": 83,
+      "height": 26,
+      "ratio": 3.1923076923076925
+    },
+    {
+      "id": "M2",
+      "zone": "middle",
+      "vertices": [
+        [
+          452,
+          411
+        ],
+        [
+          480,
+          419
+        ],
+        [
+          458,
+          432
+        ],
+        [
+          430,
+          421
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.45454545454545453,
+        "upperRight": 0.2857142857142857,
+        "lowerRight": -0.5909090909090909,
+        "lowerLeft": 0.39285714285714285
+      },
+      "width": 50,
+      "height": 21,
+      "ratio": 2.380952380952381
+    },
+    {
+      "id": "M3",
+      "zone": "middle",
+      "vertices": [
+        [
+          425,
+          428
+        ],
+        [
+          475,
+          443
+        ],
+        [
+          430,
+          462
+        ],
+        [
+          380,
+          444
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.35555555555555557,
+        "upperRight": 0.3,
+        "lowerRight": -0.4222222222222222,
+        "lowerLeft": 0.36
+      },
+      "width": 95,
+      "height": 34,
+      "ratio": 2.7941176470588234
+    },
+    {
+      "id": "M4",
+      "zone": "middle",
+      "vertices": [
+        [
+          499,
+          431
+        ],
+        [
+          519,
+          439
+        ],
+        [
+          502,
+          448
+        ],
+        [
+          485,
+          439
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.5714285714285714,
+        "upperRight": 0.4,
+        "lowerRight": -0.5294117647058824,
+        "lowerLeft": 0.5294117647058824
+      },
+      "width": 34,
+      "height": 17,
+      "ratio": 2
+    },
+    {
+      "id": "M5",
+      "zone": "middle",
+      "vertices": [
+        [
+          343,
+          408
+        ],
+        [
+          364,
+          418
+        ],
+        [
+          337,
+          429
+        ],
+        [
+          314,
+          417
+        ]
+      ],
+      "slopes": {
+        "upperLeft": -0.3103448275862069,
+        "upperRight": 0.47619047619047616,
+        "lowerRight": -0.4074074074074074,
+        "lowerLeft": 0.5217391304347826
+      },
+      "width": 50,
+      "height": 21,
+      "ratio": 2.380952380952381
+    }
+  ],
+  "aggregate": {
+    "count": 10,
+    "meanAbsoluteSlope": 0.40927605776434434,
+    "meanRatio": 2.5197614406514814,
+    "meanWidth": 67.5,
+    "meanHeight": 26.4,
+    "negativeSlope": -0.44461297958670387,
+    "positiveSlope": 0.3739391359419847
+  },
+  "zones": {
+    "near": {
+      "count": 5,
+      "meanAbsoluteSlope": 0.40808597673628644,
+      "meanRatio": 2.4898568610487084,
+      "meanWidth": 72.6,
+      "meanHeight": 29,
+      "negativeSlope": -0.4441576888515879,
+      "positiveSlope": 0.3720142646209851
+    },
+    "middle": {
+      "count": 5,
+      "meanAbsoluteSlope": 0.4104661387924022,
+      "meanRatio": 2.5496660202542554,
+      "meanWidth": 62.4,
+      "meanHeight": 23.8,
+      "negativeSlope": -0.44506827032182006,
+      "positiveSlope": 0.37586400726298425
+    }
+  },
+  "annotations": {
+    "near": {
+      "x": 690,
+      "y": 350,
+      "width": 230,
+      "height": 120
+    },
+    "middle": {
+      "x": 300,
+      "y": 355,
+      "width": 230,
+      "height": 120
+    }
+  },
+  "tileComparison": {
+    "id": "M2",
+    "crop": {
+      "x": 426,
+      "y": 407,
+      "width": 59,
+      "height": 30
+    }
+  },
+  "guide": {
+    "canvas": [
+      85,
+      35
+    ],
+    "vertices": [
+      [
+        42,
+        0
+      ],
+      [
+        84,
+        17
+      ],
+      [
+        42,
+        34
+      ],
+      [
+        0,
+        17
+      ]
+    ],
+    "divisions": [
+      [
+        [
+          21,
+          8.5
+        ],
+        [
+          63,
+          25.5
+        ]
+      ],
+      [
+        [
+          63,
+          8.5
+        ],
+        [
+          21,
+          25.5
+        ]
+      ]
+    ],
+    "layout": "2x2 fitted diamonds",
+    "slope": 0.40476190476190477,
+    "diagonals": [
+      84,
+      34
+    ],
+    "ratio": 2.4705882352941178,
+    "referenceCenter": [
+      898,
+      348
+    ],
+    "origin": [
+      856,
+      331
+    ]
+  },
+  "outputs": {
+    "architecture": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/architecture.png",
+      "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931",
+      "width": 960,
+      "height": 540
+    },
+    "outline": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/outline.png",
+      "sha256": "7387b16e81f4944a058795136c48dd0b48ede9386d4c0834d39a99f944a33cfa",
+      "width": 85,
+      "height": 35
+    },
+    "outline8x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/outline8x.png",
+      "sha256": "a428111007a91c2cc9a92c90e272742e9c017fed4546327ed7dd08f108b995f8",
+      "width": 680,
+      "height": 280
+    },
+    "nearAnnotated": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/nearAnnotated.png",
+      "sha256": "a7cc3e4efb3bc0293312ecff9573968d662b9eac1b04ae64806dae5b6bd486e9",
+      "width": 920,
+      "height": 480
+    },
+    "middleAnnotated": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/middleAnnotated.png",
+      "sha256": "91e1d222489983a4d62a173696d144f3f1fb7e8850900d2911caa185f54140c8",
+      "width": 920,
+      "height": 480
+    },
+    "realTile": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/realTile.png",
+      "sha256": "1a7f78ffa352f3e7b7f384719d36768f5ac2063e9192740005c96c86065e916a",
+      "width": 59,
+      "height": 30
+    },
+    "realTile4x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-06/realTile4x.png",
+      "sha256": "16d5a198deb6987f4801edb20f1b62fefdd3c045ad63c8625f326d244d4f940e",
+      "width": 236,
+      "height": 120
+    }
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "schema": "mimic-pressure-plate-attempt-05-source/v1",
+  "generator": "imagegen",
+  "tool": "built-in",
+  "transparent": true,
+  "decision": "awaiting-calibration",
+  "parentLineage": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/lineage-attempt-04.json",
+    "sha256": "d2269cc9943fa043443b6e7c366650fb5c3cfe01e6443e0442fd11c277a34614"
+  },
+  "measurement": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/measurement.json",
+    "sha256": "3b75334284881ab2954a323202e57408a8696977baffbd3d5eac7ece413bbf08"
+  },
+  "inputs": {
+    "spec": {
+      "path": "docs/superpowers/specs/2026-11-02-landing-prop-placement-and-pressure-plate-design.md",
+      "sha256": "5d3c506484d0a452481113867421813110e8ca20c1c3afcf5c813da475db5c0d"
+    },
+    "parent": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement.manifest.json",
+      "sha256": "df90822ccb7fdd671899f08ec70c0d1535f16393d5b0ca4007aac0642d7eb1b5"
+    },
+    "chest": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/ancient-treasure-chest-v04.manifest.json",
+      "sha256": "10125e1224a4f2ff24f92ca764e6a627ecf716c0370546422fd9d914a117061a"
+    },
+    "previous": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/pressure-plate-v02-attempt-04.manifest.json",
+      "sha256": "d6d7efd7c383ee6c5c9cbcf9c063794a140f4f14b941cc5678e4e3ebbde0b32b"
+    },
+    "referenceScene": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v04/closed-logical.png",
+      "sha256": "651306bb9bc6243402c2cca45161507092cf073b034277339c5682ac919d5e2d",
+      "width": 960,
+      "height": 540
+    },
+    "phone": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-logical.png",
+      "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+      "width": 390,
+      "height": 600
+    },
+    "raster": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-chest-raster.mjs",
+      "sha256": "e65cabaefeba0532516c0d8ee9576c838e5eb40d53045871ff7dfdcc978cc08a"
+    }
+  },
+  "history": [
+    {
+      "mode": "edit",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05.png",
+        "sha256": "b8f0e574875f18c8e24546a6c7465f65699c38f00750dc840b9e66db04ba0ca5"
+      },
+      "prompt": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05-prompt.md",
+        "sha256": "d2c9b308c7979ca4e6e796dd6d518d69dc64e3cc07dc992bdcb71223fb52e21b"
+      },
+      "editTarget": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-04-retry-01.png",
+        "sha256": "6186839b101bbad448f6fe22e181652a61ed3168942f3490226b413aab5fab16"
+      },
+      "references": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/outline8x.png",
+          "sha256": "01fccba77d45426054d3e726ee525706c2cc230573f3fb96c53dd939209dbec0",
+          "width": 768,
+          "height": 144
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v04/closed-logical.png",
+          "sha256": "651306bb9bc6243402c2cca45161507092cf073b034277339c5682ac919d5e2d",
+          "width": 960,
+          "height": 540
+        }
+      ],
+      "referenceRoles": [
+        "Image1: selected attempt-04 retry-01 edit target",
+        "Image2: measured outline, mandatory shape and divisions",
+        "Image3: cave scene, perspective and floor colour only"
+      ],
+      "originalPath": "C:/Users/Edward1_Lee/.codex/generated_images/01a19b45-863a-7e71-8961-2797844ca322/exec-0007b015-ec6f-4caf-8687-ba29e39d1204.png",
+      "disposition": "Rejected: right alpha short-edge slope below required range"
+    },
+    {
+      "mode": "edit",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05-retry-01.png",
+        "sha256": "17537d8aea836d342afac4dbebd4790c2b486cc23fbf3b91b488ea0ce4e4f540"
+      },
+      "prompt": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05-retry-01-prompt.md",
+        "sha256": "580c737c25afe20efa01ed0a7c19a8187e0e2b41fc378ced017e50275da75237"
+      },
+      "editTarget": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05.png",
+        "sha256": "b8f0e574875f18c8e24546a6c7465f65699c38f00750dc840b9e66db04ba0ca5"
+      },
+      "references": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/outline8x.png",
+          "sha256": "01fccba77d45426054d3e726ee525706c2cc230573f3fb96c53dd939209dbec0",
+          "width": 768,
+          "height": 144
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v04/closed-logical.png",
+          "sha256": "651306bb9bc6243402c2cca45161507092cf073b034277339c5682ac919d5e2d",
+          "width": 960,
+          "height": 540
+        }
+      ],
+      "referenceRoles": [
+        "Image1: attempt-05 edit target",
+        "Image2: measured outline, mandatory shape and divisions",
+        "Image3: cave scene, perspective and floor colour only"
+      ],
+      "originalPath": "C:/Users/Edward1_Lee/.codex/generated_images/01a19b45-863a-7e71-8961-2797844ca322/exec-12f9eb27-6497-4a9e-8df1-2e0fe3304d34.png",
+      "disposition": "Rejected: right alpha short-edge slope below required range"
+    },
+    {
+      "mode": "edit",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05-retry-02.png",
+        "sha256": "d2902a1277831ddd88b779852949ee34c79b6c83650cf44fb3d3ceaeca36c9b4"
+      },
+      "prompt": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05-retry-02-prompt.md",
+        "sha256": "4b80654ff198c483b41c76d997ef535e895ba35793417f8259ac95000f4bff57"
+      },
+      "editTarget": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05-retry-01.png",
+        "sha256": "17537d8aea836d342afac4dbebd4790c2b486cc23fbf3b91b488ea0ce4e4f540"
+      },
+      "references": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/outline8x.png",
+          "sha256": "01fccba77d45426054d3e726ee525706c2cc230573f3fb96c53dd939209dbec0",
+          "width": 768,
+          "height": 144
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v04/closed-logical.png",
+          "sha256": "651306bb9bc6243402c2cca45161507092cf073b034277339c5682ac919d5e2d",
+          "width": 960,
+          "height": 540
+        }
+      ],
+      "referenceRoles": [
+        "Image1: attempt-05-retry-01 edit target",
+        "Image2: measured outline, mandatory shape and divisions",
+        "Image3: cave scene, perspective and floor colour only"
+      ],
+      "originalPath": "C:/Users/Edward1_Lee/.codex/generated_images/01a19b45-863a-7e71-8961-2797844ca322/exec-25b75201-7944-42de-8f60-d9fba228c4e5.png",
+      "disposition": "Candidate awaiting appearance review"
+    }
+  ],
+  "selected": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-attempt-05/attempt-05-retry-02.png",
+    "sha256": "d2902a1277831ddd88b779852949ee34c79b6c83650cf44fb3d3ceaeca36c9b4"
+  }
+}

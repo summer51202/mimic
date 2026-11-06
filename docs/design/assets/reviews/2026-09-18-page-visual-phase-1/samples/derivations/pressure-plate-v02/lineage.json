@@ -1,0 +1,112 @@
+{
+  "schema": "mimic-pressure-plate-v02-source/v1",
+  "generator": "imagegen",
+  "tool": "built-in",
+  "transparent": true,
+  "decision": "awaiting-calibration",
+  "selected": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/plate-source.png",
+    "sha256": "9be635235f59d04107827569c372346508cea8423d65143575ee72039b0101ab"
+  },
+  "history": [
+    {
+      "mode": "generate",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-01.png",
+        "sha256": "470975a910ca402e94ce40891962c676af51481c82e63c9095b0dd7344adea9d"
+      },
+      "prompt": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-01-prompt.md",
+        "sha256": "f2ea3d2cd7f16a02c970829365ecccbebb5ada7a4fa9f9072aeec59f04a0bfe4"
+      },
+      "editTarget": null,
+      "references": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v04/closed-logical.png",
+          "sha256": "651306bb9bc6243402c2cca45161507092cf073b034277339c5682ac919d5e2d"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/warrior.png",
+          "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v04/closed-sprite.png",
+          "sha256": "1d3033feec912b2a8c3e8985949cccbbeadadcd02e6500999f3d7a1558d9a2bc"
+        }
+      ],
+      "originalPath": "C:/Users/Edward1_Lee/.codex/generated_images/01a19a7a-3547-7e80-bbf4-0a5be7bd1fa9/exec-3e5800b6-0437-4e34-b955-fc55a54ada91.png"
+    },
+    {
+      "mode": "edit",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-02.png",
+        "sha256": "bd793834c7050ba7dd694718bb476883acb0e29617fbf570b9ad75cd7bc344b9"
+      },
+      "prompt": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-02-prompt.md",
+        "sha256": "4c301a076ca7f98eb725133b72594f16bf4de0190a047909fb5d5cffb9120364"
+      },
+      "editTarget": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-01.png",
+        "sha256": "470975a910ca402e94ce40891962c676af51481c82e63c9095b0dd7344adea9d"
+      },
+      "references": [],
+      "originalPath": "C:/Users/Edward1_Lee/.codex/generated_images/01a19a7a-3547-7e80-bbf4-0a5be7bd1fa9/exec-362ea280-8a9a-4b27-a211-6db8dedc5777.png"
+    },
+    {
+      "mode": "edit",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-03.png",
+        "sha256": "9be635235f59d04107827569c372346508cea8423d65143575ee72039b0101ab"
+      },
+      "prompt": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-03-prompt.md",
+        "sha256": "02da44c507ef3a2cb2009cd585ac8296b162293be1b312c4d4b80bb721f98304"
+      },
+      "editTarget": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/pressure-plate-v02/attempt-02.png",
+        "sha256": "bd793834c7050ba7dd694718bb476883acb0e29617fbf570b9ad75cd7bc344b9"
+      },
+      "references": [],
+      "originalPath": "C:/Users/Edward1_Lee/.codex/generated_images/01a19a7a-3547-7e80-bbf4-0a5be7bd1fa9/exec-6ec6b342-4509-4b7a-b347-187e7981da09.png"
+    }
+  ],
+  "inputs": {
+    "parent": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement.manifest.json",
+      "sha256": "df90822ccb7fdd671899f08ec70c0d1535f16393d5b0ca4007aac0642d7eb1b5"
+    },
+    "chest": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/ancient-treasure-chest-v04.manifest.json",
+      "sha256": "10125e1224a4f2ff24f92ca764e6a627ecf716c0370546422fd9d914a117061a"
+    },
+    "raster": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-chest-raster.mjs",
+      "sha256": "e65cabaefeba0532516c0d8ee9576c838e5eb40d53045871ff7dfdcc978cc08a"
+    },
+    "spec": {
+      "path": "docs/superpowers/specs/2026-11-02-landing-prop-placement-and-pressure-plate-design.md",
+      "sha256": "28edc48e4f3675e454c8ceaaee2f5cfcd87814b35370b94996913111ec675efb"
+    },
+    "v01": {
+      "id": "pressurePlate",
+      "x": 850,
+      "y": 339,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/pressurePlate.png",
+      "sha256": "75212a50c132fb18dc6b6b7ca817fd9bc24c3bf3772d88a87152035d0973d6c2",
+      "width": 67,
+      "height": 14
+    },
+    "phone": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-logical.png",
+      "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+      "width": 390,
+      "height": 600
+    }
+  },
+  "referenceRoles": [
+    "actual cave scene: perspective, floor colour and scale only",
+    "warrior: pixel-style reference only",
+    "approved treasure chest v04: pixel-style reference only"
+  ]
+}
