@@ -39,3 +39,9 @@ worktrees/
 .merge-backup/
 models/
 transcripts/
+
+# Local agent scratch, caches and private references
+.tmp/
+.claude/
+.codex-remote-attachments/
+reference/
