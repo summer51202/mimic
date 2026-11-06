@@ -1,0 +1,38 @@
+{
+  "schema": "mimic-restored-chest-source/v1",
+  "generator": "imagegen",
+  "transparent": true,
+  "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v01/family-source.png",
+  "selectedPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+  "frames": [
+    "closed",
+    "latch-release",
+    "unlatched",
+    "cracked",
+    "half-open",
+    "opening-wide",
+    "near-open",
+    "open"
+  ],
+  "history": [
+    {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-01.png",
+      "editTargetPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v01/family-source.png",
+      "referencePaths": [
+        "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/warrior.png",
+        "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/warrior.png",
+        "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-logical.png"
+      ]
+    },
+    {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-02.png",
+      "editTargetPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-01.png",
+      "referencePaths": []
+    },
+    {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-03.png",
+      "editTargetPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-02.png",
+      "referencePaths": []
+    }
+  ]
+}

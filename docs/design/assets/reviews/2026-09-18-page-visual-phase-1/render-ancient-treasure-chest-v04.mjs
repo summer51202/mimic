@@ -1,0 +1,26 @@
+import {renderRestoredChestReview} from "./render-restored-treasure-chest.mjs";
+const prefix="docs/design/assets/reviews/2026-09-18-page-visual-phase-1/";
+const esc=s=>String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+const rel=a=>esc(a.path.slice(prefix.length));
+export function renderAncientChestReview(m,parentHTML,scripts){
+  let html=renderRestoredChestReview({...m,sourceHistory:[]},parentHTML,scripts);
+  const oldIntro="小隊修整過、正在使用的珍藏老箱：深暖木材、一處下角修復、有份量的鎖扣；逐步揭露堆疊金幣與青藍寶石。篝火與伙伴仍為主角。";
+  if(!html.includes(oldIntro))throw Error("Missing introduction boundary");
+  html=html.replaceAll("Landing — 修整老箱與重量開關","Landing — 古老珍藏 v04")
+    .replaceAll('href="restored-treasure-chest.manifest.json"','href="ancient-treasure-chest-v04.manifest.json"')
+    .replaceAll("v02 ","v04 ")
+    .replace(oldIntro,"古老珍藏：工藝與年代，而非華麗裝飾。v04 修訂開蓋進度、外側扣鎖與左下角修補。下列角度是設計目標，bbox 是實際像素量測；待整組視覺審核。開 750ms／關 660ms 沿用 v03，未調整逐段時間。");
+  const comparison=Object.entries(m.v03Frames).map(([id,f])=>'<section class="state-card" data-v03-comparison="'+id+'"><h3>v03 '+id+'</h3><img class="actual-sprite" src="'+rel(f.sprite)+'" width="104" height="120" alt="v03 '+id+'"><img src="'+rel(f.zoom)+'" width="208" height="240" alt="v03 '+id+' 2×"></section>').join("");
+  const angles=[0,0,0,12,35,58,80,100],v=m.openingProgress.v04,old=m.openingProgress.v03;
+  const rows=m.config.frames.map((id,i)=>'<tr><th scope="row">'+id+'</th><td>'+angles[i]+'°</td><td>'+old.tops[i]+'</td><td>'+v.tops[i]+'</td><td>'+(i>=4?v.steps[i-4]:"—")+'</td></tr>').join("");
+  const result=p=>'<ul><li>cracked→open 總上升 '+p.total+'px；逐步 '+p.steps.join(" / ")+'px</li><li>單調：'+p.monotonic+'；最大步幅 ≤40%：'+p.bounded+'；三中段兩兩 ≥3px：'+p.distinct+'；cracked ≤25%：'+p.cracked+'</li></ul>';
+  const crop=(a,scale,attr,label)=>{const [x,y,w,h]=m.repair.rect;return '<figure><div '+attr+' class="repair-crop" style="width:'+w*scale+'px;height:'+h*scale+'px"><img src="'+rel(a)+'" alt="'+esc(label)+'" style="width:'+104*scale+'px;height:'+120*scale+'px;left:-'+x*scale+'px;top:-'+y*scale+'px"></div><figcaption>'+esc(label)+'</figcaption></figure>';};
+  const repairs='<section class="repair-review"><h2>唯一修補：左下角實際尺寸與局部放大</h2><p>左側下方較淺胡桃木補換段與角落暗鐵片。固定局部 (15,96,31,23)，無插值裁切；八格共用 closed 下半部。請核對 1×／灰階／桌機場景的辨識度，以及兩顆方釘是否足夠清楚。機構與美術仍由整組視覺審核決定。</p><div class="repair-gallery">'+crop(m.frames.closed.sprite,1,'data-repair-crop="1"',"修補局部 1×，31×23")+crop(m.frames.closed.sprite,4,'data-repair-crop="4"',"修補局部 4×，124×92")+crop(m.frames.closed.spriteGray,1,'data-repair-gray="1"',"真實灰階 1×")+crop(m.frames.closed.spriteGray,4,'data-repair-gray="4"',"真實灰階 4×")+'</div></section>';
+  const history=m.sourceHistory.map((s,i)=>'<li>attempt-'+String(i+1).padStart(2,"0")+' · 編修 <a href="'+rel(s.editTarget)+'">'+rel(s.editTarget)+'</a><br><a href="'+rel(s.source)+'">原始輸出</a> · <a href="'+rel(s.prompt)+'">實際 prompt</a><br><code>'+esc(s.source.sha256)+'</code><br>references: '+(s.references.map(rel).join(" · ")||"無")+'</li>').join("");
+  const section='<section class="v04-evidence"><h2>v03 對照（未核准，原檔唯讀）</h2><p><a href="ancient-treasure-chest-review.html">開啟完整 v03 review</a></p><div class="state-gallery">'+comparison+'</div><h2>開蓋進度量測表（2× alpha bbox top）</h2><div class="progress-scroll"><table data-opening-progress><thead><tr><th>frame</th><th>目標角</th><th>v03 top</th><th>v04 top</th><th>v04 上升</th></tr></thead><tbody>'+rows+'</tbody></table></div><h3>v04 實測</h3>'+result(v)+'<h3>v03 負對照</h3>'+result(old)+'<p>cracked 的可見窄縫、蓋自由上緣扣鎖、open 超垂直後傾均需目視；高度量測不等同角度量測。先蓋後扣的關閉順序及原時序保持。</p>'+repairs+'<h2>實際 ImageGen 編修紀錄</h2><p>01 直接編修 v03 family-source，以兩張戰士為風格參照；02–05 逐次編修前稿，03 額外參照原 v03。選定 05，原始 bytes 不變。沒有逐格 crop-fit、位移或縮放。</p><ol>'+history+'</ol><p><a href="ancient-treasure-chest-v04-verification.md">驗證紀錄與人工視覺檢查</a></p></section>';
+  if(!html.includes('<section class="notes"'))throw Error("Missing review boundary");
+  const scene=(a,attr,label)=>'<figure '+attr+'><img src="'+rel(a)+'" width="'+a.width+'" height="'+a.height+'" alt="'+esc(label)+'" style="display:block;width:100%;height:auto;image-rendering:pixelated"><figcaption>'+esc(label)+'</figcaption></figure>';
+  const original='<details><summary>原場景與 v03 桌機場景對照</summary>'+scene(m.parentDesktop.color,'data-original-scene',"原場景，標題與其餘物件凍結")+scene(m.v03Frames.closed.color,'data-v03-scene="closed"',"v03 closed 原場景")+scene(m.v03Frames.open.color,'data-v03-scene="open"',"v03 open 原場景")+'</details><p>箱身 staple 使用 unlatched 固定區域 (59,90,10,13)，release 後像素一致；closed 時被垂下扣鎖遮擋。左下角修補仍重用 closed 箱身。</p>';
+  html=html.replace('<section class="notes"',section+original+'<p>前三格只釋放扣鎖：蓋子區域重用 closed（row 90 以上、移動扣鎖範圍以外），消除來源圖的閉蓋漂移；所有取樣仍使用單一 lattice 與共同 transform。</p><section class="notes"');
+  return html.replace('</head>','<style>.v04-evidence{overflow-wrap:anywhere}.v04-evidence li{margin-bottom:12px}.v04-evidence code{word-break:break-all}.repair-gallery{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}.repair-gallery figure{margin:8px 0}.repair-crop{position:relative;overflow:hidden;background:#30271f;max-width:100%}.repair-crop img{position:absolute;max-width:none;image-rendering:pixelated}.progress-scroll{overflow-x:auto}.progress-scroll table{min-width:280px}.progress-scroll th,.progress-scroll td{padding:5px;text-align:left;font-size:12px}</style></head>');
+}

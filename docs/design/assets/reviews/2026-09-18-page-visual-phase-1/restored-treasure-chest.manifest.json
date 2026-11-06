@@ -1,0 +1,1871 @@
+{
+  "schema": "mimic-restored-chest-review/v1",
+  "decision": "awaiting-calibration",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "spec": "docs/superpowers/specs/2026-10-19-landing-restored-treasure-chest-design.md",
+  "plan": "docs/superpowers/plans/2026-10-20-landing-restored-treasure-chest.md",
+  "inputs": {
+    "old": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/treasure-chest-states.manifest.json",
+      "sha256": "61f1bf4e2ec7efca3e3c80a08af1852f674868094d8912962d2c40082c636cb1"
+    },
+    "parent": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement.manifest.json",
+      "sha256": "df90822ccb7fdd671899f08ec70c0d1535f16393d5b0ca4007aac0642d7eb1b5"
+    },
+    "oldSource": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v01/family-source.png",
+      "sha256": "a666381ea471a8670f3bcff8b0acf534a0bc2a3e969a264b03219af0233100ce",
+      "width": 1254,
+      "height": 1254
+    },
+    "closedLayer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/ordinary-chest.png",
+      "sha256": "fc2a8eb5b6337658e3056cc4cfc014328a4ec0c2920d800f9daa37451aef729b",
+      "width": 78,
+      "height": 66
+    },
+    "warriorMaster": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/warrior.png",
+      "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447",
+      "width": 512,
+      "height": 512
+    },
+    "warriorLayer": {
+      "id": "warrior",
+      "x": 350,
+      "y": 196,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/warrior.png",
+      "sha256": "fa155d31d7668e7d3660f89f4a90de865ca978abd725aa8bc5f591342eb252e1",
+      "width": 132,
+      "height": 149
+    },
+    "referenceScene": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-logical.png",
+      "sha256": "984f503fe910121fc5cf130d3204bb66276140e5403a2b7f255eb332abc87d5f",
+      "width": 960,
+      "height": 540
+    },
+    "source": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+      "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+      "width": 1774,
+      "height": 887
+    },
+    "prompt": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/prompt.md",
+      "sha256": "87f5ea2d22a2e5e0ead8f62b88e337b8b9133f8dcb1a708fa6a65619aa95e36b"
+    },
+    "lineage": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/lineage.json",
+      "sha256": "38c60f8337fba7f8bbaca16ace4cef158cda685aec9fbfd6eddeae0d502e8b9d"
+    },
+    "parentReview": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement-review.html",
+      "sha256": "da5a81e41a8b3f5bda76732ac6c611731d87f386819883816250b5542c515c71"
+    },
+    "sharedRaster": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-chest-raster.mjs",
+      "sha256": "e65cabaefeba0532516c0d8ee9576c838e5eb40d53045871ff7dfdcc978cc08a"
+    },
+    "legacyRenderer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/render-treasure-chest-states.mjs",
+      "sha256": "3a3a87d2f31d97009fb8957490cbcee8c8d43204a9ab98c161891410c5b6199e"
+    },
+    "config": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/restored-chest.config.mjs",
+      "sha256": "50383f88a6162d175914bcbfcbfaf0645232416730131717991a561f757ea769"
+    },
+    "model": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/restored-chest.model.mjs",
+      "sha256": "d75da1d29c5b91885dcdc526e7daaaad7886e60b81dea6d1f7bef1e44177999a"
+    },
+    "controller": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/restored-chest.controller.mjs",
+      "sha256": "c1f1ac530426b145927ec59801a70c6ade75228baf00ce026375c2ee53304c48"
+    },
+    "raster": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/restored-chest.raster.mjs",
+      "sha256": "8b8ba83f2c0112fc175f74fe0a441d4eb8b8b2fa325db74ef16a161e457e46b8"
+    },
+    "renderer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/render-restored-treasure-chest.mjs",
+      "sha256": "01779c68162b6f5d8d4a9121bfe75b460a2a7ee0dd27385e75d191225337e5bc"
+    },
+    "composer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/compose-restored-treasure-chest.mjs",
+      "sha256": "428b94820133637369c6876f60a8a9c0212c24891affa609b68ed2c95997c44e"
+    }
+  },
+  "sourceHistory": [
+    {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-01.png",
+        "sha256": "d5f85d27a50399cff1d725f0651d23bf02c2104a79e5346fc5a0ad159e72ffbd",
+        "width": 1774,
+        "height": 887
+      },
+      "editTarget": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v01/family-source.png",
+        "sha256": "a666381ea471a8670f3bcff8b0acf534a0bc2a3e969a264b03219af0233100ce",
+        "width": 1254,
+        "height": 1254
+      },
+      "references": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/warrior.png",
+          "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447",
+          "width": 512,
+          "height": 512
+        },
+        {
+          "id": "warrior",
+          "x": 350,
+          "y": 196,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/warrior.png",
+          "sha256": "fa155d31d7668e7d3660f89f4a90de865ca978abd725aa8bc5f591342eb252e1",
+          "width": 132,
+          "height": 149
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-logical.png",
+          "sha256": "984f503fe910121fc5cf130d3204bb66276140e5403a2b7f255eb332abc87d5f",
+          "width": 960,
+          "height": 540
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-02.png",
+        "sha256": "a3abd5e57adef0e649a271c899b531abf9d6f136c55bda73872ebc0bb771106a",
+        "width": 1774,
+        "height": 887
+      },
+      "editTarget": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-01.png",
+        "sha256": "d5f85d27a50399cff1d725f0651d23bf02c2104a79e5346fc5a0ad159e72ffbd",
+        "width": 1774,
+        "height": 887
+      },
+      "references": []
+    },
+    {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-03.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887
+      },
+      "editTarget": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/attempt-02.png",
+        "sha256": "a3abd5e57adef0e649a271c899b531abf9d6f136c55bda73872ebc0bb771106a",
+        "width": 1774,
+        "height": 887
+      },
+      "references": []
+    }
+  ],
+  "config": {
+    "frames": [
+      "closed",
+      "latch-release",
+      "unlatched",
+      "cracked",
+      "half-open",
+      "opening-wide",
+      "near-open",
+      "open"
+    ],
+    "mainFrames": {
+      "closed": "closed",
+      "cracked": "cracked",
+      "half-open": "half-open",
+      "open": "open"
+    },
+    "timelines": {
+      "open": [
+        [
+          "latch-release",
+          100
+        ],
+        [
+          "unlatched",
+          90
+        ],
+        [
+          "cracked",
+          150
+        ],
+        [
+          "half-open",
+          90
+        ],
+        [
+          "opening-wide",
+          70
+        ],
+        [
+          "near-open",
+          110
+        ],
+        [
+          "open",
+          140
+        ]
+      ],
+      "close": [
+        [
+          "near-open",
+          120
+        ],
+        [
+          "opening-wide",
+          100
+        ],
+        [
+          "half-open",
+          80
+        ],
+        [
+          "cracked",
+          70
+        ],
+        [
+          "unlatched",
+          90
+        ],
+        [
+          "latch-release",
+          80
+        ],
+        [
+          "closed",
+          120
+        ]
+      ]
+    },
+    "layout": {
+      "width": 104,
+      "height": 120,
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "bodyStart": 90,
+      "latchArea": {
+        "x": 44,
+        "y": 68,
+        "width": 36,
+        "height": 40
+      },
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      }
+    },
+    "sourceGrid": {
+      "origin": [
+        20,
+        0
+      ],
+      "cell": [
+        432,
+        430
+      ],
+      "stride": [
+        432,
+        430
+      ]
+    }
+  },
+  "layout": {
+    "width": 104,
+    "height": 120,
+    "sceneOrigin": [
+      92,
+      230
+    ],
+    "ground": [
+      52,
+      120
+    ],
+    "worldGround": [
+      144,
+      350
+    ],
+    "bodyStart": 90,
+    "latchArea": {
+      "x": 44,
+      "y": 68,
+      "width": 36,
+      "height": 40
+    },
+    "hingeReference": {
+      "kind": "review-guide",
+      "point": [
+        52,
+        84
+      ]
+    }
+  },
+  "registration": {
+    "cells": [
+      {
+        "x": 20,
+        "y": 0,
+        "width": 432,
+        "height": 430
+      },
+      {
+        "x": 452,
+        "y": 0,
+        "width": 432,
+        "height": 430
+      },
+      {
+        "x": 884,
+        "y": 0,
+        "width": 432,
+        "height": 430
+      },
+      {
+        "x": 1316,
+        "y": 0,
+        "width": 432,
+        "height": 430
+      },
+      {
+        "x": 20,
+        "y": 430,
+        "width": 432,
+        "height": 430
+      },
+      {
+        "x": 452,
+        "y": 430,
+        "width": 432,
+        "height": 430
+      },
+      {
+        "x": 884,
+        "y": 430,
+        "width": 432,
+        "height": 430
+      },
+      {
+        "x": 1316,
+        "y": 430,
+        "width": 432,
+        "height": 430
+      }
+    ],
+    "boxes": [
+      {
+        "x": 34,
+        "y": 93,
+        "width": 372,
+        "height": 326
+      },
+      {
+        "x": 32,
+        "y": 93,
+        "width": 373,
+        "height": 326
+      },
+      {
+        "x": 36,
+        "y": 92,
+        "width": 373,
+        "height": 327
+      },
+      {
+        "x": 37,
+        "y": 92,
+        "width": 374,
+        "height": 327
+      },
+      {
+        "x": 33,
+        "y": 44,
+        "width": 379,
+        "height": 374
+      },
+      {
+        "x": 34,
+        "y": 38,
+        "width": 376,
+        "height": 380
+      },
+      {
+        "x": 35,
+        "y": 38,
+        "width": 377,
+        "height": 380
+      },
+      {
+        "x": 36,
+        "y": 34,
+        "width": 378,
+        "height": 384
+      }
+    ],
+    "scale": 0.20245398773006135,
+    "rawAnchor": [
+      220,
+      419
+    ],
+    "rawBodyBands": [
+      {
+        "x": 15,
+        "y": 0,
+        "width": 75,
+        "height": 30
+      },
+      {
+        "x": 15,
+        "y": 0,
+        "width": 75,
+        "height": 30
+      },
+      {
+        "x": 15,
+        "y": 0,
+        "width": 76,
+        "height": 30
+      },
+      {
+        "x": 16,
+        "y": 0,
+        "width": 75,
+        "height": 30
+      },
+      {
+        "x": 15,
+        "y": 0,
+        "width": 76,
+        "height": 30
+      },
+      {
+        "x": 15,
+        "y": 0,
+        "width": 76,
+        "height": 30
+      },
+      {
+        "x": 15,
+        "y": 0,
+        "width": 76,
+        "height": 30
+      },
+      {
+        "x": 15,
+        "y": 0,
+        "width": 76,
+        "height": 30
+      }
+    ],
+    "bodyReuse": {
+      "from": "closed",
+      "startRow": 90,
+      "except": {
+        "x": 44,
+        "y": 68,
+        "width": 36,
+        "height": 40
+      }
+    }
+  },
+  "backdrop": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/desktop-without-chest.png",
+    "sha256": "f5ed85d7c6632b5a9ad4f6fece332b916f274fc828c4c02eaa0f0038b44cc777",
+    "width": 960,
+    "height": 540
+  },
+  "outputs": {
+    "desktop-without-chest": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/desktop-without-chest.png",
+      "sha256": "f5ed85d7c6632b5a9ad4f6fece332b916f274fc828c4c02eaa0f0038b44cc777",
+      "width": 960,
+      "height": 540
+    },
+    "closed-sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-sprite.png",
+      "sha256": "e853deee9605b93ea1aece8592f80409be22ba6ed2dbebb6501b016cd267500c",
+      "width": 104,
+      "height": 120
+    },
+    "closed-sprite-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-sprite-gray.png",
+      "sha256": "7a003a0d0203eaa9a12672f2d6cf9aa219a6e1f5cdd512068c4aff5e4c18f92e",
+      "width": 104,
+      "height": 120
+    },
+    "closed-2x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-2x.png",
+      "sha256": "950da4666c417e1b25b40782ade6d89ff4f6e040b808f1a9f8a4181e4c849cc5",
+      "width": 208,
+      "height": 240
+    },
+    "closed-logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-logical.png",
+      "sha256": "41d3360a7f1b16f6b473e05a134418b26e9ff4a9c3260e6fe2b5e9da549f4571",
+      "width": 960,
+      "height": 540
+    },
+    "closed-color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-color.png",
+      "sha256": "9da0feb35183c860c18bb208d117dae77271d37ca7edbb3e362b5d55948969f2",
+      "width": 1920,
+      "height": 1080
+    },
+    "closed-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-gray.png",
+      "sha256": "489bff6beff8fba9c7523fd3b0756ede18d7d2eabf106f43ec13f074a103c293",
+      "width": 1920,
+      "height": 1080
+    },
+    "latch-release-sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-sprite.png",
+      "sha256": "b9b567580997eb38c09d3a74d9f3f339bb392f8b4f544c3ae70247cbf21e95cf",
+      "width": 104,
+      "height": 120
+    },
+    "latch-release-sprite-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-sprite-gray.png",
+      "sha256": "26eb2ece9000d3fcfb12b3e2fca3329825801ab0473c774a6eea9795c087fb5a",
+      "width": 104,
+      "height": 120
+    },
+    "latch-release-2x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-2x.png",
+      "sha256": "f9547c06eec62e878f1522f36ed8d02c6a7180052a23d42434ba4b37360ce963",
+      "width": 208,
+      "height": 240
+    },
+    "latch-release-logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-logical.png",
+      "sha256": "c0589173c049d2cbba74006180c7de62a129fe2fe33165b718bf31d3509f5346",
+      "width": 960,
+      "height": 540
+    },
+    "latch-release-color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-color.png",
+      "sha256": "b1f219824db7f74f2b5f72c3c74da94b2f0ec5ac8a07dd2f67a1c328e485953e",
+      "width": 1920,
+      "height": 1080
+    },
+    "latch-release-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-gray.png",
+      "sha256": "f2432588d417f52482df619226e5cf2342ade05aa15df08e84c6f9c62c4aa6bc",
+      "width": 1920,
+      "height": 1080
+    },
+    "unlatched-sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-sprite.png",
+      "sha256": "782f0de353537af1c2de281f37ed75fd7d5ffecd71ec0ccccdfc4c9b70678726",
+      "width": 104,
+      "height": 120
+    },
+    "unlatched-sprite-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-sprite-gray.png",
+      "sha256": "112a4545ed131d60314a43f27a888825791c61e7b51c49c6637f209e6df61ba4",
+      "width": 104,
+      "height": 120
+    },
+    "unlatched-2x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-2x.png",
+      "sha256": "5bfa0124bc78a8f272bcfa4b5b0ce7997b7f9adc63a6681424a3600e0d807dac",
+      "width": 208,
+      "height": 240
+    },
+    "unlatched-logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-logical.png",
+      "sha256": "bebc32f2d5099d4804533d14a8350d92277b07171a184a96ff22bb05910dec8b",
+      "width": 960,
+      "height": 540
+    },
+    "unlatched-color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-color.png",
+      "sha256": "357392358e8cd9b60a08f449a825d5efcc5b9eb479a558833ace89813adda091",
+      "width": 1920,
+      "height": 1080
+    },
+    "unlatched-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-gray.png",
+      "sha256": "a045f1e7908c2f2bf3873dc50dc3b14cd2c7ccbdb08dd0e55a4ee648bce35ef7",
+      "width": 1920,
+      "height": 1080
+    },
+    "cracked-sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-sprite.png",
+      "sha256": "23bac2efd5f048a79f04eba2bbf41f756241ab5239568803ce18d50392a06651",
+      "width": 104,
+      "height": 120
+    },
+    "cracked-sprite-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-sprite-gray.png",
+      "sha256": "2e9637b2c68230a8ba8106bf93514d328e20e43ebc7db5519362b0bcebbb145b",
+      "width": 104,
+      "height": 120
+    },
+    "cracked-2x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-2x.png",
+      "sha256": "032744f0070dca2f768a87c62b9c241ce9a525a41a753d7bda5fd55bff26b10e",
+      "width": 208,
+      "height": 240
+    },
+    "cracked-logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-logical.png",
+      "sha256": "ef22876a990aafd5aebc023085ee4faaceefd3b01f632f152070f331c5db6813",
+      "width": 960,
+      "height": 540
+    },
+    "cracked-color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-color.png",
+      "sha256": "6d52e73b3602533bb4b4b58661be75f43a647d71488b10472d7fbc774ef0e7e5",
+      "width": 1920,
+      "height": 1080
+    },
+    "cracked-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-gray.png",
+      "sha256": "fcadbde931234caf800e6e67b8a2e88da2df3c855d8dbd8904ec493f2c4a9398",
+      "width": 1920,
+      "height": 1080
+    },
+    "half-open-sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-sprite.png",
+      "sha256": "09a614bd0ebee995352fa0b472a5ecba5eaff8291c09c483201a8e8eea4d98a9",
+      "width": 104,
+      "height": 120
+    },
+    "half-open-sprite-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-sprite-gray.png",
+      "sha256": "ef2acc89896a59b0d7ef889a85f0127654a285da9ecdc05d21332b34f25615e7",
+      "width": 104,
+      "height": 120
+    },
+    "half-open-2x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-2x.png",
+      "sha256": "95340d9493d4f82e38b54fa10b0fd7de480fe6c71723e5a2db7f3214f80e98a6",
+      "width": 208,
+      "height": 240
+    },
+    "half-open-logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-logical.png",
+      "sha256": "bb1fcfc73db972b0c6e88798b78f6aafea0a412734611da38dbcb4760522f396",
+      "width": 960,
+      "height": 540
+    },
+    "half-open-color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-color.png",
+      "sha256": "9235b8a36b62fb2747af2b65d186c19222a88554598681508e89a75fa37ed361",
+      "width": 1920,
+      "height": 1080
+    },
+    "half-open-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-gray.png",
+      "sha256": "618c889e7a447f25ef43f2fd99c5df76ae71f08e42dd06111d41058ee5967d42",
+      "width": 1920,
+      "height": 1080
+    },
+    "opening-wide-sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-sprite.png",
+      "sha256": "522e04aebf0a430cc436dbcc6a346eeb59f4cdc2be401c9695f96e08a13bab30",
+      "width": 104,
+      "height": 120
+    },
+    "opening-wide-sprite-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-sprite-gray.png",
+      "sha256": "51db7943442125f7f98b45da77bddfdf311f0f194cd76adb3baa0891513ffbe2",
+      "width": 104,
+      "height": 120
+    },
+    "opening-wide-2x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-2x.png",
+      "sha256": "13a35a889f25468fd0b501fa0972b04f9612a63d6d55bd30d0653c960d284520",
+      "width": 208,
+      "height": 240
+    },
+    "opening-wide-logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-logical.png",
+      "sha256": "a1c8dc42323969af13309e19749749e162df08da5afac32aa317ef6120c03e55",
+      "width": 960,
+      "height": 540
+    },
+    "opening-wide-color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-color.png",
+      "sha256": "85317b13daf786906db086760fb3d572ffda1ccc8bdd4fcfdec347d709610bd4",
+      "width": 1920,
+      "height": 1080
+    },
+    "opening-wide-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-gray.png",
+      "sha256": "f799ca44fab7c7dcd7a5cac9725b80c1a0c7c22c0e31c7a9282dd7f2741aa0d5",
+      "width": 1920,
+      "height": 1080
+    },
+    "near-open-sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-sprite.png",
+      "sha256": "d49b30f70b5b766ec84485f6b3f551d0f02623237e710f3fb143783af7a4851e",
+      "width": 104,
+      "height": 120
+    },
+    "near-open-sprite-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-sprite-gray.png",
+      "sha256": "22b0bcdf80ebd91c90c8c40f71d8d836a28de5bb3c2685a7d0b149ed18bbb4e6",
+      "width": 104,
+      "height": 120
+    },
+    "near-open-2x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-2x.png",
+      "sha256": "834bf78cfdde3d50a04da8c08a8dcafa1ceeb333b9eebb995f27d10a76d1fe0b",
+      "width": 208,
+      "height": 240
+    },
+    "near-open-logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-logical.png",
+      "sha256": "b61d4211d975127aad554a2e55901849758b229678cc2eb12153b388b43c89d0",
+      "width": 960,
+      "height": 540
+    },
+    "near-open-color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-color.png",
+      "sha256": "ca99eb18df220fc028bf7112386b3d52950f84b5e6e165c95936c489aaa6bc50",
+      "width": 1920,
+      "height": 1080
+    },
+    "near-open-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-gray.png",
+      "sha256": "e03cc8d47019abe21a234de3fabad654b0c7cacefab538d35c93ca1aa4b47674",
+      "width": 1920,
+      "height": 1080
+    },
+    "open-sprite": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-sprite.png",
+      "sha256": "124a1f050f46122e7aba2aafa41010aca57f634e930ac7ca42b86d9f47f37ca3",
+      "width": 104,
+      "height": 120
+    },
+    "open-sprite-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-sprite-gray.png",
+      "sha256": "6f057a26c6d8b72e8cd4d2f274f923b3d76b9d958f6d54d906b5b87076ce049c",
+      "width": 104,
+      "height": 120
+    },
+    "open-2x": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-2x.png",
+      "sha256": "64c2166fd1eb8dd0718aea9ff6f056df33bdf58e80695ab071f12c1f7fdf5406",
+      "width": 208,
+      "height": 240
+    },
+    "open-logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-logical.png",
+      "sha256": "6806fbc45bab235b35252a983f38a2f05d4f58a9f0c45faae14ffee341ae204d",
+      "width": 960,
+      "height": 540
+    },
+    "open-color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-color.png",
+      "sha256": "fb50376079302561c61723bb07daa897d182dc5330afdf34b6433d0cd2c576df",
+      "width": 1920,
+      "height": 1080
+    },
+    "open-gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-gray.png",
+      "sha256": "fd84e76483778302773f05688240d3100621e8d1be69f422a260cd5d02a1d9a0",
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "frames": {
+    "closed": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887,
+        "cell": {
+          "x": 20,
+          "y": 0,
+          "width": 432,
+          "height": 430
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 4339,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-sprite.png",
+        "sha256": "e853deee9605b93ea1aece8592f80409be22ba6ed2dbebb6501b016cd267500c",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-sprite-gray.png",
+        "sha256": "7a003a0d0203eaa9a12672f2d6cf9aa219a6e1f5cdd512068c4aff5e4c18f92e",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-2x.png",
+        "sha256": "950da4666c417e1b25b40782ade6d89ff4f6e040b808f1a9f8a4181e4c849cc5",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-logical.png",
+        "sha256": "41d3360a7f1b16f6b473e05a134418b26e9ff4a9c3260e6fe2b5e9da549f4571",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-color.png",
+        "sha256": "9da0feb35183c860c18bb208d117dae77271d37ca7edbb3e362b5d55948969f2",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/closed-gray.png",
+        "sha256": "489bff6beff8fba9c7523fd3b0756ede18d7d2eabf106f43ec13f074a103c293",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "latch-release": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887,
+        "cell": {
+          "x": 452,
+          "y": 0,
+          "width": 432,
+          "height": 430
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 4341,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-sprite.png",
+        "sha256": "b9b567580997eb38c09d3a74d9f3f339bb392f8b4f544c3ae70247cbf21e95cf",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-sprite-gray.png",
+        "sha256": "26eb2ece9000d3fcfb12b3e2fca3329825801ab0473c774a6eea9795c087fb5a",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-2x.png",
+        "sha256": "f9547c06eec62e878f1522f36ed8d02c6a7180052a23d42434ba4b37360ce963",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-logical.png",
+        "sha256": "c0589173c049d2cbba74006180c7de62a129fe2fe33165b718bf31d3509f5346",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-color.png",
+        "sha256": "b1f219824db7f74f2b5f72c3c74da94b2f0ec5ac8a07dd2f67a1c328e485953e",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/latch-release-gray.png",
+        "sha256": "f2432588d417f52482df619226e5cf2342ade05aa15df08e84c6f9c62c4aa6bc",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "unlatched": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887,
+        "cell": {
+          "x": 884,
+          "y": 0,
+          "width": 432,
+          "height": 430
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 4347,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-sprite.png",
+        "sha256": "782f0de353537af1c2de281f37ed75fd7d5ffecd71ec0ccccdfc4c9b70678726",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-sprite-gray.png",
+        "sha256": "112a4545ed131d60314a43f27a888825791c61e7b51c49c6637f209e6df61ba4",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-2x.png",
+        "sha256": "5bfa0124bc78a8f272bcfa4b5b0ce7997b7f9adc63a6681424a3600e0d807dac",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-logical.png",
+        "sha256": "bebc32f2d5099d4804533d14a8350d92277b07171a184a96ff22bb05910dec8b",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-color.png",
+        "sha256": "357392358e8cd9b60a08f449a825d5efcc5b9eb479a558833ace89813adda091",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/unlatched-gray.png",
+        "sha256": "a045f1e7908c2f2bf3873dc50dc3b14cd2c7ccbdb08dd0e55a4ee648bce35ef7",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "cracked": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887,
+        "cell": {
+          "x": 1316,
+          "y": 0,
+          "width": 432,
+          "height": 430
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 4350,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-sprite.png",
+        "sha256": "23bac2efd5f048a79f04eba2bbf41f756241ab5239568803ce18d50392a06651",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-sprite-gray.png",
+        "sha256": "2e9637b2c68230a8ba8106bf93514d328e20e43ebc7db5519362b0bcebbb145b",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-2x.png",
+        "sha256": "032744f0070dca2f768a87c62b9c241ce9a525a41a753d7bda5fd55bff26b10e",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-logical.png",
+        "sha256": "ef22876a990aafd5aebc023085ee4faaceefd3b01f632f152070f331c5db6813",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-color.png",
+        "sha256": "6d52e73b3602533bb4b4b58661be75f43a647d71488b10472d7fbc774ef0e7e5",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/cracked-gray.png",
+        "sha256": "fcadbde931234caf800e6e67b8a2e88da2df3c855d8dbd8904ec493f2c4a9398",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "half-open": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887,
+        "cell": {
+          "x": 20,
+          "y": 430,
+          "width": 432,
+          "height": 430
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 4996,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-sprite.png",
+        "sha256": "09a614bd0ebee995352fa0b472a5ecba5eaff8291c09c483201a8e8eea4d98a9",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-sprite-gray.png",
+        "sha256": "ef2acc89896a59b0d7ef889a85f0127654a285da9ecdc05d21332b34f25615e7",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-2x.png",
+        "sha256": "95340d9493d4f82e38b54fa10b0fd7de480fe6c71723e5a2db7f3214f80e98a6",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-logical.png",
+        "sha256": "bb1fcfc73db972b0c6e88798b78f6aafea0a412734611da38dbcb4760522f396",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-color.png",
+        "sha256": "9235b8a36b62fb2747af2b65d186c19222a88554598681508e89a75fa37ed361",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/half-open-gray.png",
+        "sha256": "618c889e7a447f25ef43f2fd99c5df76ae71f08e42dd06111d41058ee5967d42",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "opening-wide": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887,
+        "cell": {
+          "x": 452,
+          "y": 430,
+          "width": 432,
+          "height": 430
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 5067,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-sprite.png",
+        "sha256": "522e04aebf0a430cc436dbcc6a346eeb59f4cdc2be401c9695f96e08a13bab30",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-sprite-gray.png",
+        "sha256": "51db7943442125f7f98b45da77bddfdf311f0f194cd76adb3baa0891513ffbe2",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-2x.png",
+        "sha256": "13a35a889f25468fd0b501fa0972b04f9612a63d6d55bd30d0653c960d284520",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-logical.png",
+        "sha256": "a1c8dc42323969af13309e19749749e162df08da5afac32aa317ef6120c03e55",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-color.png",
+        "sha256": "85317b13daf786906db086760fb3d572ffda1ccc8bdd4fcfdec347d709610bd4",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/opening-wide-gray.png",
+        "sha256": "f799ca44fab7c7dcd7a5cac9725b80c1a0c7c22c0e31c7a9282dd7f2741aa0d5",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "near-open": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887,
+        "cell": {
+          "x": 884,
+          "y": 430,
+          "width": 432,
+          "height": 430
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 5116,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-sprite.png",
+        "sha256": "d49b30f70b5b766ec84485f6b3f551d0f02623237e710f3fb143783af7a4851e",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-sprite-gray.png",
+        "sha256": "22b0bcdf80ebd91c90c8c40f71d8d836a28de5bb3c2685a7d0b149ed18bbb4e6",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-2x.png",
+        "sha256": "834bf78cfdde3d50a04da8c08a8dcafa1ceeb333b9eebb995f27d10a76d1fe0b",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-logical.png",
+        "sha256": "b61d4211d975127aad554a2e55901849758b229678cc2eb12153b388b43c89d0",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-color.png",
+        "sha256": "ca99eb18df220fc028bf7112386b3d52950f84b5e6e165c95936c489aaa6bc50",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/near-open-gray.png",
+        "sha256": "e03cc8d47019abe21a234de3fabad654b0c7cacefab538d35c93ca1aa4b47674",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "open": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v02/family-source.png",
+        "sha256": "e36ea69de62696e6ee85411c30a45451f2a31b3c53cf4cd45f7b8ee3af8e4896",
+        "width": 1774,
+        "height": 887,
+        "cell": {
+          "x": 1316,
+          "y": 430,
+          "width": 432,
+          "height": 430
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 5142,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-sprite.png",
+        "sha256": "124a1f050f46122e7aba2aafa41010aca57f634e930ac7ca42b86d9f47f37ca3",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-sprite-gray.png",
+        "sha256": "6f057a26c6d8b72e8cd4d2f274f923b3d76b9d958f6d54d906b5b87076ce049c",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-2x.png",
+        "sha256": "64c2166fd1eb8dd0718aea9ff6f056df33bdf58e80695ab071f12c1f7fdf5406",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-logical.png",
+        "sha256": "6806fbc45bab235b35252a983f38a2f05d4f58a9f0c45faae14ffee341ae204d",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-color.png",
+        "sha256": "fb50376079302561c61723bb07daa897d182dc5330afdf34b6433d0cd2c576df",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v02/open-gray.png",
+        "sha256": "fd84e76483778302773f05688240d3100621e8d1be69f422a260cd5d02a1d9a0",
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  },
+  "oldFrames": {
+    "closed": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v01/family-source.png",
+        "sha256": "a666381ea471a8670f3bcff8b0acf534a0bc2a3e969a264b03219af0233100ce",
+        "width": 1254,
+        "height": 1254,
+        "cell": {
+          "x": 0,
+          "y": 0,
+          "width": 627,
+          "height": 627
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 4311,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-sprite.png",
+        "sha256": "46675fe65150e2a80df60f0bde3f014a5e175e9eb382128656d54ac087a95116",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-sprite-gray.png",
+        "sha256": "d2cfbe471ac638767440c336a5944431e91f31fa3da74768d20e33703f0cb009",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-2x.png",
+        "sha256": "1bab839ab6c2ad20d3e7729774d5a08b97cf44831ca04cc72892971c40b817f0",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-logical.png",
+        "sha256": "984f503fe910121fc5cf130d3204bb66276140e5403a2b7f255eb332abc87d5f",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-color.png",
+        "sha256": "528aa889c901bd38ea2a80bbb5a27999cab1844804208c22473af694ad494d9a",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/closed-gray.png",
+        "sha256": "ace3875af42cd67afda51f08b844921f97ca7ab48fd02bdaf3941c35065518a0",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "cracked": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v01/family-source.png",
+        "sha256": "a666381ea471a8670f3bcff8b0acf534a0bc2a3e969a264b03219af0233100ce",
+        "width": 1254,
+        "height": 1254,
+        "cell": {
+          "x": 627,
+          "y": 0,
+          "width": 627,
+          "height": 627
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 4313,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/cracked-sprite.png",
+        "sha256": "ba5d88e15a886552ffc84e31821d40828591b89c977b5a5f3428fe3016a2fc20",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/cracked-sprite-gray.png",
+        "sha256": "77cf34544e80db880d62a009a57bd6ddab5a6a4b47185cd524a486faa6674bc7",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/cracked-2x.png",
+        "sha256": "c9441c8d2df251fa779dc0d5d4355a5e31d83ebf8e7b0ad965a98a4e1725c3d4",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/cracked-logical.png",
+        "sha256": "cb794abc20051bcf6089ce72d38b257f32703708990d87c773b0aee4de9f671a",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/cracked-color.png",
+        "sha256": "44aaef4da4812d311783199df254392155b82b9b1c7fd58d85b9f3cf21fbb6f1",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/cracked-gray.png",
+        "sha256": "f7cdcf086d530c44dcfec69ec1ceb38df0d6dad8e7e9044c29d6cf3fe546d9a8",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "half-open": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v01/family-source.png",
+        "sha256": "a666381ea471a8670f3bcff8b0acf534a0bc2a3e969a264b03219af0233100ce",
+        "width": 1254,
+        "height": 1254,
+        "cell": {
+          "x": 0,
+          "y": 627,
+          "width": 627,
+          "height": 627
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 4959,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/half-open-sprite.png",
+        "sha256": "e603fcd4978e3b8240367589d8061418b295ac36e177f68614d8c92886cc74be",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/half-open-sprite-gray.png",
+        "sha256": "a61e60ce303cf8f46c5bdd1649d414e597e843f4a562f8d111affc502723eba7",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/half-open-2x.png",
+        "sha256": "cd8a5084afcbb26616de9df4bc4827902a7442bb05df986c4ab5b41d1cdb9f3c",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/half-open-logical.png",
+        "sha256": "5a982b5e0f688c10d037445ccb1c3224515f791bae1904d102d6b64db26fc140",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/half-open-color.png",
+        "sha256": "23998adac01d80db48c63a8125d1be20c72da58c89745d69ab734c82f493f483",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/half-open-gray.png",
+        "sha256": "230f12b96c72539e83439b0f898ac1fb132f35e3095c6af42d99541a0e1acde0",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "open": {
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/treasure-chest-states-v01/family-source.png",
+        "sha256": "a666381ea471a8670f3bcff8b0acf534a0bc2a3e969a264b03219af0233100ce",
+        "width": 1254,
+        "height": 1254,
+        "cell": {
+          "x": 627,
+          "y": 627,
+          "width": 627,
+          "height": 627
+        }
+      },
+      "canvas": [
+        104,
+        120
+      ],
+      "sceneOrigin": [
+        92,
+        230
+      ],
+      "ground": [
+        52,
+        120
+      ],
+      "worldGround": [
+        144,
+        350
+      ],
+      "hingeReference": {
+        "kind": "review-guide",
+        "point": [
+          52,
+          84
+        ]
+      },
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "changedPixels": 5181,
+      "sprite": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/open-sprite.png",
+        "sha256": "a79d5c8604180644a8d8a666f3c769aeebdb6dce711aff292fbe66f102e35a17",
+        "width": 104,
+        "height": 120
+      },
+      "spriteGray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/open-sprite-gray.png",
+        "sha256": "9f011bfe90484c562aa8b35851051f26bb66ea37f9d89e9fec9ffd6bf45ba786",
+        "width": 104,
+        "height": 120
+      },
+      "zoom": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/open-2x.png",
+        "sha256": "4e376970d9911d88e8a73c5baec72139e19f6c04faef2c4fa220b66ad4c4870a",
+        "width": 208,
+        "height": 240
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/open-logical.png",
+        "sha256": "61ca8562dc86c7d04f04a60d319b63d6d1ccaafd387e0f74162b232de3b08958",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/open-color.png",
+        "sha256": "4ed015e05cc95276f31ce6456fdc84fe61bc7748fdda91ade2ac4dfad98a6c1e",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/treasure-chest-states-v01/open-gray.png",
+        "sha256": "92740f404983183152e0b5eee63903bc47168525eee04f98116da5675df02b8a",
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  },
+  "parentDesktop": {
+    "view": "desktop",
+    "wordmark": "single",
+    "wall": [
+      376,
+      100,
+      288,
+      84
+    ],
+    "title": {
+      "id": "wordmark",
+      "x": 376,
+      "y": 100,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+      "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+      "width": 288,
+      "height": 84
+    },
+    "logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-logical.png",
+      "sha256": "08dca5cb9f13c0a4ede1322f4e8f93295cae7b39a36438509a1286f12f87643f",
+      "width": 960,
+      "height": 540
+    },
+    "color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-color.png",
+      "sha256": "3208e934a247796a438f029458a4e82fe1a229dd8c8c5208d8a8a903c60923c4",
+      "width": 1920,
+      "height": 1080
+    },
+    "gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-gray.png",
+      "sha256": "60461e78796adb24ca9fe64d1981447cfd280d8537dbddab2200bfd07e344093",
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "phone": {
+    "view": "phone",
+    "wordmark": "staggered",
+    "wall": [
+      130,
+      59,
+      148,
+      98
+    ],
+    "title": {
+      "id": "wordmark",
+      "x": 130,
+      "y": 59,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/phone-staggered.png",
+      "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c",
+      "width": 148,
+      "height": 98
+    },
+    "logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-logical.png",
+      "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+      "width": 390,
+      "height": 600
+    },
+    "color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-color.png",
+      "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+      "width": 390,
+      "height": 600
+    },
+    "gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-gray.png",
+      "sha256": "317ad09e18904b7bca29496418a59a0aa5f9c72f611c4d23c83661fbe536c2ac",
+      "width": 390,
+      "height": 600
+    }
+  },
+  "review": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/restored-treasure-chest-review.html",
+    "sha256": "6bcdbeb94c263f321292ca1cba55a32b1ea87957de3f068e3e54233c4b901060"
+  }
+}

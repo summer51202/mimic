@@ -1,0 +1,13 @@
+{
+  "schema": "mimic-chest-material-source/v1",
+  "generator": "imagegen",
+  "transparent": true,
+  "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-chest-material-v01/ordinary-chest-source.png",
+  "parentPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/ordinary-chest-v01-source.png",
+  "promptPath": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-chest-material-v01/prompt.md",
+  "references": [
+    "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/warrior.png",
+    "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/warrior.png",
+    "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-logical.png"
+  ]
+}

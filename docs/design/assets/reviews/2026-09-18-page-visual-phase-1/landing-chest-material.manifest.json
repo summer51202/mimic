@@ -1,0 +1,300 @@
+{
+  "schema": "mimic-chest-material-review/v1",
+  "decision": "awaiting-calibration",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "spec": "docs/superpowers/specs/2026-10-15-landing-ordinary-chest-material-design.md",
+  "plan": "docs/superpowers/plans/2026-10-15-landing-ordinary-chest-material.md",
+  "inputs": {
+    "parent": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement.manifest.json",
+      "sha256": "df90822ccb7fdd671899f08ec70c0d1535f16393d5b0ca4007aac0642d7eb1b5"
+    },
+    "oldSource": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-war-room/sources/ordinary-chest-v01-source.png",
+      "sha256": "8308b9bf28f164f3b6f37b190eb6330345d6787794f9e8e1b20af899c2f96011",
+      "width": 1402,
+      "height": 1122
+    },
+    "warriorLayer": {
+      "id": "warrior",
+      "x": 350,
+      "y": 196,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/warrior.png",
+      "sha256": "fa155d31d7668e7d3660f89f4a90de865ca978abd725aa8bc5f591342eb252e1",
+      "width": 132,
+      "height": 149
+    },
+    "warriorMaster": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/warrior.png",
+      "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447",
+      "width": 512,
+      "height": 512
+    },
+    "source": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-chest-material-v01/ordinary-chest-source.png",
+      "sha256": "b82139f77cb2cd10426caa1831f374eb9b65f85c0c5bb59deecdf9dd41ae1de9",
+      "width": 1402,
+      "height": 1122
+    },
+    "prompt": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-chest-material-v01/prompt.md",
+      "sha256": "7faf462d0572b02a500888e876ba4f0c02e5a2bf79dbb6f01fc4e8f7a34434b6"
+    },
+    "lineage": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-chest-material-v01/lineage.json",
+      "sha256": "d0caeb184e417674112f9e980b7efa533e09d7dac19238273dcf20e45fbc8ce1"
+    },
+    "parentReview": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-title-placement-review.html",
+      "sha256": "da5a81e41a8b3f5bda76732ac6c611731d87f386819883816250b5542c515c71"
+    },
+    "generator": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/compose-landing-chest-material.mjs",
+      "sha256": "ec4c4c2c64cad46316d28f185836bfd7659c7ee6d841e8db45b7be2b4f6af242"
+    },
+    "rasterModule": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-chest-raster.mjs",
+      "sha256": "e65cabaefeba0532516c0d8ee9576c838e5eb40d53045871ff7dfdcc978cc08a"
+    },
+    "renderer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/render-landing-chest-material.mjs",
+      "sha256": "2e8b7af3b9fd713c6a00fbb320ce97dd178e0f2439d07e998eb3e222770c2910"
+    }
+  },
+  "before": {
+    "layer": {
+      "id": "chest",
+      "x": 105,
+      "y": 284,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/chest.png",
+      "sha256": "c3026375ca3821478a822030dda1c8463e8750d09048f791e40449b7dda12753",
+      "width": 78,
+      "height": 66
+    },
+    "frame": {
+      "view": "desktop",
+      "wordmark": "single",
+      "wall": [
+        376,
+        100,
+        288,
+        84
+      ],
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-logical.png",
+        "sha256": "08dca5cb9f13c0a4ede1322f4e8f93295cae7b39a36438509a1286f12f87643f",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-color.png",
+        "sha256": "3208e934a247796a438f029458a4e82fe1a229dd8c8c5208d8a8a903c60923c4",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-gray.png",
+        "sha256": "60461e78796adb24ca9fe64d1981447cfd280d8537dbddab2200bfd07e344093",
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  },
+  "fit": {
+    "bounds": {
+      "x": 239,
+      "y": 202,
+      "width": 942,
+      "height": 822
+    },
+    "width": 76,
+    "height": 66,
+    "x": 1,
+    "y": 0,
+    "scale": 0.08029197080291971
+  },
+  "changedPixels": 4146,
+  "outputs": {
+    "layer": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/ordinary-chest.png",
+      "sha256": "fc2a8eb5b6337658e3056cc4cfc014328a4ec0c2920d800f9daa37451aef729b",
+      "width": 78,
+      "height": 66
+    },
+    "layerGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/ordinary-chest-gray.png",
+      "sha256": "865c0fbcde78787016299dcc55b014f0d5fb35af55d10f2d3d12493e42ea54ce",
+      "width": 78,
+      "height": 66
+    },
+    "oldGray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/old-chest-gray.png",
+      "sha256": "2026c689b581adca2deb1f957079ae646988c63ea46986190d3e101524ef4bdf",
+      "width": 78,
+      "height": 66
+    },
+    "beforeZoom": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/old-chest-3x.png",
+      "sha256": "173bd44fc57115bafd7fd8a762842b06b1b59740448d357ec35d315826ab8c5f",
+      "width": 234,
+      "height": 198
+    },
+    "afterZoom": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/ordinary-chest-3x.png",
+      "sha256": "391bea76f96094d783de541e40657ee133e29a374e1dcfe36d197de7464b64c1",
+      "width": 234,
+      "height": 198
+    },
+    "logical": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/desktop-logical.png",
+      "sha256": "458e28654b436179472110fa97b904703e9dfa73cefc4cccd8bc077fa05a8c19",
+      "width": 960,
+      "height": 540
+    },
+    "color": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/desktop-color.png",
+      "sha256": "00893b2dbff9c6beefd7302765586ac823220f54692fc8ccb6ca1b7855093a75",
+      "width": 1920,
+      "height": 1080
+    },
+    "gray": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/desktop-gray.png",
+      "sha256": "20e07fa50d348d181aa8baf01f7398017df7f877675e1c9f5ec18888736d2c8e",
+      "width": 1920,
+      "height": 1080
+    }
+  },
+  "placement": {
+    "x": 105,
+    "y": 284,
+    "width": 78,
+    "height": 66
+  },
+  "frames": {
+    "desktop-before": {
+      "view": "desktop",
+      "wordmark": "single",
+      "wall": [
+        376,
+        100,
+        288,
+        84
+      ],
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-logical.png",
+        "sha256": "08dca5cb9f13c0a4ede1322f4e8f93295cae7b39a36438509a1286f12f87643f",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-color.png",
+        "sha256": "3208e934a247796a438f029458a4e82fe1a229dd8c8c5208d8a8a903c60923c4",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/desktop-single-gray.png",
+        "sha256": "60461e78796adb24ca9fe64d1981447cfd280d8537dbddab2200bfd07e344093",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "desktop-after": {
+      "view": "desktop",
+      "wordmark": "single",
+      "wall": [
+        376,
+        100,
+        288,
+        84
+      ],
+      "title": {
+        "id": "wordmark",
+        "x": 376,
+        "y": 100,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+        "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+        "width": 288,
+        "height": 84
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/desktop-logical.png",
+        "sha256": "458e28654b436179472110fa97b904703e9dfa73cefc4cccd8bc077fa05a8c19",
+        "width": 960,
+        "height": 540
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/desktop-color.png",
+        "sha256": "00893b2dbff9c6beefd7302765586ac823220f54692fc8ccb6ca1b7855093a75",
+        "width": 1920,
+        "height": 1080
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-chest-material-v01/desktop-gray.png",
+        "sha256": "20e07fa50d348d181aa8baf01f7398017df7f877675e1c9f5ec18888736d2c8e",
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "phone-staggered": {
+      "view": "phone",
+      "wordmark": "staggered",
+      "wall": [
+        130,
+        59,
+        148,
+        98
+      ],
+      "title": {
+        "id": "wordmark",
+        "x": 130,
+        "y": 59,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/phone-staggered.png",
+        "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c",
+        "width": 148,
+        "height": 98
+      },
+      "logical": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-logical.png",
+        "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+        "width": 390,
+        "height": 600
+      },
+      "color": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-color.png",
+        "sha256": "dae2872edddfa14d68b37c7b5475c4680381db0826dc417cb8a07ee370385ecf",
+        "width": 390,
+        "height": 600
+      },
+      "gray": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-title-placement-v01/phone-staggered-gray.png",
+        "sha256": "317ad09e18904b7bca29496418a59a0aa5f9c72f611c4d23c83661fbe536c2ac",
+        "width": 390,
+        "height": 600
+      }
+    }
+  },
+  "review": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-chest-material-review.html",
+    "sha256": "d29c4ef6e9800556eb91c3c116341e4810a538d8f41adf5f14b1da4cab2fd33c"
+  }
+}
