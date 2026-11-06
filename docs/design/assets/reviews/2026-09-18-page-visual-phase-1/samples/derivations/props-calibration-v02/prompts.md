@@ -1,0 +1,11 @@
+# ImageGen lineage
+
+## features-source.png
+
+Generate a transparent 2x2 sprite sheet of four separate 16-bit pixel art RPG inventory vignettes for a cozy dungeon finance app. Each centered in its own quadrant with wide transparent margin and no overlap. Same 3/4 front viewpoint, upper left torch lighting, warm muted brown leather and dark warm slate metal, strong dark outlines, tight pixel clusters and crisp blocky pixels, no cast shadows. Upper left: a single neatly folded private brown leather coin purse with a strap and small dull buckle. Upper right: three overlapping pale parchment receipts with abstract short horizontal strokes and two dull brass coins. Bottom left: a distinctly square open iron communal cashbox with straight flat lid and industrial clasp, alongside a rolled camp blanket. Bottom right: a freestanding rough wooden adventurer bulletin board with three small pinned paper notes. No text, numbers, currency marks, magic, glow, jewels, rewards, or any background.
+
+## carving-source.png
+
+Create an isolated transparent pixel art stencil for incised rock lines on the supplied warm dungeon wall references. Output ONLY opaque dark strokes on transparent, no rock background or fill; the stencil will be used as a mask and the actual groove shading comes from the scene's stone pixels. Wide 3:2 composition, simple archaeological cave drawing, carved line art with an open silhouette: on the left a large recognizable friendly mimic chest with a round arched lid, two eyes and one row of small triangular teeth; at right two tiny stick figure adventurers standing together. Straight front view with gentle irregular hand-carved strokes, no borders, additional symbols, lettering, magic, glow, ground or shadows. Make line width consistent, readable when downsampled to 54x36, and keep generous space between figures.
+
+Inputs: desktop-wall-reference.png (205,190 at 72×48), phone-wall-reference.png (945,163 at 54×36), sampled from the approved layered architecture and enlarged 8×. Both generated attempts are retained here. The composer derives both carving states from the same alpha stencil and local rock pixels, and derives the feature images from the four sprite sheet regions.

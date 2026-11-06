@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mimic · Frames 校準</title>
+<style>
+  :root {
+    --canvas: #191513; --ink: #251a14; --ink-muted: #554235;
+    --light: #f4e4c4; --light-muted: #d2bc9c; --rule: #625043;
+    --frame-parchment-field: #eddbb3; --frame-wood-field: #39271e;
+    --frame-stone-field: #ddd2bd; --frame-dialogue-field: #211a18;
+    --frame-notebook-field: #ead7ac; --cta: #d0a667;
+    font: 16px/1.55 system-ui, "Microsoft JhengHei", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--canvas); color: var(--light); overflow-wrap: anywhere; container: viewport / inline-size; }
+  main { width: min(1200px, calc(100% - 32px)); margin: auto; padding: 30px 0 72px; container-type: inline-size; }
+  h1, h2, h3, h4, p, figure, dl, dd { margin: 0; }
+  h1 { font: 700 clamp(2.25rem, 7vw, 5.25rem)/1.05 Georgia, serif; }
+  h2 { font-size: clamp(1.35rem, 3vw, 2rem); }
+  h3 { font-size: 1.05rem; }
+  p + p, h3 + p { margin-top: .6rem; }
+  a { color: inherit; text-underline-offset: .23em; }
+  button, input, select { font: inherit; color: inherit; min-height: 44px; max-width: 100%; }
+  button { cursor: pointer; border: 1px solid #5d442d; padding: 4px 12px; background: #f2e4c6; color: var(--ink); }
+  :focus-visible { outline: 3px solid #87511e; outline-offset: 3px; }
+  header :focus-visible, .frame--dialogue :focus-visible { outline-color: #f0bf65; }
+  .hero { padding: 24px 0 32px; border-bottom: 1px solid var(--rule); }
+  .hero p { margin-top: .85rem; color: var(--light-muted); }
+  .eyebrow, figcaption, .proof-label { color: var(--light-muted); font: .78rem/1.5 Consolas, monospace; letter-spacing: .07em; }
+  nav { display: flex; flex-wrap: wrap; column-gap: 22px; margin-top: 10px; }
+  nav a, .back { display: inline-flex; align-items: center; min-height: 44px; }
+  .prose a { display: inline-flex; align-items: center; min-height: 44px; }
+  section { margin-top: 48px; }
+  .section-title { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline; margin-bottom: 16px; }
+  .stack { display: grid; gap: 16px; }
+  .duo { display: grid; gap: 16px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .frame {
+    --padding: 26px;
+    --slice: 14; --edge: 28px;
+    border: var(--edge) solid #7c6246;
+    border-image: var(--master) var(--slice) / var(--edge) / 0 repeat;
+    padding: var(--padding);
+    background: var(--field);
+    background-clip: padding-box;
+    color: var(--ink);
+    image-rendering: pixelated;
+    min-width: 0;
+  }
+  .frame--parchment { --master: url("samples/frames-2r/frame-parchment.png"); --previous: url("samples/frames/frame-parchment.png"); --field: var(--frame-parchment-field); }
+  .frame--wood { --master: url("samples/frames-2r/frame-wood.png"); --previous: url("samples/frames/frame-wood.png"); --field: var(--frame-wood-field); color: var(--light); }
+  .frame--stone { --master: url("samples/frames-2r/frame-stone.png"); --previous: url("samples/frames/frame-stone.png"); --field: var(--frame-stone-field); }
+  .frame--dialogue { --master: url("samples/frames-2r/frame-dialogue.png"); --previous: url("samples/frames/frame-dialogue.png"); --field: var(--frame-dialogue-field); color: var(--light); }
+  .frame--notebook { --master: url("samples/frames-2r/frame-notebook.png"); --previous: url("samples/frames/frame-notebook.png"); --field: var(--frame-notebook-field); }
+  .frame--v1 { --master: var(--previous); --slice: 10; --edge: 20px; }
+  .prose > * { max-inline-size: 70ch; }
+  .prose h3:not(:first-child) { margin-top: 1rem; }
+  .profile { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: .65rem; }
+  .muted, dt { color: var(--ink-muted); }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: .9rem; }
+  caption { text-align: left; font-weight: bold; }
+  th, td { padding: 6px 0; text-align: left; border-bottom: 1px solid #927c5f; }
+  th:last-child, td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  .task-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 12px 0 0; }
+  .task-list li { padding: 14px; color: var(--ink); background: var(--frame-parchment-field); }
+  .status { display: inline-block; font-size: .8rem; font-weight: 700; color: var(--ink-muted); margin-bottom: .4rem; }
+  form { display: grid; gap: 12px; }
+  label { display: grid; gap: 4px; min-width: 0; }
+  input, select { width: 100%; background: #f6ebd3; border: 1px solid #80694f; border-radius: 0; padding: 6px 9px; }
+  input[readonly] { background: transparent; }
+  output { display: block; min-height: 1.5em; }
+  .error { color: #7d221c; font-weight: 700; }
+  .scene-set { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 390px); gap: 18px; align-items: start; }
+  .scene { position: relative; height: 720px; background: #27201d; container-type: inline-size; }
+  .scene--phone { height: 700px; }
+  .scene > img { position: absolute; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; }
+  .exploration { position: absolute; inset: 0; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .exploration:focus-visible { outline: 3px solid #f0bf65; outline-offset: -3px; }
+  .exploration img { display: block; width: auto; height: 100%; image-rendering: pixelated; }
+  .home-art { position: absolute; inset: 0; overflow: clip; }
+  .home-canvas { position: absolute; left: 50%; top: 50%; width: max(100%, 1280px); aspect-ratio: 960 / 540; translate: -50% -50%; }
+  .scene--phone .home-canvas { width: max(100%, 455px); aspect-ratio: 390 / 600; }
+  .home-canvas img { position: absolute; width: var(--w, 100%); height: var(--h, 100%); left: var(--x, 0); top: var(--y, 0); image-rendering: pixelated; }
+  .scene .frame { position: absolute; inset: auto 0 0; height: 22%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 6px 12px; font-size: .875rem; line-height: 1.35; }
+  .scene--phone .frame { height: 29%; --padding: 18px; grid-template-columns: auto minmax(0, 1fr); }
+  .scene--phone .cta { grid-column: 2; justify-self: start; }
+  .portrait { width: 36px; height: 36px; object-fit: contain; image-rendering: pixelated; }
+  .cta { background: var(--cta); font-weight: 700; }
+  .cta:hover { background: #eabd72; }
+  figcaption { margin-bottom: 6px; }
+  .notebook-preview { background: #30261f; padding: 24px; border: 1px solid var(--rule); }
+  dialog.frame { position: fixed; inset: 0 0 0 auto; margin: 0; width: min(440px, 100%); max-width: none; height: 100%; max-height: 100%; }
+  dialog::backdrop { background: #17120fbb; }
+  .notebook-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .notebook-head button { min-width: 44px; }
+  .proof-row { margin-top: 20px; }
+  .proof-row .proof-label { line-height: 20px; }
+  .proof-row .frame { width: min(var(--specimen-width), 100%); margin-top: 6px; }
+  .proof-row p { max-width: 70ch; line-height: 24px; }
+  .proof-row p + p { margin-top: 8px; }
+  .compare-controls { margin: 14px 0; max-width: 340px; }
+  .compare-controls select { color: var(--ink); }
+  .compare-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 16px; }
+  .compare-grid figure { min-width: 0; display: grid; grid-template-rows: auto 1fr; }
+  .compare-grid .scene--phone { width: min(100%, 390px); justify-self: center; }
+  .compare-grid .exploration { overflow: hidden; }
+  @container (max-width: 850px) {
+    .scene-set { grid-template-columns: minmax(0, 1fr); }
+    .phone-specimen { width: min(100%, 390px); }
+  }
+  @container (max-width: 580px) {
+    .frame { --padding: 18px; }
+    .duo, .profile, .task-list { grid-template-columns: minmax(0, 1fr); }
+    .scene .frame { --padding: 18px; }
+  }
+  @container (max-width: 620px) {
+    .compare-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @container (max-width: 430px) {
+    .scene--desktop { height: 900px; }
+    .scene--desktop .home-canvas { width: 1600px; }
+    .scene--desktop .frame { grid-template-columns: auto minmax(0, 1fr); }
+    .scene--desktop .cta { grid-column: 2; justify-self: start; }
+  }
+  @container viewport (max-width: 600px) {
+    dialog.frame { --padding: 18px; inset: auto 0 0; width: 100%; height: auto; max-height: 94dvh; }
+  }
+  @media (forced-colors: active) {
+    .frame { border-image: none; border-color: CanvasText; }
+    :focus-visible { outline-color: Highlight !important; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <a class="back" href="review-index.html">← 素材審閱索引</a>
+    <div class="eyebrow">MIMIC / VISUAL REVIEW / 2026.11.06</div>
+    <h1>Frames <span lang="zh-Hant">框體校準</span></h1>
+    <p>2R 以 ImageGen 重繪五種材質。52 × 52 邏輯像素母圖以 14 px 切片、2× 角件和重複邊條包住 HTML 內容。</p>
+    <nav aria-label="審閱項目">
+      <a href="#compare">新舊比較</a><a href="#parchment">羊皮紙</a><a href="#wood">木</a><a href="#stone">石</a>
+      <a href="#dialogue">對話框</a><a href="#notebook">筆記本</a><a href="#proofs">尺寸校驗</a>
+    </nav>
+    <p class="eyebrow">PHASE 1 · 待視覺審核</p>
+  </header>
+
+  <section id="compare" aria-labelledby="compare-title">
+    <div class="section-title"><span class="eyebrow">01 → 2R</span><h2 id="compare-title">同尺寸比較</h2></div>
+    <p>兩版使用同一份內容與場景。窄螢幕會將同寬的樣本上下排列。</p>
+    <label class="compare-controls">比較樣本
+      <select id="compare-sample">
+        <option value="parchment">羊皮紙 · 服務條款</option>
+        <option value="wood">木框 · 公會任務板</option>
+        <option value="stone">暖石 · 設定</option>
+        <option value="Landing-desktop">對話框 · Landing 桌機</option>
+        <option value="Landing-phone">對話框 · Landing 手機</option>
+        <option value="Home-desktop">對話框 · Home 桌機</option>
+        <option value="Home-phone">對話框 · Home 手機</option>
+        <option value="notebook">筆記本 · 快速記帳</option>
+      </select>
+    </label>
+    <div class="compare-grid">
+      <figure data-version="v1"><figcaption>第一版 · 20 px 角件</figcaption></figure>
+      <figure data-version="2r"><figcaption>2R · 28 px 角件</figcaption></figure>
+    </div>
+  </section>
+
+  <section id="parchment">
+    <div class="section-title"><span class="eyebrow">01 / PARCHMENT</span><h2>羊皮紙</h2></div>
+    <div class="stack">
+      <article class="frame frame--parchment prose">
+        <h3>服務條款節錄（審閱示例）</h3>
+        <p>Mimic 提供個人記帳、共同支出分攤與共同基金管理功能。使用者可記錄支出及其分類，並依所在空間的權限查看對應的記錄。當你受邀加入共同空間時，請先確認成員與記帳用途，再決定是否接受邀請。</p>
+        <h3>結算與更正</h3>
+        <p>已完成的結算期間會鎖定。如發現舊記錄需要更正，請在後續期間建立新的更正記錄，以保留結算當時的資料與更正過程。<a href="#ledger">查看帳本欄位示例</a>。</p>
+      </article>
+      <div class="duo">
+        <article class="frame frame--parchment">
+          <h3>冒險檔案</h3>
+          <dl class="profile">
+            <div><dt>冒險者</dt><dd>北境旅人</dd></div><div><dt>職業</dt><dd>戰士</dd></div>
+            <div><dt>據點</dt><dd>旅人營地</dd></div><div><dt>偏好語言</dt><dd>繁體中文</dd></div>
+          </dl>
+        </article>
+        <article class="frame frame--parchment" id="ledger">
+          <table>
+            <caption>帳務表格 · 示範資料</caption>
+            <thead><tr><th scope="col">項目</th><th scope="col">示範金額</th></tr></thead>
+            <tbody><tr><td>營地用品</td><td>示範 120.00</td></tr><tr><td>旅途補給</td><td>示範 1,280.00</td></tr></tbody>
+          </table>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="wood">
+    <div class="section-title"><span class="eyebrow">02 / WOOD</span><h2>木框</h2></div>
+    <div class="stack">
+      <div class="frame frame--wood"><h3>本週公會消息</h3></div>
+      <article class="frame frame--wood">
+        <h3>公會任務板</h3>
+        <ul class="task-list">
+          <li><span class="status">待處理</span><h4>整理旅行收據</h4><p>確認三筆補給支出的分類。</p></li>
+          <li><span class="status">進行中</span><h4>核對共同支出</h4><p>確認同行者與分攤比例。</p></li>
+          <li><span class="status">已完成</span><h4>建立營地帳本</h4><p>已準備好本次旅程的記帳空間。</p></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="stone">
+    <div class="section-title"><span class="eyebrow">03 / STONE</span><h2>暖石框</h2></div>
+    <article class="frame frame--stone">
+      <form id="settings">
+        <h3>冒險者設定</h3>
+        <p class="muted">顯示名稱會出現在共同空間。</p>
+        <div class="duo">
+          <label>顯示名稱<input name="display" value="北境旅人" required></label>
+          <label>冒險者 ID（唯讀）<input value="MIMIC-DEMO-0001" readonly></label>
+        </div>
+        <div><button type="submit">儲存示範設定</button></div>
+        <output aria-live="polite"></output>
+      </form>
+    </article>
+  </section>
+
+  <section id="dialogue">
+    <div class="section-title"><span class="eyebrow">04 / DIALOGUE</span><h2>暖深褐對話框</h2></div>
+    <div id="scenes" class="stack"></div>
+    <p id="scene-result" role="status" class="eyebrow"></p>
+  </section>
+
+  <section id="notebook">
+    <div class="section-title"><span class="eyebrow">05 / NOTEBOOK</span><h2>冒險筆記本</h2></div>
+    <div class="notebook-preview">
+      <p>在桌機以右側抽屜開啟，在手機從底部展開。送出可試用欄位驗證。</p>
+      <p><button id="open-notebook" class="cta" type="button">開啟快速記帳</button></p>
+    </div>
+  </section>
+
+  <section id="proofs">
+    <div class="section-title"><span class="eyebrow">GEOMETRY / 2×</span><h2>尺寸校驗</h2></div>
+    <p>280／600／1200 CSS px，各含一行與多段落。較窄的螢幕會縮小容器，四角維持 28 CSS px。</p>
+    <div id="proof-grid"></div>
+  </section>
+</main>
+
+<dialog class="frame frame--notebook" aria-labelledby="notebook-title">
+  <div class="notebook-head">
+    <h2 id="notebook-title">快速記帳</h2>
+    <button id="close-notebook" type="button" aria-label="關閉快速記帳">×</button>
+  </div>
+  <form id="expense" novalidate>
+    <p class="muted">個人帳本 · 示範表單</p>
+    <label>項目<input name="item" value="營地補給" required></label>
+    <label>金額<input name="amount" type="number" min="0.01" step="0.01" inputmode="decimal" aria-describedby="amount-error" required></label>
+    <p id="amount-error" class="error" role="alert" hidden>請輸入大於 0 的金額，最多兩位小數。</p>
+    <label>分類<select name="category"><option>餐飲</option><option>交通</option><option>旅宿</option></select></label>
+    <div><button class="cta" type="submit">送出示範記錄</button></div>
+    <output aria-live="polite"></output>
+  </form>
+</dialog>
+
+<script>
+  const samples = "samples";
+  const portrait = samples + "/mimiku-states-actions/masters/state-idle.png";
+  const homeLayers = {
+    desktop: [
+      ["fire", 50.625, 47.222, 10.729, 19.259],
+      ["warrior", 35.104, 40.185, 11.146, 27.593],
+      ["mimiku", 63.854, 48.333, 12.292, 22.778],
+    ],
+    phone: [
+      ["fire", 40.513, 51.667, 19.231, 12.667],
+      ["warrior", 13.846, 41.167, 21.795, 19.833],
+      ["mimiku", 62.051, 48, 24.615, 16.667],
+    ],
+  };
+  function sceneArt(place, device) {
+    if (place === "Landing") {
+      if (device === "phone") {
+        return `<div class="exploration" tabindex="0" role="region" aria-label="Landing 洞窟探索，向左或向右移動">
+          <img src="${samples}/landing-phone-exploration-3r3/scene-closed.png" alt="">
+        </div>`;
+      }
+      return `<img src="${samples}/landing-prop-placement-application/desktop-closed.png" alt="">`;
+    }
+    const home = samples + "/home-base-v02/" + device;
+    const layers = homeLayers[device].map(([id, x, y, w, h]) => {
+      const suffix = device === "desktop" ? "A-desktop" : "A-phone";
+      const src = id === "fire" ? `${samples}/landing-warm-rest/layers/${suffix}/fire.png` : `${home}-${id}.png`;
+      return `<img src="${src}" alt="" style="--x:${x}%;--y:${y}%;--w:${w}%;--h:${h}%">`;
+    });
+    return `<div class="home-art"><div class="home-canvas"><img src="${home}-architecture.png" alt="">${layers.join("")}</div></div>`;
+  }
+  const scenes = document.querySelector("#scenes");
+  for (const place of ["Landing", "Home"]) {
+    const group = document.createElement("div");
+    group.className = "scene-set";
+    for (const device of ["desktop", "phone"]) {
+      const caption = place + " · " + (device === "desktop" ? "桌機" : "手機") +
+        (place === "Landing" && device === "phone" ? "（可左右探索）" : "");
+      const line = place === "Landing" ? "歇一會兒，再一起出發。" : "今天想記下哪段旅程？";
+      const action = place === "Landing" ? "開始冒險" : "快速記帳";
+      group.insertAdjacentHTML("beforeend", `<figure class="${device}-specimen">
+        <figcaption>${caption}</figcaption>
+        <div class="scene scene--${device}" data-scene="${place}-${device}">
+          ${sceneArt(place, device)}
+          <div class="frame frame--dialogue">
+            <img class="portrait" src="${portrait}" alt="">
+            <p><strong>Mimiku</strong><br>${line}</p>
+            <button type="button" class="cta" data-scene-action="${place}">${action}</button>
+          </div>
+        </div>
+      </figure>`);
+    }
+    scenes.append(group);
+  }
+  function centerExploration(root) {
+    const strip = root.querySelector(".exploration");
+    if (!strip) return;
+    const stripArt = strip.querySelector("img");
+    const center = () => { strip.scrollLeft = (strip.scrollWidth - strip.clientWidth) / 2; };
+    if (stripArt.complete) center();
+    else stripArt.addEventListener("load", center, { once: true });
+  }
+  centerExploration(scenes);
+
+  const samplePicker = document.querySelector("#compare-sample");
+  function compareFrames() {
+    const key = samplePicker.value;
+    const examples = { parchment: "#parchment .prose", wood: "#wood article", stone: "#stone article" };
+    const original = document.querySelector(examples[key] ?? `[data-scene="${key}"]`);
+    for (const figure of document.querySelectorAll(".compare-grid figure")) {
+      const specimen = original?.cloneNode(true) ?? document.createElement("article");
+      if (key === "notebook") {
+        specimen.className = "frame frame--notebook";
+        specimen.append(document.querySelector("#expense").cloneNode(true));
+      }
+      specimen.removeAttribute("data-scene");
+      specimen.querySelectorAll("[id], [aria-describedby]").forEach(element => {
+        element.removeAttribute("id");
+        element.removeAttribute("aria-describedby");
+      });
+      const frame = specimen.matches(".frame") ? specimen : specimen.querySelector(".frame");
+      frame.classList.toggle("frame--v1", figure.dataset.version === "v1");
+      specimen.inert = true;
+      figure.replaceChildren(figure.firstElementChild, specimen);
+      centerExploration(specimen);
+    }
+  }
+  samplePicker.addEventListener("change", compareFrames);
+  compareFrames();
+
+  const proofGrid = document.querySelector("#proof-grid");
+  for (const [id, label] of Object.entries({ parchment: "羊皮紙", wood: "木", stone: "石", dialogue: "對話框", notebook: "筆記本" })) {
+    for (const width of [280, 600, 1200]) {
+      proofGrid.insertAdjacentHTML("beforeend", `<div class="proof-row" style="--specimen-width:${width}px" data-width="${width}">
+        <h3 class="proof-label">${label} · ${width} CSS px</h3>
+        <div class="frame frame--${id}" data-height="short"><p>今日紀錄</p></div>
+        <div class="frame frame--${id}" data-height="tall">
+          <p>回到營地後，先把旅程中取得的收據和分類整理好。</p>
+          <p>確認日期、支出用途和共同分攤的人員。需要補充的項目可以先留在草稿。</p>
+          <p>結算完成後，若有需要調整的項目，請在後續期間另記一筆更正。</p>
+        </div>
+      </div>`);
+    }
+  }
+
+  document.querySelector("#settings").addEventListener("submit", (event) => {
+    event.preventDefault();
+    event.currentTarget.querySelector("output").textContent = "示範設定已更新。";
+  });
+  const notebook = document.querySelector("dialog");
+  document.querySelector("#open-notebook").addEventListener("click", () => notebook.showModal());
+  document.querySelector("#close-notebook").addEventListener("click", () => notebook.close());
+  scenes.addEventListener("click", (event) => {
+    const action = event.target.closest("[data-scene-action]");
+    if (!action) return;
+    if (action.dataset.sceneAction === "Home") notebook.showModal();
+    else {
+      document.querySelector("#scene-result").textContent = "已開啟冒險檔案示例。";
+      document.querySelector("#parchment").scrollIntoView();
+    }
+  });
+  const expense = document.querySelector("#expense");
+  const item = expense.elements.namedItem("item");
+  const amount = expense.elements.namedItem("amount");
+  const amountError = document.querySelector("#amount-error");
+  const receipt = expense.querySelector("output");
+  amount.addEventListener("input", () => {
+    amountError.hidden = true;
+    amount.removeAttribute("aria-invalid");
+    receipt.textContent = "";
+  });
+  expense.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!item.reportValidity()) return;
+    amountError.hidden = amount.validity.valid;
+    if (!amountError.hidden) {
+      receipt.textContent = "";
+      amount.setAttribute("aria-invalid", "true");
+      amount.focus();
+      return;
+    }
+    receipt.textContent = "已送出示範記錄。";
+  });
+</script>
+</body>
+</html>

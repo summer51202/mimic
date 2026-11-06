@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mimic · Motion 校準 v02</title>
+<style>
+  * { box-sizing: border-box }
+  :root { color-scheme: dark; background: #161211; color: #f1e2c5; font: 16px/1.5 system-ui, sans-serif }
+  body { margin: 0 }
+  main { max-width: 1200px; margin: auto; padding: clamp(12px, 2vw, 24px) }
+  h1,h2,h3,p { margin: 0 0 .65rem }
+  h1,h2 { color: #ffdc94 }
+  a { color: #ffdc94 }
+  .label { color: #dbad67; font-size: .85rem; letter-spacing: .12em }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0 }
+  button,select,label.toggle { min-height: 44px; padding: 8px 12px; border: 1px solid #b79556; border-radius: 5px; background: #30251d; color: inherit; font: inherit }
+  button,select,input { cursor: pointer }
+  label.toggle { display: flex; align-items: center; gap: 8px }
+  :focus-visible { outline: 3px solid #ffe3a7; outline-offset: 2px }
+  [aria-pressed="true"], .cta { background: #f3cc7a; color: #231910 }
+  .scene-scroll { max-width: 100%; overflow-x: auto; background: #211a18 }
+  .scene-deck { position: relative }
+  .dialogue-panel { position: absolute; inset: auto 8px 8px; max-width: 944px; margin-inline: auto }
+  .world { position: relative; width: var(--scene-width); height: var(--scene-height); margin-inline: auto }
+  .layer { position: absolute; image-rendering: pixelated; pointer-events: none }
+  .hotspot { position: absolute; background: transparent; border-color: transparent }
+  .hotspot:hover { border-color: #ffe3a7 }
+  .dialogue { display: block; width: 100%; text-align: left; background: #211a18; border: 28px solid transparent; border-image: url(samples/frames-2r/frame-dialogue.png) 14 / 28px repeat; image-rendering: pixelated }
+  .strip { display: flex; gap: 12px; overflow-x: auto; max-width: 100%; padding: 8px; background: #231d19 }
+  figure { flex: none; margin: 0; text-align: center }
+  figure img { display: block; image-rendering: pixelated; background: #342923 }
+  figcaption { font-size: .83rem; color: #ebc78d }
+  details { margin-block: 12px }
+  summary { cursor: pointer; padding-block: 8px }
+  [hidden] { display: none !important }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
+</style>
+<main>
+  <header><p class="label">GATE A · 待視覺審核</p><h1>Motion 校準 v02</h1>
+  <p>切換洞窟與秘密基地，檢視動畫節奏、靜止結果與逐格差異。</p></header>
+  <div class="controls">
+    <button data-scene="landing" aria-pressed="true">Landing 洞窟</button>
+    <button data-scene="home" aria-pressed="false">Home 秘密基地</button>
+    <label class="toggle"><input id="reduce" type="checkbox">減少動態</label>
+    <button id="pause" aria-pressed="false">暫停全部</button>
+    <label>節奏 <select id="speed"><option value=".5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select></label>
+  </div>
+  <section id="landing-controls" aria-label="洞窟操作">
+    <div class="controls"><button id="blink">標題眨眼</button><button id="chest" aria-pressed="false">寶箱</button><button id="carving" aria-pressed="false">壁畫</button></div>
+  </section>
+  <section id="home-controls" aria-label="基地操作" hidden>
+    <div class="controls"><button id="ledger">記帳成功</button><button id="celebration">冒險完成</button><button id="both">同時觸發</button><button id="skip">跳過（Esc）</button><button id="reset">重置審閱情境</button></div>
+    <p id="result" role="status">等待操作</p>
+  </section>
+  <div class="scene-deck">
+    <div id="scene" class="scene-scroll" tabindex="0" role="region" aria-label="場景，手機洞窟可水平探索"><div class="world"></div></div>
+    <div id="dialogue-panel" class="dialogue-panel">
+      <button id="dialogue" class="dialogue" aria-label="補完或繼續對話"><span aria-hidden="true"></span></button>
+      <p id="sentence" role="status" aria-live="polite" class="sr"></p>
+    </div>
+  </div>
+  <p class="controls"><button id="cta" class="cta">進入秘密基地</button></p>
+  <section aria-labelledby="frames-heading"><h2 id="frames-heading">逐格比對</h2>
+    <div class="controls"><button id="scale" aria-pressed="false">放大至 4×</button></div>
+    <div id="strips"></div>
+  </section>
+  <p><a href="review-index.html">Gate A 審閱索引</a> · <a href="motion-calibration-v02-verification.md">驗證紀錄</a></p>
+</main>
+<script src="motion-calibration-v02.data.js"></script>
+<script src="motion-calibration-v02.js"></script>
+</html>

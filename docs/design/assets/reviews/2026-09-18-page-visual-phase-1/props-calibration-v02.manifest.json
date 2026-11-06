@@ -1,0 +1,1429 @@
+{
+  "reviewOnly": true,
+  "lineage": {
+    "features-source.png": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/props-calibration-v02/features-source.png",
+      "sha256": "07f5e5e5e1f760f7c5f3c5268453d094f433528b5b2c34db4fb8c651f36ffc2c"
+    },
+    "carving-source.png": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/props-calibration-v02/carving-source.png",
+      "sha256": "99e90e3abead5752e7525753405d2453aaee8d7c7d9fc5a65373755066bc6e99"
+    },
+    "desktop-wall-reference.png": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/props-calibration-v02/desktop-wall-reference.png",
+      "sha256": "1ea27afae40280643de35f73b48f7353083e714d17f441e7efb5903aa8e885fa"
+    },
+    "phone-wall-reference.png": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/props-calibration-v02/phone-wall-reference.png",
+      "sha256": "e44f7c28e1ccb30d26cb26eeb1c6030f807c560c1e77123432da4b38d6425874"
+    },
+    "prompts.md": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/props-calibration-v02/prompts.md",
+      "sha256": "486500f7ca77300647d2a22f1c14ff507aeac1199803eaf06afd8772c6270afd"
+    }
+  },
+  "features": {
+    "personal": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/feature/personal.png",
+      "sha256": "de254b9659f8512aa1da872135ed27518658f0fc33a39cee544eb673c14e5d93",
+      "width": 256,
+      "height": 256,
+      "bounds": {
+        "x": 16,
+        "y": 42,
+        "width": 224,
+        "height": 172
+      }
+    },
+    "shared": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/feature/shared.png",
+      "sha256": "1f3a772a2e38c9a51622ed1b499c87f495c185c89992e51e01340a4dd841c808",
+      "width": 256,
+      "height": 256,
+      "bounds": {
+        "x": 20,
+        "y": 40,
+        "width": 220,
+        "height": 176
+      }
+    },
+    "pooled": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/feature/pooled.png",
+      "sha256": "e83cb6c67614bcac1527367ab6d5922ebfddc5386f325bb3a3768a0a6d26117a",
+      "width": 256,
+      "height": 256,
+      "bounds": {
+        "x": 16,
+        "y": 16,
+        "width": 224,
+        "height": 224
+      }
+    },
+    "tasks": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/feature/tasks.png",
+      "sha256": "deb540084142ac4433c792ff6aed1017b04c71e64774628e6bc98aa52039eaa4",
+      "width": 256,
+      "height": 256,
+      "bounds": {
+        "x": 34,
+        "y": 16,
+        "width": 188,
+        "height": 224
+      }
+    }
+  },
+  "carving": {
+    "desktop": {
+      "hidden": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-hidden-desktop.png",
+        "sha256": "09ee74c333392dece30201006d7cde71f416def22e66a2d13de469dcf41de9fb",
+        "width": 72,
+        "height": 48,
+        "bounds": {
+          "x": 2,
+          "y": 2,
+          "width": 68,
+          "height": 43
+        }
+      },
+      "revealed": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-revealed-desktop.png",
+        "sha256": "aa4f2a2bedc07ff813d6074d7f1459d052631ec31cb33bc4d5cc84cafe8dc608",
+        "width": 72,
+        "height": 48,
+        "bounds": {
+          "x": 2,
+          "y": 2,
+          "width": 68,
+          "height": 43
+        }
+      }
+    },
+    "phone": {
+      "hidden": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-hidden-phone.png",
+        "sha256": "2a244c9d4659dac53758ebb38219c49e0dfc50a723ef666ff9a040e12051e263",
+        "width": 54,
+        "height": 36,
+        "bounds": {
+          "x": 2,
+          "y": 1,
+          "width": 50,
+          "height": 33
+        }
+      },
+      "revealed": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-revealed-phone.png",
+        "sha256": "0237297adac1324f4b9e582e720e0ebf582e10c50e0761e4ab926d4e2b55039f",
+        "width": 54,
+        "height": 36,
+        "bounds": {
+          "x": 2,
+          "y": 1,
+          "width": 50,
+          "height": 33
+        }
+      }
+    }
+  },
+  "measurements": {
+    "desktop": {
+      "hidden": {
+        "contrast": 0.09909842877656684,
+        "count": 756,
+        "referenceMean": 79.40511322751324,
+        "grooveMean": 71.5361912698413
+      },
+      "revealed": {
+        "contrast": 0.3798848226318698,
+        "count": 756,
+        "referenceMean": 79.40511322751324,
+        "grooveMean": 49.24031587301584
+      }
+    },
+    "phone": {
+      "hidden": {
+        "contrast": 0.09985238647674402,
+        "count": 390,
+        "referenceMean": 61.177773333333334,
+        "grooveMean": 55.069026666666694
+      },
+      "revealed": {
+        "contrast": 0.37972797192692515,
+        "count": 390,
+        "referenceMean": 61.177773333333334,
+        "grooveMean": 37.94686153846155
+      }
+    }
+  },
+  "scenes": {
+    "desktop": {
+      "frame": {
+        "id": "desktop",
+        "width": 960,
+        "height": 540
+      },
+      "scene": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/desktop-architecture.png",
+        "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931",
+        "width": 960,
+        "height": 540
+      },
+      "fixed": [
+        {
+          "id": "torchHigh",
+          "x": 260,
+          "y": 129,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchHigh.png",
+          "sha256": "59733789a12b4da07217835369b033000b27561dc75ebdf1fc6e23c486744903",
+          "width": 26,
+          "height": 55,
+          "depth": -100
+        },
+        {
+          "id": "torchLow",
+          "x": 837,
+          "y": 213,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchLow.png",
+          "sha256": "f44a406f22bb657f8a9bb41df947d77d025df8dc335fdfff2cccc8677dc767c0",
+          "width": 31,
+          "height": 44,
+          "depth": -100
+        },
+        {
+          "id": "bats",
+          "x": 681,
+          "y": 46,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/bats.png",
+          "sha256": "1e2d48012feb4391337e369d54b4f4079232529c0a2977b87402c2df2fe091e2",
+          "width": 78,
+          "height": 72,
+          "depth": -100
+        },
+        {
+          "id": "groundLight",
+          "x": 374,
+          "y": 326,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/groundLight.png",
+          "sha256": "1a934ff25c1585f3805e8bc08504761e50e7ed28ff41b375fbcb2589f10d7a63",
+          "width": 326,
+          "height": 53,
+          "depth": -100
+        },
+        {
+          "id": "ranger",
+          "x": 598,
+          "y": 187,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/ranger.png",
+          "sha256": "fdad776716166112bea51ee254c0bff41e3f8173d60ba00f8c488d12c55ac9ec",
+          "width": 153,
+          "height": 133,
+          "depth": 320
+        },
+        {
+          "id": "warrior",
+          "x": 350,
+          "y": 196,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/warrior.png",
+          "sha256": "fa155d31d7668e7d3660f89f4a90de865ca978abd725aa8bc5f591342eb252e1",
+          "width": 132,
+          "height": 149,
+          "depth": 345
+        },
+        {
+          "id": "fire",
+          "x": 486,
+          "y": 272,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/fire.png",
+          "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b",
+          "width": 103,
+          "height": 104,
+          "depth": 376
+        },
+        {
+          "id": "mimiku",
+          "x": 610,
+          "y": 282,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/mimiku.png",
+          "sha256": "b7b39f4a4cde431623ff6e76d99476f66b02c4f06e6b95ac251647478c29eec0",
+          "width": 123,
+          "height": 120,
+          "depth": 402
+        },
+        {
+          "id": "sign",
+          "x": 742,
+          "y": 327,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/sign.png",
+          "sha256": "69b3caae590795ce5866570611fd039c9c1ed337c8a33f301f85a9aa70d7d26d",
+          "width": 70,
+          "height": 67,
+          "depth": 394
+        },
+        {
+          "id": "wordmark",
+          "x": 376,
+          "y": 100,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/desktop-single.png",
+          "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31",
+          "width": 288,
+          "height": 84,
+          "depth": -90
+        }
+      ],
+      "objects": [
+        {
+          "id": "chest",
+          "label": "寶箱",
+          "x": 294,
+          "y": 340,
+          "variants": {
+            "closed": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-closed.png",
+              "sha256": "e2e804ccba88b4fdd3561241c1c7f3aed1415857c45ca84ad752236142b55315",
+              "width": 156,
+              "height": 180,
+              "bounds": {
+                "x": 20,
+                "y": 86,
+                "width": 117,
+                "height": 94
+              }
+            },
+            "latch-release": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-latch-release.png",
+              "sha256": "569af8fb2ea9b217411685ab39cdea4e1db788841583cd73b950821d9282dc98",
+              "width": 156,
+              "height": 180,
+              "bounds": {
+                "x": 20,
+                "y": 86,
+                "width": 117,
+                "height": 94
+              }
+            },
+            "unlatched": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-unlatched.png",
+              "sha256": "f9a7227dbdf89a3bda2abb3e6d6f8567bbb3659020b6cfe45124d2c7c04de05d",
+              "width": 156,
+              "height": 180,
+              "bounds": {
+                "x": 20,
+                "y": 86,
+                "width": 117,
+                "height": 94
+              }
+            },
+            "cracked": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-cracked.png",
+              "sha256": "b54f6fdc5c89112b148263f974fc2edfe7294b6e1f0f1fb7448f60caa7635fe4",
+              "width": 156,
+              "height": 180,
+              "bounds": {
+                "x": 20,
+                "y": 85,
+                "width": 116,
+                "height": 95
+              }
+            },
+            "half-open": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-half-open.png",
+              "sha256": "8b2e3c155cc13335dabd97451eb9df316a53a8b0c3570276b6945daa95156ba7",
+              "width": 156,
+              "height": 180,
+              "bounds": {
+                "x": 20,
+                "y": 79,
+                "width": 118,
+                "height": 101
+              }
+            },
+            "opening-wide": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-opening-wide.png",
+              "sha256": "7a6d7be2c9f8dcefbecd60beacd42286476e99b76f6daf50aa8426c2342a9b40",
+              "width": 156,
+              "height": 180,
+              "bounds": {
+                "x": 18,
+                "y": 73,
+                "width": 118,
+                "height": 107
+              }
+            },
+            "near-open": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-near-open.png",
+              "sha256": "ccffc65ab9d4a9ea44f3abe377b00ba16efeb842cb7dadd5473aa465ac4119f7",
+              "width": 156,
+              "height": 180,
+              "bounds": {
+                "x": 19,
+                "y": 65,
+                "width": 118,
+                "height": 115
+              }
+            },
+            "open": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-open.png",
+              "sha256": "e18c938fe3f89e277419189344d9d9b356190c843d12cb5c044843e2f80dbce1",
+              "width": 156,
+              "height": 180,
+              "bounds": {
+                "x": 20,
+                "y": 58,
+                "width": 119,
+                "height": 122
+              }
+            }
+          },
+          "variant": "closed",
+          "offset": {
+            "x": 78,
+            "y": 180
+          },
+          "anchor": "ground",
+          "opacity": 1,
+          "width": 156,
+          "height": 180,
+          "lidBounds": {
+            "x": 21,
+            "y": 58,
+            "width": 118,
+            "height": 70
+          }
+        },
+        {
+          "id": "mapCrate",
+          "label": "地圖木箱",
+          "x": 167,
+          "y": 324,
+          "variants": {
+            "default": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/desktop-crate.png",
+              "sha256": "3b5d8676e99724ee831be2db690a83207a4c948cc611d16d3bc1973a9dcb321f",
+              "width": 85,
+              "height": 47,
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 85,
+                "height": 47
+              }
+            }
+          },
+          "variant": "default",
+          "offset": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor": "top-left",
+          "opacity": 1,
+          "width": 85,
+          "height": 47
+        },
+        {
+          "id": "carving",
+          "label": "隱藏壁畫",
+          "x": 205,
+          "y": 190,
+          "variants": {
+            "hidden": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-hidden-desktop.png",
+              "sha256": "09ee74c333392dece30201006d7cde71f416def22e66a2d13de469dcf41de9fb",
+              "width": 72,
+              "height": 48,
+              "bounds": {
+                "x": 2,
+                "y": 2,
+                "width": 68,
+                "height": 43
+              }
+            },
+            "revealed": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-revealed-desktop.png",
+              "sha256": "aa4f2a2bedc07ff813d6074d7f1459d052631ec31cb33bc4d5cc84cafe8dc608",
+              "width": 72,
+              "height": 48,
+              "bounds": {
+                "x": 2,
+                "y": 2,
+                "width": 68,
+                "height": 43
+              }
+            }
+          },
+          "variant": "hidden",
+          "offset": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor": "top-left",
+          "opacity": 1,
+          "width": 72,
+          "height": 48
+        }
+      ],
+      "signLabel": {
+        "x": 753.2,
+        "y": 338.39,
+        "width": 49,
+        "height": 32.16
+      },
+      "guidance": {
+        "method": "conservative-review-rectangles/v1",
+        "floor": {
+          "x": 0,
+          "y": 320,
+          "width": 960,
+          "height": 150
+        },
+        "dialogue": {
+          "x": 0,
+          "y": 421.2,
+          "width": 960,
+          "height": 118.8
+        },
+        "forbidden": [
+          {
+            "id": "warrior-face",
+            "x": 400,
+            "y": 224,
+            "width": 45,
+            "height": 50
+          },
+          {
+            "id": "ranger-face",
+            "x": 640,
+            "y": 211,
+            "width": 47,
+            "height": 48
+          },
+          {
+            "id": "fire",
+            "x": 486,
+            "y": 272,
+            "width": 103,
+            "height": 104
+          },
+          {
+            "id": "mimiku",
+            "x": 610,
+            "y": 282,
+            "width": 123,
+            "height": 120
+          },
+          {
+            "id": "sign",
+            "x": 742,
+            "y": 327,
+            "width": 70,
+            "height": 67
+          },
+          {
+            "id": "wordmark",
+            "x": 376,
+            "y": 100,
+            "width": 288,
+            "height": 84
+          },
+          {
+            "id": "torchHigh",
+            "x": 260,
+            "y": 129,
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchHigh.png",
+            "sha256": "59733789a12b4da07217835369b033000b27561dc75ebdf1fc6e23c486744903",
+            "width": 26,
+            "height": 55,
+            "depth": -100
+          },
+          {
+            "id": "torchLow",
+            "x": 837,
+            "y": 213,
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchLow.png",
+            "sha256": "f44a406f22bb657f8a9bb41df947d77d025df8dc335fdfff2cccc8677dc767c0",
+            "width": 31,
+            "height": 44,
+            "depth": -100
+          }
+        ]
+      }
+    },
+    "phone": {
+      "frame": {
+        "id": "phone",
+        "width": 1170,
+        "height": 600,
+        "viewportWidth": 390,
+        "initialViewportX": 390
+      },
+      "scene": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r3/phone-architecture.png",
+        "sha256": "4cd2854e8673feb4b7ba61d5f6f8172f0bf200f475085ddda7a52f310ed0f7d4",
+        "width": 1170,
+        "height": 600
+      },
+      "fixed": [
+        {
+          "id": "bats",
+          "x": 665,
+          "y": 56,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+          "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+          "width": 54,
+          "height": 50,
+          "depth": -100,
+          "propsId": "bats"
+        },
+        {
+          "id": "groundLight",
+          "x": 522,
+          "y": 346,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/groundLight.png",
+          "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7",
+          "width": 215,
+          "height": 35,
+          "depth": -100,
+          "propsId": "groundLight"
+        },
+        {
+          "id": "wordmark",
+          "x": 520,
+          "y": 59,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/phone-staggered.png",
+          "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c",
+          "width": 148,
+          "height": 98,
+          "depth": -90,
+          "propsId": "wordmark"
+        },
+        {
+          "id": "ranger",
+          "x": 635,
+          "y": 198,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/ranger.png",
+          "sha256": "fd2297f9f7cf17d3bdd187a981cdf79987642a732d49caa5d46f546d0d8c5ca9",
+          "width": 122,
+          "height": 106,
+          "depth": 304,
+          "propsId": "ranger"
+        },
+        {
+          "id": "warrior",
+          "x": 491,
+          "y": 235,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/warrior.png",
+          "sha256": "fede3c20ad2f3f96a1f909a379019daeee1f85e1417cced2736420cd554cb85b",
+          "width": 104,
+          "height": 117,
+          "depth": 352,
+          "propsId": "warrior"
+        },
+        {
+          "id": "fire",
+          "x": 602,
+          "y": 306,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/fire.png",
+          "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+          "width": 75,
+          "height": 76,
+          "depth": 382,
+          "propsId": "fire"
+        },
+        {
+          "id": "mimiku",
+          "x": 679,
+          "y": 316,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mimiku.png",
+          "sha256": "1c3cd662a4bf6df2ef7e1567f20d805370d0f96b48ea17666af8d469f71a8693",
+          "width": 95,
+          "height": 93,
+          "depth": 409,
+          "propsId": "mimiku"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/phone-crate.png",
+          "sha256": "5d8b731c4215782dafd26442f519bf15d7766bcb2553cb32449cab1e9cd15271",
+          "width": 59,
+          "height": 33,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 59,
+            "height": 33
+          },
+          "id": "mapCrate",
+          "x": 557,
+          "y": 379,
+          "depth": 412,
+          "propsId": "mapCrate"
+        },
+        {
+          "id": "sign",
+          "x": 405,
+          "y": 355,
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/sign.png",
+          "sha256": "8d40ae39e9ebb21e886b1782d48b63d0e97acc7fb0eddb478e95df144e487845",
+          "width": 62,
+          "height": 59,
+          "depth": 414,
+          "propsId": "sign"
+        }
+      ],
+      "objects": [
+        {
+          "id": "chest",
+          "label": "寶箱",
+          "x": 103,
+          "y": 316,
+          "variants": {
+            "closed": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-closed.png",
+              "sha256": "0f3d54212961f17df89d379b267f62a634b153a7cbec3166826f637579499bef",
+              "width": 110,
+              "height": 126,
+              "bounds": {
+                "x": 14,
+                "y": 60,
+                "width": 83,
+                "height": 66
+              }
+            },
+            "latch-release": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-latch-release.png",
+              "sha256": "c08fcede364ceb62ff72b3054cbc8925b8b7a873575812cc6766d2c37bbb4523",
+              "width": 110,
+              "height": 126,
+              "bounds": {
+                "x": 14,
+                "y": 60,
+                "width": 83,
+                "height": 66
+              }
+            },
+            "unlatched": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-unlatched.png",
+              "sha256": "4c552640e4b10b6619d5a193f2015b8cfd7d1bb958f033f2f4eac276d708d127",
+              "width": 110,
+              "height": 126,
+              "bounds": {
+                "x": 14,
+                "y": 60,
+                "width": 83,
+                "height": 66
+              }
+            },
+            "cracked": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-cracked.png",
+              "sha256": "c864f6d5fa9e62840372260270d68aa5c9a7cf0257fee18cebe1f308f30dc747",
+              "width": 110,
+              "height": 126,
+              "bounds": {
+                "x": 14,
+                "y": 59,
+                "width": 83,
+                "height": 67
+              }
+            },
+            "half-open": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-half-open.png",
+              "sha256": "fac846b0e7796bd6d91246b53be5625221a8002789473958d44d54dbf9a42f23",
+              "width": 110,
+              "height": 126,
+              "bounds": {
+                "x": 14,
+                "y": 54,
+                "width": 83,
+                "height": 72
+              }
+            },
+            "opening-wide": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-opening-wide.png",
+              "sha256": "48afbe7a5daed12bb0fc94530ba19c79d9ffb5243003c6e78bffa113bf4ef953",
+              "width": 110,
+              "height": 126,
+              "bounds": {
+                "x": 13,
+                "y": 50,
+                "width": 83,
+                "height": 76
+              }
+            },
+            "near-open": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-near-open.png",
+              "sha256": "c6d2c82105c1778c36b7f9ec2a25dd11fcb609bc90d8c808fc7b478acb59084b",
+              "width": 110,
+              "height": 126,
+              "bounds": {
+                "x": 13,
+                "y": 44,
+                "width": 84,
+                "height": 82
+              }
+            },
+            "open": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-open.png",
+              "sha256": "bed440fb820f7491dba3c8ac624eebf419bbc242b1d2e32830ab7e74389a7de1",
+              "width": 110,
+              "height": 126,
+              "bounds": {
+                "x": 14,
+                "y": 39,
+                "width": 84,
+                "height": 87
+              }
+            }
+          },
+          "variant": "closed",
+          "offset": {
+            "x": 55,
+            "y": 126
+          },
+          "anchor": "ground",
+          "opacity": 1,
+          "width": 110,
+          "height": 126,
+          "lidBounds": {
+            "x": 15,
+            "y": 39,
+            "width": 83,
+            "height": 51
+          }
+        },
+        {
+          "id": "torch",
+          "label": "火把",
+          "x": 295,
+          "y": 145,
+          "variants": {
+            "default": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/torch.png",
+              "sha256": "52a52c100aff82f463f6fc9da21317187a30f215d2ed75b68bbc769a88b2e192",
+              "width": 20,
+              "height": 43,
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 20,
+                "height": 43
+              }
+            }
+          },
+          "variant": "default",
+          "offset": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor": "top-left",
+          "opacity": 1,
+          "width": 20,
+          "height": 43
+        },
+        {
+          "id": "explorationBats",
+          "label": "蝙蝠",
+          "x": 1028,
+          "y": 58,
+          "variants": {
+            "default": {
+              "id": "bats",
+              "x": 275,
+              "y": 56,
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+              "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+              "width": 54,
+              "height": 50,
+              "depth": -100,
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 54,
+                "height": 50
+              }
+            }
+          },
+          "variant": "default",
+          "offset": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor": "top-left",
+          "opacity": 1,
+          "width": 54,
+          "height": 50
+        },
+        {
+          "id": "carving",
+          "label": "隱藏壁畫",
+          "x": 945,
+          "y": 163,
+          "variants": {
+            "hidden": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-hidden-phone.png",
+              "sha256": "2a244c9d4659dac53758ebb38219c49e0dfc50a723ef666ff9a040e12051e263",
+              "width": 54,
+              "height": 36,
+              "bounds": {
+                "x": 2,
+                "y": 1,
+                "width": 50,
+                "height": 33
+              }
+            },
+            "revealed": {
+              "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-revealed-phone.png",
+              "sha256": "0237297adac1324f4b9e582e720e0ebf582e10c50e0761e4ab926d4e2b55039f",
+              "width": 54,
+              "height": 36,
+              "bounds": {
+                "x": 2,
+                "y": 1,
+                "width": 50,
+                "height": 33
+              }
+            }
+          },
+          "variant": "hidden",
+          "offset": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor": "top-left",
+          "opacity": 1,
+          "width": 54,
+          "height": 36
+        }
+      ],
+      "signLabel": {
+        "x": 414.92,
+        "y": 365.03,
+        "width": 43.4,
+        "height": 28.32
+      },
+      "guidance": {
+        "method": "conservative-review-rectangles/v1",
+        "floor": {
+          "x": 0,
+          "y": 290,
+          "width": 1170,
+          "height": 210
+        },
+        "dialogue": {
+          "x": 0,
+          "y": 432,
+          "width": 1170,
+          "height": 168.00000000000003
+        },
+        "forbidden": [
+          {
+            "id": "warrior-face",
+            "x": 525,
+            "y": 267,
+            "width": 34,
+            "height": 37
+          },
+          {
+            "id": "ranger-face",
+            "x": 666,
+            "y": 219,
+            "width": 37,
+            "height": 40
+          },
+          {
+            "id": "fire",
+            "x": 602,
+            "y": 306,
+            "width": 75,
+            "height": 76
+          },
+          {
+            "id": "mimiku",
+            "x": 679,
+            "y": 316,
+            "width": 95,
+            "height": 93
+          },
+          {
+            "id": "sign",
+            "x": 405,
+            "y": 355,
+            "width": 62,
+            "height": 59
+          },
+          {
+            "id": "wordmark",
+            "x": 520,
+            "y": 59,
+            "width": 148,
+            "height": 98
+          },
+          {
+            "id": "mapCrate",
+            "x": 557,
+            "y": 379,
+            "width": 59,
+            "height": 33
+          }
+        ]
+      }
+    }
+  },
+  "inventory": [
+    [
+      "desktop · chest closed",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-closed.png",
+        "sha256": "e2e804ccba88b4fdd3561241c1c7f3aed1415857c45ca84ad752236142b55315",
+        "width": 156,
+        "height": 180,
+        "bounds": {
+          "x": 20,
+          "y": 86,
+          "width": 117,
+          "height": 94
+        }
+      }
+    ],
+    [
+      "desktop · chest latch-release",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-latch-release.png",
+        "sha256": "569af8fb2ea9b217411685ab39cdea4e1db788841583cd73b950821d9282dc98",
+        "width": 156,
+        "height": 180,
+        "bounds": {
+          "x": 20,
+          "y": 86,
+          "width": 117,
+          "height": 94
+        }
+      }
+    ],
+    [
+      "desktop · chest unlatched",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-unlatched.png",
+        "sha256": "f9a7227dbdf89a3bda2abb3e6d6f8567bbb3659020b6cfe45124d2c7c04de05d",
+        "width": 156,
+        "height": 180,
+        "bounds": {
+          "x": 20,
+          "y": 86,
+          "width": 117,
+          "height": 94
+        }
+      }
+    ],
+    [
+      "desktop · chest cracked",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-cracked.png",
+        "sha256": "b54f6fdc5c89112b148263f974fc2edfe7294b6e1f0f1fb7448f60caa7635fe4",
+        "width": 156,
+        "height": 180,
+        "bounds": {
+          "x": 20,
+          "y": 85,
+          "width": 116,
+          "height": 95
+        }
+      }
+    ],
+    [
+      "desktop · chest half-open",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-half-open.png",
+        "sha256": "8b2e3c155cc13335dabd97451eb9df316a53a8b0c3570276b6945daa95156ba7",
+        "width": 156,
+        "height": 180,
+        "bounds": {
+          "x": 20,
+          "y": 79,
+          "width": 118,
+          "height": 101
+        }
+      }
+    ],
+    [
+      "desktop · chest opening-wide",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-opening-wide.png",
+        "sha256": "7a6d7be2c9f8dcefbecd60beacd42286476e99b76f6daf50aa8426c2342a9b40",
+        "width": 156,
+        "height": 180,
+        "bounds": {
+          "x": 18,
+          "y": 73,
+          "width": 118,
+          "height": 107
+        }
+      }
+    ],
+    [
+      "desktop · chest near-open",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-near-open.png",
+        "sha256": "ccffc65ab9d4a9ea44f3abe377b00ba16efeb842cb7dadd5473aa465ac4119f7",
+        "width": 156,
+        "height": 180,
+        "bounds": {
+          "x": 19,
+          "y": 65,
+          "width": 118,
+          "height": 115
+        }
+      }
+    ],
+    [
+      "desktop · chest open",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-open.png",
+        "sha256": "e18c938fe3f89e277419189344d9d9b356190c843d12cb5c044843e2f80dbce1",
+        "width": 156,
+        "height": 180,
+        "bounds": {
+          "x": 20,
+          "y": 58,
+          "width": 119,
+          "height": 122
+        }
+      }
+    ],
+    [
+      "desktop · torchHigh",
+      {
+        "id": "torchHigh",
+        "x": 260,
+        "y": 129,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchHigh.png",
+        "sha256": "59733789a12b4da07217835369b033000b27561dc75ebdf1fc6e23c486744903",
+        "width": 26,
+        "height": 55,
+        "depth": -100
+      }
+    ],
+    [
+      "desktop · torchLow",
+      {
+        "id": "torchLow",
+        "x": 837,
+        "y": 213,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchLow.png",
+        "sha256": "f44a406f22bb657f8a9bb41df947d77d025df8dc335fdfff2cccc8677dc767c0",
+        "width": 31,
+        "height": 44,
+        "depth": -100
+      }
+    ],
+    [
+      "desktop · bats",
+      {
+        "id": "bats",
+        "x": 681,
+        "y": 46,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/bats.png",
+        "sha256": "1e2d48012feb4391337e369d54b4f4079232529c0a2977b87402c2df2fe091e2",
+        "width": 78,
+        "height": 72,
+        "depth": -100
+      }
+    ],
+    [
+      "desktop · mapCrate",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/desktop-crate.png",
+        "sha256": "3b5d8676e99724ee831be2db690a83207a4c948cc611d16d3bc1973a9dcb321f",
+        "width": 85,
+        "height": 47,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 85,
+          "height": 47
+        }
+      }
+    ],
+    [
+      "desktop · sign",
+      {
+        "id": "sign",
+        "x": 742,
+        "y": 327,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/sign.png",
+        "sha256": "69b3caae590795ce5866570611fd039c9c1ed337c8a33f301f85a9aa70d7d26d",
+        "width": 70,
+        "height": 67,
+        "depth": 394
+      }
+    ],
+    [
+      "desktop · fire",
+      {
+        "id": "fire",
+        "x": 486,
+        "y": 272,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/fire.png",
+        "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b",
+        "width": 103,
+        "height": 104,
+        "depth": 376
+      }
+    ],
+    [
+      "desktop · 壁畫 hidden",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-hidden-desktop.png",
+        "sha256": "09ee74c333392dece30201006d7cde71f416def22e66a2d13de469dcf41de9fb",
+        "width": 72,
+        "height": 48,
+        "bounds": {
+          "x": 2,
+          "y": 2,
+          "width": 68,
+          "height": 43
+        }
+      }
+    ],
+    [
+      "desktop · 壁畫 revealed",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-revealed-desktop.png",
+        "sha256": "aa4f2a2bedc07ff813d6074d7f1459d052631ec31cb33bc4d5cc84cafe8dc608",
+        "width": 72,
+        "height": 48,
+        "bounds": {
+          "x": 2,
+          "y": 2,
+          "width": 68,
+          "height": 43
+        }
+      }
+    ],
+    [
+      "phone · chest closed",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-closed.png",
+        "sha256": "0f3d54212961f17df89d379b267f62a634b153a7cbec3166826f637579499bef",
+        "width": 110,
+        "height": 126,
+        "bounds": {
+          "x": 14,
+          "y": 60,
+          "width": 83,
+          "height": 66
+        }
+      }
+    ],
+    [
+      "phone · chest latch-release",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-latch-release.png",
+        "sha256": "c08fcede364ceb62ff72b3054cbc8925b8b7a873575812cc6766d2c37bbb4523",
+        "width": 110,
+        "height": 126,
+        "bounds": {
+          "x": 14,
+          "y": 60,
+          "width": 83,
+          "height": 66
+        }
+      }
+    ],
+    [
+      "phone · chest unlatched",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-unlatched.png",
+        "sha256": "4c552640e4b10b6619d5a193f2015b8cfd7d1bb958f033f2f4eac276d708d127",
+        "width": 110,
+        "height": 126,
+        "bounds": {
+          "x": 14,
+          "y": 60,
+          "width": 83,
+          "height": 66
+        }
+      }
+    ],
+    [
+      "phone · chest cracked",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-cracked.png",
+        "sha256": "c864f6d5fa9e62840372260270d68aa5c9a7cf0257fee18cebe1f308f30dc747",
+        "width": 110,
+        "height": 126,
+        "bounds": {
+          "x": 14,
+          "y": 59,
+          "width": 83,
+          "height": 67
+        }
+      }
+    ],
+    [
+      "phone · chest half-open",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-half-open.png",
+        "sha256": "fac846b0e7796bd6d91246b53be5625221a8002789473958d44d54dbf9a42f23",
+        "width": 110,
+        "height": 126,
+        "bounds": {
+          "x": 14,
+          "y": 54,
+          "width": 83,
+          "height": 72
+        }
+      }
+    ],
+    [
+      "phone · chest opening-wide",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-opening-wide.png",
+        "sha256": "48afbe7a5daed12bb0fc94530ba19c79d9ffb5243003c6e78bffa113bf4ef953",
+        "width": 110,
+        "height": 126,
+        "bounds": {
+          "x": 13,
+          "y": 50,
+          "width": 83,
+          "height": 76
+        }
+      }
+    ],
+    [
+      "phone · chest near-open",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-near-open.png",
+        "sha256": "c6d2c82105c1778c36b7f9ec2a25dd11fcb609bc90d8c808fc7b478acb59084b",
+        "width": 110,
+        "height": 126,
+        "bounds": {
+          "x": 13,
+          "y": 44,
+          "width": 84,
+          "height": 82
+        }
+      }
+    ],
+    [
+      "phone · chest open",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-open.png",
+        "sha256": "bed440fb820f7491dba3c8ac624eebf419bbc242b1d2e32830ab7e74389a7de1",
+        "width": 110,
+        "height": 126,
+        "bounds": {
+          "x": 14,
+          "y": 39,
+          "width": 84,
+          "height": 87
+        }
+      }
+    ],
+    [
+      "phone · torch",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/torch.png",
+        "sha256": "52a52c100aff82f463f6fc9da21317187a30f215d2ed75b68bbc769a88b2e192",
+        "width": 20,
+        "height": 43,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 20,
+          "height": 43
+        }
+      }
+    ],
+    [
+      "phone · bats",
+      {
+        "id": "bats",
+        "x": 665,
+        "y": 56,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+        "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+        "width": 54,
+        "height": 50,
+        "depth": -100,
+        "propsId": "bats"
+      }
+    ],
+    [
+      "phone · mapCrate",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/phone-crate.png",
+        "sha256": "5d8b731c4215782dafd26442f519bf15d7766bcb2553cb32449cab1e9cd15271",
+        "width": 59,
+        "height": 33,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 59,
+          "height": 33
+        },
+        "id": "mapCrate",
+        "x": 557,
+        "y": 379,
+        "depth": 412,
+        "propsId": "mapCrate"
+      }
+    ],
+    [
+      "phone · sign",
+      {
+        "id": "sign",
+        "x": 405,
+        "y": 355,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/sign.png",
+        "sha256": "8d40ae39e9ebb21e886b1782d48b63d0e97acc7fb0eddb478e95df144e487845",
+        "width": 62,
+        "height": 59,
+        "depth": 414,
+        "propsId": "sign"
+      }
+    ],
+    [
+      "phone · fire",
+      {
+        "id": "fire",
+        "x": 602,
+        "y": 306,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/fire.png",
+        "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+        "width": 75,
+        "height": 76,
+        "depth": 382,
+        "propsId": "fire"
+      }
+    ],
+    [
+      "phone · 壁畫 hidden",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-hidden-phone.png",
+        "sha256": "2a244c9d4659dac53758ebb38219c49e0dfc50a723ef666ff9a040e12051e263",
+        "width": 54,
+        "height": 36,
+        "bounds": {
+          "x": 2,
+          "y": 1,
+          "width": 50,
+          "height": 33
+        }
+      }
+    ],
+    [
+      "phone · 壁畫 revealed",
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/landing/wall-carving-revealed-phone.png",
+        "sha256": "0237297adac1324f4b9e582e720e0ebf582e10c50e0761e4ab926d4e2b55039f",
+        "width": 54,
+        "height": 36,
+        "bounds": {
+          "x": 2,
+          "y": 1,
+          "width": 50,
+          "height": 33
+        }
+      }
+    ]
+  ]
+}

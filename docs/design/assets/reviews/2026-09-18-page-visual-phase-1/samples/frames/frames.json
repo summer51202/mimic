@@ -1,0 +1,80 @@
+{
+  "decision": "awaiting-visual-review",
+  "frames": {
+    "parchment": {
+      "file": "frame-parchment.png",
+      "sha256": "90b590d146927274c6ac9e163e1d31d1d9d9c907fb0081654b530aff5aa370d8",
+      "width": 36,
+      "height": 36,
+      "slice": 10,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-parchment-field",
+      "centerColor": "#eddbb3",
+      "minPadding": {
+        "phone": 16,
+        "desktop": 24
+      }
+    },
+    "wood": {
+      "file": "frame-wood.png",
+      "sha256": "3cbe056f98e14e959421b1917103121b315ecc7b11ef01cbcc8be6f7a059bbc6",
+      "width": 36,
+      "height": 36,
+      "slice": 10,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-wood-field",
+      "centerColor": "#39271e",
+      "minPadding": {
+        "phone": 16,
+        "desktop": 24
+      }
+    },
+    "stone": {
+      "file": "frame-stone.png",
+      "sha256": "8f9e3a15d2760a04eea95d3844fefad494d1473afe176dbd343e09475aa979ce",
+      "width": 36,
+      "height": 36,
+      "slice": 10,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-stone-field",
+      "centerColor": "#ddd2bd",
+      "minPadding": {
+        "phone": 16,
+        "desktop": 24
+      }
+    },
+    "dialogue": {
+      "file": "frame-dialogue.png",
+      "sha256": "61c07ae3397d5f41097f636eba4ab3015d7cbd8a68ac67e54649ad341f937849",
+      "width": 36,
+      "height": 36,
+      "slice": 10,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-dialogue-field",
+      "centerColor": "#211a18",
+      "minPadding": {
+        "phone": 16,
+        "desktop": 24
+      }
+    },
+    "notebook": {
+      "file": "frame-notebook.png",
+      "sha256": "8898351bf1a175758a9e8c98fd616617457b9d0d897fd073218d8b1a6d2c1454",
+      "width": 36,
+      "height": 36,
+      "slice": 10,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-notebook-field",
+      "centerColor": "#ead7ac",
+      "minPadding": {
+        "phone": 16,
+        "desktop": 24
+      }
+    }
+  }
+}
