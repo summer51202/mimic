@@ -1,0 +1,43 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home 秘密基地 · 視覺審核</title><style>
+*{box-sizing:border-box}body{margin:auto;max-width:1984px;padding:16px;background:#19110d;color:#f6e3cc;font:16px/1.5 system-ui,sans-serif}
+fieldset{display:flex;flex-wrap:wrap;gap:12px;border:1px solid #a37c51}label{white-space:nowrap}figure{margin:0;min-width:0}figcaption{padding-top:6px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:start}.scene{position:relative;container-type:inline-size}.background{display:block;width:100%;height:auto}.layer,.zone{position:absolute}.layer{display:block}img{image-rendering:pixelated}
+.avatar{display:none}body:has(#warrior:checked) .warrior,body:has(#mage:checked) .mage,body:has(#ranger:checked) .ranger{display:block}
+.zone{display:none;padding:1.2cqw;background:#17110de8;color:#ffe5bf;outline:1px dashed #d5a567;outline-offset:-1px;font-size:clamp(8px,2.5cqw,14px);overflow:hidden}body:has(#guides:checked) .zone{display:block}
+body:has(#gray:checked) img{filter:grayscale(1)}[data-frame=phone], [data-frame=phone]+figcaption{max-width:390px}section:has([data-frame=phone]) .pair{max-width:792px}
+</style></head><body><h1>Home 秘密基地</h1><p>Phase 1 · 待視覺審核</p><fieldset><legend>審核預覽</legend>
+<label><input type="checkbox" id="guides" checked> 安全區</label><label><input type="checkbox" id="gray"> 灰階</label>
+<label><input type="radio" name="avatar" id="warrior" checked> warrior</label>
+<label><input type="radio" name="avatar" id="mage"> mage</label>
+<label><input type="radio" name="avatar" id="ranger"> ranger</label>
+</fieldset>
+<section><h2>桌機 · 960 × 540</h2>
+<div class="pair"><figure><div class="scene" data-frame="desktop">
+<img class="background" src="samples/home-base/desktop-architecture.png" width="960" height="540" alt="暖色地城秘密基地">
+<img class="layer " style="left:38.958333333333336%;top:57.22222222222222%;width:33.958333333333336%;height:9.814814814814815%" src="samples/landing-warm-rest/layers/A-desktop/groundLight.png" alt="">
+<img class="layer " style="left:50.625%;top:47.22222222222222%;width:10.729166666666666%;height:19.25925925925926%" src="samples/landing-warm-rest/layers/A-desktop/fire.png" alt="篝火">
+<img class="layer avatar warrior" style="left:39.270833333333336%;top:45.74074074074074%;width:8.333333333333334%;height:20.74074074074074%" src="samples/home-base/desktop-warrior.png" alt="warrior">
+<img class="layer avatar mage" style="left:39.6875%;top:45.74074074074074%;width:7.5%;height:20.74074074074074%" src="samples/home-base/desktop-mage.png" alt="mage">
+<img class="layer avatar ranger" style="left:38.854166666666664%;top:45.74074074074074%;width:9.270833333333334%;height:20.74074074074074%" src="samples/home-base/desktop-ranger.png" alt="ranger">
+<img class="layer " style="left:64.0625%;top:52.03703703703704%;width:9.270833333333334%;height:17.037037037037038%" src="samples/home-base/desktop-mimiku.png" alt="Mimiku">
+<div class="zone card" style="left:1.6666666666666667%;top:10.37037037037037%;width:31.25%;height:25.925925925925927%">最近冒險</div>
+<div class="zone dialogue" style="left:0%;top:77.96296296296296%;width:100%;height:22.037037037037038%">Mimiku · 回來啦。先在火邊坐一會兒。</div>
+<div class="zone nav" style="left:0%;top:0%;width:100%;height:7.407407407407407%">導覽列</div>
+</div><figcaption>Home · 秘密基地</figcaption></figure>
+<figure><img class="background" src="samples/landing-prop-placement-application/desktop-closed.png" width="960" height="540" alt="已核准 Landing 場景"><figcaption>Landing · 風格基準</figcaption></figure></div></section>
+<section><h2>手機 · 390 × 600</h2>
+<div class="pair"><figure><div class="scene" data-frame="phone">
+<img class="background" src="samples/home-base/phone-architecture.png" width="390" height="600" alt="暖色地城秘密基地">
+<img class="layer " style="left:20%;top:55%;width:55.12820512820513%;height:5.833333333333333%" src="samples/landing-warm-rest/layers/A-phone/groundLight.png" alt="">
+<img class="layer " style="left:40.51282051282051%;top:48.333333333333336%;width:19.23076923076923%;height:12.666666666666666%" src="samples/landing-warm-rest/layers/A-phone/fire.png" alt="篝火">
+<img class="layer avatar warrior" style="left:21.025641025641026%;top:46.166666666666664%;width:15.128205128205128%;height:13.666666666666666%" src="samples/home-base/phone-warrior.png" alt="warrior">
+<img class="layer avatar mage" style="left:21.794871794871796%;top:46.166666666666664%;width:13.58974358974359%;height:13.666666666666666%" src="samples/home-base/phone-mage.png" alt="mage">
+<img class="layer avatar ranger" style="left:20.256410256410255%;top:46.166666666666664%;width:16.666666666666668%;height:13.666666666666666%" src="samples/home-base/phone-ranger.png" alt="ranger">
+<img class="layer " style="left:62.05128205128205%;top:52.166666666666664%;width:16.666666666666668%;height:11.333333333333334%" src="samples/home-base/phone-mimiku.png" alt="Mimiku">
+<div class="zone card" style="left:3.076923076923077%;top:2.6666666666666665%;width:93.84615384615384%;height:20%">最近冒險</div>
+<div class="zone dialogue" style="left:0%;top:72%;width:100%;height:28%">Mimiku · 回來啦。先在火邊坐一會兒。</div>
+<div class="zone nav" style="left:0%;top:93%;width:100%;height:7%">導覽列</div>
+</div><figcaption>Home · 秘密基地</figcaption></figure>
+<figure><img class="background" src="samples/landing-prop-placement-application/phone.png" width="390" height="600" alt="已核准 Landing 場景"><figcaption>Landing · 風格基準</figcaption></figure></div></section>
+</body></html>

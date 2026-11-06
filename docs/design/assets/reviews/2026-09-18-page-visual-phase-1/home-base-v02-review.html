@@ -1,0 +1,79 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home v02 · 視覺審核</title><style>
+*{box-sizing:border-box}body{margin:auto;max-width:2928px;padding:16px;background:#19110d;color:#f6e3cc;font:16px/1.5 system-ui,sans-serif}
+fieldset{display:flex;flex-wrap:wrap;gap:12px;border:1px solid #a37c51}select{font:inherit}figure{margin:0;min-width:0}figcaption{padding-top:6px}
+.triptych,.proof,.measurements{display:grid;gap:12px;align-items:start}.triptych{grid-template-columns:repeat(3,minmax(0,1fr))}.triptych.phone{max-width:1194px}.proof,.measurements{grid-template-columns:repeat(2,minmax(0,1fr))}.measurements{max-width:1120px}
+.scene,.sprite{position:relative}.scene{container-type:inline-size}.sprite{max-width:100%}.background{display:block;width:100%;height:auto}.layer,.zone,.sprite svg{position:absolute}.sprite svg{inset:0;width:100%;height:100%;overflow:visible}.sprite line{stroke:#00fff0;stroke-width:1}.sprite circle{fill:#00fff0;stroke:#181511;stroke-width:.35}img{image-rendering:pixelated}
+.zone{display:none;padding:1.2cqw;background:#17110de8;color:#ffe5bf;outline:1px dashed #d5a567;outline-offset:-1px;font-size:clamp(6px,2.5cqw,14px);overflow:hidden}body:has(#guides:checked) .zone{display:block}
+body:has(#gray:checked) img{filter:grayscale(1)}@media(max-width:620px){.measurements{grid-template-columns:1fr}.triptych{gap:4px}}
+</style></head><body><h1>Home 秘密基地 v02</h1><p>Phase 1 · 待視覺審核</p><fieldset><legend>審核預覽</legend>
+<label for="avatar">頭像</label><select id="avatar"><option>warrior</option><option>mage</option><option>ranger</option><option>rogue</option><option>physician</option><option>bard</option><option>alchemist</option><option>cartographer</option></select>
+<label><input type="checkbox" id="guides"> 安全區</label><label><input type="checkbox" id="wall"> 掛紙（桌機）</label><label><input type="checkbox" id="gray"> 灰階</label>
+</fieldset>
+<section><h2>桌機 · 960 × 540</h2>
+<div class="triptych desktop">
+<figure><div class="scene" data-version="v02" data-frame="desktop">
+<img class="background" src="samples/home-base-v02/desktop-architecture.png" width="960" height="540" alt="秘密基地底圖">
+<img class="layer wall" style="left:50.208333333333336%;top:20%;width:11.666666666666666%;height:11.296296296296296%" src="samples/home-base-v02/blank-parchment.svg" alt="空白掛紙" hidden>
+<img class="layer " style="left:38.958333333333336%;top:57.22222222222222%;width:33.958333333333336%;height:9.814814814814815%" src="samples/landing-warm-rest/layers/A-desktop/groundLight.png" alt="" >
+<img class="layer " style="left:50.625%;top:47.22222222222222%;width:10.729166666666666%;height:19.25925925925926%" src="samples/landing-warm-rest/layers/A-desktop/fire.png" alt="篝火" >
+<img class="layer avatar" style="left:35.104166666666664%;top:40.18518518518518%;width:11.145833333333334%;height:27.59259259259259%" src="samples/home-base-v02/desktop-warrior.png" alt="warrior" data-avatar="warrior">
+<img class="layer avatar" style="left:35.625%;top:40.18518518518518%;width:10%;height:27.59259259259259%" src="samples/home-base-v02/desktop-mage.png" alt="mage" data-avatar="mage" hidden>
+<img class="layer avatar" style="left:34.479166666666664%;top:40.18518518518518%;width:12.395833333333334%;height:27.59259259259259%" src="samples/home-base-v02/desktop-ranger.png" alt="ranger" data-avatar="ranger" hidden>
+<img class="layer avatar" style="left:35.3125%;top:40.18518518518518%;width:10.729166666666666%;height:27.59259259259259%" src="samples/home-base-v02/desktop-rogue.png" alt="rogue" data-avatar="rogue" hidden>
+<img class="layer avatar" style="left:34.895833333333336%;top:40.18518518518518%;width:11.458333333333334%;height:27.59259259259259%" src="samples/home-base-v02/desktop-physician.png" alt="physician" data-avatar="physician" hidden>
+<img class="layer avatar" style="left:35.208333333333336%;top:40%;width:10.9375%;height:27.77777777777778%" src="samples/home-base-v02/desktop-bard.png" alt="bard" data-avatar="bard" hidden>
+<img class="layer avatar" style="left:36.5625%;top:40.18518518518518%;width:8.125%;height:27.59259259259259%" src="samples/home-base-v02/desktop-alchemist.png" alt="alchemist" data-avatar="alchemist" hidden>
+<img class="layer avatar" style="left:35.9375%;top:40.18518518518518%;width:9.375%;height:27.59259259259259%" src="samples/home-base-v02/desktop-cartographer.png" alt="cartographer" data-avatar="cartographer" hidden>
+<img class="layer " style="left:63.854166666666664%;top:48.333333333333336%;width:12.291666666666666%;height:22.77777777777778%" src="samples/home-base-v02/desktop-mimiku.png" alt="Mimiku" >
+<div class="zone" style="left:1.6666666666666667%;top:10.37037037037037%;width:31.25%;height:25.925925925925927%">最近冒險</div><div class="zone" style="left:0%;top:77.96296296296296%;width:100%;height:22.037037037037038%">Mimiku · 回來啦。先在火邊坐一會兒。</div><div class="zone" style="left:0%;top:0%;width:100%;height:7.407407407407407%">導覽列</div>
+</div><figcaption>Home v02</figcaption></figure>
+<figure><div class="scene" data-version="v01" data-frame="desktop">
+<img class="background" src="samples/home-base/desktop-architecture.png" width="960" height="540" alt="秘密基地底圖">
+
+<img class="layer " style="left:38.958333333333336%;top:57.22222222222222%;width:33.958333333333336%;height:9.814814814814815%" src="samples/landing-warm-rest/layers/A-desktop/groundLight.png" alt="" >
+<img class="layer " style="left:50.625%;top:47.22222222222222%;width:10.729166666666666%;height:19.25925925925926%" src="samples/landing-warm-rest/layers/A-desktop/fire.png" alt="篝火" >
+<img class="layer avatar" style="left:39.270833333333336%;top:45.74074074074074%;width:8.333333333333334%;height:20.74074074074074%" src="samples/home-base/desktop-warrior.png" alt="warrior" data-avatar="warrior">
+<img class="layer " style="left:64.0625%;top:52.03703703703704%;width:9.270833333333334%;height:17.037037037037038%" src="samples/home-base/desktop-mimiku.png" alt="Mimiku" >
+
+</div><figcaption>Home v01</figcaption></figure>
+<figure><img class="background" src="samples/landing-prop-placement-application/desktop-closed.png" width="960" height="540" alt="已核准的 Landing"><figcaption>Landing</figcaption></figure></div>
+<details open><summary>比例量測 · 圖層同倍率</summary><div class="measurements">
+<article><h3>Warrior · 頭盔頂到下巴（不含羽飾）</h3><div class="proof"><figure><div class="sprite" style="width:264px"><img class="background" src="samples/landing-warm-rest/layers/A-desktop/warrior.png" width="132" height="149" alt="Landing"><svg viewBox="0 0 132 149" aria-hidden="true"><line x1="77" y1="22" x2="77" y2="66"/><circle cx="77" cy="22" r="1"/><circle cx="77" cy="66" r="1"/></svg></div><figcaption>Landing · 44 px</figcaption></figure><figure><div class="sprite" style="width:214px"><img class="background" src="samples/home-base-v02/desktop-warrior.png" width="107" height="149" alt="Home v02"><svg viewBox="0 0 107 149" aria-hidden="true"><line x1="59" y1="20" x2="59" y2="64"/><circle cx="59" cy="20" r="1"/><circle cx="59" cy="64" r="1"/></svg></div><figcaption>Home v02 · 44 px</figcaption></figure></div></article>
+<article><h3>Mimiku · 對應眼球寬（含瞳孔）</h3><div class="proof"><figure><div class="sprite" style="width:246px"><img class="background" src="samples/landing-warm-rest/layers/A-desktop/mimiku.png" width="123" height="120" alt="Landing"><svg viewBox="0 0 123 120" aria-hidden="true"><line x1="30" y1="28" x2="46" y2="28"/><circle cx="30" cy="28" r="1"/><circle cx="46" cy="28" r="1"/></svg></div><figcaption>Landing · 16 px</figcaption></figure><figure><div class="sprite" style="width:236px"><img class="background" src="samples/home-base-v02/desktop-mimiku.png" width="118" height="123" alt="Home v02"><svg viewBox="0 0 118 123" aria-hidden="true"><line x1="77" y1="21" x2="93" y2="21"/><circle cx="77" cy="21" r="1"/><circle cx="93" cy="21" r="1"/></svg></div><figcaption>Home v02 · 16 px</figcaption></figure></div></article>
+</div></details></section>
+<section><h2>手機 · 390 × 600</h2>
+<div class="triptych phone">
+<figure><div class="scene" data-version="v02" data-frame="phone">
+<img class="background" src="samples/home-base-v02/phone-architecture.png" width="390" height="600" alt="秘密基地底圖">
+
+<img class="layer " style="left:20%;top:55%;width:55.12820512820513%;height:5.833333333333333%" src="samples/landing-warm-rest/layers/A-phone/groundLight.png" alt="" >
+<img class="layer " style="left:40.51282051282051%;top:48.333333333333336%;width:19.23076923076923%;height:12.666666666666666%" src="samples/landing-warm-rest/layers/A-phone/fire.png" alt="篝火" >
+<img class="layer avatar" style="left:13.846153846153847%;top:41.166666666666664%;width:21.794871794871796%;height:19.833333333333332%" src="samples/home-base-v02/phone-warrior.png" alt="warrior" data-avatar="warrior">
+<img class="layer avatar" style="left:14.871794871794872%;top:41.166666666666664%;width:19.487179487179485%;height:19.833333333333332%" src="samples/home-base-v02/phone-mage.png" alt="mage" data-avatar="mage" hidden>
+<img class="layer avatar" style="left:12.564102564102564%;top:41.166666666666664%;width:24.358974358974358%;height:19.833333333333332%" src="samples/home-base-v02/phone-ranger.png" alt="ranger" data-avatar="ranger" hidden>
+<img class="layer avatar" style="left:14.102564102564102%;top:41.166666666666664%;width:21.025641025641026%;height:19.833333333333332%" src="samples/home-base-v02/phone-rogue.png" alt="rogue" data-avatar="rogue" hidden>
+<img class="layer avatar" style="left:13.58974358974359%;top:41.166666666666664%;width:22.307692307692307%;height:19.833333333333332%" src="samples/home-base-v02/phone-physician.png" alt="physician" data-avatar="physician" hidden>
+<img class="layer avatar" style="left:13.846153846153847%;top:41.166666666666664%;width:21.53846153846154%;height:19.833333333333332%" src="samples/home-base-v02/phone-bard.png" alt="bard" data-avatar="bard" hidden>
+<img class="layer avatar" style="left:16.666666666666668%;top:41.166666666666664%;width:15.897435897435898%;height:19.833333333333332%" src="samples/home-base-v02/phone-alchemist.png" alt="alchemist" data-avatar="alchemist" hidden>
+<img class="layer avatar" style="left:15.64102564102564%;top:41.166666666666664%;width:18.205128205128204%;height:19.833333333333332%" src="samples/home-base-v02/phone-cartographer.png" alt="cartographer" data-avatar="cartographer" hidden>
+<img class="layer " style="left:62.05128205128205%;top:48%;width:24.615384615384617%;height:16.666666666666668%" src="samples/home-base-v02/phone-mimiku.png" alt="Mimiku" >
+<div class="zone" style="left:3.076923076923077%;top:2.6666666666666665%;width:93.84615384615384%;height:20%">最近冒險</div><div class="zone" style="left:0%;top:72%;width:100%;height:28%">Mimiku · 回來啦。先在火邊坐一會兒。</div><div class="zone" style="left:0%;top:93%;width:100%;height:7%">導覽列</div>
+</div><figcaption>Home v02</figcaption></figure>
+<figure><div class="scene" data-version="v01" data-frame="phone">
+<img class="background" src="samples/home-base/phone-architecture.png" width="390" height="600" alt="秘密基地底圖">
+
+<img class="layer " style="left:20%;top:55%;width:55.12820512820513%;height:5.833333333333333%" src="samples/landing-warm-rest/layers/A-phone/groundLight.png" alt="" >
+<img class="layer " style="left:40.51282051282051%;top:48.333333333333336%;width:19.23076923076923%;height:12.666666666666666%" src="samples/landing-warm-rest/layers/A-phone/fire.png" alt="篝火" >
+<img class="layer avatar" style="left:21.025641025641026%;top:46.166666666666664%;width:15.128205128205128%;height:13.666666666666666%" src="samples/home-base/phone-warrior.png" alt="warrior" data-avatar="warrior">
+<img class="layer " style="left:62.05128205128205%;top:52.166666666666664%;width:16.666666666666668%;height:11.333333333333334%" src="samples/home-base/phone-mimiku.png" alt="Mimiku" >
+
+</div><figcaption>Home v01</figcaption></figure>
+<figure><img class="background" src="samples/landing-prop-placement-application/phone.png" width="390" height="600" alt="已核准的 Landing"><figcaption>Landing</figcaption></figure></div>
+<details open><summary>比例量測 · 圖層同倍率</summary><div class="measurements">
+<article><h3>Warrior · 頭盔頂到下巴（不含羽飾）</h3><div class="proof"><figure><div class="sprite" style="width:208px"><img class="background" src="samples/landing-warm-rest/layers/A-phone/warrior.png" width="104" height="117" alt="Landing"><svg viewBox="0 0 104 117" aria-hidden="true"><line x1="61" y1="18" x2="61" y2="53"/><circle cx="61" cy="18" r="1"/><circle cx="61" cy="53" r="1"/></svg></div><figcaption>Landing · 35 px</figcaption></figure><figure><div class="sprite" style="width:170px"><img class="background" src="samples/home-base-v02/phone-warrior.png" width="85" height="119" alt="Home v02"><svg viewBox="0 0 85 119" aria-hidden="true"><line x1="47" y1="16" x2="47" y2="51"/><circle cx="47" cy="16" r="1"/><circle cx="47" cy="51" r="1"/></svg></div><figcaption>Home v02 · 35 px</figcaption></figure></div></article>
+<article><h3>Mimiku · 對應眼球寬（含瞳孔）</h3><div class="proof"><figure><div class="sprite" style="width:190px"><img class="background" src="samples/landing-warm-rest/layers/A-phone/mimiku.png" width="95" height="93" alt="Landing"><svg viewBox="0 0 95 93" aria-hidden="true"><line x1="23" y1="23" x2="36" y2="23"/><circle cx="23" cy="23" r="1"/><circle cx="36" cy="23" r="1"/></svg></div><figcaption>Landing · 13 px</figcaption></figure><figure><div class="sprite" style="width:192px"><img class="background" src="samples/home-base-v02/phone-mimiku.png" width="96" height="100" alt="Home v02"><svg viewBox="0 0 96 100" aria-hidden="true"><line x1="63" y1="17" x2="76" y2="17"/><circle cx="63" cy="17" r="1"/><circle cx="76" cy="17" r="1"/></svg></div><figcaption>Home v02 · 13 px</figcaption></figure></div></article>
+</div></details></section>
+<script>const avatar=document.querySelector("#avatar");const wall=document.querySelector("#wall");
+function update(){for(const item of document.querySelectorAll('[data-version="v02"] [data-avatar]')) item.hidden=item.dataset.avatar!==avatar.value;document.querySelector(".wall").hidden=!wall.checked;}
+avatar.addEventListener("change",update);wall.addEventListener("change",update);update();</script></body></html>

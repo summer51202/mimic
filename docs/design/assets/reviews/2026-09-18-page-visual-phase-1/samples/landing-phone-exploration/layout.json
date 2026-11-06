@@ -1,0 +1,110 @@
+{
+  "initialViewportX": 390,
+  "viewportWidth": 390,
+  "width": 1170,
+  "height": 600,
+  "fixed": [
+    {
+      "id": "bats",
+      "x": 665,
+      "y": 56,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+      "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+      "width": 54,
+      "height": 50,
+      "depth": -100
+    },
+    {
+      "id": "groundLight",
+      "x": 522,
+      "y": 346,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/groundLight.png",
+      "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7",
+      "width": 215,
+      "height": 35,
+      "depth": -100
+    },
+    {
+      "id": "ranger",
+      "x": 635,
+      "y": 198,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/ranger.png",
+      "sha256": "fd2297f9f7cf17d3bdd187a981cdf79987642a732d49caa5d46f546d0d8c5ca9",
+      "width": 122,
+      "height": 106,
+      "depth": 304
+    },
+    {
+      "id": "warrior",
+      "x": 491,
+      "y": 235,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/warrior.png",
+      "sha256": "fede3c20ad2f3f96a1f909a379019daeee1f85e1417cced2736420cd554cb85b",
+      "width": 104,
+      "height": 117,
+      "depth": 352
+    },
+    {
+      "id": "fire",
+      "x": 602,
+      "y": 306,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/fire.png",
+      "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+      "width": 75,
+      "height": 76,
+      "depth": 382
+    },
+    {
+      "id": "mimiku",
+      "x": 679,
+      "y": 316,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mimiku.png",
+      "sha256": "1c3cd662a4bf6df2ef7e1567f20d805370d0f96b48ea17666af8d469f71a8693",
+      "width": 95,
+      "height": 93,
+      "depth": 409
+    },
+    {
+      "id": "sign",
+      "x": 405,
+      "y": 355,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/sign.png",
+      "sha256": "8d40ae39e9ebb21e886b1782d48b63d0e97acc7fb0eddb478e95df144e487845",
+      "width": 62,
+      "height": 59,
+      "depth": 414
+    },
+    {
+      "id": "wordmark",
+      "x": 520,
+      "y": 59,
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/phone-staggered.png",
+      "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c",
+      "width": 148,
+      "height": 98,
+      "depth": -90
+    },
+    {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/phone-crate.png",
+      "sha256": "5d8b731c4215782dafd26442f519bf15d7766bcb2553cb32449cab1e9cd15271",
+      "width": 59,
+      "height": 33,
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 59,
+        "height": 33
+      },
+      "id": "mapCrate",
+      "x": 557,
+      "y": 379,
+      "depth": 412
+    }
+  ],
+  "signLabel": {
+    "x": 414.92,
+    "y": 365.03,
+    "width": 43.4,
+    "height": 28.32
+  }
+}

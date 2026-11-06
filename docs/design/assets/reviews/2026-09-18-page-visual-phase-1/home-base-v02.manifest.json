@@ -1,0 +1,1126 @@
+{
+  "decision": "awaiting-home-v02-visual-review",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "wall": {
+    "path": "samples/home-base-v02/blank-parchment.svg",
+    "sha256": "5eeb4f39d7d0d70bf5284b0898be710f15880a3d24966fa865066db9483faa20",
+    "output": 21,
+    "id": "blank-parchment",
+    "family": "Props",
+    "x": 482,
+    "y": 108,
+    "width": 112,
+    "height": 61
+  },
+  "metric": {
+    "luma": "BT.709 weighted RGB (0–255)",
+    "deviation": "population standard deviation",
+    "density": "fraction of pixels with in-zone right or lower neighbor differing by at least 16 luma units",
+    "threshold": "both metrics <= same-frame Landing architecture values"
+  },
+  "frames": {
+    "desktop": {
+      "width": 960,
+      "height": 540,
+      "zones": {
+        "card": [
+          16,
+          56,
+          300,
+          140
+        ],
+        "dialogue": [
+          0,
+          421,
+          960,
+          119
+        ],
+        "nav": [
+          0,
+          0,
+          960,
+          40
+        ]
+      },
+      "architecture": {
+        "path": "samples/home-base-v02/desktop-architecture.png",
+        "sha256": "2db9902425dfaff05cc38426c937acbef89113f8e30dd05635ca7ca8019c31cc",
+        "width": 960,
+        "height": 540
+      },
+      "fire": {
+        "id": "fire",
+        "x": 486,
+        "y": 255,
+        "path": "samples/landing-warm-rest/layers/A-desktop/fire.png",
+        "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b",
+        "width": 103,
+        "height": 104,
+        "depth": 359
+      },
+      "groundLight": {
+        "id": "groundLight",
+        "x": 374,
+        "y": 309,
+        "path": "samples/landing-warm-rest/layers/A-desktop/groundLight.png",
+        "sha256": "1a934ff25c1585f3805e8bc08504761e50e7ed28ff41b375fbcb2589f10d7a63",
+        "width": 326,
+        "height": 53,
+        "depth": -100
+      },
+      "slots": {
+        "warrior": {
+          "path": "samples/home-base-v02/desktop-warrior.png",
+          "sha256": "efa81386a83959915918a4893156e16bd49b07a54ff02fca60bb0bc91e9d6846",
+          "width": 107,
+          "height": 149,
+          "x": 337,
+          "y": 217,
+          "ground": [
+            390,
+            366
+          ],
+          "scale": 0.3340790454884415,
+          "source": {
+            "path": "samples/avatar-classes/masters/warrior.png",
+            "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447"
+          }
+        },
+        "mage": {
+          "path": "samples/home-base-v02/desktop-mage.png",
+          "sha256": "ea6151263894b3edfc373b37cf69f15406a67bf7a1c1a56fccfd8326191a4b3a",
+          "width": 96,
+          "height": 149,
+          "x": 342,
+          "y": 217,
+          "ground": [
+            390,
+            366
+          ],
+          "scale": 0.3340790454884415,
+          "source": {
+            "path": "samples/avatar-classes/masters/mage.png",
+            "sha256": "a1e8804d6b25d9eae0dedebb39805ac62c4ebf28c3bbf12eaa6c798fb603d08a"
+          }
+        },
+        "ranger": {
+          "path": "samples/home-base-v02/desktop-ranger.png",
+          "sha256": "9e37b0456801acd5135084cb9877be95cd95a6f8e54638d72c6e15482be089c9",
+          "width": 119,
+          "height": 149,
+          "x": 331,
+          "y": 217,
+          "ground": [
+            390,
+            366
+          ],
+          "scale": 0.3340790454884415,
+          "source": {
+            "path": "samples/avatar-classes/masters/ranger.png",
+            "sha256": "cd2e91826ef580f98272d3923f6e30375894e37f11989c62927605460a619c9a"
+          }
+        },
+        "rogue": {
+          "path": "samples/home-base-v02/desktop-rogue.png",
+          "sha256": "cf3e64996dfac0f222f59e0d049300cadce4b7eb92c544586aa280a60a355f1f",
+          "width": 103,
+          "height": 149,
+          "x": 339,
+          "y": 217,
+          "ground": [
+            390,
+            366
+          ],
+          "scale": 0.3340790454884415,
+          "source": {
+            "path": "samples/avatar-classes/masters/rogue.png",
+            "sha256": "a212dd57ddf7a18112e1421c5bb8e41a8a2aea8a6711fcee042c9b75a72377d3"
+          }
+        },
+        "physician": {
+          "path": "samples/home-base-v02/desktop-physician.png",
+          "sha256": "67ad3077a8a4367a3a4e1500e9599daf7e56db9aea98d5e67bdd1266cbd1db4c",
+          "width": 110,
+          "height": 149,
+          "x": 335,
+          "y": 217,
+          "ground": [
+            390,
+            366
+          ],
+          "scale": 0.3340790454884415,
+          "source": {
+            "path": "samples/avatar-classes/masters/physician.png",
+            "sha256": "2c90a7ca884e9d99e4e519aa1ce938b78ce3f4a70f876da97afde9805011e598"
+          }
+        },
+        "bard": {
+          "path": "samples/home-base-v02/desktop-bard.png",
+          "sha256": "1e048bba285a7e3392ff794c730fdd81c4fd8b05c2b0b78f8624afa7641f2245",
+          "width": 105,
+          "height": 150,
+          "x": 338,
+          "y": 216,
+          "ground": [
+            390,
+            366
+          ],
+          "scale": 0.3340790454884415,
+          "source": {
+            "path": "samples/avatar-classes/masters/bard.png",
+            "sha256": "78cf180d9263145582fca6c0307f5192c17b7d9af1f5afd1af469f1b94e4c28b"
+          }
+        },
+        "alchemist": {
+          "path": "samples/home-base-v02/desktop-alchemist.png",
+          "sha256": "08a855c41e345cfd9868537f91b1518d15e2f275b6316f8f39c966274c33d614",
+          "width": 78,
+          "height": 149,
+          "x": 351,
+          "y": 217,
+          "ground": [
+            390,
+            366
+          ],
+          "scale": 0.3340790454884415,
+          "source": {
+            "path": "samples/avatar-classes/masters/alchemist.png",
+            "sha256": "acacaeb4fb1f40a1fe0dedda21b9fc964a4459b377e6ebfd7d4d6d8f8c110dad"
+          }
+        },
+        "cartographer": {
+          "path": "samples/home-base-v02/desktop-cartographer.png",
+          "sha256": "fdaddd0c93140430246fd0c7fdb97c1a7d836827fe78365fc5c37864690d0507",
+          "width": 90,
+          "height": 149,
+          "x": 345,
+          "y": 217,
+          "ground": [
+            390,
+            366
+          ],
+          "scale": 0.3340790454884415,
+          "source": {
+            "path": "samples/avatar-classes/masters/cartographer.png",
+            "sha256": "2cd9e894cfdf4229ba4e7dc04b0e41ef330c08328015fdc9e5a5017a1aeb6ea5"
+          }
+        }
+      },
+      "mimiku": {
+        "path": "samples/home-base-v02/desktop-mimiku.png",
+        "sha256": "804b4017687a1311d86b4ec18e512b2e5c6d3b6d0907c56f7dff44203575a6d0",
+        "width": 118,
+        "height": 123,
+        "x": 613,
+        "y": 261,
+        "ground": [
+          672,
+          384
+        ],
+        "scale": 0.2738095238095238,
+        "source": {
+          "path": "samples/mimiku-states-actions/masters/state-idle.png",
+          "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+        }
+      },
+      "proof": {
+        "warrior": {
+          "label": "Warrior · 頭盔頂到下巴（不含羽飾）",
+          "landing": [
+            77,
+            22,
+            77,
+            66
+          ],
+          "home": [
+            59,
+            20,
+            59,
+            64
+          ],
+          "reference": {
+            "id": "warrior",
+            "x": 350,
+            "y": 196,
+            "path": "samples/landing-warm-rest/layers/A-desktop/warrior.png",
+            "sha256": "fa155d31d7668e7d3660f89f4a90de865ca978abd725aa8bc5f591342eb252e1",
+            "width": 132,
+            "height": 149,
+            "depth": 345
+          }
+        },
+        "mimiku": {
+          "label": "Mimiku · 對應眼球寬（含瞳孔）",
+          "landing": [
+            30,
+            28,
+            46,
+            28
+          ],
+          "home": [
+            77,
+            21,
+            93,
+            21
+          ],
+          "reference": {
+            "id": "mimiku",
+            "x": 610,
+            "y": 282,
+            "path": "samples/landing-warm-rest/layers/A-desktop/mimiku.png",
+            "sha256": "b7b39f4a4cde431623ff6e76d99476f66b02c4f06e6b95ac251647478c29eec0",
+            "width": 123,
+            "height": 120,
+            "depth": 402
+          }
+        }
+      },
+      "anchorDelta": {
+        "avatar": [
+          -27,
+          7
+        ],
+        "mimiku": [
+          13,
+          11
+        ]
+      },
+      "lineage": {
+        "attempt": {
+          "path": "samples/derivations/home-base-v02/desktop-source.png",
+          "sha256": "fa24d7ea83daa87079999b72ebcf8d5ce74d07e7cfd77bcf81ca3783d8308216"
+        },
+        "prompt": {
+          "path": "samples/derivations/home-base-v02/desktop-prompt.md",
+          "sha256": "65abde3d4cdf029eca15229f364c0abb6238dff20fd116db6463e2f0b589de0d"
+        },
+        "editTarget": {
+          "path": "samples/home-base/desktop-architecture.png",
+          "sha256": "b0fb007bb46fbc4db0965846a01bd78e7f28fb67ed1a01655dbc43f7765f6165",
+          "width": 960,
+          "height": 540
+        },
+        "styleReference": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/desktop-architecture.png",
+          "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931",
+          "width": 960,
+          "height": 540
+        }
+      },
+      "card": {
+        "actual": {
+          "deviation": 8.94969625686407,
+          "density": 0.008047619047619048
+        },
+        "limit": {
+          "deviation": 35.42885884220168,
+          "density": 0.17816666666666667
+        },
+        "reference": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/desktop-architecture.png",
+          "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931",
+          "width": 960,
+          "height": 540
+        },
+        "desktopDimming": 0,
+        "desktopWallBand": {
+          "top": 176,
+          "bottom": 252,
+          "from": 192,
+          "to": 199
+        },
+        "phonePreserved": false
+      },
+      "comparison": {
+        "path": "samples/landing-prop-placement-application/desktop-closed.png",
+        "sha256": "81cffbf3430199b9bc33b4003670db850a2aa8b1fcf95a8965fa4675340dbbd0",
+        "width": 960,
+        "height": 540,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 960,
+          "height": 540
+        }
+      },
+      "previous": {
+        "width": 960,
+        "height": 540,
+        "fire": {
+          "id": "fire",
+          "x": 486,
+          "y": 255,
+          "path": "samples/landing-warm-rest/layers/A-desktop/fire.png",
+          "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b",
+          "width": 103,
+          "height": 104,
+          "depth": 359
+        },
+        "avatar": [
+          417,
+          359
+        ],
+        "mimiku": {
+          "path": "samples/home-base/desktop-mimiku.png",
+          "sha256": "8850730921b2e1cfb864f4ede0a20713a4d38a84d5621145f3ee50e6244a395b",
+          "width": 89,
+          "height": 92,
+          "x": 615,
+          "y": 281,
+          "ground": [
+            659,
+            373
+          ],
+          "source": {
+            "path": "samples/mimiku-states-actions/masters/state-idle.png",
+            "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+          }
+        },
+        "size": 112,
+        "pet": 92,
+        "zones": {
+          "card": [
+            16,
+            56,
+            300,
+            140
+          ],
+          "dialogue": [
+            0,
+            421,
+            960,
+            119
+          ],
+          "nav": [
+            0,
+            0,
+            960,
+            40
+          ]
+        },
+        "architecture": {
+          "path": "samples/home-base/desktop-architecture.png",
+          "sha256": "b0fb007bb46fbc4db0965846a01bd78e7f28fb67ed1a01655dbc43f7765f6165",
+          "width": 960,
+          "height": 540
+        },
+        "original": {
+          "path": "samples/derivations/home-base/desktop-source.png",
+          "sha256": "6ea9575a05538ae49a6ae9761e7e7ebff495ebd2a800930c8e57100c44ac7ad5"
+        },
+        "prompt": {
+          "path": "samples/derivations/home-base/desktop-prompt.md",
+          "sha256": "32b4aa0d0325d934ca1ca0aa76203500912d0f5da5d42afc836e660608ec38d2"
+        },
+        "architectureReference": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/desktop-architecture.png",
+          "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931",
+          "width": 960,
+          "height": 540
+        },
+        "comparison": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/desktop-closed.png",
+          "sha256": "81cffbf3430199b9bc33b4003670db850a2aa8b1fcf95a8965fa4675340dbbd0",
+          "width": 960,
+          "height": 540,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 960,
+            "height": 540
+          }
+        },
+        "groundLight": {
+          "id": "groundLight",
+          "x": 374,
+          "y": 309,
+          "path": "samples/landing-warm-rest/layers/A-desktop/groundLight.png",
+          "sha256": "1a934ff25c1585f3805e8bc08504761e50e7ed28ff41b375fbcb2589f10d7a63",
+          "width": 326,
+          "height": 53,
+          "depth": -100
+        },
+        "slots": {
+          "warrior": {
+            "path": "samples/home-base/desktop-warrior.png",
+            "sha256": "131a5d384a3562d0cc153323b1c1dc325cb9b1e9283c452dcc8ccff462baf048",
+            "width": 80,
+            "height": 112,
+            "x": 377,
+            "y": 247,
+            "ground": [
+              417,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/warrior.png",
+              "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447"
+            }
+          },
+          "mage": {
+            "path": "samples/home-base/desktop-mage.png",
+            "sha256": "c673b114f5db23e602f7a9a7d7e4aac2ca27f0dbe998d3d1cd38ee8287e31844",
+            "width": 72,
+            "height": 112,
+            "x": 381,
+            "y": 247,
+            "ground": [
+              417,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/mage.png",
+              "sha256": "a1e8804d6b25d9eae0dedebb39805ac62c4ebf28c3bbf12eaa6c798fb603d08a"
+            }
+          },
+          "ranger": {
+            "path": "samples/home-base/desktop-ranger.png",
+            "sha256": "ba0a4369277038ea4a926f790884fce355b149422c0aa41463ed928924f46cf0",
+            "width": 89,
+            "height": 112,
+            "x": 373,
+            "y": 247,
+            "ground": [
+              417,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/ranger.png",
+              "sha256": "cd2e91826ef580f98272d3923f6e30375894e37f11989c62927605460a619c9a"
+            }
+          },
+          "rogue": {
+            "path": "samples/home-base/desktop-rogue.png",
+            "sha256": "0f8630f00951600b62ec176cd6903d4752b8606f5c9c24dc70f86247ee608c81",
+            "width": 77,
+            "height": 112,
+            "x": 379,
+            "y": 247,
+            "ground": [
+              417,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/rogue.png",
+              "sha256": "a212dd57ddf7a18112e1421c5bb8e41a8a2aea8a6711fcee042c9b75a72377d3"
+            }
+          },
+          "physician": {
+            "path": "samples/home-base/desktop-physician.png",
+            "sha256": "2315dc8573872a638e1f6ac5475bd66671168c4e3df96a5af3dab1e9553e33df",
+            "width": 82,
+            "height": 112,
+            "x": 376,
+            "y": 247,
+            "ground": [
+              417,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/physician.png",
+              "sha256": "2c90a7ca884e9d99e4e519aa1ce938b78ce3f4a70f876da97afde9805011e598"
+            }
+          },
+          "bard": {
+            "path": "samples/home-base/desktop-bard.png",
+            "sha256": "c6c47bdc1dc948d878195e3eb982eafa16e54d5bf0580c846308be4ecadd619c",
+            "width": 79,
+            "height": 112,
+            "x": 378,
+            "y": 247,
+            "ground": [
+              417,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/bard.png",
+              "sha256": "78cf180d9263145582fca6c0307f5192c17b7d9af1f5afd1af469f1b94e4c28b"
+            }
+          },
+          "alchemist": {
+            "path": "samples/home-base/desktop-alchemist.png",
+            "sha256": "456593278a95fa291c3e1904e449a716d397b49914b6487a3857cb890e253d41",
+            "width": 59,
+            "height": 112,
+            "x": 388,
+            "y": 247,
+            "ground": [
+              417,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/alchemist.png",
+              "sha256": "acacaeb4fb1f40a1fe0dedda21b9fc964a4459b377e6ebfd7d4d6d8f8c110dad"
+            }
+          },
+          "cartographer": {
+            "path": "samples/home-base/desktop-cartographer.png",
+            "sha256": "15f28cad3980eb8cd3f260e940252944c2b24daf3348208fe09f2f79697f4e07",
+            "width": 68,
+            "height": 112,
+            "x": 383,
+            "y": 247,
+            "ground": [
+              417,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/cartographer.png",
+              "sha256": "2cd9e894cfdf4229ba4e7dc04b0e41ef330c08328015fdc9e5a5017a1aeb6ea5"
+            }
+          }
+        }
+      }
+    },
+    "phone": {
+      "width": 390,
+      "height": 600,
+      "zones": {
+        "card": [
+          12,
+          16,
+          366,
+          120
+        ],
+        "dialogue": [
+          0,
+          432,
+          390,
+          168
+        ],
+        "nav": [
+          0,
+          558,
+          390,
+          42
+        ]
+      },
+      "architecture": {
+        "path": "samples/home-base-v02/phone-architecture.png",
+        "sha256": "db69ee964a5fbc94a35518bf116f8aadc92b222306d39068d1baebf9b13a0567",
+        "width": 390,
+        "height": 600
+      },
+      "fire": {
+        "id": "fire",
+        "x": 158,
+        "y": 290,
+        "path": "samples/landing-warm-rest/layers/A-phone/fire.png",
+        "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+        "width": 75,
+        "height": 76,
+        "depth": 366
+      },
+      "groundLight": {
+        "id": "groundLight",
+        "x": 78,
+        "y": 330,
+        "path": "samples/landing-warm-rest/layers/A-phone/groundLight.png",
+        "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7",
+        "width": 215,
+        "height": 35,
+        "depth": -100
+      },
+      "slots": {
+        "warrior": {
+          "path": "samples/home-base-v02/phone-warrior.png",
+          "sha256": "22d448346982dff9125a69beb28f48ab6e318059716f4431ed30c83c08d41f34",
+          "width": 85,
+          "height": 119,
+          "x": 54,
+          "y": 247,
+          "ground": [
+            96,
+            366
+          ],
+          "scale": 0.26574469527489664,
+          "source": {
+            "path": "samples/avatar-classes/masters/warrior.png",
+            "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447"
+          }
+        },
+        "mage": {
+          "path": "samples/home-base-v02/phone-mage.png",
+          "sha256": "f6f7428098e8a5a9ae85acd2bb76c60da9721bafeb107111f5e0dde30eaace71",
+          "width": 76,
+          "height": 119,
+          "x": 58,
+          "y": 247,
+          "ground": [
+            96,
+            366
+          ],
+          "scale": 0.26574469527489664,
+          "source": {
+            "path": "samples/avatar-classes/masters/mage.png",
+            "sha256": "a1e8804d6b25d9eae0dedebb39805ac62c4ebf28c3bbf12eaa6c798fb603d08a"
+          }
+        },
+        "ranger": {
+          "path": "samples/home-base-v02/phone-ranger.png",
+          "sha256": "d60fae80d9d451c834f41af02ddfaf0778354df3c1dba72be2db7b51e09d2f36",
+          "width": 95,
+          "height": 119,
+          "x": 49,
+          "y": 247,
+          "ground": [
+            96,
+            366
+          ],
+          "scale": 0.26574469527489664,
+          "source": {
+            "path": "samples/avatar-classes/masters/ranger.png",
+            "sha256": "cd2e91826ef580f98272d3923f6e30375894e37f11989c62927605460a619c9a"
+          }
+        },
+        "rogue": {
+          "path": "samples/home-base-v02/phone-rogue.png",
+          "sha256": "5d243aeff76573c89b044f7d43af0e1730354c152587eb184c2f7586932c4410",
+          "width": 82,
+          "height": 119,
+          "x": 55,
+          "y": 247,
+          "ground": [
+            96,
+            366
+          ],
+          "scale": 0.26574469527489664,
+          "source": {
+            "path": "samples/avatar-classes/masters/rogue.png",
+            "sha256": "a212dd57ddf7a18112e1421c5bb8e41a8a2aea8a6711fcee042c9b75a72377d3"
+          }
+        },
+        "physician": {
+          "path": "samples/home-base-v02/phone-physician.png",
+          "sha256": "91263d42030fdccb4722e9292af05d3c8fdb810799a00286332026a7c105d59f",
+          "width": 87,
+          "height": 119,
+          "x": 53,
+          "y": 247,
+          "ground": [
+            96,
+            366
+          ],
+          "scale": 0.26574469527489664,
+          "source": {
+            "path": "samples/avatar-classes/masters/physician.png",
+            "sha256": "2c90a7ca884e9d99e4e519aa1ce938b78ce3f4a70f876da97afde9805011e598"
+          }
+        },
+        "bard": {
+          "path": "samples/home-base-v02/phone-bard.png",
+          "sha256": "ad0b9a56eaeab5da0efd9efb4b8aa28fbcf73e57d63f6790418b0c1c733aaace",
+          "width": 84,
+          "height": 119,
+          "x": 54,
+          "y": 247,
+          "ground": [
+            96,
+            366
+          ],
+          "scale": 0.26574469527489664,
+          "source": {
+            "path": "samples/avatar-classes/masters/bard.png",
+            "sha256": "78cf180d9263145582fca6c0307f5192c17b7d9af1f5afd1af469f1b94e4c28b"
+          }
+        },
+        "alchemist": {
+          "path": "samples/home-base-v02/phone-alchemist.png",
+          "sha256": "befa647577641f2aac0eb8882bb77120de9ba1b1dd55417a5153a2f15cff327c",
+          "width": 62,
+          "height": 119,
+          "x": 65,
+          "y": 247,
+          "ground": [
+            96,
+            366
+          ],
+          "scale": 0.26574469527489664,
+          "source": {
+            "path": "samples/avatar-classes/masters/alchemist.png",
+            "sha256": "acacaeb4fb1f40a1fe0dedda21b9fc964a4459b377e6ebfd7d4d6d8f8c110dad"
+          }
+        },
+        "cartographer": {
+          "path": "samples/home-base-v02/phone-cartographer.png",
+          "sha256": "ff6f1fc7821e3c1dbd689faf3b83c4a38097b8d030348676e5ec7ac97db9ab69",
+          "width": 71,
+          "height": 119,
+          "x": 61,
+          "y": 247,
+          "ground": [
+            96,
+            366
+          ],
+          "scale": 0.26574469527489664,
+          "source": {
+            "path": "samples/avatar-classes/masters/cartographer.png",
+            "sha256": "2cd9e894cfdf4229ba4e7dc04b0e41ef330c08328015fdc9e5a5017a1aeb6ea5"
+          }
+        }
+      },
+      "mimiku": {
+        "path": "samples/home-base-v02/phone-mimiku.png",
+        "sha256": "c5b4aefba8f0d94f862b9d1e256197f54c9ea42ce3cb8b6225d87e5f3fe742dc",
+        "width": 96,
+        "height": 100,
+        "x": 242,
+        "y": 288,
+        "ground": [
+          290,
+          388
+        ],
+        "scale": 0.22247023809523808,
+        "source": {
+          "path": "samples/mimiku-states-actions/masters/state-idle.png",
+          "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+        }
+      },
+      "proof": {
+        "warrior": {
+          "label": "Warrior · 頭盔頂到下巴（不含羽飾）",
+          "landing": [
+            61,
+            18,
+            61,
+            53
+          ],
+          "home": [
+            47,
+            16,
+            47,
+            51
+          ],
+          "reference": {
+            "id": "warrior",
+            "x": 101,
+            "y": 235,
+            "path": "samples/landing-warm-rest/layers/A-phone/warrior.png",
+            "sha256": "fede3c20ad2f3f96a1f909a379019daeee1f85e1417cced2736420cd554cb85b",
+            "width": 104,
+            "height": 117,
+            "depth": 352
+          }
+        },
+        "mimiku": {
+          "label": "Mimiku · 對應眼球寬（含瞳孔）",
+          "landing": [
+            23,
+            23,
+            36,
+            23
+          ],
+          "home": [
+            63,
+            17,
+            76,
+            17
+          ],
+          "reference": {
+            "id": "mimiku",
+            "x": 289,
+            "y": 316,
+            "path": "samples/landing-warm-rest/layers/A-phone/mimiku.png",
+            "sha256": "1c3cd662a4bf6df2ef7e1567f20d805370d0f96b48ea17666af8d469f71a8693",
+            "width": 95,
+            "height": 93,
+            "depth": 409
+          }
+        }
+      },
+      "anchorDelta": {
+        "avatar": [
+          -15,
+          7
+        ],
+        "mimiku": [
+          16,
+          7
+        ]
+      },
+      "lineage": {
+        "attempt": {
+          "path": "samples/derivations/home-base-v02/phone-source.png",
+          "sha256": "1e48fc061f718cefb78fa65215ddd97bace9071a06a5609935a766ff3c97a727"
+        },
+        "prompt": {
+          "path": "samples/derivations/home-base-v02/phone-prompt.md",
+          "sha256": "ff2923a7b401304510c2517d49a675f4cce3f4ef39b4e4a84f0475bbb1d9e2e5"
+        },
+        "editTarget": {
+          "path": "samples/home-base/phone-architecture.png",
+          "sha256": "85ffa53d7467483145232734ea3d56566799929d74973ecf5d8079d8ed257c19",
+          "width": 390,
+          "height": 600
+        },
+        "styleReference": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/phone-architecture.png",
+          "sha256": "8cc96d82481db4d6abc81efd4f22c1879d547ed9f7ae225ca90046d6bb958bd3",
+          "width": 390,
+          "height": 600
+        }
+      },
+      "card": {
+        "actual": {
+          "deviation": 11.788353922853851,
+          "density": 0.07987249544626594
+        },
+        "limit": {
+          "deviation": 24.643310356763052,
+          "density": 0.16646174863387977
+        },
+        "reference": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/phone-architecture.png",
+          "sha256": "8cc96d82481db4d6abc81efd4f22c1879d547ed9f7ae225ca90046d6bb958bd3",
+          "width": 390,
+          "height": 600
+        },
+        "desktopDimming": 0,
+        "desktopWallBand": null,
+        "phonePreserved": true
+      },
+      "comparison": {
+        "path": "samples/landing-prop-placement-application/phone.png",
+        "sha256": "e720726b610158555ad76b19772c2d49408c760785cf0707a2fa7227945505ec",
+        "width": 390,
+        "height": 600,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 600
+        }
+      },
+      "previous": {
+        "width": 390,
+        "height": 600,
+        "fire": {
+          "id": "fire",
+          "x": 158,
+          "y": 290,
+          "path": "samples/landing-warm-rest/layers/A-phone/fire.png",
+          "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+          "width": 75,
+          "height": 76,
+          "depth": 366
+        },
+        "avatar": [
+          111,
+          359
+        ],
+        "mimiku": {
+          "path": "samples/home-base/phone-mimiku.png",
+          "sha256": "d2f1fa41597a9a04fe2e94d84125f0965538c81912ea5dfc40485dd06ace6034",
+          "width": 65,
+          "height": 68,
+          "x": 242,
+          "y": 313,
+          "ground": [
+            274,
+            381
+          ],
+          "source": {
+            "path": "samples/mimiku-states-actions/masters/state-idle.png",
+            "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+          }
+        },
+        "size": 82,
+        "pet": 68,
+        "zones": {
+          "card": [
+            12,
+            16,
+            366,
+            120
+          ],
+          "dialogue": [
+            0,
+            432,
+            390,
+            168
+          ],
+          "nav": [
+            0,
+            558,
+            390,
+            42
+          ]
+        },
+        "architecture": {
+          "path": "samples/home-base/phone-architecture.png",
+          "sha256": "85ffa53d7467483145232734ea3d56566799929d74973ecf5d8079d8ed257c19",
+          "width": 390,
+          "height": 600
+        },
+        "original": {
+          "path": "samples/derivations/home-base/phone-source.png",
+          "sha256": "b2a961427f3db3def5d35ede63e85fd85cb2172a597d978053b010040463624c"
+        },
+        "prompt": {
+          "path": "samples/derivations/home-base/phone-prompt.md",
+          "sha256": "6a20433f2180b73ef676244eb782e4eb7896403a04d1802f32907702c05ed0c8"
+        },
+        "architectureReference": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/phone-architecture.png",
+          "sha256": "8cc96d82481db4d6abc81efd4f22c1879d547ed9f7ae225ca90046d6bb958bd3",
+          "width": 390,
+          "height": 600
+        },
+        "comparison": {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/phone.png",
+          "sha256": "e720726b610158555ad76b19772c2d49408c760785cf0707a2fa7227945505ec",
+          "width": 390,
+          "height": 600,
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 600
+          }
+        },
+        "groundLight": {
+          "id": "groundLight",
+          "x": 78,
+          "y": 330,
+          "path": "samples/landing-warm-rest/layers/A-phone/groundLight.png",
+          "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7",
+          "width": 215,
+          "height": 35,
+          "depth": -100
+        },
+        "slots": {
+          "warrior": {
+            "path": "samples/home-base/phone-warrior.png",
+            "sha256": "380d14443e0d9e23746d64eae9dd59f3bd866a423ec4b9d3cda1106b6bdd7d9b",
+            "width": 59,
+            "height": 82,
+            "x": 82,
+            "y": 277,
+            "ground": [
+              111,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/warrior.png",
+              "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447"
+            }
+          },
+          "mage": {
+            "path": "samples/home-base/phone-mage.png",
+            "sha256": "9b7eb97697349bca00ecf0dbfe228cdd254b0e45b4b5530f6d420472702b1f9a",
+            "width": 53,
+            "height": 82,
+            "x": 85,
+            "y": 277,
+            "ground": [
+              111,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/mage.png",
+              "sha256": "a1e8804d6b25d9eae0dedebb39805ac62c4ebf28c3bbf12eaa6c798fb603d08a"
+            }
+          },
+          "ranger": {
+            "path": "samples/home-base/phone-ranger.png",
+            "sha256": "a7821016f09110b30170fa950e894eac273e3bae1fa06b25033bf25b26f52e97",
+            "width": 65,
+            "height": 82,
+            "x": 79,
+            "y": 277,
+            "ground": [
+              111,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/ranger.png",
+              "sha256": "cd2e91826ef580f98272d3923f6e30375894e37f11989c62927605460a619c9a"
+            }
+          },
+          "rogue": {
+            "path": "samples/home-base/phone-rogue.png",
+            "sha256": "fa55104e216f84be03d38fa78473bda1bc60dbb667eebedbbd059dbdfb806a34",
+            "width": 56,
+            "height": 82,
+            "x": 83,
+            "y": 277,
+            "ground": [
+              111,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/rogue.png",
+              "sha256": "a212dd57ddf7a18112e1421c5bb8e41a8a2aea8a6711fcee042c9b75a72377d3"
+            }
+          },
+          "physician": {
+            "path": "samples/home-base/phone-physician.png",
+            "sha256": "01ff620a693113a4c0d3bad98c95853933f59a84ca94175e0eedc5071ccb0114",
+            "width": 60,
+            "height": 82,
+            "x": 81,
+            "y": 277,
+            "ground": [
+              111,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/physician.png",
+              "sha256": "2c90a7ca884e9d99e4e519aa1ce938b78ce3f4a70f876da97afde9805011e598"
+            }
+          },
+          "bard": {
+            "path": "samples/home-base/phone-bard.png",
+            "sha256": "b1d3d4c47b38489a23f0185cc18547a6b8ec8d86e2444558aa6bfbe36c7d0c9c",
+            "width": 58,
+            "height": 82,
+            "x": 82,
+            "y": 277,
+            "ground": [
+              111,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/bard.png",
+              "sha256": "78cf180d9263145582fca6c0307f5192c17b7d9af1f5afd1af469f1b94e4c28b"
+            }
+          },
+          "alchemist": {
+            "path": "samples/home-base/phone-alchemist.png",
+            "sha256": "97b285992be5dfa5329eb481471ebf2987a4cd22a650c82c0a6bfbe55ca79004",
+            "width": 43,
+            "height": 82,
+            "x": 90,
+            "y": 277,
+            "ground": [
+              111,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/alchemist.png",
+              "sha256": "acacaeb4fb1f40a1fe0dedda21b9fc964a4459b377e6ebfd7d4d6d8f8c110dad"
+            }
+          },
+          "cartographer": {
+            "path": "samples/home-base/phone-cartographer.png",
+            "sha256": "8639e4cac8e001f1d8c80241063c86de453844a1b2a5485be8c4fabe3555d1a8",
+            "width": 49,
+            "height": 82,
+            "x": 87,
+            "y": 277,
+            "ground": [
+              111,
+              359
+            ],
+            "source": {
+              "path": "samples/avatar-classes/masters/cartographer.png",
+              "sha256": "2cd9e894cfdf4229ba4e7dc04b0e41ef330c08328015fdc9e5a5017a1aeb6ea5"
+            }
+          }
+        }
+      }
+    }
+  },
+  "reviewHash": "67b3885e114261da94ccba862376150b02cb094dff698916abc7ffc8898132dc"
+}

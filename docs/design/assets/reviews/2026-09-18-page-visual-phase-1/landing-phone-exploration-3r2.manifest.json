@@ -1,0 +1,517 @@
+{
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "decision": "awaiting-visual-review",
+  "lineage": {
+    "source": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r/phone-architecture.png",
+      "sha256": "7308820d55aad694b1ad37b6810568badbf1d77347096c38c05fe0ac7c0b98c7",
+      "width": 1170,
+      "height": 600
+    },
+    "approvedStandalone": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/phone-architecture.png",
+      "sha256": "8cc96d82481db4d6abc81efd4f22c1879d547ed9f7ae225ca90046d6bb958bd3",
+      "width": 390,
+      "height": 600
+    }
+  },
+  "contract": {
+    "seams": [
+      390,
+      780
+    ],
+    "halfWidth": 12,
+    "windowRadius": 24,
+    "maxGain": 3,
+    "featherPower": 2,
+    "liftStrength": 1.04,
+    "coolNeutralBlend": 0.75,
+    "referenceOffsets": [
+      -14,
+      13
+    ],
+    "sampleHalfWidth": 4,
+    "acceptanceOffsets": [
+      -16,
+      16
+    ],
+    "minRatio": 0.92,
+    "bands": {
+      "wall": [
+        60,
+        220
+      ],
+      "floor": [
+        250,
+        430
+      ],
+      "foreground": [
+        430,
+        600
+      ]
+    },
+    "coolHue": [
+      90,
+      330
+    ],
+    "minimumSaturation": 0.12,
+    "colorProtection": "Preserve chroma during the lift and blend cool pixels toward neutral at the lifted luma"
+  },
+  "metrics": {
+    "before": [
+      {
+        "seam": 390,
+        "band": "wall",
+        "ratio": 0.9229865991959086,
+        "cool": 0.0203125,
+        "referenceCool": 0.0764423076923077
+      },
+      {
+        "seam": 390,
+        "band": "floor",
+        "ratio": 0.6970900571966198,
+        "cool": 0.03796296296296296,
+        "referenceCool": 0.014857549857549857
+      },
+      {
+        "seam": 390,
+        "band": "foreground",
+        "ratio": 0.5731610203943621,
+        "cool": 0.1161764705882353,
+        "referenceCool": 0.05113122171945701
+      },
+      {
+        "seam": 780,
+        "band": "wall",
+        "ratio": 0.9602137556629522,
+        "cool": 0.016927083333333332,
+        "referenceCool": 0.027115384615384614
+      },
+      {
+        "seam": 780,
+        "band": "floor",
+        "ratio": 0.7459641933072945,
+        "cool": 0.013888888888888888,
+        "referenceCool": 0.0056410256410256415
+      },
+      {
+        "seam": 780,
+        "band": "foreground",
+        "ratio": 0.5947366799953152,
+        "cool": 0.08161764705882353,
+        "referenceCool": 0.03579185520361991
+      }
+    ],
+    "after": [
+      {
+        "seam": 390,
+        "band": "wall",
+        "ratio": 1.1339525468691658,
+        "cool": 0.0010416666666666667,
+        "referenceCool": 0.0764423076923077
+      },
+      {
+        "seam": 390,
+        "band": "floor",
+        "ratio": 0.9912764753294337,
+        "cool": 0.0025462962962962965,
+        "referenceCool": 0.014857549857549857
+      },
+      {
+        "seam": 390,
+        "band": "foreground",
+        "ratio": 0.9254527829719073,
+        "cool": 0.003676470588235294,
+        "referenceCool": 0.05113122171945701
+      },
+      {
+        "seam": 780,
+        "band": "wall",
+        "ratio": 1.1090928737229948,
+        "cool": 0.0026041666666666665,
+        "referenceCool": 0.027115384615384614
+      },
+      {
+        "seam": 780,
+        "band": "floor",
+        "ratio": 0.9900998447968695,
+        "cool": 0.001388888888888889,
+        "referenceCool": 0.0056410256410256415
+      },
+      {
+        "seam": 780,
+        "band": "foreground",
+        "ratio": 1.0326886501100663,
+        "cool": 0.0024509803921568627,
+        "referenceCool": 0.03579185520361991
+      }
+    ]
+  },
+  "changedPixels": 20460,
+  "centerChangedPixels": 10509,
+  "centerSha256": "3f9f61c314e27a13db7907e605c744a07d3e4e7d0419e3b5117b73a0953bd7d7",
+  "layout": {
+    "id": "phone",
+    "width": 1170,
+    "height": 600,
+    "viewportWidth": 390,
+    "initialViewportX": 390,
+    "scene": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/phone-architecture.png",
+      "sha256": "7a27a4d8efe4ba1062c368b428d6377f4ee0aa79c8d08198734ef15cdcc7858e",
+      "width": 1170,
+      "height": 600
+    },
+    "layers": [
+      {
+        "id": "bats",
+        "x": 665,
+        "y": 56,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+        "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+        "width": 54,
+        "height": 50,
+        "depth": -100,
+        "propsId": "bats"
+      },
+      {
+        "id": "groundLight",
+        "x": 522,
+        "y": 346,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/groundLight.png",
+        "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7",
+        "width": 215,
+        "height": 35,
+        "depth": -100,
+        "propsId": "groundLight"
+      },
+      {
+        "id": "wordmark",
+        "x": 520,
+        "y": 59,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-a-title/wordmarks/phone-staggered.png",
+        "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c",
+        "width": 148,
+        "height": 98,
+        "depth": -90,
+        "propsId": "wordmark"
+      },
+      {
+        "id": "explorationBats",
+        "propsId": "bats",
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+        "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+        "x": 1028,
+        "y": 58,
+        "ground": {
+          "x": 1055,
+          "y": 108
+        },
+        "depth": 108,
+        "width": 54,
+        "height": 50,
+        "variants": {
+          "default": {
+            "id": "bats",
+            "x": 275,
+            "y": 56,
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+            "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+            "width": 54,
+            "height": 50,
+            "depth": -100,
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 54,
+              "height": 50
+            }
+          }
+        },
+        "opacity": 1
+      },
+      {
+        "id": "torch",
+        "propsId": "torchHigh",
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/torch.png",
+        "sha256": "52a52c100aff82f463f6fc9da21317187a30f215d2ed75b68bbc769a88b2e192",
+        "x": 295,
+        "y": 145,
+        "ground": {
+          "x": 305,
+          "y": 188
+        },
+        "depth": 188,
+        "width": 20,
+        "height": 43,
+        "variants": {
+          "default": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/torch.png",
+            "sha256": "52a52c100aff82f463f6fc9da21317187a30f215d2ed75b68bbc769a88b2e192",
+            "width": 20,
+            "height": 43,
+            "bounds": {
+              "x": 0,
+              "y": 0,
+              "width": 20,
+              "height": 43
+            }
+          }
+        },
+        "opacity": 1
+      },
+      {
+        "id": "ranger",
+        "x": 635,
+        "y": 198,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/ranger.png",
+        "sha256": "fd2297f9f7cf17d3bdd187a981cdf79987642a732d49caa5d46f546d0d8c5ca9",
+        "width": 122,
+        "height": 106,
+        "depth": 304,
+        "propsId": "ranger"
+      },
+      {
+        "id": "chest",
+        "propsId": "ancient-treasure-chest-v04",
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-closed.png",
+        "sha256": "0f3d54212961f17df89d379b267f62a634b153a7cbec3166826f637579499bef",
+        "x": 48,
+        "y": 190,
+        "ground": {
+          "x": 103,
+          "y": 316
+        },
+        "depth": 316,
+        "width": 110,
+        "height": 126,
+        "variants": {
+          "closed": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-closed.png",
+            "sha256": "0f3d54212961f17df89d379b267f62a634b153a7cbec3166826f637579499bef",
+            "width": 110,
+            "height": 126,
+            "bounds": {
+              "x": 14,
+              "y": 60,
+              "width": 83,
+              "height": 66
+            }
+          },
+          "latch-release": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-latch-release.png",
+            "sha256": "c08fcede364ceb62ff72b3054cbc8925b8b7a873575812cc6766d2c37bbb4523",
+            "width": 110,
+            "height": 126,
+            "bounds": {
+              "x": 14,
+              "y": 60,
+              "width": 83,
+              "height": 66
+            }
+          },
+          "unlatched": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-unlatched.png",
+            "sha256": "4c552640e4b10b6619d5a193f2015b8cfd7d1bb958f033f2f4eac276d708d127",
+            "width": 110,
+            "height": 126,
+            "bounds": {
+              "x": 14,
+              "y": 60,
+              "width": 83,
+              "height": 66
+            }
+          },
+          "cracked": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-cracked.png",
+            "sha256": "c864f6d5fa9e62840372260270d68aa5c9a7cf0257fee18cebe1f308f30dc747",
+            "width": 110,
+            "height": 126,
+            "bounds": {
+              "x": 14,
+              "y": 59,
+              "width": 83,
+              "height": 67
+            }
+          },
+          "half-open": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-half-open.png",
+            "sha256": "fac846b0e7796bd6d91246b53be5625221a8002789473958d44d54dbf9a42f23",
+            "width": 110,
+            "height": 126,
+            "bounds": {
+              "x": 14,
+              "y": 54,
+              "width": 83,
+              "height": 72
+            }
+          },
+          "opening-wide": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-opening-wide.png",
+            "sha256": "48afbe7a5daed12bb0fc94530ba19c79d9ffb5243003c6e78bffa113bf4ef953",
+            "width": 110,
+            "height": 126,
+            "bounds": {
+              "x": 13,
+              "y": 50,
+              "width": 83,
+              "height": 76
+            }
+          },
+          "near-open": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-near-open.png",
+            "sha256": "c6d2c82105c1778c36b7f9ec2a25dd11fcb609bc90d8c808fc7b478acb59084b",
+            "width": 110,
+            "height": 126,
+            "bounds": {
+              "x": 13,
+              "y": 44,
+              "width": 84,
+              "height": 82
+            }
+          },
+          "open": {
+            "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-open.png",
+            "sha256": "bed440fb820f7491dba3c8ac624eebf419bbc242b1d2e32830ab7e74389a7de1",
+            "width": 110,
+            "height": 126,
+            "bounds": {
+              "x": 14,
+              "y": 39,
+              "width": 84,
+              "height": 87
+            }
+          }
+        },
+        "opacity": 1
+      },
+      {
+        "id": "warrior",
+        "x": 491,
+        "y": 235,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/warrior.png",
+        "sha256": "fede3c20ad2f3f96a1f909a379019daeee1f85e1417cced2736420cd554cb85b",
+        "width": 104,
+        "height": 117,
+        "depth": 352,
+        "propsId": "warrior"
+      },
+      {
+        "id": "fire",
+        "x": 602,
+        "y": 306,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/fire.png",
+        "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+        "width": 75,
+        "height": 76,
+        "depth": 382,
+        "propsId": "fire"
+      },
+      {
+        "id": "mimiku",
+        "x": 679,
+        "y": 316,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mimiku.png",
+        "sha256": "1c3cd662a4bf6df2ef7e1567f20d805370d0f96b48ea17666af8d469f71a8693",
+        "width": 95,
+        "height": 93,
+        "depth": 409,
+        "propsId": "mimiku"
+      },
+      {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/phone-crate.png",
+        "sha256": "5d8b731c4215782dafd26442f519bf15d7766bcb2553cb32449cab1e9cd15271",
+        "width": 59,
+        "height": 33,
+        "bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 59,
+          "height": 33
+        },
+        "id": "mapCrate",
+        "x": 557,
+        "y": 379,
+        "depth": 412,
+        "propsId": "mapCrate"
+      },
+      {
+        "id": "sign",
+        "x": 405,
+        "y": 355,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/sign.png",
+        "sha256": "8d40ae39e9ebb21e886b1782d48b63d0e97acc7fb0eddb478e95df144e487845",
+        "width": 62,
+        "height": 59,
+        "depth": 414,
+        "propsId": "sign"
+      }
+    ],
+    "signLabel": {
+      "x": 414.92,
+      "y": 365.03,
+      "width": 43.4,
+      "height": 28.32
+    },
+    "receipt": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-prop-placement-receipts/phone-exploration-receipt.json",
+      "sha256": "e5e32395401af10a2ff4ee1b8523c2106788c9518bc50f89fdf610b44e222e88",
+      "sceneSha256": "800f03a8e62ded6c83129f7805d734afaa988f3062a1ccc40bd4616f8e6411c9"
+    }
+  },
+  "previews": {
+    "closed": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/scene-closed.png",
+      "sha256": "59d922e20fa1fceb9c38e44f41dcbd2f22b5e10bb58b841a7adab7a979d1860a",
+      "width": 1170,
+      "height": 600
+    },
+    "latch-release": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/scene-latch-release.png",
+      "sha256": "8b6795e22828dc4b1d471113f07b2586795249d770082220e2e83785101b03cf",
+      "width": 1170,
+      "height": 600
+    },
+    "unlatched": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/scene-unlatched.png",
+      "sha256": "4690f81ec56e8577f342b9c3a879d84e18476961a8bdfaa3291c43c2505ac1fe",
+      "width": 1170,
+      "height": 600
+    },
+    "cracked": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/scene-cracked.png",
+      "sha256": "e60472bd6f050fdbdedb2c1edffc215df6a98904a52742ea33f2c2e3e57a383d",
+      "width": 1170,
+      "height": 600
+    },
+    "half-open": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/scene-half-open.png",
+      "sha256": "36c4abde25fdd9cb0ab8bf36234ec6df504b856dca0749cd91d02a645ff67366",
+      "width": 1170,
+      "height": 600
+    },
+    "opening-wide": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/scene-opening-wide.png",
+      "sha256": "eb6d61e371297be1dd82b100c42ba0e65ec7c4191e901ceeb1ac67916a30a648",
+      "width": 1170,
+      "height": 600
+    },
+    "near-open": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/scene-near-open.png",
+      "sha256": "25ef7705d8698eee034c25240aa6e298fe24581aacf4d6934f4bf86801d3b01f",
+      "width": 1170,
+      "height": 600
+    },
+    "open": {
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r2/scene-open.png",
+      "sha256": "eddd1f66e5e1ee001c69a2758d73b574dad18820d2d31335fb6d558cec9ea6f9",
+      "width": 1170,
+      "height": 600
+    }
+  },
+  "review": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-phone-exploration-3r2-review.html",
+    "sha256": "948457a1db42af620e9ea07c26e76f7e5029470384de2b09b3a4f75ed8f25526"
+  }
+}
