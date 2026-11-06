@@ -1,0 +1,215 @@
+{
+  "decision": "approved",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "strategy": "approved-source-to-192-master-to-48-optical",
+  "icons": [
+    {
+      "id": "nav-home",
+      "label": "Base",
+      "meaning": "Simplified campfire",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/icons-navigation-v04-source.png",
+        "sha256": "3e9284c6666723c1d58a437063cd823bfee62d5acfdf682eaf54d5123c618cea"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-home.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "505b173936d3e53db8296340d407fceaecf536d540dd8c50328f5ef5cfc7c484"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-home.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "eb52eed0cf5596a333b361d3cd140ee7b27084af2dad7d4f2a6bb931aabf2364",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-home.png",
+        "resizeKernel": "nearest"
+      }
+    },
+    {
+      "id": "nav-adventure-log",
+      "label": "Adventure Log",
+      "meaning": "Wooden travel journal and quill",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/icons-navigation-v04-source.png",
+        "sha256": "3e9284c6666723c1d58a437063cd823bfee62d5acfdf682eaf54d5123c618cea"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-adventure-log.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "3c54a3da83f5ca78a6b8fc98be65a1ffe473405411d2a49a966d490129c628a9"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-adventure-log.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "e5bbd136aa6fe35c731401fb103e1adcccf83114321bba144b6803c001da196c",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-adventure-log.png",
+        "resizeKernel": "nearest"
+      }
+    },
+    {
+      "id": "nav-guild",
+      "label": "Adventurer Guild",
+      "meaning": "Warrior and mage handshake",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/icons-navigation-v04-source.png",
+        "sha256": "3e9284c6666723c1d58a437063cd823bfee62d5acfdf682eaf54d5123c618cea"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-guild.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "71f47ff78db03efef93a60dfa89315a6eec3fc9e8607632d53f5bc89ce9d747c"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-guild.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "98194202610f382fe1394077fa889b7b0aa5d573679c5ad30b8631c2dd2971dd",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-guild.png",
+        "resizeKernel": "nearest"
+      }
+    },
+    {
+      "id": "nav-tasks",
+      "label": "Tasks",
+      "meaning": "Selected candidate A adventurer contract board",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/task-board-variants/task-board-a-adventurer-contract.png",
+        "sha256": "3cb0cfd4d0b91e1e58f09ad69777dc72ce89944fc982a3c46c12817e68b72856"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-tasks.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "500f3224eeedea2aedb958b4c352b21dc1e2f20b8164c518dfbe8f7ad1669862"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-tasks.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "928b10b5a834a23c60e9176aaaefbfc80d252a2dd2ee136fd1feaf09b87b465e",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-tasks.png",
+        "resizeKernel": "nearest"
+      }
+    },
+    {
+      "id": "nav-settings",
+      "label": "Settings",
+      "meaning": "Repaired brass gear",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/icons-navigation-v04-source.png",
+        "sha256": "3e9284c6666723c1d58a437063cd823bfee62d5acfdf682eaf54d5123c618cea"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-settings.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "a0ce9c709543f6b9413a7b6c7fc31957892d1a3a0295485279f2311ada20aba6"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-settings.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "df47c1d7c0c961cb659757e144c6137ac681e8eedbc7909e49133704df023cce",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/nav-settings.png",
+        "resizeKernel": "nearest"
+      }
+    },
+    {
+      "id": "mode-personal",
+      "label": "Personal",
+      "meaning": "Wallet",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icons-calibration.png",
+        "sha256": "8ddfc1ffa00ee3c0a6466c73d14ec813da50256de271d9a1b63793882612720d"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/mode-personal.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "62a464651077244bde516ee393cf63a8a0abb1f141ca744b412afcdd28f883dc"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/mode-personal.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "59df5cbb970c5a1a4fcc3f8a3841e32821fea401c61ca90244a33ef53ce1548f",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/mode-personal.png",
+        "resizeKernel": "nearest"
+      }
+    },
+    {
+      "id": "mode-shared",
+      "label": "Shared",
+      "meaning": "Overlapping receipts and coins",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icons-calibration.png",
+        "sha256": "8ddfc1ffa00ee3c0a6466c73d14ec813da50256de271d9a1b63793882612720d"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/mode-shared.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "3d9c590bed13983072be5ed952b3e31fd4a31086af894ce25805e5356bbe0182"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/mode-shared.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "58e61510d5eb6bf453cf7244c0dfb23b0b89851f2d173bf6ce64d17395a1b7af",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/mode-shared.png",
+        "resizeKernel": "nearest"
+      }
+    },
+    {
+      "id": "mode-pooled",
+      "label": "Pooled",
+      "meaning": "Open common-fund coin chest",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icons-calibration.png",
+        "sha256": "8ddfc1ffa00ee3c0a6466c73d14ec813da50256de271d9a1b63793882612720d"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/mode-pooled.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "9be450c6b06a2ac8dd27e284c13250ab2430b8ef21aa861b1d6ad1a4836b804c"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/mode-pooled.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "f3a3b1704ddab90990eb3fddccc3d11a4f772009806e022a3634805ca0f83311",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/mode-pooled.png",
+        "resizeKernel": "nearest"
+      }
+    },
+    {
+      "id": "action-record-expense",
+      "label": "Record expense",
+      "meaning": "Quill writing on a ledger page with secondary coin",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/record-expense-action/record-expense-action-v01.png",
+        "sha256": "5f261384aa4e5748a932ed692bc5dfa3bedd30e0c0892c02571a73dc31567680"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/action-record-expense.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "5f261384aa4e5748a932ed692bc5dfa3bedd30e0c0892c02571a73dc31567680"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/action-record-expense.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "8e559e179652c8b05b2e513e00cc9b5ef6cf3cec87011118ae7bdaf2b21ab0e3",
+        "derivedFrom": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/masters/action-record-expense.png",
+        "resizeKernel": "nearest"
+      }
+    }
+  ]
+}

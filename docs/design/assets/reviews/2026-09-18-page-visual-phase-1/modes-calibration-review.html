@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mimic Mode Icons Calibration</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --night: #080c1c;
+        --ink: #111832;
+        --panel: #151d38;
+        --line: #465071;
+        --paper: #f1dfb7;
+        --paper-dim: #b9aa87;
+        --brass: #f2b638;
+        --ember: #d95d38;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--paper);
+        background:
+          linear-gradient(90deg, transparent 49.8%, #27304d55 50%, transparent 50.2%),
+          radial-gradient(circle at 50% -12%, #26365f 0, transparent 42%),
+          var(--night);
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 44px 0 72px;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(240px, 380px);
+        gap: 28px;
+        align-items: end;
+        margin-bottom: 34px;
+      }
+
+      .eyebrow, .utility {
+        font-family: "Cascadia Mono", Consolas, monospace;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow { color: var(--brass); font-size: 13px; }
+      h1, h2, p { margin: 0; }
+      h1 {
+        max-width: 12ch;
+        margin-top: 8px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(40px, 7vw, 76px);
+        font-weight: 700;
+        line-height: .96;
+      }
+
+      header > p {
+        padding: 14px 16px;
+        border-left: 4px solid var(--brass);
+        color: var(--paper-dim);
+        background: #0e1429cc;
+        line-height: 1.6;
+      }
+
+      .modes {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .mode-card {
+        min-width: 0;
+        padding: 24px;
+        border-right: 1px solid var(--line);
+        background: linear-gradient(180deg, #161f3cdd, #0d142bdd);
+      }
+
+      .mode-card:last-child { border-right: 0; }
+
+      .mode-head {
+        min-height: 112px;
+        padding-bottom: 18px;
+        border-bottom: 1px solid #39425f;
+      }
+
+      .index { color: var(--ember); font: 700 13px/1 "Cascadia Mono", Consolas, monospace; }
+      .approved {
+        float: right;
+        padding: 4px 7px;
+        border: 1px solid var(--brass);
+        color: var(--brass);
+        font: 700 11px/1 "Cascadia Mono", Consolas, monospace;
+      }
+      h2 { margin-top: 10px; color: #fff1ca; font-size: 25px; }
+      .mode-head p { margin-top: 7px; color: var(--paper-dim); line-height: 1.5; }
+
+      .master {
+        display: grid;
+        place-items: center;
+        min-height: 270px;
+        background:
+          linear-gradient(45deg, #11172d 25%, transparent 25%, transparent 75%, #11172d 75%),
+          linear-gradient(45deg, #11172d 25%, #0c1227 25%, #0c1227 75%, #11172d 75%);
+        background-position: 0 0, 8px 8px;
+        background-size: 16px 16px;
+      }
+
+      .crop {
+        position: relative;
+        width: 224px;
+        height: 224px;
+        overflow: hidden;
+      }
+
+      .sheet {
+        position: absolute;
+        width: 1024px;
+        max-width: none;
+        height: 1024px;
+        left: calc(
+          var(--source-x) * -1px
+          + (224 - var(--source-width)) * .5px
+        );
+        top: calc(var(--source-y) * -1px);
+        clip-path: inset(
+          calc(var(--source-y) * 1px)
+          calc((1024 - var(--source-x) - var(--source-width)) * 1px)
+          calc((1024 - var(--source-y) - 224) * 1px)
+          calc(var(--source-x) * 1px)
+        );
+        image-rendering: pixelated;
+      }
+
+      .evidence {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding-top: 18px;
+      }
+
+      .proof {
+        display: grid;
+        justify-items: center;
+        gap: 10px;
+        min-height: 112px;
+        padding: 14px 8px;
+        border: 1px solid #39425f;
+        color: var(--paper-dim);
+        font: 12px/1.3 "Cascadia Mono", Consolas, monospace;
+        text-align: center;
+      }
+
+      .crop.small {
+        width: 48px;
+        height: 48px;
+      }
+
+      .small .sheet {
+        width: 219.428571px;
+        height: 219.428571px;
+        left: calc(
+          var(--source-x) * -0.2142857143px
+          + (224 - var(--source-width)) * .1071428571px
+        );
+        top: calc(var(--source-y) * -0.2142857143px);
+        clip-path: inset(
+          calc(var(--source-y) * .2142857143px)
+          calc((1024 - var(--source-x) - var(--source-width)) * .2142857143px)
+          calc((1024 - var(--source-y) - 224) * .2142857143px)
+          calc(var(--source-x) * .2142857143px)
+        );
+      }
+
+      .gray .sheet { filter: grayscale(1); }
+
+      .questions {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+        margin-top: 28px;
+      }
+
+      .question {
+        padding: 18px;
+        border-top: 3px solid var(--brass);
+        color: var(--paper-dim);
+        background: #11182e;
+        line-height: 1.55;
+      }
+
+      .question strong { display: block; margin-bottom: 5px; color: var(--paper); }
+      .utility { margin-top: 30px; color: #8d96af; font-size: 11px; }
+
+      @media (max-width: 900px) {
+        header { grid-template-columns: 1fr; }
+        h1 { max-width: none; }
+        .modes { grid-template-columns: 1fr; }
+        .mode-card { border-right: 0; border-bottom: 1px solid var(--line); }
+        .mode-card:last-child { border-bottom: 0; }
+        .questions { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 480px) {
+        main { width: min(100% - 20px, 1180px); padding-top: 26px; }
+        .mode-card { padding: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">Icons · Gate A · Mode calibration</p>
+          <h1>三種帳務空間，一眼分清。</h1>
+        </div>
+        <p>Mode icon directions approved — personal wallet, shared receipts, and pooled open chest. The complete Icons family calibration is approved; no runtime asset changes here.</p>
+      </header>
+
+      <section class="modes" aria-label="Mode icon comparison">
+        <article class="mode-card" data-mode="personal" data-decision="approved" style="--source-x:15; --source-y:728; --source-width:167">
+          <div class="mode-head">
+            <span class="index">01 / PERSONAL</span>
+            <span class="approved">已核准</span>
+            <h2>個人 · 錢包</h2>
+            <p>自己的金錢、自己的記錄；以收納中的硬幣表達私有帳本。</p>
+          </div>
+          <div class="master">
+            <div class="crop"><img class="sheet" src="samples/icons-calibration.png" alt="個人模式錢包 icon" /></div>
+          </div>
+          <div class="evidence">
+            <div class="proof">
+              <div class="crop small"><img class="sheet" src="samples/icons-calibration.png" alt="" /></div>
+              <span data-preview-size="48">48 px</span>
+            </div>
+            <div class="proof gray" data-grayscale-preview>
+              <div class="crop small"><img class="sheet" src="samples/icons-calibration.png" alt="" /></div>
+              <span>灰階輪廓</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="mode-card" data-mode="shared" data-decision="approved" style="--source-x:178; --source-y:728; --source-width:157">
+          <div class="mode-head">
+            <span class="index">02 / SHARED</span>
+            <span class="approved">已核准</span>
+            <h2>共享 · 雙帳單</h2>
+            <p>各自付款、共同分攤；重疊單據與硬幣表達多人之間的精確關係。</p>
+          </div>
+          <div class="master">
+            <div class="crop"><img class="sheet" src="samples/icons-calibration.png" alt="共享模式雙帳單 icon" /></div>
+          </div>
+          <div class="evidence">
+            <div class="proof">
+              <div class="crop small"><img class="sheet" src="samples/icons-calibration.png" alt="" /></div>
+              <span data-preview-size="48">48 px</span>
+            </div>
+            <div class="proof gray" data-grayscale-preview>
+              <div class="crop small"><img class="sheet" src="samples/icons-calibration.png" alt="" /></div>
+              <span>灰階輪廓</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="mode-card" data-mode="pooled" data-decision="approved" style="--source-x:335; --source-y:728; --source-width:169">
+          <div class="mode-head">
+            <span class="index">03 / POOLED</span>
+            <span class="approved">已核准</span>
+            <h2>共同基金 · 開箱</h2>
+            <p>先匯入共同資金、再由基金支付；打開的寶箱表達可動用的共同存量。</p>
+          </div>
+          <div class="master">
+            <div class="crop"><img class="sheet" src="samples/icons-calibration.png" alt="共同基金模式開箱 icon" /></div>
+          </div>
+          <div class="evidence">
+            <div class="proof">
+              <div class="crop small"><img class="sheet" src="samples/icons-calibration.png" alt="" /></div>
+              <span data-preview-size="48">48 px</span>
+            </div>
+            <div class="proof gray" data-grayscale-preview>
+              <div class="crop small"><img class="sheet" src="samples/icons-calibration.png" alt="" /></div>
+              <span>灰階輪廓</span>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="questions" aria-label="Approved review findings">
+        <p class="question"><strong>語意已確認</strong>個人、分攤與共同資金可由錢包、雙帳單與開箱分別辨識。</p>
+        <p class="question"><strong>輪廓已確認</strong>48px 與灰階下，三款仍保有不同外形和重心。</p>
+        <p class="question"><strong>家族感已確認</strong>木材、金屬、紙張和像素密度與已選導航 icons 一致。</p>
+      </section>
+
+      <p class="utility">SOURCE · icons-calibration.png · color specimens only · grayscale is a live CSS inspection</p>
+    </main>
+  </body>
+</html>

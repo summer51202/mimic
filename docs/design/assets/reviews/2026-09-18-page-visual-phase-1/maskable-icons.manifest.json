@@ -1,0 +1,45 @@
+{
+  "decision": "approved",
+  "strategy": "dedicated-maskable-master",
+  "canonicalMasterId": "maskable-512",
+  "resizeKernel": "nearest",
+  "safeZone": {
+    "shape": "circle",
+    "diameterPercent": 80
+  },
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "source": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/maskable/maskable-source.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "90b040d9c9073fc390f4e61a90562b9730fd974018cfff9d8a715dd7b2674952",
+    "generator": "OpenAI ImageGen built-in tool"
+  },
+  "outputs": [
+    {
+      "id": "maskable-512",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/maskable/maskable-512.png",
+      "width": 512,
+      "height": 512,
+      "purpose": "maskable-master",
+      "consumer": "Canonical maskable review master",
+      "opaque": true,
+      "derivedFrom": null,
+      "resizeKernel": "nearest",
+      "sha256": "7f9c937516e8bf30ef6ddbfbb0d513932bf317b82badfacafca557c22061c441"
+    },
+    {
+      "id": "maskable-192",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/maskable/maskable-192.png",
+      "width": 192,
+      "height": 192,
+      "purpose": "maskable",
+      "consumer": "Installed-PWA maskable evidence",
+      "opaque": true,
+      "derivedFrom": "maskable-512",
+      "resizeKernel": "nearest",
+      "sha256": "834a3812fd56ef0803fcef33412cbbbfebcd6c3200203314d75299eff03859b8"
+    }
+  ]
+}

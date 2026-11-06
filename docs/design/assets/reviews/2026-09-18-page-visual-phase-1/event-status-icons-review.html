@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mimic Event / Status Icon Review</title>
+<style>
+:root{color-scheme:dark;--night:#080c1c;--panel:#121a32;--line:#465071;--paper:#f1dfb7;--dim:#b9aa87;--gold:#f2b638;--teal:#79b4b0}*{box-sizing:border-box}body{margin:0;background:var(--night);color:var(--paper);font-family:"Segoe UI",system-ui,sans-serif}main{width:min(1180px,calc(100% - 32px));margin:auto;padding:40px 0 72px}h1,h2,p{margin:0}header{display:grid;grid-template-columns:1fr minmax(280px,420px);gap:28px;align-items:end;margin-bottom:28px}h1{font:700 clamp(40px,7vw,72px)/.95 Georgia,serif}header>p{border-left:4px solid var(--gold);padding:14px 16px;color:var(--dim);line-height:1.6}.icon-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.icon-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;min-width:0;padding:18px;border:1px solid var(--line);background:var(--panel)}.master{grid-column:1/-1;display:grid;place-items:center;min-height:220px;background:#0b1124}.master img{width:192px;height:192px;max-width:100%;object-fit:contain;image-rendering:pixelated}.copy{grid-column:1/-1;min-width:0}.kind{color:var(--gold);font:11px Consolas,monospace;letter-spacing:.1em}.copy h2{margin-top:6px}.copy>p:not(.kind){margin-top:8px;color:var(--dim);line-height:1.5}.boundary{border-left:3px solid var(--teal);padding-left:10px}.proof{display:grid;place-items:center;gap:8px;min-width:0;min-height:100px;background:#0b1124;color:var(--dim);font-size:12px;text-align:center}.proof img{width:48px;height:48px;image-rendering:pixelated}.grayscale-proof img{filter:grayscale(1)}code{grid-column:1/-1;min-width:0;color:#8d96af;font-size:10px;overflow-wrap:anywhere}.controls,.rules{margin-top:24px;padding:22px;border:1px solid var(--line);background:var(--panel)}.control-images{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-top:16px;align-items:center}.control-images img{display:block;max-width:100%;margin:auto;image-rendering:pixelated}.rules{display:grid;grid-template-columns:1fr 1fr;gap:18px;line-height:1.6;color:var(--dim)}.rules strong{display:block;color:var(--paper)}
+@media(max-width:900px){.icon-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:620px){header,.icon-grid,.rules{grid-template-columns:1fr}.control-images{grid-template-columns:1fr}}@media(max-width:390px){main{width:calc(100% - 20px);padding-top:26px}.icon-card{padding:14px}.master{min-height:200px}}
+</style></head><body><main><header><h1>Event / Status icons</h1><p>Event / Status artwork approved at exact hashes. Icons family calibration approved; Gate A remains open.</p></header><section class="icon-grid" aria-label="Nine event and status icon directions">
+      <article class="icon-card" data-icon="event-expense" data-decision="approved">
+        <div class="master"><img src="samples/event-status/event-expense.png" alt="一張已付款支出單，硬幣位於紙張下緣外側"></div>
+        <div class="copy"><p class="kind">EVENT</p><h2>支出</h2><p>已付款支出單＋外側硬幣</p><p class="boundary">已完成的支出事實；不是正在記帳的操作</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/event-expense.png" alt="一張已付款支出單，硬幣位於紙張下緣外側的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/event-expense.png" alt="一張已付款支出單，硬幣位於紙張下緣外側的灰階預覽"></div>
+        <code>MASTER SHA-256 e2ae5aca4b4bb82810336fc4f5ff7fb9fc52dc48323c2f25a007670753f66bcc</code>
+      </article>
+      <article class="icon-card" data-icon="event-contribution" data-decision="approved">
+        <div class="master"><img src="samples/event-status/event-contribution.png" alt="一枚硬幣部分進入共同錢袋的袋口"></div>
+        <div class="copy"><p class="kind">EVENT</p><h2>投入共同基金</h2><p>硬幣進入共同錢袋</p><p class="boundary">以重疊表達投入；不使用箭頭</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/event-contribution.png" alt="一枚硬幣部分進入共同錢袋的袋口的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/event-contribution.png" alt="一枚硬幣部分進入共同錢袋的袋口的灰階預覽"></div>
+        <code>MASTER SHA-256 fbdb18bcc43ca070422ef3092616d3f9542448a9d28eb9abbcf171a0c497a1ef</code>
+      </article>
+      <article class="icon-card" data-icon="event-reimbursement" data-decision="approved">
+        <div class="master"><img src="samples/event-status/event-reimbursement.png" alt="一張報銷單旁有一枚返還的硬幣"></div>
+        <div class="copy"><p class="kind">EVENT</p><h2>代墊報銷</h2><p>報銷單＋返還硬幣</p><p class="boundary">必須保留單據；不可看成共同基金餘額返還</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/event-reimbursement.png" alt="一張報銷單旁有一枚返還的硬幣的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/event-reimbursement.png" alt="一張報銷單旁有一枚返還的硬幣的灰階預覽"></div>
+        <code>MASTER SHA-256 c9b63487ae65e81db4994c668143d239310339b83b0b89aa918c1afb448045c2</code>
+      </article>
+      <article class="icon-card" data-icon="event-shortfall" data-decision="approved">
+        <div class="master"><img src="samples/event-status/event-shortfall.png" alt="空的裂痕錢袋旁只剩一枚硬幣"></div>
+        <div class="copy"><p class="kind">EVENT</p><h2>共同基金不足</h2><p>空且有裂痕的錢袋＋最後一枚硬幣</p><p class="boundary">表示可用資金不足；不是資料錯誤或刪除</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/event-shortfall.png" alt="空的裂痕錢袋旁只剩一枚硬幣的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/event-shortfall.png" alt="空的裂痕錢袋旁只剩一枚硬幣的灰階預覽"></div>
+        <code>MASTER SHA-256 ede2b6d3d407875ef4f67dd9a82d41de008f2b75ccd721d9034aaaf074549011</code>
+      </article>
+      <article class="icon-card" data-icon="event-return" data-decision="approved">
+        <div class="master"><img src="samples/event-status/event-return.png" alt="共同錢袋向外傾斜，一枚硬幣已在袋口外"></div>
+        <div class="copy"><p class="kind">EVENT</p><h2>共同基金返還</h2><p>向外傾斜的共同錢袋＋袋外硬幣</p><p class="boundary">不含單據；不可看成代墊報銷</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/event-return.png" alt="共同錢袋向外傾斜，一枚硬幣已在袋口外的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/event-return.png" alt="共同錢袋向外傾斜，一枚硬幣已在袋口外的灰階預覽"></div>
+        <code>MASTER SHA-256 bc3e95c97ead09edc0c6b72115a0e5969a5a808032f0e195320f388a0fccab08</code>
+      </article>
+      <article class="icon-card" data-icon="event-settlement" data-decision="approved">
+        <div class="master"><img src="samples/event-status/event-settlement.png" alt="平衡秤兩側各有一疊不同的硬幣"></div>
+        <div class="copy"><p class="kind">EVENT</p><h2>共享結算</h2><p>平衡秤＋兩疊硬幣</p><p class="boundary">表示共享部位經轉帳結清；不是全域餘額</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/event-settlement.png" alt="平衡秤兩側各有一疊不同的硬幣的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/event-settlement.png" alt="平衡秤兩側各有一疊不同的硬幣的灰階預覽"></div>
+        <code>MASTER SHA-256 10346dfa9fc5bda4f510b6623d687e6abd37981655d48c6138ed20f869e9b9ab</code>
+      </article>
+      <article class="icon-card" data-icon="event-correction" data-decision="approved">
+        <div class="master"><img src="samples/event-status/event-correction.png" alt="完整舊帳頁旁固定一張新的更正附頁"></div>
+        <div class="copy"><p class="kind">EVENT</p><h2>後期更正</h2><p>完整舊帳頁＋旁釘的新附頁</p><p class="boundary">舊紀錄仍完整可見；不是塗改或重開已結算期間</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/event-correction.png" alt="完整舊帳頁旁固定一張新的更正附頁的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/event-correction.png" alt="完整舊帳頁旁固定一張新的更正附頁的灰階預覽"></div>
+        <code>MASTER SHA-256 d39a3a402bc00c78bb0d55a5eef35e4f597947c969cfb8327447c02b984ae3cd</code>
+      </article>
+      <article class="icon-card" data-icon="status-lock" data-decision="approved">
+        <div class="master"><img src="samples/event-status/status-lock.png" alt="厚重黃銅掛鎖扣住一張期間帳頁"></div>
+        <div class="copy"><p class="kind">STATUS</p><h2>期間鎖定</h2><p>黃銅掛鎖扣住期間帳頁</p><p class="boundary">表示不可變更；不是刪除、封存或權限不足</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/status-lock.png" alt="厚重黃銅掛鎖扣住一張期間帳頁的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/status-lock.png" alt="厚重黃銅掛鎖扣住一張期間帳頁的灰階預覽"></div>
+        <code>MASTER SHA-256 50bec38d68900b1836306dc6298a2f379339b5e98cabc08977bcfec559c3ac00</code>
+      </article>
+      <article class="icon-card" data-icon="status-offline" data-decision="approved">
+        <div class="master"><img src="samples/event-status/status-offline.png" alt="熄滅的訊號燈旁有中斷的訊號刻痕"></div>
+        <div class="copy"><p class="kind">STATUS</p><h2>離線</h2><p>熄滅的訊號燈＋中斷訊號</p><p class="boundary">表示無法權威送出；不表示草稿遺失或永久失敗</p></div>
+        <div class="proof" data-preview-size="48"><span>48 px</span><img src="samples/event-status/optical-48/status-offline.png" alt="熄滅的訊號燈旁有中斷的訊號刻痕的 48 像素預覽"></div>
+        <div class="proof grayscale-proof" data-grayscale-preview><span>48 px grayscale</span><img src="samples/event-status/optical-48/status-offline.png" alt="熄滅的訊號燈旁有中斷的訊號刻痕的灰階預覽"></div>
+        <code>MASTER SHA-256 bb4632111ef73c4e089a2eef1ece30be11495baf4d1923464d87735c573405a5</code>
+      </article></section><section class="controls"><h2>Approved family controls</h2><div class="control-images"><img src="samples/icons-calibration.png" alt="已核准的導航與模式 icon 對照"><img src="samples/record-expense-action/record-expense-action-v01.png" alt="已核准的記一筆支出 Action icon"></div></section><section class="rules"><p><strong>Live-HTML boundary</strong>Every future consumer retains a visible label or independent accessible name.</p><p><strong>Accounting boundary</strong>Personal, shared, and pooled meanings stay separate; corrections remain new records and never reopen locked periods.</p><p><strong>Phase boundary</strong>Review-only files outside web/public; no runtime asset changes.</p></section></main></body></html>

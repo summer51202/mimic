@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mimic Tasks Icon — Three Refined Candidates</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --navy: #090d20;
+        --navy-soft: #111830;
+        --ink: #1d1830;
+        --parchment: #f4dfb4;
+        --parchment-deep: #d9b978;
+        --gold: #f4b52f;
+        --muted: #c6b892;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: ui-rounded, "Segoe UI", system-ui, sans-serif;
+        color: var(--parchment);
+        background:
+          radial-gradient(circle at 50% -20%, #27345e 0, transparent 45%),
+          var(--navy);
+      }
+
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 44px 0 64px;
+      }
+
+      header {
+        display: grid;
+        gap: 12px;
+        max-width: 820px;
+        margin-bottom: 30px;
+      }
+
+      h1, h2, p { margin: 0; }
+      h1 { font-size: clamp(28px, 5vw, 48px); line-height: 1.05; }
+      header p { color: var(--muted); line-height: 1.6; }
+
+      .boundary {
+        border-left: 4px solid var(--gold);
+        padding: 10px 14px;
+        color: var(--parchment);
+        background: #10162bcc;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      article {
+        overflow: hidden;
+        border: 2px solid #2c3558;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #151d38, #0d1328);
+        box-shadow: 0 18px 48px #0008;
+      }
+
+      article[data-selected="true"] {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 2px #f4b52f33, 0 18px 48px #0008;
+      }
+
+      .art {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1;
+        padding: 18px;
+        background:
+          linear-gradient(45deg, #151b32 25%, transparent 25%, transparent 75%, #151b32 75%),
+          linear-gradient(45deg, #151b32 25%, #10162a 25%, #10162a 75%, #151b32 75%);
+        background-position: 0 0, 10px 10px;
+        background-size: 20px 20px;
+      }
+
+      .art img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: pixelated;
+      }
+
+      .copy { padding: 18px; }
+      h2 { color: #fff1c8; font-size: 21px; }
+      .copy p { min-height: 3.2em; margin-top: 8px; color: var(--muted); line-height: 1.55; }
+
+      .scale-check {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 14px;
+        border-top: 1px solid #303957;
+        color: #d6caa9;
+        font-size: 13px;
+      }
+
+      .scale-check img {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+        flex: 0 0 auto;
+        image-rendering: pixelated;
+      }
+
+      @media (max-width: 820px) {
+        .grid { grid-template-columns: 1fr; }
+        article { display: grid; grid-template-columns: minmax(180px, 42%) 1fr; }
+        .art { aspect-ratio: 1; }
+      }
+
+      @media (max-width: 520px) {
+        main { width: min(100% - 20px, 1180px); padding-top: 26px; }
+        article { display: block; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p>PAGE VISUAL OPTIMIZATION · PHASE 1 · TASKS ICON</p>
+        <h1>任務佈告欄：三個精細化候選</h1>
+        <p>三款皆沿用已核准的 Mimiku 高密度像素手繪語言；差異集中在輪廓、材質層次與資訊焦點。</p>
+        <p class="boundary">A selected — the main review calibration now uses this Tasks icon. Runtime assets and the complete Icons family decision remain unchanged.</p>
+      </header>
+
+      <section class="grid" aria-label="Tasks icon candidates">
+        <article data-selected="true">
+          <div class="art">
+            <img src="samples/task-board-variants/task-board-a-adventurer-contract.png" alt="A 冒險委託板：厚木框、三張委託紙與紅色蠟封" />
+          </div>
+          <div class="copy">
+            <h2>A · 冒險委託板 · 已選定</h2>
+            <p>最接近現有任務語意。厚木框、黃銅護角與紅色蠟封提供清楚焦點。</p>
+            <div class="scale-check">
+              <img src="samples/task-board-variants/task-board-a-adventurer-contract.png" alt="" />
+              <span>48 px 導航預覽</span>
+            </div>
+          </div>
+        </article>
+
+        <article data-selected="false">
+          <div class="art">
+            <img src="samples/task-board-variants/task-board-b-guild-quest-wall.png" alt="B 公會任務牆：拱形木框、吊環與多層羊皮紙" />
+          </div>
+          <div class="copy">
+            <h2>B · 公會任務牆</h2>
+            <p>拱形頂框和吊環增加公會陳列感，輪廓比現版更華麗且有辨識度。</p>
+            <div class="scale-check">
+              <img src="samples/task-board-variants/task-board-b-guild-quest-wall.png" alt="" />
+              <span>48 px 導航預覽</span>
+            </div>
+          </div>
+        </article>
+
+        <article data-selected="false">
+          <div class="art">
+            <img src="samples/task-board-variants/task-board-c-expedition-planning.png" alt="C 遠征作戰板：盾形木框、任務紙、路線圖與徽章" />
+          </div>
+          <div class="copy">
+            <h2>C · 遠征作戰板</h2>
+            <p>盾形底框、路線圖與遠征徽章帶來最強冒險感，資訊量也最高。</p>
+            <div class="scale-check">
+              <img src="samples/task-board-variants/task-board-c-expedition-planning.png" alt="" />
+              <span>48 px 導航預覽</span>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

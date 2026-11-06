@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mimic Record-expense Action Icon Review</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --night: #080c1c;
+        --panel: #121a32;
+        --panel-soft: #18213c;
+        --line: #465071;
+        --paper: #f1dfb7;
+        --paper-dim: #b9aa87;
+        --brass: #f2b638;
+        --teal: #79b4b0;
+        --ember: #d95d38;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--paper);
+        background:
+          radial-gradient(circle at 78% 0, #28375d 0, transparent 36%),
+          linear-gradient(90deg, transparent 49.8%, #27304d55 50%, transparent 50.2%),
+          var(--night);
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0 72px;
+      }
+
+      h1, h2, p { margin: 0; }
+      header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+        gap: 30px;
+        align-items: end;
+        margin-bottom: 32px;
+      }
+      .eyebrow, .meta, .badge {
+        font-family: "Cascadia Mono", Consolas, monospace;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+      }
+      .eyebrow { color: var(--brass); font-size: 12px; }
+      h1 {
+        max-width: 11ch;
+        margin-top: 8px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(42px, 7vw, 74px);
+        line-height: .95;
+      }
+      header > p {
+        padding: 14px 16px;
+        border-left: 4px solid var(--brass);
+        color: var(--paper-dim);
+        background: #0e1429cc;
+        line-height: 1.6;
+      }
+
+      .candidate {
+        display: grid;
+        grid-template-columns: minmax(300px, .9fr) minmax(0, 1.1fr);
+        border: 1px solid var(--line);
+        background: linear-gradient(145deg, var(--panel-soft), #0c1227);
+      }
+      .master {
+        display: grid;
+        place-items: center;
+        min-height: 390px;
+        border-right: 1px solid var(--line);
+        background:
+          linear-gradient(45deg, #11172d 25%, transparent 25%, transparent 75%, #11172d 75%),
+          linear-gradient(45deg, #11172d 25%, #0c1227 25%, #0c1227 75%, #11172d 75%);
+        background-position: 0 0, 8px 8px;
+        background-size: 16px 16px;
+      }
+      .master img {
+        width: 192px;
+        height: 192px;
+        image-rendering: pixelated;
+      }
+      .copy { padding: clamp(24px, 4vw, 44px); }
+      .badge {
+        display: inline-block;
+        padding: 6px 9px;
+        border: 1px solid var(--brass);
+        color: var(--brass);
+        font-size: 11px;
+      }
+      .copy h2 { margin-top: 18px; color: #fff2ce; font-size: 30px; }
+      .copy > p { margin-top: 12px; color: var(--paper-dim); line-height: 1.65; }
+      .facts { display: grid; gap: 10px; margin-top: 24px; }
+      .fact {
+        padding: 12px 14px;
+        border-left: 3px solid var(--teal);
+        color: #d7e6e2;
+        background: #0b1124aa;
+        line-height: 1.5;
+      }
+
+      .evidence {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 24px;
+      }
+      .proof, .family {
+        padding: 22px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+      }
+      .proof h2, .family h2 { color: #fff2ce; font-size: 20px; }
+      .proof p, .family p { margin-top: 8px; color: var(--paper-dim); line-height: 1.55; }
+      .icon-well {
+        display: grid;
+        place-items: center;
+        min-height: 116px;
+        margin-top: 18px;
+        background: #0b1124;
+      }
+      .icon-well img {
+        width: 48px;
+        height: 48px;
+        image-rendering: pixelated;
+      }
+      [data-grayscale-preview] img { filter: grayscale(1); }
+
+      .family { margin-top: 24px; }
+      .family img {
+        display: block;
+        width: min(100%, 720px);
+        height: auto;
+        margin: 20px auto 0;
+        image-rendering: pixelated;
+      }
+      .boundary {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin-top: 24px;
+      }
+      .boundary article {
+        padding: 20px;
+        border-top: 3px solid var(--ember);
+        color: var(--paper-dim);
+        background: #11182e;
+        line-height: 1.6;
+      }
+      .boundary strong { display: block; margin-bottom: 5px; color: var(--paper); }
+      .meta {
+        margin-top: 28px;
+        color: #8d96af;
+        font-size: 11px;
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+      }
+
+      @media (max-width: 760px) {
+        header, .candidate { grid-template-columns: 1fr; }
+        h1 { max-width: none; }
+        .master { min-height: 290px; border-right: 0; border-bottom: 1px solid var(--line); }
+        .evidence, .boundary { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 390px) {
+        main { width: min(100% - 20px, 1120px); padding-top: 26px; }
+        .copy, .proof, .family { padding: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">Icons · Gate A · Action checkpoint</p>
+          <h1>記一筆支出</h1>
+        </div>
+        <p>Record-expense Action icon approved — quill, loose ledger page, and subordinate coin. The complete Icons family calibration is approved; no runtime asset changes here.</p>
+      </header>
+
+      <article class="candidate" data-action="record-expense" data-decision="approved">
+        <div class="master">
+          <img src="samples/record-expense-action/record-expense-action-v01.png" alt="羽毛筆在單張帳頁記錄支出，右下有一枚小硬幣" />
+        </div>
+        <div class="copy">
+          <span class="badge">Approved</span>
+          <h2>A · 羽毛筆＋帳頁＋小硬幣</h2>
+          <p>讀序先是「正在記錄」，再由右下角的小硬幣補足「支出」。單張紙的開放輪廓刻意避開已核准的厚重探險日誌。</p>
+          <div class="facts">
+            <p class="fact">筆尖接觸新寫入的一筆；不是靜態文具組合。</p>
+            <p class="fact">硬幣約占視覺主體兩成，不使用加號、箭頭或幣別符號。</p>
+            <p class="fact">192 × 192 review master；透明背景；像素化顯示。</p>
+          </div>
+        </div>
+      </article>
+
+      <section class="evidence" aria-label="Optical evidence">
+        <article class="proof">
+          <h2>48 px optical preview</h2>
+          <p>檢查縮小後仍能分出紙張、羽毛筆與次要硬幣。</p>
+          <div class="icon-well" data-preview-size="48">
+            <img src="samples/record-expense-action/record-expense-action-v01.png" alt="48 像素記一筆支出 icon 預覽" />
+          </div>
+        </article>
+        <article class="proof" data-grayscale-preview>
+          <h2>48 px grayscale</h2>
+          <p>不依賴紙黃、青綠或金色，也能保留三個物件的輪廓層級。</p>
+          <div class="icon-well">
+            <img src="samples/record-expense-action/record-expense-action-v01.png" alt="48 像素灰階記一筆支出 icon 預覽" />
+          </div>
+        </article>
+      </section>
+
+      <section class="family" data-family-control>
+        <h2>Approved family control</h2>
+        <p>下方保留已核准的導航與 Mode 方向作同頁對照；此 Action 方向不重複探險日誌、帳單、錢包或開箱的主要輪廓。</p>
+        <img src="samples/icons-calibration.png" alt="已核准的導航與 Mode icon 家族對照" />
+      </section>
+
+      <section class="boundary" aria-label="Product and accessibility boundaries">
+        <article><strong>Live-HTML boundary</strong>「記一筆支出」必須保留為 live HTML 或獨立 accessible name；icon 不是唯一操作名稱，也不烘焙金額、日期或狀態。</article>
+        <article><strong>Phase boundary</strong>Review-only candidate outside <code>web/public</code>; no runtime asset changes. Personal、shared、pooled 的路由與帳務規則完全不變。</article>
+      </section>
+
+      <p class="meta">SOURCE · samples/derivations/record-expense-action-v01-source.png · MASTER SHA-256 · 5f261384aa4e5748a932ed692bc5dfa3bedd30e0c0892c02571a73dc31567680</p>
+    </main>
+  </body>
+</html>

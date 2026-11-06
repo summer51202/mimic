@@ -1,0 +1,150 @@
+{
+  "approvedOn": "2026-10-01",
+  "decision": "approved",
+  "icons": [
+    {
+      "id": "event-expense",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/event-expense-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/event-expense.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "e2ae5aca4b4bb82810336fc4f5ff7fb9fc52dc48323c2f25a007670753f66bcc"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-expense.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "840c5da0f78a0437f08727bbec7973937c4bbdde0e1c2a017006b0a1249572ce"
+      }
+    },
+    {
+      "id": "event-contribution",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/event-contribution-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/event-contribution.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "fbdb18bcc43ca070422ef3092616d3f9542448a9d28eb9abbcf171a0c497a1ef"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-contribution.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "173b840f695fc77f549831fc25aeb11716cd1eaa35e24f5e6cb9518a93adc57a"
+      }
+    },
+    {
+      "id": "event-reimbursement",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/event-reimbursement-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/event-reimbursement.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "c9b63487ae65e81db4994c668143d239310339b83b0b89aa918c1afb448045c2"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-reimbursement.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "0f3c251f889faa51f47bbf390de6dec8c57dba853013c41a55cfa56e35af89e5"
+      }
+    },
+    {
+      "id": "event-shortfall",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/event-shortfall-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/event-shortfall.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "ede2b6d3d407875ef4f67dd9a82d41de008f2b75ccd721d9034aaaf074549011"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-shortfall.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "198b2ad8425adf0cd575b16f05a3a20e4accccfef158c718f9fde35df502698d"
+      }
+    },
+    {
+      "id": "event-return",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/event-return-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/event-return.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "bc3e95c97ead09edc0c6b72115a0e5969a5a808032f0e195320f388a0fccab08"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-return.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "7d8a32b3aa7edd388380541e05b150c523bccf12961d8fa3d0aca0ed92d20fa1"
+      }
+    },
+    {
+      "id": "event-settlement",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/event-settlement-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/event-settlement.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "10346dfa9fc5bda4f510b6623d687e6abd37981655d48c6138ed20f869e9b9ab"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-settlement.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "74bca0bc605805d8668606ce023c19c01d650704277247c797b642130882ad67"
+      }
+    },
+    {
+      "id": "event-correction",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/event-correction-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/event-correction.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "d39a3a402bc00c78bb0d55a5eef35e4f597947c969cfb8327447c02b984ae3cd"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-correction.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "fb3df784eb1544ae49baec8efa8cbc2782aab2941fe0be4ca7f7d73462285043"
+      }
+    },
+    {
+      "id": "status-lock",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/status-lock-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/status-lock.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "50bec38d68900b1836306dc6298a2f379339b5e98cabc08977bcfec559c3ac00"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/status-lock.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "0cb525aca29bdd3ef7dde8641faf9ac597f2756351221f19441daa7b1c73f1ff"
+      }
+    },
+    {
+      "id": "status-offline",
+      "source": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/event-status/status-offline-source.png",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/status-offline.png",
+        "width": 192,
+        "height": 192,
+        "sha256": "bb4632111ef73c4e089a2eef1ece30be11495baf4d1923464d87735c573405a5"
+      },
+      "optical48": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/status-offline.png",
+        "width": 48,
+        "height": 48,
+        "sha256": "f1935a2fdda462c87ab615879022706cc8267a2dc7ffa68c0770c4f223bd3194"
+      }
+    }
+  ]
+}

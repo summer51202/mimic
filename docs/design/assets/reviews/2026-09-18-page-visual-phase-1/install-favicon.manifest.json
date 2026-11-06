@@ -1,0 +1,76 @@
+{
+  "decision": "approved",
+  "strategy": "single-master-resize",
+  "canonicalMasterId": "icon-512",
+  "resizeKernel": "nearest",
+  "phaseException": "Complete Mimiku and heart coin remain at every size without optical redraws.",
+  "source": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/install-favicon/install-favicon-source.png",
+    "width": 1254,
+    "height": 1254,
+    "sha256": "34bdb87d03165512f55e2aabb2c6b03cae39acd23a769526f31381f86d9d4731",
+    "generator": "OpenAI ImageGen built-in tool"
+  },
+  "outputs": [
+    {
+      "id": "icon-512",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/icon-512.png",
+      "width": 512,
+      "height": 512,
+      "purpose": "install-master",
+      "consumer": "Canonical install review master",
+      "opaque": true,
+      "derivedFrom": null,
+      "resizeKernel": "nearest",
+      "sha256": "4d40441a62d2c3ae15294d6e281a12638e780eb8dbca9a06b8ca8216591a0d56"
+    },
+    {
+      "id": "icon-192",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/icon-192.png",
+      "width": 192,
+      "height": 192,
+      "purpose": "install",
+      "consumer": "PWA install and launcher evidence",
+      "opaque": true,
+      "derivedFrom": "icon-512",
+      "resizeKernel": "nearest",
+      "sha256": "c6390c23645fa642e1d3ba561c4506b2cae9606c12c08ffbaded47e7333e9988"
+    },
+    {
+      "id": "icon-48",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/icon-48.png",
+      "width": 48,
+      "height": 48,
+      "purpose": "optical-evidence",
+      "consumer": "Intermediate optical evidence only",
+      "opaque": true,
+      "derivedFrom": "icon-512",
+      "resizeKernel": "nearest",
+      "sha256": "e72c115abe5f6d9b56d8b0ab4246899388007ad6ccff017623d9ae629dbbad43"
+    },
+    {
+      "id": "favicon-32",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/favicon-32.png",
+      "width": 32,
+      "height": 32,
+      "purpose": "favicon",
+      "consumer": "High-density browser favicon evidence",
+      "opaque": true,
+      "derivedFrom": "icon-512",
+      "resizeKernel": "nearest",
+      "sha256": "a1aa2d33ae24fb27c68ca472c10a965b984d233e608740f7ac001621d4f216cf"
+    },
+    {
+      "id": "favicon-16",
+      "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/favicon-16.png",
+      "width": 16,
+      "height": 16,
+      "purpose": "favicon",
+      "consumer": "Smallest browser favicon evidence",
+      "opaque": true,
+      "derivedFrom": "icon-512",
+      "resizeKernel": "nearest",
+      "sha256": "3aeff4325d6240fcdaeca8fa9e9ba7d4dd13cf1395dd7f9f7d799271f1942b8f"
+    }
+  ]
+}

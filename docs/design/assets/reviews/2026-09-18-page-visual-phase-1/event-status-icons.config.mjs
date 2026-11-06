@@ -1,0 +1,80 @@
+export const eventStatusIcons = [
+  {
+    id: "event-expense",
+    label: "支出",
+    objects: "已付款支出單＋外側硬幣",
+    alt: "一張已付款支出單，硬幣位於紙張下緣外側",
+    boundary: "已完成的支出事實；不是正在記帳的操作",
+  },
+  {
+    id: "event-contribution",
+    label: "投入共同基金",
+    objects: "硬幣進入共同錢袋",
+    alt: "一枚硬幣部分進入共同錢袋的袋口",
+    boundary: "以重疊表達投入；不使用箭頭",
+  },
+  {
+    id: "event-reimbursement",
+    label: "代墊報銷",
+    objects: "報銷單＋返還硬幣",
+    alt: "一張報銷單旁有一枚返還的硬幣",
+    boundary: "必須保留單據；不可看成共同基金餘額返還",
+  },
+  {
+    id: "event-shortfall",
+    label: "共同基金不足",
+    objects: "空且有裂痕的錢袋＋最後一枚硬幣",
+    alt: "空的裂痕錢袋旁只剩一枚硬幣",
+    boundary: "表示可用資金不足；不是資料錯誤或刪除",
+  },
+  {
+    id: "event-return",
+    label: "共同基金返還",
+    objects: "向外傾斜的共同錢袋＋袋外硬幣",
+    alt: "共同錢袋向外傾斜，一枚硬幣已在袋口外",
+    boundary: "不含單據；不可看成代墊報銷",
+  },
+  {
+    id: "event-settlement",
+    label: "共享結算",
+    objects: "平衡秤＋兩疊硬幣",
+    alt: "平衡秤兩側各有一疊不同的硬幣",
+    boundary: "表示共享部位經轉帳結清；不是全域餘額",
+  },
+  {
+    id: "event-correction",
+    label: "後期更正",
+    objects: "完整舊帳頁＋旁釘的新附頁",
+    alt: "完整舊帳頁旁固定一張新的更正附頁",
+    boundary: "舊紀錄仍完整可見；不是塗改或重開已結算期間",
+  },
+  {
+    id: "status-lock",
+    label: "期間鎖定",
+    objects: "黃銅掛鎖扣住期間帳頁",
+    alt: "厚重黃銅掛鎖扣住一張期間帳頁",
+    boundary: "表示不可變更；不是刪除、封存或權限不足",
+  },
+  {
+    id: "status-offline",
+    label: "離線",
+    objects: "熄滅的訊號燈＋中斷訊號",
+    alt: "熄滅的訊號燈旁有中斷的訊號刻痕",
+    boundary: "表示無法權威送出；不表示草稿遺失或永久失敗",
+  },
+];
+
+export const eventStatusApproval = {
+  approvedOn: "2026-10-01",
+  masterSha256ById: {
+    "event-expense": "e2ae5aca4b4bb82810336fc4f5ff7fb9fc52dc48323c2f25a007670753f66bcc",
+    "event-contribution": "fbdb18bcc43ca070422ef3092616d3f9542448a9d28eb9abbcf171a0c497a1ef",
+    "event-reimbursement": "c9b63487ae65e81db4994c668143d239310339b83b0b89aa918c1afb448045c2",
+    "event-shortfall": "ede2b6d3d407875ef4f67dd9a82d41de008f2b75ccd721d9034aaaf074549011",
+    "event-return": "bc3e95c97ead09edc0c6b72115a0e5969a5a808032f0e195320f388a0fccab08",
+    "event-settlement": "10346dfa9fc5bda4f510b6623d687e6abd37981655d48c6138ed20f869e9b9ab",
+    "event-correction": "d39a3a402bc00c78bb0d55a5eef35e4f597947c969cfb8327447c02b984ae3cd",
+    "status-lock": "50bec38d68900b1836306dc6298a2f379339b5e98cabc08977bcfec559c3ac00",
+    "status-offline": "bb4632111ef73c4e089a2eef1ece30be11495baf4d1923464d87735c573405a5",
+  },
+};

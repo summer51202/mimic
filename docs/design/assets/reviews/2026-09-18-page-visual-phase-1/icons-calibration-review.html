@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mimic Icons Gate A calibration review</title>
+    <style>
+      :root { color-scheme: dark; --navy:#101329; --panel:#191d38; --line:#665d45; --gold:#ffd45b; --paper:#f3ead2; --ink:#2b2030; }
+      * { box-sizing: border-box; }
+      body { margin:0; background:var(--navy); color:#f7f0de; font:16px/1.55 system-ui,sans-serif; }
+      main { width:min(1400px,100%); margin:auto; padding:clamp(18px,4vw,52px); }
+      h1 { margin-top:0; font-size:clamp(28px,4vw,44px); }
+      h2 { margin-top:40px; color:var(--gold); }
+      p, li { max-width:88ch; }
+      .status { padding:10px 14px; border:2px solid var(--gold); background:#222746; }
+      .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+      figure { min-width:0; margin:0; padding:16px; background:var(--panel); border:1px solid var(--line); }
+      figure.paper { background:var(--paper); color:var(--ink); }
+      img { display:block; max-width:100%; height:auto; margin:auto; image-rendering:pixelated; }
+      figcaption { margin-top:10px; font-size:14px; }
+      .scale-row { display:flex; flex-wrap:wrap; align-items:end; gap:24px; padding:20px; background:var(--paper); color:var(--ink); }
+      .scale-row figure { padding:8px; background:transparent; border:0; text-align:center; }
+      .scale-row img { width:var(--size); height:var(--size); object-fit:contain; }
+      .gray { filter:grayscale(1); }
+      .safe-zone { position:relative; width:min(100%,512px); margin:auto; }
+      .safe-zone::after { content:""; position:absolute; inset:10%; border:3px dashed #ff4f77; border-radius:50%; pointer-events:none; }
+      .safe-zone img { width:100%; }
+      .findings { padding:18px 22px; border-left:5px solid #ffb347; background:#241f35; }
+      .checkpoint { margin-top:14px; }
+      .checkpoint a { color:var(--gold); font-weight:700; }
+      code { color:#ffe59a; }
+      @media (max-width:760px) { .grid { grid-template-columns:1fr; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Icons · Gate A calibration review</h1>
+      <p class="status">Primary-navigation, Mode, record-expense Action, Event / Status, Install / Favicon, and Maskable directions are approved at exact hashes. Icons family calibration is complete; Gate A remains open for the other asset families. This page does not promote any icon to runtime.</p>
+      <p class="checkpoint"><a href="record-expense-action-review.html">Open approved record-expense Action direction</a> · master SHA-256 <code>5f261384aa4e5748a932ed692bc5dfa3bedd30e0c0892c02571a73dc31567680</code> · review-only, no runtime promotion</p>
+
+      <h2>Replacement calibration candidate</h2>
+      <div class="grid">
+        <figure><img src="samples/icons-calibration.png" alt="Existing Icons calibration on navy" /><figcaption>1024 × 1024 calibration · navy</figcaption></figure>
+        <figure class="paper"><img src="samples/icons-calibration.png" alt="Existing Icons calibration on parchment" /><figcaption>Same pixels · parchment</figcaption></figure>
+      </div>
+
+      <h2>Approved primary-navigation direction</h2>
+      <figure class="paper"><img src="samples/derivations/icons-navigation-v04-source.png" alt="Approved five-icon primary navigation direction" /><figcaption>Primary navigation direction approved; Icons family calibration approved. Left to right: Base campfire, Adventure Log, Adventurer Guild, Tasks, Settings.</figcaption></figure>
+      <figure class="paper"><img src="samples/task-board-variants/task-board-a-adventurer-contract.png" alt="Selected refined Adventurer Contract Board Tasks icon" /><figcaption>Selected Tasks refinement · A · Adventurer Contract Board</figcaption></figure>
+      <p>The four unchanged navigation directions retain source SHA-256 <code>3e9284c6666723c1d58a437063cd823bfee62d5acfdf682eaf54d5123c618cea</code>; selected Tasks source A is locked at SHA-256 <code>3cb0cfd4d0b91e1e58f09ad69777dc72ce89944fc982a3c46c12817e68b72856</code>. Their approved 192 × 192 masters and direct 48 × 48 optical exports are recorded in <code>icon-optical-evidence.manifest.json</code>.</p>
+
+      <h2>Earlier rejected candidate · audit control</h2>
+      <figure class="paper"><img src="samples/rejected/icons-calibration-5d6eb7fa.png" alt="Earlier rejected Icons calibration" /><figcaption>Rejected/superseded · smooth polished rendering and unresolved optical evidence</figcaption></figure>
+      <figure class="paper"><img src="samples/rejected/icons-calibration-28a1add6.png" alt="Rejected coarse mode-icon calibration" /><figcaption>Rejected/superseded · mode icons read as low-resolution glyphs enlarged</figcaption></figure>
+
+      <h2>Canonical source and runtime controls</h2>
+      <div class="grid">
+        <figure class="paper"><img src="../../../../../icon.png" alt="Immutable Mimiku master" /><figcaption>Immutable master · <code>icon.png</code></figcaption></figure>
+        <figure class="paper"><img src="../../sources/pixel-ui/icons-ui.png" alt="Existing pixel UI source sheet" /><figcaption>Existing source sheet · <code>icons-ui.png</code></figcaption></figure>
+        <figure><img src="../../../../../web/public/icons/icon-512.png" alt="Current runtime 512 icon" /><figcaption>Current runtime any-purpose icon</figcaption></figure>
+        <figure><img src="../../../../../web/public/icons/icon-maskable-512.png" alt="Current runtime maskable 512 icon" /><figcaption>Current runtime maskable icon</figcaption></figure>
+      </div>
+
+      <h2>Small-size optical check</h2>
+      <div class="scale-row" aria-label="Current runtime icon shown at requested review sizes">
+        <figure><img data-preview-size="16" style="--size:16px" src="../../../../../web/public/icons/icon-512.png" alt="Current icon at 16 pixels" /><figcaption>16px</figcaption></figure>
+        <figure><img data-preview-size="32" style="--size:32px" src="../../../../../web/public/icons/icon-512.png" alt="Current icon at 32 pixels" /><figcaption>32px</figcaption></figure>
+        <figure><img data-preview-size="48" style="--size:48px" src="../../../../../web/public/icons/icon-512.png" alt="Current icon at 48 pixels" /><figcaption>48px</figcaption></figure>
+        <figure><img data-preview-size="192" style="--size:192px" src="../../../../../web/public/icons/icon-512.png" alt="Current icon at 192 pixels" /><figcaption>192px</figcaption></figure>
+      </div>
+
+      <h2>Grayscale distinction</h2>
+      <div class="grid" data-grayscale-review>
+        <figure><img src="samples/icons-calibration.png" alt="Icons calibration in color" /><figcaption>Color control</figcaption></figure>
+        <figure class="paper"><img class="gray" src="samples/icons-calibration.png" alt="Icons calibration converted to grayscale for review" /><figcaption>CSS grayscale review · silhouettes must remain distinct</figcaption></figure>
+      </div>
+
+      <h2>Maskable safe-zone inspection</h2>
+      <figure data-maskable-safe-zone>
+        <div class="safe-zone"><img src="../../../../../web/public/icons/icon-maskable-512.png" alt="Maskable icon with an 80 percent circular inspection guide" /></div>
+        <figcaption>The dashed circle is a live review overlay, not baked into the icon. Eyes, teeth, chest silhouette, and defining coin must survive platform masks.</figcaption>
+      </figure>
+
+      <h2>Named future consumers</h2>
+      <p>PWA install icons, favicon, five primary navigation entries, record-expense action, personal/shared/pooled mode badges, and expense/contribution/reimbursement/shortfall/return/settlement/correction/lock/offline event types.</p>
+      <h2>Live-HTML boundary</h2>
+      <p>Critical controls and financial event rows keep visible text. Icons never provide the only action name, mode, event type, status, or accounting meaning; mode/event distinction cannot depend on hue alone.</p>
+
+      <h2>Proposed staged filenames and canvases</h2>
+      <ul>
+        <li><code>icons/install/icon-192.png</code> · 192 × 192 opaque field</li>
+        <li><code>icons/install/icon-512.png</code> · 512 × 512 opaque field</li>
+        <li><code>icons/install/icon-maskable-192.png</code> · 192 × 192 safe-zone composition</li>
+        <li><code>icons/install/icon-maskable-512.png</code> · 512 × 512 safe-zone composition</li>
+        <li><code>icons/install/favicon-16.png</code> · 16 × 16 simplified silhouette</li>
+        <li><code>icons/install/favicon-32.png</code> · 32 × 32 simplified silhouette</li>
+        <li><code>icons/ui/nav-home.png</code>, <code>nav-adventure-log.png</code>, <code>nav-guild.png</code>, <code>nav-tasks.png</code>, <code>nav-settings.png</code> · 48 × 48 transparent each</li>
+        <li><code>icons/ui/action-record-expense.png</code> · 48 × 48 transparent</li>
+        <li><code>icons/ui/mode-personal.png</code>, <code>mode-shared.png</code>, <code>mode-pooled.png</code> · 48 × 48 transparent; silhouette-distinct</li>
+        <li><code>icons/ui/event-expense.png</code>, <code>event-contribution.png</code>, <code>event-reimbursement.png</code>, <code>event-shortfall.png</code>, <code>event-return.png</code>, <code>event-settlement.png</code>, <code>event-correction.png</code> · 48 × 48 transparent each</li>
+        <li><code>icons/ui/status-lock.png</code>, <code>status-offline.png</code> · 48 × 48 transparent each</li>
+      </ul>
+      <p>All paths are relative to <code>docs/design/assets/approved/page-visual-v1/</code> and remain staged outside runtime during Phase 1.</p>
+
+      <section class="findings">
+        <h2>Self-check findings</h2>
+        <ul>
+          <li>The approved personal wallet, shared receipts, and pooled open-chest directions use substantially higher pixel density, smaller deliberate clusters, nuanced limited ramps, broken highlights, and V11-like hand-drawn irregularity.</li>
+          <li>The 16px and 32px directions intentionally simplify the body and omit the heart coin while retaining the face/chest silhouette.</li>
+          <li>Navigation and mode concepts use no scenic base; the detailed wallet, overlapping receipts, and open chest remain distinct from one another.</li>
+          <li>The five primary-navigation meanings and their visual direction are approved: campfire, travel journal, warrior/mage handshake, quest board, and repaired gear.</li>
+          <li>The selected Tasks refinement is candidate A: a thicker timber contract board with brass corners, layered notices, and a red wax-seal focal point.</li>
+          <li>The three approved mode silhouettes remain distinguishable in grayscale; their exact individual 192 × 192 masters and 48 × 48 exports are recorded in <code>icon-optical-evidence.manifest.json</code>.</li>
+          <li>The approved record-expense Action direction uses a quill writing on one loose ledger page with a subordinate coin; its 192 × 192 master, 48 px preview, and grayscale evidence are locked at SHA-256 <code>5f261384aa4e5748a932ed692bc5dfa3bedd30e0c0892c02571a73dc31567680</code>.</li>
+          <li>The dedicated Maskable A composition is approved at its exact source, 512, and 192 hashes with defining anatomy inside the live 80% inspection guide.</li>
+        </ul>
+        <p><strong>Decision:</strong> retain all approved Icons directions and exact optical hashes. Gate A remains open for the other asset families; do not create staged complete families or promote runtime assets yet.</p>
+      </section>
+    </main>
+  </body>
+</html>
