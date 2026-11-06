@@ -1,0 +1,412 @@
+{
+  "family": "avatar-classes",
+  "generatedOn": "2026-10-03",
+  "approvedOn": "2026-10-04",
+  "decision": "approved",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "normalization": "nearest-contain-alpha-clean-v1",
+  "opticalNormalization": "nearest-neighbor-optical-v1",
+  "masterSize": 512,
+  "masterFit": 448,
+  "masterBaseline": 488,
+  "opticalSizes": [
+    128,
+    64
+  ],
+  "characterOrder": [
+    "warrior",
+    "mage",
+    "ranger",
+    "rogue",
+    "physician",
+    "bard",
+    "alchemist",
+    "cartographer"
+  ],
+  "characters": [
+    {
+      "id": "warrior",
+      "label": "Warrior",
+      "role": "Seasoned front-line anchor",
+      "identity": "Compact adult, red-plumed helmet, round shield, short blade, worn heavy armor.",
+      "pose": "Heavy and planted.",
+      "palette": "Red, gold, steel, leather.",
+      "reference": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/references/warrior-approved-reference.png",
+        "width": 1536,
+        "height": 1024,
+        "sha256": "a2aa5fcafe1386ace566363042503e9f2f4812545334571e50cb50047ee63a18",
+        "transparentBackground": false
+      },
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/sources/warrior-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "f7bba471c9c669c649acf5f17f5380cbb16630cd56cf53609a1cee058584d365",
+        "transparentBackground": true,
+        "lineage": "imagegen-transparent-edit"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/warrior.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "cad8b04c066a149a081095ea7507091fd92fa65fdfd95ca9a40366cfcdbb9447",
+        "transparentBackground": true,
+        "normalization": "nearest-contain-alpha-clean-v1"
+      },
+      "optical128": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-128/warrior.png",
+        "width": 128,
+        "height": 128,
+        "sha256": "f0b29f8ee4c6a36d60a3382af07c29b17a03b272eee74bc9f26ad14d4d7027a6",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      },
+      "optical64": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-64/warrior.png",
+        "width": 64,
+        "height": 64,
+        "sha256": "4cb5b3b93016a564ec36ee7042071fa142c025680dc67e80b9a7eda0012c3068",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      }
+    },
+    {
+      "id": "mage",
+      "label": "Mage",
+      "role": "Experienced court-trained mage",
+      "identity": "Broad B-shaped pointed hat, purple robe, book, staff, and controlled field wear.",
+      "pose": "Upright and composed.",
+      "palette": "Purple, gold, cream, brown.",
+      "reference": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/references/mage-approved-reference.png",
+        "width": 1536,
+        "height": 1024,
+        "sha256": "26429bbdf5a76f5d2d5a63f865060eb62a52ae9526a6d5d67cec21d6ebaf2090",
+        "transparentBackground": false
+      },
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/sources/mage-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "1cd13af1572a9f12a863a90dedab829b8961f28b3147c4e77e40efa9c3e968cd",
+        "transparentBackground": true,
+        "lineage": "imagegen-transparent-edit"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/mage.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "a1e8804d6b25d9eae0dedebb39805ac62c4ebf28c3bbf12eaa6c798fb603d08a",
+        "transparentBackground": true,
+        "normalization": "nearest-contain-alpha-clean-v1"
+      },
+      "optical128": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-128/mage.png",
+        "width": 128,
+        "height": 128,
+        "sha256": "7caaa32765cd2467f3b96358dcc76cc0cb0c18e8aa70d4edbf887c4b53722414",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      },
+      "optical64": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-64/mage.png",
+        "width": 64,
+        "height": 64,
+        "sha256": "5ef1464230a8d0da92b91a3704188a9278fcf29687f5d3d65408fd1d067590b8",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      }
+    },
+    {
+      "id": "ranger",
+      "label": "Ranger",
+      "role": "Seasoned pathfinder",
+      "identity": "Dark skin, tied hair with white streaks, long braid, green shoulder covering, low-held bow.",
+      "pose": "Active image-right guidance.",
+      "palette": "Moss green, cream, brown, restrained gold.",
+      "reference": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/references/ranger-approved-reference.png",
+        "width": 1536,
+        "height": 1024,
+        "sha256": "b270fc305132941000db8c5e682817b3fbbac8e6a2ed9639add364bd3752b94f",
+        "transparentBackground": false
+      },
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/sources/ranger-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "a8ebb4299a38037e84cd237573dbc0de91cc09e3909092304498a5dd43076850",
+        "transparentBackground": true,
+        "lineage": "imagegen-transparent-edit"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/ranger.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "cd2e91826ef580f98272d3923f6e30375894e37f11989c62927605460a619c9a",
+        "transparentBackground": true,
+        "normalization": "nearest-contain-alpha-clean-v1"
+      },
+      "optical128": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-128/ranger.png",
+        "width": 128,
+        "height": 128,
+        "sha256": "3322cec6605a862792f94d903767c590907529c327ba4d4a3ee373d75e4a36f0",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      },
+      "optical64": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-64/ranger.png",
+        "width": 64,
+        "height": 64,
+        "sha256": "f9140d138346b0a2cea6fce4fd572072bcde5270e76a203ec473001670dc26a3",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      }
+    },
+    {
+      "id": "rogue",
+      "label": "Rogue",
+      "role": "Former guild infiltrator",
+      "identity": "Asymmetric short dark hair, beauty mark, wine-red scarf, dark shoulder covering, one drawn dagger.",
+      "pose": "Low and ready.",
+      "palette": "Charcoal, black, wine red, leather, restrained gold.",
+      "reference": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/references/rogue-approved-reference.png",
+        "width": 1536,
+        "height": 1024,
+        "sha256": "80fc19a13d8607bcd46b15c4187c3ad87592bc1e0bc95401d92fa37579bc3aa1",
+        "transparentBackground": false
+      },
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/sources/rogue-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "f5703043e77dfd30e49f0c04f4a5aa0b78c8b1baeb6150fa6679e8f2575849f9",
+        "transparentBackground": true,
+        "lineage": "imagegen-transparent-edit"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/rogue.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "a212dd57ddf7a18112e1421c5bb8e41a8a2aea8a6711fcee042c9b75a72377d3",
+        "transparentBackground": true,
+        "normalization": "nearest-contain-alpha-clean-v1"
+      },
+      "optical128": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-128/rogue.png",
+        "width": 128,
+        "height": 128,
+        "sha256": "b477ab96fad8938dfb9144c876e2c3a350df4515aadf2fd61b65b351e5f8b19a",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      },
+      "optical64": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-64/rogue.png",
+        "width": 64,
+        "height": 64,
+        "sha256": "b51a559a6ef039e2313bc0ab991fb30be4ce1a180cbda1728916be41f5067b9e",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      }
+    },
+    {
+      "id": "physician",
+      "label": "Physician",
+      "role": "Young travelling physician",
+      "identity": "Warm golden-brown skin, halo braid, white and teal robe, wooden staff, open diagnostic hand.",
+      "pose": "Upright and caring.",
+      "palette": "White, muted teal, gold, warm brown.",
+      "reference": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/references/physician-approved-reference.png",
+        "width": 1536,
+        "height": 1024,
+        "sha256": "81e158de89f2026184fa703bfcea828c799f3420ae2dcf641fe05e3809e1ce83",
+        "transparentBackground": false
+      },
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/sources/physician-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "db3c9e3e8aee4399cecdfe6fd2ed5c059a05625b66828711c1b84b69bcebbbad",
+        "transparentBackground": true,
+        "lineage": "imagegen-transparent-edit"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/physician.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "2c90a7ca884e9d99e4e519aa1ce938b78ce3f4a70f876da97afde9805011e598",
+        "transparentBackground": true,
+        "normalization": "nearest-contain-alpha-clean-v1"
+      },
+      "optical128": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-128/physician.png",
+        "width": 128,
+        "height": 128,
+        "sha256": "cc74369ba9a0df25665883c056e180919b05a97879853eb8ef650891bf36144a",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      },
+      "optical64": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-64/physician.png",
+        "width": 64,
+        "height": 64,
+        "sha256": "7f9a2b012f12ffe09c9fe0f029eaff2798b20ee579d82f80d72a26d1180fba52",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      }
+    },
+    {
+      "id": "bard",
+      "label": "Bard",
+      "role": "Former court musician and chronicler",
+      "identity": "Freckles, light stubble, red feathered hat, lute, and active playing hands.",
+      "pose": "Open performance stance.",
+      "palette": "Red, brown, cream, restrained gold.",
+      "reference": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/references/bard-approved-reference.png",
+        "width": 1536,
+        "height": 1024,
+        "sha256": "3ddf876cdcb67f8feed1cbf727c7a6a18aa5802b8314781e25a663bd48d6be41",
+        "transparentBackground": false
+      },
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/sources/bard-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "aad78abb19337bf17805140778f6587b74acff8b627e6a080f6cb890096038ab",
+        "transparentBackground": true,
+        "lineage": "imagegen-transparent-edit"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/bard.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "78cf180d9263145582fca6c0307f5192c17b7d9af1f5afd1af469f1b94e4c28b",
+        "transparentBackground": true,
+        "normalization": "nearest-contain-alpha-clean-v1"
+      },
+      "optical128": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-128/bard.png",
+        "width": 128,
+        "height": 128,
+        "sha256": "cef33332469d2156430554593fadc66c3e2558e579b7d670f34a7622966e9221",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      },
+      "optical64": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-64/bard.png",
+        "width": 64,
+        "height": 64,
+        "sha256": "a2f64319011b04f22e6a856659a74cf948cdbe80a5da20792fe7b3c347b5fc4e",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      }
+    },
+    {
+      "id": "alchemist",
+      "label": "Alchemist",
+      "role": "Field formula specialist",
+      "identity": "Asymmetric goggles and eyewear, green scarf, cream work coat, carefully inspected flask.",
+      "pose": "Precise close inspection.",
+      "palette": "Olive, cream, charcoal, leather, brass.",
+      "reference": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/references/alchemist-approved-reference.png",
+        "width": 1536,
+        "height": 1024,
+        "sha256": "56adb937555e6a0b4bf7717e2aa602bc6c623deb54c4a35867d7851ac274bdc3",
+        "transparentBackground": false
+      },
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/sources/alchemist-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "647badb03cb79026df1ec7561595ec59bc5c59dd6b4719325f806fd4c480979f",
+        "transparentBackground": true,
+        "lineage": "imagegen-transparent-edit"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/alchemist.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "acacaeb4fb1f40a1fe0dedda21b9fc964a4459b377e6ebfd7d4d6d8f8c110dad",
+        "transparentBackground": true,
+        "normalization": "nearest-contain-alpha-clean-v1"
+      },
+      "optical128": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-128/alchemist.png",
+        "width": 128,
+        "height": 128,
+        "sha256": "b70da63bd0e1c005098a999a8efaee324636457225bb141bee6d13321acc1cf4",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      },
+      "optical64": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-64/alchemist.png",
+        "width": 64,
+        "height": 64,
+        "sha256": "1a0a6907ee4bfe5eaa5dbd261f54f38c7a2b94c27d6b000ee36a59e05e12883e",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      }
+    },
+    {
+      "id": "cartographer",
+      "label": "Cartographer",
+      "role": "Coastal-born frontier surveyor",
+      "identity": "Short-brimmed hat, blue neck scarf, folded map, compass, and practical fieldwear.",
+      "pose": "Observant field survey.",
+      "palette": "Sand, blue, cream, dark charcoal, brass.",
+      "reference": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/references/cartographer-approved-reference.png",
+        "width": 1536,
+        "height": 1024,
+        "sha256": "2e5b2c008947c336bd99a756f4ec60908a9c9a390122e4e271c3ff7e95f5cdec",
+        "transparentBackground": false
+      },
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/avatar-classes/sources/cartographer-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "93a8d4c10f5a112268bae50c7ff70efc73072d1ee6f08a4ea2b299539aad2056",
+        "transparentBackground": true,
+        "lineage": "imagegen-transparent-edit"
+      },
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/masters/cartographer.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "2cd9e894cfdf4229ba4e7dc04b0e41ef330c08328015fdc9e5a5017a1aeb6ea5",
+        "transparentBackground": true,
+        "normalization": "nearest-contain-alpha-clean-v1"
+      },
+      "optical128": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-128/cartographer.png",
+        "width": 128,
+        "height": 128,
+        "sha256": "0a16507a5bca86980120d23eac38f6be8d52871865144910529c8092532f2b4b",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      },
+      "optical64": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/optical-64/cartographer.png",
+        "width": 64,
+        "height": 64,
+        "sha256": "42569dcd8a08bc88f9f707da03b8c4f589f36040d9bbca6a99ac9d52ecf9a4bf",
+        "transparentBackground": true,
+        "normalization": "nearest-neighbor-optical-v1"
+      }
+    }
+  ],
+  "sheet": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/avatar-classes-calibration.png",
+    "width": 2048,
+    "height": 1024,
+    "sha256": "4f3cfacfbe20576390c26561025218b4c8dfe083ef921d27a11ecdd7fa2f2b59",
+    "transparentBackground": true
+  }
+}

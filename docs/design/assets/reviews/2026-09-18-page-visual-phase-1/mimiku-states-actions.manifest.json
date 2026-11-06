@@ -1,0 +1,202 @@
+{
+  "family": "mimiku-states-actions",
+  "generatedOn": "2026-10-02",
+  "approvedOn": "2026-10-02",
+  "decision": "approved",
+  "reviewOnly": true,
+  "runtimePromotion": false,
+  "poseOrder": [
+    "state-idle",
+    "state-working",
+    "state-happy",
+    "state-reminder",
+    "state-serious",
+    "state-concerned",
+    "action-record-ledger-key",
+    "action-adventure-complete-key"
+  ],
+  "poses": [
+    {
+      "id": "state-idle",
+      "label": "Idle",
+      "role": "state",
+      "lineage": "canonical",
+      "source": {
+        "path": "web/public/pixel-ui/characters/mimiku-idle.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "1cc0e72cd73f12f8dbe75a00c2253aec08fd8a27e9ab92430be41ec958eeaea2",
+        "transparentBackground": true
+      },
+      "meaning": "Neutral, available, and attentive.",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-idle.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68",
+        "normalization": "nearest-contain-alpha-clean-v1",
+        "transparentBackground": true
+      }
+    },
+    {
+      "id": "state-working",
+      "label": "Working",
+      "role": "state",
+      "lineage": "imagegen-repair",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/mimiku-states/state-working-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "f34bd78a2df5c5058008c0c619782ccd5bc41c89b9f08e6fcaae5eba2a5c9ec8",
+        "transparentBackground": true
+      },
+      "meaning": "Quietly reviews an open ledger; quill remains visibly above the page.",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-working.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "b6231d641e032ba3a7cfa856553ceeb9eca0f526a0375cb70df7cf0466988337",
+        "normalization": "nearest-contain-alpha-clean-v1",
+        "transparentBackground": true
+      }
+    },
+    {
+      "id": "state-happy",
+      "label": "Happy",
+      "role": "state",
+      "lineage": "canonical",
+      "source": {
+        "path": "web/public/pixel-ui/characters/mimiku-happy.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "397431082776b3ec037c90b8bfd5a7c144a0dbc730f6b753c782b3836b6727f3",
+        "transparentBackground": true
+      },
+      "meaning": "Warm positive acknowledgement.",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-happy.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "1a350e5c6b9995c9ea5d8be5a1e73c2fcd8dc38646f08d08488b8446ef50d294",
+        "normalization": "nearest-contain-alpha-clean-v1",
+        "transparentBackground": true
+      }
+    },
+    {
+      "id": "state-reminder",
+      "label": "Reminder",
+      "role": "state",
+      "lineage": "canonical",
+      "source": {
+        "path": "web/public/pixel-ui/characters/mimiku-reminder.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "2fa3d8b6d27a08b4f98ddfd6f30786c9f0a4fd9757a5ad244c2c56f35484aaec",
+        "transparentBackground": true
+      },
+      "meaning": "Friendly prompt that asks for attention.",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-reminder.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "1a24a850d965fe97889a93e95250a4b463649686909c830f03040185990716dd",
+        "normalization": "nearest-contain-alpha-clean-v1",
+        "transparentBackground": true
+      }
+    },
+    {
+      "id": "state-serious",
+      "label": "Serious",
+      "role": "state",
+      "lineage": "canonical",
+      "source": {
+        "path": "web/public/pixel-ui/characters/mimiku-serious.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "2c89947f952dd76aa55c5ddf1f79dc4a501c530458b10355a5214ff6c8d1a442",
+        "transparentBackground": true
+      },
+      "meaning": "Firm, high-attention accounting boundary.",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-serious.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "08eb6a2ab5f54f17f252e8693dab2fd81415a370bba7c4a1665f325e3e141fdf",
+        "normalization": "nearest-contain-alpha-clean-v1",
+        "transparentBackground": true
+      }
+    },
+    {
+      "id": "state-concerned",
+      "label": "Concerned",
+      "role": "state",
+      "lineage": "imagegen-repair",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/mimiku-states/state-concerned-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "28bfa2d4f23082b41fdcfc4c227562fe7bd8460394d2cb0faad2769738538cf6",
+        "transparentBackground": true
+      },
+      "meaning": "Restrained, recoverable concern without blame or disaster.",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-concerned.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "74abb07a02aab5eb23c5f69821eee7db5149c3fbfda2e7673682d6db9b1f746e",
+        "normalization": "nearest-contain-alpha-clean-v1",
+        "transparentBackground": true
+      }
+    },
+    {
+      "id": "action-record-ledger-key",
+      "label": "Record ledger",
+      "role": "action-key",
+      "lineage": "imagegen-repair",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/mimiku-states/action-record-ledger-key-v03-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "d17ce8e5d127829ab4d38a4215f2480117080f56478618bda6e51f0ad0ef1c0f",
+        "transparentBackground": true
+      },
+      "meaning": "Quill writes on the left page while restrained prior-entry marks remain visible on the right.",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/action-record-ledger-key.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "3e6f930e511404840007c0fc86a2230524b021102adbbb1b29bf8e23b4eed948",
+        "normalization": "nearest-contain-alpha-clean-v1",
+        "transparentBackground": true
+      }
+    },
+    {
+      "id": "action-adventure-complete-key",
+      "label": "Adventure complete",
+      "role": "action-key",
+      "lineage": "imagegen-repair",
+      "source": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/mimiku-states/action-adventure-complete-key-source.png",
+        "width": 1254,
+        "height": 1254,
+        "sha256": "ea1d30fc5aa239d7d0541c8ad63dbb47a1ae7cc6f40a3dcedcddb63342cbf8b9",
+        "transparentBackground": true
+      },
+      "meaning": "A modest forward step with restrained completion sparkles.",
+      "master": {
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/action-adventure-complete-key.png",
+        "width": 512,
+        "height": 512,
+        "sha256": "27c528b461ca5c3cbbf72ac1568a248a11deed2c9c197832157e6d242e3ace54",
+        "normalization": "nearest-contain-alpha-clean-v1",
+        "transparentBackground": true
+      }
+    }
+  ],
+  "sheet": {
+    "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/mimiku-states-actions-calibration.png",
+    "width": 1536,
+    "height": 1024,
+    "sha256": "eea15ebaff7ccb1f68f44cc7ea12b1484c73836fabf439bf7f639c37c55107f3"
+  }
+}
