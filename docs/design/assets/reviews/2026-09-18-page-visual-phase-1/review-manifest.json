@@ -17,9 +17,29 @@
         "width": 1200,
         "height": 400,
         "alpha": true,
-        "sha256": "4a9c037db30e1cfe69db702ab473efccc08f9278d93e6d167252c34f41b38f14"
+        "sha256": "745eda3b5df02f9f7cf3e911a5f095c9fc16178892857a0b2d8d10379f42bd09"
       },
-      "decision": "awaiting-calibration"
+      "staged_files": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/wordmark/mimic-wordmark-display.png",
+          "width": 1536,
+          "height": 512,
+          "frames": 1
+        },
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/wordmark/mimic-wordmark-compact.png",
+          "width": 768,
+          "height": 256,
+          "frames": 1
+        },
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/wordmark/mimic-wordmark-motion-sheet.png",
+          "width": 4608,
+          "height": 512,
+          "frames": 3
+        }
+      ],
+      "decision": "approved"
     },
     {
       "id": "icons",
@@ -32,9 +52,9 @@
         "width": 1024,
         "height": 1024,
         "alpha": true,
-        "sha256": "5d6eb7faef38e2ca371f106036ffe25d4678c2178a6e28433bf27293108713e4"
+        "sha256": "8ddfc1ffa00ee3c0a6466c73d14ec813da50256de271d9a1b63793882612720d"
       },
-      "decision": "awaiting-calibration"
+      "decision": "approved"
     },
     {
       "id": "mimiku-states",
@@ -43,13 +63,13 @@
       "fallback": "Show the full state message and actions without character art.",
       "accessibility": "Use contextual alternative text only when the pose adds information.",
       "sample": {
-        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-calibration.png",
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/mimiku-states-actions-calibration.png",
         "width": 1536,
         "height": 1024,
         "alpha": true,
-        "sha256": "c09d051730df12848e8b142b425382da7cd6473bb4b456c10d4e91dff9f223c7"
+        "sha256": "eea15ebaff7ccb1f68f44cc7ea12b1484c73836fabf439bf7f639c37c55107f3"
       },
-      "decision": "awaiting-calibration"
+      "decision": "approved"
     },
     {
       "id": "avatar-classes",
@@ -58,13 +78,13 @@
       "fallback": "Identify each person with their live name and role.",
       "accessibility": "Never use class as identity, permission, or accounting meaning.",
       "sample": {
-        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes-calibration.png",
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/avatar-classes-calibration.png",
         "width": 2048,
         "height": 1024,
         "alpha": true,
-        "sha256": "81721babcbd3b240471bf7d08352f3e5a3477ca69cd74a9a2f6b596985966de5"
+        "sha256": "4f3cfacfbe20576390c26561025218b4c8dfe083ef921d27a11ecdd7fa2f2b59"
       },
-      "decision": "awaiting-calibration"
+      "decision": "approved"
     },
     {
       "id": "scenes",
@@ -73,13 +93,30 @@
       "fallback": "Use the same live content and actions on a static bounded background.",
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "sample": {
-        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/scenes-calibration.png",
-        "width": 2048,
-        "height": 1152,
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/desktop-closed.png",
+        "width": 960,
+        "height": 540,
         "alpha": false,
-        "sha256": "db7495b1a5a18b5b53bf935681d274317b8717921f44ecf3c281cf340b1d58b5"
+        "sha256": "81cffbf3430199b9bc33b4003670db850a2aa8b1fcf95a8965fa4675340dbbd0"
       },
-      "decision": "awaiting-calibration"
+      "additional_samples": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/desktop-open.png",
+          "width": 960,
+          "height": 540,
+          "alpha": false,
+          "sha256": "ce9b57b353f6231072bbf3cb7f27e99537d2d3dc11f4d7ae9434eca9f32b3bb2"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r3/layout.json",
+          "sha256": "b105d090a90615a9d3f4b9f5e6e6a619c2d54014c0708ec626c86857ca142a71"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/home-base-v02.manifest.json",
+          "sha256": "35e1b6abfb065f9466f49c40805d5c0ab57254ac537ecbabe1d01878592da371"
+        }
+      ],
+      "decision": "approved"
     },
     {
       "id": "frames",
@@ -88,13 +125,10 @@
       "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
       "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
       "sample": {
-        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-calibration.png",
-        "width": 1536,
-        "height": 1024,
-        "alpha": true,
-        "sha256": "847199610d905f5787c5873c2880c0d67b946aff3e27bbb41db0b54801150e3a"
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-2r/frames.json",
+        "sha256": "51d1edf28c539c4a751b706dd0a435b6657345b69b828c81812d1387e2a07d6c"
       },
-      "decision": "awaiting-calibration"
+      "decision": "approved"
     },
     {
       "id": "props",
@@ -103,13 +137,16 @@
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "sample": {
-        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration.png",
-        "width": 1536,
-        "height": 1024,
-        "alpha": true,
-        "sha256": "e20472bbb8cfa5f8105c6d749f20c525f8f0b87843acbc07aeeb848776600520"
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/props-calibration-v04.manifest.json",
+        "sha256": "bcee8473f6041f81bef4adf875980c8c98831665ebc937afacf7a3962b377bc6"
       },
-      "decision": "awaiting-calibration"
+      "additional_samples": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-prop-placement-application.manifest.json",
+          "sha256": "8084940578e2409aae4c59ffea6adfc7ac17e416ca61367a205c1e85105e0e8c"
+        }
+      ],
+      "decision": "approved"
     },
     {
       "id": "motion",
@@ -118,12 +155,36 @@
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "sample": {
-        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration.html",
+        "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02r-review.html",
         "width": 1200,
         "height": 800,
         "alpha": null,
-        "sha256": "2f5c3f424f809a3f648785d5255834dfb181f4d2f1727186c2e8b9c94bb5a925"
+        "sha256": "f85417e0d7807a9d56e2ecd592fdf12d1dd7476b1bbdff42dd615146ac682d39"
       },
+      "additional_samples": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02r.manifest.json",
+          "sha256": "53c0ea3dd812b52b5e882d2b5031383e575e9c5c7a5ff47ba1b226658fb4f0a3"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02-review.html",
+          "width": 1200,
+          "height": 800,
+          "alpha": null,
+          "sha256": "40b8fb2bfd57f8a1115b72d97b2fac675bb1e867398d44d34c4824a6b7abbaf9"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02.manifest.json",
+          "sha256": "3e4c711a79d864f6f47645fa23833346733488ba15712caa889863c5c96b8b92"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration.html",
+          "width": 1200,
+          "height": 800,
+          "alpha": null,
+          "sha256": "2f5c3f424f809a3f648785d5255834dfb181f4d2f1727186c2e8b9c94bb5a925"
+        }
+      ],
       "decision": "awaiting-calibration"
     }
   ]

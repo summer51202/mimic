@@ -1253,3 +1253,903 @@
 - Updated the review page and regression baselines for 320, 390, 768, and 1440 viewports.
 **Decisions:** Canonical Mimiku stepped navy outlines, clustered pixels, limited color ramps, restrained dithering, and handmade asymmetry are the Wordmark style authority. The replacement remains `awaiting-calibration`.
 **Known gaps / follow-ups:** Await explicit Wordmark visual approval or further correction. No complete family, runtime promotion, page composition, or next-family work is authorized.
+
+## 2026-09-23 — Calibrate selected Wordmark V11
+
+**Task:** Deterministically convert the user-selected V11 Wordmark visual into the required 1200 × 400 Gate A calibration sheet without redesigning it.
+**Scope:** Phase 1 Wordmark composer, calibration PNG, manifest, decision/lineage records, review index, and focused asset-style test.
+**What changed:**
+- Locked V11's exact dimensions and SHA-256 in the focused test before changing the composer.
+- Switched the deterministic composer from the superseded derived source to V11, preserving nearest-neighbor display/compact placement and zero RGB under fully transparent pixels.
+- Updated the review-only calibration hash and placed the selected V11 control beside the canonical export in the review index.
+**Decisions:** The V11 visual source is selected, but the new exact calibration hash and the proposed 1536 × 512 display, 768 × 256 compact, and 4608 × 512 motion-sheet canvases remain pending user confirmation. Wordmark stays `awaiting-calibration`; Gate A remains closed.
+**Known gaps / follow-ups:** Stop at the visual checkpoint. Do not produce the complete Wordmark family or begin Icons calibration until the user confirms the exact calibration sample and canvas choices.
+
+## 2026-09-23 — Record Wordmark Gate A approval
+
+**Task:** Record the user's approval of the exact V11-derived Wordmark calibration and proposed staged canvases.
+**Scope:** Phase 1 review manifest, decision and lineage records, review index, focused asset-style test, and devlog.
+**What changed:**
+- Marked only the Wordmark family `approved` at exact calibration SHA-256 `745eda3b5df02f9f7cf3e911a5f095c9fc16178892857a0b2d8d10379f42bd09`.
+- Recorded the accepted 1536 × 512 display, 768 × 256 compact, and 4608 × 512 three-frame motion-sheet staged paths and canvases.
+- Kept the other seven families at `awaiting-calibration` and kept the overall Gate A closed.
+**Decisions:** Per-family approval permits continuing to the next calibration review; it does not authorize complete-family production, runtime promotion, page composition, or Phase 2.
+**Known gaps / follow-ups:** Reconcile and present the existing Icons calibration, references, consumer mapping, safe-zone, grayscale, and small-size evidence for the next explicit decision.
+
+## 2026-09-23 — Assemble Icons calibration checkpoint
+
+**Task:** Present the existing Icons calibration beside canonical source/runtime references and required optical checks without producing replacement assets.
+**Scope:** Icons review-only HTML and focused asset-style test.
+**What changed:**
+- Added one review page with the existing candidate, immutable/source/runtime controls, 16/32/48/192 CSS-size previews, grayscale comparison, and a live maskable safe-zone overlay.
+- Restated named consumers, live-HTML boundaries, and evidence-based self-check findings outside raster pixels.
+- Kept the manifest decision at `awaiting-calibration`; no icon image was generated or promoted.
+**Decisions:** Recommend source-constrained recalibration because the candidate's smooth polished rendering does not yet match the approved V11/canonical stepped pixel language, while 16–32px simplification and measurable safe-zone evidence are also unresolved.
+**Known gaps / follow-ups:** Stop for explicit approve, reject, or correction direction. Do not produce the complete icon family.
+
+## 2026-09-23 — Recalibrate Icons from canonical sources
+
+**Task:** Produce one review-only Icons replacement after approval of the documented correction directions.
+**Scope:** Archived Icons sample, generated source, deterministic composer, manifest/decision/review records, and focused asset contract.
+**What changed:**
+- Archived the superseded calibration at exact hash instead of deleting it.
+- Used built-in ImageGen with the immutable Mimiku master, pixel UI source sheet, selected V11, and prior calibration assigned explicit reference roles.
+- Rejected the first generated attempt during self-check because navigation/mode icons retained smooth gradients and scenic bases; a single targeted edit removed those issues without changing the top-band composition.
+- Deterministically normalized the selected 1254 × 1254 RGBA source to a clean 1024 × 1024 transparent calibration with nearest-neighbor scaling and zero RGB beneath fully transparent pixels.
+**Decisions:** The replacement remains `awaiting-calibration`. It is review-only and does not authorize complete-family production or runtime promotion.
+**Known gaps / follow-ups:** Await explicit approval, rejection, or a single-variable correction for exact calibration SHA-256 `28a1add69f6a15dcaeb3ffa897659f19c72736750d845de2ec433bb62ad1728c` and proposed icon staged paths/canvases.
+
+## 2026-09-23 — Raise Mode icon pixel density
+
+**Task:** Replace the rejected coarse mode-icon treatment with the approved high-density V11 hand-drawn pixel direction.
+**Scope:** Icons calibration brief, archived intermediate candidate, generated source, deterministic composer input, manifest/decision/review records, and focused asset contract.
+**What changed:**
+- Recorded that mode icons use detailed 192px-class masters with later 48px optical exports, not enlarged 16 × 16 or 32 × 32 glyphs.
+- Archived the coarse candidate at SHA-256 `28a1add69f6a15dcaeb3ffa897659f19c72736750d845de2ec433bb62ad1728c`.
+- Reworked only the wallet, overlapping-receipts, and open-chest mode specimens at higher pixel density while retaining their meanings, order, grayscale counterparts, and transparent layout.
+- Deterministically normalized the new source to the 1024 × 1024 calibration contract with clean transparent RGB.
+**Decisions:** The low-resolution visual-companion mockups and coarse calibration are rejected style references. The current high-density replacement remains `awaiting-calibration`.
+**Known gaps / follow-ups:** Await exact visual approval or one-variable correction for SHA-256 `2cdbb9b47bea7dcfe4aefdeed1b85da85830876e06935a0483cc3187bf60c90a`; do not produce the complete icon family.
+
+## 2026-09-23 — Approve primary-navigation icon direction
+
+**Task:** Preserve the user-approved five-icon navigation strip and place it into the Icons calibration beside the other icon evidence.
+**Scope:** Navigation source, deterministic Icons composer, calibration/review records, focused asset contract, and devlog.
+**What changed:**
+- Recorded the approved Base campfire, Adventure Log journal, Adventurer Guild warrior/mage handshake, Tasks quest board, and Settings repaired-gear direction at exact source SHA-256 `3e9284c6666723c1d58a437063cd823bfee62d5acfdf682eaf54d5123c618cea`.
+- Replaced only the five-icon navigation band in the review-only 1024 × 1024 Icons calibration; retained the existing install/face and mode evidence.
+- Documented that the navigation approval is a sub-family decision and does not approve the complete Icons family.
+**Decisions:** Keep Icons at `awaiting-calibration`; individual 48 × 48 optical exports and all non-navigation icon consumers still require review.
+**Known gaps / follow-ups:** Review the recomposed calibration, then continue with the remaining Icons evidence without runtime promotion or full-family production.
+
+## 2026-09-23 — Repair navigation calibration slicing
+
+**Task:** Remove broken fragments in the approved primary-navigation row without changing its art direction.
+**Scope:** Icons calibration composer, generated review PNG, manifest/decision hashes, focused regression test, and devlog.
+**What changed:**
+- Reproduced the defect as 123 blue-dominant sleeve pixels leaking into the task-icon cell.
+- Replaced equal-width source slicing with deterministic alpha-component labeling, retaining the five main icons and intentional campfire rock components while discarding isolated generation noise.
+- Rebuilt the review-only calibration and added a regression assertion that prevents the mage sleeve from leaking into the task icon again.
+**Decisions:** Preserve the approved source unchanged; repair only deterministic composition. The Icons family remains `awaiting-calibration`.
+**Known gaps / follow-ups:** Individual 48 × 48 optical exports and the remaining non-navigation icon evidence are still pending; no runtime assets were promoted.
+
+## 2026-09-24 — Generate refined Tasks icon candidates
+
+**Task:** Create three more detailed task-board icons for visual selection without changing the approved navigation source.
+**Scope:** Phase 1 Tasks icon design/implementation notes, three review-only PNG candidates, comparison page, and devlog.
+**What changed:**
+- Used built-in ImageGen with the approved five-icon strip as the style and subject reference to create Adventurer Contract Board, Guild Quest Wall, and Expedition Planning Board candidates.
+- Preserved each 1254 × 1254 RGBA output under `samples/task-board-variants/` with a versioned descriptive filename.
+- Added an equal-scale comparison page with large and 48 px previews plus a live decision-boundary notice.
+**Decisions:** No candidate is selected yet. The navigation source, main calibration, runtime assets, and Icons family decision remain unchanged.
+**Known gaps / follow-ups:** Await the user's A/B/C selection before any source replacement, calibration recomposition, or optical export work.
+
+## 2026-09-24 — Select Tasks candidate A
+
+**Task:** Apply the user-selected Adventurer Contract Board to the primary-navigation calibration.
+**Scope:** Selected Tasks source contract, deterministic Icons composer, calibration PNG, comparison/review pages, manifest/decision records, focused regression test, and devlog.
+**What changed:**
+- Locked candidate A at SHA-256 `3cb0cfd4d0b91e1e58f09ad69777dc72ce89944fc982a3c46c12817e68b72856` and marked it selected in the comparison page.
+- Updated the composer to replace only the Tasks cell while retaining the original strip as the source for the other four navigation directions.
+- Ignored invisible low-alpha generation fringe when sizing A so its visible board matches the visual weight of the adjacent icons.
+- Rebuilt the review calibration at SHA-256 `8ddfc1ffa00ee3c0a6466c73d14ec813da50256de271d9a1b63793882612720d`.
+**Decisions:** Candidate A is the selected Tasks master direction. The complete Icons family remains `awaiting-calibration`; no runtime asset or 48 × 48 optical export was produced.
+**Known gaps / follow-ups:** Continue reviewing the remaining non-navigation Icons evidence before any complete-family production or runtime promotion.
+
+## 2026-09-24 — Present focused Mode icon calibration
+
+**Task:** Isolate the current personal, shared, and pooled mode icons for semantic, 48 px, and grayscale review.
+**Scope:** Focused Mode review HTML, asset-style regression test, rendered desktop/mobile visual checks, and devlog.
+**What changed:**
+- Added a three-column review surface for the personal wallet, shared receipts, and pooled open-chest specimens already present in the Icons calibration.
+- Reused the existing calibration PNG through clipped sprite windows; no icon pixels or source images were changed.
+- Added live 48 px and CSS grayscale evidence for each mode plus explicit semantic, silhouette, and family-style review questions.
+- Tightened each crop to its connected visible bounds after visual QA exposed neighboring sprite fragments in the first presentation pass.
+**Decisions:** This page is review evidence only. No mode icon is approved, rejected, regenerated, or promoted by this change.
+**Known gaps / follow-ups:** Await user feedback on the three mode concepts before recording a Mode sub-family decision or moving to the record-expense Action icon.
+
+## 2026-09-25 — Approve Mode icon directions
+
+**Task:** Record approval of all three presented financial-space Mode icon directions.
+**Scope:** Mode comparison page, Icons review/index, calibration brief, decision log, focused regression test, and devlog.
+**What changed:**
+- Marked Personal wallet, Shared overlapping receipts and coins, and Pooled open coin chest as approved Mode sub-family directions.
+- Recorded that approval includes the presented 48 px and grayscale evidence at the unchanged Icons calibration SHA-256 `8ddfc1ffa00ee3c0a6466c73d14ec813da50256de271d9a1b63793882612720d`.
+- Updated review surfaces to distinguish the approved navigation and Mode directions from the remaining Icons work.
+**Decisions:** This is a Mode sub-family decision only. The complete Icons family remains `awaiting-calibration`.
+**Known gaps / follow-ups:** Install/favicon, record-expense Action, event/status, maskable, and final individual optical-export evidence remain pending before Icons Gate A approval.
+
+## 2026-09-25 — Present record-expense Action icon A
+
+**Task:** Produce the approved quill, loose-ledger-page, and subordinate-coin direction for user review.
+**Scope:** Action source/master, deterministic composer, specialized review page, review links, and Gate A test.
+**What changed:**
+- Added one review-only 192 × 192 Action candidate with 48 px and grayscale evidence.
+- Retained its generative source and recorded the deterministic master SHA-256 `5f261384aa4e5748a932ed692bc5dfa3bedd30e0c0892c02571a73dc31567680`.
+- Kept the complete Icons family awaiting calibration and changed no runtime path.
+**Decisions:** The loose page distinguishes the action from the approved Adventure Log navigation icon; the coin remains secondary.
+**Known gaps / follow-ups:** User visual approval, event/status icons, install/favicon, maskable evidence, and final complete-family optical exports remain pending.
+
+## 2026-09-27 — Approve record-expense Action icon
+
+**Task:** Record user approval of the presented record-expense Action icon A.
+**Scope:** Action review page, Icons review/index, calibration brief, decision log, focused regression test, and devlog.
+**What changed:**
+- Marked the quill, loose-ledger-page, and subordinate-coin Action direction as approved.
+- Locked the approved 192 × 192 master at SHA-256 `5f261384aa4e5748a932ed692bc5dfa3bedd30e0c0892c02571a73dc31567680`, including its presented 48 px and grayscale evidence.
+- Updated review surfaces while retaining the complete Icons family as `awaiting-calibration` and leaving runtime paths unchanged.
+**Decisions:** Approval applies only to the record-expense Action sub-family direction.
+**Known gaps / follow-ups:** Install/favicon, event/status, maskable, and final individual optical-export evidence remain pending before Icons Gate A approval.
+
+## 2026-09-30 — Event and status icon calibration checkpoint
+
+**Task:** Produce nine review-only Event / Status icon directions from the approved direct-accounting-object design.
+**Scope:** Event / Status ImageGen sources, deterministic composer, 192 px masters, 48 px optical exports, manifest, review page, focused tests, calibration brief, and decision log.
+**What changed:**
+- Added nine transparent source directions and deterministic normalized review outputs.
+- Added exact SHA-256 metadata, grayscale evidence, approved-family controls, and four-viewport checks.
+- Kept all product runtime paths unchanged and retained the Icons family as awaiting calibration.
+
+**Decisions:** Used posture and overlap instead of arrows; preserved the old ledger in Correction; kept Lock and Offline visually simpler than event icons.
+**Known gaps / follow-ups:** Await user approval or revision of the exact presented hashes; install/favicon, maskable, and final individual optical-export evidence remain pending.
+
+## 2026-10-01 — Approve Event and Status icon directions
+
+**Task:** Record user approval of all nine presented Event / Status icon directions.
+**Scope:** Event / Status manifest, deterministic composer, review page, calibration brief, decision log, focused contracts, and devlog.
+**What changed:**
+- Marked all nine Event / Status directions approved at their existing exact master hashes.
+- Added a deterministic guard that rejects any future master whose SHA-256 differs from the approved set.
+- Retained the approved 48 px and grayscale evidence without changing any PNG pixels.
+- Kept the complete Icons family awaiting calibration and left runtime paths unchanged.
+
+**Decisions:** Approval applies only to the Event / Status sub-family and preserves all accounting-boundary notes.
+**Known gaps / follow-ups:** Install/favicon, maskable, and final individual optical-export evidence remain pending before Icons Gate A approval.
+
+## 2026-10-01 — Approve Install and Favicon direction
+
+**Task:** Produce and record the user-approved Install / Favicon calibration using the selected single-master strategy.
+**Scope:** Install / Favicon ImageGen source, deterministic composer and config, five review PNGs, manifest, responsive review page, focused Vitest and Playwright contracts, calibration brief, decision log, and devlog.
+**What changed:**
+- Generated one complete-character Mimiku source and deterministically composed one opaque 512 px canonical master.
+- Derived 192, 48, 32, and 16 px review outputs directly from the canonical master with nearest-neighbor sampling and recorded exact SHA-256 values.
+- Added true-size, enlarged, grayscale, browser-tab, installed-app, responsive, opacity, lineage, and determinism evidence.
+- Recorded explicit user approval of the single-master Phase 1 exception while leaving all product runtime paths unchanged.
+
+**Decisions:** Keep the complete Mimiku and heart coin at every size without optical redraws. Approval applies only to the exact five Install / Favicon hashes; the complete Icons family remains `awaiting-calibration`.
+**Known gaps / follow-ups:** Maskable, remaining final optical-export evidence, runtime promotion, and Gate A approval remain pending.
+
+## 2026-10-01 — Maskable icon calibration checkpoint
+
+**Task:** Produce the approved-direction Maskable review artifacts without runtime promotion.
+**Scope:** ImageGen source, deterministic compositor/config, two PNGs, manifest, responsive review, focused contracts, calibration records, and devlog.
+**What changed:**
+- Generated a dedicated borderless complete-character Mimiku source on deep navy.
+- Composed and hashed the opaque 512 px canonical master and direct 192 px nearest-neighbor derivative.
+- Added 80% safe-zone, circle, rounded-square, squircle, aggressive-crop, grayscale, responsive, and deterministic review evidence.
+- Added independent Vitest and four-viewport Playwright contracts while leaving runtime paths unchanged.
+
+**Decisions:** Use the selected A direction, keep defining anatomy and the complete heart coin inside the centered 80% safe zone, and retain decision state `awaiting-calibration`.
+**Known gaps / follow-ups:** Await exact-hash visual approval; runtime promotion, final optical-export evidence, complete Icons-family approval, and Gate A remain deferred.
+
+## 2026-10-01 — Final UI icon optical evidence checkpoint
+
+**Task:** Record Maskable approval and produce the remaining review-only 48 px Navigation, Mode, and Action icon evidence.
+**Scope:** Maskable decision records, deterministic icon compositor/config, nine 192 px masters, nine 48 px exports, manifest, responsive review page, and focused Vitest/Playwright contracts.
+**What changed:**
+- Recorded approval of the exact Maskable source, 512 master, and 192 derivative hashes without changing their pixels.
+- Normalized five Navigation, three Mode, and one Action direction from their approved sources into deterministic transparent masters and direct nearest-neighbor 48 px exports.
+- Presented all eighteen UI icons together with true-size color and grayscale evidence and live semantic boundaries.
+- Added independent raster-integrity and four-viewport no-overflow contracts.
+
+**Decisions:** Preserve the selected Tasks candidate A; reuse the exact Mode crop coordinates from the approved review; keep every output review-only outside `web/public`.
+**Known gaps / follow-ups:** Await visual approval of the nine new master/export hash pairs. The complete Icons family, all-family Gate A, staged production families, runtime promotion, and Phase 2 remain pending.
+
+## 2026-10-01 — Icons calibration approval
+
+**Task:** Record user approval of the final Navigation, Mode, and Action master/export pairs.
+**Scope:** Optical-evidence manifest/review, Icons decision records, review manifest/index, focused contract, and devlog.
+**What changed:**
+- Changed the exact-hash optical-evidence decision from `awaiting-calibration` to `approved` without changing any approved PNG pixels.
+- Marked the complete Icons calibration approved and linked the complete eighteen-icon evidence from the review index.
+- Consolidated duplicate pending optical-evidence records into one approved hash table.
+
+**Decisions:** Approval covers only the review hashes and accepted staged filenames/canvases for Icons; other families and Gate A remain open.
+**Known gaps / follow-ups:** Do not create complete staged families until every Gate A family is approved. Runtime promotion and Phase 2 remain unauthorized.
+
+## 2026-10-02 — Mimiku states and actions calibration checkpoint
+
+**Task:** Produce the selected partial-lineage-repair Mimiku state/action family for visual review.
+**Scope:** Four ImageGen sources, eight deterministic 512 px masters, combined calibration sheet, manifest, review page, focused Vitest/Playwright contracts, calibration brief, and decision log.
+**What changed:**
+- Preserved canonical Idle, Happy, Reminder, and Serious as read-only lineage controls.
+- Generated repaired Working, Concerned, record-ledger, and adventure-complete sources, then normalized all eight poses with one deterministic pipeline.
+- Added real 128 px and grayscale evidence, exact hashes, two semantic comparisons, and four-viewport no-overflow coverage.
+- Kept every output review-only and left all runtime paths unchanged.
+
+**Decisions:** Working keeps the quill visibly above the page; record-ledger requires page contact. Concerned stays recoverable and non-blaming; adventure-complete uses a modest step and restrained sparkles.
+**Known gaps / follow-ups:** Await visual approval of the eight exact master hashes. Mimiku, Gate A, staged complete families, runtime promotion, and Phase 2 remain pending.
+
+## 2026-10-02 — Clarify Mimiku record-ledger ink contact
+
+**Task:** Move the record-ledger action's ink evidence to the opposite blank page for stronger visual clarity.
+**Scope:** Record-ledger ImageGen v02 source, deterministic master/sheet/manifest/review outputs, calibration brief, decision log, and focused contracts.
+**What changed:**
+- Preserved the prior source and added a v02 source with the quill nib and sole short ink stroke on the cleaner right-hand page.
+- Regenerated the record-ledger master and combined sheet at new exact hashes without changing the other seven masters.
+- Updated the semantic copy and pending review records; no runtime path changed.
+
+**Decisions:** Keep the mark small and non-textual while making active writing unmistakable at the 128 px evidence size.
+**Known gaps / follow-ups:** Await visual approval of the revised exact hashes; Mimiku and Gate A remain pending.
+
+## 2026-10-02 — Add prior-entry evidence to Mimiku ledger
+
+**Task:** Correct the record-ledger interpretation by preserving the original active-writing pose and adding prior recorded marks to the opposite page.
+**Scope:** Record-ledger ImageGen v03 source, deterministic master/sheet/manifest/review outputs, calibration brief, decision log, and focused contract.
+**What changed:**
+- Returned to the original source's quill position and left-page active ink stroke.
+- Added three abstract, non-textual prior-entry marks to the right page and preserved v02 as superseded review lineage.
+- Regenerated the record-ledger master and combined sheet while leaving the other seven masters unchanged.
+
+**Decisions:** Use both active writing and restrained prior-entry evidence to communicate an in-progress ledger with existing records.
+**Known gaps / follow-ups:** Await visual approval of v03; Mimiku and Gate A remain pending.
+
+## 2026-10-02 — Approve Mimiku states and actions calibration
+
+**Task:** Record user approval of the Mimiku states/actions v03 calibration at exact hashes.
+**Scope:** Mimiku calibration config, manifest, review page, overall review manifest/index, calibration brief, decision log, design spec, focused contracts, and devlog.
+**What changed:**
+- Marked the exact eight 512 px master hashes and combined-sheet hash approved without changing any PNG pixels.
+- Updated the family review and overall review index to show the approved state and approval date.
+- Preserved all outputs as review-only with no runtime promotion.
+
+**Decisions:** Approval includes the v03 record-ledger pose with the original quill and active left-page ink mark plus three restrained prior-entry marks on the right page.
+**Known gaps / follow-ups:** Avatar, scenes, frames, props, and motion remain awaiting calibration. Gate A, complete-family production, runtime promotion, and Phase 2 remain pending.
+
+## 2026-10-04 — Build Avatar / Classes calibration evidence
+
+**Task:** Produce the eight-character Avatar / Classes visual calibration candidate from the approved references and implementation plan.
+**Scope:** Eight transparent ImageGen sources, deterministic 512 px masters, 128/64 px optical exports, combined sheet, manifest, review page, focused Vitest/Playwright contracts, calibration brief, and decision log.
+**What changed:**
+- Generated one complete transparent full-body source for warrior, mage, ranger, rogue, physician, bard, alchemist, and cartographer.
+- Added a deterministic nearest-neighbor normalization pipeline with a common baseline, clean transparent RGB, exact hashes, and fixed 4 × 2 roster order.
+- Added one responsive review page with approved-reference comparisons, semantic identity notes, true-size optical evidence, and four-viewport no-overflow coverage.
+- Kept all artifacts review-only and left product runtime paths unchanged.
+
+**Decisions:** Use the warrior as the family anchor for apparent 2.25-head proportions and medium garment clusters; permit finer clusters only for faces, hands, and identity tools. Preserve approved references as identity authority and the ImageGen sources as full-body candidate authority.
+**Known gaps / follow-ups:** Await visual approval of the eight exact master hashes. Avatar / Classes, Gate A, complete-family production, runtime promotion, and Phase 2 remain pending.
+
+## 2026-10-04 — Approve Avatar / Classes calibration
+
+**Task:** Record user approval of the eight-character Avatar / Classes calibration at the reviewed exact hashes.
+**Scope:** Avatar config, deterministic manifest/review output, focused contracts, overall review manifest/index, calibration brief, decision log, and devlog.
+**What changed:**
+- Marked the eight exact 512 px masters and their deterministic 128/64 px evidence approved without changing PNG pixels.
+- Updated the family and overall review pages to show approval and corrected the overall manifest to the current sheet path and hash.
+- Preserved review-only status and left all product runtime paths unchanged.
+
+**Decisions:** Approval is limited to the exact hashes recorded in `avatar-classes.manifest.json`; it does not authorize runtime promotion, animation, or Phase 2.
+**Known gaps / follow-ups:** Scenes, Frames, Props, and Motion remain awaiting calibration. Gate A and runtime promotion remain pending.
+
+## 2026-10-05 — Build Landing war-room visual review
+
+**Task:** Compose a review-only Landing war room from the approved resting-party direction and character identities.
+**Scope:** Landing spec/plan status, fourteen ImageGen sources, layout config/composer, desktop/phone PNGs, twenty-one transparent layers, wordmark derivation, manifest/review HTML, focused Vitest and Playwright contracts, and devlog.
+**What changed:**
+- Composed a warm asymmetric cave room with four resting party members, one map crate, one ordinary chest, sign, two torches, three bats, subdued carving, and pressure plate.
+- Repositioned the same sources for the phone first viewport and kept live sign/dialogue/CTA text separate from the scene PNGs.
+- Added a four-chapter journal example, approved master comparisons, source/output hashes, and deterministic alpha-clean layer exports.
+- Used contract-first tests for manifest, dimensions, lineage, transparent RGB, and exact desktop 2× pixels; browser contracts cover 320/390/768/1440 widths.
+
+**Decisions:** Preserve raw ImageGen bytes and clean only derivatives. Reuse the approved wooden wordmark as a separate accessible element. Lower the phone mage to the floor and separate the phone sign from Mimiku and the dialogue panel. Run static review browser checks through an ignored session config.
+**Known gaps / follow-ups:** Await the user's visual review. Interaction responses, full horizontal exploration, lighting/animation production passes, Home, and runtime integration remain deferred. Scenes remains awaiting-calibration. Review artifacts remain uncommitted to preserve the pre-existing staged and unstaged work.
+
+## 2026-10-05 — Refine Landing background toward option B
+
+**Task:** Replace the visually busy, distant pointed cave backdrop with the user's selected B old-vault masonry direction.
+**Scope:** Landing background ImageGen v03 source/prompt, config, composer review copy, deterministic desktop/phone outputs and manifest, spec/plan refinement, preserved v01 comparison PNGs, and devlog.
+**What changed:**
+- Replaced the central deep cavern vista and sharp formations with a close warm-brown rear wall of large masonry blocks; retained natural ceiling rock and the asymmetric side passages.
+- Preserved the old architecture source and desktop/phone composites as versioned files.
+- Reused all existing character/prop sources, layer preparation, placements, wordmark, and journal content.
+- Recorded the parent source hash and submitted ImageGen prompt with the B revision.
+
+**Decisions:** Keep this pass focused on the background so the room's enclosure and visual noise can be judged without changing the party. Maintain the existing floor height and review-only boundary.
+**Known gaps / follow-ups:** Await visual judgment of the B composite. Scenes remains awaiting-calibration; interactions and runtime promotion remain deferred. No staging or commit was performed.
+
+## 2026-10-06 — Refine Landing natural wall and hanging wordmark
+
+**Task:** Retain B's enclosed room while replacing central masonry with natural rock and hanging the approved wooden MIMIC wordmark above the party.
+**Scope:** Two versioned ImageGen sources/prompts, Landing config/composer, derived layers and desktop/phone outputs, manifest/review HTML, focused Vitest/Playwright contracts, spec/plan refinement, and devlog.
+**What changed:**
+- Generated a close warm natural rear wall and a separate transparent two-hook/short-cord mounting layer; archived the B desktop/phone PNGs without changing their source.
+- Moved the unchanged approved wordmark to the upper central wall with a restrained contact shadow and separate desktop/phone placements.
+- Added contract-first checks for mount connection, approved wordmark hash, party clearance and rendered positioning at four viewports.
+- Corrected the desktop comparison to include the live wordmark rather than showing only its mounting hardware.
+
+**Decisions:** Preserve all existing character/prop sources, placements, and wordmark pixels. Keep lettering accessible and separate from scene PNGs; normalize only derived alpha. Keep every change review-only and uncommitted.
+**Known gaps / follow-ups:** Await visual judgment of this wall/sign refinement. Scenes remains awaiting-calibration; interaction design, Home, runtime integration and Phase 2 are deferred. No staging or commit was performed.
+
+## 2026-10-06 — Enlarge Landing MIMIC wall title
+
+**Task:** Enlarge the hanging MIMIC title to approximately two thirds of the central wall width.
+**Scope:** Landing config, generated desktop/phone mounting layers and composites, manifest/review page, versioned browser previews, focused contracts, spec/plan notes and devlog.
+**What changed:**
+- Set desktop title width to 360 of 540 logical wall pixels and phone title width to 260 of 390 visible wall pixels; repositioned and scaled mounting hardware.
+- Kept approved wordmark bytes, all creative source images, party/prop placements, background and journal content unchanged.
+- Added contract-first wall-ratio checks and actual four-viewport browser sizing checks; corrected browser measurement to use artwork content width rather than the scene's 4-pixel border.
+
+**Decisions:** Interpret two thirds as wall width, not total canvas area. Preserve the original wordmark aspect ratio and leave clearance above the mage; no new ImageGen source is needed for a layout-only scale change.
+**Known gaps / follow-ups:** Await visual judgment of the enlarged title. Remains review-only and awaiting-calibration; no runtime changes, staging or commit.
+
+## 2026-10-07 — Seat smaller Landing title on an intact rock face
+
+**Task:** Reduce the previous MIMIC title by 20% and make it feel embedded in a broad rock face rather than bridging stone gaps.
+**Scope:** Versioned architecture ImageGen source/prompt, Landing config/composer, generated review outputs/manifest/page, focused contracts, versioned previews, spec/plan notes and devlog.
+**What changed:**
+- Locally revised the central rear rock face to remove title-area intersecting seams while retaining the room geometry.
+- Set title widths to 288/208 logical pixels, removed the hanging layer from selected composition, and reduced the contact shadow for a flush-mounted appearance.
+- Added contract-first checks for exact 80% scale, intact-face placement, no hanging layer, and unchanged approved wordmark bytes.
+
+**Decisions:** Preserve the wooden letter design as accessible live UI, not stone-carved or baked into the background. Retain prior sources, mounting exports and previews for comparison; party/prop placements stay unchanged.
+**Known gaps / follow-ups:** Await visual judgment of v06. Scenes remains awaiting-calibration; no runtime changes, staging or commit.
+
+## 2026-10-07 — Center Landing title on upper rock face
+
+**Task:** Shift MIMIC slightly right and place it at the broad rock wall's upper center.
+**Scope:** Landing config, generated manifest/review page, focused Vitest/Playwright contracts, versioned browser previews, spec/plan notes and devlog.
+**What changed:**
+- Moved desktop title from [332,87] to [385,84] and phone title from [91,154] to [96,130], preserving 288/208-pixel widths.
+- Updated safe-face layout bounds to reflect the intact rock face; title center is horizontally aligned and about 35% down its height.
+- Added contract-first horizontal/vertical placement checks and four-viewport rendered center checks.
+- Self-review caught the first desktop placement approaching the bats; adjusted title placement and added an eight-logical-pixel clearance contract without moving other assets.
+
+**Decisions:** Reuse every raster byte; this is a live layout adjustment with no ImageGen regeneration or runtime integration.
+**Known gaps / follow-ups:** Await visual judgment of v07. Remains review-only and awaiting-calibration; no staging or commit.
+
+## 2026-10-07 — Subdue Landing title tone
+
+**Task:** Make the wooden MIMIC title slightly dimmer so it integrates better with the rock wall.
+**Scope:** Landing review config/composer, generated manifest/HTML, Playwright contract, v08 browser previews, spec/plan notes and devlog.
+**What changed:**
+- Applied review-local brightness 0.82 and saturation 0.72, retaining full opacity and the shallow contact shadow.
+- Added a red-green browser check of computed title filters while preserving four-viewport framing checks.
+- Retained all original raster hashes, title dimensions/positions, characters and prop placements.
+
+**Decisions:** Adjust live rendering rather than redraw or alter the approved wordmark pixels. Desktop/phone screenshot inspection confirms readable wood detail and more restrained highlights.
+**Known gaps / follow-ups:** Await visual judgment of v08. Review-only and awaiting-calibration; no runtime promotion, staging or commit.
+
+## 2026-10-07 — Explore Landing title rock inlay
+
+**Task:** Show multiple ways to integrate the wooden title into the rock wall using local fissures and inset edges.
+**Scope:** Three new ImageGen concept PNGs under landing-war-room/inlay-options-v09, comparison/prompt notes and devlog only.
+**What changed:**
+- Generated independent A/B/C edits from the subdued v08 desktop screenshot: restrained grooves, local rock interlocking, and a shared shallow recess.
+- Saved raw generated bytes without replacing the selected review, approved wordmark, sources or layered composites.
+- Recorded exact prompts and flagged that full-scene generated concepts may re-render unrelated pixels and UI text.
+
+**Decisions:** Use concepts for choosing the stone/wood junction only; after selection integrate into the existing separated assets and keep accessible text live. Actual C reads more like a surround, so A or A with limited B interlocking is the calmer direction.
+**Known gaps / follow-ups:** Await user choice. No production-ready invariant claim, responsive inlay exports, Scenes approval, runtime changes, staging or commit.
+
+## 2026-10-07 — Match inlay title illumination to rock
+
+**Task:** Bring the MIMIC title brightness closer to the surrounding dim stone wall.
+**Scope:** Three new v10 ImageGen concept PNGs, exact prompt/comparison notes and devlog only.
+**What changed:**
+- Revised each v09 concept with subdued wood, brass and white highlights while retaining the prior junction direction.
+- Saved new raw outputs separately and documented off-target foreground tone changes in A/B.
+
+**Decisions:** Judge only the intended title lighting; do not promote generated scene-wide differences or dim the approved Mimiku layer during later integration.
+**Known gaps / follow-ups:** Await visual choice; concepts are not byte-preserving production exports. Original review and runtime unchanged; no staging or commit.
+
+## 2026-10-07 — Compare smaller, spaced B title in three brightness levels
+
+**Task:** Refine selected B with slightly smaller wooden letters, more spacing and three visible brightness choices.
+**Scope:** Three new v11 ImageGen concept PNGs, prompt/comparison notes and devlog only.
+**What changed:**
+- Generated a common B geometry anchor with smaller individual glyphs and clearer gaps; used it as the medium option.
+- Generated dark and lighter title-tone concepts from that common anchor.
+- Preserved old sources and selected review; documented generation targets versus actual visual results and incidental scene drift.
+
+**Decisions:** Compare numbered brightness options 1/2/3 without conflating them with earlier A/B/C junction options. Final layered integration remains after user choice.
+**Known gaps / follow-ups:** Await brightness selection. No exact percentage or pixel-invariance claim for concepts, runtime changes, staging, commit or Scenes approval.
+
+## 2026-10-08 — Angle and enlarge Landing map crate
+
+**Task:** Make the map crate less frontal, about 20% larger and clearly left of the campfire.
+**Scope:** New ImageGen crate source/prompt; Landing config, composer, manifest, desktop/phone composites, derived map layers and browser previews; focused Vitest/Playwright contracts; scene spec, plan and devlog.
+**What changed:**
+- Generated a three-quarter low crate with front/right faces, preserving map, wood and small metal details; kept the old source.
+- Increased displayed width from 94/66 to 113/79 and repositioned left of the unchanged fire.
+- Added actual-alpha fire/warrior occlusion checks and browser checks that the dialogue does not cover the crate.
+- Recorded the previously selected B junction / third v11 title brightness as pending layered integration.
+
+**Decisions:** The first placement put the warrior's foot over the map. A foreground trial appeared off the floor, so it was rejected; the final desktop layout shifts only the warrior 60 logical pixels left, retaining the original dialogue and all other positions. Only the map source changes; character references and UI assets remain identical.
+**Known gaps / follow-ups:** Await visual judgment of the crate and necessary desktop spacing. Selected v11 title integration remains deferred. No Scenes approval, runtime/public changes, staging or commit.
+
+## 2026-10-08 — Place Landing map crate upper-left of campfire
+
+**Task:** Move the same map crate nearer the warrior/mage and slightly upper-left of the campfire without fire occlusion.
+**Scope:** Landing config, composer review copy, manifest, desktop/phone composites and versioned browser previews; focused calibration contract; scene spec, plan and devlog.
+**What changed:**
+- Changed only crate placement: desktop [340, 290, 113], phone [124, 332, 79].
+- Added a contract-first upper-left/left-party relation check alongside existing actual-alpha occlusion, size and lineage contracts.
+- Retained the v02 angled ImageGen source, widths, all character positions, fire and dialogue.
+
+**Decisions:** Treat this as optical placement only, not a new creative source. The crate is in front of the mage's lower robe while her upper body remains clear. Preserve v02 previews and save v03 separately.
+**Known gaps / follow-ups:** Await visual judgment; selected v11 title integration still pending. No runtime/public changes, staging, commit or Scenes approval.
+
+## 2026-10-08 — Refine Landing warming warrior and map-study mage
+
+**Task:** Exchange the left-party roles so the warrior rests nearer the fire and the mage quietly studies the crate's map.
+**Scope:** Two new ImageGen sources and prompt records; Landing config, review copy, manifest, composites, derived character layers and versioned browser previews; focused Vitest contract; scene spec, plan and devlog.
+**What changed:**
+- Generated separate transparent warrior warming-hands and mage map-study poses, preserving the previous sources and approved masters.
+- Positioned the warrior closer to the unchanged fire and the mage at the left crate; aligned the crate with her hand without changing its source, angle or enlarged widths.
+- Added contract-first source/role checks and an actual-alpha warrior/fire clearance regression.
+
+**Decisions:** The first composite covered the warrior's right leg with the fire ring. A failing pixel-overlap test confirmed the defect; the revised position clears all flame/ring pixels on desktop and phone. The mage's staff rests at her outer side and the held book is omitted to clarify map reading. All other source assets, placements, lighting and live UI remain unchanged.
+**Known gaps / follow-ups:** Await visual judgment of the two poses and responsive composition. Selected v11 title integration remains pending. No runtime/public changes, staging, commit or Scenes approval.
+
+## 2026-10-08 — Compare Landing warm-rest compositions
+
+**Task:** Execute the approved warm-rest plan inline through an A/B rough-composition visual checkpoint.
+**Scope:** New landing-warm-rest config/composer/renderer, manifest and HTML; ImageGen sources/prompts/lineage under warm-rest; A/B logical, color, grayscale, layers and browser previews; independent Vitest/Playwright/lint configuration; devlog append only.
+**What changed:**
+- Generated independent continuous-ground desktop/phone architecture, four directionally lit resting companions and one ground-reflection layer. Retained raw originals and revised the ranger gaze inward in a second ImageGen version.
+- Built A tight-fire-side and B staggered-welcome compositions with identical source assets, scales, live v08 title/UI and preserved four-chapter journal.
+- Added contract-first source/hash, dimensions, exact 2x, grayscale, transparent RGB, alpha-occlusion, visitor-ground and four-viewport browser checks.
+- Corrected phone sign/Mimiku occlusion and ranger/fire contact through placement-only adjustments; aligned desktop ground contacts and mage hands with the unchanged map.
+
+**Decisions:** The approved coordinates were optical starting points, not final positions. Keep the fire and angled map sources/widths unchanged; do not loosen overlap assertions to pass. Existing v04 files, staged index and earlier untracked artwork remain untouched. Review artifacts are not staged or committed.
+**Known gaps / follow-ups:** Both drafts remain awaiting-calibration, reviewOnly and not runtime-promoted. Await A/B choice and visual feedback before fine polish or selected B/C wordmark integration. No Scenes approval, product/runtime/public/registry/PWA/SW/Home/accounting/interaction or Phase 2 changes.
+
+## 2026-10-09 — Landing A reduced party and staggered wordmark review
+
+**Task:** Execute the approved Landing A refinement inline: remove the mage and compare single-line versus equal-letter-scale staggered MI / MIC titles.
+**Scope:** New landing-a-title config/composer/renderer, manifest and review HTML; wordmark ImageGen sources/prompts/lineage; review rasters and 12 viewport previews; independent Web Vitest/Playwright/lint configuration; devlog append only.
+**What changed:**
+- Reconstructed the same A desktop and independent phone scenes, omitting only the mage and preserving every remaining source, layer, scale and placement.
+- Retained two transparent ImageGen originals. Rejected v01 duplicate eyes; v02 keeps eyes only in the first M and the heart in C, with equal-scale staggered rows.
+- Exported desktop single/staggered and shared phone staggered color/grayscale frames, cleaned wordmark masters, dimensions and exact hashes; preserved the four-chapter journal and live review UI.
+- Added contract-first pixel, source/hash, alpha, viewport, focus and UI checks. Self-review added the layout-only reference hash through a failing test before fixing lineage.
+- Verified 15 focused Vitest tests, four Playwright viewports (320/390/768/1440), focused ESLint, typecheck, 18 byte-identical regenerated outputs, dimensions and transparent RGB. Inspected actual live UI previews.
+**Decisions:** Raw ImageGen content reaches alpha 254, not 255; preserve raw bytes and assert near-opaque content, while deterministic cleaned masters require binary alpha and zero transparent RGB. Apply one baked tone to both title arrangements. Keep this implementation unstaged and uncommitted in the existing dirty checkout.
+**Known gaps / follow-ups:** Await visual review; all new artifacts remain awaiting-calibration, reviewOnly and not runtime-promoted. B wall integration / third-C brightness polish and chest/map crate/trap placement are deferred. No Scenes approval, product/runtime/public/registry/PWA/SW/Home/accounting/interaction or Phase 2 changes. Production build and full-repository test suites were not run.
+
+## 2026-10-14 — Landing desktop title positioning review tool
+
+**Task:** Add the approved desktop single-line MIMIC positioning tool to the existing review page.
+**Scope:** New positioning model/controller/tool renderer/HTML-only CLI; incremental existing renderer/HTML; independent Vitest/Playwright contracts; new preview screenshots; devlog append only.
+**What changed:**
+- Layered the existing title-free desktop scene and fixed-size single-line title without modifying source or export bytes.
+- Added pointer drag, focused keyboard and button nudges, separate guide/clean modes, reset and immutable-identity JSON.
+- Added native clipboard copying, selectable fallback and serialized requests with stale-position feedback; image failures disable the tool.
+- Preserved the original review HTML outside the tool block, phone frame, candidates and journal.
+- Verified 23 focused Vitest tests, 52 Playwright cases across 320/390/768/1440 (including native clipboard and actual file URL), TypeScript and five-MJS/three-TS focused lint; HTML regenerated byte-identically, with 36 prior title assets/config files unchanged. Saved and inspected eight new initial/clean previews.
+**Decisions:** Coordinates are integer logical pixels in the 960×540 desktop frame. No scaling/rotation, automatic file saves, local persistence or position approval. Keep implementation unstaged in the dirty checkout. Test import uses the repository's literal relative MJS pattern; browser mouse steps scroll to the real scene and refresh geometry; native clipboard checks normalize Windows CRLF while retaining exact JSON content checks. MJS lint runs from repo root so docs files are not ignored.
+**Known gaps / follow-ups:** Await user-position JSON before any separately authorized composition update. Runtime/public/registry/PWA/SW/Home/accounting/production exports and Phase 2 remain out of scope. Full repository suites and production build are not implied by focused review verification.
+
+## 2026-10-14 — Landing mobile title positioning extension
+
+**Task:** Extend the approved title-positioning review tool to the independent phone MI/MIC frame after the user's desktop positioning feedback.
+**Scope:** Existing pure model/controller/tool renderer/HTML-only CLI and generated review HTML; new frame/clipboard coordinator and mobile Vitest/Playwright contracts; minimal desktop test selector/config changes; eight new mobile previews; devlog append only.
+**What changed:**
+- Added explicit desktop/phone selection with independent coordinates, guide/mode preferences, reset and JSON. Phone uses the unchanged 390×600 scene and 148×98 staggered title, starting at 116/93.
+- Kept hidden-frame controls inert, ended capture on switching and preserved focus. Coordinated clipboard writes across frames; failed or mismatched phone images disable only phone.
+- Preserved all historical HTML outside the sole marked tool block. HTML-only generation validates actual hashes and dimensions of all four desktop/phone sources and produces byte-identical results.
+- Observed 4 new unit failures before frame math, then only the absent phone HTML failure; all 60 new browser cases failed before UI implementation. Final focused verification passed 28 Vitest tests and 112 Playwright cases across 320/390/768/1440, including actual file URL, native clipboard and real touch dragging/page scrolling. Focused ESM/TS ESLint and typecheck passed.
+- Saved and inspected eight new initial/clean phone previews. Self-review re-read actual implementation and contracts; no critical or important issues remained. Verified 1,276 prior non-task files, web/public and staged binary diff against the fresh execution baseline.
+**Decisions:** Reuse the existing warm brown/brass controls and artwork, with single-pointer nudge alternatives and phone-specific live overlays. No media-query frame switching or automatic persistence. User desktop receipt x=376/y=100, exact source hashes and center 54.17%/26.30% are recorded in the independent implementation plan, not applied to manifest/config or raster exports. Only the new spec/plan were independently committed; overlapping implementation remains unstaged/uncommitted.
+**Known gaps / follow-ups:** Await the user's phone position JSON and separately authorized position application. Reload resets each preview to manifest coordinates. No art/source/master/gray/config/manifest/runtime/public/registry/PWA/SW/product/Home/accounting/production export or Phase 2 changes; assets remain awaiting-calibration, reviewOnly and not promoted. Full-repository suites and production build were not run. Non-failing Playwright NO_COLOR/FORCE_COLOR and Git LF/CRLF notices are not lint or contract failures.
+
+## 2026-10-15 — Apply confirmed Landing title placements to review outputs
+
+**Task:** Apply the user's confirmed desktop 376/100 and phone 130/59 title positions to review-only color and grayscale scenes.
+**Scope:** New placement receipts, independent compositor, derivative manifest/review HTML, six versioned PNG exports and eight viewport scene previews; new Vitest/Playwright contracts and combined config; devlog append only.
+**What changed:**
+- Validated both complete user receipts against the unchanged frame/source identities, dimensions, logical bounds and center percentages before composition.
+- Reused the existing title-free bases and exact transparent title rasters without redrawing, resizing the title, retone or moving any other object. Exported desktop logical 960×540 and nearest-neighbor color/gray 1920×1080; phone logical/color/gray remain 390×600.
+- Created a separate confirmation page showing only selected desktop/phone frames, actual grayscale, live labels and the original four-chapter journal. Original review, positional tools, configs, manifests, sources and old exports remain unchanged.
+- Observed five actual unit RED assertions and four viewport RED cases before implementation. Final focused verification passed 33 Vitest tests and 116 Playwright cases at 320/390/768/1440, focused ESM/TS ESLint and typecheck. Verified alpha/transparent RGB, independent full-pixel reconstruction, scale/grayscale coefficients and all asset hashes; all eight generated files regenerated byte-identically.
+- Re-read actual implementation/contracts and inspected both color/gray exports plus eight viewport previews. Self-review found no remaining critical or important issue. New owned-output overwrite protection was exercised by temporary test tampering with exact restoration in finally.
+**Decisions:** Keep previous evidence intact in the dirty checkout and create a versioned confirmation instead of invoking the old bulk composer. Reuse the existing warm review styles with independent frame proportions. Vite's eager analysis prevented the initial literal missing-module assertion, so delayed loading established actual RED; once the real module existed, use the established literal relative import to avoid Windows dynamic-path drive loss. Only the new independent implementation plan was committed; implementation/artifacts stay unstaged/uncommitted.
+**Known gaps / follow-ups:** Await visual approval or adjustment feedback for the applied placement version. Old positioning tool deliberately retains its original initial coordinates; the new confirmation page/manifest are the applied-position evidence. No Scenes approval, runtime/public/registry/PWA/SW/product/Home/accounting/production exports or Phase 2 changes. Full repository suites and production build were not run. Original 1,295 files and staged binary diff are protected by a fresh baseline; devlog history is append-only.
+
+## 2026-10-15 — Calibrate ordinary Landing chest material to warrior
+
+**Task:** Redraw only the ordinary round-lid chest material and pixel treatment against the warrior, keeping its placement, both title placements and phone unchanged.
+
+**Scope:** New ImageGen source/prompt/lineage, three independent review modules, manifest/review HTML, eight PNG exports and twelve viewport previews; new Vitest/Playwright contracts and isolated combined config; devlog append only.
+
+**What changed:**
+
+- Used built-in ImageGen with the original chest as edit target and warrior master, actual scene warrior and desktop as references. Preserved the returned transparent source bytes; simplified woodgrain and metallic shading without changing chest identity or orientation.
+- Normalized a transparent 78x66 logical layer with proportional nearest-neighbor fit and binary alpha/clean transparent RGB. Rebuilt the original scene from architecture and ordered layers and proved complete old-scene pixel equality before replacement.
+- Kept the chest at 105/284. Exactly 4,146 logical pixels differ, all inside its fixed 78x66 bounds; no old-chest paint-over, background retouch or other object movement.
+- Reused original phone/title bytes. Added actual-size, equal 3x zoom, grayscale, warrior references, original/new desktop with live UI and the four-chapter journal; saved and inspected twelve real screenshots across 320/390/768/1440.
+- Observed seven original unit RED assertions and four browser RED cases before implementation. Added a further failing integration test showing an incomplete prior output inventory could bypass one output hash; require the complete expected output set before writes.
+- Final focused verification passed 41 Vitest tests and 120 Playwright cases, scoped ESM/TS ESLint, TypeScript, syntax and deterministic complete-byte regeneration of all eight PNGs, HTML and manifest. Contracts independently verify pixels, source hashes, alpha/RGB, dimensions, proportional fit, zoom and grayscale.
+- Re-read all new implementation/contracts and checked all seven self-review dimensions. Fixed an unnecessary test-module return type assertion and the output-inventory guard; no critical or important issues remain.
+
+**Decisions:** Keep all artifacts independent and review-only; no historical composer/config/manifest/page/source edits. One selected material candidate, not position candidates. New implementation/artifacts remain unstaged/uncommitted. Existing 1,320 protected files, all 19 web/public files and staged binary diff matched the fresh baseline before this append; the original devlog prefix is protected separately.
+
+**Known gaps / follow-ups:** Await user material-only visual approval or edits. Chest position, map-crate/trap review and whole Scenes approval remain separate. No runtime/public/asset registry/PWA manifest/service worker/product/Home/accounting/production export/Phase 2 changes. Full-repository suites and production build were not run. Playwright NO_COLOR/FORCE_COLOR and Git LF/CRLF notices are non-failing environment warnings.
+
+## 2026-10-17 — Coordinated Landing treasure-chest four-state review
+
+**Task:** Complete closed, cracked, half-open and open states together, freezing both titles, phone and all other objects.
+
+**Scope:** New ImageGen atlas/prompt/lineage, five review-only ESM modules, twenty-five PNG exports, independent manifest/HTML, two Vitest files, Playwright spec/config; implementation-plan sample-code corrections and this append.
+
+**What changed:**
+
+- Used built-in ImageGen for one coordinated 2x2 family, then two registration edits. Preserved all three original transparent image files with exact hashes and edit-target lineage. Gold coins dominate with a few gems retained inside; no reward effects or financial behavior.
+- Shared one source scale, 104x120 envelope, origin (92,230), local ground (52,120), world ground (144,350), and closed-derived lower body. No per-state tight-crop fit or CSS-rotated fake lid.
+- Reconstructed architecture and ordered layers, keeping original title/phone bytes. Changed 4311/4313/4959/5181 logical pixels across the four states, all within the chest envelope; other objects remain untouched.
+- Added actual-size/2x/true-gray family comparison, old closed candidate and warrior references, unchanged phone, live semantic labels, native chest hit target and external controls. Playback is manual, 140ms per transition, reverse-to-close, no input queue, manual cancellation, reduced-motion terminal switching, and explicit missing/decode failure handling.
+- Observed 13 initial unit RED assertions and a genuine missing-page browser RED. Self-review added complete ImageGen history and real non-image decode coverage. Fixed transformed function-toString output differences by embedding hash-checked raw script bytes instead; deterministic regeneration now passes through Node and Vitest.
+- Final verification: 55 focused Vitest tests across nine files (14 new, 41 existing), 140 Playwright cases (20 new, 120 existing) across 320/390/768/1440, scoped TS/ESM ESLint, typecheck and five ESM syntax checks. Inspected sixteen state scene screenshots plus four unchanged-phone screenshots.
+
+**Decisions:** Run mutation-based artifact suites sequentially with a 30s test budget; parallel runs could observe another suite's deliberately damaged manifest. No old tests or guards weakened. Preserve dirty checkout/index, do not stage or commit. Synchronize plan interface/sample code with raw-script and source-history changes. UI/UX reduced-motion review confirmed the existing media-query/direct-terminal behavior without changing art direction.
+
+**Known gaps / follow-ups:** Await user visual approval of the entire four-state family; no individual state or Scenes-family approval inferred. Hinge coordinate is a review guide, not an automatically measured physical hinge. No runtime/public/registry/PWA/SW/product/Home/accounting/production exports/Phase 2 changes. Full-repository suites and production build not run. Original 915 scoped files and staged diff verified unchanged; devlog original bytes must remain an exact prefix. Windows sandbox tests required normal-host execution; NO_COLOR/FORCE_COLOR and Git EOL notices are non-failing warnings.
+
+## 2026-10-20 — Restored treasure-chest eight-frame review
+
+**Task:** Produce the approved repaired old-chest family and weighted opening/closing preview together, without moving titles, phone or surrounding objects.
+
+**Scope:** Six new restored-chest ESM modules; three raw ImageGen attempts, selected source, prompt and lineage; 49 PNG outputs, independent manifest/HTML/verification receipt; two Vitest files and Playwright spec/config; this append.
+
+**What changed:**
+
+- Used built-in ImageGen for the coordinated chest and two targeted revisions. Kept every raw transparent source unchanged, preserving actual edit targets, references and exact hashes. The family includes four semantic states and four latch/lid transition frames, a replaced lower-corner fitting, warm wood, overlapping treasure and a restrained teal accent.
+- Added explicit frame/state separation and nonuniform opening750ms / closing660ms. The latch clears first and returns after the lid closes. Retained native buttons, keyboard control, manual interruption, no input queue, reduced-motion terminal switching and missing/non-image failure protection.
+- Shared a104x120 envelope, origin(92,230), ground(52,120), world ground(144,350), and lower-body pixel reuse excluding the moving latch. Independently reconstructed ordered scenes and verified zero changed pixels outside the envelope. Original phone/title bytes and all other objects remain unchanged.
+- Observed17 initial unit RED failures and6 genuine missing-page browser failures before implementation. Added a further failing regular-lattice test after diagnosing source outer-padding versus cell-pitch mismatch, then made it pass without per-frame fitting, translation, scale changes or weakened registration tolerances.
+- Final checks passed73 focused Vitest cases across11 files (18 new /55 existing),164 Playwright cases (24 new /140 existing), scoped TS/ESM ESLint, typecheck and6 ESM syntax checks. Inspected32 state scene screenshots,4 unchanged-phone screenshots, eight enlarged sprites and grayscale output.
+- Two direct Node regenerations matched all51 PNG/HTML/manifest files byte-for-byte, in addition to the two Vitest rebuilds. Verified957 original scoped files and the existing staged binary-diff hash unchanged before this append; the original devlog bytes are protected separately.
+
+**Decisions:** ImageGen produced transparent outer padding around a regular atlas lattice: use one origin(20,0),432x430 cell and432x430 stride for all eight frames, rather than treating the whole canvas edge as the cell boundary. This is documented in prompt/manifest and covered by an extra contract. No independent state crop-fit or scene repositioning. Retain v01 and all existing specs/plans unchanged. Inline only, no worktree/subagents, staging or commits. Self-review covered all seven dimensions with no critical/important implementation issues remaining; UI/UX review confirmed manual-only motion and reduced-motion handling without changing art direction.
+
+**Known gaps / follow-ups:** Await entire new family visual approval or revisions; technical passes do not approve art or Scenes. Hinge coordinate remains a manual review guide. No runtime/public/registry/PWA/SW/product/Home/accounting/production exports/Phase2 changes. Full-repository suites and production build not run. Sandbox cache EPERM and sandbox-only Chromium path failures were re-run on the normal host; only genuine subsequent RED/GREEN runs count. Playwright NO_COLOR/FORCE_COLOR and Git EOL notices are non-failing environment warnings.
+
+## 2026-10-20 — Ancient recovered treasure chest visual family v03
+
+**Task:** Produce the whole chest visual family as an understated ancient treasure repaired by the party, calibrated against the warrior, without moving titles, phone or other objects.
+
+**Scope:** New antique-chest style decision record; compose/render-ancient-treasure-chest modules; v03 ImageGen sources/prompts/lineage and 49 review PNGs; independent HTML/manifest/verification receipt; one Vitest contract and Playwright spec/config; this append.
+
+**What changed:**
+
+- Recorded the product-commission mode's approved visual direction: value through workmanship and age, not ornate decoration; arched walnut timber, restrained dark iron, one integrated repair and a slim mechanical hasp. Prior v02 art was rejected, not approved. All prior artifacts remain untouched.
+- Used built-in ImageGen for four actual calls: exploration, fresh warrior-referenced generation, connected-hasp/proportion revision, then whole-atlas registration/margin revision. Saved every raw output unchanged and selected attempt04 as family-source; actual generation versus edit targets and references are explicit, with no invented edit targets. No third-party survey artwork was copied or sent to ImageGen.
+- Kept the existing eight-frame/four-state playback, 750ms opening/660ms closing, fixed 104x120 envelope and world ground(144,350). New compositor uses one regular source lattice origin(62,0), cell/stride410x410 and one uniform transform; no per-frame fit, warp or translation. Reused verified lower-body pixels excluding the moving hasp region.
+- Preserved existing model/controller/raster/renderers read-only. New renderer exposes real generate/edit lineage separately because the legacy table assumes every source has an edit target; retained v01 and rejected v02 comparisons, actual size/2x/grayscale/warrior reference and frozen phone.
+- Observed genuine RED: seven missing-manifest unit failures and one missing-HTML desktop browser failure. New suite passed7; combined focused suite passed80 across12 files. New browser cases passed24; full scoped browser regression passed188 across320/390/768/1440. Scoped TS/ESM ESLint, typecheck, two ESM syntax checks and git diff checks passed.
+- Two direct Node rebuilds matched all51 PNG/HTML/manifest files byte-for-byte, in addition to two Vitest rebuilds. All49 PNG dimensions passed; 368610 transparent output pixels had zero nonzero hidden RGB. Independent ordered-scene tests verified no changes outside the chest envelope; titles and phone remain pinned.
+- Compared1025 original scoped files with the turn-start baseline: zero changed. Staged binary-diff hash remains96241f5fc7516568a9ba83d26d2ccd1a6ead98e3ff36cdea1e01979629b402d3. Original devlog prefix is verified separately. No staging, commits, worktree or subagents.
+
+**Decisions:** User approved the understated recovered-antique identity and explicitly authorized the whole visual family. The selected source is93a3096fd29ae343d833cc5921bcc6a3740d824af4765f856fb8f762a217f170. Keep art awaiting-calibration/reviewOnly with runtimePromotion false. Self-review covered correctness, edge cases, completeness, architecture, style, security and tests; no critical/important implementation issues remain. Visual checks included all eight enlarged sprites, grayscale, logical closed/open composites and representative four-viewport scene/phone screenshots; automated contracts cover every frame in every viewport.
+
+**Known gaps / follow-ups:** Await user's whole-family visual verdict; no claim of artistic approval or final production animation. Scene hinge is still a manual review guide. No product/runtime/public/registry/PWA/service worker/Home/accounting changes, production exports or Phase2. Full-repository suites and production build not run. Initial sandbox temp-cache EPERM and sandbox-specific Chromium lookup failures do not count as RED; reran with workspace TEMP/TMP and existing host PLAYWRIGHT_BROWSERS_PATH. Non-failing NO_COLOR/FORCE_COLOR and existing Git EOL warnings remain.
+
+## 2026-11-02 — Ancient chest v04 visual review family
+
+**Task:** Execute the approved v04 revision design using ImageGen edits of v03, RED opening-progress contracts, and an independent whole-family visual review.
+**Scope:** New v04 composer/renderer/verifier, derivation sources/prompts/lineage/baseline, 49 review PNGs, manifest/HTML/verification receipt, focused Vitest and Playwright spec/config; this append only.
+**What changed:**
+- Retained five raw built-in ImageGen edits; attempt01 edits v03 with warrior references, selected attempt05 copied unchanged to family-source (SHA-256 494f26780f351601962c58630857fc21aea60dafa0a00c3bb3c31e7282eb45ca).
+- Added opening-progress contract and v03 negative control. Final 2x tops116/116/116/114/106/98/86/78; cracked-to-open steps8/8/12/8, max33.33%, all four rules pass.
+- Added eight-frame v03 comparison, measured progress table, repair1x/4x color/true-gray crops, original scene and frozen phone, actual edit lineage.
+- Added RED and fixes for missing original-scene comparison, exposed-staple drift and static-lid drift during hasp-only poses. Kept the single lattice/common transform; explicitly reuse stationary pixels.
+- Final v04 Vitest13 passed and four-viewport Playwright28 passed; earlier combined92 and browser regression212 passed. ESLint/typecheck/syntax passed. Two direct Node rebuilds kept all51 files byte-identical;49 PNG dimensions/hashes passed,382374 transparent pixels with zero hidden RGB. Envelope exterior has zero differences.
+**Decisions:** Retain original750ms opening/660ms closing and segment delays. Preserve all v01-v03 and existing scoped artifacts;876 captured hashes unchanged, staged binary diff unchanged, original205135-byte devlog prefix preserved. No staging or commit.
+**Known gaps / follow-ups:** Stop awaiting whole-family visual verdict. Lower-left lighter wood is identifiable in scene and grayscale; the side-facing square nail remains less legible than the front fastener at1x, so the two-square-nail detail is not certified. Exact100-degree geometry is a visual target, not a measured angle. No runtime/public/registry/PWA/SW/product/accounting changes, exports or Phase2. Full-repository suites and production build not run.
+
+## 2026-11-02 — Approve Landing treasure chest v04
+
+**Task:** Record the user's approval of the ancient treasure-chest v04 family after independent review.
+**Scope:** `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/decision-log.md`; this append.
+**What changed:**
+- Added an approval section with the selected source hash, all eight sprite hashes, re-measured lid progression and accepted limitations.
+**Decisions:** Left the v04 manifest at `awaiting-calibration` because its composer regenerates it byte-identically under contract tests; the decision log is the approval authority. Scenes row stays open; only the chest element is approved.
+**Known gaps / follow-ups:** Map crate / trap placement and whole-Scenes approval are next; Frames, Props and Motion remain. No runtime/public/registry changes, staging or commits.
+
+
+## 2026-11-02 — Landing pressure plate v02 appearance candidate (C)
+
+**Task:** In product-commission mode, execute only C from the approved prop-placement / pressure-plate design, verify it, and stop for appearance review before A.
+**Scope:** New pressure-plate-v02 derivation sources/prompts/lineage; standalone compositor,12 review PNGs, HTML/manifest/verification receipt; focused Vitest and four-viewport Playwright spec/config; this append only.
+**What changed:**
+- Used built-in ImageGen with the exact design-document attempt01 prompt and actual cave scene / warrior / approved v04 chest references; followed with two edits for muted stone, footprint and a continuous mechanism slot. Preserved all three raw PNGs and prompts; attempt03 copied byte-identically as the review candidate (SHA-256 9be635235f59d04107827569c372346508cea8423d65143575ee72039b0101ab).
+- Added native1x / nearest4x / true-grayscale / v01 comparisons, original-position desktop scene and native-size scrollable scene/crops. Derived an80x18 binary-alpha sprite with transparent RGB0 using one uniform nearest transform and no hand painting.
+- Kept origin(850,339), scene opacity0.85, approved v04 chest, titles, phone and all other layers frozen. Independently rebuilt the v04 desktop exactly before replacement; only1,254 pixels inside the80x18 pressure-plate envelope changed.
+- Final focused Vitest5 passed; four-viewport Playwright12 passed at320/390/768/1440. Scoped TS/ESM ESLint, typecheck, ESM syntax and Git whitespace checks passed. Two direct Node rebuilds kept14 PNG/HTML/manifest files byte-identical; all12 PNG dimensions/hashes passed,11,662 transparent pixels had zero hidden RGB.
+**Decisions:** Stop awaiting the user's pressure-plate appearance verdict; do not mark approved or start A. Use an80x18 canvas with16px sampled content to preserve generated proportions. Review remains awaiting-calibration/reviewOnly with runtimePromotion false. Self-review covered all new functions and contracts; no critical/important implementation issues remain. Preserved all1,266 captured pre-existing files and Git index; devlog original bytes retained as a prefix.
+**Known gaps / follow-ups:** User may select or revise the appearance; position and A remain pending. No runtime/public/registry/PWA/service-worker/product/accounting changes, worktree/subagent, staging/commit, production exports or Phase2. Full-repository suites / production build not run. The earlier automatic approval review failed due to usage limits before the compositor was written; resumed on the user's instruction. Initial test-root/import-resolution and ignored-file lint issues were corrected and are not counted as missing-artwork RED.
+
+## 2026-11-02 — Pressure plate attempt-04 front gap and warmer stone (C revision)
+
+**Task:** Execute only the design's C revision using its exact prompt to edit attempt-03, verify the result, and stop for appearance review before A.
+**Scope:** New attempt-04/retry raw PNGs and prompts, sibling lineage, standalone composer,19 review PNGs, HTML/manifest/verification receipt,2 focused Vitest files and four-viewport Playwright spec/config; this append only.
+**What changed:**
+- Used built-in ImageGen with the exact attempt-04 document prompt, unchanged attempt-03 edit target and actual cave colour reference. Retained that raw output; normalization exposed interrupted front-gap highlights, so made one groove-only retry and preserved both calls/prompts. Selected retry SHA-2566186839b101bbad448f6fe22e181652a61ed3168942f3490226b413aab5fab16; all attempt-01–03 originals and previous review artifacts remain read-only.
+- Added attempt-03/v01,1x/4x/true-gray, desktop/local context and front-edge8x comparisons. Canvas80x18, origin(850,339), opacity0.85 unchanged. One uniform nearest transform with binary alpha/hidden RGB0; no manual painting. Only1252 pixels within plate envelope differ from frozen approved-chest desktop.
+- Added reproducible HSV contract: fixed inner plate rectangle(854,342,72,9) and2px floor ring. Candidate S0.696208,V0.600194; floor S0.714348,V0.543358; delta+0.056835. Attempt-03 S0.461468 fails S>=0.58. Normalized front gap is73 contiguous warm near-black pixels on row13 (91.25%).
+- Focused Vitest8 and four-viewport Playwright12 pass; scoped TS/ESM ESLint, typecheck, syntax and Git whitespace checks pass. Two direct rebuilds match21 files byte-identically;19 PNG dimensions/hashes pass,22665 transparent pixels have zero hidden RGB; all5 raw copies verified.1293 captured old files and Git index unchanged; original devlog prefix retained.
+**Decisions:** Keep awaiting-calibration/reviewOnly with runtimePromotion:false. The document does not record the original HSV mask; use identical explicitly pinned masks for both versions and disclose that these do not exactly replicate the old undocumented averages. Self-review inspected all changed functions/behaviours and representative browser/raster evidence; no critical/important implementation issues remain.
+**Known gaps / follow-ups:** Await user's appearance verdict; no artistic approval or position approval. Exact original-mask measurement replication remains unverified. A has not started. No runtime/public/registry/PWA/service-worker/product/accounting changes, worktree/subagent, staging/commit, production exports or Phase2. Full-repository suites/build not run. Existing non-failing Playwright environment and Git line-ending warnings remain.
+
+
+## 2026-11-02 — Pressure plate attempt-05 stair-aligned perspective (C revision)
+
+**Task:** Execute the approved final C revision: measure architecture-only stairs, generate an outline, edit attempt-04 with the document prompt, verify and stop for appearance review before A.
+**Scope:** New attempt-05 preparation/contracts/composer/renderer; raw sources/prompts/guide/lineage;13 review PNGs plus4 prepared PNGs; HTML/manifest/verification receipt;2 focused Vitest files and four-viewport Playwright spec/config; execution plan; this append only.
+**What changed:**
+- Manually marked the lower three stair left corners (857,326), (871,312), (883,299) on the architecture-only scene. Least-squares upward dx/dy=0.963436929; saved annotated evidence and a texture-free96x18 guide before ImageGen. Manual point-selection uncertainty approximately +/-1 logical px.
+- Built-in ImageGen used the exact attempt-05 document prompt and raw selected attempt-04, guide and cave references. Preserved that output and two geometry-only retries with actual prompts. Selected retry-02 SHA-256 d2902a1277831ddd88b779852949ee34c79b6c83650cf44fb3d3ceaeca36c9b4; no CLI fallback, painting, warping or colour replacement.
+- Added attempt-04 comparisons,1x/4x/true-gray, guide overlay, stair measurement, native scene and stair-mouth context. Uniform nearest derivation creates binary-alpha/RGB0 sprite on96x18, origin(850,339), opacity0.85; only1541 pixels within the expanded envelope differ from frozen baseline.
+- Alpha slopes1.000/0.916667 pass measured slope +/-25%, relative difference8.33% <=20%. Attempt-04 has opposite signs; both earlier new outputs fail right-slope threshold. Fixed guide-adjusted colour mask yields S0.707723,V delta+0.070880; front gap77/80=96.25% continuous warm near-black pixels.
+- Focused Vitest12 pass in3 files; four-viewport Playwright12 pass at320/390/768/1440. Scoped TS/ESM ESLint, typecheck, syntax and whitespace checks pass. Two direct rebuilds keep20 targets byte-identical;17 derived/prepared PNGs and3 raw copies verified.1220 captured pre-existing files and Git index unchanged; original devlog bytes retained as prefix.
+**Decisions:** Awaiting-calibration/reviewOnly with runtimePromotion:false; stop at appearance review before A. Preserve front-left landing and approximately80px front long edge, widen canvas to96px for rear-right shear. Record/show the new fixed colour-mask formula; old rectangle retained, no claim of numerical equivalence. Self-review covered all new functions/sections and representative visual/browser evidence; no critical/important review-implementation issues remain.
+**Known gaps / follow-ups:** User appearance verdict pending; position not approved. All attempt-01-04 originals/reviews/contracts unchanged. No A, runtime/public/registry/PWA/service-worker/product/accounting changes, worktree/subagent, stage/commit, production exports or Phase2. Full-repository suites/build not run. Corrected sandbox TEMP issue and a browser/image-decode race by running the browser after mutation/rebuild unit tests; final browser run all12 pass. Protected .agents directory requires scoped elevation solely for this append.
+
+
+## 2026-11-03 — Pressure plate attempt-06 existing-source appearance review (C)
+
+**Task:** Resume C using only the existing five attempt-06 sources; select a passing candidate, finish lineage/composition/review/validation/devlog and stop for appearance review without starting A.
+**Scope:** New attempt-06 lineage, composer/renderer,13 review PNGs, HTML/manifest/verification receipt, focused integrity tests and four-viewport Playwright spec/config; local selection/baseline/rebuild receipts; this append only. Existing measurement, guide, preparation, contracts, core tests, all five source/prompt files and attempt-01-05 artifacts remain unchanged.
+**What changed:**
+- Re-evaluated the existing five sources with identical frozen scene, fitting, masks and thresholds; selected retry-04, SHA-256 f95a1a7b3db580c2baa1aeaf1bb7d2cd501674cb17ad7a5255e921aaf157abcc. No new ImageGen calls, no new source images, no remeasurement/guide/contract regeneration. Recorded all five historical edit calls, their actual prompts, guide/scene/extra references and original-byte locations in lineage.
+- Candidate diamond slopes -0.412308/+0.412174/+0.398462/-0.397826 pass measured0.409276 +/-20%; opposite-pair differences3.51%/3.33% <=15%, apex x difference0px. Attempt-05's80px horizontal upper span fails the new diamond contract. Preserved the saved ten-tile measurement and2x2 diamond guide.
+- Candidate scene S0.741732,V0.563881, floor V0.539935, delta+0.023946 passes S>=0.58 and delta0.02-0.08. Other deltas: retry-03 +0.098469, retry-02 -0.025010, retry-01 +0.095433, first output +0.121831; all fail colour. Existing gap contract left/right95.00%/97.44%; independent8-connected shadow check95.00%/92.31% also passes without editing the contract.
+- Uniform nearest derivation yields80x35 content offset(2,0) on85x35; origin(856,331), center(898,348), opacity0.85. Binary alpha and RGB0. Only1661 pixels differ from original baseline,1850 from attempt-05, all inside old/new plate union(850,331,96,35). Added1x/4x/true-gray, attempt-05, guide overlay, same-scale real M2 tile comparison, scene/context, mask/gap evidence and five-source results.
+- Focused Vitest15 pass across3 files; four-viewport Playwright12 pass at320/390/768/1440. Scoped TS/ESM ESLint, typecheck, syntax and whitespace checks pass. Two rebuilds keep37 monitored targets byte-identical;21 PNG hashes/dimensions/transparent RGB and all5 raw copies verified.1257 initial and1280 resume pre-existing files preserved, Git index unchanged; original devlog prefix retained.
+**Decisions:** Preserve existing contracts and thresholds exactly; retry-04 is the only passing colour candidate. Rebuild skips byte-identical existing outputs and never calls preparation/ImageGen. Keep awaiting-calibration/reviewOnly with runtimePromotion:false. Self-review covered all new functions/sections plus representative raster/browser evidence; no critical/important review implementation issues remain.
+**Known gaps / follow-ups:** User appearance verdict pending; no artistic or positioning approval. A remains unstarted. No runtime/public/registry/PWA/service-worker/product/accounting changes, worktree/subagent, stage/commit, production exports or Phase2. Full-repository suites/build not run. Previous run's automatic approval usage-limit interruption left the proposed contract patch unexecuted; continuation did not apply it. Manual tile-corner uncertainty remains approximately +/-2 logical px as recorded.
+
+## 2026-11-03 — Approve Landing pressure plate attempt-06
+
+**Task:** Record the user's approval of the floor-diamond pressure plate after independent review.
+**Scope:** `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/decision-log.md`; this append.
+**What changed:**
+- Added an approval section with source and sprite hashes, review placement, measured slopes, colour and gap results, and the accepted low-contrast limitation.
+**Decisions:** Manifest left at `awaiting-calibration` (byte-identical regeneration); decision log is the authority. Only the plate element is approved; position awaits the placement tool (A).
+**Known gaps / follow-ups:** Execute A (prop-placement tool) next. Scenes, Frames, Props and Motion remain open. No runtime/public/registry changes, staging or commits.
+
+
+## 2026-11-03 — Landing prop placement tool (A)
+
+**Task:** Implement the approved prop-placement tool using pressure plate attempt-06 and chest v04; finish verification and wait for user coordinate JSON without applying positions.
+**Scope:** New landing-prop-position model/controller/composer/renderer, standalone HTML/manifest, two architecture-only review PNGs, verification report, implementation plan, focused Vitest, four-viewport Playwright spec/config; this append only.
+**What changed:**
+- Added independent desktop chest/mapCrate/pressurePlate and phone mapCrate placement, pointer capture, keyboard/buttons at 1/10 logical px, X/Y entry, individual/frame reset, guides and clean preview.
+- Pinned the approved 85x35 attempt-06 sprite e398cd840975bd77dd2b6053476be2c1ab371107e5f6087f793052b08c883f7c at opacity0.85 and all eight approved v04 chest sprites. Chest uses one ground anchor across previews. No restriction to the right passage.
+- Added advisory dialogue/floor/face/fire/Mimiku/sign/title/out-of-frame/open-lid warnings, y-based actor/prop order, and source-hashed per-frame JSON receipts. Hidden/error frames disable interaction. Clipboard requests serialize across frames and report stale/rejected writes.
+- Final focused Vitest18 pass across3 files; broader asset contract run36 pass across5 files. Four-viewport Playwright24 pass at320/390/768/1440. Scoped ESM/TS ESLint and Web typecheck pass. Native Node rebuilds are byte-identical. All878 pre-existing review files preserved; original devlog prefix retained.
+**Decisions:** Reconstruct architecture-only backgrounds from verified original crop/nearest sources and keep fixed actors as separate exact-source layers for depth sorting. Use conservative documented rectangle warnings rather than adding runtime collision logic. Initial positions are the existing review defaults and are not approvals. Self-review fixed inherited44px minimum height stretching sprites, sign-text depth, and dialogue layout drift; no critical/important issues remain.
+**Known gaps / follow-ups:** Wait for the user to drag and return desktop/phone JSON; do not apply positions in this round. Warning geometry remains conservative and needs visual judgment. No new artwork, old-tool edits, runtime/public/registry/PWA/service-worker/product/accounting changes, worktree/subagent, stage/commit, production exports or Phase2. Full product suites/build not run. Full Web lint initially raced deletion of Playwright temporary output; final scoped checks passed. Protected devlog append uses scoped elevation only.
+
+## 2026-11-03 — Remove Landing pressure plate
+
+**Task:** Record the user's decision to drop the pressure plate as a Landing interactive prop after trying placements.
+**Scope:** decision-log; prop-placement/pressure-plate spec; this append.
+**What changed:**
+- Decision-log entry withdrawing the attempt-06 approval for use, removing the plate layer from Landing, and noting the deviation from the 2026-09-14 initial interactive-object list.
+- Spec appended with the removal decision; placement application now covers chest (desktop) and map crate (desktop/phone) only.
+**Decisions:** Keep all pressure-plate artifacts as archived history; no files deleted. Did not edit the 2026-09-14 approved design; deviation recorded in decision-log.
+**Known gaps / follow-ups:** Await the user's chest/map-crate placement JSON, then apply in a separate round without the plate. Consider whether a replacement discovery is wanted. No runtime/public/registry changes, staging or commits.
+
+## 2026-11-04 — Landing 道具位置與比例套用
+
+**Task:** 依核對過的桌機與手機回執套用寶箱與地圖木箱。  
+**Scope:** Phase 1 獨立場景審核頁、合成器、產物與驗證。  
+**What changed:** 從 v04 高解析圖集重新取樣八格寶箱，從原始木箱 PNG 分別取樣桌機與手機尺寸。依落地點排序，場景省略壓力板。  
+**Decisions:** 木箱寬度保留原圖比例並取最近奇數，以維持半像素落地中心。關箱可見高度 94 px，木箱桌機 47 px、手機 33 px。  
+**Known gaps / follow-ups:** 整體場景視覺審核待使用者確認。
+
+## 2026-11-04 — Approve Landing scene composition
+
+**Task:** Record the user's visual approval of the full Landing scene after independent measurement.
+**Scope:** decision-log; this append.
+**What changed:**
+- Added approval section with desktop closed/open and phone scene hashes, independent measurements and the user-accepted shield overlap.
+**Decisions:** Scenes row left open: Home secret-base calibration and a revised layered staged file set are still required by Gate A; the application round's verification receipt is still missing.
+**Known gaps / follow-ups:** Codex to add the verification receipt; decide Home calibration and revise Scenes staged set; Frames, Props, Motion remain.
+
+## 2026-11-04 — Home 秘密基地校準
+
+**Task:** 執行 Scenes 規格第 2 部分並停在 Home 視覺審核。  
+**Scope:** Phase 1 Home 審核頁、合成器、素材與來源、專項測試及兩份驗證紀錄。  
+**What changed:** 保存 ImageGen 的桌機與手機原圖及提示詞，產出邏輯畫布與角色圖層。審核頁提供 Landing 並排比較、安全區、三職業切換及灰階。補登 Landing 道具套用的唯讀驗證。  
+**Decisions:** 直接重用兩個 Landing 尺寸的篝火及地面光，以已核准的 Mimiku idle 和八職業素材貼合 Home 落地點。最近冒險卡後方採局部壓暗。  
+**Known gaps / follow-ups:** 等待 Home 視覺審核。Scenes Gate A 與 Landing 手機探索條留在各自的後續階段。
+
+## 2026-11-04 — Home 秘密基地 v02 校準
+
+**Task:** 依 Scenes 規格 2R 製作獨立 Home v02，停在視覺審核。
+
+**Scope:** Home v02 背景原圖與提示詞、合成器、審核頁、比例證據、驗證紀錄與測試。
+
+**What changed:** 桌機和手機地板改為不規則扁石。桌機卡片區清出岩壁，手機保留 v01 卡片像素。依 Landing 頭部和眼球標註校準人物比例，新增八職業切換及可選空白掛紙。原 Home v01 產物以唯讀方式比對。
+
+**Decisions:** 八職業每個畫布各用一個共通倍率。沿用 Landing 火光。桌機卡片不加壓暗，掛紙預設關閉。
+
+**Known gaps / follow-ups:** 待 Home v02 視覺審核，包含石塊透視與掛紙取捨。
+
+## 2026-11-04 — Approve Home secret base v02
+
+**Task:** Record the user's approval of Home v02 after independent review.
+**Scope:** decision-log; this append.
+**What changed:** Approval section with architecture, Mimiku and avatar-slot hashes for desktop and phone, scale evidence, and accepted decisions (larger flagstones intentional; parchment placeholder not adopted).
+**Known gaps / follow-ups:** Landing phone exploration strip (spec §3) is the last Scenes item before Gate A approval of the family.
+
+## 2026-11-04 — Landing 手機探索條
+
+**Task:** 依 Scenes 規格第 3 部分交付手機探索素材與擺位工具。
+**Scope:** Phase 1 Landing 手機探索條、v04 寶箱八格、擺位預覽與驗證紀錄。
+**What changed:** 保存 ImageGen 原圖及提示詞，產出 1170×600 探索背景與 110×126 八格寶箱；擺位工具可切換三段並匯出全畫布座標。
+**Decisions:** 中段逐列覆蓋核准底圖，固定圖層及 33 px 木箱平移 x+390；寶箱以同一原圖 transform 取樣，關箱可見高度 66 px。
+**Known gaps / follow-ups:** 兩側交界有局部石紋折線待目視驗收；等待使用者擺位回執。
+
+## 2026-11-04 — 手機探索條 3R 接縫與回執擺位
+
+**Task:** 局部重繪手機探索條接縫，通過 contract 後套用核准擺位並交付視覺審核。  
+**Scope:** Phase 1 的 3R 合成腳本、ImageGen lineage、背景與八格合成、layout、manifest、審核頁、verification。  
+**What changed:** 中段 234,000 個 RGBA 像素零差異，遮罩外零差異。兩條原接縫均未通過，新接縫均通過。已驗證回執雜湊、圖層順序及重建雜湊。  
+**Decisions:** 在兩條 24 px 帶內取用 ImageGen 候選，對齊邊界顏色並校正偏冷像素，採 1.20 欄差比上限。  
+**Known gaps / follow-ups:** 局部地板與岩塊仍看得出色階轉折，待使用者視覺審核。
+
+## 2026-11-05 — 手機探索條 3R2 接縫暗谷
+
+**Task:** 依 3R2 規格補正手機探索條接縫暗谷，加上色相保護並交付視覺審核。  
+**Scope:** Phase 1 的 3R2 合成器、背景、八格場景、layout、manifest、審核頁與驗證紀錄。  
+**What changed:** 兩條接縫的牆、地板與前景均通過 92% 亮度門檻及冷色比例檢查。共提亮 20,460 像素，中段 10,509 像素，變動限於兩條指定的 24 px 帶。  
+**Decisions:** 採 BT.709 亮度偏移與冷色去飽和，使用二次羽化，沿用 3R 已驗證的圖層擺位。  
+**Known gaps / follow-ups:** 牆面接縫亮度高於參考欄，接縫觀感與變更後的中段待使用者審核。
+
+
+## 2026-11-05 — 手機探索條 3R3 接縫色度
+
+**Task:** 依 3R3 規格修正 3R2 手機探索條接縫色度並交付視覺審核。  
+**Scope:** Phase 1 的 3R3 合成器、背景、八格場景、layout、manifest、審核頁與驗證紀錄。  
+**What changed:** 兩處接縫的六組量測通過 92% 亮度及 85% 飽和度門檻，3R2 負向對照五組未通過飽和度門檻。新增三版本全條與 6× 接縫對照。  
+**Decisions:** 在 BT.709 YCbCr 沿固定 Y 修正 Cb／Cr，使用兩側參考欄與線性羽化。8 位元輸出最大亮度誤差為 0.482／255。  
+**Known gaps / follow-ups:** 等待使用者目視審核接縫及中段。
+
+
+## 2026-11-05 — Approve Landing phone exploration strip and Scenes family
+
+**Task:** Record the user's approval of the 3R3 phone exploration strip and of the Scenes family for Gate A.
+**Scope:** decision-log (Scenes table row and new section); this append.
+**What changed:** Scenes row set to approved with references to Landing desktop, Landing phone strip 3R3 and Home v02 sections; added strip hashes, placement, seam-fix history and Gate A status (5 of 8 families approved).
+**Decisions:** Did not edit `review-manifest.json` because its contract tests could not be run here; flagged for a separate Codex round.
+**Known gaps / follow-ups:** Update review-manifest scenes sample with tests; Frames, Props, Motion remain.
+
+## 2026-11-05 — Props 家族校準 v02
+
+**Task:** 重做 Mimiku 壁畫、繪製四張功能插圖，交付可操作的 Props 校準審閱。
+**Scope:** Phase 1 素材及 ImageGen 來源、擺位工具、審閱頁、manifest 與專項驗證。
+**What changed:** 增加桌機與手機各兩種刻痕狀態、四張 256×256 功能插圖、實景切換、倍率及灰階對照、壁畫座標與狀態輸出。
+**Decisions:** 同一 ImageGen 刻痕遮罩依預設岩壁像素調光。功能插圖由 ImageGen 四格圖分離並整數放大。擺位重用已核准的桌機圖層及手機 3R3 版配置。
+**Known gaps / follow-ups:** 待視覺審核。壁畫色彩依預設落點校準，移位後需目視重新確認明暗。驗證結果見 props-calibration-v02-verification.md。
+
+## 2026-11-05 — Approve feature chapter cues; request wall-carving revision
+
+**Task:** Record approval of the four feature cues and specify the wall-carving revision.
+**Scope:** decision-log; Props spec §2R; this append.
+**What changed:** Feature cue hashes approved; carving v02 rejected for invisibility on phone, line-art look and conflict with the chest's open lid; §2R adds incised-groove styling, single-rock-face placement, chest-open forbidden zone and a texture-relative discoverability metric.
+**Known gaps / follow-ups:** Carving v03 by Codex; Props row then approvable.
+
+## 2026-11-05 — 隱藏壁畫 v03（2R）
+
+**Task:** 依 Props 規格 2R 製作凹槽刻痕，更新擺位與審閱後交付視覺審核。  
+**Scope:** v03 ImageGen lineage、composer、紋理量測模組、共用擺位 model／controller／renderer、v03 review／manifest／verifier、review-index、verification。  
+**What changed:** 新增桌機與手機兩狀態刻痕、v02／v03 實景對照與實際大小截圖，工具即時重算紋理比值，新增隨寶箱座標更新的 open 禁止區與砌磚灰縫提示。  
+**Decisions:** 桌機選 (718,128) 以遠離岩縫，手機 (948,136) 貼合斜岩面。取 ImageGen 實心輪廓重建暗槽與暖色槽緣。沿用已核准插圖與場景來源。  
+**Known gaps / follow-ups:** 停在視覺審核。Hidden 偏含蓄，凹槽感與可發現性需驗收。移位後工具沿用素材像素，定案位置需重新合成取色。驗證詳見 props-calibration-v03-verification.md。
+
+
+## 2026-11-05 — 隱藏壁畫 v04（2R2）
+
+**Task:** 加強凹槽明暗、調整桌機落點並加入標題保留區，交付視覺審核。  
+**Scope:** v04 壁畫 PNG、專項合成與驗證腳本、Props 審閱頁、擺位工具及驗證紀錄。  
+**What changed:** 桌機與手機兩狀態加入更清楚的暗槽和暖色下緣。審閱頁顯示 v03／v04 與分組量測。擺位工具提示標題外框周圍 48 px，保留即時紋理比值、開蓋及灰縫提示。  
+**Decisions:** 桌機保留 (860,120) 的 72×48 畫布，將可見刻線收進單一岩面。手機沿用 (948,136)。兩端沿用 v03 ImageGen 構圖。  
+**Known gaps / follow-ups:** 停在視覺審核。待確認凹槽的立體感、hidden 可發現性及手機 revealed 的強度。數值見 props-calibration-v04-verification.md。
+
+
+## 2026-11-06 — Approve wall carving v04 and Props family
+
+**Task:** Record the user's approval of the wall carving v04 and of the Props family for Gate A.
+**Scope:** decision-log (Props row and new section); this append.
+**What changed:** Props row approved; carving hashes, placements, ratios and accepted small-size limitation recorded; Gate A now 6 of 8 (frames, motion open).
+**Known gaps / follow-ups:** Update review-manifest.json scenes/props samples with tests; Frames and Motion calibration remain.
+
+
+## 2026-11-06 — Frames 家族校準
+
+**Task:** 製作五種 9-slice 框與可操作的 Phase 1 審閱頁，交付視覺審核。
+
+**Scope:** Frames 審閱頁、審閱索引、PNG 母圖、frames.json、合成器、Vitest／Playwright 與驗證紀錄。
+
+**What changed:** 以實際 border-image 套用羊皮紙、木、暖石、暖深褐對話框與筆記本。用法律文字、檔案、帳務表格、任務板、設定及快速記帳表單檢查留白，並將對話框放入 Landing 與 Home 的桌機／手機素材。
+
+**Decisions:** 共用 36 × 36 的 1× 母圖規格、10 px 切片與 2× 角件。中心由 CSS 純色填滿。金屬配件採低調黃銅與暗鐵。
+
+**Known gaps / follow-ups:** Frames 待視覺審核。Scenes／Props manifest 樣本另案更新，涉及既有 Gate A 測試契約。驗證見 frames-calibration-verification.md。
+
+
+
+## 2026-11-06 — Frames 2R 原圖重繪
+
+**Task:** 以 ImageGen 重繪五種 9-slice 框，交付新舊比較並停在視覺審核。
+
+**Scope:** Frames 審閱頁與索引、ImageGen 原始圖集與提示詞、2R 合成器、PNG 與 frames.json、Vitest／Playwright、2R 驗證紀錄。
+
+**What changed:** 以既有洞窟與道具作為材質參考。五張 52 × 52 母圖沿用 border-image，切片放寬為 14 邏輯 px，並加入同尺寸、同內容的第一版與 2R 比較。
+
+**Decisions:** 保存單次圖集及來源外框。以確定性方式清理鍵色、調整金屬亮度並收斂邊條首尾。內距改為手機 18、桌機 26 CSS px，對話框維持原高度比例。
+
+**Known gaps / follow-ups:** 2R 待視覺審核。窄視窗中的桌機場景預覽會裁切兩側。驗證見 frames-calibration-2r-verification.md。
+
+
+## 2026-11-06 — Approve Frames 2R
+
+**Task:** Record the user's approval of the Frames 2R masters and the Frames family for Gate A.
+**Scope:** decision-log (Frames row and new section); this append.
+**What changed:** Frames row approved with master and frames.json hashes, verification summary and accepted characteristics (stone/parchment slightly loud on dark pages; visible edge repetition on very wide frames). Gate A now 7 of 8; motion remains.
+**Known gaps / follow-ups:** Motion calibration; synchronise review-manifest.json samples and Gate A tests.
+
+## 2026-11-06 — Motion v02 校準與 Gate A 審閱資料同步
+
+**Task:** 依 Motion 家族規格完成第 0 步、ImageGen 編修與逐格審閱頁，交付視覺審核。
+**Scope:** Phase 1 review manifest／index、Gate A 契約測試、Motion v02 圖格／來源／合成器／審閱頁／驗證紀錄。
+**What changed:** 同步 Scenes、Frames、Props 的既有核准樣本與雜湊。新增桌機與手機標題眨眼、Mimiku 待機、記帳、完成慶祝及篝火逐格，沿用 v04 寶箱與壁畫、Frames 2R 對話框。
+**Decisions:** 以核准圖為底稿，只將 ImageGen 像素嵌入指定動作區。桌機與手機動作共用核准 512 px master 的對位，再取樣到各自的場景尺寸。標題 Mimiku「C」未辨識到獨立眼睛，保留原像素。
+**Known gaps / follow-ups:** Motion 待視覺審核。見 motion-calibration-v02-verification.md。
+
+## 2026-11-06 — Motion 2R 待機與完成慶祝
+
+**Task:** 依 Motion 規格 2R 修正待機與完成慶祝，交付視覺審核。
+**Scope:** Motion v02r 合成器、圖格、manifest、審閱頁、驗證，及 Gate A 審閱索引與契約。
+**What changed:** 待機改為每格 250 ms 的雙格循環，每 3–6 秒插入 140 ms 眨眼。完成慶祝中段使用核准的開心姿勢，依序上移 2、3、1、0 個邏輯像素，首尾使用完成關鍵格。新增 v02／2R 時間軸與逐格對照。
+**Decisions:** v02 作為唯讀比對基準。開心姿勢沿用 Home idle 的最近鄰取樣、倍率與場景錨點，星光直接取自 v02 的星光區。
+**Known gaps / follow-ups:** Motion 2R 待視覺審核。見 motion-calibration-v02r-verification.md。
+
+
+## 2026-11-06 — Motion 2R 慶祝角色尺寸一致
+
+**Task:** 消除完成慶祝首尾因切換角色姿勢而產生的尺寸跳動。
+**Scope:** Motion 2R 慶祝圖格、播放結果、審閱頁、規格與驗證紀錄。
+**What changed:** 六格都採同一核准開心姿勢，僅垂直平移並疊加既有星光。播放結束、跳過與減少動態都切到 Home idle 基準格並保留冒險完成結果。
+**Decisions:** Home idle 是播放後結果，與六格慶祝圖分開。逐格回歸測試分離角色與星光，檢查可見寬高、水平座標與預期垂直位移。
+**Known gaps / follow-ups:** 等待 Motion 2R 視覺審核。
+
+## 2026-11-06 — Approve Motion 2R; Gate A complete
+
+**Task:** Record the user's approval of Motion 2R and completion of Gate A.
+**Scope:** decision-log (Motion row and new section); this append.
+**What changed:** Motion row approved; revision history, accepted sparse-sparkle characteristic and verification summary recorded; Gate A marked complete (8 of 8).
+**Known gaps / follow-ups:** Gate B — complete staged families under docs/design/assets/approved/page-visual-v1/ with QA packet; motion-calibration-v02r manifest still reads awaiting status by generator design (decision log is authority).

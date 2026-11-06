@@ -27,6 +27,22 @@ const wordmarkLineageAuditPath = path.resolve(
   path.dirname(reviewManifestPath),
   "wordmark-lineage-audit.md",
 );
+const iconsCalibrationReviewPath = path.resolve(
+  path.dirname(reviewManifestPath),
+  "icons-calibration-review.html",
+);
+const taskBoardVariantsReviewPath = path.resolve(
+  path.dirname(reviewManifestPath),
+  "task-board-variants-review.html",
+);
+const modesCalibrationReviewPath = path.resolve(
+  path.dirname(reviewManifestPath),
+  "modes-calibration-review.html",
+);
+const recordExpenseActionReviewPath = path.resolve(
+  path.dirname(reviewManifestPath),
+  "record-expense-action-review.html",
+);
 
 const expectedFamilyIds = [
   "wordmark",
@@ -39,7 +55,7 @@ const expectedFamilyIds = [
   "motion",
 ] as const;
 
-const rasterFamiliesUnderReview = [
+const approvedFamilies = [
   "wordmark",
   "icons",
   "mimiku-states",
@@ -50,20 +66,29 @@ const rasterFamiliesUnderReview = [
 ] as const;
 const pngSignature = "89504e470d0a1a0a";
 
+type ReviewSample = {
+  path: string;
+  sha256: string;
+} & (
+  | { width: number; height: number; alpha: boolean | null }
+  | { width?: never; height?: never; alpha?: never }
+);
+
 interface ReviewFamily {
   id: string;
   consumers: string[];
   live_html_boundaries: string[];
   fallback: string;
   accessibility: string;
-  sample: {
+  sample: ReviewSample;
+  additional_samples?: ReviewSample[];
+  decision: string;
+  staged_files?: Array<{
     path: string;
     width: number;
     height: number;
-    alpha: boolean | null;
-    sha256: string | null;
-  };
-  decision: string;
+    frames: number;
+  }>;
 }
 
 interface ReviewManifest {
@@ -88,16 +113,68 @@ describe("page visual asset style gate", () => {
       ).toBeGreaterThan(0);
       expect(family.fallback.trim(), `${family.id} fallback`).not.toBe("");
       expect(family.accessibility.trim(), `${family.id} accessibility`).not.toBe("");
-      expect(family.sample.path.trim(), `${family.id} sample path`).not.toBe("");
-      expect(family.sample.path.replaceAll("\\", "/")).not.toMatch(
-        /^web\/public\//,
+      for (const sample of [family.sample, ...(family.additional_samples ?? [])]) {
+        expect(sample.path).toMatch(/^docs\/design\/assets\/reviews\//);
+        expect(sample.path.split("/")).not.toContain("..");
+      }
+      expect(family.decision).toBe(
+        approvedFamilies.some((id) => id === family.id)
+          ? "approved"
+          : "awaiting-calibration",
       );
-      expect(family.decision).toBe("awaiting-calibration");
     }
+
+    const wordmark = manifest.families.find(({ id }) => id === "wordmark");
+    expect(wordmark?.staged_files).toEqual([
+      {
+        path: "docs/design/assets/approved/page-visual-v1/wordmark/mimic-wordmark-display.png",
+        width: 1536,
+        height: 512,
+        frames: 1,
+      },
+      {
+        path: "docs/design/assets/approved/page-visual-v1/wordmark/mimic-wordmark-compact.png",
+        width: 768,
+        height: 256,
+        frames: 1,
+      },
+      {
+        path: "docs/design/assets/approved/page-visual-v1/wordmark/mimic-wordmark-motion-sheet.png",
+        width: 4608,
+        height: 512,
+        frames: 3,
+      },
+    ]);
+
+    const mimiku = manifest.families.find(({ id }) => id === "mimiku-states");
+    expect(mimiku).toMatchObject({
+      decision: "approved",
+      sample: {
+        path: "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/mimiku-states-actions-calibration.png",
+        width: 1536,
+        height: 1024,
+        alpha: true,
+        sha256: "eea15ebaff7ccb1f68f44cc7ea12b1484c73836fabf439bf7f639c37c55107f3",
+      },
+    });
+
+    const avatarClasses = manifest.families.find(
+      ({ id }) => id === "avatar-classes",
+    );
+    expect(avatarClasses).toMatchObject({
+      decision: "approved",
+      sample: {
+        path: "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/avatar-classes/avatar-classes-calibration.png",
+        width: 2048,
+        height: 1024,
+        alpha: true,
+        sha256: "4f3cfacfbe20576390c26561025218b4c8dfe083ef921d27a11ecdd7fa2f2b59",
+      },
+    });
   });
 
-  it.each(rasterFamiliesUnderReview)(
-    "validates the %s calibration PNG",
+  it.each(approvedFamilies)(
+    "validates the %s calibration samples",
     async (familyId) => {
       const manifest = JSON.parse(
         await readFile(reviewManifestPath, "utf8"),
@@ -106,24 +183,27 @@ describe("page visual asset style gate", () => {
 
       expect(family, `${familyId} manifest record`).toBeDefined();
 
-      const samplePath = path.resolve(process.cwd(), "..", family!.sample.path);
-      const image = await readFile(samplePath);
-      const png = PNG.sync.read(image);
+      for (const sample of [family!.sample, ...(family!.additional_samples ?? [])]) {
+        const samplePath = path.resolve(process.cwd(), "..", sample.path);
+        const bytes = await readFile(samplePath);
+        expect(sample.sha256).toMatch(/^[a-f0-9]{64}$/);
+        expect(createHash("sha256").update(bytes).digest("hex")).toBe(sample.sha256);
 
-      expect(image.subarray(0, 8).toString("hex")).toBe(pngSignature);
-      expect(png.width).toBe(family!.sample.width);
-      expect(png.height).toBe(family!.sample.height);
-      expect(
-        hasTransparentPixel(png),
-        `${familyId} transparency expectation`,
-      ).toBe(family!.sample.alpha);
-      if (familyId === "wordmark" || familyId === "mimiku-states") {
-        expect(hasNonzeroTransparentPixel(png)).toBe(false);
+        if (samplePath.endsWith(".json")) {
+          expect(JSON.parse(bytes.toString("utf8"))).toBeTypeOf("object");
+          expect(sample.width).toBeUndefined();
+          continue;
+        }
+
+        expect(bytes.subarray(0, 8).toString("hex")).toBe(pngSignature);
+        const png = PNG.sync.read(bytes);
+        expect(png.width).toBe(sample.width);
+        expect(png.height).toBe(sample.height);
+        expect(hasTransparentPixel(png), sample.path).toBe(sample.alpha);
+        if (familyId === "wordmark" || familyId === "mimiku-states") {
+          expect(hasNonzeroTransparentPixel(png)).toBe(false);
+        }
       }
-      expect(family!.sample.sha256).toMatch(/^[a-f0-9]{64}$/);
-      expect(createHash("sha256").update(image).digest("hex")).toBe(
-        family!.sample.sha256,
-      );
     },
   );
 
@@ -135,30 +215,17 @@ describe("page visual asset style gate", () => {
 
     expect(motion).toBeDefined();
 
-    const samplePath = path.resolve(process.cwd(), "..", motion!.sample.path);
-    const sample = await readFile(samplePath);
-    const html = sample.toString("utf8");
-
-    expect(motion!.sample.sha256).toMatch(/^[a-f0-9]{64}$/);
-    expect(createHash("sha256").update(sample).digest("hex")).toBe(
-      motion!.sample.sha256,
-    );
-
-    for (const example of [
-      "wordmark-glance",
-      "base-idle",
-      "action-once",
-      "celebration-once",
-      "typewriter-final",
-    ]) {
-      expect(html).toContain(`data-motion-example="${example}"`);
+    for (const sample of [motion!.sample, ...(motion!.additional_samples ?? [])]) {
+      const bytes = await readFile(path.resolve(process.cwd(), "..", sample.path));
+      expect(createHash("sha256").update(bytes).digest("hex")).toBe(sample.sha256);
     }
-
-    expect(html).toContain("@media (prefers-reduced-motion: reduce)");
-    expect(html).not.toMatch(/pointermove|mousemove|clientX|clientY/);
-    expect(html).toMatch(
-      /role="status"[^>]*data-accessible-dialogue[^>]*>[^<]+<\/[^>]+>/,
-    );
+    const html = await readFile(path.resolve(process.cwd(), "..", motion!.sample.path), "utf8");
+    const controllerPath = motion!.sample.path.replace(/-review\.html$/, ".js");
+    const controller = await readFile(path.resolve(process.cwd(), "..", controllerPath), "utf8");
+    expect(html).toContain('role="status" aria-live="polite"');
+    expect(html).toContain('id="skip"');
+    expect(controller).toContain('matchMedia("(prefers-reduced-motion: reduce)")');
+    expect(controller).not.toMatch(/pointermove|mousemove|clientX|clientY/);
   });
 
   it("assembles all families into the responsive live-caption review index", async () => {
@@ -168,7 +235,9 @@ describe("page visual asset style gate", () => {
     const html = await readFile(reviewIndexPath, "utf8");
 
     for (const family of manifest.families) {
-      expect(html, family.id).toContain(path.basename(family.sample.path));
+      for (const sample of [family.sample, ...(family.additional_samples ?? [])]) {
+        expect(html, family.id).toContain(path.basename(sample.path));
+      }
       expect(html, `${family.id} section`).toContain(
         `data-family="${family.id}"`,
       );
@@ -241,12 +310,12 @@ describe("page visual asset style gate", () => {
     expect(audit).toContain("new");
     expect(reviewIndex).toContain('data-family="mimiku-states"');
     expect(reviewIndex).toContain(
-      "Awaiting calibration review — lineage baseline confirmed.",
+      "Mimiku calibration approved at exact recorded hashes.",
     );
     expect(reviewIndex).toContain("[data-live-caption] a {");
     expect(reviewIndex).toContain("[data-live-caption] a:focus-visible {");
     expect(reviewIndex).toContain("Decisions are recorded per family");
-    expect(reviewIndex).toContain("Mimiku replacement awaiting review");
+    expect(reviewIndex).toContain("Mimiku calibration approved");
     expect(reviewIndex).not.toContain("no decision is recorded yet");
     expect(createHash("sha256").update(rejectedSample).digest("hex")).toBe(
       "1278f447346866922f2ae7512dfdea52d52106ef5d01d704bc611ae4b118bbe2",
@@ -285,6 +354,15 @@ describe("page visual asset style gate", () => {
       path.join(reviewDirectory, "compose-wordmark-calibration.mjs"),
       "utf8",
     );
+    const selectedV11Bytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "wordmark-synthesis",
+        "wordmark-synthesis-v11.png",
+      ),
+    );
+    const selectedV11 = PNG.sync.read(selectedV11Bytes);
     const derivedSourceBytes = await readFile(
       path.join(
         reviewDirectory,
@@ -312,10 +390,204 @@ describe("page visual asset style gate", () => {
     expect(createHash("sha256").update(derivedSourceBytes).digest("hex")).toBe(
       "74c2c21e1dcf78732528f205987f572fce96fb5305b7ebd1a4da586157368fa2",
     );
-    expect(composer).toContain("wordmark-pixel-source.png");
+    expect(selectedV11.width).toBe(1947);
+    expect(selectedV11.height).toBe(808);
+    expect(hasTransparentPixel(selectedV11)).toBe(true);
+    expect(createHash("sha256").update(selectedV11Bytes).digest("hex")).toBe(
+      "d80f9ef5e4273d05ab8a61fe2da01cb4fc3ebfd68486eaef0157c86623c3b189",
+    );
+    expect(composer).toContain("wordmark-synthesis-v11.png");
+    expect(composer).not.toContain('"derivations"');
+    expect(composer).toContain("containNearest");
+    expect(composer).toContain("zeroTransparentRgb(output)");
     expect(composer).toContain("wordmark-calibration.png");
     expect(reviewIndex).toContain(
-      "Wordmark replacement awaiting review — canonical Mimiku pixel lineage.",
+      "Wordmark calibration approved · exact hash and staged canvases recorded.",
+    );
+    expect(reviewIndex).toContain("wordmark-synthesis-v11.png");
+  });
+
+  it("presents the icon calibration with source, runtime, scale, grayscale, and safe-zone controls", async () => {
+    const html = await readFile(iconsCalibrationReviewPath, "utf8");
+    const taskBoardReview = await readFile(taskBoardVariantsReviewPath, "utf8");
+    const reviewDirectory = path.dirname(reviewManifestPath);
+    const rejectedBytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "rejected",
+        "icons-calibration-5d6eb7fa.png",
+      ),
+    );
+    const coarseReplacementBytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "rejected",
+        "icons-calibration-28a1add6.png",
+      ),
+    );
+    const replacementSourceBytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "derivations",
+        "icons-calibration-v03-source.png",
+      ),
+    );
+    const replacementSource = PNG.sync.read(replacementSourceBytes);
+    const approvedNavigationSourceBytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "derivations",
+        "icons-navigation-v04-source.png",
+      ),
+    );
+    const approvedNavigationSource = PNG.sync.read(
+      approvedNavigationSourceBytes,
+    );
+    const selectedTaskBoardBytes = await readFile(
+      path.join(
+        reviewDirectory,
+        "samples",
+        "task-board-variants",
+        "task-board-a-adventurer-contract.png",
+      ),
+    );
+    const selectedTaskBoard = PNG.sync.read(selectedTaskBoardBytes);
+    const composer = await readFile(
+      path.join(reviewDirectory, "compose-icons-calibration.mjs"),
+      "utf8",
+    );
+
+    for (const reference of [
+      "samples/icons-calibration.png",
+      "../../sources/pixel-ui/icons-ui.png",
+      "../../../../../icon.png",
+      "../../../../../web/public/icons/icon-512.png",
+      "../../../../../web/public/icons/icon-maskable-512.png",
+    ]) {
+      expect(html).toContain(reference);
+    }
+
+    for (const size of ["16", "32", "48", "192"]) {
+      expect(html).toContain(`data-preview-size="${size}"`);
+    }
+
+    expect(html).toContain("data-grayscale-review");
+    expect(html).toContain("data-maskable-safe-zone");
+    expect(html).toContain("Named future consumers");
+    expect(html).toContain("Live-HTML boundary");
+    expect(html).toContain("Self-check findings");
+    expect(html).toContain(
+      "Primary-navigation, Mode, record-expense Action, Event / Status, Install / Favicon, and Maskable directions are approved at exact hashes",
+    );
+    expect(html).toContain("icons-calibration-5d6eb7fa.png");
+    expect(html).toContain("icons-calibration-28a1add6.png");
+    expect(createHash("sha256").update(rejectedBytes).digest("hex")).toBe(
+      "5d6eb7faef38e2ca371f106036ffe25d4678c2178a6e28433bf27293108713e4",
+    );
+    expect(createHash("sha256").update(coarseReplacementBytes).digest("hex")).toBe(
+      "28a1add69f6a15dcaeb3ffa897659f19c72736750d845de2ec433bb62ad1728c",
+    );
+    expect(replacementSource.width).toBeGreaterThanOrEqual(1024);
+    expect(replacementSource.height).toBe(replacementSource.width);
+    expect(hasTransparentPixel(replacementSource)).toBe(true);
+    expect(createHash("sha256").update(replacementSourceBytes).digest("hex")).toBe(
+      "e3a8fba0c07b2c4e53a9fa8722afbbbfc0c64207050d252dba3a97082a8323c2",
+    );
+    expect(approvedNavigationSource.width).toBe(2172);
+    expect(approvedNavigationSource.height).toBe(724);
+    expect(hasTransparentPixel(approvedNavigationSource)).toBe(true);
+    expect(
+      createHash("sha256")
+        .update(approvedNavigationSourceBytes)
+        .digest("hex"),
+    ).toBe("3e9284c6666723c1d58a437063cd823bfee62d5acfdf682eaf54d5123c618cea");
+    expect(selectedTaskBoard.width).toBe(1254);
+    expect(selectedTaskBoard.height).toBe(1254);
+    expect(hasTransparentPixel(selectedTaskBoard)).toBe(true);
+    expect(createHash("sha256").update(selectedTaskBoardBytes).digest("hex")).toBe(
+      "3cb0cfd4d0b91e1e58f09ad69777dc72ce89944fc982a3c46c12817e68b72856",
+    );
+    expect(html).toContain("icons-navigation-v04-source.png");
+    expect(html).toContain("task-board-a-adventurer-contract.png");
+    expect(html).toContain(
+      "Primary navigation direction approved; Icons family calibration approved",
+    );
+    expect(taskBoardReview).toContain('data-selected="true"');
+    expect(taskBoardReview).toContain("A · 冒險委託板 · 已選定");
+    expect(composer).toContain("icons-calibration-v03-source.png");
+    expect(composer).toContain("icons-navigation-v04-source.png");
+    expect(composer).toContain("task-board-a-adventurer-contract.png");
+    expect(composer).toContain("selectedTaskBoard");
+    expect(composer).toContain("composeNavigationRow");
+    expect(composer).toContain("icons-calibration.png");
+    expect(composer).toContain("resizeNearest");
+    expect(composer).toContain("zeroTransparentRgb(output)");
+  });
+
+  it("keeps the selected task board full-sized without sleeve leakage", async () => {
+    const reviewDirectory = path.dirname(reviewManifestPath);
+    const calibration = PNG.sync.read(
+      await readFile(
+        path.join(reviewDirectory, "samples", "icons-calibration.png"),
+      ),
+    );
+
+    expect(
+      countBlueDominantPixels(calibration, {
+        left: 615,
+        top: 486,
+        width: 191,
+        height: 242,
+      }),
+    ).toBeLessThanOrEqual(10);
+    expect(
+      findOpaqueBounds(
+        calibration,
+        { left: 615, top: 486, width: 191, height: 242 },
+        16,
+      ).width,
+    ).toBeGreaterThanOrEqual(180);
+  });
+
+  it("presents the three mode icons at master, 48px, and grayscale scales", async () => {
+    const html = await readFile(modesCalibrationReviewPath, "utf8");
+
+    expect(html.match(/data-mode=/g)).toHaveLength(3);
+    expect(html.match(/data-decision="approved"/g)).toHaveLength(3);
+    expect(html).toContain('data-mode="personal"');
+    expect(html).toContain('data-mode="shared"');
+    expect(html).toContain('data-mode="pooled"');
+    expect(html).toContain("samples/icons-calibration.png");
+    expect(html.match(/data-preview-size="48"/g)).toHaveLength(3);
+    expect(html.match(/data-grayscale-preview/g)).toHaveLength(3);
+    expect(html).toContain(
+      "Mode icon directions approved — personal wallet, shared receipts, and pooled open chest.",
+    );
+    expect(html).toContain(
+      "The complete Icons family calibration is approved; no runtime asset changes here.",
+    );
+  });
+
+  it("records approval of the record-expense Action without promoting it to runtime", async () => {
+    const html = await readFile(recordExpenseActionReviewPath, "utf8");
+
+    expect(html).toContain('data-action="record-expense"');
+    expect(html).toContain('data-decision="approved"');
+    expect(html).toContain("record-expense-action-v01.png");
+    expect(html).toContain('data-preview-size="48"');
+    expect(html).toContain("data-grayscale-preview");
+    expect(html).toContain("data-family-control");
+    expect(html).toContain("記一筆支出");
+    expect(html).toContain("live HTML");
+    expect(html).toContain(
+      "Record-expense Action icon approved — quill, loose ledger page, and subordinate coin.",
+    );
+    expect(html).toContain(
+      "The complete Icons family calibration is approved; no runtime asset changes here.",
     );
   });
 });
@@ -340,4 +612,58 @@ function hasNonzeroTransparentPixel(png: PNG): boolean {
   }
 
   return false;
+}
+
+function countBlueDominantPixels(
+  png: PNG,
+  region: { left: number; top: number; width: number; height: number },
+): number {
+  let count = 0;
+
+  for (let y = region.top; y < region.top + region.height; y += 1) {
+    for (let x = region.left; x < region.left + region.width; x += 1) {
+      const offset = (y * png.width + x) * 4;
+      const red = png.data[offset];
+      const green = png.data[offset + 1];
+      const blue = png.data[offset + 2];
+      const alpha = png.data[offset + 3];
+
+      if (
+        alpha > 0 &&
+        blue > 35 &&
+        blue > red * 1.18 &&
+        blue > green * 1.08
+      ) {
+        count += 1;
+      }
+    }
+  }
+
+  return count;
+}
+
+function findOpaqueBounds(
+  png: PNG,
+  region: { left: number; top: number; width: number; height: number },
+  alphaThreshold: number,
+): { width: number; height: number } {
+  let minX = region.left + region.width;
+  let minY = region.top + region.height;
+  let maxX = region.left - 1;
+  let maxY = region.top - 1;
+
+  for (let y = region.top; y < region.top + region.height; y += 1) {
+    for (let x = region.left; x < region.left + region.width; x += 1) {
+      if (png.data[(y * png.width + x) * 4 + 3] < alphaThreshold) continue;
+      minX = Math.min(minX, x);
+      minY = Math.min(minY, y);
+      maxX = Math.max(maxX, x);
+      maxY = Math.max(maxY, y);
+    }
+  }
+
+  return {
+    width: Math.max(0, maxX - minX + 1),
+    height: Math.max(0, maxY - minY + 1),
+  };
 }
