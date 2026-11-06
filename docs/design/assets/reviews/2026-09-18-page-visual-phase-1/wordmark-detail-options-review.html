@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mimic Wordmark — detailed pixel calibration options</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #111326; color: #f5edd7; }
+    header { padding: 28px clamp(18px, 4vw, 56px) 16px; max-width: 1500px; margin: auto; }
+    h1 { margin: 0 0 8px; font-size: clamp(24px, 4vw, 42px); }
+    header p { margin: 6px 0; max-width: 92ch; line-height: 1.55; color: #d8d1bc; }
+    .notice { color: #ffd45b; }
+    main { max-width: 1500px; margin: auto; padding: 12px clamp(18px, 4vw, 56px) 56px; display: grid; gap: 24px; }
+    article { border: 1px solid #3a3c55; border-radius: 14px; overflow: hidden; background: #191b31; }
+    .meta { padding: 14px 18px; display: flex; gap: 16px; align-items: baseline; flex-wrap: wrap; }
+    h2 { margin: 0; font-size: 20px; color: #ffd45b; }
+    .meta p { margin: 0; color: #c8c1ac; }
+    .views { display: grid; grid-template-columns: 1fr 1fr; }
+    figure { margin: 0; min-width: 0; padding: 18px; display: grid; place-items: center; gap: 12px; }
+    figure img { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+    figcaption { justify-self: start; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .72; }
+    .navy { background: #101329; }
+    .paper { background: #f3ead2; color: #2b2030; }
+    .compact { grid-column: 1 / -1; min-height: 150px; background: repeating-conic-gradient(#e9dfc8 0 25%, #dfd2b7 0 50%) 0 / 20px 20px; color: #2b2030; }
+    .compact img { width: 260px; max-width: 72vw; }
+    @media (max-width: 700px) { .views { grid-template-columns: 1fr; } .compact { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Wordmark：細節校準候選</h1>
+    <p>共同硬條件：五字母 MIMIC；僅第一個 M 左半有兩顆不對焦眼睛與木片眉毛；最後 C 是無眼的寶箱怪嘴，實際咬住愛心金幣；其餘字母無臉。全部以 Mimiku master／model sheet 為直接造型依據。</p>
+    <p class="notice">Review-only。尚未選為 calibration，也未寫入 manifest、runtime 或產品頁。</p>
+  </header>
+  <main id="options"></main>
+  <script>
+    const notes = [
+      '最接近原始寶箱比例；結構清楚、金屬稍多。',
+      '字距較緊、板材較厚；第一個 M 表情集中。',
+      '高低差更明顯；保留較強的手工基線節奏。',
+      '拼板與破口最突出；木材主導、修補感明確。',
+      '木紋與局部像素抖色較豐富；材質密度最高。',
+      '低彩度舊黃銅；縮小後木材輪廓最安靜。',
+      'C 的上下顎與咬合關係最強；整體仍保持可讀。',
+      '第一個 M 的眼睛差異最大；呆萌感最直接。',
+      '字級、傾斜、板形差異最大；拼湊故事最明顯。',
+      '平衡版：可讀性、眼神、木紋、薄金屬與 C 咬合折衷。'
+    ];
+    const root = document.querySelector('#options');
+    notes.forEach((note, index) => {
+      const number = String(index + 1).padStart(2, '0');
+      const src = `samples/wordmark-options-detail/wordmark-detail-${number}.png`;
+      root.insertAdjacentHTML('beforeend', `
+        <article>
+          <div class="meta"><h2>版本 ${number}</h2><p>${note}</p></div>
+          <div class="views">
+            <figure class="navy"><img src="${src}" alt="MIMIC wordmark 版本 ${number}，深藍背景"><figcaption>深藍背景 · 原比例</figcaption></figure>
+            <figure class="paper"><img src="${src}" alt="MIMIC wordmark 版本 ${number}，羊皮紙背景"><figcaption>淺色背景 · 原比例</figcaption></figure>
+            <figure class="compact"><img src="${src}" alt="MIMIC wordmark 版本 ${number}，縮小檢視"><figcaption>縮小檢視 · 260px CSS 寬</figcaption></figure>
+          </div>
+        </article>`);
+    });
+  </script>
+</body>
+</html>

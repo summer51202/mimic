@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mimic Wordmark V10 saturation review</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #101329; color: #f4ecd7; }
+    main { width: min(1400px, 100%); margin: auto; padding: clamp(20px, 4vw, 56px); }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); }
+    h2 { margin-top: 42px; color: #ffd45b; }
+    p { max-width: 88ch; line-height: 1.6; }
+    .warning { color: #ffd45b; }
+    .views { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 22px; background: #3d405d; border: 1px solid #3d405d; border-radius: 14px; overflow: hidden; }
+    figure { margin: 0; padding: 20px; min-width: 0; display: grid; place-items: center; gap: 12px; background: #191b31; }
+    img { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+    figcaption { justify-self: start; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .74; }
+    .paper, .compare figure { background: #f3ead2; color: #2b2030; }
+    .compact { grid-column: 1 / -1; min-height: 180px; background: repeating-conic-gradient(#e9dfc8 0 25%, #dfd2b7 0 50%) 0 / 20px 20px; color: #2b2030; }
+    .compact img { width: 260px; max-width: 72vw; }
+    @media (max-width: 720px) { .views { grid-template-columns: 1fr; } .compact { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Wordmark V10 · 提高棕黃飽和度</h1>
+    <p>沿用 V9 的棕黃配色方向，進一步提高木材紅棕、金屬金黃與愛心紅色的飽和度，同時保留原有明暗階梯、木紋與金幣像素線；黑色輪廓、白色眼睛與牙齒維持中性。</p>
+    <p class="warning">Review-only：未取代 calibration，未加入 manifest、runtime 或產品頁。</p>
+
+    <section class="views">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v10.png" alt="MIMIC Wordmark V10，深藍背景"><figcaption>V10 · 深藍背景</figcaption></figure>
+      <figure class="paper"><img src="samples/wordmark-synthesis/wordmark-synthesis-v10.png" alt="MIMIC Wordmark V10，淺色背景"><figcaption>V10 · 淺色背景</figcaption></figure>
+      <figure class="compact"><img src="samples/wordmark-synthesis/wordmark-synthesis-v10.png" alt="MIMIC Wordmark V10，縮小檢視"><figcaption>V10 · 260px 縮小檢視</figcaption></figure>
+    </section>
+
+    <h2>V9／V10 飽和度比對</h2>
+    <section class="views compare">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v09.png" alt="Wordmark V9 原飽和度"><figcaption>V9 · 原飽和度</figcaption></figure>
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v10.png" alt="Wordmark V10 提高飽和度"><figcaption>V10 · 提高飽和度</figcaption></figure>
+    </section>
+
+    <h2>V3 顏色基準／V10</h2>
+    <section class="views compare">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v03.png" alt="Wordmark V3 顏色基準"><figcaption>V3 · 棕黃色彩基準</figcaption></figure>
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v10.png" alt="Wordmark V10 高飽和棕黃版本"><figcaption>V10 · 高飽和版本</figcaption></figure>
+    </section>
+  </main>
+</body>
+</html>

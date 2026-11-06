@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mimic Wordmark V6 coin-shine review</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #101329; color: #f4ecd7; }
+    main { width: min(1400px, 100%); margin: auto; padding: clamp(20px, 4vw, 56px); }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); }
+    h2 { margin-top: 42px; color: #ffd45b; }
+    p { max-width: 88ch; line-height: 1.6; }
+    .warning { color: #ffd45b; }
+    .views { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 22px; background: #3d405d; border: 1px solid #3d405d; border-radius: 14px; overflow: hidden; }
+    figure { margin: 0; padding: 20px; min-width: 0; display: grid; place-items: center; gap: 12px; background: #191b31; }
+    img { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+    figcaption { justify-self: start; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .74; }
+    .paper, .compare figure { background: #f3ead2; color: #2b2030; }
+    .compact { grid-column: 1 / -1; min-height: 180px; background: repeating-conic-gradient(#e9dfc8 0 25%, #dfd2b7 0 50%) 0 / 20px 20px; color: #2b2030; }
+    .compact img { width: 260px; max-width: 72vw; }
+    @media (max-width: 720px) { .views { grid-template-columns: 1fr; } .compact { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Wordmark V6 · 鈍尖牙與加強金幣光澤</h1>
+    <p>以 V5 為基準：牙齒縮短並改成較寬、帶像素鈍尖的形狀，同時維持上下排的咬合節奏；金幣增加左上弧面高光、方形亮點群與局部抖色，愛心保持完整露出。</p>
+    <p class="warning">Review-only：未取代 calibration，未加入 manifest、runtime 或產品頁。</p>
+
+    <section class="views">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v06b.png" alt="MIMIC Wordmark V6，深藍背景"><figcaption>V6 · 深藍背景</figcaption></figure>
+      <figure class="paper"><img src="samples/wordmark-synthesis/wordmark-synthesis-v06b.png" alt="MIMIC Wordmark V6，淺色背景"><figcaption>V6 · 淺色背景</figcaption></figure>
+      <figure class="compact"><img src="samples/wordmark-synthesis/wordmark-synthesis-v06b.png" alt="MIMIC Wordmark V6，縮小檢視"><figcaption>V6 · 260px 縮小檢視</figcaption></figure>
+    </section>
+
+    <h2>V5／V6 直接比對</h2>
+    <section class="views compare">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v05.png" alt="Wordmark V5 尖牙與原光澤"><figcaption>V5 · 長尖牙、原光澤</figcaption></figure>
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v06b.png" alt="Wordmark V6 鈍尖牙與加強光澤"><figcaption>V6 · 鈍尖牙、光澤加強</figcaption></figure>
+    </section>
+  </main>
+</body>
+</html>

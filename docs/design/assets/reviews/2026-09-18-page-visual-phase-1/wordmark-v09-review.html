@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mimic Wordmark V9 V3-palette review</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #101329; color: #f4ecd7; }
+    main { width: min(1400px, 100%); margin: auto; padding: clamp(20px, 4vw, 56px); }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); }
+    h2 { margin-top: 42px; color: #ffd45b; }
+    p { max-width: 88ch; line-height: 1.6; }
+    .warning { color: #ffd45b; }
+    .views { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 22px; background: #3d405d; border: 1px solid #3d405d; border-radius: 14px; overflow: hidden; }
+    figure { margin: 0; padding: 20px; min-width: 0; display: grid; place-items: center; gap: 12px; background: #191b31; }
+    img { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+    figcaption { justify-self: start; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .74; }
+    .paper, .compare figure { background: #f3ead2; color: #2b2030; }
+    .compact { grid-column: 1 / -1; min-height: 180px; background: repeating-conic-gradient(#e9dfc8 0 25%, #dfd2b7 0 50%) 0 / 20px 20px; color: #2b2030; }
+    .compact img { width: 260px; max-width: 72vw; }
+    @media (max-width: 720px) { .views { grid-template-columns: 1fr; } .compact { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Wordmark V9 · V8 造型與 V3 棕黃配色</h1>
+    <p>保留 V8 的字形、眼睛眉毛、牙齒間距、愛心金幣比例與像素線光澤；木材改為 V3 的濃暖紅棕／蜂蜜棕階調，金屬與金幣改為 V3 的明亮暖黃金色階調。未採用第一次偏灰、偏米褐的輸出。</p>
+    <p class="warning">Review-only：未取代 calibration，未加入 manifest、runtime 或產品頁。</p>
+
+    <section class="views">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v09.png" alt="MIMIC Wordmark V9，深藍背景"><figcaption>V9 · 深藍背景</figcaption></figure>
+      <figure class="paper"><img src="samples/wordmark-synthesis/wordmark-synthesis-v09.png" alt="MIMIC Wordmark V9，淺色背景"><figcaption>V9 · 淺色背景</figcaption></figure>
+      <figure class="compact"><img src="samples/wordmark-synthesis/wordmark-synthesis-v09.png" alt="MIMIC Wordmark V9，縮小檢視"><figcaption>V9 · 260px 縮小檢視</figcaption></figure>
+    </section>
+
+    <h2>V8／V9 色彩調整</h2>
+    <section class="views compare">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v08.png" alt="Wordmark V8 原配色"><figcaption>V8 · 原棕色與橘金色</figcaption></figure>
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v09.png" alt="Wordmark V9 V3 配色"><figcaption>V9 · V3 濃暖棕與明亮黃金</figcaption></figure>
+    </section>
+
+    <h2>V3 色票來源／V9 套用結果</h2>
+    <section class="views compare">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v03.png" alt="Wordmark V3 棕黃配色參考"><figcaption>V3 · 顏色參考</figcaption></figure>
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v09.png" alt="Wordmark V9 保留 V8 造型並套用 V3 配色"><figcaption>V9 · 保留 V8 造型</figcaption></figure>
+    </section>
+  </main>
+</body>
+</html>

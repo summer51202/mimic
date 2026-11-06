@@ -1,0 +1,7 @@
+Use case: precise-object-edit
+Asset type: one transparent hand-drawn pixel RPG wordmark for a Landing layout review
+Input image 1: existing MIMIC wooden-letter identity/style reference and edit target. Preserve its letter identity and eye/heart details; do not insert a scene.
+Primary request: rearrange only this five-letter wordmark into two staggered rows. Upper row is exactly "MI", lower row exactly "MIC"; together M-I-M-I-C. Upper MI starts at the left. Lower MIC starts farther right, not centered underneath MI and not flush left. Both rows have the same per-letter scale.
+Composition: compact upper-left to lower-right stepped grouping, mildly tightened vertical spacing so a few outer wooden tips overlap. Keep every defining letter stroke readable. The lower row is still unmistakably below the upper row, not one continuous line. No broad overlap that hides letters, eyes or the heart.
+Style: preserve the supplied hand-drawn fine pixel clusters, stepped brown outlines, wood grain, restrained brass fittings, eyes in the letter M and heart detail in the C. Keep material shading and highlight intensity consistent with the reference; no brighter rim, gloss, extra ornament or redesign.
+Constraints: genuinely transparent background, whole silhouette unclipped, no stone wall, room, backing board, rope, character, fire, UI, caption, extra text, currency symbol or watermark. Do not stretch MI to match MIC width. Do not change letter anatomy or invent additional letters. This is layout only, not a new logo concept.

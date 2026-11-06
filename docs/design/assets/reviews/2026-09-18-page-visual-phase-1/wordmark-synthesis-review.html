@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mimic Wordmark — selected-feature synthesis</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #101329; color: #f4ecd7; }
+    main { width: min(1400px, 100%); margin: auto; padding: clamp(20px, 4vw, 56px); }
+    h1 { margin: 0 0 10px; font-size: clamp(26px, 4vw, 44px); }
+    p { max-width: 90ch; line-height: 1.6; color: #d8d1bc; }
+    .warning { color: #ffd45b; }
+    ul { line-height: 1.65; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #3d405d; border-radius: 16px; overflow: hidden; margin-top: 24px; }
+    figure { margin: 0; padding: 22px; min-width: 0; display: grid; place-items: center; gap: 12px; }
+    img { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+    figcaption { justify-self: start; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; opacity: .72; }
+    .navy { background: #101329; }
+    .paper { background: #f3ead2; color: #2b2030; }
+    .compact { grid-column: 1 / -1; min-height: 190px; background: repeating-conic-gradient(#e9dfc8 0 25%, #dfd2b7 0 50%) 0 / 20px 20px; color: #2b2030; }
+    .compact img { width: 260px; max-width: 75vw; }
+    h2 { margin-top: 42px; color: #ffd45b; }
+    h3 { margin: 0 0 8px; font-size: 16px; color: #ffd45b; }
+    .before, .references { display: grid; gap: 16px; }
+    .before { grid-template-columns: 1fr; }
+    .references { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .reference { margin: 0; padding: 16px; background: #191b31; border: 1px solid #3d405d; border-radius: 12px; display: block; }
+    .reference img { margin-top: 12px; }
+    table { width: 100%; border-collapse: collapse; margin: 18px 0 8px; background: #191b31; }
+    th, td { padding: 12px; border: 1px solid #3d405d; text-align: left; vertical-align: top; }
+    th { color: #ffd45b; }
+    .pass { color: #8ee6a8; }
+    .fixed { color: #ffd45b; }
+    @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } .compact { grid-column: auto; } }
+    @media (max-width: 720px) { .references { grid-template-columns: 1fr; } table { font-size: 14px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Wordmark 合成候選 v02</h1>
+    <p>依照本輪選擇進行單一方向合成：</p>
+    <ul>
+      <li>版本 1 的兩眼、瞳孔方向與眼球比例</li>
+      <li>版本 3 的字面高低差及功能性金屬件</li>
+      <li>版本 5 的厚實木片眉毛</li>
+      <li>版本 7 的寶箱上下顎、牙齒與愛心金幣咬合</li>
+      <li>版本 9 的字級、傾斜、板形差異及拼湊節奏</li>
+    </ul>
+    <p class="warning">Review-only：尚未取代 calibration，未加入 manifest、runtime 或產品頁。</p>
+    <section class="grid">
+      <figure class="navy"><img src="samples/wordmark-synthesis/wordmark-synthesis-v02.png" alt="MIMIC wordmark 合成候選 v02，深藍背景"><figcaption>v02 · 深藍背景 · 原比例</figcaption></figure>
+      <figure class="paper"><img src="samples/wordmark-synthesis/wordmark-synthesis-v02.png" alt="MIMIC wordmark 合成候選 v02，淺色背景"><figcaption>v02 · 淺色背景 · 原比例</figcaption></figure>
+      <figure class="compact"><img src="samples/wordmark-synthesis/wordmark-synthesis-v02.png" alt="MIMIC wordmark 合成候選 v02，縮小檢視"><figcaption>v02 · 縮小檢視 · 260px CSS 寬</figcaption></figure>
+    </section>
+
+    <h2>我自己的逐項比對</h2>
+    <table>
+      <thead><tr><th>指定來源</th><th>要保留的特徵</th><th>v01 判定</th><th>v02 判定</th></tr></thead>
+      <tbody>
+        <tr><td>版本 1</td><td>眼球比例與分離視線</td><td class="pass">保留</td><td class="pass">保留</td></tr>
+        <tr><td>版本 3</td><td>高低差與功能性金屬</td><td>高低差偏保守</td><td class="fixed">已加強：兩個 I 高度與傾斜不同</td></tr>
+        <tr><td>版本 5</td><td>厚木片眉毛</td><td class="pass">保留</td><td class="pass">保留</td></tr>
+        <tr><td>版本 7</td><td>C 的上下顎、牙齒與金幣咬合</td><td class="pass">保留</td><td class="pass">保留</td></tr>
+        <tr><td>版本 9</td><td>字級、傾斜、板形與拼湊感</td><td>中段過於整齊</td><td class="fixed">已修正：I／M 寬高、傾斜及接板差異增加</td></tr>
+      </tbody>
+    </table>
+
+    <h2>修正前 v01</h2>
+    <section class="before">
+      <figure class="reference"><img src="samples/wordmark-synthesis/wordmark-synthesis-v01.png" alt="修正前的合成候選 v01"><figcaption>v01 · 中段字塊仍偏整齊</figcaption></figure>
+    </section>
+
+    <h2>五張實際參考圖</h2>
+    <section class="references">
+      <figure class="reference"><h3>版本 1 · 眼睛</h3><img src="samples/wordmark-options-detail/wordmark-detail-01.png" alt="參考版本 1，眼睛"></figure>
+      <figure class="reference"><h3>版本 3 · 高低差與金屬</h3><img src="samples/wordmark-options-detail/wordmark-detail-03.png" alt="參考版本 3，高低差與金屬"></figure>
+      <figure class="reference"><h3>版本 5 · 眉毛</h3><img src="samples/wordmark-options-detail/wordmark-detail-05.png" alt="參考版本 5，眉毛"></figure>
+      <figure class="reference"><h3>版本 7 · 寶箱金幣</h3><img src="samples/wordmark-options-detail/wordmark-detail-07.png" alt="參考版本 7，寶箱金幣"></figure>
+      <figure class="reference"><h3>版本 9 · 字級、傾斜、板形與拼湊感</h3><img src="samples/wordmark-options-detail/wordmark-detail-09.png" alt="參考版本 9，字級、傾斜、板形與拼湊感"></figure>
+    </section>
+  </main>
+</body>
+</html>

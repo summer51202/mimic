@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MIMIC Wordmark — 10 個方向</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --navy: #17213a;
+        --cave: #0d1324;
+        --parchment: #fff7df;
+        --gold: #f4b83f;
+        --line: #b87918;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--cave);
+        color: #fffaf0;
+        font: 16px/1.55 system-ui, sans-serif;
+      }
+      header, main {
+        width: min(1440px, 100%);
+        margin: auto;
+        padding: 24px clamp(16px, 4vw, 48px);
+      }
+      h1 { margin: 0 0 8px; }
+      header p { max-width: 78ch; color: #dce5f7; }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+      article {
+        min-width: 0;
+        border: 3px solid var(--line);
+        background: var(--navy);
+      }
+      article h2, article p { margin: 0; padding: 12px 16px 0; }
+      article p { color: #dce5f7; padding-bottom: 12px; }
+      figure { margin: 0; padding: 12px; }
+      figure + figure { padding-top: 0; }
+      figure[data-bg="parchment"] { background: var(--parchment); }
+      figure[data-bg="navy"] { background: var(--navy); }
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+      }
+      @media (max-width: 760px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>MIMIC Wordmark — 10 個方向</h1>
+      <p>所有版本固定使用第一個 M 的失焦 Mimiku 眉眼、最後 C 的寶箱怪嘴與愛心金幣，並維持手繪塗鴉像素風。請用編號選擇，或指定要混合哪些版本的特徵。</p>
+    </header>
+    <main class="grid">
+      <article><h2>01 · 厚重木板</h2><p>寬厚、穩重、字高錯落，金屬作角落結構。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-01.png" alt="Wordmark option 01 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-01.png" alt="Wordmark option 01 on parchment" /></figure></article>
+      <article><h2>02 · 高瘦錯落</h2><p>垂直節奏較強、基線不齊，MIMI 負空間清楚。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-02.png" alt="Wordmark option 02 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-02.png" alt="Wordmark option 02 on parchment" /></figure></article>
+      <article><h2>03 · Mimiku 本體感</h2><p>最大程度貼近既有 Mimiku 的輪廓、材質、眉眼、牙齒與金幣。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-03.png" alt="Wordmark option 03 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-03.png" alt="Wordmark option 03 on parchment" /></figure></article>
+      <article><h2>04 · 塗鴉歪斜</h2><p>拼板更歪、更鬆、更有手畫標題感。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-04.png" alt="Wordmark option 04 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-04.png" alt="Wordmark option 04 on parchment" /></figure></article>
+      <article><h2>05 · 小尺寸優先</h2><p>輪廓簡化、負空間放大，縮小後辨識度最高。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-05.png" alt="Wordmark option 05 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-05.png" alt="Wordmark option 05 on parchment" /></figure></article>
+      <article><h2>06 · 碎木拼接</h2><p>短木板與斷面更明顯，最能表現拆解寶箱後重新拼字。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-06.png" alt="Wordmark option 06 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-06.png" alt="Wordmark option 06 on parchment" /></figure></article>
+      <article><h2>07 · 粗像素輪廓</h2><p>色階更少、像素塊更大、深藍階梯輪廓最明確。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-07.png" alt="Wordmark option 07 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-07.png" alt="Wordmark option 07 on parchment" /></figure></article>
+      <article><h2>08 · 輕金屬結構</h2><p>金屬最少，只保留必要固定件，木紋與木形主導。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-08.png" alt="Wordmark option 08 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-08.png" alt="Wordmark option 08 on parchment" /></figure></article>
+      <article><h2>09 · 故事感最強</h2><p>活物招牌感最明顯，眉眼、木板節奏與咬幣 C 更有角色性。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-09.png" alt="Wordmark option 09 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-09.png" alt="Wordmark option 09 on parchment" /></figure></article>
+      <article><h2>10 · 大膽不對稱</h2><p>字高、字寬、傾斜與木種差異最大，但仍維持可讀。</p><figure data-bg="navy"><img src="samples/wordmark-options/wordmark-option-10.png" alt="Wordmark option 10 on navy" /></figure><figure data-bg="parchment"><img src="samples/wordmark-options/wordmark-option-10.png" alt="Wordmark option 10 on parchment" /></figure></article>
+    </main>
+  </body>
+</html>

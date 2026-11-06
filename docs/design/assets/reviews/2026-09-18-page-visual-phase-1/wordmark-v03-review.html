@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mimic Wordmark V3 review</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #101329; color: #f4ecd7; }
+    main { width: min(1400px, 100%); margin: auto; padding: clamp(20px, 4vw, 56px); }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 44px); }
+    h2 { margin-top: 44px; color: #ffd45b; }
+    h3 { margin: 0; color: #ffd45b; }
+    p, li { line-height: 1.6; }
+    .warning { color: #ffd45b; }
+    .views, .references { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 22px; background: #3d405d; border: 1px solid #3d405d; border-radius: 14px; overflow: hidden; }
+    figure { margin: 0; padding: 20px; min-width: 0; display: grid; place-items: center; gap: 12px; background: #191b31; }
+    figure img { display: block; max-width: 100%; height: auto; image-rendering: pixelated; }
+    figcaption { justify-self: start; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; opacity: .74; }
+    .paper { background: #f3ead2; color: #2b2030; }
+    .compact { grid-column: 1 / -1; min-height: 180px; background: repeating-conic-gradient(#e9dfc8 0 25%, #dfd2b7 0 50%) 0 / 20px 20px; color: #2b2030; }
+    .compact img { width: 260px; max-width: 72vw; }
+    .references figure:first-child { grid-column: 1 / -1; }
+    @media (max-width: 720px) { .views, .references { grid-template-columns: 1fr; } .compact, .references figure:first-child { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Wordmark V3</h1>
+    <p>版本 9 為完整基準，只替換第一個 M 的局部表情：</p>
+    <ul>
+      <li>整體字級、傾斜、板形、拼湊節奏、金屬及 C：版本 9</li>
+      <li>兩顆眼睛與分離視線：版本 1</li>
+      <li>兩塊厚木片眉毛：版本 5</li>
+    </ul>
+    <p class="warning">Review-only：未取代 calibration，未加入 manifest、runtime 或產品頁。</p>
+
+    <section class="views">
+      <figure><img src="samples/wordmark-synthesis/wordmark-synthesis-v03.png" alt="MIMIC Wordmark V3，深藍背景"><figcaption>V3 · 深藍背景</figcaption></figure>
+      <figure class="paper"><img src="samples/wordmark-synthesis/wordmark-synthesis-v03.png" alt="MIMIC Wordmark V3，淺色背景"><figcaption>V3 · 淺色背景</figcaption></figure>
+      <figure class="compact"><img src="samples/wordmark-synthesis/wordmark-synthesis-v03.png" alt="MIMIC Wordmark V3，縮小檢視"><figcaption>V3 · 260px 縮小檢視</figcaption></figure>
+    </section>
+
+    <h2>直接參考比對</h2>
+    <section class="references">
+      <figure><h3>版本 9 · 完整基準</h3><img src="samples/wordmark-options-detail/wordmark-detail-09.png" alt="參考版本 9"><figcaption>應保留整體構造與 C</figcaption></figure>
+      <figure><h3>版本 1 · 眼睛</h3><img src="samples/wordmark-options-detail/wordmark-detail-01.png" alt="參考版本 1"><figcaption>應保留眼球比例與分離視線</figcaption></figure>
+      <figure><h3>版本 5 · 眉毛</h3><img src="samples/wordmark-options-detail/wordmark-detail-05.png" alt="參考版本 5"><figcaption>應保留厚實、歪斜的木片眉毛</figcaption></figure>
+    </section>
+  </main>
+</body>
+</html>

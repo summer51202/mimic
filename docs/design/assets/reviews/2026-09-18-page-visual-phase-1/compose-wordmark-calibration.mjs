@@ -13,8 +13,8 @@ const { PNG } = require(
 const sourcePath = path.join(
   reviewDirectory,
   "samples",
-  "derivations",
-  "wordmark-pixel-source.png",
+  "wordmark-synthesis",
+  "wordmark-synthesis-v11.png",
 );
 const outputPath = path.join(
   reviewDirectory,
@@ -23,7 +23,7 @@ const outputPath = path.join(
 );
 
 const source = PNG.sync.read(await readFile(sourcePath));
-if (source.width !== 2172 || source.height !== 724) {
+if (source.width !== 1947 || source.height !== 808) {
   throw new Error("Unexpected wordmark source dimensions");
 }
 
