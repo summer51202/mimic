@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
 import { PNG } from "pngjs";
@@ -65,6 +65,146 @@ const approvedFamilies = [
   "props",
 ] as const;
 const pngSignature = "89504e470d0a1a0a";
+const repository = path.resolve(process.cwd(), "..");
+const approvedDirectory = "docs/design/assets/approved/page-visual-v1";
+
+interface ProductionAsset {
+  path: string;
+  sources: Array<{ path: string; sha256: string }>;
+  export_method: string;
+  canvas?: { width: number; height: number; crop: [number, number, number, number]; x: number; y: number };
+  sha256: string;
+  width: number | null;
+  height: number | null;
+  frames: number;
+  frame_width: number | null;
+  frame_height: number | null;
+  alpha: boolean | null;
+  css_size: string;
+  consumer: string;
+  loading: string;
+  accessibility: string;
+  fallback: string;
+  reduced_motion: string;
+  runtime_target: null;
+  disposition: string;
+}
+
+const sha256 = (bytes: Buffer) => createHash("sha256").update(bytes).digest("hex");
+
+it.each([
+  ["display", [28, 67, 900, 265], "240–640 CSS px wide"],
+  ["compact", [936, 302, 240, 70], "96–220 CSS px wide"],
+] as const)("stages the %s wordmark with exactly eight pixels of transparent padding", async (id, crop, cssSize) => {
+  const { assets } = JSON.parse(await readFile(
+    path.join(repository, approvedDirectory, "production-asset-manifest.json"), "utf8",
+  )) as { assets: ProductionAsset[] };
+  const file = `wordmark/mimic-wordmark-${id}.png`;
+  const width = crop[2] + 16;
+  const height = crop[3] + 16;
+  expect(assets.find((asset) => asset.path === file)).toMatchObject({
+    width, height, frames: 1, frame_width: width, frame_height: height,
+    canvas: { width, height, crop, x: 8, y: 8 },
+    css_size: cssSize,
+  });
+
+  const png = PNG.sync.read(await readFile(path.join(repository, approvedDirectory, file)));
+  expect([png.width, png.height]).toEqual([width, height]);
+  const visible = { left: width, top: height, right: -1, bottom: -1 };
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (png.data[(y * width + x) * 4 + 3] === 0) continue;
+      visible.left = Math.min(visible.left, x);
+      visible.top = Math.min(visible.top, y);
+      visible.right = Math.max(visible.right, x);
+      visible.bottom = Math.max(visible.bottom, y);
+    }
+  }
+  expect(visible).toEqual({ left: 8, top: 8, right: width - 9, bottom: height - 9 });
+});
+
+it("stages the complete B1 manifest and files outside public runtime paths", async () => {
+  const { assets, gate, schema_version } = JSON.parse(await readFile(
+    path.join(repository, approvedDirectory, "production-asset-manifest.json"), "utf8",
+  )) as { assets: ProductionAsset[]; gate: string; schema_version: number };
+  expect(gate).toBe("B1");
+  expect(schema_version).toBe(1);
+  expect(assets).toHaveLength(102);
+  const paths = assets.map((asset) => asset.path);
+  expect(new Set(paths).size).toBe(paths.length);
+  const stagedFiles = (await readdir(path.join(repository, approvedDirectory), {
+    recursive: true, withFileTypes: true,
+  })).filter((entry) => entry.isFile() && /\.(png|json)$/.test(entry.name))
+    .map((entry) => path.relative(
+      path.join(repository, approvedDirectory), path.join(entry.parentPath, entry.name),
+    ).split(path.sep).join("/"));
+  expect(stagedFiles.sort()).toEqual([...paths, "production-asset-manifest.json"].sort());
+  const publicPaths = new Set(await readdir(path.join(repository, "web/public"), {
+    recursive: true,
+  }));
+  const hashes = new Set<string>();
+  for (const asset of assets) {
+    expect(asset.path).toMatch(/^[a-z0-9-]+(?:\/[a-z0-9-]+)*\.(png|json)$/);
+    expect(publicPaths.has(path.normalize(asset.path))).toBe(false);
+    expect(asset.runtime_target).toBeNull();
+    expect(asset.disposition).toBe("staged-only-until-consumer-plan");
+    for (const value of [
+      asset.export_method, asset.css_size, asset.consumer, asset.loading,
+      asset.accessibility, asset.fallback, asset.reduced_motion,
+    ]) {
+      expect(value?.trim(), asset.path).toBeTruthy();
+    }
+
+    const bytes = await readFile(path.join(repository, approvedDirectory, asset.path));
+    expect(sha256(bytes), asset.path).toBe(asset.sha256);
+    expect(hashes.has(asset.sha256), asset.path).toBe(false);
+    hashes.add(asset.sha256);
+    expect(asset.sources.length, asset.path).toBeGreaterThan(0);
+    const sources = await Promise.all(asset.sources.map(async (source) => {
+      expect(source.path).toMatch(/^docs\/design\/assets\/reviews\//);
+      expect(source.path.split("/")).not.toContain("..");
+      const sourceBytes = await readFile(path.join(repository, source.path));
+      expect(sha256(sourceBytes), source.path).toBe(source.sha256);
+      return sourceBytes;
+    }));
+    if (asset.path.endsWith(".json")) {
+      expect(JSON.parse(bytes.toString("utf8"))).toBeTypeOf("object");
+      expect([asset.width, asset.height, asset.frame_width, asset.frame_height, asset.alpha])
+        .toEqual([null, null, null, null, null]);
+      expect(asset.frames).toBe(0);
+      if (asset.export_method === "copy") expect(bytes.equals(sources[0])).toBe(true);
+      continue;
+    }
+    expect(bytes.subarray(0, 8).toString("hex")).toBe(pngSignature);
+    const png = PNG.sync.read(bytes);
+    expect([png.width, png.height], asset.path).toEqual([asset.width, asset.height]);
+    expect(png.width).toBe(asset.frame_width! * asset.frames);
+    expect(png.height).toBe(asset.frame_height);
+    expect(hasTransparentPixel(png), asset.path).toBe(asset.alpha);
+    expect(hasNonzeroTransparentPixel(png), asset.path).toBe(false);
+    expect(sources).toHaveLength(asset.frames);
+    for (const [index, source] of sources.entries()) {
+      let frame: PNG = PNG.sync.read(source);
+      if (asset.canvas) {
+        const { width, height, crop, x, y } = asset.canvas;
+        const padded = new PNG({ width, height });
+        padded.data.fill(0);
+        PNG.bitblt(frame, padded, ...crop, x, y);
+        frame = padded;
+      }
+      expect([frame.width, frame.height]).toEqual([asset.frame_width, asset.frame_height]);
+      expect(frame.data.some((value, offset) => offset % 4 === 3 && value > 0), asset.path)
+        .toBe(true);
+      const rowBytes = frame.width * 4;
+      for (let y = 0; y < frame.height; y++) {
+        const start = (y * png.width + index * frame.width) * 4;
+        expect(png.data.subarray(start, start + rowBytes).equals(
+          frame.data.subarray(y * rowBytes, (y + 1) * rowBytes),
+        ), `${asset.path} frame ${index} row ${y}`).toBe(true);
+      }
+    }
+  }
+});
 
 type ReviewSample = {
   path: string;

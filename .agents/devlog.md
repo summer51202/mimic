@@ -2153,3 +2153,24 @@
 **Scope:** decision-log (Motion row and new section); this append.
 **What changed:** Motion row approved; revision history, accepted sparse-sparkle characteristic and verification summary recorded; Gate A marked complete (8 of 8).
 **Known gaps / follow-ups:** Gate B — complete staged families under docs/design/assets/approved/page-visual-v1/ with QA packet; motion-calibration-v02r manifest still reads awaiting status by generator design (decision log is authority).
+
+## 2026-11-09 — Gate B1 已核准素材匯出
+
+**Task:** 依 Gate B 規格匯出已核准素材並驗證 B1。  
+**Scope:** `docs/design/assets/approved/`、`web/src/shared/brand/asset-style-gate.test.ts`。  
+**What changed:** 新增可重建的 102 個素材檔、production manifest 與 B1 驗證紀錄。測試先重現缺 manifest，再重現缺素材。  
+**Decisions:** 字標裁出核准的 display 與 compact，原像素置中留透明邊。Home 地面光沿用 Landing 像素，透過無損重新編碼保留獨立路徑和檔案雜湊。  
+**Known gaps / follow-ups:** 停在 B1 審閱。Home 頭像槽已引用預定的 Avatar 資產 ID，對應圖片屬 B2。
+
+
+## 2026-11-09 — Gate B1R 字標透明邊距
+
+**Task:** 依 B1R 修訂兩張字標的輸出畫布。
+
+**Scope:** Wordmark PNG、B1 匯出器、production manifest、asset style gate 測試與驗證紀錄。
+
+**What changed:** 先以兩個測試重現原畫布超出留白規格。依核准校準圖的 alpha 外框裁切，保留四邊各 8 px 透明邊。Display 為 916 × 281，compact 為 256 × 86。
+
+**Decisions:** 依校準圖的左右區域分別計算外框。沿用原像素與預定 CSS 寬度。匯出器略過位元組相同的檔案。
+
+**Known gaps / follow-ups:** 停在 B1R 審閱。

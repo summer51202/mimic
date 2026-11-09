@@ -236,3 +236,11 @@ The user approved Motion 2R (`motion-calibration-v02r-review.html`, SHA-256 `f85
 - Verification: frame hashes/dimensions/transparent RGB, action-region-only changes, timeline tests with a controllable clock (title cadence, idle blink interval, once-only actions, de-duplication, button/Esc skip, typewriter completion, single DOM announcement, focus retention, pause, hidden-page pause, reduced motion), four viewports plus 1200 × 800, deterministic rebuild.
 
 **Gate A is complete: all eight families (wordmark, icons, mimiku-states, avatar-classes, scenes, frames, props, motion) are approved**, and `review-manifest.json` has been synchronised by Codex for scenes, props, frames and motion review samples. Per the Phase 1 plan, the next stop is Gate B: produce the complete staged families under `docs/design/assets/approved/page-visual-v1/` using the accepted staged sets (as revised for Scenes, Props and Frames) and present the complete-family QA packet. Runtime promotion, `web/public` changes, page composition and Phase 2 remain blocked until Gate B is separately approved.
+
+### Gate B plan decisions — 2026-11-09
+
+The user chose to split Gate B into B1 (export already-approved assets with the production manifest and tests) and B2 (new art plus final QA), and to complete the four missing Mimiku actions (invitation, settlement, pooled-funds, guide) within Gate B after a calibration review. The fifth avatar class staged name follows the approved `physician`, replacing the plan's `cleric`. Spec: `docs/superpowers/specs/2026-11-09-gate-b-complete-families-design.md`.
+
+### Wordmark staged canvas revision — 2026-11-09
+
+B1 export showed excessive padding in the accepted wordmark canvases (compact 768 × 256 held a 240 × 70 wordmark, about 31 % of its width). The user accepted revising the wordmark staged canvases: display and compact are trimmed to the visible alpha bounds plus 8 px transparent padding on each side, with approved pixels unchanged; the B2 motion sheet uses the revised display canvas per frame. This replaces the 2026-09-23 canvas sizes (1536 × 512, 768 × 256, 4608 × 512).

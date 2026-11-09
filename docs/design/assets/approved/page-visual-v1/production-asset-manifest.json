@@ -1,0 +1,2724 @@
+{
+  "schema_version": 1,
+  "gate": "B1",
+  "assets": [
+    {
+      "path": "frames/frame-dialogue.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-2r/frame-dialogue.png",
+          "sha256": "a11877b039b95f9e51ba3a8a44c1511e24740164e062cc31e56e6f0db321139f"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "a11877b039b95f9e51ba3a8a44c1511e24740164e062cc31e56e6f0db321139f",
+      "width": 52,
+      "height": 52,
+      "frames": 1,
+      "frame_width": 52,
+      "frame_height": 52,
+      "alpha": true,
+      "css_size": "28 CSS px nine-slice corners",
+      "consumer": "shared panels, legal reading surface, dialogue, adventure notebook, guild board, settlement board",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
+      "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "frames/frame-notebook.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-2r/frame-notebook.png",
+          "sha256": "cfbb8f907aab0312bac926f8ac945f2dc4345f92ba45a9e587195b05c8444370"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "cfbb8f907aab0312bac926f8ac945f2dc4345f92ba45a9e587195b05c8444370",
+      "width": 52,
+      "height": 52,
+      "frames": 1,
+      "frame_width": 52,
+      "frame_height": 52,
+      "alpha": true,
+      "css_size": "28 CSS px nine-slice corners",
+      "consumer": "shared panels, legal reading surface, dialogue, adventure notebook, guild board, settlement board",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
+      "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "frames/frame-parchment.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-2r/frame-parchment.png",
+          "sha256": "27d44ad46645307efe957d18ea2fc5aaf4e13a0b49a8e573304faeea4761dfbe"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "27d44ad46645307efe957d18ea2fc5aaf4e13a0b49a8e573304faeea4761dfbe",
+      "width": 52,
+      "height": 52,
+      "frames": 1,
+      "frame_width": 52,
+      "frame_height": 52,
+      "alpha": true,
+      "css_size": "28 CSS px nine-slice corners",
+      "consumer": "shared panels, legal reading surface, dialogue, adventure notebook, guild board, settlement board",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
+      "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "frames/frame-stone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-2r/frame-stone.png",
+          "sha256": "b154133930b1ccc8bf9a9e0bb9560ba63b5c9fc5e4b0788480f679a0b5ca1811"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "b154133930b1ccc8bf9a9e0bb9560ba63b5c9fc5e4b0788480f679a0b5ca1811",
+      "width": 52,
+      "height": 52,
+      "frames": 1,
+      "frame_width": 52,
+      "frame_height": 52,
+      "alpha": true,
+      "css_size": "28 CSS px nine-slice corners",
+      "consumer": "shared panels, legal reading surface, dialogue, adventure notebook, guild board, settlement board",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
+      "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "frames/frame-wood.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-2r/frame-wood.png",
+          "sha256": "edd8b03a8249471e32ebe9781f532fc31bc2515f990ae6eab267bdaf785e3f5e"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "edd8b03a8249471e32ebe9781f532fc31bc2515f990ae6eab267bdaf785e3f5e",
+      "width": 52,
+      "height": 52,
+      "frames": 1,
+      "frame_width": 52,
+      "frame_height": 52,
+      "alpha": true,
+      "css_size": "28 CSS px nine-slice corners",
+      "consumer": "shared panels, legal reading surface, dialogue, adventure notebook, guild board, settlement board",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
+      "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "frames/frames.json",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/frames-2r/frames.json",
+          "sha256": "51d1edf28c539c4a751b706dd0a435b6657345b69b828c81812d1387e2a07d6c"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "51d1edf28c539c4a751b706dd0a435b6657345b69b828c81812d1387e2a07d6c",
+      "width": null,
+      "height": null,
+      "frames": 0,
+      "frame_width": null,
+      "frame_height": null,
+      "alpha": null,
+      "css_size": "data only",
+      "consumer": "shared panels, legal reading surface, dialogue, adventure notebook, guild board, settlement board",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
+      "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/install/favicon-16.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/favicon-16.png",
+          "sha256": "3aeff4325d6240fcdaeca8fa9e9ba7d4dd13cf1395dd7f9f7d799271f1942b8f"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "3aeff4325d6240fcdaeca8fa9e9ba7d4dd13cf1395dd7f9f7d799271f1942b8f",
+      "width": 16,
+      "height": 16,
+      "frames": 1,
+      "frame_width": 16,
+      "frame_height": 16,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Browser favicon",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/install/favicon-32.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/favicon-32.png",
+          "sha256": "a1aa2d33ae24fb27c68ca472c10a965b984d233e608740f7ac001621d4f216cf"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "a1aa2d33ae24fb27c68ca472c10a965b984d233e608740f7ac001621d4f216cf",
+      "width": 32,
+      "height": 32,
+      "frames": 1,
+      "frame_width": 32,
+      "frame_height": 32,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Browser favicon",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/install/icon-192.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/icon-192.png",
+          "sha256": "c6390c23645fa642e1d3ba561c4506b2cae9606c12c08ffbaded47e7333e9988"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "c6390c23645fa642e1d3ba561c4506b2cae9606c12c08ffbaded47e7333e9988",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Web app install manifest",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/install/icon-512.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/install-favicon/icon-512.png",
+          "sha256": "4d40441a62d2c3ae15294d6e281a12638e780eb8dbca9a06b8ca8216591a0d56"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "4d40441a62d2c3ae15294d6e281a12638e780eb8dbca9a06b8ca8216591a0d56",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Web app install manifest",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/install/icon-maskable-192.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/maskable/maskable-192.png",
+          "sha256": "834a3812fd56ef0803fcef33412cbbbfebcd6c3200203314d75299eff03859b8"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "834a3812fd56ef0803fcef33412cbbbfebcd6c3200203314d75299eff03859b8",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Web app install manifest",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/install/icon-maskable-512.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/maskable/maskable-512.png",
+          "sha256": "7f9c937516e8bf30ef6ddbfbb0d513932bf317b82badfacafca557c22061c441"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "7f9c937516e8bf30ef6ddbfbb0d513932bf317b82badfacafca557c22061c441",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Web app install manifest",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/action-record-expense.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/action-record-expense.png",
+          "sha256": "8e559e179652c8b05b2e513e00cc9b5ef6cf3cec87011118ae7bdaf2b21ab0e3"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "8e559e179652c8b05b2e513e00cc9b5ef6cf3cec87011118ae7bdaf2b21ab0e3",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/event-contribution.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-contribution.png",
+          "sha256": "173b840f695fc77f549831fc25aeb11716cd1eaa35e24f5e6cb9518a93adc57a"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "173b840f695fc77f549831fc25aeb11716cd1eaa35e24f5e6cb9518a93adc57a",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/event-correction.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-correction.png",
+          "sha256": "fb3df784eb1544ae49baec8efa8cbc2782aab2941fe0be4ca7f7d73462285043"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "fb3df784eb1544ae49baec8efa8cbc2782aab2941fe0be4ca7f7d73462285043",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/event-expense.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-expense.png",
+          "sha256": "840c5da0f78a0437f08727bbec7973937c4bbdde0e1c2a017006b0a1249572ce"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "840c5da0f78a0437f08727bbec7973937c4bbdde0e1c2a017006b0a1249572ce",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/event-reimbursement.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-reimbursement.png",
+          "sha256": "0f3c251f889faa51f47bbf390de6dec8c57dba853013c41a55cfa56e35af89e5"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "0f3c251f889faa51f47bbf390de6dec8c57dba853013c41a55cfa56e35af89e5",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/event-return.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-return.png",
+          "sha256": "7d8a32b3aa7edd388380541e05b150c523bccf12961d8fa3d0aca0ed92d20fa1"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "7d8a32b3aa7edd388380541e05b150c523bccf12961d8fa3d0aca0ed92d20fa1",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/event-settlement.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-settlement.png",
+          "sha256": "74bca0bc605805d8668606ce023c19c01d650704277247c797b642130882ad67"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "74bca0bc605805d8668606ce023c19c01d650704277247c797b642130882ad67",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/event-shortfall.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-shortfall.png",
+          "sha256": "198b2ad8425adf0cd575b16f05a3a20e4accccfef158c718f9fde35df502698d"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "198b2ad8425adf0cd575b16f05a3a20e4accccfef158c718f9fde35df502698d",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/mode-personal.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/mode-personal.png",
+          "sha256": "59df5cbb970c5a1a4fcc3f8a3841e32821fea401c61ca90244a33ef53ce1548f"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "59df5cbb970c5a1a4fcc3f8a3841e32821fea401c61ca90244a33ef53ce1548f",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/mode-pooled.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/mode-pooled.png",
+          "sha256": "f3a3b1704ddab90990eb3fddccc3d11a4f772009806e022a3634805ca0f83311"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "f3a3b1704ddab90990eb3fddccc3d11a4f772009806e022a3634805ca0f83311",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/mode-shared.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/mode-shared.png",
+          "sha256": "58e61510d5eb6bf453cf7244c0dfb23b0b89851f2d173bf6ce64d17395a1b7af"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "58e61510d5eb6bf453cf7244c0dfb23b0b89851f2d173bf6ce64d17395a1b7af",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/nav-adventure-log.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-adventure-log.png",
+          "sha256": "e5bbd136aa6fe35c731401fb103e1adcccf83114321bba144b6803c001da196c"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "e5bbd136aa6fe35c731401fb103e1adcccf83114321bba144b6803c001da196c",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/nav-guild.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-guild.png",
+          "sha256": "98194202610f382fe1394077fa889b7b0aa5d573679c5ad30b8631c2dd2971dd"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "98194202610f382fe1394077fa889b7b0aa5d573679c5ad30b8631c2dd2971dd",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/nav-home.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-home.png",
+          "sha256": "eb52eed0cf5596a333b361d3cd140ee7b27084af2dad7d4f2a6bb931aabf2364"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "eb52eed0cf5596a333b361d3cd140ee7b27084af2dad7d4f2a6bb931aabf2364",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/nav-settings.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-settings.png",
+          "sha256": "df47c1d7c0c961cb659757e144c6137ac681e8eedbc7909e49133704df023cce"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "df47c1d7c0c961cb659757e144c6137ac681e8eedbc7909e49133704df023cce",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/nav-tasks.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/icon-optical-evidence/optical-48/nav-tasks.png",
+          "sha256": "928b10b5a834a23c60e9176aaaefbfc80d252a2dd2ee136fd1feaf09b87b465e"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "928b10b5a834a23c60e9176aaaefbfc80d252a2dd2ee136fd1feaf09b87b465e",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/status-lock.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/status-lock.png",
+          "sha256": "0cb525aca29bdd3ef7dde8641faf9ac597f2756351221f19441daa7b1c73f1ff"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "0cb525aca29bdd3ef7dde8641faf9ac597f2756351221f19441daa7b1c73f1ff",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "icons/ui/status-offline.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/status-offline.png",
+          "sha256": "f1935a2fdda462c87ab615879022706cc8267a2dc7ffa68c0770c4f223bd3194"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "f1935a2fdda462c87ab615879022706cc8267a2dc7ffa68c0770c4f223bd3194",
+      "width": 48,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 48,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "48 × 48 logical px",
+      "consumer": "PWA install icons, favicon, five primary navigation entries, record-expense action, three mode badges, financial event and status types",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "mimiku/state-concerned.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-concerned.png",
+          "sha256": "74abb07a02aab5eb23c5f69821eee7db5149c3fbfda2e7673682d6db9b1f746e"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "74abb07a02aab5eb23c5f69821eee7db5149c3fbfda2e7673682d6db9b1f746e",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "512 × 512 logical px",
+      "consumer": "Auth, invite, shared route states, loading, empty, error, offline, success, Home dialogue, record/invite/settle/pooled/guide/complete actions",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Use contextual alternative text only when the pose adds information.",
+      "fallback": "Show the full state message and actions without character art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "mimiku/state-happy.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-happy.png",
+          "sha256": "1a350e5c6b9995c9ea5d8be5a1e73c2fcd8dc38646f08d08488b8446ef50d294"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "1a350e5c6b9995c9ea5d8be5a1e73c2fcd8dc38646f08d08488b8446ef50d294",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "512 × 512 logical px",
+      "consumer": "Auth, invite, shared route states, loading, empty, error, offline, success, Home dialogue, record/invite/settle/pooled/guide/complete actions",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Use contextual alternative text only when the pose adds information.",
+      "fallback": "Show the full state message and actions without character art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "mimiku/state-idle.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-idle.png",
+          "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "512 × 512 logical px",
+      "consumer": "Auth, invite, shared route states, loading, empty, error, offline, success, Home dialogue, record/invite/settle/pooled/guide/complete actions",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Use contextual alternative text only when the pose adds information.",
+      "fallback": "Show the full state message and actions without character art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "mimiku/state-reminder.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-reminder.png",
+          "sha256": "1a24a850d965fe97889a93e95250a4b463649686909c830f03040185990716dd"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "1a24a850d965fe97889a93e95250a4b463649686909c830f03040185990716dd",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "512 × 512 logical px",
+      "consumer": "Auth, invite, shared route states, loading, empty, error, offline, success, Home dialogue, record/invite/settle/pooled/guide/complete actions",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Use contextual alternative text only when the pose adds information.",
+      "fallback": "Show the full state message and actions without character art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "mimiku/state-serious.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-serious.png",
+          "sha256": "08eb6a2ab5f54f17f252e8693dab2fd81415a370bba7c4a1665f325e3e141fdf"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "08eb6a2ab5f54f17f252e8693dab2fd81415a370bba7c4a1665f325e3e141fdf",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "512 × 512 logical px",
+      "consumer": "Auth, invite, shared route states, loading, empty, error, offline, success, Home dialogue, record/invite/settle/pooled/guide/complete actions",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Use contextual alternative text only when the pose adds information.",
+      "fallback": "Show the full state message and actions without character art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "mimiku/state-working.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/mimiku-states-actions/masters/state-working.png",
+          "sha256": "b6231d641e032ba3a7cfa856553ceeb9eca0f526a0375cb70df7cf0466988337"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "b6231d641e032ba3a7cfa856553ceeb9eca0f526a0375cb70df7cf0466988337",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "512 × 512 logical px",
+      "consumer": "Auth, invite, shared route states, loading, empty, error, offline, success, Home dialogue, record/invite/settle/pooled/guide/complete actions",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Use contextual alternative text only when the pose adds information.",
+      "fallback": "Show the full state message and actions without character art.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/campfire-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/fire-desktop-master.png",
+          "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/fire-desktop-02.png",
+          "sha256": "5524bb8cc6f1b20c01ff0c5a3f953e63ee5701b695c066e9e0f84f2fc1519efa"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/fire-desktop-03.png",
+          "sha256": "83f33438a268cc6e2e422ed3021b444db080769d4dd9a1dc4de2338f42c07cf1"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/fire-desktop-04.png",
+          "sha256": "8985adbc9a0eb776580b8ddad847f544650b336814b0c957015c35928e6578da"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "5271a0d0312d96e4f905321ae74019d0f97aa34321651621ff38d0a933dd9e09",
+      "width": 412,
+      "height": 104,
+      "frames": 4,
+      "frame_width": 103,
+      "frame_height": 104,
+      "alpha": true,
+      "css_size": "103 × 104 logical px",
+      "consumer": "Landing and Home campfire",
+      "loading": "With the scene.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/campfire-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/fire-phone-master.png",
+          "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/fire-phone-02.png",
+          "sha256": "fd97179ca5f349ae17dc18e17e9a016c9c18dde316acb4d3d9414baf63e4529b"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/fire-phone-03.png",
+          "sha256": "2a903b0279450d525f71153aaa8e347b7970f75ddc7abdf69672ed49190fa299"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/fire-phone-04.png",
+          "sha256": "0e324ea00d79af6292a94beed6fff8490cea711616468361389ae2069f1b9f28"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "fe1f69e12e83dfd38d4b597497947d56d3fb96b31190731434c8102cc99698c6",
+      "width": 300,
+      "height": 76,
+      "frames": 4,
+      "frame_width": 75,
+      "frame_height": 76,
+      "alpha": true,
+      "css_size": "75 × 76 logical px",
+      "consumer": "Landing and Home campfire",
+      "loading": "With the scene.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/mimiku-adventure-complete-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-desktop-1.png",
+          "sha256": "581faccfe0e8a05acb716018fb43a97dc6de580131ba4541d5b0e1e372410d4c"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-desktop-2.png",
+          "sha256": "d4c8ca37a9eb681f2b2f8eb311486384d9a953fb39134e3f5539ff51b8f62251"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-desktop-3.png",
+          "sha256": "e2206657a922f44e9b11320d144516fe79dbe4dfc135780ff3dc8bbf5aedcf66"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-desktop-4.png",
+          "sha256": "66175d81fd26cc3438cf98013b19de26be259b7f75f45204951870957c96fa74"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-desktop-5.png",
+          "sha256": "784e5b784446a06de137ef1ed921b11bcce226546c369bb18b09e3ccc837157a"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-desktop-6.png",
+          "sha256": "581faccfe0e8a05acb716018fb43a97dc6de580131ba4541d5b0e1e372410d4c"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "c20269280bc10bdae5ed00688d9b21415d88407dbe5a62c858f352ca348034fd",
+      "width": 720,
+      "height": 126,
+      "frames": 6,
+      "frame_width": 120,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "120 × 126 logical px",
+      "consumer": "Home Mimiku",
+      "loading": "On demand with the action.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold idle frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/mimiku-adventure-complete-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-phone-1.png",
+          "sha256": "01cffe9f555ee74c4e7a38dc5bbf1b23b75c5ca6eadd4ff48ca131c00c52687f"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-phone-2.png",
+          "sha256": "f48567e2b93c23e731590533ab1bad828b2162f9e511d0d20c77090aecdcdb1b"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-phone-3.png",
+          "sha256": "45f316a707284dfff263b062195b53bd8ff856238fe4b982879b9a9c9bbce30a"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-phone-4.png",
+          "sha256": "9beb695de84575be2f0bb78f00219f396b509e8f68f52072efa71152cf4f74c5"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-phone-5.png",
+          "sha256": "218e7b0df6d8427357cd287b074b7dfd852b087840eabfa6ac3f4a24b69b6249"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02r/celebration-phone-6.png",
+          "sha256": "01cffe9f555ee74c4e7a38dc5bbf1b23b75c5ca6eadd4ff48ca131c00c52687f"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "2eb1e8d38bdd4d954987e1d94b4d1e3ba801334e8e27920e09ce5f9ccb70dbe1",
+      "width": 588,
+      "height": 103,
+      "frames": 6,
+      "frame_width": 98,
+      "frame_height": 103,
+      "alpha": true,
+      "css_size": "98 × 103 logical px",
+      "consumer": "Home Mimiku",
+      "loading": "On demand with the action.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold idle frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/mimiku-idle-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/idle-desktop-master.png",
+          "sha256": "804b4017687a1311d86b4ec18e512b2e5c6d3b6d0907c56f7dff44203575a6d0"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/idle-desktop-02.png",
+          "sha256": "31b0d327545ba6696bc33dd7fe19f5adc6c11a00c10f7c68733a9d01f2744b12"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/idle-desktop-03.png",
+          "sha256": "9c73788010d564bd69936aec4d330c51cf486bffae8f3189a950a3a6ecc6c6ac"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "0b8b02f95ccb6ab14c62dff03cebb6c7723852599848314d112eef14d1760887",
+      "width": 354,
+      "height": 123,
+      "frames": 3,
+      "frame_width": 118,
+      "frame_height": 123,
+      "alpha": true,
+      "css_size": "118 × 123 logical px",
+      "consumer": "Home Mimiku",
+      "loading": "With the scene.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/mimiku-idle-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/idle-phone-master.png",
+          "sha256": "c5b4aefba8f0d94f862b9d1e256197f54c9ea42ce3cb8b6225d87e5f3fe742dc"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/idle-phone-02.png",
+          "sha256": "fbc958d7dc60d3d6d47e9f5f7113599f266bf5b8c95ec427ae5ec25cb5aad457"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/idle-phone-03.png",
+          "sha256": "64d09e85ec095ebecc677c7eba757c88deeed4dde0a7e169e6edb46ddb59be78"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "2dd09d8eb34f9f28055303c04a189ea9840c765ef919debfecb311b8b25cfd3f",
+      "width": 288,
+      "height": 100,
+      "frames": 3,
+      "frame_width": 96,
+      "frame_height": 100,
+      "alpha": true,
+      "css_size": "96 × 100 logical px",
+      "consumer": "Home Mimiku",
+      "loading": "With the scene.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/mimiku-record-ledger-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-desktop-1x-0.png",
+          "sha256": "e8b4bca2595de1c78ff1dd2453536f562ace5bf605ebc94099b36805040589f5"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-desktop-1x-1.png",
+          "sha256": "31e8e681b4676eaabbdb752cc5db73d564cf5330ba0846f32f29d04518d2d5fa"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-desktop-1x-2.png",
+          "sha256": "3b4a7bbdb31adefbcc29437dd7773db522ef2d31ab6ff0f906b0bc3196e57b67"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-desktop-1x-3.png",
+          "sha256": "601514b5487908311cdf0646c8b5bcc6df7f1a85eb472d39a5b659d09d084872"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-desktop-1x-4.png",
+          "sha256": "5598eb1cfe9dc2b600c1961415b57c807bb840d2e3196756d5288feefebb55b3"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "45ae5b2d20baa2d0cedc7e33219c9600a5beb260af1d6e7cdaa3a26cbbde9083",
+      "width": 590,
+      "height": 123,
+      "frames": 5,
+      "frame_width": 118,
+      "frame_height": 123,
+      "alpha": true,
+      "css_size": "118 × 123 logical px",
+      "consumer": "Home Mimiku",
+      "loading": "On demand with the action.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 4.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/mimiku-record-ledger-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-phone-1x-0.png",
+          "sha256": "de46dd8573c202c1f696074c6ff81e04e3dc68776dffdf149757c24e7a68de21"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-phone-1x-1.png",
+          "sha256": "8378b1a83c3382d0f9b955d5b592fb9a3dc3d9f5ec8b279b792c95d208b0ec37"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-phone-1x-2.png",
+          "sha256": "1e8e8b281f0e33ee8773010ad38e951880276b2469a740ddf1ea95b4f301b6b4"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-phone-1x-3.png",
+          "sha256": "11e6983ad62a9b8fa0bf4689dc47e7c01ccc99aad1a44ca10f60684d165da5ec"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/ledger-phone-1x-4.png",
+          "sha256": "379bf5a350c733919f17e49f6b2077a0d097e58c0183c9d14afc706ac56de42b"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "f5aecd67b8299d53598bde6ef971bf2c7400ab330322963b4ffff87ed84a39c2",
+      "width": 480,
+      "height": 100,
+      "frames": 5,
+      "frame_width": 96,
+      "frame_height": 100,
+      "alpha": true,
+      "css_size": "96 × 100 logical px",
+      "consumer": "Home Mimiku",
+      "loading": "On demand with the action.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 4.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/motion-timing.json",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02r.manifest.json",
+          "sha256": "53c0ea3dd812b52b5e882d2b5031383e575e9c5c7a5ff47ba1b226658fb4f0a3"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02r.js",
+          "sha256": "c96be3d553ca2de3927232857ba78d451f37e083c1fa13777f0c0f777cb81258"
+        }
+      ],
+      "export_method": "project-review-metadata",
+      "sha256": "674fd84b067217695e099df7025873ffb0855c194d035f81448f7f72f51f927f",
+      "width": null,
+      "height": null,
+      "frames": 0,
+      "frame_width": null,
+      "frame_height": null,
+      "alpha": null,
+      "css_size": "data only",
+      "consumer": "wordmark glance/blink, base-state loops, action sequences, cave props, dialogue typewriter, one-time celebration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/title-blink-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/title-desktop-master.png",
+          "sha256": "4ecc5bc6788f34854aac81a54d35b85fad9648c9f9d6499200f825246976ff31"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/title-desktop-02.png",
+          "sha256": "71c3478a974369dd1a2dc141f231ba394eb7ca3a98ece1c345faa1e2394cfd56"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/title-desktop-03.png",
+          "sha256": "e0430594cd5b86f577abcdbb8f9c942dd4117afdb6716cac0729471896d7b70d"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "c9604f74a66231953600b38528a35ef676de105416a3112d25b71a951d012cbb",
+      "width": 864,
+      "height": 84,
+      "frames": 3,
+      "frame_width": 288,
+      "frame_height": 84,
+      "alpha": true,
+      "css_size": "288 × 84 logical px",
+      "consumer": "Landing title",
+      "loading": "With the scene.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "motion/title-blink-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/title-phone-master.png",
+          "sha256": "8fd7d677df46cc77478518de2a9f68ff77b8ae4d28deb25e6b11ad5ba6ee8f1c"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/title-phone-02.png",
+          "sha256": "909472654009df8c0439208e30080abc763b590751e3f40f3da13692c60dfdf0"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/motion-calibration-v02/title-phone-03.png",
+          "sha256": "172008d228c5233298ddcd0364d10d96bd9e209ce919634d3e82b333f7b57802"
+        }
+      ],
+      "export_method": "horizontal-sprite-sheet",
+      "sha256": "c044a0499103801afa6249b1a8af2663b04bd5b286436a13341098a42432a2c6",
+      "width": 444,
+      "height": 98,
+      "frames": 3,
+      "frame_width": 148,
+      "frame_height": 98,
+      "alpha": true,
+      "css_size": "148 × 98 logical px",
+      "consumer": "Landing title",
+      "loading": "With the scene.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/feature/personal.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/feature/personal.png",
+          "sha256": "de254b9659f8512aa1da872135ed27518658f0fc33a39cee544eb673c14e5d93"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "de254b9659f8512aa1da872135ed27518658f0fc33a39cee544eb673c14e5d93",
+      "width": 256,
+      "height": 256,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "alpha": true,
+      "css_size": "256 × 256 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/feature/pooled.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/feature/pooled.png",
+          "sha256": "e83cb6c67614bcac1527367ab6d5922ebfddc5386f325bb3a3768a0a6d26117a"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "e83cb6c67614bcac1527367ab6d5922ebfddc5386f325bb3a3768a0a6d26117a",
+      "width": 256,
+      "height": 256,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "alpha": true,
+      "css_size": "256 × 256 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/feature/shared.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/feature/shared.png",
+          "sha256": "1f3a772a2e38c9a51622ed1b499c87f495c185c89992e51e01340a4dd841c808"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "1f3a772a2e38c9a51622ed1b499c87f495c185c89992e51e01340a4dd841c808",
+      "width": 256,
+      "height": 256,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "alpha": true,
+      "css_size": "256 × 256 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/feature/tasks.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v02/feature/tasks.png",
+          "sha256": "deb540084142ac4433c792ff6aed1017b04c71e64774628e6bc98aa52039eaa4"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "deb540084142ac4433c792ff6aed1017b04c71e64774628e6bc98aa52039eaa4",
+      "width": 256,
+      "height": 256,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 256,
+      "alpha": true,
+      "css_size": "256 × 256 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/bats-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/bats.png",
+          "sha256": "1e2d48012feb4391337e369d54b4f4079232529c0a2977b87402c2df2fe091e2"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "1e2d48012feb4391337e369d54b4f4079232529c0a2977b87402c2df2fe091e2",
+      "width": 78,
+      "height": 72,
+      "frames": 1,
+      "frame_width": 78,
+      "frame_height": 72,
+      "alpha": true,
+      "css_size": "78 × 72 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/bats-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/bats.png",
+          "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "b3fbaffd3d9b478c060b0d4dc7bb28c2149b206a63c788f22918bf391d44c3c2",
+      "width": 54,
+      "height": 50,
+      "frames": 1,
+      "frame_width": 54,
+      "frame_height": 50,
+      "alpha": true,
+      "css_size": "54 × 50 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-closed-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-closed.png",
+          "sha256": "e2e804ccba88b4fdd3561241c1c7f3aed1415857c45ca84ad752236142b55315"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "e2e804ccba88b4fdd3561241c1c7f3aed1415857c45ca84ad752236142b55315",
+      "width": 156,
+      "height": 180,
+      "frames": 1,
+      "frame_width": 156,
+      "frame_height": 180,
+      "alpha": true,
+      "css_size": "156 × 180 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-closed-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-closed.png",
+          "sha256": "0f3d54212961f17df89d379b267f62a634b153a7cbec3166826f637579499bef"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "0f3d54212961f17df89d379b267f62a634b153a7cbec3166826f637579499bef",
+      "width": 110,
+      "height": 126,
+      "frames": 1,
+      "frame_width": 110,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "110 × 126 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-cracked-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-cracked.png",
+          "sha256": "b54f6fdc5c89112b148263f974fc2edfe7294b6e1f0f1fb7448f60caa7635fe4"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "b54f6fdc5c89112b148263f974fc2edfe7294b6e1f0f1fb7448f60caa7635fe4",
+      "width": 156,
+      "height": 180,
+      "frames": 1,
+      "frame_width": 156,
+      "frame_height": 180,
+      "alpha": true,
+      "css_size": "156 × 180 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-cracked-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-cracked.png",
+          "sha256": "c864f6d5fa9e62840372260270d68aa5c9a7cf0257fee18cebe1f308f30dc747"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "c864f6d5fa9e62840372260270d68aa5c9a7cf0257fee18cebe1f308f30dc747",
+      "width": 110,
+      "height": 126,
+      "frames": 1,
+      "frame_width": 110,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "110 × 126 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-half-open-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-half-open.png",
+          "sha256": "8b2e3c155cc13335dabd97451eb9df316a53a8b0c3570276b6945daa95156ba7"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "8b2e3c155cc13335dabd97451eb9df316a53a8b0c3570276b6945daa95156ba7",
+      "width": 156,
+      "height": 180,
+      "frames": 1,
+      "frame_width": 156,
+      "frame_height": 180,
+      "alpha": true,
+      "css_size": "156 × 180 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-half-open-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-half-open.png",
+          "sha256": "fac846b0e7796bd6d91246b53be5625221a8002789473958d44d54dbf9a42f23"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "fac846b0e7796bd6d91246b53be5625221a8002789473958d44d54dbf9a42f23",
+      "width": 110,
+      "height": 126,
+      "frames": 1,
+      "frame_width": 110,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "110 × 126 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-latch-release-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-latch-release.png",
+          "sha256": "569af8fb2ea9b217411685ab39cdea4e1db788841583cd73b950821d9282dc98"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "569af8fb2ea9b217411685ab39cdea4e1db788841583cd73b950821d9282dc98",
+      "width": 156,
+      "height": 180,
+      "frames": 1,
+      "frame_width": 156,
+      "frame_height": 180,
+      "alpha": true,
+      "css_size": "156 × 180 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-latch-release-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-latch-release.png",
+          "sha256": "c08fcede364ceb62ff72b3054cbc8925b8b7a873575812cc6766d2c37bbb4523"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "c08fcede364ceb62ff72b3054cbc8925b8b7a873575812cc6766d2c37bbb4523",
+      "width": 110,
+      "height": 126,
+      "frames": 1,
+      "frame_width": 110,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "110 × 126 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-near-open-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-near-open.png",
+          "sha256": "ccffc65ab9d4a9ea44f3abe377b00ba16efeb842cb7dadd5473aa465ac4119f7"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "ccffc65ab9d4a9ea44f3abe377b00ba16efeb842cb7dadd5473aa465ac4119f7",
+      "width": 156,
+      "height": 180,
+      "frames": 1,
+      "frame_width": 156,
+      "frame_height": 180,
+      "alpha": true,
+      "css_size": "156 × 180 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-near-open-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-near-open.png",
+          "sha256": "c6d2c82105c1778c36b7f9ec2a25dd11fcb609bc90d8c808fc7b478acb59084b"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "c6d2c82105c1778c36b7f9ec2a25dd11fcb609bc90d8c808fc7b478acb59084b",
+      "width": 110,
+      "height": 126,
+      "frames": 1,
+      "frame_width": 110,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "110 × 126 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-open-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-open.png",
+          "sha256": "e18c938fe3f89e277419189344d9d9b356190c843d12cb5c044843e2f80dbce1"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "e18c938fe3f89e277419189344d9d9b356190c843d12cb5c044843e2f80dbce1",
+      "width": 156,
+      "height": 180,
+      "frames": 1,
+      "frame_width": 156,
+      "frame_height": 180,
+      "alpha": true,
+      "css_size": "156 × 180 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-open-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-open.png",
+          "sha256": "bed440fb820f7491dba3c8ac624eebf419bbc242b1d2e32830ab7e74389a7de1"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "bed440fb820f7491dba3c8ac624eebf419bbc242b1d2e32830ab7e74389a7de1",
+      "width": 110,
+      "height": 126,
+      "frames": 1,
+      "frame_width": 110,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "110 × 126 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-opening-wide-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-opening-wide.png",
+          "sha256": "7a6d7be2c9f8dcefbecd60beacd42286476e99b76f6daf50aa8426c2342a9b40"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "7a6d7be2c9f8dcefbecd60beacd42286476e99b76f6daf50aa8426c2342a9b40",
+      "width": 156,
+      "height": 180,
+      "frames": 1,
+      "frame_width": 156,
+      "frame_height": 180,
+      "alpha": true,
+      "css_size": "156 × 180 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-opening-wide-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-opening-wide.png",
+          "sha256": "48afbe7a5daed12bb0fc94530ba19c79d9ffb5243003c6e78bffa113bf4ef953"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "48afbe7a5daed12bb0fc94530ba19c79d9ffb5243003c6e78bffa113bf4ef953",
+      "width": 110,
+      "height": 126,
+      "frames": 1,
+      "frame_width": 110,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "110 × 126 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-unlatched-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/chest-unlatched.png",
+          "sha256": "f9a7227dbdf89a3bda2abb3e6d6f8567bbb3659020b6cfe45124d2c7c04de05d"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "f9a7227dbdf89a3bda2abb3e6d6f8567bbb3659020b6cfe45124d2c7c04de05d",
+      "width": 156,
+      "height": 180,
+      "frames": 1,
+      "frame_width": 156,
+      "frame_height": 180,
+      "alpha": true,
+      "css_size": "156 × 180 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/chest-unlatched-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/chest-unlatched.png",
+          "sha256": "4c552640e4b10b6619d5a193f2015b8cfd7d1bb958f033f2f4eac276d708d127"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "4c552640e4b10b6619d5a193f2015b8cfd7d1bb958f033f2f4eac276d708d127",
+      "width": 110,
+      "height": 126,
+      "frames": 1,
+      "frame_width": 110,
+      "frame_height": 126,
+      "alpha": true,
+      "css_size": "110 × 126 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/map-crate-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/desktop-crate.png",
+          "sha256": "3b5d8676e99724ee831be2db690a83207a4c948cc611d16d3bc1973a9dcb321f"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "3b5d8676e99724ee831be2db690a83207a4c948cc611d16d3bc1973a9dcb321f",
+      "width": 85,
+      "height": 47,
+      "frames": 1,
+      "frame_width": 85,
+      "frame_height": 47,
+      "alpha": true,
+      "css_size": "85 × 47 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/map-crate-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-placement-application/phone-crate.png",
+          "sha256": "5d8b731c4215782dafd26442f519bf15d7766bcb2553cb32449cab1e9cd15271"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "5d8b731c4215782dafd26442f519bf15d7766bcb2553cb32449cab1e9cd15271",
+      "width": 59,
+      "height": 33,
+      "frames": 1,
+      "frame_width": 59,
+      "frame_height": 33,
+      "alpha": true,
+      "css_size": "59 × 33 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/sign-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/sign.png",
+          "sha256": "69b3caae590795ce5866570611fd039c9c1ed337c8a33f301f85a9aa70d7d26d"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "69b3caae590795ce5866570611fd039c9c1ed337c8a33f301f85a9aa70d7d26d",
+      "width": 70,
+      "height": 67,
+      "frames": 1,
+      "frame_width": 70,
+      "frame_height": 67,
+      "alpha": true,
+      "css_size": "70 × 67 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/sign-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/sign.png",
+          "sha256": "8d40ae39e9ebb21e886b1782d48b63d0e97acc7fb0eddb478e95df144e487845"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "8d40ae39e9ebb21e886b1782d48b63d0e97acc7fb0eddb478e95df144e487845",
+      "width": 62,
+      "height": 59,
+      "frames": 1,
+      "frame_width": 62,
+      "frame_height": 59,
+      "alpha": true,
+      "css_size": "62 × 59 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/torch-high-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchHigh.png",
+          "sha256": "59733789a12b4da07217835369b033000b27561dc75ebdf1fc6e23c486744903"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "59733789a12b4da07217835369b033000b27561dc75ebdf1fc6e23c486744903",
+      "width": 26,
+      "height": 55,
+      "frames": 1,
+      "frame_width": 26,
+      "frame_height": 55,
+      "alpha": true,
+      "css_size": "26 × 55 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/torch-low-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/torchLow.png",
+          "sha256": "f44a406f22bb657f8a9bb41df947d77d025df8dc335fdfff2cccc8677dc767c0"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "f44a406f22bb657f8a9bb41df947d77d025df8dc335fdfff2cccc8677dc767c0",
+      "width": 31,
+      "height": 44,
+      "frames": 1,
+      "frame_width": 31,
+      "frame_height": 44,
+      "alpha": true,
+      "css_size": "31 × 44 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/torch-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration/torch.png",
+          "sha256": "52a52c100aff82f463f6fc9da21317187a30f215d2ed75b68bbc769a88b2e192"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "52a52c100aff82f463f6fc9da21317187a30f215d2ed75b68bbc769a88b2e192",
+      "width": 20,
+      "height": 43,
+      "frames": 1,
+      "frame_width": 20,
+      "frame_height": 43,
+      "alpha": true,
+      "css_size": "20 × 43 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/wall-carving-hidden-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v04/wall-carving-hidden-desktop.png",
+          "sha256": "d174356f2f50d36fa7e96349beadde15b9f2c7c7d5ad2f031163e1bb7f689f7a"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "d174356f2f50d36fa7e96349beadde15b9f2c7c7d5ad2f031163e1bb7f689f7a",
+      "width": 72,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 72,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "72 × 48 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/wall-carving-hidden-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v04/wall-carving-hidden-phone.png",
+          "sha256": "ce86f6aee400617cd87b095597a3b16da47aa3f59738e5ac4863317d8e0c4983"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "ce86f6aee400617cd87b095597a3b16da47aa3f59738e5ac4863317d8e0c4983",
+      "width": 54,
+      "height": 36,
+      "frames": 1,
+      "frame_width": 54,
+      "frame_height": 36,
+      "alpha": true,
+      "css_size": "54 × 36 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/wall-carving-revealed-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v04/wall-carving-revealed-desktop.png",
+          "sha256": "32e645f42cb747f61316ed5a02d741ab2af0b0540a94d3771300bc83c8e3e1e9"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "32e645f42cb747f61316ed5a02d741ab2af0b0540a94d3771300bc83c8e3e1e9",
+      "width": 72,
+      "height": 48,
+      "frames": 1,
+      "frame_width": 72,
+      "frame_height": 48,
+      "alpha": true,
+      "css_size": "72 × 48 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/landing/wall-carving-revealed-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/props-calibration-v04/wall-carving-revealed-phone.png",
+          "sha256": "cd52162f95c2d851e9563f3ff9cbdbfd35e7a978107a44c725c8a78a470df4c9"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "cd52162f95c2d851e9563f3ff9cbdbfd35e7a978107a44c725c8a78a470df4c9",
+      "width": 54,
+      "height": 36,
+      "frames": 1,
+      "frame_width": 54,
+      "frame_height": 36,
+      "alpha": true,
+      "css_size": "54 × 36 logical px",
+      "consumer": "Landing interactive props, feature chapter cues, financial-mode decoration, event decoration",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/shared/campfire-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/fire.png",
+          "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b",
+      "width": 103,
+      "height": 104,
+      "frames": 1,
+      "frame_width": 103,
+      "frame_height": 104,
+      "alpha": true,
+      "css_size": "103 × 104 logical px",
+      "consumer": "Landing and Home scene campfire",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "props/shared/campfire-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/fire.png",
+          "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc",
+      "width": 75,
+      "height": 76,
+      "frames": 1,
+      "frame_width": 75,
+      "frame_height": 76,
+      "alpha": true,
+      "css_size": "75 × 76 logical px",
+      "consumer": "Landing and Home scene campfire",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
+      "fallback": "Remove decorative props while retaining named controls and labels.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/home/actors/mimiku-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/home-base-v02/desktop-mimiku.png",
+          "sha256": "804b4017687a1311d86b4ec18e512b2e5c6d3b6d0907c56f7dff44203575a6d0"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "804b4017687a1311d86b4ec18e512b2e5c6d3b6d0907c56f7dff44203575a6d0",
+      "width": 118,
+      "height": 123,
+      "frames": 1,
+      "frame_width": 118,
+      "frame_height": 123,
+      "alpha": true,
+      "css_size": "118 × 123 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/home/actors/mimiku-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/home-base-v02/phone-mimiku.png",
+          "sha256": "c5b4aefba8f0d94f862b9d1e256197f54c9ea42ce3cb8b6225d87e5f3fe742dc"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "c5b4aefba8f0d94f862b9d1e256197f54c9ea42ce3cb8b6225d87e5f3fe742dc",
+      "width": 96,
+      "height": 100,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 100,
+      "alpha": true,
+      "css_size": "96 × 100 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/home/desktop-architecture.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/home-base-v02/desktop-architecture.png",
+          "sha256": "2db9902425dfaff05cc38426c937acbef89113f8e30dd05635ca7ca8019c31cc"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "2db9902425dfaff05cc38426c937acbef89113f8e30dd05635ca7ca8019c31cc",
+      "width": 960,
+      "height": 540,
+      "frames": 1,
+      "frame_width": 960,
+      "frame_height": 540,
+      "alpha": false,
+      "css_size": "960 × 540 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/home/desktop-ground-light.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/groundLight.png",
+          "sha256": "1a934ff25c1585f3805e8bc08504761e50e7ed28ff41b375fbcb2589f10d7a63"
+        }
+      ],
+      "export_method": "lossless-png-reencode",
+      "sha256": "99dbf37ce7a58662ec5c6643803cee682ccb19d375d0e342cf302c978d1742eb",
+      "width": 326,
+      "height": 53,
+      "frames": 1,
+      "frame_width": 326,
+      "frame_height": 53,
+      "alpha": true,
+      "css_size": "326 × 53 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/home/layout.json",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/home-base-v02.manifest.json",
+          "sha256": "35e1b6abfb065f9466f49c40805d5c0ab57254ac537ecbabe1d01878592da371"
+        }
+      ],
+      "export_method": "project-review-metadata",
+      "sha256": "2fa53acff142375c18f9f7308062af69a808b97886cdea4ccd02af48f37ebb23",
+      "width": null,
+      "height": null,
+      "frames": 0,
+      "frame_width": null,
+      "frame_height": null,
+      "alpha": null,
+      "css_size": "data only",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/home/phone-architecture.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/home-base-v02/phone-architecture.png",
+          "sha256": "db69ee964a5fbc94a35518bf116f8aadc92b222306d39068d1baebf9b13a0567"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "db69ee964a5fbc94a35518bf116f8aadc92b222306d39068d1baebf9b13a0567",
+      "width": 390,
+      "height": 600,
+      "frames": 1,
+      "frame_width": 390,
+      "frame_height": 600,
+      "alpha": false,
+      "css_size": "390 × 600 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/home/phone-ground-light.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/groundLight.png",
+          "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7"
+        }
+      ],
+      "export_method": "lossless-png-reencode",
+      "sha256": "bdb1df6d5b5bcc8f6ec383b314b60b7d5a51a362db1b63a3a53492c02ffce261",
+      "width": 215,
+      "height": 35,
+      "frames": 1,
+      "frame_width": 215,
+      "frame_height": 35,
+      "alpha": true,
+      "css_size": "215 × 35 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/actors/mimiku-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/mimiku.png",
+          "sha256": "b7b39f4a4cde431623ff6e76d99476f66b02c4f06e6b95ac251647478c29eec0"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "b7b39f4a4cde431623ff6e76d99476f66b02c4f06e6b95ac251647478c29eec0",
+      "width": 123,
+      "height": 120,
+      "frames": 1,
+      "frame_width": 123,
+      "frame_height": 120,
+      "alpha": true,
+      "css_size": "123 × 120 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/actors/mimiku-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/mimiku.png",
+          "sha256": "1c3cd662a4bf6df2ef7e1567f20d805370d0f96b48ea17666af8d469f71a8693"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "1c3cd662a4bf6df2ef7e1567f20d805370d0f96b48ea17666af8d469f71a8693",
+      "width": 95,
+      "height": 93,
+      "frames": 1,
+      "frame_width": 95,
+      "frame_height": 93,
+      "alpha": true,
+      "css_size": "95 × 93 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/actors/ranger-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/ranger.png",
+          "sha256": "fdad776716166112bea51ee254c0bff41e3f8173d60ba00f8c488d12c55ac9ec"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "fdad776716166112bea51ee254c0bff41e3f8173d60ba00f8c488d12c55ac9ec",
+      "width": 153,
+      "height": 133,
+      "frames": 1,
+      "frame_width": 153,
+      "frame_height": 133,
+      "alpha": true,
+      "css_size": "153 × 133 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/actors/ranger-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/ranger.png",
+          "sha256": "fd2297f9f7cf17d3bdd187a981cdf79987642a732d49caa5d46f546d0d8c5ca9"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "fd2297f9f7cf17d3bdd187a981cdf79987642a732d49caa5d46f546d0d8c5ca9",
+      "width": 122,
+      "height": 106,
+      "frames": 1,
+      "frame_width": 122,
+      "frame_height": 106,
+      "alpha": true,
+      "css_size": "122 × 106 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/actors/warrior-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/warrior.png",
+          "sha256": "fa155d31d7668e7d3660f89f4a90de865ca978abd725aa8bc5f591342eb252e1"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "fa155d31d7668e7d3660f89f4a90de865ca978abd725aa8bc5f591342eb252e1",
+      "width": 132,
+      "height": 149,
+      "frames": 1,
+      "frame_width": 132,
+      "frame_height": 149,
+      "alpha": true,
+      "css_size": "132 × 149 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/actors/warrior-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/warrior.png",
+          "sha256": "fede3c20ad2f3f96a1f909a379019daeee1f85e1417cced2736420cd554cb85b"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "fede3c20ad2f3f96a1f909a379019daeee1f85e1417cced2736420cd554cb85b",
+      "width": 104,
+      "height": 117,
+      "frames": 1,
+      "frame_width": 104,
+      "frame_height": 117,
+      "alpha": true,
+      "css_size": "104 × 117 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/desktop-architecture.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-prop-position-v01/desktop-architecture.png",
+          "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "0fd9727772539a54dc66d7c3461fd4d4884d4fce17cff53c8d7a0603f1c55931",
+      "width": 960,
+      "height": 540,
+      "frames": 1,
+      "frame_width": 960,
+      "frame_height": 540,
+      "alpha": false,
+      "css_size": "960 × 540 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/desktop-ground-light.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-desktop/groundLight.png",
+          "sha256": "1a934ff25c1585f3805e8bc08504761e50e7ed28ff41b375fbcb2589f10d7a63"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "1a934ff25c1585f3805e8bc08504761e50e7ed28ff41b375fbcb2589f10d7a63",
+      "width": 326,
+      "height": 53,
+      "frames": 1,
+      "frame_width": 326,
+      "frame_height": 53,
+      "alpha": true,
+      "css_size": "326 × 53 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/layout.json",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-prop-placement-application.manifest.json",
+          "sha256": "8084940578e2409aae4c59ffea6adfc7ac17e416ca61367a205c1e85105e0e8c"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-phone-exploration-3r3.manifest.json",
+          "sha256": "a933d9a6a2d667dbc92e489c01465cbe7e152771a019bf6f82486097a07d516e"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/props-calibration-v04.manifest.json",
+          "sha256": "bcee8473f6041f81bef4adf875980c8c98831665ebc937afacf7a3962b377bc6"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02r.manifest.json",
+          "sha256": "53c0ea3dd812b52b5e882d2b5031383e575e9c5c7a5ff47ba1b226658fb4f0a3"
+        }
+      ],
+      "export_method": "project-review-metadata",
+      "sha256": "7e9ec5651326d2dcb5020c9615309bc913eb5709e82298ae8df7fe0e401cddd4",
+      "width": null,
+      "height": null,
+      "frames": 0,
+      "frame_width": null,
+      "frame_height": null,
+      "alpha": null,
+      "css_size": "data only",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/phone-architecture.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-phone-exploration-3r3/phone-architecture.png",
+          "sha256": "4cd2854e8673feb4b7ba61d5f6f8172f0bf200f475085ddda7a52f310ed0f7d4"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "4cd2854e8673feb4b7ba61d5f6f8172f0bf200f475085ddda7a52f310ed0f7d4",
+      "width": 1170,
+      "height": 600,
+      "frames": 1,
+      "frame_width": 1170,
+      "frame_height": 600,
+      "alpha": false,
+      "css_size": "1170 × 600 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "scenes/landing/phone-ground-light.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/landing-warm-rest/layers/A-phone/groundLight.png",
+          "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "a07efe92662e98e028de7f9492e2361e39164278fdd8bed98eb59f548abb2bd7",
+      "width": 215,
+      "height": 35,
+      "frames": 1,
+      "frame_width": 215,
+      "frame_height": 35,
+      "alpha": true,
+      "css_size": "215 × 35 logical px",
+      "consumer": "Landing cave, Home secret base",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Keep interactive objects as separately named HTML controls.",
+      "fallback": "Use the same live content and actions on a static bounded background.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "wordmark/mimic-wordmark-compact.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/wordmark-calibration.png",
+          "sha256": "745eda3b5df02f9f7cf3e911a5f095c9fc16178892857a0b2d8d10379f42bd09"
+        }
+      ],
+      "export_method": "crop-and-pad",
+      "canvas": {
+        "width": 256,
+        "height": 86,
+        "crop": [
+          936,
+          302,
+          240,
+          70
+        ],
+        "x": 8,
+        "y": 8
+      },
+      "sha256": "cbe25e16fdf5adb62da0c0c80f4296d60b90b0f7b2e7252f861e2f9d028eb281",
+      "width": 256,
+      "height": 86,
+      "frames": 1,
+      "frame_width": 256,
+      "frame_height": 86,
+      "alpha": true,
+      "css_size": "96–220 CSS px wide",
+      "consumer": "Landing, Home, public header, authenticated top rail, compact brand link",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Expose one accessible MIMIC name; treat motion as decorative.",
+      "fallback": "Render the live MIMIC brand name without image motion.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "wordmark/mimic-wordmark-display.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/wordmark-calibration.png",
+          "sha256": "745eda3b5df02f9f7cf3e911a5f095c9fc16178892857a0b2d8d10379f42bd09"
+        }
+      ],
+      "export_method": "crop-and-pad",
+      "canvas": {
+        "width": 916,
+        "height": 281,
+        "crop": [
+          28,
+          67,
+          900,
+          265
+        ],
+        "x": 8,
+        "y": 8
+      },
+      "sha256": "75cd9a21a1a2c52d8efc3bffa27285ba4af44d7b141ecaafe9567e25ad27ef65",
+      "width": 916,
+      "height": 281,
+      "frames": 1,
+      "frame_width": 916,
+      "frame_height": 281,
+      "alpha": true,
+      "css_size": "240–640 CSS px wide",
+      "consumer": "Landing, Home, public header, authenticated top rail, compact brand link",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Expose one accessible MIMIC name; treat motion as decorative.",
+      "fallback": "Render the live MIMIC brand name without image motion.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    }
+  ]
+}
