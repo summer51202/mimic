@@ -5,6 +5,8 @@ import path from "node:path";
 import { PNG } from "pngjs";
 import { describe, expect, it } from "vitest";
 
+import { inspectPng } from "./png-inspection";
+
 const reviewManifestPath = path.resolve(
   process.cwd(),
   "..",
@@ -67,6 +69,9 @@ const approvedFamilies = [
 const pngSignature = "89504e470d0a1a0a";
 const repository = path.resolve(process.cwd(), "..");
 const approvedDirectory = "docs/design/assets/approved/page-visual-v1";
+const portraitsCroppedThroughCorner = new Set([
+  "alchemist", "bard", "cartographer", "mage", "physician", "ranger", "warrior",
+]);
 
 interface ProductionAsset {
   path: string;
@@ -123,15 +128,31 @@ it.each([
   expect(visible).toEqual({ left: 8, top: 8, right: width - 9, bottom: height - 9 });
 });
 
-it("stages the complete B1 manifest and files outside public runtime paths", async () => {
+it("stages the complete Gate B manifest and files outside public runtime paths", async () => {
   const { assets, gate, schema_version } = JSON.parse(await readFile(
     path.join(repository, approvedDirectory, "production-asset-manifest.json"), "utf8",
   )) as { assets: ProductionAsset[]; gate: string; schema_version: number };
-  expect(gate).toBe("B1");
+  expect(gate).toBe("B2-2");
   expect(schema_version).toBe(1);
-  expect(assets).toHaveLength(102);
+  expect(assets).toHaveLength(125);
+  const decisions = await readFile(path.join(path.dirname(reviewManifestPath), "decision-log.md"), "utf8");
+  const b2Decisions = decisions.slice(decisions.indexOf("### Gate B2-1 partial approval"));
+  const approvals = new Map([...b2Decisions.matchAll(
+    /`([a-z0-9-]+\.png)`(?: \([^\n]*?\))?\s*(?:\|\s*`|\(SHA-256 `)([a-f0-9]{64})`/g,
+  )].map(([, name, hash]) => [name, hash]));
+  expect(approvals.size).toBe(23);
+  const b2Assets = assets.filter((asset) => asset.sources.some(({ path }) => path.includes("/gate-b2-1/")));
+  expect(b2Assets).toHaveLength(23);
+  expect(new Map(b2Assets.map((asset) => [path.basename(asset.path), asset.sha256]))).toEqual(approvals);
   const paths = assets.map((asset) => asset.path);
   expect(new Set(paths).size).toBe(paths.length);
+  for (const purpose of ["any", "maskable"]) {
+    for (const size of [192, 512]) {
+      const name = purpose === "any" ? "icon" : "icon-maskable";
+      expect(assets.find((asset) => asset.path === `icons/install/${name}-${size}.png`))
+        .toMatchObject({ width: size, height: size, frames: 1 });
+    }
+  }
   const stagedFiles = (await readdir(path.join(repository, approvedDirectory), {
     recursive: true, withFileTypes: true,
   })).filter((entry) => entry.isFile() && /\.(png|json)$/.test(entry.name))
@@ -155,7 +176,8 @@ it("stages the complete B1 manifest and files outside public runtime paths", asy
       expect(value?.trim(), asset.path).toBeTruthy();
     }
 
-    const bytes = await readFile(path.join(repository, approvedDirectory, asset.path));
+    const filename = path.join(repository, approvedDirectory, asset.path);
+    const bytes = await readFile(filename);
     expect(sha256(bytes), asset.path).toBe(asset.sha256);
     expect(hashes.has(asset.sha256), asset.path).toBe(false);
     hashes.add(asset.sha256);
@@ -182,6 +204,27 @@ it("stages the complete B1 manifest and files outside public runtime paths", asy
     expect(png.height).toBe(asset.frame_height);
     expect(hasTransparentPixel(png), asset.path).toBe(asset.alpha);
     expect(hasNonzeroTransparentPixel(png), asset.path).toBe(false);
+    if (asset.alpha) {
+      const portrait = /^avatars\/([a-z]+)-portrait\.png$/.exec(asset.path)?.[1];
+      const inspection = await inspectPng(filename);
+      if (!portrait || !portraitsCroppedThroughCorner.has(portrait)) {
+        expect(inspection.exteriorCornerTransparent, asset.path).toBe(true);
+      }
+      // Record the approved warrior portrait's boundary finding without editing its pixels.
+      expect(inspection.connectedNeutralPixels, asset.path)
+        .toBe(portrait === "warrior" ? 16 : 0);
+    }
+    if (asset.export_method === "copy") {
+      expect(sources, asset.path).toHaveLength(1);
+      expect(bytes.equals(sources[0]), asset.path).toBe(true);
+      for (let index = 0; index < asset.frames; index++) {
+        const frame = new PNG({ width: asset.frame_width!, height: asset.frame_height! });
+        PNG.bitblt(png, frame, index * frame.width, 0, frame.width, frame.height, 0, 0);
+        expect(frame.data.some((value, offset) => offset % 4 === 3 && value > 0),
+          `${asset.path} frame ${index}`).toBe(true);
+      }
+      continue;
+    }
     expect(sources).toHaveLength(asset.frames);
     for (const [index, source] of sources.entries()) {
       let frame: PNG = PNG.sync.read(source);
@@ -204,7 +247,7 @@ it("stages the complete B1 manifest and files outside public runtime paths", asy
       }
     }
   }
-});
+}, 20_000);
 
 type ReviewSample = {
   path: string;

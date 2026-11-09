@@ -288,3 +288,13 @@ The user approved the B2-1R2 revisions:
 | `action-pooled-funds.png` (5 × 512) | `78ec9f3f4c10a7560ec3fc572c6b9e587b7b4cf291b80f7aac66a46f3a886237` |
 
 Invitation: parchment card with dark border and a plain red seal dot rises from the mouth and rests front-right (40 × 33 px at Home desktop size). Pooled funds: small heart coin held between the teeth, forward lean toward an iron strongbox matching `feature/pooled` (38–40 % of Mimiku's height), lid bounce, happy-eye return. Both are handless; Mimiku is uniformly scaled inside the 512 canvas to make room for props and is restored to approved size in Home. With guide and the 20 earlier approvals, all 23 B2-1 candidates are approved. Next: B2-2 export into `docs/design/assets/approved/page-visual-v1/` and final Gate B QA.
+
+### Gate B approved — Phase 1 asset style gate complete — 2026-11-09
+
+The user approved Gate B. The complete staged families are in `docs/design/assets/approved/page-visual-v1/`: 125 records (121 PNG, 4 JSON) in `production-asset-manifest.json` (SHA-256 `0db461bc86b7b99fc35c720111280dfbcc7c20752fc467204f108e08e5fff844`), all `runtime_target: null` and `disposition: "staged-only-until-consumer-plan"`. QA: `qa-report.md` (SHA-256 `a33cb3cc7ec22be221fb37d32c8112674085910acdb683ba271c284cde335e09`).
+
+- Verified: byte-identical export of the 23 B2-1 approvals and the 102 B1 files; contrast composites on navy, cave charcoal, parchment and warm surfaces (text ≥ 14.9:1, boundaries ≥ 5.5:1); per-family image-failure fallbacks at 320/390/768/1440; motion in normal and reduced modes; web lint, typecheck, 84 focused unit tests, asset and public/auth Playwright suites, web and backend builds; loopback real-backend financial regression (20 flows × 4 widths) on a dedicated PostgreSQL; no changes to `web/public`, web runtime, backend or `icon.png`.
+- Accepted exceptions: seven avatar busts touch the bottom edge by design (chest crop); 16 bright pixels at the bottom of `warrior-portrait.png` are armour silver, not matte residue.
+- Out-of-scope change accepted: `web/e2e/public-and-auth.spec.ts` now checks private routes by URL pathname prefix, fixing a false positive on Next.js `/_next/static/chunks/app/` public chunks; committed separately.
+
+**Phase 1 (asset style gate) is complete.** Phase 2 may now begin with consumer plans that assign `runtime_target` per asset. Carry-over items for Phase 2: update `--mimic-color-hud-dark` to the approved warm dark brown dialogue field; decide whether Home and Landing share one ground-light file; reduced-motion and one-primary-animation rules from Motion 2R become runtime requirements.

@@ -18,6 +18,7 @@ test("motion calibration plays one primary sequence and supports skip", async ({
   page,
 }) => {
   await installReviewRoutes(page);
+  await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 1200, height: 800 });
   await page.goto("https://asset-review.local/samples/motion-calibration.html");
 
@@ -111,6 +112,8 @@ test("review index is deterministic at the native project viewport", async ({
   });
   await expectNoHorizontalOverflow(page);
 
+  await expect(page.getByRole("link", { name: "Gate B · Complete-family contrast and fallback review" }))
+    .toHaveAttribute("href", "gate-b-composites.html");
   await expect(page).toHaveScreenshot(
     `asset-style-gate-${testInfo.project.name}.png`,
     {
@@ -118,6 +121,86 @@ test("review index is deterministic at the native project viewport", async ({
       fullPage: true,
     },
   );
+});
+
+test("Gate B composites keep the same layout and live fallback for each failed family", async ({ page }, testInfo) => {
+  const repository = path.resolve(process.cwd(), "..");
+  const origin = "https://gate-b.local";
+  const reviewPage = path.relative(repository, path.join(reviewRoot, "gate-b-composites.html")).split(path.sep).join("/");
+  let failedAsset: string | undefined;
+  let aborts = 0;
+  await page.route(`${origin}/**`, async (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname === failedAsset) {
+      aborts++;
+      await route.abort("failed");
+      return;
+    }
+    const filename = path.resolve(repository, "." + url.pathname);
+    if (!filename.startsWith(repository + path.sep)) {
+      await route.abort("blockedbyclient");
+      return;
+    }
+    await route.fulfill({ path: filename });
+  });
+  const open = () => page.goto(`${origin}/${reviewPage}`);
+  await open();
+  const samples = page.locator("main img");
+  await expect(samples).toHaveCount(32);
+  await samples.evaluateAll((images) => Promise.all(images.map((img) => (img as HTMLImageElement).decode())));
+  await expectNoHorizontalOverflow(page);
+  const contrast = await page.locator("[data-surface]").evaluateAll((surfaces) => {
+    const luminance = (color: string) => color.match(/[\d.]+/g)!.slice(0, 3).map((part) => {
+      const channel = Number(part) / 255;
+      return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+    }).reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+    const ratio = (a: string, b: string) => {
+      const values = [luminance(a), luminance(b)].sort((left, right) => right - left);
+      return (values[0] + 0.05) / (values[1] + 0.05);
+    };
+    return surfaces.map((surface) => {
+      const background = getComputedStyle(surface).backgroundColor;
+      const card = getComputedStyle(surface.querySelector("article")!);
+      return {
+        surface: (surface as HTMLElement).dataset.surface,
+        background, label: card.color, boundary: card.borderTopColor,
+        text: ratio(card.color, background),
+        border: ratio(card.borderTopColor, background),
+      };
+    });
+  });
+  expect(contrast).toHaveLength(4);
+  for (const { text, border, surface } of contrast) {
+    expect(text, surface).toBeGreaterThanOrEqual(4.5);
+    expect(border, surface).toBeGreaterThanOrEqual(3);
+  }
+  await testInfo.attach("contrast-ratios", { body: JSON.stringify(contrast, null, 2), contentType: "application/json" });
+  await page.screenshot({ path: testInfo.outputPath("gate-b-composites.png"), fullPage: true });
+  const cards = page.locator("[data-surface=navy] article");
+  const baseline = await cards.evaluateAll((nodes) => nodes.map((node) => ({
+    family: (node as HTMLElement).dataset.family,
+    asset: new URL((node.querySelector("img") as HTMLImageElement).src).pathname,
+    text: node.querySelector("p")!.textContent,
+    height: node.getBoundingClientRect().height,
+  })));
+  for (const { family, asset, text, height } of baseline) {
+    failedAsset = asset;
+    aborts = 0;
+    await open();
+    const familyCards = page.locator(`[data-family="${family}"]`);
+    await expect(familyCards).toHaveCount(4);
+    for (const card of await familyCards.all()) {
+      await expect(card.getByRole("heading")).toBeVisible();
+      await expect(card.locator("p")).toHaveText(text!);
+      await expect(card.getByText("Image unavailable")).toBeVisible();
+      await expect(card.locator("img")).toHaveAttribute("alt", "");
+      await expect(card.locator("img")).toBeHidden();
+    }
+    expect(aborts).toBeGreaterThan(0);
+    expect((await familyCards.first().boundingBox())?.height).toBe(height);
+    await expectNoHorizontalOverflow(page);
+    await familyCards.first().screenshot({ path: testInfo.outputPath(`fallback-${family}.png`) });
+  }
 });
 
 test("a broken sample keeps its live review boundary visible", async ({ page }) => {

@@ -2205,3 +2205,22 @@
 **Scope:** decision-log; this append.
 **What changed:** Invitation and pooled-funds R2 hashes approved; all 23 B2-1 candidates now approved.
 **Known gaps / follow-ups:** B2-2 export and final QA.
+
+## 2026-11-09 — Gate B2-2 正式素材與最終 QA
+
+**Task:** 依 B2-1 核准雜湊匯出 23 張素材並執行 Task 13。
+
+**Scope:** `docs/design/assets/approved/`、Phase 1 審閱頁、`docs/design/visual-assets.md`、素材 Vitest、審閱與 Cache Storage 的 Playwright 驗證。
+
+**What changed:** 正式清單增至 125 筆。加入四種表面的合成、八個家族的載入失敗驗證、更新校準索引快照並記錄 lint、typecheck、build 與 loopback 財務回歸結果。
+
+**Decisions:** 保留候選原始位元組，在 QA 報告揭露胸像裁切與 Warrior 亮邊。使用獨立 PostgreSQL 與 API／Web 連接埠。Build 在隔離副本產生 service worker。
+
+**Known gaps / follow-ups:** 停在 Gate B 最終審核。驗證結果和待審例外見 [qa-report.md](../docs/design/assets/approved/page-visual-v1/qa-report.md)。
+
+## 2026-11-09 — Approve Gate B; Phase 1 complete
+
+**Task:** Record the user's approval of Gate B.
+**Scope:** decision-log; this append.
+**What changed:** Gate B approval with manifest and QA hashes, verification summary, accepted exceptions and the separately committed public/auth test fix; Phase 1 marked complete with Phase 2 carry-over items.
+**Known gaps / follow-ups:** Phase 2 consumer plans.

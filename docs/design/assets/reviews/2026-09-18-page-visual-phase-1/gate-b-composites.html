@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gate B complete-family QA</title>
+  <link rel="stylesheet" href="../../../../../web/src/styles/tokens.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: auto; max-width: 76rem; padding: 1rem; font: 1rem/1.5 system-ui; }
+    .surfaces { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: 1rem; }
+    section { padding: .75rem; color: var(--label); background: var(--backdrop); }
+    [data-surface="navy"] { --backdrop: var(--mimic-color-hud-dark); }
+    [data-surface="charcoal"] { --backdrop: #242222; }
+    [data-surface="navy"], [data-surface="charcoal"] {
+      --label: var(--mimic-color-surface);
+      --boundary: var(--mimic-color-coin-action);
+    }
+    [data-surface="parchment"] { --backdrop: var(--mimic-color-surface); }
+    [data-surface="warm"] { --backdrop: var(--mimic-color-warm-surface); }
+    [data-surface="parchment"], [data-surface="warm"] {
+      --label: var(--mimic-color-ink);
+      --boundary: var(--mimic-color-frame-line);
+    }
+    article { margin-block: .75rem; border: 2px solid var(--boundary); padding: .625rem; }
+    h3, p { margin-block: 0 .375rem; }
+    .image-slot { display: grid; place-items: center; height: 7rem; }
+    img { max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: pixelated; }
+    .image-slot img { min-width: 0; min-height: 0; }
+    a { color: var(--mimic-color-ink); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Gate B complete-family QA</h1>
+    <p>Staged artwork on four live surfaces. Each card keeps its label and text when its image is unavailable.</p>
+    <a href="../../approved/page-visual-v1/qa-report.md">QA report</a> ·
+    <a href="review-index.html">Calibration index</a> ·
+    <a href="motion-calibration-v02r-review.html">Motion 2R</a> ·
+    <a href="gate-b2-1/index.html">B2-1 action review</a>
+  </header>
+  <main class="surfaces"></main>
+  <template id="sample">
+    <article>
+      <h3></h3>
+      <div class="image-slot"><img alt=""><span hidden>Image unavailable</span></div>
+      <p></p>
+    </article>
+  </template>
+  <script>
+    const families = [
+      ['wordmark', 'Wordmark', 'wordmark/mimic-wordmark-display.png', 'MIMIC'],
+      ['icons', 'Icons', 'icons/ui/action-record-expense.png', 'Record expense'],
+      ['mimiku', 'Mimiku', 'mimiku/state-idle.png', 'Mimiku is ready to help.'],
+      ['avatars', 'Avatars', 'avatars/warrior-portrait.png', 'Party member · Warrior'],
+      ['scenes', 'Scenes', 'scenes/home/actors/mimiku-desktop.png', 'Home base · Continue your adventure'],
+      ['frames', 'Frames', 'frames/frame-dialogue.png', 'Dialogue · Your notes stay here.'],
+      ['props', 'Props', 'props/feature/pooled.png', 'Pooled funds'],
+      ['motion', 'Motion', 'motion/mimiku-record-ledger-desktop.png', 'Expense recorded.'],
+    ];
+    const surfaces = [
+      ['navy', 'Navy'], ['charcoal', 'Cave charcoal'], ['parchment', 'Parchment'], ['warm', 'Warm surface'],
+    ];
+    for (const [surface, name] of surfaces) {
+      const section = document.createElement('section');
+      section.dataset.surface = surface;
+      const heading = document.createElement('h2');
+      heading.textContent = name;
+      section.append(heading);
+      for (const [id, label, file, text] of families) {
+        const card = document.querySelector('#sample').content.firstElementChild.cloneNode(true);
+        card.dataset.family = id;
+        card.querySelector('h3').textContent = label;
+        card.querySelector('p').textContent = text;
+        const img = card.querySelector('img');
+        img.addEventListener('error', () => {
+          img.hidden = true;
+          card.querySelector('span').hidden = false;
+        });
+        img.src = '../../approved/page-visual-v1/' + file;
+        section.append(card);
+      }
+      document.querySelector('main').append(section);
+    }
+  </script>
+</body>
+</html>

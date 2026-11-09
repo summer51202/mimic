@@ -1,7 +1,407 @@
 {
   "schema_version": 1,
-  "gate": "B1",
+  "gate": "B2-2",
   "assets": [
+    {
+      "path": "avatars/alchemist-full.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/alchemist-full.png",
+          "sha256": "2ff1210e1302b4215c0265b308272e774cb65580da8b27a206289a929185a265"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "2ff1210e1302b4215c0265b308272e774cb65580da8b27a206289a929185a265",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": true,
+      "css_size": "96–192 CSS px square",
+      "consumer": "Class selection and Home actor slot",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/alchemist-portrait.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/alchemist-portrait.png",
+          "sha256": "c1f7d49a6351cf9801ef2004dec5074946789c92e0d7cc07828dca0925fdd2cd"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "c1f7d49a6351cf9801ef2004dec5074946789c92e0d7cc07828dca0925fdd2cd",
+      "width": 96,
+      "height": 96,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 96,
+      "alpha": true,
+      "css_size": "48–96 CSS px square",
+      "consumer": "Registration, Settings, party and participant rosters",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/bard-full.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/bard-full.png",
+          "sha256": "929b782c7991848e54661865db9a0b58bd28e956eb37694785333f04f4a15251"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "929b782c7991848e54661865db9a0b58bd28e956eb37694785333f04f4a15251",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": true,
+      "css_size": "96–192 CSS px square",
+      "consumer": "Class selection and Home actor slot",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/bard-portrait.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/bard-portrait.png",
+          "sha256": "ee04340ec755b4044843fa793df9cb58c13d2aa8dd96ac6bc9f5b08dfdfc8eb1"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "ee04340ec755b4044843fa793df9cb58c13d2aa8dd96ac6bc9f5b08dfdfc8eb1",
+      "width": 96,
+      "height": 96,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 96,
+      "alpha": true,
+      "css_size": "48–96 CSS px square",
+      "consumer": "Registration, Settings, party and participant rosters",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/cartographer-full.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/cartographer-full.png",
+          "sha256": "5b4a182da4ef3e1e676b44216af8aca4c39c61b096bfe18727e13d01ba33b43e"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "5b4a182da4ef3e1e676b44216af8aca4c39c61b096bfe18727e13d01ba33b43e",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": true,
+      "css_size": "96–192 CSS px square",
+      "consumer": "Class selection and Home actor slot",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/cartographer-portrait.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/cartographer-portrait.png",
+          "sha256": "a7a6f5ab7179d9ee81e1520e31c77b332bb523d4a1dcc767a5aa53448de0fe59"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "a7a6f5ab7179d9ee81e1520e31c77b332bb523d4a1dcc767a5aa53448de0fe59",
+      "width": 96,
+      "height": 96,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 96,
+      "alpha": true,
+      "css_size": "48–96 CSS px square",
+      "consumer": "Registration, Settings, party and participant rosters",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/mage-full.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/mage-full.png",
+          "sha256": "4ffa64b64a4bcf3f1264a41ec9d1b1e87ded7a34882bfababfd19b24cdadeecb"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "4ffa64b64a4bcf3f1264a41ec9d1b1e87ded7a34882bfababfd19b24cdadeecb",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": true,
+      "css_size": "96–192 CSS px square",
+      "consumer": "Class selection and Home actor slot",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/mage-portrait.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/mage-portrait.png",
+          "sha256": "91739634ce56fedd8b743f9f51916436980595c570177352e8db4c3ccd5c29c5"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "91739634ce56fedd8b743f9f51916436980595c570177352e8db4c3ccd5c29c5",
+      "width": 96,
+      "height": 96,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 96,
+      "alpha": true,
+      "css_size": "48–96 CSS px square",
+      "consumer": "Registration, Settings, party and participant rosters",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/physician-full.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/physician-full.png",
+          "sha256": "01b3c812a23b03b4f464774d0a31ca2731b1689beae834a338a03ffd8c4ad339"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "01b3c812a23b03b4f464774d0a31ca2731b1689beae834a338a03ffd8c4ad339",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": true,
+      "css_size": "96–192 CSS px square",
+      "consumer": "Class selection and Home actor slot",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/physician-portrait.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/physician-portrait.png",
+          "sha256": "942d625c7a4f08e40c304a4f00c236f7af05a56214033fd5b872205655319fca"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "942d625c7a4f08e40c304a4f00c236f7af05a56214033fd5b872205655319fca",
+      "width": 96,
+      "height": 96,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 96,
+      "alpha": true,
+      "css_size": "48–96 CSS px square",
+      "consumer": "Registration, Settings, party and participant rosters",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/ranger-full.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/ranger-full.png",
+          "sha256": "e0d489c120d103ddcbc55e35bc95e88029edacb989ade618807740cd40fdf1c5"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "e0d489c120d103ddcbc55e35bc95e88029edacb989ade618807740cd40fdf1c5",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": true,
+      "css_size": "96–192 CSS px square",
+      "consumer": "Class selection and Home actor slot",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/ranger-portrait.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/ranger-portrait.png",
+          "sha256": "3944c7b2130cc6120240595e335bc72f749e303b4f5c2177dc34a9e44b1e4750"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "3944c7b2130cc6120240595e335bc72f749e303b4f5c2177dc34a9e44b1e4750",
+      "width": 96,
+      "height": 96,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 96,
+      "alpha": true,
+      "css_size": "48–96 CSS px square",
+      "consumer": "Registration, Settings, party and participant rosters",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/rogue-full.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/rogue-full.png",
+          "sha256": "1e7097dac8acd53edcfba1d3d6e6859ee0bde75cb836d9ddb6b916fe68d4a4bf"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "1e7097dac8acd53edcfba1d3d6e6859ee0bde75cb836d9ddb6b916fe68d4a4bf",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": true,
+      "css_size": "96–192 CSS px square",
+      "consumer": "Class selection and Home actor slot",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/rogue-portrait.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/rogue-portrait.png",
+          "sha256": "e03044b55409fab1f8582bd7426d62bd4d438664b55561fe9c888bf473ee5559"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "e03044b55409fab1f8582bd7426d62bd4d438664b55561fe9c888bf473ee5559",
+      "width": 96,
+      "height": 96,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 96,
+      "alpha": true,
+      "css_size": "48–96 CSS px square",
+      "consumer": "Registration, Settings, party and participant rosters",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/warrior-full.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/warrior-full.png",
+          "sha256": "4cccd41b0898d9cbede965e5dc8a99a84370ecd44272cb20456d8c6bb8ff29e6"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "4cccd41b0898d9cbede965e5dc8a99a84370ecd44272cb20456d8c6bb8ff29e6",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": true,
+      "css_size": "96–192 CSS px square",
+      "consumer": "Class selection and Home actor slot",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "avatars/warrior-portrait.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/warrior-portrait.png",
+          "sha256": "61ec4f2b98511613f6918f0b1aec7cf5215d19352f35059088f2efbd8f83a45d"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "61ec4f2b98511613f6918f0b1aec7cf5215d19352f35059088f2efbd8f83a45d",
+      "width": 96,
+      "height": 96,
+      "frames": 1,
+      "frame_width": 96,
+      "frame_height": 96,
+      "alpha": true,
+      "css_size": "48–96 CSS px square",
+      "consumer": "Registration, Settings, party and participant rosters",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Decorative beside the live member name and class.",
+      "fallback": "Keep the reserved avatar slot and live member name and class.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan"
+    },
     {
       "path": "frames/frame-dialogue.png",
       "sources": [
@@ -751,6 +1151,205 @@
       "reduced_motion": "Static asset.",
       "runtime_target": null,
       "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "mimiku/action-adventure-complete.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/action-adventure-complete.png",
+          "sha256": "2dbb28f9e5895183431e89569b0ca954cebdd18d833ec78ee2ea734061851ae4"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "2dbb28f9e5895183431e89569b0ca954cebdd18d833ec78ee2ea734061851ae4",
+      "width": 3072,
+      "height": 512,
+      "frames": 6,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "96–160 CSS px companion, aligned to the consumer slot",
+      "consumer": "Adventure completion feedback and Home",
+      "loading": "Load on demand with the named consumer after promotion.",
+      "accessibility": "Decorative frames beside live dialogue or status.",
+      "fallback": "Preserve live dialogue and status in the reserved companion layout.",
+      "reduced_motion": "Return immediately to static idle; expose completion in live text.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan",
+      "frame_ms": [
+        130,
+        140,
+        170,
+        160,
+        180,
+        220
+      ],
+      "final_frame": "idle"
+    },
+    {
+      "path": "mimiku/action-guide.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/action-guide.png",
+          "sha256": "982c7ad28cfbf4b8e14b2f279ac4c5f88ed6274ba15ae083c94f23dd656571af"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "982c7ad28cfbf4b8e14b2f279ac4c5f88ed6274ba15ae083c94f23dd656571af",
+      "width": 2048,
+      "height": 512,
+      "frames": 4,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "114 CSS px phone / 140 CSS px desktop sprite slot in the Home preview",
+      "consumer": "Companion navigation and onboarding guidance",
+      "loading": "Load on demand with the named consumer after promotion.",
+      "accessibility": "Decorative frames beside live dialogue or status.",
+      "fallback": "Preserve live dialogue and status in the reserved companion layout.",
+      "reduced_motion": "Use final frame 3 (zero-based) and show full live copy immediately.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan",
+      "frame_ms": [
+        130,
+        140,
+        170,
+        220
+      ],
+      "final_frame": 3
+    },
+    {
+      "path": "mimiku/action-invitation.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/action-invitation.png",
+          "sha256": "b3e25b96f8dcdf9d3b947986d8237118c7e222549da081ce7a4ae9ebf5644d92"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "b3e25b96f8dcdf9d3b947986d8237118c7e222549da081ce7a4ae9ebf5644d92",
+      "width": 2560,
+      "height": 512,
+      "frames": 5,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "146 CSS px phone / 180 CSS px desktop sprite slot in the Home preview",
+      "consumer": "Invitation panel and Home companion",
+      "loading": "Load on demand with the named consumer after promotion.",
+      "accessibility": "Decorative frames beside live dialogue or status.",
+      "fallback": "Preserve live dialogue and status in the reserved companion layout.",
+      "reduced_motion": "Use final frame 4 (zero-based) and show full live copy immediately.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan",
+      "frame_ms": [
+        130,
+        140,
+        170,
+        160,
+        180
+      ],
+      "final_frame": 4
+    },
+    {
+      "path": "mimiku/action-pooled-funds.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/action-pooled-funds.png",
+          "sha256": "78ec9f3f4c10a7560ec3fc572c6b9e587b7b4cf291b80f7aac66a46f3a886237"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "78ec9f3f4c10a7560ec3fc572c6b9e587b7b4cf291b80f7aac66a46f3a886237",
+      "width": 2560,
+      "height": 512,
+      "frames": 5,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "146 CSS px phone / 180 CSS px desktop sprite slot in the Home preview",
+      "consumer": "Pooled-fund contribution confirmation",
+      "loading": "Load on demand with the named consumer after promotion.",
+      "accessibility": "Decorative frames beside live dialogue or status.",
+      "fallback": "Preserve live dialogue and status in the reserved companion layout.",
+      "reduced_motion": "Use final frame 4 (zero-based) and show full live copy immediately.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan",
+      "frame_ms": [
+        130,
+        140,
+        170,
+        160,
+        180
+      ],
+      "final_frame": 4
+    },
+    {
+      "path": "mimiku/action-record-ledger.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/action-record-ledger.png",
+          "sha256": "6d2da052a1417372cc4f924d5b215a1a5aa11940167bd1bf23e4e980d2905757"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "6d2da052a1417372cc4f924d5b215a1a5aa11940167bd1bf23e4e980d2905757",
+      "width": 2560,
+      "height": 512,
+      "frames": 5,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "96–160 CSS px companion, aligned to the consumer slot",
+      "consumer": "Record expense confirmation",
+      "loading": "Load on demand with the named consumer after promotion.",
+      "accessibility": "Decorative frames beside live dialogue or status.",
+      "fallback": "Preserve live dialogue and status in the reserved companion layout.",
+      "reduced_motion": "Use final frame 4 (zero-based) and show full live copy immediately.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan",
+      "frame_ms": [
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "final_frame": 4
+    },
+    {
+      "path": "mimiku/action-settlement.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/action-settlement.png",
+          "sha256": "6086bdc26a5fa1efebf995f9576f6de382a5b64c571b406c3481338b33d4740b"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "6086bdc26a5fa1efebf995f9576f6de382a5b64c571b406c3481338b33d4740b",
+      "width": 3072,
+      "height": 512,
+      "frames": 6,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "96–160 CSS px companion, aligned to the consumer slot",
+      "consumer": "Shared settlement confirmation",
+      "loading": "Load on demand with the named consumer after promotion.",
+      "accessibility": "Decorative frames beside live dialogue or status.",
+      "fallback": "Preserve live dialogue and status in the reserved companion layout.",
+      "reduced_motion": "Use final frame 5 (zero-based) and show full live copy immediately.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan",
+      "frame_ms": [
+        130,
+        140,
+        170,
+        160,
+        180,
+        220
+      ],
+      "final_frame": 5
     },
     {
       "path": "mimiku/state-concerned.png",
@@ -2719,6 +3318,37 @@
       "reduced_motion": "Static asset.",
       "runtime_target": null,
       "disposition": "staged-only-until-consumer-plan"
+    },
+    {
+      "path": "wordmark/mimic-wordmark-motion-sheet.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/candidates/mimic-wordmark-motion-sheet.png",
+          "sha256": "b811c7473034d9691c978464d19943f043b91df6c85cf4e4ffd97c20f28cbedf"
+        }
+      ],
+      "export_method": "copy",
+      "sha256": "b811c7473034d9691c978464d19943f043b91df6c85cf4e4ffd97c20f28cbedf",
+      "width": 2748,
+      "height": 281,
+      "frames": 3,
+      "frame_width": 916,
+      "frame_height": 281,
+      "alpha": true,
+      "css_size": "240–640 CSS px wide",
+      "consumer": "Landing and Home display wordmark",
+      "loading": "Load on demand with the named consumer after promotion.",
+      "accessibility": "Decorative frames beside one accessible MIMIC name.",
+      "fallback": "Render the live MIMIC name.",
+      "reduced_motion": "Use open-eye frame 0.",
+      "runtime_target": null,
+      "disposition": "staged-only-until-consumer-plan",
+      "frame_ms": [
+        90,
+        90,
+        90
+      ],
+      "final_frame": 0
     }
   ]
 }

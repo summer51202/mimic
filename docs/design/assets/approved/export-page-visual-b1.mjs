@@ -377,11 +377,26 @@ function write(file, bytes) {
   writeFileSync(destination, bytes);
 }
 
-for (const [file, bytes] of payloads) write(file, bytes);
-write("production-asset-manifest.json", json({
+const manifestFile = "production-asset-manifest.json";
+const manifestPath = path.join(output, manifestFile);
+const currentManifest = existsSync(manifestPath)
+  ? JSON.parse(readFileSync(manifestPath, "utf8"))
+  : null;
+const b1Manifest = {
   schema_version: 1, gate: "B1",
   assets: [...assets.values()].sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0),
-}));
+};
+if (currentManifest?.gate === "B2-2") {
+  assert.ok(check, "The Gate B2-2 manifest is complete. Use --check to verify the B1 subset.");
+  assert.equal(currentManifest.schema_version, b1Manifest.schema_version);
+  assert.deepEqual(
+    currentManifest.assets.filter((asset) => assets.has(asset.path)),
+    b1Manifest.assets,
+    "B1 entries differ from the complete manifest",
+  );
+}
+for (const [file, bytes] of payloads) write(file, bytes);
+if (currentManifest?.gate !== "B2-2") write(manifestFile, json(b1Manifest));
 console.log(check
-  ? `B1: ${assets.size} assets and manifest rebuilt byte-identically.`
+  ? `B1: ${assets.size} assets rebuilt byte-identically and manifest entries verified.`
   : `B1: ${assets.size} assets exported.`);
