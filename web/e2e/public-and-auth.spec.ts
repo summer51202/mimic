@@ -88,8 +88,9 @@ test.describe("public identity and auth entry", () => {
       return entries;
     });
 
-    expect(cachedRequests).not.toContainEqual(
-      expect.stringMatching(/\/(?:api|app|invite)(?:\/|$)/),
+    const privateRequests = cachedRequests.filter((url) =>
+      /^\/(?:api|app|invite)(?:\/|$)/.test(new URL(url).pathname),
     );
+    expect(privateRequests).toEqual([]);
   });
 });
