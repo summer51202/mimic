@@ -1,0 +1,350 @@
+{
+  "desktop": {
+    "width": 960,
+    "height": 540,
+    "architecture": {
+      "asset_id": "scenes/home/desktop-architecture.png",
+      "sha256": "2db9902425dfaff05cc38426c937acbef89113f8e30dd05635ca7ca8019c31cc"
+    },
+    "safeZones": {
+      "card": [
+        16,
+        56,
+        300,
+        140
+      ],
+      "dialogue": [
+        0,
+        421,
+        960,
+        119
+      ],
+      "nav": [
+        0,
+        0,
+        960,
+        40
+      ]
+    },
+    "avatarSlots": {
+      "warrior": {
+        "asset_id": "avatars/warrior-full.png",
+        "x": 337,
+        "y": 217,
+        "width": 107,
+        "height": 149,
+        "ground": [
+          390,
+          366
+        ],
+        "scale": 0.3340790454884415,
+        "depth": 366
+      },
+      "mage": {
+        "asset_id": "avatars/mage-full.png",
+        "x": 342,
+        "y": 217,
+        "width": 96,
+        "height": 149,
+        "ground": [
+          390,
+          366
+        ],
+        "scale": 0.3340790454884415,
+        "depth": 366
+      },
+      "ranger": {
+        "asset_id": "avatars/ranger-full.png",
+        "x": 331,
+        "y": 217,
+        "width": 119,
+        "height": 149,
+        "ground": [
+          390,
+          366
+        ],
+        "scale": 0.3340790454884415,
+        "depth": 366
+      },
+      "rogue": {
+        "asset_id": "avatars/rogue-full.png",
+        "x": 339,
+        "y": 217,
+        "width": 103,
+        "height": 149,
+        "ground": [
+          390,
+          366
+        ],
+        "scale": 0.3340790454884415,
+        "depth": 366
+      },
+      "physician": {
+        "asset_id": "avatars/physician-full.png",
+        "x": 335,
+        "y": 217,
+        "width": 110,
+        "height": 149,
+        "ground": [
+          390,
+          366
+        ],
+        "scale": 0.3340790454884415,
+        "depth": 366
+      },
+      "bard": {
+        "asset_id": "avatars/bard-full.png",
+        "x": 338,
+        "y": 216,
+        "width": 105,
+        "height": 150,
+        "ground": [
+          390,
+          366
+        ],
+        "scale": 0.3340790454884415,
+        "depth": 366
+      },
+      "alchemist": {
+        "asset_id": "avatars/alchemist-full.png",
+        "x": 351,
+        "y": 217,
+        "width": 78,
+        "height": 149,
+        "ground": [
+          390,
+          366
+        ],
+        "scale": 0.3340790454884415,
+        "depth": 366
+      },
+      "cartographer": {
+        "asset_id": "avatars/cartographer-full.png",
+        "x": 345,
+        "y": 217,
+        "width": 90,
+        "height": 149,
+        "ground": [
+          390,
+          366
+        ],
+        "scale": 0.3340790454884415,
+        "depth": 366
+      }
+    },
+    "layers": [
+      {
+        "id": "groundLight",
+        "x": 374,
+        "y": 309,
+        "width": 326,
+        "height": 53,
+        "depth": -100,
+        "asset_id": "scenes/home/desktop-ground-light.png",
+        "sha256": "99dbf37ce7a58662ec5c6643803cee682ccb19d375d0e342cf302c978d1742eb"
+      },
+      {
+        "id": "fire",
+        "x": 486,
+        "y": 255,
+        "width": 103,
+        "height": 104,
+        "depth": 359,
+        "ground": {
+          "x": 537.5,
+          "y": 359
+        },
+        "asset_id": "props/shared/campfire-desktop.png",
+        "sha256": "3981ef5ce6deda98a36b09aeab2ae5b1169c7ba357c9eeb5689f1e1203c4793b"
+      },
+      {
+        "id": "mimiku",
+        "x": 613,
+        "y": 261,
+        "width": 118,
+        "height": 123,
+        "depth": 384,
+        "ground": [
+          672,
+          384
+        ],
+        "asset_id": "scenes/home/actors/mimiku-desktop.png",
+        "sha256": "804b4017687a1311d86b4ec18e512b2e5c6d3b6d0907c56f7dff44203575a6d0"
+      }
+    ]
+  },
+  "phone": {
+    "width": 390,
+    "height": 600,
+    "architecture": {
+      "asset_id": "scenes/home/phone-architecture.png",
+      "sha256": "db69ee964a5fbc94a35518bf116f8aadc92b222306d39068d1baebf9b13a0567"
+    },
+    "safeZones": {
+      "card": [
+        12,
+        16,
+        366,
+        120
+      ],
+      "dialogue": [
+        0,
+        432,
+        390,
+        168
+      ],
+      "nav": [
+        0,
+        558,
+        390,
+        42
+      ]
+    },
+    "avatarSlots": {
+      "warrior": {
+        "asset_id": "avatars/warrior-full.png",
+        "x": 54,
+        "y": 247,
+        "width": 85,
+        "height": 119,
+        "ground": [
+          96,
+          366
+        ],
+        "scale": 0.26574469527489664,
+        "depth": 366
+      },
+      "mage": {
+        "asset_id": "avatars/mage-full.png",
+        "x": 58,
+        "y": 247,
+        "width": 76,
+        "height": 119,
+        "ground": [
+          96,
+          366
+        ],
+        "scale": 0.26574469527489664,
+        "depth": 366
+      },
+      "ranger": {
+        "asset_id": "avatars/ranger-full.png",
+        "x": 49,
+        "y": 247,
+        "width": 95,
+        "height": 119,
+        "ground": [
+          96,
+          366
+        ],
+        "scale": 0.26574469527489664,
+        "depth": 366
+      },
+      "rogue": {
+        "asset_id": "avatars/rogue-full.png",
+        "x": 55,
+        "y": 247,
+        "width": 82,
+        "height": 119,
+        "ground": [
+          96,
+          366
+        ],
+        "scale": 0.26574469527489664,
+        "depth": 366
+      },
+      "physician": {
+        "asset_id": "avatars/physician-full.png",
+        "x": 53,
+        "y": 247,
+        "width": 87,
+        "height": 119,
+        "ground": [
+          96,
+          366
+        ],
+        "scale": 0.26574469527489664,
+        "depth": 366
+      },
+      "bard": {
+        "asset_id": "avatars/bard-full.png",
+        "x": 54,
+        "y": 247,
+        "width": 84,
+        "height": 119,
+        "ground": [
+          96,
+          366
+        ],
+        "scale": 0.26574469527489664,
+        "depth": 366
+      },
+      "alchemist": {
+        "asset_id": "avatars/alchemist-full.png",
+        "x": 65,
+        "y": 247,
+        "width": 62,
+        "height": 119,
+        "ground": [
+          96,
+          366
+        ],
+        "scale": 0.26574469527489664,
+        "depth": 366
+      },
+      "cartographer": {
+        "asset_id": "avatars/cartographer-full.png",
+        "x": 61,
+        "y": 247,
+        "width": 71,
+        "height": 119,
+        "ground": [
+          96,
+          366
+        ],
+        "scale": 0.26574469527489664,
+        "depth": 366
+      }
+    },
+    "layers": [
+      {
+        "id": "groundLight",
+        "x": 78,
+        "y": 330,
+        "width": 215,
+        "height": 35,
+        "depth": -100,
+        "asset_id": "scenes/home/phone-ground-light.png",
+        "sha256": "bdb1df6d5b5bcc8f6ec383b314b60b7d5a51a362db1b63a3a53492c02ffce261"
+      },
+      {
+        "id": "fire",
+        "x": 158,
+        "y": 290,
+        "width": 75,
+        "height": 76,
+        "depth": 366,
+        "ground": {
+          "x": 195.5,
+          "y": 366
+        },
+        "asset_id": "props/shared/campfire-phone.png",
+        "sha256": "b492f79ab23e1631663c50ccb7f105707c3854605ec3490d91823daa1249cbdc"
+      },
+      {
+        "id": "mimiku",
+        "x": 242,
+        "y": 288,
+        "width": 96,
+        "height": 100,
+        "depth": 388,
+        "ground": [
+          290,
+          388
+        ],
+        "asset_id": "scenes/home/actors/mimiku-phone.png",
+        "sha256": "c5b4aefba8f0d94f862b9d1e256197f54c9ea42ce3cb8b6225d87e5f3fe742dc"
+      }
+    ]
+  }
+}
