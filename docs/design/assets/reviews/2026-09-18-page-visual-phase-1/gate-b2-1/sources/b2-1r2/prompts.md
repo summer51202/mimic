@@ -1,0 +1,5 @@
+# B2-1R2 ImageGen
+
+Built-in ImageGen edit using the approved Mimiku idle master.
+
+Image edit based on the approved transparent Mimiku pixel art. Create a single isolated pixel-art invitation card prop, extracted as a new companion prop matching the provided chest's pixel art scale, texture, and outline. Show the full large plain pale parchment paper sheet, almost square portrait-leaning landscape rectangle (4:3 horizontal width to height), front face fully legible toward camera, rotating it 10 to 12 degrees counterclockwise in the plane of the canvas. Crisp, clean, dark coffee brown approximately one-pixel thin outer border at 128px asset scale. Light cream parchment that reads immediately as paper, with one single tiny circular dark brick-red wax seal dot near the lower right corner (less than 9 percent of the card width). Completely blank smooth paper otherwise, no text, no decorative border, no folds, no symbols, no hearts, no envelope flap, no hands, no mascot body, no shadow, no other objects. Generate genuine transparent RGBA background with crisp pixel-art edge and no white outline. Only one centered card, generous transparent padding.

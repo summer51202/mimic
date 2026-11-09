@@ -1,0 +1,576 @@
+{
+  "reviewOnly": true,
+  "contract": {
+    "maxChangedOutsideMotionPixels": 0,
+    "pooledFringe": {
+      "minChannel": 190,
+      "maxChannelSpread": 40,
+      "maxRemovedPixels": 2000
+    },
+    "glove": {
+      "minAlpha": 160,
+      "minChannel": 208,
+      "maxChannelSpread": 32,
+      "masterWhiteTolerancePx": 6,
+      "maxNewConnectedPixels": 23,
+      "connectivity": 4
+    }
+  },
+  "readabilityLimits": {
+    "cardHomeWidth": 35,
+    "cardHomeHeight": 28,
+    "cardWidthRatio": [
+      0.3,
+      0.35
+    ],
+    "strongboxHeightRatio": [
+      0.35,
+      0.45
+    ],
+    "leanCentroidHome": 3,
+    "smallCoinDiameterRatio": [
+      0.3,
+      0.4
+    ]
+  },
+  "projectedHomeScale": 0.3515625,
+  "locked": {
+    "candidates/mimic-wordmark-motion-sheet.png": "b811c7473034d9691c978464d19943f043b91df6c85cf4e4ffd97c20f28cbedf",
+    "candidates/alchemist-full.png": "2ff1210e1302b4215c0265b308272e774cb65580da8b27a206289a929185a265",
+    "candidates/bard-full.png": "929b782c7991848e54661865db9a0b58bd28e956eb37694785333f04f4a15251",
+    "candidates/cartographer-full.png": "5b4a182da4ef3e1e676b44216af8aca4c39c61b096bfe18727e13d01ba33b43e",
+    "candidates/mage-full.png": "4ffa64b64a4bcf3f1264a41ec9d1b1e87ded7a34882bfababfd19b24cdadeecb",
+    "candidates/physician-full.png": "01b3c812a23b03b4f464774d0a31ca2731b1689beae834a338a03ffd8c4ad339",
+    "candidates/ranger-full.png": "e0d489c120d103ddcbc55e35bc95e88029edacb989ade618807740cd40fdf1c5",
+    "candidates/rogue-full.png": "1e7097dac8acd53edcfba1d3d6e6859ee0bde75cb836d9ddb6b916fe68d4a4bf",
+    "candidates/warrior-full.png": "4cccd41b0898d9cbede965e5dc8a99a84370ecd44272cb20456d8c6bb8ff29e6",
+    "candidates/alchemist-portrait.png": "c1f7d49a6351cf9801ef2004dec5074946789c92e0d7cc07828dca0925fdd2cd",
+    "candidates/bard-portrait.png": "ee04340ec755b4044843fa793df9cb58c13d2aa8dd96ac6bc9f5b08dfdfc8eb1",
+    "candidates/cartographer-portrait.png": "a7a6f5ab7179d9ee81e1520e31c77b332bb523d4a1dcc767a5aa53448de0fe59",
+    "candidates/mage-portrait.png": "91739634ce56fedd8b743f9f51916436980595c570177352e8db4c3ccd5c29c5",
+    "candidates/physician-portrait.png": "942d625c7a4f08e40c304a4f00c236f7af05a56214033fd5b872205655319fca",
+    "candidates/ranger-portrait.png": "3944c7b2130cc6120240595e335bc72f749e303b4f5c2177dc34a9e44b1e4750",
+    "candidates/rogue-portrait.png": "e03044b55409fab1f8582bd7426d62bd4d438664b55561fe9c888bf473ee5559",
+    "candidates/warrior-portrait.png": "61ec4f2b98511613f6918f0b1aec7cf5215d19352f35059088f2efbd8f83a45d",
+    "candidates/action-record-ledger.png": "6d2da052a1417372cc4f924d5b215a1a5aa11940167bd1bf23e4e980d2905757",
+    "candidates/action-adventure-complete.png": "2dbb28f9e5895183431e89569b0ca954cebdd18d833ec78ee2ea734061851ae4",
+    "candidates/action-settlement.png": "6086bdc26a5fa1efebf995f9576f6de382a5b64c571b406c3481338b33d4740b",
+    "candidates/action-guide.png": "982c7ad28cfbf4b8e14b2f279ac4c5f88ed6274ba15ae083c94f23dd656571af"
+  },
+  "actions": [
+    {
+      "id": "invitation",
+      "label": "邀請",
+      "file": "candidates/action-invitation.png",
+      "width": 512,
+      "height": 512,
+      "count": 5,
+      "sha256": "b3e25b96f8dcdf9d3b947986d8237118c7e222549da081ce7a4ae9ebf5644d92",
+      "master": {
+        "path": "../../../approved/page-visual-v1/mimiku/state-idle.png",
+        "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+      },
+      "sources": [
+        {
+          "path": "sources/b2-1r/invitation.png",
+          "sha256": "999ec9193c0635bd0f24a85de28cf005a13e48c60a61cb9211d4fece00d34e18"
+        },
+        {
+          "path": "sources/b2-1r2/card.png",
+          "sha256": "f66cc2b5d293b3cae685a8c6fc92ba0cb08092957b3d1657d22e141684cf747f"
+        }
+      ],
+      "frameBounds": [
+        {
+          "x": 9,
+          "y": 135,
+          "width": 336,
+          "height": 345
+        },
+        {
+          "x": 9,
+          "y": 131,
+          "width": 336,
+          "height": 349
+        },
+        {
+          "x": 9,
+          "y": 131,
+          "width": 470,
+          "height": 349
+        },
+        {
+          "x": 9,
+          "y": 131,
+          "width": 470,
+          "height": 349
+        },
+        {
+          "x": 9,
+          "y": 131,
+          "width": 470,
+          "height": 349
+        }
+      ],
+      "ms": [
+        130,
+        140,
+        170,
+        160,
+        180
+      ],
+      "scene": true,
+      "anchorX": 177,
+      "anchorY": 480,
+      "final": 4,
+      "previous": {
+        "path": "previous/b2-1r/action-invitation.png",
+        "sha256": "541f95a10047d2cc942f2643ebf9374021fed0f05448ae3e8e8a6fdd14325036"
+      },
+      "story": "封蠟卡從嘴中升起，飄到右前方。眨眼後停留。",
+      "frameAudit": [
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78
+          },
+          "regions": [
+            [
+              4,
+              127,
+              325,
+              299
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 34095,
+          "changedBounds": [
+            9,
+            131,
+            321,
+            296
+          ],
+          "largestNewWhite": 4
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78
+          },
+          "regions": [
+            [
+              86,
+              287,
+              200,
+              333
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 3742,
+          "changedBounds": [
+            86,
+            287,
+            195,
+            333
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78
+          },
+          "regions": [
+            [
+              365,
+              273,
+              479,
+              367
+            ]
+          ],
+          "readability": {
+            "cardWidthRatio": 0.3392857142857143,
+            "cardHome": [
+              40,
+              33
+            ]
+          },
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 7826,
+          "changedBounds": [
+            365,
+            273,
+            479,
+            367
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78
+          },
+          "regions": [
+            [
+              109,
+              183,
+              169,
+              236
+            ],
+            [
+              219,
+              164,
+              275,
+              220
+            ],
+            [
+              365,
+              273,
+              479,
+              367
+            ]
+          ],
+          "readability": {
+            "cardWidthRatio": 0.3392857142857143,
+            "cardHome": [
+              40,
+              33
+            ]
+          },
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 11770,
+          "changedBounds": [
+            112,
+            167,
+            479,
+            367
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78
+          },
+          "regions": [
+            [
+              365,
+              273,
+              479,
+              367
+            ]
+          ],
+          "readability": {
+            "cardWidthRatio": 0.3392857142857143,
+            "cardHome": [
+              40,
+              33
+            ]
+          },
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 7826,
+          "changedBounds": [
+            365,
+            273,
+            479,
+            367
+          ],
+          "largestNewWhite": 0
+        }
+      ],
+      "revision": "B2-1R2",
+      "timing": "calibration proposal",
+      "sceneScale": 0.78,
+      "readabilitySummary": "Home 桌機卡片 40×33 px"
+    },
+    {
+      "id": "pooled-funds",
+      "label": "共用基金",
+      "file": "candidates/action-pooled-funds.png",
+      "width": 512,
+      "height": 512,
+      "count": 5,
+      "sha256": "78ec9f3f4c10a7560ec3fc572c6b9e587b7b4cf291b80f7aac66a46f3a886237",
+      "master": {
+        "path": "../../../approved/page-visual-v1/mimiku/state-idle.png",
+        "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+      },
+      "sources": [
+        {
+          "path": "sources/b2-1r/pooled-funds.png",
+          "sha256": "b3efae8b5168d6363f4c4e5ad852cd114981b58842a3461c6fabe0fba10fd2b5"
+        },
+        {
+          "path": "sources/b2-1r/props.png",
+          "sha256": "54b75799d4c78dd0342b50ec1f125b03216e5988e691db566ddd86ee8d4ae8a3"
+        },
+        {
+          "path": "../../../approved/page-visual-v1/mimiku/state-happy.png",
+          "sha256": "1a350e5c6b9995c9ea5d8be5a1e73c2fcd8dc38646f08d08488b8446ef50d294"
+        }
+      ],
+      "frameBounds": [
+        {
+          "x": 9,
+          "y": 132,
+          "width": 491,
+          "height": 348
+        },
+        {
+          "x": 42,
+          "y": 139,
+          "width": 458,
+          "height": 341
+        },
+        {
+          "x": 52,
+          "y": 127,
+          "width": 448,
+          "height": 353
+        },
+        {
+          "x": 26,
+          "y": 143,
+          "width": 474,
+          "height": 337
+        },
+        {
+          "x": 9,
+          "y": 132,
+          "width": 491,
+          "height": 348
+        }
+      ],
+      "ms": [
+        130,
+        140,
+        170,
+        160,
+        180
+      ],
+      "scene": true,
+      "anchorX": 177,
+      "anchorY": 480,
+      "final": 4,
+      "previous": {
+        "path": "previous/b2-1r/action-pooled-funds.png",
+        "sha256": "358cb1d6be690125814cff8405f8de2bb237821d72cec68c1c012028791379d4"
+      },
+      "story": "用牙齒叼住小愛心幣，明顯向前傾。幣落入鐵皮錢箱，箱蓋輕彈後回正微笑。",
+      "frameAudit": [
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78,
+            "pivot": 414
+          },
+          "regions": [
+            [
+              135,
+              250,
+              199,
+              316
+            ],
+            [
+              391,
+              340,
+              503,
+              483
+            ]
+          ],
+          "readability": {
+            "boxRatio": 0.3868194842406877,
+            "leanHome": 0,
+            "toothOcclusionPixels": 622
+          },
+          "removedFringePixels": 442,
+          "outside": 0,
+          "changed": 12868,
+          "changedBounds": [
+            9,
+            131,
+            500,
+            480
+          ],
+          "largestNewWhite": 1
+        },
+        {
+          "registration": {
+            "angle": 9,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78,
+            "pivot": 414
+          },
+          "regions": [
+            [
+              178,
+              245,
+              297,
+              347
+            ],
+            [
+              391,
+              340,
+              503,
+              483
+            ]
+          ],
+          "readability": {
+            "boxRatio": 0.39589442815249265,
+            "leanHome": 10.194522404028053,
+            "toothOcclusionPixels": 793
+          },
+          "removedFringePixels": 470,
+          "outside": 0,
+          "changed": 12769,
+          "changedBounds": [
+            41,
+            139,
+            500,
+            480
+          ],
+          "largestNewWhite": 1
+        },
+        {
+          "registration": {
+            "angle": 15,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78,
+            "pivot": 414
+          },
+          "regions": [
+            [
+              391,
+              340,
+              503,
+              483
+            ],
+            [
+              406,
+              383,
+              459,
+              436
+            ]
+          ],
+          "readability": {
+            "boxRatio": 0.38243626062322944,
+            "leanHome": 17.490734630745777
+          },
+          "removedFringePixels": 461,
+          "outside": 0,
+          "changed": 11285,
+          "changedBounds": [
+            52,
+            127,
+            500,
+            480
+          ],
+          "largestNewWhite": 1
+        },
+        {
+          "registration": {
+            "angle": 4,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78,
+            "pivot": 414
+          },
+          "regions": [
+            [
+              391,
+              338,
+              503,
+              483
+            ]
+          ],
+          "readability": {
+            "boxRatio": 0.40412979351032446,
+            "leanHome": 4.402581545572789
+          },
+          "removedFringePixels": 463,
+          "outside": 0,
+          "changed": 11165,
+          "changedBounds": [
+            26,
+            141,
+            500,
+            480
+          ],
+          "largestNewWhite": 1
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -79,
+            "lift": 0,
+            "scale": 0.78,
+            "pivot": 414
+          },
+          "regions": [
+            [
+              109,
+              183,
+              169,
+              236
+            ],
+            [
+              219,
+              164,
+              275,
+              220
+            ],
+            [
+              391,
+              340,
+              503,
+              483
+            ]
+          ],
+          "readability": {
+            "boxRatio": 0.3868194842406877,
+            "leanHome": 0
+          },
+          "removedFringePixels": 442,
+          "outside": 0,
+          "changed": 14890,
+          "changedBounds": [
+            9,
+            131,
+            500,
+            480
+          ],
+          "largestNewWhite": 1
+        }
+      ],
+      "revision": "B2-1R2",
+      "timing": "calibration proposal",
+      "sceneScale": 0.78,
+      "coinRatio": 0.3469387755102041,
+      "leanStepHome": 7.296212226717725,
+      "pooledPropReference": {
+        "path": "../../../approved/page-visual-v1/props/feature/pooled.png",
+        "sha256": "e83cb6c67614bcac1527367ab6d5922ebfddc5386f325bb3a3768a0a6d26117a"
+      },
+      "readabilitySummary": "錢箱高度 38–40% · 第 2–3 格 Home 重心差 7.3 px"
+    }
+  ]
+}

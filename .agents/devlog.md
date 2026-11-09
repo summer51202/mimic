@@ -2174,3 +2174,34 @@
 **Decisions:** 依校準圖的左右區域分別計算外框。沿用原像素與預定 CSS 寬度。匯出器略過位元組相同的檔案。
 
 **Known gaps / follow-ups:** 停在 B1R 審閱。
+
+## 2026-11-09 — Gate B2-1 素材校準
+
+**Task:** 製作 Wordmark、八職業與 Mimiku 動作候選圖，交付校準審閱。  
+**Scope:** `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/`。  
+**What changed:** 建立 23 張候選 PNG、來源雜湊、審閱頁與驗證紀錄。  
+**Decisions:** 新繪像素由內建 ImageGen 編修核准 master。Wordmark 只匯入眼睛區。Avatar 從核准像素取景、面積平均並吸附原色。新動作播放節奏列為校準提案。  
+**Known gaps / follow-ups:** 等待 B2-1 審核，重點為新動作的本體一致性與共用基金的邊緣。正式匯出屬 B2-2。
+
+## 2026-11-09 — Gate B2-1R 無手動作校準
+
+**Task:** 依 B2-1R 修訂邀請、共用基金與導覽，維持 Mimiku 無手。  
+**Scope:** `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/`。  
+**What changed:** 重做 3 張 sheet，更新新舊逐格比對與 Home 預覽，新增非動作區、手套色塊及共用基金邊緣檢查。比對 20 張核准候選的 SHA-256。  
+**Decisions:** 以核准 idle master 對位組圖，從 ImageGen 編修擷取眼睛與道具。邀請最後一格保留空白卡。共用基金逐格清理與透明區相連的淺色邊緣。  
+**Known gaps / follow-ups:** 停在 B2-1R 候選審閱。正式匯出屬 B2-2。
+
+## 2026-11-09 — Gate B2-1R2 道具可讀性
+
+**Task:** 放大邀請卡及共用基金錢箱，讓小幣從嘴邊落入錢箱，加入 Home 尺寸驗收。  
+**Scope:** `docs/design/assets/reviews/2026-09-18-page-visual-phase-1/gate-b2-1/`。  
+**What changed:** 重做邀請與共用基金各 5 格，保留上一版供並排。桌機卡片外框 40×33 px，錢箱高度比 38.2–40.4%，共用基金第 2→3 格重心位移 7.3 px。21 張核准候選以 decision log 雜湊核對。  
+**Decisions:** Sprite 內等比例縮放角色留道具空間，Home 還原核准角色尺寸。兩格以原牙遮住小幣的一部分，回正格使用核准 happy 眼神。  
+**Known gaps / follow-ups:** 停在 B2-1R2 候選審閱。
+
+## 2026-11-09 — Approve Gate B2-1
+
+**Task:** Record approval of the remaining B2-1 candidates.
+**Scope:** decision-log; this append.
+**What changed:** Invitation and pooled-funds R2 hashes approved; all 23 B2-1 candidates now approved.
+**Known gaps / follow-ups:** B2-2 export and final QA.

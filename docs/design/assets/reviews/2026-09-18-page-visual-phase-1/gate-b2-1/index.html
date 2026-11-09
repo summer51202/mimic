@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mimic · Gate B2-1R2 素材校準</title>
+<style>
+  :root { color-scheme: dark; font: 16px/1.55 system-ui, sans-serif; background:#15141b; color:#f4e6d4; }
+  body { margin:0 auto; max-width:76rem; padding:1.25rem; }
+  header { border-bottom:1px solid #68523d; padding:1.5rem 0; }
+  h1 { font-size:clamp(1.8rem,5vw,3rem); margin:.25rem 0; }
+  .tag, a { color:#ffcc83; }
+  .tag { letter-spacing:.15em; font-size:.85rem; }
+  nav, .controls, .gallery { display:flex; flex-wrap:wrap; align-items:center; gap:.75rem; }
+  .controls { margin:.7rem 0; }
+  button, select, .controls label { color:inherit; font:inherit; padding:.35rem .65rem; background:#32293a; border:1px solid #8e735f; border-radius:.3rem; }
+  button, select { cursor:pointer; }
+  button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline:3px solid #ffcc83; outline-offset:3px; }
+  button:disabled { opacity:.5; cursor:default; }
+  article { border:1px solid #68523d; border-radius:.5rem; padding:1rem; margin:1rem 0; background:#201c27; }
+  article h3 { margin:0; }
+  figure { margin:0; min-width:0; max-width:100%; }
+  figcaption, small { color:#dcc9b6; }
+  .gallery { align-items:start; }
+  .comparison { width:100%; }
+  .raster { width:fit-content; max-width:100%; overflow:auto; background:#34303c; border:1px solid #68523d; }
+  .raster canvas, .raster img { display:block; image-rendering:pixelated; }
+  .raster img { max-width:240px; max-height:192px; object-fit:contain; }
+  .scene canvas { display:block; max-width:100%; height:auto; image-rendering:pixelated; }
+  .scene { margin-top:.8rem; }
+  .gray canvas, .gray img { filter:grayscale(100%); }
+  .portrait-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,27rem),1fr)); gap:1rem; }
+  .portrait-list article { margin:0; }
+  .sr { position:absolute; clip-path:inset(50%); width:1px; height:1px; overflow:hidden; }
+</style>
+<script defer src="review-data.js"></script>
+<script defer src="review.js"></script>
+</head>
+<body>
+<header>
+  <div class="tag">MIMIC / GATE B2-1R2 / 待審閱</div>
+  <h1>新圖校準</h1>
+  <p>用逐格、播放或灰階檢查候選稿。1× 與 4× 以 PNG 單格像素為基準，可在圖框內捲動。</p>
+  <nav aria-label="審閱章節"><a href="#wordmark">Wordmark</a><a href="#avatars">八職業</a><a href="#actions">Mimiku 動作</a><a href="verification.md">驗證紀錄</a></nav>
+</header>
+<main>
+  <div class="controls" aria-label="全頁顯示設定">
+    <label>像素倍率 <select id="zoom"><option value="1">1×</option><option value="4">4×</option></select></label>
+    <label><input id="gray" type="checkbox"> 真實灰階</label>
+    <label><input id="reduce" type="checkbox"> 減少動態</label>
+  </div>
+  <section id="wordmark"><h2>Wordmark</h2></section>
+  <section id="avatars"><h2>八職業</h2><div class="portrait-list"></div></section>
+  <section id="actions"><h2>Mimiku</h2><p>邀請與共用基金並排顯示 B2-1R2 和 B2-1R。Home 使用原場景尺寸，並顯示修訂稿的可讀性量測。導覽已核准。</p></section>
+  <p id="status" class="sr" role="status"></p>
+</main>
+</body>
+</html>

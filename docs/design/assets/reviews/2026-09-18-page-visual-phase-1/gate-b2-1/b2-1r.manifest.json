@@ -1,0 +1,655 @@
+{
+  "reviewOnly": true,
+  "contract": {
+    "maxChangedOutsideMotionPixels": 0,
+    "pooledFringe": {
+      "minChannel": 190,
+      "maxChannelSpread": 40,
+      "maxRemovedPixels": 2000
+    },
+    "glove": {
+      "minAlpha": 160,
+      "minChannel": 208,
+      "maxChannelSpread": 32,
+      "masterWhiteTolerancePx": 6,
+      "maxNewConnectedPixels": 23,
+      "connectivity": 4
+    }
+  },
+  "locked": {
+    "candidates/mimic-wordmark-motion-sheet.png": "b811c7473034d9691c978464d19943f043b91df6c85cf4e4ffd97c20f28cbedf",
+    "candidates/alchemist-full.png": "2ff1210e1302b4215c0265b308272e774cb65580da8b27a206289a929185a265",
+    "candidates/bard-full.png": "929b782c7991848e54661865db9a0b58bd28e956eb37694785333f04f4a15251",
+    "candidates/cartographer-full.png": "5b4a182da4ef3e1e676b44216af8aca4c39c61b096bfe18727e13d01ba33b43e",
+    "candidates/mage-full.png": "4ffa64b64a4bcf3f1264a41ec9d1b1e87ded7a34882bfababfd19b24cdadeecb",
+    "candidates/physician-full.png": "01b3c812a23b03b4f464774d0a31ca2731b1689beae834a338a03ffd8c4ad339",
+    "candidates/ranger-full.png": "e0d489c120d103ddcbc55e35bc95e88029edacb989ade618807740cd40fdf1c5",
+    "candidates/rogue-full.png": "1e7097dac8acd53edcfba1d3d6e6859ee0bde75cb836d9ddb6b916fe68d4a4bf",
+    "candidates/warrior-full.png": "4cccd41b0898d9cbede965e5dc8a99a84370ecd44272cb20456d8c6bb8ff29e6",
+    "candidates/alchemist-portrait.png": "c1f7d49a6351cf9801ef2004dec5074946789c92e0d7cc07828dca0925fdd2cd",
+    "candidates/bard-portrait.png": "ee04340ec755b4044843fa793df9cb58c13d2aa8dd96ac6bc9f5b08dfdfc8eb1",
+    "candidates/cartographer-portrait.png": "a7a6f5ab7179d9ee81e1520e31c77b332bb523d4a1dcc767a5aa53448de0fe59",
+    "candidates/mage-portrait.png": "91739634ce56fedd8b743f9f51916436980595c570177352e8db4c3ccd5c29c5",
+    "candidates/physician-portrait.png": "942d625c7a4f08e40c304a4f00c236f7af05a56214033fd5b872205655319fca",
+    "candidates/ranger-portrait.png": "3944c7b2130cc6120240595e335bc72f749e303b4f5c2177dc34a9e44b1e4750",
+    "candidates/rogue-portrait.png": "e03044b55409fab1f8582bd7426d62bd4d438664b55561fe9c888bf473ee5559",
+    "candidates/warrior-portrait.png": "61ec4f2b98511613f6918f0b1aec7cf5215d19352f35059088f2efbd8f83a45d",
+    "candidates/action-record-ledger.png": "6d2da052a1417372cc4f924d5b215a1a5aa11940167bd1bf23e4e980d2905757",
+    "candidates/action-adventure-complete.png": "2dbb28f9e5895183431e89569b0ca954cebdd18d833ec78ee2ea734061851ae4",
+    "candidates/action-settlement.png": "6086bdc26a5fa1efebf995f9576f6de382a5b64c571b406c3481338b33d4740b"
+  },
+  "actions": [
+    {
+      "id": "invitation",
+      "label": "邀請",
+      "file": "candidates/action-invitation.png",
+      "width": 512,
+      "height": 512,
+      "count": 5,
+      "sha256": "541f95a10047d2cc942f2643ebf9374021fed0f05448ae3e8e8a6fdd14325036",
+      "master": {
+        "path": "../../../approved/page-visual-v1/mimiku/state-idle.png",
+        "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+      },
+      "sources": [
+        {
+          "path": "sources/b2-1r/invitation.png",
+          "sha256": "999ec9193c0635bd0f24a85de28cf005a13e48c60a61cb9211d4fece00d34e18"
+        },
+        {
+          "path": "sources/b2-1r/props.png",
+          "sha256": "54b75799d4c78dd0342b50ec1f125b03216e5988e691db566ddd86ee8d4ae8a3"
+        }
+      ],
+      "frameBounds": [
+        {
+          "x": 68,
+          "y": 38,
+          "width": 431,
+          "height": 442
+        },
+        {
+          "x": 68,
+          "y": 32,
+          "width": 431,
+          "height": 448
+        },
+        {
+          "x": 4,
+          "y": 32,
+          "width": 495,
+          "height": 448
+        },
+        {
+          "x": 4,
+          "y": 32,
+          "width": 495,
+          "height": 448
+        },
+        {
+          "x": 4,
+          "y": 32,
+          "width": 495,
+          "height": 448
+        }
+      ],
+      "ms": [
+        130,
+        140,
+        170,
+        160,
+        180
+      ],
+      "scene": true,
+      "anchorX": 284,
+      "anchorY": 480,
+      "final": 4,
+      "previous": {
+        "path": "previous/action-invitation.png",
+        "sha256": "1e55ddf0e3e110a9848003bb57e16a25d2ebd945d5ef57cffd012561e74c5adc"
+      },
+      "story": "箱蓋微開，空白卡從嘴裡飄出。眨眼後，卡片停留在身前。",
+      "frameAudit": [
+        {
+          "registration": {
+            "angle": 0,
+            "shift": 28,
+            "lift": 0
+          },
+          "regions": [
+            [
+              65,
+              30,
+              471,
+              245
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 56082,
+          "changedBounds": [
+            68,
+            32,
+            468,
+            244
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": 28,
+            "lift": 0
+          },
+          "regions": [
+            [
+              145,
+              232,
+              228,
+              283
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 3322,
+          "changedBounds": [
+            145,
+            233,
+            228,
+            283
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": 28,
+            "lift": 0
+          },
+          "regions": [
+            [
+              4,
+              257,
+              87,
+              308
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 3322,
+          "changedBounds": [
+            4,
+            258,
+            87,
+            308
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": 28,
+            "lift": 0
+          },
+          "regions": [
+            [
+              200,
+              103,
+              271,
+              164
+            ],
+            [
+              341,
+              78,
+              407,
+              143
+            ],
+            [
+              4,
+              257,
+              87,
+              308
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 9805,
+          "changedBounds": [
+            4,
+            79,
+            406,
+            308
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": 28,
+            "lift": 0
+          },
+          "regions": [
+            [
+              4,
+              257,
+              87,
+              308
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 3322,
+          "changedBounds": [
+            4,
+            258,
+            87,
+            308
+          ],
+          "largestNewWhite": 0
+        }
+      ],
+      "timing": "calibration proposal"
+    },
+    {
+      "id": "pooled-funds",
+      "label": "共用基金",
+      "file": "candidates/action-pooled-funds.png",
+      "width": 512,
+      "height": 512,
+      "count": 5,
+      "sha256": "358cb1d6be690125814cff8405f8de2bb237821d72cec68c1c012028791379d4",
+      "master": {
+        "path": "../../../approved/page-visual-v1/mimiku/state-idle.png",
+        "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+      },
+      "sources": [
+        {
+          "path": "sources/b2-1r/pooled-funds.png",
+          "sha256": "b3efae8b5168d6363f4c4e5ad852cd114981b58842a3461c6fabe0fba10fd2b5"
+        },
+        {
+          "path": "sources/b2-1r/props.png",
+          "sha256": "54b75799d4c78dd0342b50ec1f125b03216e5988e691db566ddd86ee8d4ae8a3"
+        }
+      ],
+      "frameBounds": [
+        {
+          "x": 15,
+          "y": 34,
+          "width": 491,
+          "height": 446
+        },
+        {
+          "x": 42,
+          "y": 51,
+          "width": 464,
+          "height": 429
+        },
+        {
+          "x": 37,
+          "y": 47,
+          "width": 469,
+          "height": 433
+        },
+        {
+          "x": 26,
+          "y": 40,
+          "width": 480,
+          "height": 440
+        },
+        {
+          "x": 15,
+          "y": 34,
+          "width": 491,
+          "height": 446
+        }
+      ],
+      "ms": [
+        130,
+        140,
+        170,
+        160,
+        180
+      ],
+      "scene": true,
+      "anchorX": 231,
+      "anchorY": 480,
+      "final": 4,
+      "previous": {
+        "path": "previous/action-pooled-funds.png",
+        "sha256": "47c60b29d5e4d8e4594a408d29f34a1676502e74126fd36e3c5caaf89d4075d4"
+      },
+      "story": "輕叼小愛心幣，前傾讓幣落入小鐵皮錢箱。錢箱彈一下，Mimiku 回正。",
+      "frameAudit": [
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -25,
+            "lift": 0
+          },
+          "regions": [
+            [
+              425,
+              374,
+              508,
+              480
+            ],
+            [
+              367,
+              181,
+              399,
+              213
+            ]
+          ],
+          "removedFringePixels": 764,
+          "outside": 0,
+          "changed": 7366,
+          "changedBounds": [
+            15,
+            32,
+            506,
+            478
+          ],
+          "largestNewWhite": 1
+        },
+        {
+          "registration": {
+            "angle": 5,
+            "shift": -25,
+            "lift": 0
+          },
+          "regions": [
+            [
+              425,
+              374,
+              508,
+              480
+            ],
+            [
+              392,
+              197,
+              424,
+              229
+            ]
+          ],
+          "removedFringePixels": 761,
+          "outside": 0,
+          "changed": 7363,
+          "changedBounds": [
+            42,
+            48,
+            506,
+            478
+          ],
+          "largestNewWhite": 1
+        },
+        {
+          "registration": {
+            "angle": 4,
+            "shift": -25,
+            "lift": 0
+          },
+          "regions": [
+            [
+              425,
+              374,
+              508,
+              480
+            ],
+            [
+              445,
+              397,
+              477,
+              429
+            ]
+          ],
+          "removedFringePixels": 766,
+          "outside": 0,
+          "changed": 6599,
+          "changedBounds": [
+            36,
+            45,
+            506,
+            478
+          ],
+          "largestNewWhite": 1
+        },
+        {
+          "registration": {
+            "angle": 2,
+            "shift": -25,
+            "lift": 0
+          },
+          "regions": [
+            [
+              425,
+              368,
+              508,
+              474
+            ]
+          ],
+          "removedFringePixels": 767,
+          "outside": 0,
+          "changed": 6558,
+          "changedBounds": [
+            25,
+            38,
+            506,
+            473
+          ],
+          "largestNewWhite": 1
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": -25,
+            "lift": 0
+          },
+          "regions": [
+            [
+              425,
+              374,
+              508,
+              480
+            ]
+          ],
+          "removedFringePixels": 767,
+          "outside": 0,
+          "changed": 6558,
+          "changedBounds": [
+            15,
+            32,
+            506,
+            478
+          ],
+          "largestNewWhite": 1
+        }
+      ],
+      "timing": "calibration proposal",
+      "pooledPropReference": {
+        "path": "../../../approved/page-visual-v1/props/feature/pooled.png",
+        "sha256": "e83cb6c67614bcac1527367ab6d5922ebfddc5386f325bb3a3768a0a6d26117a"
+      }
+    },
+    {
+      "id": "guide",
+      "label": "導覽",
+      "file": "candidates/action-guide.png",
+      "width": 512,
+      "height": 512,
+      "count": 4,
+      "sha256": "982c7ad28cfbf4b8e14b2f279ac4c5f88ed6274ba15ae083c94f23dd656571af",
+      "master": {
+        "path": "../../../approved/page-visual-v1/mimiku/state-idle.png",
+        "sha256": "d94da31bbe9152ecb05c7464926a45b7b329dbbe55405ac9484ff25819a77e68"
+      },
+      "sources": [
+        {
+          "path": "sources/b2-1r/guide.png",
+          "sha256": "877bd3779dc2afb7929e111c75ec53d024599200fe0c9831be74bdf97cdae1ef"
+        }
+      ],
+      "frameBounds": [
+        {
+          "x": 40,
+          "y": 32,
+          "width": 431,
+          "height": 448
+        },
+        {
+          "x": 16,
+          "y": 17,
+          "width": 443,
+          "height": 463
+        },
+        {
+          "x": 16,
+          "y": 5,
+          "width": 443,
+          "height": 463
+        },
+        {
+          "x": 40,
+          "y": 32,
+          "width": 431,
+          "height": 448
+        }
+      ],
+      "ms": [
+        130,
+        140,
+        170,
+        220
+      ],
+      "scene": true,
+      "anchorX": 256,
+      "anchorY": 480,
+      "final": 3,
+      "previous": {
+        "path": "previous/action-guide.png",
+        "sha256": "0328f94bbdf261763ce304d7d0d8224cc700ba10551e8831397ae30e63c46599"
+      },
+      "story": "往一側看，同側傾斜，輕跳一下後回正。左右可鏡像。",
+      "frameAudit": [
+        {
+          "registration": {
+            "angle": 0,
+            "shift": 0,
+            "lift": 0
+          },
+          "regions": [
+            [
+              172,
+              103,
+              243,
+              164
+            ],
+            [
+              313,
+              78,
+              379,
+              143
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 6393,
+          "changedBounds": [
+            173,
+            79,
+            378,
+            163
+          ],
+          "largestNewWhite": 2
+        },
+        {
+          "registration": {
+            "angle": -4,
+            "shift": 0,
+            "lift": 0
+          },
+          "regions": [
+            [
+              142,
+              76,
+              243,
+              170
+            ],
+            [
+              283,
+              51,
+              379,
+              149
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 6388,
+          "changedBounds": [
+            149,
+            66,
+            352,
+            161
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": -4,
+            "shift": 0,
+            "lift": 12
+          },
+          "regions": [
+            [
+              142,
+              76,
+              243,
+              170
+            ],
+            [
+              283,
+              51,
+              379,
+              149
+            ]
+          ],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 6388,
+          "changedBounds": [
+            149,
+            54,
+            352,
+            149
+          ],
+          "largestNewWhite": 0
+        },
+        {
+          "registration": {
+            "angle": 0,
+            "shift": 0,
+            "lift": 0
+          },
+          "regions": [],
+          "removedFringePixels": 0,
+          "outside": 0,
+          "changed": 0,
+          "changedBounds": null,
+          "largestNewWhite": 0
+        }
+      ],
+      "timing": "calibration proposal",
+      "gaze": {
+        "outside": 0,
+        "changed": 6393,
+        "changedBounds": [
+          173,
+          79,
+          378,
+          163
+        ],
+        "largestNewWhite": 2
+      }
+    }
+  ]
+}

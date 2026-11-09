@@ -244,3 +244,47 @@ The user chose to split Gate B into B1 (export already-approved assets with the 
 ### Wordmark staged canvas revision — 2026-11-09
 
 B1 export showed excessive padding in the accepted wordmark canvases (compact 768 × 256 held a 240 × 70 wordmark, about 31 % of its width). The user accepted revising the wordmark staged canvases: display and compact are trimmed to the visible alpha bounds plus 8 px transparent padding on each side, with approved pixels unchanged; the B2 motion sheet uses the revised display canvas per frame. This replaces the 2026-09-23 canvas sizes (1536 × 512, 768 × 256, 4608 × 512).
+
+### Gate B2-1 partial approval — 2026-11-09
+
+The user reviewed the B2-1 candidates (`gate-b2-1/`). Approved for B2-2 export at these exact hashes (paths under `gate-b2-1/candidates/`):
+
+| Candidate | SHA-256 |
+|---|---|
+| `mimic-wordmark-motion-sheet.png` | `b811c7473034d9691c978464d19943f043b91df6c85cf4e4ffd97c20f28cbedf` |
+| `alchemist-full.png` | `2ff1210e1302b4215c0265b308272e774cb65580da8b27a206289a929185a265` |
+| `bard-full.png` | `929b782c7991848e54661865db9a0b58bd28e956eb37694785333f04f4a15251` |
+| `cartographer-full.png` | `5b4a182da4ef3e1e676b44216af8aca4c39c61b096bfe18727e13d01ba33b43e` |
+| `mage-full.png` | `4ffa64b64a4bcf3f1264a41ec9d1b1e87ded7a34882bfababfd19b24cdadeecb` |
+| `physician-full.png` | `01b3c812a23b03b4f464774d0a31ca2731b1689beae834a338a03ffd8c4ad339` |
+| `ranger-full.png` | `e0d489c120d103ddcbc55e35bc95e88029edacb989ade618807740cd40fdf1c5` |
+| `rogue-full.png` | `1e7097dac8acd53edcfba1d3d6e6859ee0bde75cb836d9ddb6b916fe68d4a4bf` |
+| `warrior-full.png` | `4cccd41b0898d9cbede965e5dc8a99a84370ecd44272cb20456d8c6bb8ff29e6` |
+| `alchemist-portrait.png` | `c1f7d49a6351cf9801ef2004dec5074946789c92e0d7cc07828dca0925fdd2cd` |
+| `bard-portrait.png` | `ee04340ec755b4044843fa793df9cb58c13d2aa8dd96ac6bc9f5b08dfdfc8eb1` |
+| `cartographer-portrait.png` | `a7a6f5ab7179d9ee81e1520e31c77b332bb523d4a1dcc767a5aa53448de0fe59` |
+| `mage-portrait.png` | `91739634ce56fedd8b743f9f51916436980595c570177352e8db4c3ccd5c29c5` |
+| `physician-portrait.png` | `942d625c7a4f08e40c304a4f00c236f7af05a56214033fd5b872205655319fca` |
+| `ranger-portrait.png` | `3944c7b2130cc6120240595e335bc72f749e303b4f5c2177dc34a9e44b1e4750` |
+| `rogue-portrait.png` | `e03044b55409fab1f8582bd7426d62bd4d438664b55561fe9c888bf473ee5559` |
+| `warrior-portrait.png` | `61ec4f2b98511613f6918f0b1aec7cf5215d19352f35059088f2efbd8f83a45d` |
+| `action-record-ledger.png` | `6d2da052a1417372cc4f924d5b215a1a5aa11940167bd1bf23e4e980d2905757` |
+| `action-adventure-complete.png` | `2dbb28f9e5895183431e89569b0ca954cebdd18d833ec78ee2ea734061851ae4` |
+| `action-settlement.png` | `6086bdc26a5fa1efebf995f9576f6de382a5b64c571b406c3481338b33d4740b` |
+
+Not approved: `action-invitation`, `action-pooled-funds`, `action-guide`. All approved Mimiku masters have no hands; the candidates added white-glove cartoon hands (guide, pooled funds) or a floating card without a mechanism (invitation). The user decided Mimiku **keeps no hands**: actions use lid, mouth, eyes, body tilt/hop and floating objects only. Revision spec: `2026-11-09-gate-b-complete-families-design.md` §B2-1R.
+
+### Gate B2-1R review — 2026-11-09
+
+Approved for B2-2 export: `action-guide.png` (SHA-256 `982c7ad28cfbf4b8e14b2f279ac4c5f88ed6274ba15ae083c94f23dd656571af`; eyes look aside, body tilt and hop, no hands, mirrorable). Not yet approved: `action-invitation` (card reads as a thin plank at Home size) and `action-pooled-funds` (strongbox about 1/8 of Mimiku's height, coin drop does not read as carried by mouth, little lean). The handless constraint is satisfied in all three. The user requested one more revision of the two (spec §B2-1R2). The 20 earlier approvals are unchanged.
+
+### Gate B2-1 complete — 2026-11-09
+
+The user approved the B2-1R2 revisions:
+
+| Candidate (`gate-b2-1/candidates/`) | SHA-256 |
+|---|---|
+| `action-invitation.png` (5 × 512) | `b3e25b96f8dcdf9d3b947986d8237118c7e222549da081ce7a4ae9ebf5644d92` |
+| `action-pooled-funds.png` (5 × 512) | `78ec9f3f4c10a7560ec3fc572c6b9e587b7b4cf291b80f7aac66a46f3a886237` |
+
+Invitation: parchment card with dark border and a plain red seal dot rises from the mouth and rests front-right (40 × 33 px at Home desktop size). Pooled funds: small heart coin held between the teeth, forward lean toward an iron strongbox matching `feature/pooled` (38–40 % of Mimiku's height), lid bounce, happy-eye return. Both are handless; Mimiku is uniformly scaled inside the 512 canvas to make room for props and is restored to approved size in Home. With guide and the 20 earlier approvals, all 23 B2-1 candidates are approved. Next: B2-2 export into `docs/design/assets/approved/page-visual-v1/` and final Gate B QA.
