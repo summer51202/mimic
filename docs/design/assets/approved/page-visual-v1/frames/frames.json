@@ -1,0 +1,119 @@
+{
+  "decision": "awaiting-visual-review",
+  "source": {
+    "file": "../derivations/frames-2r/attempt-01.png",
+    "sha256": "a44bfa67d0aa1da542f3079c811c627dffdbec22926d7a381abfdc4e7dd96b34",
+    "tool": "ImageGen",
+    "grid": [
+      3,
+      2
+    ]
+  },
+  "frames": {
+    "parchment": {
+      "file": "frame-parchment.png",
+      "sha256": "27d44ad46645307efe957d18ea2fc5aaf4e13a0b49a8e573304faeea4761dfbe",
+      "width": 52,
+      "height": 52,
+      "slice": 14,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-parchment-field",
+      "centerColor": "#eddbb3",
+      "minPadding": {
+        "phone": 18,
+        "desktop": 26
+      },
+      "sourceBounds": {
+        "left": 37,
+        "top": 36,
+        "width": 440,
+        "height": 433
+      }
+    },
+    "wood": {
+      "file": "frame-wood.png",
+      "sha256": "edd8b03a8249471e32ebe9781f532fc31bc2515f990ae6eab267bdaf785e3f5e",
+      "width": 52,
+      "height": 52,
+      "slice": 14,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-wood-field",
+      "centerColor": "#39271e",
+      "minPadding": {
+        "phone": 18,
+        "desktop": 26
+      },
+      "sourceBounds": {
+        "left": 544,
+        "top": 33,
+        "width": 448,
+        "height": 437
+      }
+    },
+    "stone": {
+      "file": "frame-stone.png",
+      "sha256": "b154133930b1ccc8bf9a9e0bb9560ba63b5c9fc5e4b0788480f679a0b5ca1811",
+      "width": 52,
+      "height": 52,
+      "slice": 14,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-stone-field",
+      "centerColor": "#ddd2bd",
+      "minPadding": {
+        "phone": 18,
+        "desktop": 26
+      },
+      "sourceBounds": {
+        "left": 1055,
+        "top": 30,
+        "width": 449,
+        "height": 441
+      }
+    },
+    "dialogue": {
+      "file": "frame-dialogue.png",
+      "sha256": "a11877b039b95f9e51ba3a8a44c1511e24740164e062cc31e56e6f0db321139f",
+      "width": 52,
+      "height": 52,
+      "slice": 14,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-dialogue-field",
+      "centerColor": "#211a18",
+      "minPadding": {
+        "phone": 18,
+        "desktop": 26
+      },
+      "sourceBounds": {
+        "left": 37,
+        "top": 546,
+        "width": 440,
+        "height": 438
+      }
+    },
+    "notebook": {
+      "file": "frame-notebook.png",
+      "sha256": "cfbb8f907aab0312bac926f8ac945f2dc4345f92ba45a9e587195b05c8444370",
+      "width": 52,
+      "height": 52,
+      "slice": 14,
+      "scale": 2,
+      "repeat": "repeat",
+      "centerToken": "--frame-notebook-field",
+      "centerColor": "#ead7ac",
+      "minPadding": {
+        "phone": 18,
+        "desktop": 26
+      },
+      "sourceBounds": {
+        "left": 543,
+        "top": 544,
+        "width": 449,
+        "height": 444
+      }
+    }
+  }
+}
