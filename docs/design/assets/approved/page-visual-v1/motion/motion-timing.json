@@ -1,0 +1,183 @@
+{
+  "variants": {
+    "desktop": {
+      "title": {
+        "asset_id": "motion/title-blink-desktop.png",
+        "sha256": "c9604f74a66231953600b38528a35ef676de105416a3112d25b71a951d012cbb",
+        "frames": 3,
+        "frame_ms": [
+          90,
+          90,
+          90
+        ],
+        "reduced_motion_final": "frame 0"
+      },
+      "idle": {
+        "asset_id": "motion/mimiku-idle-desktop.png",
+        "sha256": "0b8b02f95ccb6ab14c62dff03cebb6c7723852599848314d112eef14d1760887",
+        "frames": 3,
+        "frame_ms": [
+          250,
+          250,
+          140
+        ],
+        "reduced_motion_final": "frame 0"
+      },
+      "ledger": {
+        "asset_id": "motion/mimiku-record-ledger-desktop.png",
+        "sha256": "45ae5b2d20baa2d0cedc7e33219c9600a5beb260af1d6e7cdaa3a26cbbde9083",
+        "frames": 5,
+        "frame_ms": [
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "reduced_motion_final": "frame 4"
+      },
+      "celebration": {
+        "asset_id": "motion/mimiku-adventure-complete-desktop.png",
+        "sha256": "c20269280bc10bdae5ed00688d9b21415d88407dbe5a62c858f352ca348034fd",
+        "frames": 6,
+        "frame_ms": [
+          130,
+          140,
+          170,
+          160,
+          180,
+          220
+        ],
+        "reduced_motion_final": "idle frame 0"
+      },
+      "fire": {
+        "asset_id": "motion/campfire-desktop.png",
+        "sha256": "5271a0d0312d96e4f905321ae74019d0f97aa34321651621ff38d0a933dd9e09",
+        "frames": 4,
+        "frame_ms": [
+          166.66666666666666,
+          166.66666666666666,
+          166.66666666666666,
+          166.66666666666666
+        ],
+        "reduced_motion_final": "frame 0"
+      }
+    },
+    "phone": {
+      "title": {
+        "asset_id": "motion/title-blink-phone.png",
+        "sha256": "c044a0499103801afa6249b1a8af2663b04bd5b286436a13341098a42432a2c6",
+        "frames": 3,
+        "frame_ms": [
+          90,
+          90,
+          90
+        ],
+        "reduced_motion_final": "frame 0"
+      },
+      "idle": {
+        "asset_id": "motion/mimiku-idle-phone.png",
+        "sha256": "2dd09d8eb34f9f28055303c04a189ea9840c765ef919debfecb311b8b25cfd3f",
+        "frames": 3,
+        "frame_ms": [
+          250,
+          250,
+          140
+        ],
+        "reduced_motion_final": "frame 0"
+      },
+      "ledger": {
+        "asset_id": "motion/mimiku-record-ledger-phone.png",
+        "sha256": "f5aecd67b8299d53598bde6ef971bf2c7400ab330322963b4ffff87ed84a39c2",
+        "frames": 5,
+        "frame_ms": [
+          100,
+          100,
+          100,
+          100,
+          100
+        ],
+        "reduced_motion_final": "frame 4"
+      },
+      "celebration": {
+        "asset_id": "motion/mimiku-adventure-complete-phone.png",
+        "sha256": "2eb1e8d38bdd4d954987e1d94b4d1e3ba801334e8e27920e09ce5f9ccb70dbe1",
+        "frames": 6,
+        "frame_ms": [
+          130,
+          140,
+          170,
+          160,
+          180,
+          220
+        ],
+        "reduced_motion_final": "idle frame 0"
+      },
+      "fire": {
+        "asset_id": "motion/campfire-phone.png",
+        "sha256": "fe1f69e12e83dfd38d4b597497947d56d3fb96b31190731434c8102cc99698c6",
+        "frames": 4,
+        "frame_ms": [
+          166.66666666666666,
+          166.66666666666666,
+          166.66666666666666,
+          166.66666666666666
+        ],
+        "reduced_motion_final": "frame 0"
+      }
+    }
+  },
+  "playback": {
+    "title": {
+      "trigger": "Visible on Landing or named title button",
+      "interval_ms": [
+        8000,
+        15000
+      ],
+      "mode": "once",
+      "skip": null
+    },
+    "idle": {
+      "trigger": "Home idle",
+      "mode": "loop frames 0–1",
+      "blink_frame": 2,
+      "blink_interval_ms": [
+        3000,
+        6000
+      ],
+      "skip": null
+    },
+    "fire": {
+      "trigger": "Landing or Home scene active",
+      "mode": "loop",
+      "skip": null
+    },
+    "ledger": {
+      "trigger": "Home record completion",
+      "mode": "once",
+      "skip": null
+    },
+    "celebration": {
+      "trigger": "First Home adventure completion",
+      "mode": "once per visit",
+      "skip": [
+        "Skip button",
+        "Escape"
+      ]
+    }
+  },
+  "primary_exclusion": {
+    "actions": [
+      "ledger",
+      "celebration"
+    ],
+    "interruption": "Finish the current primary before starting the next one.",
+    "idle_suppressed_by": [
+      "ledger",
+      "celebration",
+      "chest",
+      "carving"
+    ]
+  },
+  "pause": "Pause on hidden page or explicit pause. Reduced motion shows the listed final frames."
+}
