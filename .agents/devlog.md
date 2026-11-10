@@ -2224,3 +2224,55 @@
 **Scope:** decision-log; this append.
 **What changed:** Gate B approval with manifest and QA hashes, verification summary, accepted exceptions and the separately committed public/auth test fix; Phase 1 marked complete with Phase 2 carry-over items.
 **Known gaps / follow-ups:** Phase 2 consumer plans.
+
+
+## 2026-11-09 — Phase 2A Landing 靜態場景
+
+**Task:** 實作 Phase 2A 並交付視覺審核。
+
+**Scope:** Landing、PixelDialogue、視覺 token、service worker、素材推廣與驗證。
+
+**What changed:** 以 SHA-256 核對的 28 張 runtime PNG 組成桌機與手機靜態場景。加入對話框、手機水平探索與七尺寸 Playwright 審核。
+
+**Decisions:** Build 直接讀取核准的 layout.json 與 frames.json。依使用者確認，桌機 1× 對話框左右各 54px，上下各 34px。
+
+**Known gaps / follow-ups:** 待視覺審核。指令結果、截圖及環境限制見 [verification.md](../docs/design/assets/reviews/2026-11-09-phase-2a/verification.md)。
+
+
+## 2026-11-10 — Phase 2A 第一輪視覺審閱修正（2R）
+
+**Task:** 依 2R.1–2R.4 修正 Landing，交付下一輪視覺審核。
+
+**Scope:** Landing 舞台、對話框內縮、公開頁品牌文字、Playwright 與審核紀錄。
+
+**What changed:** 桌機圖層由單一 transform 依可用空間縮放，HTML 文字獨立排版。還原頁首與頁尾品牌文字，補上 1366×768、1536×864 與縮小分支的審核圖。
+
+**Decisions:** 以 4549d9c 的乾淨 worktree 比對失敗項目。2R 舞台圖擷取實際顯示倍率，舊圖保留在原目錄。舊 Landing prop 審核 HTML 已還原為 HEAD 位元組。
+
+**Known gaps / follow-ups:** 待下一輪視覺審核。實測倍率、截圖及回歸分類見 [verification.md](../docs/design/assets/reviews/2026-11-09-phase-2a/verification.md)。
+
+
+## 2026-11-10 — Phase 2A 第二輪視覺審閱修正（2R2）
+
+**Task:** 依 2R2.1–2R2.4 修正 Landing，交付下一輪視覺審核。
+
+**Scope:** Landing 舞台、對話框字級、手機初始裁切、專項 Playwright 與審核紀錄。
+
+**What changed:** 桌機對話框與 CTA 採 16–24px 字級並維持置中，寬度受限時舞台靠上。360px 手機以 x=405 起始，Mimiku 可見 86px，右側裁切 9px。十個尺寸共擷取 20 張新版截圖。
+
+**Decisions:** 以 rem 實作字級上下限以保留使用者調整文字大小的能力，沿用 CTA 的 em 內距。
+
+**Known gaps / follow-ups:** 停在視覺審核。專項 Vitest、Playwright、lint、typecheck 與正式 build 均通過。實測與裁切詳見 [verification.md](../docs/design/assets/reviews/2026-11-09-phase-2a/verification.md)。
+
+
+## 2026-11-10 — Phase 2A 核准與提交（Claude）
+
+**Task:** 審閱 2A／2R／2R2，記錄核准並分批 commit。
+
+**Scope:** decision-log、本筆 devlog、Phase 2A 全部檔案的 commit。
+
+**What changed:** 獨立量測桌機倍率與手機裁切，並以 1×／1.87×／2× 對照圖確認非整數縮放可接受。Ed 核准 2A，decision-log 記錄 token、素材推廣、整數倍規則的桌機修訂，以及 2B 待辦。
+
+**Decisions:** 桌機改填滿可用區（非整數）；hud-dark 不動；360px 的 Mimiku 裁切留到 2B（scrollLeft=414）。
+
+**Known gaps / follow-ups:** Phase 2B spec。
