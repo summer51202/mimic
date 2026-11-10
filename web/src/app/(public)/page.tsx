@@ -1,3 +1,4 @@
+import { hasSession } from "@/shared/auth/has-session";
 import { Hero } from "@/shared/brand/hero";
 import styles from "@/shared/brand/hero.module.css";
 
@@ -16,10 +17,11 @@ const signals = [
   },
 ];
 
-export default function PublicHome() {
+export default async function PublicHome() {
+  const authenticated = await hasSession();
   return (
     <>
-      <Hero />
+      <Hero authenticated={authenticated} />
       <section
         id="features"
         className={styles.nextBand}

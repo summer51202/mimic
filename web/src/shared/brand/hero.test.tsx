@@ -5,7 +5,7 @@ import { Hero } from "./hero";
 
 describe("Hero", () => {
   it("renders the public home hero contract", () => {
-    render(<Hero />);
+    render(<Hero authenticated={false} />);
 
     expect(
       screen.getByRole("heading", { level: 1, name: "mimic" }),

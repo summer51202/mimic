@@ -8,6 +8,7 @@ vi.mock("@/shared/auth/has-session", () => ({
   hasSession: vi.fn().mockResolvedValue(false),
 }));
 
+import PublicHome from "./page";
 import FeaturesPage, { metadata as featuresMetadata } from "./features/page";
 import InvitePage, { metadata as inviteMetadata } from "./invite/[code]/page";
 import PrivacyPage, { metadata as privacyMetadata } from "./privacy/page";
@@ -55,6 +56,14 @@ describe("public route metadata", () => {
 });
 
 describe("public pages", () => {
+  it.each([
+    [false, "開始冒險", "/register"],
+    [true, "返回基地", "/app"],
+  ])("selects the Landing CTA for session=%s", async (authenticated, name, href) => {
+    vi.mocked(hasSession).mockResolvedValue(authenticated);
+    render(await PublicHome());
+    expect(screen.getByRole("link", { name })).toHaveAttribute("href", href);
+  });
   it("renders the feature page with shared finance terminology", () => {
     render(<FeaturesPage />);
 

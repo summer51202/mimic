@@ -44,7 +44,7 @@
   width: calc(var(--layer-width) * var(--layer-scale) * 1px);
   height: calc(var(--layer-height) * var(--layer-scale) * 1px);
   background-size: calc(var(--layer-width) * var(--sheet-frames) * var(--layer-scale) * 1px) 100%;
-  background-position: left top;
+  background-position: calc(-1px * var(--frame, 0) * var(--layer-width) * var(--layer-scale)) top;
   background-repeat: no-repeat;
   image-rendering: pixelated;
   pointer-events: none;
@@ -98,11 +98,18 @@
     outline-offset: -2px;
   }
 
-  /* Show the center segment on the server-rendered first paint. */
-  .stage:not([data-scroll-ready]) [data-landing-viewport="phone"] .scene {
-    margin-left: calc(-1px * var(--initial-x) * var(--scene-scale));
-    margin-left: calc(-1px * var(--initial-x) * var(--scene-scale) -
-      round(down, max(0px, (var(--viewport-width) * 1px - 100%) / 2), 1px));
+  .viewport[data-landing-viewport="phone"] {
+    width: 100%;
+    container-type: inline-size;
+  }
+
+  .stage[data-scroll-ready] [data-landing-viewport="phone"] {
+    scroll-snap-type: x mandatory;
+  }
+
+  /* Native snap takes over the same offset once the layout effect runs. */
+  .stage:not([data-scroll-ready]) [data-landing-viewport="phone"] .room {
+    margin-inline-start: calc(-1 * max(390px, 774px - 100%));
   }
 }
 
@@ -140,5 +147,227 @@
   .dialogueBox {
     width: min(calc(100% - 48px * var(--scene-scale)), calc(912px * var(--scene-scale)));
     font-size: clamp(1rem, calc(1rem * var(--scene-scale) / 1.2), 1.5rem);
+  }
+}
+
+.room {
+  position: relative;
+  isolation: isolate;
+  width: calc(var(--stage-width) * var(--scene-scale) * 1px);
+}
+
+.snap {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  scroll-snap-align: start;
+}
+
+.snap[data-snap="0"] { left: 0; }
+.snap[data-snap="1"] { left: max(390px, 774px - 100cqw); }
+.snap[data-snap="2"] { left: calc(1170px - 100cqw); }
+
+.target {
+  --hit-width: max(calc(var(--layer-width) * var(--layer-scale) * 1px), calc(44.05px * var(--layer-scale) / var(--scene-scale)));
+  --hit-height: max(calc(var(--layer-height) * var(--layer-scale) * 1px), calc(44.05px * var(--layer-scale) / var(--scene-scale)));
+  position: absolute;
+  z-index: 450;
+  left: calc((var(--layer-x) + var(--layer-width) / 2) * var(--layer-scale) * 1px - var(--hit-width) / 2);
+  top: calc((var(--layer-y) + var(--layer-height) / 2) * var(--layer-scale) * 1px - var(--hit-height) / 2);
+  width: var(--hit-width);
+  height: var(--hit-height);
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.target:focus-visible {
+  --focus-width: round(up, calc(2px * var(--layer-scale) / var(--scene-scale)), 1px);
+  outline: var(--focus-width) solid var(--mimic-color-coin-action);
+  box-shadow: 0 0 0 calc(var(--focus-width) + 1px) var(--mimic-color-ink);
+  outline-offset: 0;
+}
+
+.signLabel {
+  container-type: size;
+  --left: calc(var(--layer-x) * var(--scene-scale) * 1px);
+  --top: calc(var(--layer-y) * var(--scene-scale) * 1px);
+  --right: calc((var(--layer-x) + var(--layer-width)) * var(--scene-scale) * 1px);
+  --bottom: calc((var(--layer-y) + var(--layer-height)) * var(--scene-scale) * 1px);
+  position: absolute;
+  inset: round(up, var(--top), 1px) auto auto round(up, var(--left), 1px);
+  width: calc(round(down, var(--right), 1px) - round(up, var(--left), 1px));
+  height: calc(round(down, var(--bottom), 1px) - round(up, var(--top), 1px));
+  display: grid;
+  place-items: center;
+  font-size: max(12px, calc(16px * var(--scene-scale)));
+  line-height: 1;
+  font-weight: 800;
+  color: #fff1d6;
+  text-shadow: 0 1px #241509;
+  pointer-events: none;
+}
+
+@container (width < 28px) or (height < 14px) {
+  .signLabel > span { visibility: hidden; }
+}
+
+.signLabel > span {
+  padding: 1px 2px;
+  background: rgb(37 20 11 / 72%);
+}
+
+.line {
+  min-height: 2lh;
+}
+
+@media (width < 760px) {
+  .dialogueBox { --dialogue-block-inset: 42px; }
+  .line {
+    min-height: 3lh;
+  }
+}
+
+.arrows,
+.pauseBox {
+  grid-area: 1 / 1;
+  align-self: start;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.arrows {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 264px;
+}
+
+.pauseBox {
+  display: flex;
+  justify-content: flex-end;
+  width: min(100%, var(--fit-width, 100%));
+  padding: 8px;
+}
+
+.control {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px;
+  border: 2px solid var(--mimic-color-dialogue-edge);
+  background: var(--mimic-color-dialogue-field);
+  color: var(--mimic-color-dialogue-text);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.control[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.control:focus-visible {
+  outline: 2px solid var(--mimic-color-coin-action);
+  outline-offset: -4px;
+}
+
+.control[data-landing-pause]:not([data-ready]) {
+  visibility: hidden;
+}
+
+.stage:not([data-scroll-ready]) .arrows {
+  visibility: hidden;
+}
+
+.layer:has(> .campfire[data-loaded]) {
+  background-image: none !important;
+}
+
+.campfire,
+.carvingHidden,
+.revealed {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: calc(var(--sheet-frames) * 100%) 100%;
+  background-position: calc(-1px * var(--frame, 0) * var(--layer-width) * var(--layer-scale)) top;
+}
+
+.revealed {
+  opacity: 0;
+  transition: opacity 400ms linear;
+}
+
+.carvingHidden {
+  transition: opacity 400ms linear;
+}
+
+.layer[data-revealed="true"] .carvingHidden {
+  opacity: 0;
+}
+
+.layer[data-revealed="true"] .revealed {
+  opacity: 1;
+}
+
+@property --landing-torch-strength {
+  syntax: "<number>";
+  initial-value: 0;
+  inherits: false;
+}
+
+.glow {
+  --center-x: calc((var(--layer-x) + var(--flame-x)) * var(--layer-scale) * 1px);
+  --center-y: calc((var(--layer-y) + var(--flame-y)) * var(--layer-scale) * 1px);
+  --half-box: calc(var(--layer-width) * 2px * var(--layer-scale));
+  --nominal-radius: calc(var(--layer-width) * 1.5px * var(--layer-scale));
+  --radius: var(--nominal-radius);
+  position: absolute;
+  left: calc(var(--center-x) - var(--half-box));
+  top: calc(var(--center-y) - var(--half-box));
+  width: calc(2 * var(--half-box));
+  aspect-ratio: 1;
+  pointer-events: none;
+  /* Paint the alpha into the gradient so the scene keeps the same rasterization. */
+  background: radial-gradient(circle var(--radius) at center,
+    rgb(255 179 71 / calc(0.6 * var(--landing-torch-strength))),
+    rgb(255 179 71 / calc(0.24 * var(--landing-torch-strength))) 50%,
+    rgb(255 179 71 / 0%) 100%);
+  animation: torch-glow 600ms ease-in-out both;
+}
+
+@media (width < 760px) {
+  .glow {
+    --screen-x: calc(var(--center-x) - var(--room-scroll-x, 0px));
+    --edge-distance: min(var(--screen-x), calc(100cqw - var(--screen-x)));
+    --radius: min(var(--nominal-radius), max(0px, var(--edge-distance) - 2px));
+  }
+}
+
+@keyframes torch-glow {
+  0%, 100% { --landing-torch-strength: 0; }
+  40% { --landing-torch-strength: 1; }
+}
+
+.layer[data-flight] {
+  animation: var(--bat-flight-name) var(--bat-flight-duration) steps(1, end);
+}
+
+@media (min-width: 760px) {
+  .arrows { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pauseBox, .glow { display: none; }
+  .revealed, .carvingHidden { transition: none; }
+  .layer[data-flight] { animation: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :global(html):has(.stage) {
+    scroll-behavior: smooth;
   }
 }
