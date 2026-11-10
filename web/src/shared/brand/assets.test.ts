@@ -1,14 +1,40 @@
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { expect, it } from "vitest";
 
 import { pixelUiFiles } from "./pixel-ui-assets";
 import { inspectPng } from "./png-inspection";
+import manifest from "../../../../docs/design/assets/approved/page-visual-v1/production-asset-manifest.json";
+import { landingScene } from "./landing-scene";
 
 const pngSignature = "89504e470d0a1a0a";
 
 const assets = [["mimiku-hero.png", 1672, 941]] as const;
+
+it("ships exactly the Phase 2A consumers, with the approved SHA-256 values", async () => {
+  const runtime = "web/public/pixel-ui/v1";
+  const directory = path.resolve(process.cwd(), "../", runtime);
+  const expected = new Set([
+    "frames/frame-dialogue.png",
+    ...Object.values(landingScene).flatMap(({ architecture, layers }) =>
+      [architecture, ...layers].map(({ asset_id }) => asset_id),
+    ),
+  ]);
+  expect(expected.size).toBe(28);
+  const promoted = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2a");
+  expect(promoted.map(({ path }) => path).sort()).toEqual([...expected].sort());
+  const files = (await readdir(directory, { recursive: true, withFileTypes: true }))
+    .filter((entry) => !entry.isDirectory())
+    .map((entry) => path.relative(directory, path.join(entry.parentPath, entry.name)).replaceAll("\\", "/"));
+  expect(files.sort()).toEqual([...expected].sort());
+
+  for (const asset of promoted) {
+    expect(asset.runtime_target).toBe(`${runtime}/${asset.path}`);
+    const bytes = await readFile(path.join(directory, asset.path));
+    expect(createHash("sha256").update(bytes).digest("hex")).toBe(asset.sha256);
+  }
+});
 
 const transparentCharacterAssets = Object.values(pixelUiFiles.characters);
 

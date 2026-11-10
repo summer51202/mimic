@@ -424,8 +424,8 @@
       "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
       "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/frames/frame-dialogue.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "frames/frame-notebook.png",
@@ -1872,8 +1872,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 0.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/title-blink-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "motion/title-blink-phone.png",
@@ -1905,8 +1905,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 0.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/title-blink-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/feature/personal.png",
@@ -2030,8 +2030,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/bats-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/bats-phone.png",
@@ -2055,8 +2055,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/bats-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/chest-closed-desktop.png",
@@ -2080,8 +2080,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-closed-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/chest-closed-phone.png",
@@ -2105,8 +2105,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-closed-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/chest-cracked-desktop.png",
@@ -2480,8 +2480,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/map-crate-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/map-crate-phone.png",
@@ -2505,8 +2505,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/map-crate-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/sign-desktop.png",
@@ -2530,8 +2530,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/sign-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/sign-phone.png",
@@ -2555,8 +2555,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/sign-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/torch-high-desktop.png",
@@ -2580,8 +2580,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/torch-high-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/torch-low-desktop.png",
@@ -2605,8 +2605,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/torch-low-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/torch-phone.png",
@@ -2630,8 +2630,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/torch-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/wall-carving-hidden-desktop.png",
@@ -2655,8 +2655,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/wall-carving-hidden-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/wall-carving-hidden-phone.png",
@@ -2680,8 +2680,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/wall-carving-hidden-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/landing/wall-carving-revealed-desktop.png",
@@ -2755,8 +2755,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/shared/campfire-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "props/shared/campfire-phone.png",
@@ -2780,8 +2780,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/shared/campfire-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/home/actors/mimiku-desktop.png",
@@ -2980,8 +2980,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/actors/mimiku-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/actors/mimiku-phone.png",
@@ -3005,8 +3005,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/actors/mimiku-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/actors/ranger-desktop.png",
@@ -3030,8 +3030,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/actors/ranger-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/actors/ranger-phone.png",
@@ -3055,8 +3055,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/actors/ranger-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/actors/warrior-desktop.png",
@@ -3080,8 +3080,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/actors/warrior-desktop.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/actors/warrior-phone.png",
@@ -3105,8 +3105,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/actors/warrior-phone.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/desktop-architecture.png",
@@ -3130,8 +3130,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/desktop-architecture.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/desktop-ground-light.png",
@@ -3155,8 +3155,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/desktop-ground-light.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/layout.json",
@@ -3217,8 +3217,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/phone-architecture.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "scenes/landing/phone-ground-light.png",
@@ -3242,8 +3242,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/phone-ground-light.png",
+      "disposition": "promoted-phase-2a"
     },
     {
       "path": "wordmark/mimic-wordmark-compact.png",

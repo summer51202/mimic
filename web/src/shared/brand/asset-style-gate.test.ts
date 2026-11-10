@@ -91,7 +91,7 @@ interface ProductionAsset {
   accessibility: string;
   fallback: string;
   reduced_motion: string;
-  runtime_target: null;
+  runtime_target: string | null;
   disposition: string;
 }
 
@@ -128,7 +128,7 @@ it.each([
   expect(visible).toEqual({ left: 8, top: 8, right: width - 9, bottom: height - 9 });
 });
 
-it("stages the complete Gate B manifest and files outside public runtime paths", async () => {
+it("keeps all Gate B sources in the approved directory and records Phase 2A promotion", async () => {
   const { assets, gate, schema_version } = JSON.parse(await readFile(
     path.join(repository, approvedDirectory, "production-asset-manifest.json"), "utf8",
   )) as { assets: ProductionAsset[]; gate: string; schema_version: number };
@@ -167,8 +167,12 @@ it("stages the complete Gate B manifest and files outside public runtime paths",
   for (const asset of assets) {
     expect(asset.path).toMatch(/^[a-z0-9-]+(?:\/[a-z0-9-]+)*\.(png|json)$/);
     expect(publicPaths.has(path.normalize(asset.path))).toBe(false);
-    expect(asset.runtime_target).toBeNull();
-    expect(asset.disposition).toBe("staged-only-until-consumer-plan");
+    if (asset.disposition === "promoted-phase-2a") {
+      expect(asset.runtime_target).toBe(`web/public/pixel-ui/v1/${asset.path}`);
+    } else {
+      expect(asset.runtime_target).toBeNull();
+      expect(asset.disposition).toBe("staged-only-until-consumer-plan");
+    }
     for (const value of [
       asset.export_method, asset.css_size, asset.consumer, asset.loading,
       asset.accessibility, asset.fallback, asset.reduced_motion,
