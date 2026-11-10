@@ -2276,3 +2276,48 @@
 **Decisions:** 桌機改填滿可用區（非整數）；hud-dark 不動；360px 的 Mimiku 裁切留到 2B（scrollLeft=414）。
 
 **Known gaps / follow-ups:** Phase 2B spec。
+
+## 2026-11-10 — Phase 2B Landing 互動與動態
+
+**Task:** 依已核准的 Phase 2B 規格實作公開 Landing 的互動、動態、手機探索及登入 CTA。
+
+**Scope:** Web 公開首頁、Landing 場景與動態、核准素材推廣腳本及 manifest、Landing 單元與 Playwright 測試、Phase 2B 審核資料。
+
+**What changed:**
+
+- 推廣 18 項核准素材，以同一套 requestAnimationFrame 播放器驅動篝火、標題與寶箱時序。
+- 加入具名互動、台詞提示、手機三段 snap、木牌連結與動態暫停。依登入 cookie 選擇 CTA。
+- 以 64f0173 的獨立 worktree 比對驗證，收錄十尺寸截圖、兩段錄影與 verification.md。
+
+**Decisions:** 桌機寶箱點擊框去除與高火把相交的透明上緣。木牌使用半透明深褐 CSS 字底維持對比。保留 `(public)/page.tsx` 與既有 public layout 作為唯一公開首頁路由，排除重複入口在動態渲染時的正式版錯誤。
+
+**Known gaps / follow-ups:** 五句台詞、控制鈕與 CSS 回饋交由 Ed 視覺審核。測試結果和既有失敗分類收錄於 Phase 2B verification.md。
+
+## 2026-11-10 — Phase 2B 2R 光暈與蝙蝠飛行
+
+**Task:** 依 Phase 2B §2R 修正火把光暈、蝙蝠路徑與審閱擷取。
+
+**Scope:** Landing 場景與動態、指定 Playwright 回歸、Phase 2B 的 2R 審閱產物與 verification.md。
+
+**What changed:**
+
+- 以火焰為圓心繪製暖橙 CSS 光暈。改為動畫化漸層色標的 alpha，避免桌機縮放時重新取樣場景。手機半徑隨可視邊界限制。
+- 蝙蝠沿右上整數步進加水平交錯偏移，停留在舞台外，再逐步走回原路。
+- 審閱圖切回一般動態後擷取暫停鈕。由無損短片擷取峰值格，桌機及手機外圈最大灰階差均為 0。
+
+**Decisions:** 用無損 RGB 短片量測像素，完整互動錄影保留一般播放格式。新版產物分別存入 `screenshots-2r/` 與 `videos-2r/`。
+
+**Known gaps / follow-ups:** 停在 2R 視覺審核。
+
+
+## 2026-11-10 — Phase 2B 核准與提交（Claude）
+
+**Task:** 審閱 2B 與 2B-2R，記錄核准並分批 commit。
+
+**Scope:** decision-log、本筆 devlog、Phase 2B 全部檔案的 commit（刪除根首頁另外獨立 commit）。
+
+**What changed:** 從錄影逐格擷取，發現火把光暈有方框，並確認 2R 已修好；確認蝙蝠斜飛、snap 點、點擊區與素材 hash。Ed 核准 2B 與五句台詞。
+
+**Decisions:** 刪除 `web/src/app/page.tsx` 屬範圍外修正，獨立 commit；`/` 改為動態渲染。
+
+**Known gaps / follow-ups:** 下一份 consumer plan 是 Home。
