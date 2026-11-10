@@ -2,6 +2,7 @@ import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { expect, test } from "@playwright/test";
 import { PNG } from "pngjs";
+import { chestTimelines } from "../src/shared/brand/landing-motion";
 import { brand } from "../src/shared/brand/brand";
 import { landingAssetRoot, landingScene } from "../src/shared/brand/landing-scene";
 
@@ -76,8 +77,11 @@ for (const [width, height] of [
     await expect.poll(() => [...requested].sort()).toEqual([
       ...new Set(layers.map(({ asset_id }) => `${landingAssetRoot}/${asset_id}`)),
       `${landingAssetRoot}/frames/frame-dialogue.png`,
+      `${landingAssetRoot}/motion/campfire-${variant}.png`,
+      `${landingAssetRoot}/props/landing/wall-carving-revealed-${variant}.png`,
+      ...chestTimelines.open.map(([frame]) => `${landingAssetRoot}/props/landing/chest-${frame}-${variant}.png`),
     ].sort());
-    const initialScroll = (scene.initialViewportX + Math.floor(Math.max(0, scene.viewportWidth - available.width) / 2)) * scale;
+    const initialScroll = Math.max(scene.initialViewportX, 774 - available.width);
     if (phone) {
       await expect.poll(() => viewport.evaluate((node) => node.scrollLeft)).toBe(initialScroll);
       const artOffset = (await viewport.boundingBox())!.x - (await art.boundingBox())!.x;
@@ -110,7 +114,7 @@ for (const [width, height] of [
       expect(dialogueBox.y).toBeGreaterThanOrEqual(viewportBox.y + viewportBox.height);
     }
     if (!phone) {
-      const copyBox = (await tagline.locator("..").boundingBox())!;
+      const copyBox = (await tagline.locator("../..").boundingBox())!;
       const midline = dialogueBox.y + dialogueBox.height / 2;
       expect(copyBox.y + copyBox.height / 2).toBeCloseTo(midline, 1);
       expect(ctaBox.y + ctaBox.height / 2).toBeCloseTo(midline, 1);
@@ -164,8 +168,8 @@ for (const [width, height] of [
       const left = Math.max(0, viewportBox.x - actorBox.x);
       const right = Math.max(0, actorBox.x + actorBox.width - viewportBox.x - viewportBox.width);
       const visible = actorBox.width - left - right;
-      expect(initialScroll).toBe(405);
-      expect({ left, right, visible }).toEqual({ left: 0, right: 9, visible: 86 });
+      expect(initialScroll).toBe(414);
+      expect({ left, right, visible }).toEqual({ left: 0, right: 0, visible: 95 });
       const png = PNG.sync.read(await readFile(path.join("public", landingAssetRoot, actor.asset_id)));
       const clippedColumnsWithAlpha = Array.from({ length: right }, (_, i) => png.width - right + i)
         .filter((x) => Array.from({ length: png.height }, (_, y) => y)
@@ -183,10 +187,12 @@ for (const [width, height] of [
       }
     }
 
-    const prefix = path.join(screenshots, `${width}x${height}`);
-    await mkdir(screenshots, { recursive: true });
-    await page.screenshot({ ...reviewCapture, path: `${prefix}-full.png`, fullPage: true });
-    await viewport.screenshot({ ...reviewCapture, path: `${prefix}-stage.png` });
+    if (process.env.MIMIC_PHASE_2A_CAPTURE === "1") {
+      const prefix = path.join(screenshots, `${width}x${height}`);
+      await mkdir(screenshots, { recursive: true });
+      await page.screenshot({ ...reviewCapture, path: `${prefix}-full.png`, fullPage: true });
+      await viewport.screenshot({ ...reviewCapture, path: `${prefix}-stage.png` });
+    }
     await info.attach("fit", {
       body: JSON.stringify({ width, height, available, scale, rendering, viewportBox, widthLimited, fontSizes, mimikuCrop }),
       contentType: "application/json",
@@ -196,14 +202,14 @@ for (const [width, height] of [
       await viewport.focus();
       await expect(viewport).toBeFocused();
       await page.keyboard.press("ArrowRight");
-      await expect.poll(() => viewport.evaluate((node) => node.scrollLeft))
-        .toBeGreaterThan(initialScroll);
+      const rightSnap = await viewport.evaluate((node) => node.scrollWidth - node.clientWidth);
+      await expect.poll(() => viewport.evaluate((node) => node.scrollLeft)).toBe(rightSnap);
       await page.keyboard.press("ArrowLeft");
       await expect.poll(() => viewport.evaluate((node) => node.scrollLeft))
         .toBe(initialScroll);
       expect(await dialogue.boundingBox()).toEqual(dialogueBox);
     }
-    for (let step = 0; step < 10; step++) {
+    for (let step = 0; step < 14; step++) {
       await page.keyboard.press("Tab");
       if (await cta.evaluate((node) => node === document.activeElement)) break;
     }
