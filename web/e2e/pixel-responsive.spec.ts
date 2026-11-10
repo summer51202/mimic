@@ -21,12 +21,25 @@ test("pixel public shell remains responsive and raster sharp", async ({
 }, testInfo) => {
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: "mimic" })).toBeVisible();
+  const heading = page.getByRole("heading", { level: 1, name: "mimic", exact: true });
+  await expect(heading).toHaveAccessibleName("mimic");
+  await expect(page.locator('[data-layer="wordmark"]:visible')).toHaveAttribute("aria-hidden", "true");
   await expectNoHorizontalOverflow(page);
 
-  const heroImage = page.locator("img.pixel-art").first();
-  await expect(heroImage).toBeVisible();
-  await expect(heroImage).toHaveCSS("image-rendering", /pixelated|crisp-edges/);
+  const architecture = page.locator('[data-layer="architecture"]:visible');
+  await expect(architecture).toHaveCount(1);
+  const rendering = await page.evaluate(() => {
+    const headerHeight = document.querySelector("header")!.getBoundingClientRect().height;
+    const desktop = window.matchMedia("(min-width: 760px)").matches;
+    const shrinks = document.documentElement.clientWidth < 960
+      || window.innerHeight - headerHeight < 540;
+    return desktop && shrinks ? "auto" : "pixelated";
+  });
+  await expect(architecture).toHaveCSS("image-rendering", rendering);
+  await expect(architecture).toHaveCSS(
+    "background-image",
+    /\/pixel-ui\/v1\/scenes\/landing\/(desktop|phone)-architecture\.png/,
+  );
 
   await page.keyboard.press("Tab");
   const focusedOutline = await page.evaluate(() => {

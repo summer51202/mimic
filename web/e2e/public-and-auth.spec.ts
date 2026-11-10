@@ -28,9 +28,9 @@ test.describe("public identity and auth entry", () => {
       await page.setViewportSize(viewport);
       await page.goto("/");
 
-      await expect(
-        page.getByRole("heading", { level: 1, name: "mimic" }),
-      ).toBeVisible();
+      const heading = page.getByRole("heading", { level: 1, name: "mimic", exact: true });
+      await expect(heading).toHaveAccessibleName("mimic");
+      await expect(page.locator('[data-layer="wordmark"]:visible')).toHaveAttribute("aria-hidden", "true");
       await expect(page.getByText(tagline, { exact: true })).toBeVisible();
 
       const registerCta = page.locator('a[href="/register"]').first();
@@ -40,11 +40,11 @@ test.describe("public identity and auth entry", () => {
       await expectNoHorizontalOverflow(page);
 
       const nextSection = page.locator("#features");
-      const bounds = await nextSection.boundingBox();
-      expect(bounds).not.toBeNull();
-      expect(bounds!.y).toBeGreaterThan(0);
-      expect(bounds!.y).toBeLessThan(viewport.height);
-      expect(bounds!.y + bounds!.height).toBeGreaterThan(viewport.height);
+      await expect(nextSection).toBeVisible();
+      await expect(nextSection.getByRole("heading", { name: "共同基金" })).toBeVisible();
+      const heroBounds = (await page.locator("[data-landing-hero]").boundingBox())!;
+      const nextBounds = (await nextSection.boundingBox())!;
+      expect(nextBounds.y).toBeGreaterThanOrEqual(heroBounds.y + heroBounds.height);
 
       await page.screenshot({
         path: testInfo.outputPath(`home-${viewport.name}.png`),
