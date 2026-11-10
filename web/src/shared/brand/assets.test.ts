@@ -12,7 +12,7 @@ const pngSignature = "89504e470d0a1a0a";
 
 const assets = [["mimiku-hero.png", 1672, 941]] as const;
 
-it("ships exactly the Phase 2A consumers, with the approved SHA-256 values", async () => {
+it("ships exactly the Phase 2A and 2B consumers, with the approved SHA-256 values", async () => {
   const runtime = "web/public/pixel-ui/v1";
   const directory = path.resolve(process.cwd(), "../", runtime);
   const expected = new Set([
@@ -22,14 +22,23 @@ it("ships exactly the Phase 2A consumers, with the approved SHA-256 values", asy
     ),
   ]);
   expect(expected.size).toBe(28);
+  const phase2b = new Set(Object.entries(landingScene).flatMap(([variant, scene]) => [
+    `motion/campfire-${variant}.png`,
+    ...scene.layers.flatMap((layer) => "variants" in layer && layer.variants
+      ? Object.values(layer.variants).map(({ asset_id }) => asset_id).filter((asset) => !expected.has(asset))
+      : []),
+  ]));
+  expect(phase2b.size).toBe(18);
+  const added = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2b");
+  expect(added.map(({ path }) => path).sort()).toEqual([...phase2b].sort());
   const promoted = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2a");
   expect(promoted.map(({ path }) => path).sort()).toEqual([...expected].sort());
   const files = (await readdir(directory, { recursive: true, withFileTypes: true }))
     .filter((entry) => !entry.isDirectory())
     .map((entry) => path.relative(directory, path.join(entry.parentPath, entry.name)).replaceAll("\\", "/"));
-  expect(files.sort()).toEqual([...expected].sort());
+  expect(files.sort()).toEqual([...expected, ...phase2b].sort());
 
-  for (const asset of promoted) {
+  for (const asset of [...promoted, ...added]) {
     expect(asset.runtime_target).toBe(`${runtime}/${asset.path}`);
     const bytes = await readFile(path.join(directory, asset.path));
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(asset.sha256);

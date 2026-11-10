@@ -1535,8 +1535,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 0.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/campfire-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "motion/campfire-phone.png",
@@ -1572,8 +1572,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 0.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/campfire-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "motion/mimiku-adventure-complete-desktop.png",
@@ -2130,8 +2130,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-cracked-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-cracked-phone.png",
@@ -2155,8 +2155,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-cracked-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-half-open-desktop.png",
@@ -2180,8 +2180,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-half-open-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-half-open-phone.png",
@@ -2205,8 +2205,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-half-open-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-latch-release-desktop.png",
@@ -2230,8 +2230,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-latch-release-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-latch-release-phone.png",
@@ -2255,8 +2255,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-latch-release-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-near-open-desktop.png",
@@ -2280,8 +2280,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-near-open-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-near-open-phone.png",
@@ -2305,8 +2305,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-near-open-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-open-desktop.png",
@@ -2330,8 +2330,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-open-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-open-phone.png",
@@ -2355,8 +2355,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-open-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-opening-wide-desktop.png",
@@ -2380,8 +2380,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-opening-wide-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-opening-wide-phone.png",
@@ -2405,8 +2405,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-opening-wide-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-unlatched-desktop.png",
@@ -2430,8 +2430,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-unlatched-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/chest-unlatched-phone.png",
@@ -2455,8 +2455,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/chest-unlatched-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/map-crate-desktop.png",
@@ -2705,8 +2705,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/wall-carving-revealed-desktop.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/landing/wall-carving-revealed-phone.png",
@@ -2730,8 +2730,8 @@
       "accessibility": "Name interactive props in HTML and hide decorative finance props from assistive technology.",
       "fallback": "Remove decorative props while retaining named controls and labels.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/props/landing/wall-carving-revealed-phone.png",
+      "disposition": "promoted-phase-2b"
     },
     {
       "path": "props/shared/campfire-desktop.png",

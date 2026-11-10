@@ -7,7 +7,7 @@ const root = fileURLToPath(new URL("../../", import.meta.url));
 const approved = join(root, "docs/design/assets/approved/page-visual-v1");
 const manifestPath = join(approved, "production-asset-manifest.json");
 const runtime = "web/public/pixel-ui/v1";
-const paths = [
+const phase2a = [
   "frames/frame-dialogue.png",
   "props/landing/torch-high-desktop.png",
   "props/landing/torch-low-desktop.png",
@@ -26,9 +26,20 @@ const paths = [
   ]),
 ];
 
+const phase2b = ["desktop", "phone"].flatMap((variant) => [
+  ...["latch-release", "unlatched", "cracked", "half-open", "opening-wide", "near-open", "open"]
+    .map((frame) => `props/landing/chest-${frame}-${variant}.png`),
+  `props/landing/wall-carving-revealed-${variant}.png`,
+  `motion/campfire-${variant}.png`,
+]);
+const dispositions = new Map([
+  ...phase2a.map((path) => [path, "promoted-phase-2a"]),
+  ...phase2b.map((path) => [path, "promoted-phase-2b"]),
+]);
+
 const manifestText = await readFile(manifestPath, "utf8");
 const manifest = JSON.parse(manifestText);
-const assets = paths.map((path) => {
+const assets = Array.from(dispositions.keys(), (path) => {
   const asset = manifest.assets.find((entry) => entry.path === path);
   if (!asset) throw new Error(`Missing approved manifest entry: ${path}`);
   return asset;
@@ -49,10 +60,10 @@ for (const asset of assets) {
   await copyFile(join(approved, asset.path), destination);
   await verifyHash(destination, asset);
   asset.runtime_target = target;
-  asset.disposition = "promoted-phase-2a";
+  asset.disposition = dispositions.get(asset.path);
 }
 
 const updated = JSON.stringify(manifest, null, 2) + "\n";
 const formatted = manifestText.includes("\r\n") ? updated.replaceAll("\n", "\r\n") : updated;
 if (formatted !== manifestText) await writeFile(manifestPath, formatted);
-console.log(`Verified SHA-256 for ${assets.length} Phase 2A assets.`);
+console.log(`Verified SHA-256 for ${assets.length} Phase 2A and 2B assets.`);
