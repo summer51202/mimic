@@ -1,0 +1,144 @@
+.hero {
+  background: var(--mimic-color-cave-backdrop);
+}
+
+.visuallyHidden,
+.textScale {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.textScale {
+  width: 1rem;
+}
+
+.stage {
+  --scene-scale: 1;
+  --header-height: 70px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+
+.viewport {
+  grid-area: 1 / 1;
+  width: min(100%, calc(var(--viewport-width) * var(--scene-scale) * 1px));
+}
+
+.scene {
+  --layer-scale: var(--scene-scale);
+  position: relative;
+  isolation: isolate;
+  width: calc(var(--stage-width) * var(--scene-scale) * 1px);
+  height: calc(var(--stage-height) * var(--scene-scale) * 1px);
+}
+
+.layer {
+  position: absolute;
+  left: calc(var(--layer-x) * var(--layer-scale) * 1px);
+  top: calc(var(--layer-y) * var(--layer-scale) * 1px);
+  width: calc(var(--layer-width) * var(--layer-scale) * 1px);
+  height: calc(var(--layer-height) * var(--layer-scale) * 1px);
+  background-size: calc(var(--layer-width) * var(--sheet-frames) * var(--layer-scale) * 1px) 100%;
+  background-position: left top;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.dialogueBox {
+  position: relative;
+  grid-area: 1 / 1;
+  align-self: end;
+  width: min(100%, calc(390px * var(--scene-scale)));
+  font-size: 1rem;
+}
+
+.stage[data-dialogue="flow"] .dialogueBox {
+  grid-row: 2;
+}
+
+.cta {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 2px solid var(--mimic-color-ink);
+  padding: 0.25em 0.65em;
+  background: var(--mimic-color-coin-action);
+  color: var(--mimic-color-ink);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+
+.cta:focus-visible,
+.viewport:focus-visible {
+  outline: 2px solid var(--mimic-color-dialogue-text);
+  outline-offset: 2px;
+}
+
+@media (width < 760px) {
+  .viewport[data-landing-viewport="desktop"] {
+    display: none;
+  }
+
+  .viewport[data-landing-viewport="phone"] {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    scroll-behavior: auto;
+  }
+
+  .viewport:focus-visible {
+    outline-offset: -2px;
+  }
+
+  /* Show the center segment on the server-rendered first paint. */
+  .stage:not([data-scroll-ready]) [data-landing-viewport="phone"] .scene {
+    margin-left: calc(-1px * var(--initial-x) * var(--scene-scale));
+    margin-left: calc(-1px * var(--initial-x) * var(--scene-scale) -
+      round(down, max(0px, (var(--viewport-width) * 1px - 100%) / 2), 1px));
+  }
+}
+
+@media (min-width: 760px) {
+  .viewport[data-landing-viewport="desktop"] {
+    width: min(100%, var(--fit-width, 960px));
+    height: var(--fit-height, 540px);
+    overflow: clip;
+  }
+
+  .viewport[data-landing-viewport="desktop"] .scene {
+    --layer-scale: 1;
+    width: calc(var(--stage-width) * 1px);
+    height: calc(var(--stage-height) * 1px);
+    transform: scale(var(--scene-scale));
+    transform-origin: top left;
+  }
+
+  .viewport[data-landing-viewport="desktop"] .layer {
+    image-rendering: var(--desktop-image-rendering, pixelated);
+  }
+
+  .viewport[data-landing-viewport="phone"] {
+    display: none;
+  }
+
+  .stage {
+    padding-block: max(0px, calc((100dvh - var(--header-height) - var(--fit-height, 540px)) / 2));
+  }
+
+  .stage[data-width-limited] {
+    padding-block: 0;
+  }
+
+  .dialogueBox {
+    width: min(calc(100% - 48px * var(--scene-scale)), calc(912px * var(--scene-scale)));
+    font-size: clamp(1rem, calc(1rem * var(--scene-scale) / 1.2), 1.5rem);
+  }
+}

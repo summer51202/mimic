@@ -15,8 +15,9 @@ describe("Hero", () => {
     const primaryAction = screen.getByRole("link", { name: "開始冒險" });
     expect(primaryAction).toHaveAttribute("href", "/register");
 
-    expect(
-      screen.getByRole("img", { name: /咪咪庫 Mimiku/ }),
-    ).toBeInTheDocument();
+    const dialogue = screen.getByRole("region", { name: "咪咪庫 / Mimiku" });
+    expect(dialogue).toContainElement(primaryAction);
+    expect(screen.getByRole("region", { name: "洞窟場景，可左右捲動" })).toHaveAttribute("tabindex", "0");
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 });

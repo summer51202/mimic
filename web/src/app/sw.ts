@@ -54,6 +54,20 @@ const runtimeCaching: RuntimeCaching[] = [
   },
   {
     matcher: ({ sameOrigin, url }) =>
+      sameOrigin && /^\/pixel-ui\/v1\/.+\.png$/.test(url.pathname),
+    handler: new CacheFirst({
+      cacheName: "mimic-page-visual-v1",
+      plugins: [
+        new ExpirationPlugin({
+          maxEntries: 48,
+          maxAgeSeconds: 30 * 24 * 60 * 60,
+          maxAgeFrom: "last-used",
+        }),
+      ],
+    }),
+  },
+  {
+    matcher: ({ sameOrigin, url }) =>
       sameOrigin && /^\/_next\/static\//.test(url.pathname),
     handler: new CacheFirst({
       cacheName: "mimic-next-static",

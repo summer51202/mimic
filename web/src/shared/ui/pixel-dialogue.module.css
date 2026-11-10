@@ -1,0 +1,37 @@
+.dialogue {
+  --dialogue-inset: var(--dialogue-phone-inset);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  border: 2px solid var(--mimic-color-dialogue-edge);
+  border-image: var(--dialogue-frame);
+  padding-block: max(0px, calc(var(--dialogue-block-inset, var(--dialogue-inset)) - 2px));
+  padding-inline: max(0px, calc(var(--dialogue-inline-inset, var(--dialogue-inset)) - 2px));
+  background-color: var(--mimic-color-dialogue-field);
+  color: var(--mimic-color-dialogue-text);
+  image-rendering: pixelated;
+}
+
+.copy {
+  flex: 1 1 8rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.25;
+}
+
+.speaker {
+  color: var(--mimic-color-dialogue-speaker);
+  font-weight: 800;
+}
+
+.actions {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (min-width: 760px) {
+  .dialogue {
+    --dialogue-inset: var(--dialogue-desktop-inset);
+  }
+}
