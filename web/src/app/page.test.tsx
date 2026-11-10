@@ -1,11 +1,16 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { brand } from "@/shared/brand/brand";
-import Home from "./page";
+import PublicLayout from "./(public)/layout";
+import PublicHome from "./(public)/page";
 
-describe("Home", () => {
-  it("renders the public home shell and content", () => {
-    render(<Home />);
+vi.mock("@/shared/auth/has-session", () => ({
+  hasSession: vi.fn().mockResolvedValue(false),
+}));
+
+describe("Public Landing", () => {
+  it("renders the public shell and Landing content", async () => {
+    render(<PublicLayout>{await PublicHome()}</PublicLayout>);
 
     expect(screen.getByRole("banner")).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "主要導覽" })).toBeInTheDocument();
