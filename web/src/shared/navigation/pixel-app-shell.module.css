@@ -54,6 +54,23 @@
   padding: 0 var(--mimic-space-4);
 }
 
+.wordmarkLink {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  text-decoration: none;
+}
+
+.wordmarkLink:hover :global(.mimic-wordmark__character) {
+  color: var(--mimic-color-dialogue-text);
+}
+
+.wordmarkLink:focus-visible {
+  outline: 3px solid var(--mimic-color-focus);
+  outline-offset: -3px;
+}
+
 .body {
   display: block;
   min-width: 0;

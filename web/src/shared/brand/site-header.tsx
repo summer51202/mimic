@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Wordmark } from "./wordmark";
 import styles from "./hero.module.css";
 
-export function SiteHeader() {
+export function SiteHeader({ authenticated }: { authenticated: boolean }) {
   return (
     <header className={styles.siteHeader}>
       <nav className={styles.siteNav} aria-label="主要導覽">
@@ -13,8 +13,8 @@ export function SiteHeader() {
           <Link className={styles.navLink} href="/features">
             功能
           </Link>
-          <Link className={styles.navLink} href="/login">
-            登入
+          <Link className={styles.navLink} href={authenticated ? "/app" : "/login"}>
+            {authenticated ? "返回基地" : "登入"}
           </Link>
         </div>
       </nav>

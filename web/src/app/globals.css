@@ -98,9 +98,19 @@ img[src*="/pixel-ui/"] {
   outline-offset: 3px;
 }
 
-.pixel-button:disabled {
+.pixel-button:disabled,
+.pixel-field__input:disabled {
+  background: var(--disabled-surface, var(--mimic-color-disabled-surface));
+  color: var(--disabled-text, var(--mimic-color-disabled-text));
+  border: 2px dashed var(--disabled-edge, var(--mimic-color-disabled-edge));
+  box-shadow: none;
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 1;
+}
+
+.pixel-field__input:disabled::placeholder {
+  color: var(--mimic-color-disabled-text);
+  opacity: 1;
 }
 
 .pixel-panel {
@@ -143,7 +153,7 @@ img[src*="/pixel-ui/"] {
   outline-offset: 3px;
 }
 
-.pixel-field__input[aria-invalid="true"] {
+.pixel-field__input[aria-invalid="true"]:not(:disabled) {
   border-color: var(--mimic-color-heart-critical);
 }
 

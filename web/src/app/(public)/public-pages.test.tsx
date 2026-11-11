@@ -9,6 +9,7 @@ vi.mock("@/shared/auth/has-session", () => ({
 }));
 
 import PublicHome from "./page";
+import PublicLayout from "./layout";
 import FeaturesPage, { metadata as featuresMetadata } from "./features/page";
 import InvitePage, { metadata as inviteMetadata } from "./invite/[code]/page";
 import PrivacyPage, { metadata as privacyMetadata } from "./privacy/page";
@@ -56,6 +57,16 @@ describe("public route metadata", () => {
 });
 
 describe("public pages", () => {
+  it.each([
+    [false, "登入", "/login"],
+    [true, "返回基地", "/app"],
+  ])("selects the header action for session=%s", async (authenticated, name, href) => {
+    vi.mocked(hasSession).mockResolvedValue(authenticated);
+    render(await PublicLayout({ children: "Public content" }));
+    expect(screen.getByRole("link", { name })).toHaveAttribute("href", href);
+    expect(screen.getByRole("link", { name: "功能" })).toHaveAttribute("href", "/features");
+  });
+
   it.each([
     [false, "開始冒險", "/register"],
     [true, "返回基地", "/app"],

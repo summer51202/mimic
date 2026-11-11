@@ -16,25 +16,25 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ["finance", "lifestyle"],
     icons: [
       {
-        src: "/pixel-ui/v1/icons/install/icon-192.png",
+        src: "/pixel-ui/v1/icons/install-warm/icon-192.png",
         sizes: "192x192",
         type: "image/png",
         purpose: "any",
       },
       {
-        src: "/pixel-ui/v1/icons/install/icon-512.png",
+        src: "/pixel-ui/v1/icons/install-warm/icon-512.png",
         sizes: "512x512",
         type: "image/png",
         purpose: "any",
       },
       {
-        src: "/pixel-ui/v1/icons/install/icon-maskable-192.png",
+        src: "/pixel-ui/v1/icons/install-warm/icon-maskable-192.png",
         sizes: "192x192",
         type: "image/png",
         purpose: "maskable",
       },
       {
-        src: "/pixel-ui/v1/icons/install/icon-maskable-512.png",
+        src: "/pixel-ui/v1/icons/install-warm/icon-maskable-512.png",
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable",

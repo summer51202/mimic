@@ -265,8 +265,11 @@
 }
 
 .control[aria-disabled="true"] {
-  opacity: 0.55;
-  cursor: default;
+  background: var(--mimic-color-hud-raised);
+  color: var(--mimic-color-dialogue-speaker);
+  border-style: dashed;
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
 .control:focus-visible {

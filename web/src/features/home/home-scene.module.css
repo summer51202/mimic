@@ -100,7 +100,19 @@
   white-space: normal;
 }
 
-.dialogue :global([aria-disabled="true"]) { opacity: .65; }
+.dialogue :global(.pixel-button:disabled) {
+  --disabled-surface: var(--mimic-color-hud-raised);
+  --disabled-text: var(--mimic-color-dialogue-speaker);
+  --disabled-edge: var(--mimic-color-dialogue-edge);
+}
+
+.dialogue :global(.quick-expense[aria-disabled="true"]) {
+  background: var(--mimic-color-hud-raised);
+  color: var(--mimic-color-dialogue-speaker);
+  border: 2px dashed var(--mimic-color-dialogue-edge);
+  box-shadow: none;
+  cursor: not-allowed;
+}
 .stage[data-card-flow] .card, .stage[data-dialogue-flow] .dialogue {
   position: relative;
   top: auto;

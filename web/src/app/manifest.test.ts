@@ -8,12 +8,13 @@ describe("manifest", () => {
     expect(appManifest.name).toBe("mimic");
     expect(appManifest.short_name).toBe("mimic");
     expect(appManifest.display).toBe("standalone");
-    expect(appManifest.icons).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          sizes: "512x512",
-        }),
-      ]),
-    );
+    expect(appManifest.icons).toEqual(["any", "maskable"].flatMap((purpose) =>
+      [192, 512].map((size) => ({
+        src: `/pixel-ui/v1/icons/install-warm/icon${purpose === "maskable" ? "-maskable" : ""}-${size}.png`,
+        sizes: `${size}x${size}`,
+        type: "image/png",
+        purpose,
+      })),
+    ));
   });
 });

@@ -64,7 +64,7 @@
   padding: 0;
 }
 
-.link:hover {
+.link:hover:where(:not(:disabled)) {
   background: color-mix(in srgb, var(--mimic-color-hud-raised) 55%, var(--mimic-color-hud-dark));
   color: var(--mimic-color-dialogue-text);
 }
@@ -81,8 +81,11 @@
 }
 
 .link[data-disabled="true"] {
+  background: var(--mimic-color-hud-raised);
+  color: var(--mimic-color-dialogue-speaker);
+  border: 2px dashed var(--mimic-color-dialogue-edge);
+  box-shadow: none;
   cursor: not-allowed;
-  opacity: 0.5;
 }
 
 .link img {

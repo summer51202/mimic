@@ -1,15 +1,16 @@
+import { hasSession } from "@/shared/auth/has-session";
 import { brand } from "@/shared/brand/brand";
 import styles from "@/shared/brand/hero.module.css";
 import { SiteHeader } from "@/shared/brand/site-header";
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <div className={styles.publicShell}>
-      <SiteHeader />
+      <SiteHeader authenticated={await hasSession()} />
       <main className={styles.main}>{children}</main>
       <footer className={styles.siteFooter}>
         <div className={styles.footerInner}>

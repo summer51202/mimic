@@ -387,7 +387,8 @@ test("session fixture selects the base CTA and logout reload selects registratio
   await requireBackend();
   await signInWithApiSession(context, uniqueAccounts(info).owner);
   await page.goto("/");
-  await expect(page.getByRole("link", { name: "返回基地", exact: true })).toHaveAttribute("href", "/app");
+  const landing = page.getByRole("main");
+  await expect(landing.getByRole("link", { name: "返回基地", exact: true })).toHaveAttribute("href", "/app");
   if (process.env.MIMIC_PHASE_2B_SW === "1") {
     await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
     await page.reload();
@@ -412,13 +413,13 @@ test("session fixture selects the base CTA and logout reload selects registratio
     await context.setOffline(true);
     try {
       await page.reload();
-      await expect(page.getByRole("link", { name: "返回基地", exact: true })).toHaveAttribute("href", "/app");
+      await expect(landing.getByRole("link", { name: "返回基地", exact: true })).toHaveAttribute("href", "/app");
     } finally {
       await context.setOffline(false);
     }
   }
   await page.reload();
-  await expect(page.getByRole("link", { name: "開始冒險", exact: true })).toHaveAttribute("href", "/register");
+  await expect(landing.getByRole("link", { name: "開始冒險", exact: true })).toHaveAttribute("href", "/register");
 });
 
 for (const [width, height] of [[1920, 1080], [390, 844]] as const) {

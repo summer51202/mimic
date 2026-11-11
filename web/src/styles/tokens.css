@@ -12,6 +12,9 @@
   --mimic-color-surface-raised: #ffffff;
   --mimic-color-line: #d9c7a8;
   --mimic-color-focus: #2f82d6;
+  --mimic-color-disabled-surface: #ece3d3;
+  --mimic-color-disabled-text: #5a4e44;
+  --mimic-color-disabled-edge: #8a7c6c;
 
   --mimic-color-hud-dark: #211a18;
   --mimic-color-hud-raised: #3a2c24;

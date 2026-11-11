@@ -31,7 +31,7 @@ describe("PWA cache policy", () => {
     const nextConfig = readProjectFile("next.config.ts");
 
     expect(nextConfig).toContain('createHash("sha256")');
-    expect(nextConfig).toContain('"/pixel-ui/v1/icons/install/icon-512.png"');
+    expect(nextConfig).toContain('"/pixel-ui/v1/icons/install-warm/icon-512.png"');
     expect(nextConfig).not.toContain("revision: publicShellRevision");
   });
 

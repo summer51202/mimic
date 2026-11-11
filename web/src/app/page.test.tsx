@@ -10,7 +10,7 @@ vi.mock("@/shared/auth/has-session", () => ({
 
 describe("Public Landing", () => {
   it("renders the public shell and Landing content", async () => {
-    render(<PublicLayout>{await PublicHome()}</PublicLayout>);
+    render(await PublicLayout({ children: await PublicHome() }));
 
     expect(screen.getByRole("banner")).toBeInTheDocument();
     expect(screen.getByRole("navigation", { name: "主要導覽" })).toBeInTheDocument();

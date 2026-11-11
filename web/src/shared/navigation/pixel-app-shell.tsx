@@ -23,7 +23,9 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
   return (
     <div className={styles.shell}>
       <header className={styles.topBar}>
-        <Wordmark as="span" className="mimic-wordmark--dark" />
+        <Link aria-label="回到 mimic 入口頁" className={styles.wordmarkLink} href="/">
+          <Wordmark as="span" className="mimic-wordmark--dark" />
+        </Link>
       </header>
       <div className={styles.body}>
         <div className={styles.desktopOnly}>

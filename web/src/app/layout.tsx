@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: "mimic web application",
   icons: {
     icon: [16, 32].map((size) => ({
-      url: `/pixel-ui/v1/icons/install/favicon-${size}.png`,
+      url: `/pixel-ui/v1/icons/install-warm/favicon-${size}.png`,
       sizes: `${size}x${size}`,
       type: "image/png",
     })),

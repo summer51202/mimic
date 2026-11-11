@@ -144,7 +144,7 @@ for (const [width, height] of viewports) {
           await expect(publicNav.locator("..")).toHaveCSS("height", width <= 760 ? "66px" : "70px");
           await expect(publicNav.locator("..")).toHaveCSS("background-color", dark);
           await expect(publicNav.locator("..")).toHaveCSS("border-bottom", `2px solid ${edge}`);
-          for (const name of ["功能", "登入"]) await expect(publicNav.getByRole("link", { name })).toHaveCSS("color", text);
+          for (const name of ["功能", "返回基地"]) await expect(publicNav.getByRole("link", { name })).toHaveCSS("color", text);
           await page.goto("/app");
           await expect(page.getByRole("navigation", { name: navigationName }).getByRole("link", { name: "首頁" })).toHaveAttribute("aria-current", "page");
           await expect(page.getByRole("link", { name: "記一筆支出", exact: true })).toHaveCount(0);
@@ -186,7 +186,7 @@ test("serves the approved install icons, manifest and PNG-backed favicon", async
   expect(manifest.theme_color).toBe("#211a18");
   expect(manifest.background_color).toBe("#fffaf0");
   expect(manifest.icons).toEqual(["any", "maskable"].flatMap((purpose) => [192, 512].map((size) => ({
-    src: `${iconRoot}install/icon${purpose === "maskable" ? "-maskable" : ""}-${size}.png`,
+    src: `${iconRoot}install-warm/icon${purpose === "maskable" ? "-maskable" : ""}-${size}.png`,
     sizes: `${size}x${size}`,
     type: "image/png",
     purpose,
@@ -201,7 +201,7 @@ test("serves the approved install icons, manifest and PNG-backed favicon", async
     expect([ico[entry], ico[entry + 1]]).toEqual([size, size]);
     const offset = ico.readUInt32LE(entry + 12);
     const end = offset + ico.readUInt32LE(entry + 8);
-    const asset = `icons/install/favicon-${size}.png`;
+    const asset = `icons/install-warm/favicon-${size}.png`;
     const hash = approved.assets.find(({ path }) => path === asset)?.sha256;
     expect(createHash("sha256").update(ico.subarray(offset, end)).digest("hex")).toBe(hash);
     await expect(page.locator(`link[rel="icon"][href="/pixel-ui/v1/${asset}"][sizes="${size}x${size}"]`)).toHaveCount(1);
