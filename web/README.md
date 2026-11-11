@@ -45,6 +45,15 @@ npm run verify:runtime -- --health-only
 The Playwright server command uses webpack because the Serwist service-worker
 plugin config is webpack-based and Next.js 16 defaults `next dev` to Turbopack.
 
+## Historical review tests
+
+Run `npm run test:review-archive` when changing Phase 1 review tools. Use a
+throwaway checkout because some tests write historical review files. This
+suite runs separately from CI because historical rebuilds depend on exact
+inputs that a clean checkout cannot reproduce. See the
+[Phase 2E-0 verification](../docs/design/assets/reviews/2026-11-11-phase-2e0/verification.md)
+for the recorded failures.
+
 ## Local Runtime
 
 Acceptance must use the backend source from the same active repository checkout
