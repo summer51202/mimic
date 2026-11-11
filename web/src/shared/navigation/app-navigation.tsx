@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Wordmark } from "@/shared/brand/wordmark";
+import { NavigationIcon } from "./navigation-icon";
 
 import type { AppSection } from "./app-section";
 import styles from "./app-navigation.module.css";
@@ -14,26 +14,26 @@ type AppNavigationProps = {
 
 const navigationItems = [
   {
-    icon: "H",
+    icon: "nav-home",
     href: "/app",
     label: "首頁",
     status: "available",
   },
-  { icon: "P", href: "/app/personal", label: "我的寶箱", status: "available" },
+  { icon: "nav-adventure-log", href: "/app/personal", label: "我的寶箱", status: "available" },
   {
-    icon: "G",
+    icon: "nav-guild",
     href: "/app/groups",
     label: "共同群組",
     status: "available",
   },
   {
-    icon: "!",
+    icon: "nav-tasks",
     href: "/app/tasks",
     label: "任務",
     status: "available",
   },
   {
-    icon: "S",
+    icon: "nav-settings",
     href: "/app/settings",
     label: "設定",
     status: "available",
@@ -47,12 +47,6 @@ export function AppNavigation({ currentSection, variant }: AppNavigationProps) {
       className={styles.navigation}
       data-variant={variant}
     >
-      {variant === "desktop" ? (
-        <div className={styles.brand}>
-          <Wordmark as="div" />
-        </div>
-      ) : null}
-
       <ul className={styles.list}>
         {navigationItems.map((item) => (
           <li className={styles.item} key={item.label}>
@@ -63,9 +57,7 @@ export function AppNavigation({ currentSection, variant }: AppNavigationProps) {
                 data-current={currentSection === item.href ? "true" : undefined}
                 href={item.href}
               >
-                <span aria-hidden="true" className={styles.icon}>
-                  {item.icon}
-                </span>
+                <NavigationIcon name={item.icon} size={variant === "desktop" ? 48 : 32} />
                 <span className={styles.label}>{item.label}</span>
               </Link>
             ) : (
@@ -76,9 +68,7 @@ export function AppNavigation({ currentSection, variant }: AppNavigationProps) {
                 disabled
                 type="button"
               >
-                <span aria-hidden="true" className={styles.icon}>
-                  {item.icon}
-                </span>
+                <NavigationIcon name={item.icon} size={variant === "desktop" ? 48 : 32} />
                 <span className={styles.label}>{item.label}</span>
               </button>
             )}

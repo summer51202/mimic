@@ -12,10 +12,10 @@ const nextConfig: NextConfig = {
 };
 
 const installIconUrls = [
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
-  "/icons/icon-maskable-192.png",
-  "/icons/icon-maskable-512.png",
+  "/pixel-ui/v1/icons/install/icon-192.png",
+  "/pixel-ui/v1/icons/install/icon-512.png",
+  "/pixel-ui/v1/icons/install/icon-maskable-192.png",
+  "/pixel-ui/v1/icons/install/icon-maskable-512.png",
 ];
 
 function revisionForPublicFile(url: string) {

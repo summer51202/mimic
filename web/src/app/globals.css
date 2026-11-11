@@ -233,3 +233,11 @@ img[src*="/pixel-ui/"] {
   color: var(--mimic-color-wood);
   font-size: 0.85em;
 }
+
+.mimic-wordmark--dark {
+  color: var(--mimic-color-dialogue-text);
+}
+
+.mimic-wordmark--dark .mimic-wordmark__character {
+  color: var(--mimic-color-dialogue-speaker);
+}

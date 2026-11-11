@@ -52,7 +52,7 @@ describe("AppNavigation", () => {
     });
 
     expect(navigation).toHaveAttribute("data-variant", "desktop");
-    expect(screen.getByText("mimic")).toBeInTheDocument();
+    expect(screen.queryByText("mimic")).not.toBeInTheDocument();
   });
 
   it("indicates the current route while linking to primary sections", () => {

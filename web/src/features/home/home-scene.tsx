@@ -70,11 +70,9 @@ export function HomeScene({ cards, online, taskCount, context, activity, adventu
     const card = cardRef.current!;
     const dialogue = dialogueRef.current!;
     const textScale = textScaleRef.current!;
-    const header = stage.closest("main")?.parentElement?.previousElementSibling;
     const desktopRoom = stage.querySelector<HTMLElement>('[data-home-scene="desktop"]')!;
 
     function syncLayout() {
-      if (header) stage.style.setProperty("--top-bar-height", `${header.getBoundingClientRect().height}px`);
       const desktop = desktopRoom.getClientRects().length > 0;
       const scene = desktop ? desktopVariant : phoneVariant;
       const scale = desktop ? desktopRoom.getBoundingClientRect().width / scene.width : 1;
@@ -95,7 +93,6 @@ export function HomeScene({ cards, online, taskCount, context, activity, adventu
     syncLayout();
     const observer = new ResizeObserver(syncLayout);
     for (const target of [stage.parentElement!, stage, card, dialogue, textScale]) observer.observe(target);
-    if (header) observer.observe(header);
     window.addEventListener("resize", syncLayout);
     return () => {
       observer.disconnect();

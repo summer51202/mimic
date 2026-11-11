@@ -1,4 +1,5 @@
 .shell {
+  --mimic-app-top-bar-height: 4rem;
   min-width: 0;
   min-height: 100dvh;
   background:
@@ -18,12 +19,21 @@
   min-height: 48px;
   display: inline-flex;
   align-items: center;
-  padding: 10px 16px;
+  gap: var(--mimic-space-2);
+  padding: 5px 16px;
   border: 3px solid var(--mimic-color-hud-dark);
   background: var(--mimic-color-coin-action);
   color: var(--mimic-color-hud-dark);
   box-shadow: 4px 4px 0 var(--mimic-color-hud-dark);
   text-decoration: none;
+}
+
+.quickAction img {
+  image-rendering: auto;
+}
+
+@media (min-resolution: 1.5dppx) {
+  .quickAction img { image-rendering: pixelated; }
 }
 
 .quickAction:focus-visible { outline: 3px solid var(--mimic-color-focus); outline-offset: 3px; }
@@ -37,25 +47,11 @@
   top: 0;
   z-index: 30;
   display: flex;
-  min-height: 4rem;
+  height: var(--mimic-app-top-bar-height);
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid var(--mimic-color-coin-deep);
+  border-bottom: 2px solid var(--mimic-color-dialogue-edge);
   background: var(--mimic-color-hud-dark);
-  color: var(--mimic-color-surface);
   padding: 0 var(--mimic-space-4);
-}
-
-.logo {
-  font-size: 1.6rem;
-  font-weight: 900;
-  letter-spacing: 0;
-}
-
-.mimiku {
-  color: var(--mimic-color-coin-action);
-  font-size: 0.9rem;
-  font-weight: 900;
 }
 
 .body {
@@ -67,7 +63,7 @@
   width: min(100%, 72rem);
   min-width: 0;
   margin: 0 auto;
-  padding: var(--mimic-space-5) var(--mimic-space-4) 6.5rem;
+  padding: var(--mimic-space-5) var(--mimic-space-4) calc(6.5rem + env(safe-area-inset-bottom));
 }
 
 .mobileOnly {

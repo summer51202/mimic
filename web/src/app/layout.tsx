@@ -5,6 +5,13 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "mimic",
   description: "mimic web application",
+  icons: {
+    icon: [16, 32].map((size) => ({
+      url: `/pixel-ui/v1/icons/install/favicon-${size}.png`,
+      sizes: `${size}x${size}`,
+      type: "image/png",
+    })),
+  },
 };
 
 export default function RootLayout({

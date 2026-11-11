@@ -7,7 +7,7 @@ export function SiteHeader() {
     <header className={styles.siteHeader}>
       <nav className={styles.siteNav} aria-label="主要導覽">
         <Link className={styles.brandLink} href="/">
-          <Wordmark as="span" />
+          <Wordmark as="span" className="mimic-wordmark--dark" />
         </Link>
         <div className={styles.navActions}>
           <Link className={styles.navLink} href="/features">

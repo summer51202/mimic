@@ -132,8 +132,7 @@
 
 @container home-scene (width >= 640px) {
   .stage {
-    /* The shell top bar is 4rem at first paint. Observe its actual height after hydration. */
-    --scene-width: min(100cqw, max(0px, (100vh - var(--top-bar-height, 4rem)) * 0.75 * 960 / 540));
+    --scene-width: min(100cqw, max(0px, (100vh - var(--mimic-app-top-bar-height, 4rem)) * 0.75 * 960 / 540));
     --scene-scale: tan(atan2(var(--scene-width), var(--desktop-width)));
     --scene-height: calc(var(--desktop-height) * var(--scene-scale));
     --scene-rendering: auto;

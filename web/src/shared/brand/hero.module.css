@@ -8,8 +8,8 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  border-bottom: 2px solid color-mix(in srgb, var(--mimic-color-line) 70%, transparent);
-  background: color-mix(in srgb, var(--mimic-color-surface) 94%, white);
+  border-bottom: 2px solid var(--mimic-color-dialogue-edge);
+  background: var(--mimic-color-hud-dark);
 }
 
 .siteNav {
@@ -46,7 +46,14 @@
 .navLink {
   min-height: 2.5rem;
   padding: 0 var(--mimic-space-3);
-  color: var(--mimic-color-ink-soft);
+  color: var(--mimic-color-dialogue-text);
+}
+
+.navLink:hover { text-decoration: underline; }
+
+.siteHeader a:focus-visible {
+  outline: 3px solid var(--mimic-color-focus);
+  outline-offset: -3px;
 }
 
 .primaryAction {

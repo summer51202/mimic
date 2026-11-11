@@ -114,7 +114,7 @@ test("renders eleven viewports and three data states against real financial data
         await expect(room).toHaveAttribute("data-home-scene", variant);
         expect(geometry.scale).toBeCloseTo(scale, 5);
         expect(geometry.scrollWidth).toBe(width);
-        expect(geometry.shell).toBe("#17213a");
+        expect(geometry.shell).toBe("#211a18");
         expect(geometry.home).toBe("#211a18");
         const bounds = (await room.boundingBox())!;
         expect(bounds.width).toBeCloseTo(scene.width * scale, 1);

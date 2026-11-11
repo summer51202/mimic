@@ -4,6 +4,9 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { Wordmark } from "@/shared/brand/wordmark";
+
+import { NavigationIcon } from "./navigation-icon";
 import { AppNavigation } from "./app-navigation";
 import { currentAppSection, quickExpenseHref } from "./app-section";
 import styles from "./pixel-app-shell.module.css";
@@ -20,8 +23,7 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
   return (
     <div className={styles.shell}>
       <header className={styles.topBar}>
-        <span className={styles.logo}>mimic</span>
-        <span className={styles.mimiku}>Mimiku</span>
+        <Wordmark as="span" className="mimic-wordmark--dark" />
       </header>
       <div className={styles.body}>
         <div className={styles.desktopOnly}>
@@ -30,7 +32,10 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
         <main className={styles.main}>{children}</main>
       </div>
       {(currentSection !== "/app" || pathname !== "/app") &&
-        <Link className={styles.quickAction} href={quickHref}>記一筆支出</Link>}
+        <Link className={styles.quickAction} href={quickHref}>
+          <NavigationIcon name="action-record-expense" size={32} />
+          記一筆支出
+        </Link>}
       <div className={styles.mobileOnly}>
         <AppNavigation currentSection={currentSection} variant="mobile" />
       </div>
