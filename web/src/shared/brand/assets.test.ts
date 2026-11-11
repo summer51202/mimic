@@ -6,13 +6,14 @@ import { expect, it } from "vitest";
 import { pixelUiFiles } from "./pixel-ui-assets";
 import { inspectPng } from "./png-inspection";
 import manifest from "../../../../docs/design/assets/approved/page-visual-v1/production-asset-manifest.json";
+import homeLayout from "../../../../docs/design/assets/approved/page-visual-v1/scenes/home/layout.json";
 import { landingScene } from "./landing-scene";
 
 const pngSignature = "89504e470d0a1a0a";
 
 const assets = [["mimiku-hero.png", 1672, 941]] as const;
 
-it("ships exactly the Phase 2A and 2B consumers, with the approved SHA-256 values", async () => {
+it("ships exactly the approved Phase 2A, 2B and 2C consumers with their SHA-256 values", async () => {
   const runtime = "web/public/pixel-ui/v1";
   const directory = path.resolve(process.cwd(), "../", runtime);
   const expected = new Set([
@@ -29,6 +30,15 @@ it("ships exactly the Phase 2A and 2B consumers, with the approved SHA-256 value
       : []),
   ]));
   expect(phase2b.size).toBe(18);
+  const phase2c = Object.entries(homeLayout).flatMap(([variant, scene]) => [
+    scene.architecture.asset_id,
+    ...scene.layers.map(({ asset_id }) => asset_id).filter((asset) => !expected.has(asset)),
+    `motion/mimiku-idle-${variant}.png`,
+    `motion/mimiku-record-ledger-${variant}.png`,
+  ]);
+  expect(phase2c).toHaveLength(10);
+  const home = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2c");
+  expect(home.map(({ path }) => path).sort()).toEqual(phase2c.sort());
   const added = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2b");
   expect(added.map(({ path }) => path).sort()).toEqual([...phase2b].sort());
   const promoted = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2a");
@@ -36,9 +46,9 @@ it("ships exactly the Phase 2A and 2B consumers, with the approved SHA-256 value
   const files = (await readdir(directory, { recursive: true, withFileTypes: true }))
     .filter((entry) => !entry.isDirectory())
     .map((entry) => path.relative(directory, path.join(entry.parentPath, entry.name)).replaceAll("\\", "/"));
-  expect(files.sort()).toEqual([...expected, ...phase2b].sort());
+  expect(files.sort()).toEqual([...expected, ...phase2b, ...phase2c].sort());
 
-  for (const asset of [...promoted, ...added]) {
+  for (const asset of [...promoted, ...added, ...home]) {
     expect(asset.runtime_target).toBe(`${runtime}/${asset.path}`);
     const bytes = await readFile(path.join(directory, asset.path));
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(asset.sha256);

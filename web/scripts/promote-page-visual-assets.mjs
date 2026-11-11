@@ -32,9 +32,18 @@ const phase2b = ["desktop", "phone"].flatMap((variant) => [
   `props/landing/wall-carving-revealed-${variant}.png`,
   `motion/campfire-${variant}.png`,
 ]);
+const phase2c = ["desktop", "phone"].flatMap((variant) => [
+  `scenes/home/${variant}-architecture.png`,
+  `scenes/home/${variant}-ground-light.png`,
+  `scenes/home/actors/mimiku-${variant}.png`,
+  `motion/mimiku-idle-${variant}.png`,
+  `motion/mimiku-record-ledger-${variant}.png`,
+]);
+
 const dispositions = new Map([
   ...phase2a.map((path) => [path, "promoted-phase-2a"]),
   ...phase2b.map((path) => [path, "promoted-phase-2b"]),
+  ...phase2c.map((path) => [path, "promoted-phase-2c"]),
 ]);
 
 const manifestText = await readFile(manifestPath, "utf8");
@@ -66,4 +75,4 @@ for (const asset of assets) {
 const updated = JSON.stringify(manifest, null, 2) + "\n";
 const formatted = manifestText.includes("\r\n") ? updated.replaceAll("\n", "\r\n") : updated;
 if (formatted !== manifestText) await writeFile(manifestPath, formatted);
-console.log(`Verified SHA-256 for ${assets.length} Phase 2A and 2B assets.`);
+console.log(`Verified SHA-256 for ${assets.length} Phase 2A–2C assets.`);

@@ -1695,8 +1695,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 0.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/mimiku-idle-desktop.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "motion/mimiku-idle-phone.png",
@@ -1728,8 +1728,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 0.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/mimiku-idle-phone.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "motion/mimiku-record-ledger-desktop.png",
@@ -1769,8 +1769,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 4.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/mimiku-record-ledger-desktop.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "motion/mimiku-record-ledger-phone.png",
@@ -1810,8 +1810,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 4.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/mimiku-record-ledger-phone.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "motion/motion-timing.json",
@@ -2805,8 +2805,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/home/actors/mimiku-desktop.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "scenes/home/actors/mimiku-phone.png",
@@ -2830,8 +2830,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/home/actors/mimiku-phone.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "scenes/home/desktop-architecture.png",
@@ -2855,8 +2855,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/home/desktop-architecture.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "scenes/home/desktop-ground-light.png",
@@ -2880,8 +2880,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/home/desktop-ground-light.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "scenes/home/layout.json",
@@ -2930,8 +2930,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/home/phone-architecture.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "scenes/home/phone-ground-light.png",
@@ -2955,8 +2955,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/home/phone-ground-light.png",
+      "disposition": "promoted-phase-2c"
     },
     {
       "path": "scenes/landing/actors/mimiku-desktop.png",

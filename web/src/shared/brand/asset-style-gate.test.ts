@@ -128,7 +128,7 @@ it.each([
   expect(visible).toEqual({ left: 8, top: 8, right: width - 9, bottom: height - 9 });
 });
 
-it("keeps all Gate B sources in the approved directory and records Phase 2A promotion", async () => {
+it("keeps all Gate B sources in the approved directory and records production promotions", async () => {
   const { assets, gate, schema_version } = JSON.parse(await readFile(
     path.join(repository, approvedDirectory, "production-asset-manifest.json"), "utf8",
   )) as { assets: ProductionAsset[]; gate: string; schema_version: number };
@@ -167,7 +167,7 @@ it("keeps all Gate B sources in the approved directory and records Phase 2A prom
   for (const asset of assets) {
     expect(asset.path).toMatch(/^[a-z0-9-]+(?:\/[a-z0-9-]+)*\.(png|json)$/);
     expect(publicPaths.has(path.normalize(asset.path))).toBe(false);
-    if (["promoted-phase-2a", "promoted-phase-2b"].includes(asset.disposition)) {
+    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c"].includes(asset.disposition)) {
       expect(asset.runtime_target).toBe(`web/public/pixel-ui/v1/${asset.path}`);
     } else {
       expect(asset.runtime_target).toBeNull();
