@@ -2321,3 +2321,43 @@
 **Decisions:** 刪除 `web/src/app/page.tsx` 屬範圍外修正，獨立 commit；`/` 改為動態渲染。
 
 **Known gaps / follow-ups:** 下一份 consumer plan 是 Home。
+
+
+## 2026-11-10 — Phase 2C Home 秘密基地
+
+**Task:** 依 Phase 2C 規格整合 Home 場景並交付視覺審核。  
+**Scope:** Web 共用 scene、Landing、Home、QuickExpense、app shell、素材推廣與瀏覽器驗證。  
+**What changed:**
+- Landing 與 Home 共用縮放及圖層座標、sprite 計時、暫停偏好與動態可見性控制。
+- 推廣 10 份核准素材，Home 將情境名稱、最新活動和待辦放入冒險卡，將原有 QuickExpense 放入對話框。
+- Home 加入 idle、眨眼、篝火與依情境活動鍵觸發的 ledger，並覆寫 Home 子樹的暖褐色。
+- 加入 Home 真實後端驗證、shell 測試，以及視覺審核截圖和錄影。
+
+**Decisions:** 冒險卡沿用 PixelPanel。Ledger 比較日期與活動 UUID，第一次只記錄。QuickExpense 在瀏覽器阻擋 localStorage 時維持預設順序與導航。  
+**Known gaps / follow-ups:** 停在視覺審核。逐項證據與仍待複驗的項目見 Phase 2C verification.md。
+
+
+## 2026-11-11 — Phase 2C 首輪視覺修正
+
+**Task:** 依 Phase 2C 的 2R.1–2R.4 調整 Home 場景並交回視覺審閱。  
+**Scope:** Home 場景樣式與版型、共用場景動態的版型偵測、Home e2e、2R 審閱證據。  
+**What changed:**
+- 以內容欄 640 px 為版型分界，首屏以 CSS container query 定位。Phone 場景維持 1×，內容欄不足 390 px 時突破 padding。
+- 桌機對話框填滿可用的安全區，內容垂直置中。Phone 暫停鈕放在對話框上緣左側，並測試與各內容區塊的交集。
+- 新增 1024×768、639／640 px 即時切換與 hydration 前後幾何驗證。2R 審閱證據另存新目錄。
+
+**Decisions:** 1024×768 依內容欄實測採 desktop，窄桌機對話框無法容納 CTA 時自首屏起使用正常流。  
+**Known gaps / follow-ups:** 進入視覺審閱，證據見 Phase 2C verification.md。
+
+
+## 2026-11-11 — Phase 2C 核准與提交（Claude）
+
+**Task:** 審閱 2C 與 2C-2R，記錄核准並分批 commit。
+
+**Scope:** decision-log、本筆 devlog、Phase 2C 的 commit（QuickExpense try/catch 另外獨立 commit）。
+
+**What changed:** 獨立量測窄桌機（768 寬時倍率只有 0.44）與桌機對話框過薄，兩項都在 2R 修好；從錄影確認 idle 眨眼與 ledger。Ed 核准 2C、四句台詞與 ledger 觸發方式。
+
+**Decisions:** 版型改依內容欄寬度切換（640 px）；Home 局部暖褐；頭像與 celebration 延後。
+
+**Known gaps / follow-ups:** 下一份 consumer plan 待定（導覽列／Icons 或 Avatar 選擇）。
