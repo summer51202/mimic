@@ -1,4 +1,4 @@
-import timing from "../../../../docs/design/assets/approved/page-visual-v1/motion/motion-timing.json";
+import timing from "../../../public/pixel-ui/v1/motion/motion-timing.json";
 import { sceneAssetRoot } from "@/shared/scene/geometry";
 import { drawFrame, loadSheet, playSceneFrames } from "@/shared/scene/sprite";
 import type { ScenePlayback } from "@/shared/scene/use-scene-motion";

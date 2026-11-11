@@ -1,5 +1,5 @@
 import { layersWithArchitecture } from "../scene/geometry";
-import approvedLayout from "../../../../docs/design/assets/approved/page-visual-v1/scenes/landing/layout.json";
+import approvedLayout from "../../../public/pixel-ui/v1/scenes/landing/layout.json";
 
 export const landingScene = approvedLayout;
 export const landingDesktopMedia = "(min-width: 760px)";

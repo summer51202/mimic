@@ -1,7 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from "react";
-import layout from "../../../../docs/design/assets/approved/page-visual-v1/scenes/home/layout.json";
+import layout from "../../../public/pixel-ui/v1/scenes/home/layout.json";
 import type { HomeCard } from "@/shared/api/home-contracts";
 import { boxStyle, layersWithArchitecture, sceneAssetRoot } from "@/shared/scene/geometry";
 import { ScenePauseButton } from "@/shared/scene/scene-pause-button";

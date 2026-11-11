@@ -1,5 +1,5 @@
 import { useId, type CSSProperties, type ReactNode } from "react";
-import frames from "../../../../docs/design/assets/approved/page-visual-v1/frames/frames.json";
+import frames from "../../../public/pixel-ui/v1/frames/frames.json";
 import styles from "./pixel-dialogue.module.css";
 
 type PixelDialogueProps = {

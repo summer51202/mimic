@@ -1,4 +1,4 @@
-import timing from "../../../../docs/design/assets/approved/page-visual-v1/motion/motion-timing.json";
+import timing from "../../../public/pixel-ui/v1/motion/motion-timing.json";
 
 export const landingMotion = {
   desktop: { title: timing.variants.desktop.title, fire: timing.variants.desktop.fire },
