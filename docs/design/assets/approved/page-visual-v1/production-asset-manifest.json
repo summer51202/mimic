@@ -549,8 +549,8 @@
       "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
       "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/frames/frames.json",
+      "disposition": "promoted-phase-2e1"
     },
     {
       "path": "icons/install/favicon-16.png",
@@ -1839,8 +1839,8 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/motion/motion-timing.json",
+      "disposition": "promoted-phase-2e1"
     },
     {
       "path": "motion/title-blink-desktop.png",
@@ -2905,8 +2905,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/home/layout.json",
+      "disposition": "promoted-phase-2e1"
     },
     {
       "path": "scenes/home/phone-architecture.png",
@@ -3192,8 +3192,8 @@
       "accessibility": "Keep interactive objects as separately named HTML controls.",
       "fallback": "Use the same live content and actions on a static bounded background.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/scenes/landing/layout.json",
+      "disposition": "promoted-phase-2e1"
     },
     {
       "path": "scenes/landing/phone-architecture.png",

@@ -46,21 +46,36 @@ const phase2d = [
     .map((name) => `icons/install/${name}.png`),
 ];
 
+const phase2e1 = [
+  "frames/frames.json",
+  "motion/motion-timing.json",
+  "scenes/home/layout.json",
+  "scenes/landing/layout.json",
+];
+
 const dispositions = new Map([
   ...phase2a.map((path) => [path, "promoted-phase-2a"]),
   ...phase2b.map((path) => [path, "promoted-phase-2b"]),
   ...phase2c.map((path) => [path, "promoted-phase-2c"]),
   ...phase2d.map((path) => [path, "promoted-phase-2d"]),
+  ...phase2e1.map((path) => [path, "promoted-phase-2e1"]),
+]);
+const selections = new Map([
+  ["--phase-2d", { paths: phase2d, label: "Phase 2D" }],
+  ["--phase-2e1", { paths: phase2e1, label: "Phase 2E-1" }],
 ]);
 const args = process.argv.slice(2);
-if (args.length > 1 || (args.length === 1 && args[0] !== "--phase-2d")) {
-  throw new Error("Usage: npm run assets:promote -- [--phase-2d]");
+const selection = args.length ? selections.get(args[0]) : {
+  paths: [...dispositions.keys()],
+  label: "Phase 2A–2E-1",
+};
+if (args.length > 1 || !selection) {
+  throw new Error("Usage: npm run assets:promote -- [--phase-2d|--phase-2e1]");
 }
 
 const manifestText = await readFile(manifestPath, "utf8");
 const manifest = JSON.parse(manifestText);
-const paths = args.length ? phase2d : [...dispositions.keys()];
-const assets = paths.map((path) => {
+const assets = selection.paths.map((path) => {
   const asset = manifest.assets.find((entry) => entry.path === path);
   if (!asset) throw new Error(`Missing approved manifest entry: ${path}`);
   return asset;
@@ -87,4 +102,4 @@ for (const asset of assets) {
 const updated = JSON.stringify(manifest, null, 2) + "\n";
 const formatted = manifestText.includes("\r\n") ? updated.replaceAll("\n", "\r\n") : updated;
 if (formatted !== manifestText) await writeFile(manifestPath, formatted);
-console.log(`Verified SHA-256 for ${assets.length} ${args.length ? "Phase 2D" : "Phase 2A–2D"} assets.`);
+console.log(`Verified SHA-256 for ${assets.length} ${selection.label} assets.`);
