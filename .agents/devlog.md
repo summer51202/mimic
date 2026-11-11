@@ -2438,3 +2438,27 @@
 **Decisions:** JSON 比照 PNG 推廣到 web/public/pixel-ui/v1；加 web-build-context 防回歸測試；不動 Dockerfile、CI、Railway。
 
 **Known gaps / follow-ups:** push 後確認 CI 四個 job 與 Railway staging 部署。
+
+## 2026-11-11 — Phase 2E 安裝圖示與 Web 細節修正
+
+**Task:** 實作 Phase 2E §2–§6 與 2R.1 的海軍藍換色決策，交付視覺審核。  
+**Scope:** Web 公開 header、app 頂欄、停用控制項、PWA manifest／favicon／precache、核准圖示與審閱資料。  
+**What changed:**
+- 新增六個暖色安裝圖示與逐像素遮罩，保留原核准圖作為來源並替換六個 runtime 圖示。
+- app 頂欄的 mimic 字樣連到入口頁，公開 header 依 session 顯示登入或返回基地。
+- 以淺／深底色票與虛線描邊呈現停用狀態，並加入 Phase 2E 行為與資產測試。
+
+**Decisions:** 以每檔選取像素的平均亮度為基準套用固定亮度位移，保留未選取 RGBA。Landing 初始中段與 Home 線上場景使用 2E-1 的取樣方式比對。  
+**Known gaps / follow-ups:** 等待視覺審核。驗證紀錄在 `docs/design/assets/reviews/2026-11-11-phase-2e/verification.md`。
+
+## 2026-11-11 — Phase 2E 核准與提交（Claude）
+
+**Task:** 依 Ed 手機實看的回饋，審閱 2E（含 2R）並 commit。
+
+**Scope:** 2E spec、decision-log、本筆 devlog、分批 commit、handoff。
+
+**What changed:** Codex 第一輪只做探測就停（輪廓、瞳孔、嘴巴也是偏藍近黑），Ed 決定一起換成暖近黑。審閱者獨立核對 512、maskable-512、favicon 32／16：變更像素等於選取集合、alpha 不變、無殘留藍、亮度位移固定；看主畫面模擬、favicon 放大、已登入 header、焦點、Home 離線與停用按鈕改前改後。Ed 核准。
+
+**Decisions:** 安裝圖示 install-warm（舊紀錄 superseded）；頂欄字樣連 /；已登入 header 返回基地；停用專屬色票；ink 不改。
+
+**Known gaps / follow-ups:** 頂欄字樣焦點框壓到最後一個字母，下一輪加內距；push 後確認 CI 與 staging。
