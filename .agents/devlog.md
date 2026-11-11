@@ -2361,3 +2361,28 @@
 **Decisions:** 版型改依內容欄寬度切換（640 px）；Home 局部暖褐；頭像與 celebration 延後。
 
 **Known gaps / follow-ups:** 下一份 consumer plan 待定（導覽列／Icons 或 Avatar 選擇）。
+
+
+## 2026-11-11 — Phase 2D 導覽列與圖示
+
+**Task:** 依 Phase 2D §1–§7 及 2R.1 實作並交付視覺審核證據。  
+**Scope:** Web shell、公開頁頂欄、Home 頂欄高度來源、核准圖示、PWA、相關測試與 Phase 2D 審閱資料。  
+**What changed:**
+- 推廣 12 個核准 PNG 並逐檔核對 SHA-256，將兩張 favicon PNG 原位元組包成 ICO。
+- 採用暖褐 shell、黃銅邊與五項圖文導覽。圖示依 DPR 採不同取樣規則，載入失敗保留版面與文字。
+- 新增導覽 e2e 與色票斷言，留存 43 張對照與故障截圖。Landing 25 張歷史圖的頂欄下方零差異，Home 33 張的倍率與場景外框一致。
+
+**Decisions:** Home 由 shell 的 4rem 高度變數計算場景。手機主內容的既有底部 padding 加上 safe area。停用按鈕依 2R.1 量測並列為豁免。  
+**Known gaps / follow-ups:** Home 有兩張 2560×1440 圖各差兩個圓角像素。候選完整 Vitest 受歷史素材唯讀限制，已跑唯讀集合及變更相關測試。逐項驗證與視覺證據見 Phase 2D verification.md。
+
+## 2026-11-11 — Phase 2D 核准與提交（Claude）
+
+**Task:** 審閱 Phase 2D（含 2R 對比門檻澄清），記錄核准並分批 commit。
+
+**Scope:** decision-log、本筆 devlog、Phase 2D 的 commit、claude/mimic-handoff.md。
+
+**What changed:** 第一輪 Codex 停在停用按鈕對比，經 Ed 決定依 WCAG 1.4.3 豁免後完成。獨立核對 favicon.ico 內嵌 PNG hash、Home 2560 場景區差異（只有 2 個圓角像素、差值 2）、桌機 48 與手機 32 圖示、360 寬標籤、各頁改前／改後。Ed 核准 2D 並接受 2560 的圓角像素例外。
+
+**Decisions:** hud-dark 全站 #211a18；shell 暖深褐＋黃銅邊；新 token hud-raised #3a2c24；公開 header 一致；安裝圖示換核准版、theme_color #211a18。
+
+**Known gaps / follow-ups:** 已登入時公開 header 仍顯示「登入」；ink 是否改暖色；停用按鈕樣式；event／status／mode 圖示的 consumer。
