@@ -1,1 +1,16 @@
 /ops/backup/*.sh text eol=lf
+
+# Preserve the recorded bytes of these Phase 1 review sources.
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02r-review.html -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02-review.html -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/motion-calibration-v02r.js -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-prop-position.model.mjs -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/landing-prop-position.controller.mjs -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/render-landing-prop-position-tool.mjs -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-prop-placement-receipts/desktop-receipt.json -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-prop-placement-receipts/phone-receipt.json -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/landing-prop-placement-receipts/phone-exploration-receipt.json -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/home-base/desktop-prompt.md -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/home-base/phone-prompt.md -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/home-base-v02/desktop-prompt.md -text
+/docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/derivations/home-base-v02/phone-prompt.md -text
