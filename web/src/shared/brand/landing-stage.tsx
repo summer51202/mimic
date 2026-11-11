@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useLayoutEffect, useRef, useState } from "react";
 import { PixelDialogue } from "@/shared/ui/pixel-dialogue";
+import { sceneFit, sceneImageRendering } from "../scene/geometry";
+import { ScenePauseButton } from "../scene/scene-pause-button";
 import { brand } from "./brand";
 import { useLandingAnimation } from "./landing-animation";
 import { useLandingInteractions } from "./landing-interactions";
@@ -60,18 +62,17 @@ export function LandingStage({ authenticated }: { authenticated: boolean }) {
       const variant = desktopMedia.matches ? "desktop" : "phone";
       const scene = landingScene[variant];
       const headerHeight = header?.getBoundingClientRect().height ?? 0;
-      const widthScale = stage.clientWidth / scene.viewportWidth;
-      const heightScale = Math.max(0, window.innerHeight - headerHeight) / scene.height;
-      const scale = variant === "desktop" ? Math.min(widthScale, heightScale) : 1;
+      const fit = sceneFit(scene.viewportWidth, scene.height, stage.clientWidth, window.innerHeight - headerHeight);
+      const scale = variant === "desktop" ? fit.scale : 1;
       stage.style.setProperty("--scene-scale", String(scale));
       stage.style.setProperty("--header-height", `${headerHeight}px`);
       stage.dataset.scale = String(scale);
-      stage.toggleAttribute("data-width-limited", variant === "desktop" && widthScale < heightScale);
+      stage.toggleAttribute("data-width-limited", variant === "desktop" && fit.widthLimited);
 
       if (variant === "desktop") {
         stage.style.setProperty("--fit-width", `${Math.round(scene.width * scale)}px`);
         stage.style.setProperty("--fit-height", `${Math.round(scene.height * scale)}px`);
-        stage.style.setProperty("--desktop-image-rendering", scale < 1 ? "auto" : "pixelated");
+        stage.style.setProperty("--desktop-image-rendering", sceneImageRendering(scale));
         stage.style.setProperty("--dialogue-inline-inset", `${Math.round(54 * scale)}px`);
         stage.style.setProperty("--dialogue-block-inset", `${Math.round(34 * scale)}px`);
       } else {
@@ -144,9 +145,7 @@ export function LandingStage({ authenticated }: { authenticated: boolean }) {
         </PixelDialogue>
       </div>
       <div className={styles.pauseBox}>
-        <button data-landing-pause className={styles.control} type="button" aria-pressed={paused}>
-          {paused ? "播放動畫" : "暫停動畫"}
-        </button>
+        <ScenePauseButton data-landing-pause="" className={styles.control} paused={paused} />
       </div>
     </div>
   );

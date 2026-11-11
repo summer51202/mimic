@@ -6,12 +6,27 @@ import { formatMinorUnit, parseMinorUnit } from '@/shared/finance/minor-unit';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { formatGeneratedAt } from '@/shared/ui/format-generated-at';
 import { useOnline } from '../personal-expenses/use-online';
-import { QuickExpense } from '../quick-expense/quick-expense';
+import { HomeScene } from './home-scene';
 
 const modeLabel = { PERSONAL_EXPENSES: '個人記帳', SHARED_EXPENSES: '共同分帳', POOLED_FUND: '共同基金' } as const;
 function participantHref(card: Extract<HomeCard, { access: 'PARTICIPANT' }>) {
   return card.mode === 'PERSONAL_EXPENSES' ? `/app/personal?space=${card.id}` : `/app/spaces/${card.id}`;
 }
+function latestActivity(cards: HomeCard[]) {
+  let latest: { card: Extract<HomeCard, { access: 'PARTICIPANT' }>;
+    activity: Extract<HomeCard, { access: 'PARTICIPANT' }>['recent_activity'][number] } | undefined;
+  for (const card of cards) {
+    if (card.access !== 'PARTICIPANT') continue;
+    for (const activity of card.recent_activity) {
+      if (!latest || activity.occurred_on > latest.activity.occurred_on ||
+        (activity.occurred_on === latest.activity.occurred_on && activity.id > latest.activity.id)) {
+        latest = { card, activity };
+      }
+    }
+  }
+  return latest;
+}
+
 function CardSummary({ card }: { card: Extract<HomeCard, { access: 'PARTICIPANT' }> }) {
   const money = (value: string) => formatMinorUnit(value, card.currency, 'zh-TW');
   if (card.mode === 'PERSONAL_EXPENSES') return <><span>本月支出</span><strong>{money(card.spending_minor)}</strong>
@@ -28,15 +43,29 @@ function CardSummary({ card }: { card: Extract<HomeCard, { access: 'PARTICIPANT'
 
 export function HomePage({ data, groups, openQuick }: { data: HomeResponse; groups: Group[]; openQuick: boolean }) {
   const online = useOnline();
-  return <main className="space-home">
-    <header className="space-home-hero"><div><p>THE TREASURE TRAIL</p><h1>{data.context.kind === 'PERSONAL' ? '我的寶箱' : data.context.name}</h1>
-      <p>{data.context.kind === 'PERSONAL' ? '只看自己的日常支出，不把它和共同金流混在一起。' : '只顯示你參與的財務內容；群組治理與寶箱權限各自獨立。'}</p></div>
-      <QuickExpense cards={data.cards} initiallyOpen={openQuick} /></header>
+  const latest = latestActivity(data.cards);
+  const title = data.context.kind === 'PERSONAL' ? '我的寶箱' : data.context.name;
+  const description = data.context.kind === 'PERSONAL' ? '只看自己的日常支出，不把它和共同金流混在一起。' : '只顯示你參與的財務內容；群組治理與寶箱權限各自獨立。';
+  return <div className="space-home">
+    <HomeScene
+      cards={data.cards} openQuick={openQuick} online={online} taskCount={data.task_count}
+      context={data.context.kind === 'PERSONAL' ? 'personal' : data.context.id}
+      activity={latest?.activity}
+      adventure={<PixelPanel className="home-adventure">
+        <h1>{title}</h1>
+        {latest ? <Link href={participantHref(latest.card)}>
+          {latest.activity.title} · {latest.card.name} · {latest.activity.occurred_on}
+        </Link> : <p>還沒有冒險紀錄</p>}
+        {data.task_count > 0 && <Link href="/app/tasks">{data.task_count} 個待辦</Link>}
+      </PixelPanel>}
+    />
     {!online && <p className="space-home-state" role="status">目前離線，顯示最後載入的狀態；記帳動作已停用。</p>}
-    <nav aria-label="切換財務情境" className="space-home-contexts"><Link aria-current={data.context.kind === 'PERSONAL' ? 'page' : undefined} href="/app">我的寶箱</Link>
-      {groups.map((group) => <Link aria-current={data.context.kind === 'GROUP' && data.context.id === group.id ? 'page' : undefined}
-        href={`/app?group=${encodeURIComponent(group.id)}`} key={group.id}>{group.name}</Link>)}</nav>
-    {data.task_count > 0 && <Link className="space-home-task" href="/app/tasks"><strong>{data.task_count} 個待辦</strong><span>前往任務中心處理需要你確認的事項</span></Link>}
+    <div>
+      <p className="space-home-description">{description}</p>
+      <nav aria-label="切換財務情境" className="space-home-contexts"><Link aria-current={data.context.kind === 'PERSONAL' ? 'page' : undefined} href="/app">我的寶箱</Link>
+        {groups.map((group) => <Link aria-current={data.context.kind === 'GROUP' && data.context.id === group.id ? 'page' : undefined}
+          href={`/app?group=${encodeURIComponent(group.id)}`} key={group.id}>{group.name}</Link>)}</nav>
+    </div>
     {!data.cards.length ? <PixelPanel><h2>這裡還沒有寶箱</h2><p>{data.context.kind === 'PERSONAL' ? '建立個人寶箱，開始記錄日常支出。' : '從群組頁建立共同分帳或共同基金寶箱。'}</p>
       <Link href={data.context.kind === 'PERSONAL' ? '/app/personal' : `/app/groups/${data.context.id}`}>前往建立寶箱</Link></PixelPanel>
       : <section aria-label="寶箱列表" className="space-home-grid">{data.cards.map((card) => card.access === 'GOVERNANCE'
@@ -45,5 +74,5 @@ export function HomePage({ data, groups, openQuick }: { data: HomeResponse; grou
           <span>{modeLabel[card.mode]} · {card.currency}</span><h2>{card.name}</h2><CardSummary card={card} />
           {card.recent_activity[0] && <small>最近：{card.recent_activity[0].title} · {card.recent_activity[0].occurred_on}</small>}</Link>)}</section>}
     <small className="space-home-generated">狀態時間：{formatGeneratedAt(data.generated_at)}</small>
-  </main>;
+  </div>;
 }

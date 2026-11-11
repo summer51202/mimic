@@ -29,7 +29,8 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
         </div>
         <main className={styles.main}>{children}</main>
       </div>
-      <Link className={styles.quickAction} href={quickHref}>記一筆支出</Link>
+      {(currentSection !== "/app" || pathname !== "/app") &&
+        <Link className={styles.quickAction} href={quickHref}>記一筆支出</Link>}
       <div className={styles.mobileOnly}>
         <AppNavigation currentSection={currentSection} variant="mobile" />
       </div>

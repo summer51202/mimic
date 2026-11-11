@@ -1,0 +1,190 @@
+.content { container: home-scene / inline-size; }
+
+.stage {
+  --scene-scale: 1;
+  --scene-width: var(--phone-width);
+  --scene-height: var(--phone-height);
+  --scene-rendering: pixelated;
+  --scene-gutter: max(0px, (100% - var(--scene-width)) / 2);
+  --card-x: calc(var(--scene-gutter) + var(--phone-card-x));
+  --card-y: var(--phone-card-y);
+  --card-width: min(var(--phone-card-width), 100% - 2 * var(--phone-card-x));
+  --dialogue-x: var(--card-x);
+  --dialogue-y: var(--phone-dialogue-y);
+  --dialogue-width: var(--card-width);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.viewport {
+  position: relative;
+  height: var(--scene-height);
+  overflow: clip;
+  background: var(--mimic-color-cave-backdrop);
+}
+
+.viewport[data-home-viewport="desktop"] { display: none; }
+
+.scene {
+  position: absolute;
+  isolation: isolate;
+  left: calc((100% - var(--scene-width)) / 2);
+  transform: scale(var(--scene-scale));
+  transform-origin: top left;
+  image-rendering: var(--scene-rendering, pixelated);
+}
+
+.layer {
+  position: absolute;
+  left: calc(var(--layer-x) * 1px);
+  top: calc(var(--layer-y) * 1px);
+  width: calc(var(--layer-width) * 1px);
+  height: calc(var(--layer-height) * 1px);
+  background-size: 100% 100%;
+}
+
+.sheet {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: calc(100% * var(--sheet-frames)) 100%;
+  background-position: calc(var(--frame, 0) * var(--layer-width) * -1px) 0;
+}
+
+.sheet[data-loaded] { display: block; }
+.sheet[data-home-sheet="ledger"] { display: none; }
+.scene[data-ledger] .sheet[data-home-sheet="ledger"][data-loaded] { display: block; }
+.scene[data-ledger] .layer:has(.sheet[data-home-sheet="ledger"][data-loaded]) .sheet[data-home-sheet="idle"] { display: none; }
+.layer:has(.sheet[data-loaded]:not([data-home-sheet="ledger"])),
+.scene[data-ledger] .layer:has(.sheet[data-home-sheet="ledger"][data-loaded]) { background-image: none !important; }
+
+.card, .dialogue {
+  position: absolute;
+  overflow-wrap: anywhere;
+}
+
+.card {
+  left: var(--card-x, 12px);
+  top: var(--card-y, 16px);
+  width: var(--card-width, calc(100% - 24px));
+}
+
+.card :global(.home-adventure) {
+  display: grid;
+  gap: 4px;
+  padding: clamp(8px, calc(16px * var(--scene-scale)), 20px);
+  background: var(--mimic-color-surface);
+  color: var(--mimic-color-hud-dark);
+  box-shadow: none;
+}
+
+.card h1, .card p, .line { margin: 0; }
+.card h1 { font-size: clamp(1.125rem, calc(1.5rem * var(--scene-scale)), 2rem); line-height: 1.15; }
+.card a { text-decoration: underline; }
+
+.dialogue {
+  left: var(--dialogue-x, 12px);
+  top: var(--dialogue-y, 432px);
+  width: var(--dialogue-width, calc(100% - 24px));
+  --dialogue-block-inset: 16px;
+  --dialogue-inline-inset: 22px;
+  font-size: 1rem;
+}
+
+.dialogue :global(.quick-expense) {
+  background: var(--mimic-color-coin-action);
+  color: var(--mimic-color-hud-dark);
+  white-space: normal;
+}
+
+.dialogue :global([aria-disabled="true"]) { opacity: .65; }
+.stage[data-card-flow] .card, .stage[data-dialogue-flow] .dialogue {
+  position: relative;
+  top: auto;
+  margin-block-start: 12px;
+}
+
+.textScale {
+  position: absolute;
+  width: 1rem;
+  height: 1px;
+  clip-path: inset(50%);
+}
+
+.pause {
+  position: absolute;
+  top: calc(var(--dialogue-y) - 8px);
+  left: var(--card-x);
+  transform: translateY(-100%);
+  min-height: 44px;
+  padding: 4px 10px;
+  border: 2px solid var(--mimic-color-dialogue-edge);
+  background: var(--mimic-color-hud-dark);
+  color: var(--mimic-color-surface);
+}
+
+@container home-scene (width < 390px) {
+  .stage { margin-inline: calc(-1 * (var(--home-padding) + var(--mimic-space-4))); }
+}
+
+@container home-scene (width >= 640px) {
+  .stage {
+    /* The shell top bar is 4rem at first paint. Observe its actual height after hydration. */
+    --scene-width: min(100cqw, max(0px, (100vh - var(--top-bar-height, 4rem)) * 0.75 * 960 / 540));
+    --scene-scale: tan(atan2(var(--scene-width), var(--desktop-width)));
+    --scene-height: calc(var(--desktop-height) * var(--scene-scale));
+    --scene-rendering: auto;
+    --card-x: calc(var(--scene-gutter) + var(--desktop-card-x) * var(--scene-scale));
+    --card-y: calc(var(--desktop-card-y) * var(--scene-scale));
+    --card-width: calc(var(--desktop-card-width) * var(--scene-scale));
+    --dialogue-x: var(--scene-gutter);
+    --dialogue-y: calc(var(--desktop-dialogue-y) * var(--scene-scale));
+    --dialogue-width: var(--scene-width);
+  }
+
+  .stage[data-pixelated] { --scene-rendering: pixelated; }
+  .viewport[data-home-viewport="desktop"] { display: block; }
+  .viewport[data-home-viewport="phone"] { display: none; }
+  .dialogue {
+    --dialogue-inline-inset: calc(54px * var(--scene-scale));
+    --dialogue-block-inset: calc(34px * var(--scene-scale));
+    font-size: clamp(1rem, calc(1rem * var(--scene-scale) / 1.2), 1.5rem);
+  }
+
+  .dialogue > section {
+    min-height: calc(var(--desktop-dialogue-height) * var(--scene-scale));
+    align-content: center;
+  }
+
+  .pause {
+    top: 4px;
+    right: max(12px, calc(var(--scene-gutter) + 8px));
+    left: auto;
+    transform: none;
+  }
+}
+
+@media (height >= calc(720px + 4rem)) {
+  @container home-scene (width >= 960px) {
+    .stage:not([data-scale]) { --scene-rendering: pixelated; }
+  }
+}
+
+/* Only 51 of the 119 logical pixels remain after the desktop block insets.
+   Keep the 2.75rem CTA in flow from the first paint when it cannot fit. */
+@container home-scene (640px <= width < calc(2.75rem * 960 / 51)) {
+  .dialogue { position: relative; top: auto; margin-block-start: 12px; }
+}
+
+@media (height < calc(4rem + 2.75rem * 720 / 51)) {
+  @container home-scene (width >= 640px) {
+    .dialogue { position: relative; top: auto; margin-block-start: 12px; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pause { display: none; }
+}

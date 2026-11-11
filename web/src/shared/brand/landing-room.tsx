@@ -1,3 +1,4 @@
+import { boxStyle } from "../scene/geometry";
 import { Fragment } from "react";
 import type { CSSProperties } from "react";
 import { landingAssetRoot, landingScene, sceneLayers } from "./landing-scene";
@@ -6,17 +7,6 @@ import { propNames, type LandingProp, type useLandingInteractions } from "./land
 import styles from "./landing-stage.module.css";
 
 type Variant = keyof typeof landingScene;
-
-type Box = { x: number; y: number; width: number; height: number };
-
-function boxStyle(box: Box) {
-  return {
-    "--layer-x": box.x,
-    "--layer-y": box.y,
-    "--layer-width": box.width,
-    "--layer-height": box.height,
-  } as CSSProperties;
-}
 
 function isProp(id: string): id is LandingProp {
   return Object.hasOwn(propNames, id);
