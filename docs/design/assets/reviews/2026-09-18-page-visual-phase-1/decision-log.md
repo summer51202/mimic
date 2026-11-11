@@ -372,3 +372,12 @@ CI on `main` had failed since 2026-11-06 (Active Mimic naming and Web PWA), so R
 - Linux (Docker node:22, clean checkout of the candidate tree): naming test and scan, `npm ci` (web, backend), Prisma generate, CI workflow contract, lint, typecheck, `npm test` 658/658, build all pass. Backend and Production containers were already green on CI run #13.
 
 Follow-ups: confirm all four CI jobs after push; the main suite's Landing warm-rest test has a 5 s timeout that flaked once under load and may need a longer timeout if it recurs in CI.
+
+### Phase 2E-1 — web image builds without files outside web/ — 2026-11-11
+
+After 2E-0 the Production containers CI job failed: since Phase 2A, five product imports read four approved JSON files from repo-root `docs/`, which the `web/` Docker context (and Railway's `/web` root with `Dockerfile.railway`) does not contain. Spec `docs/superpowers/specs/2026-11-11-phase-2e1-web-build-context-design.md`; verification `docs/design/assets/reviews/2026-11-11-phase-2e1/verification.md` (SHA-256 `db289238d027a3c8f9bd1a04011f6c0e1df3944277518933280f9a13e5178c35`).
+
+- Reviewer decision: promote `frames/frames.json`, `motion/motion-timing.json`, `scenes/home/layout.json` and `scenes/landing/layout.json` byte-for-byte to `web/public/pixel-ui/v1/` (`disposition: "promoted-phase-2e1"`) and import them from there; Dockerfiles, CI and Railway unchanged. They are still imported at build time only, never fetched at runtime. Manifest SHA-256 `05464be06d085de1f6eb1af3b0bda13d1d7e9156ad651094944a415316a5b74a`; 72 assets now promoted (68 PNG, 4 JSON).
+- Guard: `web/src/test/web-build-context.test.ts` resolves every non-test module reference in `web/src`, `web/next.config.ts` and `web/scripts` and fails if one lands outside `web/`; reverting each of the five imports fails it.
+- Linux (Docker node:22, native checkout): Web PWA job steps pass (`npm test` 659/659); both `web/Dockerfile` and `web/Dockerfile.railway` build, run as `node`, and answer `/api/health/live`. Landing below the header and the Home scene are pixel-identical at 11 viewports; landing-phase-2a/2b, home-phase-2c and navigation-phase-2d pass.
+- Risk noted: Vitest's 5 s timeouts tripped under heavy local load; CI runs one job per runner and passed before.

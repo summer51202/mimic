@@ -2414,3 +2414,27 @@
 **Decisions:** 歷史重建測試移到 test:review-archive，不進 CI；換行差異用精確路徑 -text 保存核准位元組；無法還原的快照列為 lineage 缺口。
 
 **Known gaps / follow-ups:** push 後確認 CI 四個 job；Landing warm-rest 測試 5 秒逾時曾在負載下發生一次。
+
+## 2026-11-11 — Phase 2E-1 Web 建置 context
+
+**Task:** 讓 Web 在獨立的 `web/` Docker context 建置，並驗證既有畫面行為。
+
+**Scope:** 核准資產 manifest、Web 推廣腳本與四份 JSON、五處 Web import、資產與建置邊界測試、Phase 2E-1 驗證紀錄。
+
+**What changed:** 逐檔核對 SHA-256 並推廣四份核准 JSON；五處 import 改指向 `web/public/pixel-ui/v1/`；新增模組邊界防回歸測試並逐一回退五處 import 驗證。
+
+**Decisions:** 沿用 Phase 2D 的資產推廣流程。候選快照以乾淨的 `4c28a83` 加上本次變更建立，Linux 停用換行轉換以保留核准檔的位元組。
+
+**Known gaps / follow-ups:** 驗證結果與證據見 Phase 2E-1 verification.md，交付停在審閱者驗收。
+
+## 2026-11-11 — Phase 2E-1 驗收與提交（Claude）
+
+**Task:** 修 Production containers：web 映像 build 時 import 了 web/ 外的 docs JSON。
+
+**Scope:** 2E-1 spec、decision-log、本筆 devlog、分批 commit、handoff。
+
+**What changed:** 獨立核對四個 JSON 核准檔與推廣副本 hash 一致、皆為 LF、HEAD blob 相同；非測試程式已無 docs/ import；Codex 在 Linux 兩個 Dockerfile 都 build 成功、健康檢查通過、像素零差異。
+
+**Decisions:** JSON 比照 PNG 推廣到 web/public/pixel-ui/v1；加 web-build-context 防回歸測試；不動 Dockerfile、CI、Railway。
+
+**Known gaps / follow-ups:** push 後確認 CI 四個 job 與 Railway staging 部署。
