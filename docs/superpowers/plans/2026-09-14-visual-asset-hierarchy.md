@@ -16,7 +16,7 @@ The completed change uses these responsibilities:
 
 - `docs/design/assets/sources/mimiku/`: immutable Mimiku master, model sheet, and state sprite sheet.
 - `docs/design/assets/sources/pixel-ui/`: source UI sheet used by the deterministic exporter.
-- `docs/design/assets/legacy/pairfund-v0.2/`: historical mobile and Web mockups/wireframes plus an explicit legacy notice.
+- `docs/design/assets/legacy/v0.2-prototype/`: historical mobile and Web mockups/wireframes plus an explicit legacy notice.
 - `docs/design/visual-assets.md`: living catalogue, provenance rules, palette authority, rendering tiers, and state usage matrix.
 - `web/public/brand/mimiku-hero.png`: the only marketing illustration in the public brand directory.
 - `web/public/pixel-ui/characters/`: one canonical binary for each Mimiku runtime state.
@@ -818,7 +818,7 @@ git commit -m "docs: publish visual asset catalogue"
 ## Task 5: Archive superseded PairFund design artifacts
 
 **Files:**
-- Create: `docs/design/assets/legacy/pairfund-v0.2/README.md`
+- Create: `docs/design/assets/legacy/v0.2-prototype/README.md`
 - Move: `docs/design/assets/mobile-mockups/`
 - Move: `docs/design/assets/mobile-wireframes/`
 - Move: `docs/design/assets/web-mockups/`
@@ -843,18 +843,18 @@ that links still point to unclassified legacy directories.
 Run from the repository root:
 
 ```powershell
-New-Item -ItemType Directory -Force docs/design/assets/legacy/pairfund-v0.2
-git mv docs/design/assets/mobile-mockups docs/design/assets/legacy/pairfund-v0.2/mobile-mockups
-git mv docs/design/assets/mobile-wireframes docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes
-git mv docs/design/assets/web-mockups docs/design/assets/legacy/pairfund-v0.2/web-mockups
-git mv docs/design/assets/web-wireframes docs/design/assets/legacy/pairfund-v0.2/web-wireframes
+New-Item -ItemType Directory -Force docs/design/assets/legacy/v0.2-prototype
+git mv docs/design/assets/mobile-mockups docs/design/assets/legacy/v0.2-prototype/mobile-mockups
+git mv docs/design/assets/mobile-wireframes docs/design/assets/legacy/v0.2-prototype/mobile-wireframes
+git mv docs/design/assets/web-mockups docs/design/assets/legacy/v0.2-prototype/web-mockups
+git mv docs/design/assets/web-wireframes docs/design/assets/legacy/v0.2-prototype/web-wireframes
 ```
 
 Expected: all 26 SVGs remain tracked under the legacy path.
 
 - [ ] **Step 3: Add an explicit legacy notice**
 
-Create `docs/design/assets/legacy/pairfund-v0.2/README.md`:
+Create `docs/design/assets/legacy/v0.2-prototype/README.md`:
 
 ```markdown
 # PairFund v0.2 legacy design assets
@@ -881,11 +881,11 @@ foreach ($document in $mobileDocs) {
   $content = Get-Content -Raw -LiteralPath $document
   $content = $content.Replace(
     "docs/design/assets/mobile-mockups/",
-    "docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/"
+    "docs/design/assets/legacy/v0.2-prototype/mobile-mockups/"
   )
   $content = $content.Replace(
     "docs/design/assets/mobile-wireframes/",
-    "docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/"
+    "docs/design/assets/legacy/v0.2-prototype/mobile-wireframes/"
   )
   Set-Content -NoNewline -LiteralPath $document -Value $content
 }
@@ -894,11 +894,11 @@ $webDocument = "docs/design/mimic-web-ui-v0.2.md"
 $webContent = Get-Content -Raw -LiteralPath $webDocument
 $webContent = $webContent.Replace(
   "assets/web-mockups/",
-  "assets/legacy/pairfund-v0.2/web-mockups/"
+  "assets/legacy/v0.2-prototype/web-mockups/"
 )
 $webContent = $webContent.Replace(
   "assets/web-wireframes/",
-  "assets/legacy/pairfund-v0.2/web-wireframes/"
+  "assets/legacy/v0.2-prototype/web-wireframes/"
 )
 Set-Content -NoNewline -LiteralPath $webDocument -Value $webContent
 ```
@@ -907,20 +907,20 @@ This performs these exact path-prefix replacements:
 
 ```text
 docs/design/assets/mobile-mockups/
-→ docs/design/assets/legacy/pairfund-v0.2/mobile-mockups/
+→ docs/design/assets/legacy/v0.2-prototype/mobile-mockups/
 
 docs/design/assets/mobile-wireframes/
-→ docs/design/assets/legacy/pairfund-v0.2/mobile-wireframes/
+→ docs/design/assets/legacy/v0.2-prototype/mobile-wireframes/
 
 assets/web-mockups/
-→ assets/legacy/pairfund-v0.2/web-mockups/
+→ assets/legacy/v0.2-prototype/web-mockups/
 
 assets/web-wireframes/
-→ assets/legacy/pairfund-v0.2/web-wireframes/
+→ assets/legacy/v0.2-prototype/web-wireframes/
 ```
 
 For the absolute `/d:/Project/mimic/...` links in the two mobile documents, keep
-their existing absolute-link style and insert `legacy/pairfund-v0.2/` after
+their existing absolute-link style and insert `legacy/v0.2-prototype/` after
 `docs/design/assets/`.
 
 - [ ] **Step 5: Verify no old paths remain and all linked SVGs exist**
@@ -929,7 +929,7 @@ Run from the repository root:
 
 ```powershell
 rg -n "assets/(mobile-mockups|mobile-wireframes|web-mockups|web-wireframes)" docs/design
-Get-ChildItem -Recurse -File docs/design/assets/legacy/pairfund-v0.2 -Filter *.svg | Measure-Object
+Get-ChildItem -Recurse -File docs/design/assets/legacy/v0.2-prototype -Filter *.svg | Measure-Object
 ```
 
 Expected: `rg` returns no matches and `Measure-Object` reports `Count : 26`.

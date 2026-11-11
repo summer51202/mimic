@@ -111,7 +111,7 @@ The existing four PWA icons remain unchanged. Their manifest purposes (`any` and
 Locations:
 
 - `docs/assets/readme/` for repository presentation images;
-- `docs/design/assets/legacy/pairfund-v0.2/` for superseded PairFund mockups and
+- `docs/design/assets/legacy/v0.2-prototype/` for superseded PairFund mockups and
   wireframes;
 - existing spec and plan files for historical decisions.
 

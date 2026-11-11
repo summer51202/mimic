@@ -114,8 +114,8 @@ Priority order:
 3. recent activity summary
 4. right-rail tasks and reminders
 
-Wireframe: [web-dashboard-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-dashboard-wireframe.svg)
-Mockup: [web-dashboard-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-dashboard-mockup.svg)
+Wireframe: [web-dashboard-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-dashboard-wireframe.svg)
+Mockup: [web-dashboard-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-dashboard-mockup.svg)
 
 ### 2. Fund Workspace
 
@@ -132,8 +132,8 @@ Priority order:
 3. timeline table or grouped list
 4. right-rail fund-specific context
 
-Wireframe: [web-fund-workspace-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-fund-workspace-wireframe.svg)
-Mockup: [web-fund-workspace-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-fund-workspace-mockup.svg)
+Wireframe: [web-fund-workspace-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-fund-workspace-wireframe.svg)
+Mockup: [web-fund-workspace-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-fund-workspace-mockup.svg)
 
 ### 3. Activity / Records
 
@@ -150,8 +150,8 @@ Priority order:
 3. record state badges
 4. contextual actions
 
-Wireframe: [web-activity-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-activity-wireframe.svg)
-Mockup: [web-activity-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-activity-mockup.svg)
+Wireframe: [web-activity-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-activity-wireframe.svg)
+Mockup: [web-activity-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-activity-mockup.svg)
 
 ### 4. Settlement
 
@@ -168,8 +168,8 @@ Priority order:
 3. lock explanation
 4. prior settlements
 
-Wireframe: [web-settlement-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-settlement-wireframe.svg)
-Mockup: [web-settlement-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-settlement-mockup.svg)
+Wireframe: [web-settlement-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-settlement-wireframe.svg)
+Mockup: [web-settlement-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-settlement-mockup.svg)
 
 ### 5. Settings
 
@@ -184,8 +184,8 @@ Priority order:
 2. group and fund management cards
 3. preferences and support
 
-Wireframe: [web-settings-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-settings-wireframe.svg)
-Mockup: [web-settings-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-settings-mockup.svg)
+Wireframe: [web-settings-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-settings-wireframe.svg)
+Mockup: [web-settings-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-settings-mockup.svg)
 
 ## Shared UX Rules
 
@@ -215,19 +215,19 @@ When a record belongs to a settled period:
 
 ### Wireframes
 
-* [web-dashboard-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-dashboard-wireframe.svg)
-* [web-fund-workspace-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-fund-workspace-wireframe.svg)
-* [web-activity-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-activity-wireframe.svg)
-* [web-settlement-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-settlement-wireframe.svg)
-* [web-settings-wireframe.svg](assets/legacy/pairfund-v0.2/web-wireframes/web-settings-wireframe.svg)
+* [web-dashboard-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-dashboard-wireframe.svg)
+* [web-fund-workspace-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-fund-workspace-wireframe.svg)
+* [web-activity-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-activity-wireframe.svg)
+* [web-settlement-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-settlement-wireframe.svg)
+* [web-settings-wireframe.svg](assets/legacy/v0.2-prototype/web-wireframes/web-settings-wireframe.svg)
 
 ### Mockups
 
-* [web-dashboard-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-dashboard-mockup.svg)
-* [web-fund-workspace-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-fund-workspace-mockup.svg)
-* [web-activity-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-activity-mockup.svg)
-* [web-settlement-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-settlement-mockup.svg)
-* [web-settings-mockup.svg](assets/legacy/pairfund-v0.2/web-mockups/web-settings-mockup.svg)
+* [web-dashboard-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-dashboard-mockup.svg)
+* [web-fund-workspace-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-fund-workspace-mockup.svg)
+* [web-activity-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-activity-mockup.svg)
+* [web-settlement-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-settlement-mockup.svg)
+* [web-settings-mockup.svg](assets/legacy/v0.2-prototype/web-mockups/web-settings-mockup.svg)
 
 ## Next Web Steps
 
