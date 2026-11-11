@@ -2386,3 +2386,31 @@
 **Decisions:** hud-dark 全站 #211a18；shell 暖深褐＋黃銅邊；新 token hud-raised #3a2c24；公開 header 一致；安裝圖示換核准版、theme_color #211a18。
 
 **Known gaps / follow-ups:** 已登入時公開 header 仍顯示「登入」；ink 是否改暖色；停用按鈕樣式；event／status／mode 圖示的 consumer。
+
+## 2026-11-11 — Phase 2E-0 恢復 CI
+
+**Task:** 修復 Mimic 命名檢查，拆分 Phase 1 歷史審閱測試。
+**Scope:** legacy 原型路徑、五份連結文件、Web Vitest 與驗證紀錄。
+**What changed:** 改名原型目錄並核對 SHA-256，將歷史重建測試與 motion 樣本檢查移入獨立套件。
+**Decisions:** 保留 Gate B 推廣檢查與既有核准 hash，僅於驗證時還原歷史 controller 的換行格式。
+**Known gaps / follow-ups:** 歷史 lineage 缺口及各步驗證結果見 Phase 2E-0 verification.md。待審閱與 GitHub Actions 驗收。
+
+## 2026-11-11 — Phase 2E-0 續作與 2R 驗證
+
+**Task:** 依 2R 繼續恢復命名及 Web PWA CI，驗證歷史檔案的 Git 位元組。  
+**Scope:** .gitattributes、Web Vitest 設定、Phase 2E-0 verification。  
+**What changed:** 保留兩份舊文件的路徑修正，按精確路徑保留 13 個 D 檔案的位元組，並把 motion 測試還回主套件。封存測試改為逐檔執行，避免測試互讀暫改的輸出。  
+**Decisions:** 撤回上一筆所記的記憶體換行處理，保留原測試與核准 hash。以 88173fa 實測的 740 個測試核對守恆，並在驗證紀錄交代規格的 726。  
+**Known gaps / follow-ups:** Phase 1 歷史 lineage 缺口及 Linux 結果見 verification。待審閱者驗收與推送後的 GitHub Actions。
+
+## 2026-11-11 — Phase 2E-0 驗收與提交（Claude）
+
+**Task:** 診斷 Railway staging 一個多月沒更新的原因，並驗收恢復 CI 的修正。
+
+**Scope:** 2E-0 spec（含 2R）、decision-log、本筆 devlog、分批 commit、claude/mimic-handoff.md。
+
+**What changed:** 從 CI log 確認兩個 job 失敗：命名檢查（legacy/pairfund-v0.2 連結）與 Web PWA（18 個 Phase 1 歷史審閱測試）。Codex 第一輪停在 audit-baseline 快照；審閱者決定不阻擋，並新增換行類 D。驗收 13 個 D 檔的四欄 hash、C 類證據、測試總數守恆 740、Linux 乾淨 checkout 的 naming 與 Web PWA 步驟全數通過。
+
+**Decisions:** 歷史重建測試移到 test:review-archive，不進 CI；換行差異用精確路徑 -text 保存核准位元組；無法還原的快照列為 lineage 缺口。
+
+**Known gaps / follow-ups:** push 後確認 CI 四個 job；Landing warm-rest 測試 5 秒逾時曾在負載下發生一次。

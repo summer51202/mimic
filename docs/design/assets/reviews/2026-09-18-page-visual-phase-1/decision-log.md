@@ -359,3 +359,16 @@ The user approved Phase 2D (spec `docs/superpowers/specs/2026-11-11-phase-2d-nav
 - Spec correction: `/login` lives in the `(auth)` route group and never had the site header; the spec assumed otherwise.
 
 Follow-ups: signed-in visitors still see "登入" in the public header; whether `ink`/`ink-soft` move to warm brown; disabled-button styling without whole-element opacity; consumers for event, status and mode icons. Next consumer plans: Avatar selection (with a backend class field), ledger notebook, guild, legal-page frames.
+
+### Phase 2E-0 — CI restored; Phase 1 review lineage gaps recorded — 2026-11-11
+
+CI on `main` had failed since 2026-11-06 (Active Mimic naming and Web PWA), so Railway's "Wait for CI" skipped every staging deploy; 2A–2D never reached staging. Spec `docs/superpowers/specs/2026-11-11-phase-2e0-restore-ci-design.md` (sections 0–7 and 2R). Verification: `docs/design/assets/reviews/2026-11-11-phase-2e0/verification.md` (SHA-256 `be53d5a339c5a63c4cd1cfd840aeec9ed6fabf3bbd5398e73a1c2f21b038daac`). No product code, approved asset or `web/public` file changed.
+
+- Naming: `docs/design/assets/legacy/pairfund-v0.2/` renamed to `legacy/v0.2-prototype/` (27 files, 100 % renames, bytes unchanged); links updated in five documents. The v04 `audit-baseline.cjs` snapshot is a one-off point-in-time audit outside CI; it already mismatched 18 files after 2A–2D, so the two link edits were accepted (2R.1).
+- Line-ending class D (2R.2): 13 Phase 1 review sources (motion v02/v02r review HTML and controller, Landing prop-position model/controller/renderer, three placement receipts, four Home prompts) were approved on Windows working-tree bytes, but `core.autocrlf` stored LF blobs, so clean Linux checkouts failed. Each exact path is now `-text` in `.gitattributes` and its blob re-added from the unchanged working tree; new blob = recorded hash for all 13.
+- Class C (unrecoverable snapshots): the pressure-plate spec (four pinned hashes; git has only `0362db3`, already containing later rounds), `landing-prop-position-review.html` (pinned `25750ea6…`, git and every copy `1021bf07…`), and the decision-log hash pinned by the prop-position manifest. Not restored or regenerated; recorded as known lineage gaps.
+- The treasure-chest `open-sprite.png` failures were transient: parallel tests temporarily mutate shared review files. Persistent bytes match their records.
+- Fourteen test files that rebuild or write Phase 1 review artefacts moved to `npm run test:review-archive` (`web/vitest.review-archive.config.ts`, file-serial). Main suite 658 + archive 82 = 740 tests, identical test identities to `88173fa`. Archive result on Linux: 71 pass, 11 known failures (all class C). `asset-style-gate.test.ts` stays whole in CI.
+- Linux (Docker node:22, clean checkout of the candidate tree): naming test and scan, `npm ci` (web, backend), Prisma generate, CI workflow contract, lint, typecheck, `npm test` 658/658, build all pass. Backend and Production containers were already green on CI run #13.
+
+Follow-ups: confirm all four CI jobs after push; the main suite's Landing warm-rest test has a 5 s timeout that flaked once under load and may need a longer timeout if it recurs in CI.
