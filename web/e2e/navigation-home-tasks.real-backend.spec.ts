@@ -19,7 +19,8 @@ async function data<T>(session: Session, path: string, init: RequestInit = {}) {
 
 async function assertNoHorizontalOverflow(page: Page) {
   expect(await page.evaluate(() => ({ width: innerWidth, scroll: document.documentElement.scrollWidth,
-    offenders: [...document.querySelectorAll<HTMLElement>('body *')].filter((node) => node.getBoundingClientRect().right > innerWidth + 1)
+    offenders: [...document.querySelectorAll<HTMLElement>('body *')].filter((node) =>
+      !node.closest('[data-home-viewport]') && node.getBoundingClientRect().right > innerWidth + 1)
       .map((node) => `${node.tagName}.${String(node.className)}`).slice(0, 5),
   }))).toEqual(expect.objectContaining({ scroll: page.viewportSize()!.width, offenders: [] }));
 }
@@ -59,7 +60,7 @@ test('navigates treasure modes, quick entry, and actor tasks against the real ba
   await page.goto(`/app?group=${group.id}`);
   await expect(page.getByRole('heading', { name: '旅行分帳' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '旅行基金' })).toBeVisible();
-  const quick = page.locator('.space-home-hero').getByRole('button', { name: '記一筆支出' });
+  const quick = page.locator('[data-home-dialogue]').getByRole('button', { name: '記一筆支出' });
   await quick.focus(); await page.keyboard.press('Enter');
   const chooser = page.getByRole('dialog', { name: '要記在哪個寶箱？' });
   await expect(chooser).toBeVisible();

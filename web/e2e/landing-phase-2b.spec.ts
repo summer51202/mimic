@@ -5,9 +5,21 @@ import { brand } from "../src/shared/brand/brand";
 import { chestTimelines } from "../src/shared/brand/landing-motion";
 import { requireBackend, signInWithApiSession, uniqueAccounts } from "./fixtures/accounts";
 
-const review = path.resolve("../docs/design/assets/reviews/2026-11-10-phase-2b");
+const review = path.resolve(process.env.MIMIC_PHASE_2B_REVIEW_DIR ?? "../docs/design/assets/reviews/2026-11-10-phase-2b");
 const capture = process.env.MIMIC_PHASE_2B_CAPTURE === "1";
 const screenshotStyle = "nextjs-portal { visibility: hidden !important; }";
+const sampleCampfireFrames = process.env.MIMIC_PHASE_2B_SAMPLE_FRAMES === "1";
+
+async function captureScreenshot(page: Page, filename: string) {
+  await page.screenshot({ path: filename, style: screenshotStyle });
+  if (!sampleCampfireFrames) return;
+  for (let frame = 0; frame < 4; frame++) {
+    await page.screenshot({
+      path: path.join(path.dirname(filename), "frames", `${path.basename(filename, ".png")}-${frame}.png`),
+      style: `${screenshotStyle} [data-campfire-sheet] { --frame: ${frame} !important; }`,
+    });
+  }
+}
 const matrix = [
   [768, 1024], [1280, 720], [1366, 768], [1440, 900], [1536, 864],
   [1920, 1080], [2560, 1440], [360, 780], [390, 844], [430, 932],
@@ -169,7 +181,7 @@ for (const [width, height] of matrix) {
     const prefix = path.join(review, "screenshots-2r", `${width}x${height}`);
     if (capture) {
       await mkdir(path.dirname(prefix), { recursive: true });
-      await page.screenshot({ path: `${prefix}-default.png`, style: screenshotStyle });
+      await captureScreenshot(page, `${prefix}-default.png`);
     }
 
     await page.emulateMedia({ reducedMotion: "reduce" });
@@ -213,13 +225,13 @@ for (const [width, height] of matrix) {
     if (capture) {
       await page.emulateMedia({ reducedMotion: "no-preference" });
       await expect(page.getByRole("button", { name: "暫停動畫" })).toBeVisible();
-      await page.screenshot({ path: `${prefix}-interacted.png`, style: screenshotStyle });
+      await captureScreenshot(page, `${prefix}-interacted.png`);
       if (phone) {
         await left(page).click();
         await expect.poll(() => scroll(page)).toBe(snap[1]);
         await left(page).click();
         await expect.poll(() => scroll(page)).toBe(0);
-        await page.screenshot({ path: `${prefix}-open-chest.png`, style: screenshotStyle });
+        await captureScreenshot(page, `${prefix}-open-chest.png`);
         await right(page).click();
         await expect.poll(() => scroll(page)).toBe(snap[1]);
       }
