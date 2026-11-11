@@ -574,8 +574,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": "web/public/pixel-ui/v1/icons/install/favicon-16.png",
-      "disposition": "promoted-phase-2d"
+      "runtime_target": null,
+      "disposition": "superseded-phase-2e"
     },
     {
       "path": "icons/install/favicon-32.png",
@@ -599,8 +599,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": "web/public/pixel-ui/v1/icons/install/favicon-32.png",
-      "disposition": "promoted-phase-2d"
+      "runtime_target": null,
+      "disposition": "superseded-phase-2e"
     },
     {
       "path": "icons/install/icon-192.png",
@@ -624,8 +624,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": "web/public/pixel-ui/v1/icons/install/icon-192.png",
-      "disposition": "promoted-phase-2d"
+      "runtime_target": null,
+      "disposition": "superseded-phase-2e"
     },
     {
       "path": "icons/install/icon-512.png",
@@ -649,8 +649,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": "web/public/pixel-ui/v1/icons/install/icon-512.png",
-      "disposition": "promoted-phase-2d"
+      "runtime_target": null,
+      "disposition": "superseded-phase-2e"
     },
     {
       "path": "icons/install/icon-maskable-192.png",
@@ -674,8 +674,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": "web/public/pixel-ui/v1/icons/install/icon-maskable-192.png",
-      "disposition": "promoted-phase-2d"
+      "runtime_target": null,
+      "disposition": "superseded-phase-2e"
     },
     {
       "path": "icons/install/icon-maskable-512.png",
@@ -699,8 +699,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": "web/public/pixel-ui/v1/icons/install/icon-maskable-512.png",
-      "disposition": "promoted-phase-2d"
+      "runtime_target": null,
+      "disposition": "superseded-phase-2e"
     },
     {
       "path": "icons/ui/action-record-expense.png",
@@ -3349,6 +3349,156 @@
         90
       ],
       "final_frame": 0
+    },
+    {
+      "path": "icons/install-warm/favicon-16.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/icons/install/favicon-16.png",
+          "sha256": "3aeff4325d6240fcdaeca8fa9e9ba7d4dd13cf1395dd7f9f7d799271f1942b8f"
+        }
+      ],
+      "export_method": "recolor-background (docs/design/assets/reviews/2026-11-11-phase-2e/recolor-install-icons.mjs)",
+      "sha256": "c1931765d15fa8dd170dff6c687d1657ccb0cd688d747e893b8f1bc58b06fada",
+      "width": 16,
+      "height": 16,
+      "frames": 1,
+      "frame_width": 16,
+      "frame_height": 16,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Browser favicon",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": "web/public/pixel-ui/v1/icons/install-warm/favicon-16.png",
+      "disposition": "promoted-phase-2e"
+    },
+    {
+      "path": "icons/install-warm/favicon-32.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/icons/install/favicon-32.png",
+          "sha256": "a1aa2d33ae24fb27c68ca472c10a965b984d233e608740f7ac001621d4f216cf"
+        }
+      ],
+      "export_method": "recolor-background (docs/design/assets/reviews/2026-11-11-phase-2e/recolor-install-icons.mjs)",
+      "sha256": "3f10529c72c925ef6e6b4d16d90de6a93ed30d22da928c3022d256a7ba0d52eb",
+      "width": 32,
+      "height": 32,
+      "frames": 1,
+      "frame_width": 32,
+      "frame_height": 32,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Browser favicon",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": "web/public/pixel-ui/v1/icons/install-warm/favicon-32.png",
+      "disposition": "promoted-phase-2e"
+    },
+    {
+      "path": "icons/install-warm/icon-192.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/icons/install/icon-192.png",
+          "sha256": "c6390c23645fa642e1d3ba561c4506b2cae9606c12c08ffbaded47e7333e9988"
+        }
+      ],
+      "export_method": "recolor-background (docs/design/assets/reviews/2026-11-11-phase-2e/recolor-install-icons.mjs)",
+      "sha256": "ace0ad9488fa03a2b2ea132d7cc72eba28ac23eb165e364120f2350807407c51",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Web app install manifest",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": "web/public/pixel-ui/v1/icons/install-warm/icon-192.png",
+      "disposition": "promoted-phase-2e"
+    },
+    {
+      "path": "icons/install-warm/icon-512.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/icons/install/icon-512.png",
+          "sha256": "4d40441a62d2c3ae15294d6e281a12638e780eb8dbca9a06b8ca8216591a0d56"
+        }
+      ],
+      "export_method": "recolor-background (docs/design/assets/reviews/2026-11-11-phase-2e/recolor-install-icons.mjs)",
+      "sha256": "e2f712f15cd692473c6d7fe7c2f7cc3e737eec5b3856eefcdce26aefc5c0b71f",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Web app install manifest",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": "web/public/pixel-ui/v1/icons/install-warm/icon-512.png",
+      "disposition": "promoted-phase-2e"
+    },
+    {
+      "path": "icons/install-warm/icon-maskable-192.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/icons/install/icon-maskable-192.png",
+          "sha256": "834a3812fd56ef0803fcef33412cbbbfebcd6c3200203314d75299eff03859b8"
+        }
+      ],
+      "export_method": "recolor-background (docs/design/assets/reviews/2026-11-11-phase-2e/recolor-install-icons.mjs)",
+      "sha256": "f4c0e49103fd22ea0857a9f8b5b2953c0fbe05fb32fb09ffefba1c147b6957fc",
+      "width": 192,
+      "height": 192,
+      "frames": 1,
+      "frame_width": 192,
+      "frame_height": 192,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Web app install manifest",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": "web/public/pixel-ui/v1/icons/install-warm/icon-maskable-192.png",
+      "disposition": "promoted-phase-2e"
+    },
+    {
+      "path": "icons/install-warm/icon-maskable-512.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/icons/install/icon-maskable-512.png",
+          "sha256": "7f9c937516e8bf30ef6ddbfbb0d513932bf317b82badfacafca557c22061c441"
+        }
+      ],
+      "export_method": "recolor-background (docs/design/assets/reviews/2026-11-11-phase-2e/recolor-install-icons.mjs)",
+      "sha256": "5b90a13f5c57cf5f6fe0109d04c0a75235668c0f6c50e3b1c9be4714cb0587c1",
+      "width": 512,
+      "height": 512,
+      "frames": 1,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": false,
+      "css_size": "Browser-managed native icon size",
+      "consumer": "Web app install manifest",
+      "loading": "Load only with the named consumer after promotion.",
+      "accessibility": "Provide an accessible name independently of icon shape or color.",
+      "fallback": "Keep every critical control and financial event readable by its live label.",
+      "reduced_motion": "Static asset.",
+      "runtime_target": "web/public/pixel-ui/v1/icons/install-warm/icon-maskable-512.png",
+      "disposition": "promoted-phase-2e"
     }
   ]
 }

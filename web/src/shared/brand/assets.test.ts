@@ -13,7 +13,7 @@ const pngSignature = "89504e470d0a1a0a";
 
 const assets = [["mimiku-hero.png", 1672, 941]] as const;
 
-it("ships exactly the approved Phase 2A–2E-1 consumers with their SHA-256 values", async () => {
+it("ships exactly the approved Phase 2A–2E consumers with their SHA-256 values", async () => {
   const runtime = "web/public/pixel-ui/v1";
   const directory = path.resolve(process.cwd(), "../", runtime);
   const expected = new Set([
@@ -46,11 +46,21 @@ it("ships exactly the approved Phase 2A–2E-1 consumers with their SHA-256 valu
   const phase2d = [
     ...["nav-home", "nav-adventure-log", "nav-guild", "nav-tasks", "nav-settings", "action-record-expense"]
       .map((name) => `icons/ui/${name}.png`),
-    ...["favicon-16", "favicon-32", "icon-192", "icon-512", "icon-maskable-192", "icon-maskable-512"]
-      .map((name) => `icons/install/${name}.png`),
   ];
   const icons = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2d");
   expect(icons.map(({ path }) => path).sort()).toEqual(phase2d.sort());
+  const installNames = ["favicon-16", "favicon-32", "icon-192", "icon-512", "icon-maskable-192", "icon-maskable-512"];
+  const phase2e = installNames.map((name) => `icons/install-warm/${name}.png`);
+  const warm = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2e");
+  expect(warm.map(({ path }) => path).sort()).toEqual(phase2e.sort());
+  for (const name of installNames) {
+    const original = manifest.assets.find(({ path }) => path === `icons/install/${name}.png`);
+    expect(original).toMatchObject({ disposition: "superseded-phase-2e", runtime_target: null });
+    expect(warm.find(({ path }) => path === `icons/install-warm/${name}.png`)?.sources).toEqual([{
+      path: `docs/design/assets/approved/page-visual-v1/icons/install/${name}.png`,
+      sha256: original?.sha256,
+    }]);
+  }
   const phase2e1 = [
     "frames/frames.json",
     "motion/motion-timing.json",
@@ -62,9 +72,9 @@ it("ships exactly the approved Phase 2A–2E-1 consumers with their SHA-256 valu
   const files = (await readdir(directory, { recursive: true, withFileTypes: true }))
     .filter((entry) => !entry.isDirectory())
     .map((entry) => path.relative(directory, path.join(entry.parentPath, entry.name)).replaceAll("\\", "/"));
-  expect(files.sort()).toEqual([...expected, ...phase2b, ...phase2c, ...phase2d, ...phase2e1].sort());
+  expect(files.sort()).toEqual([...expected, ...phase2b, ...phase2c, ...phase2d, ...phase2e1, ...phase2e].sort());
 
-  for (const asset of [...promoted, ...added, ...home, ...icons, ...configs]) {
+  for (const asset of [...promoted, ...added, ...home, ...icons, ...configs, ...warm]) {
     expect(asset.runtime_target).toBe(`${runtime}/${asset.path}`);
     const bytes = await readFile(path.join(directory, asset.path));
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(asset.sha256);

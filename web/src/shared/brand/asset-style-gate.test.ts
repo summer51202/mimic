@@ -134,7 +134,7 @@ it("keeps all Gate B sources in the approved directory and records production pr
   )) as { assets: ProductionAsset[]; gate: string; schema_version: number };
   expect(gate).toBe("B2-2");
   expect(schema_version).toBe(1);
-  expect(assets).toHaveLength(125);
+  expect(assets).toHaveLength(131);
   const decisions = await readFile(path.join(path.dirname(reviewManifestPath), "decision-log.md"), "utf8");
   const b2Decisions = decisions.slice(decisions.indexOf("### Gate B2-1 partial approval"));
   const approvals = new Map([...b2Decisions.matchAll(
@@ -149,7 +149,7 @@ it("keeps all Gate B sources in the approved directory and records production pr
   for (const purpose of ["any", "maskable"]) {
     for (const size of [192, 512]) {
       const name = purpose === "any" ? "icon" : "icon-maskable";
-      expect(assets.find((asset) => asset.path === `icons/install/${name}-${size}.png`))
+      expect(assets.find((asset) => asset.path === `icons/install-warm/${name}-${size}.png`))
         .toMatchObject({ width: size, height: size, frames: 1 });
     }
   }
@@ -167,11 +167,13 @@ it("keeps all Gate B sources in the approved directory and records production pr
   for (const asset of assets) {
     expect(asset.path).toMatch(/^[a-z0-9-]+(?:\/[a-z0-9-]+)*\.(png|json)$/);
     expect(publicPaths.has(path.normalize(asset.path))).toBe(false);
-    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c", "promoted-phase-2d", "promoted-phase-2e1"].includes(asset.disposition)) {
+    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c", "promoted-phase-2d", "promoted-phase-2e1", "promoted-phase-2e"].includes(asset.disposition)) {
       expect(asset.runtime_target).toBe(`web/public/pixel-ui/v1/${asset.path}`);
     } else {
       expect(asset.runtime_target).toBeNull();
-      expect(asset.disposition).toBe("staged-only-until-consumer-plan");
+      expect(asset.disposition).toBe(asset.path.startsWith("icons/install/")
+        ? "superseded-phase-2e"
+        : "staged-only-until-consumer-plan");
     }
     for (const value of [
       asset.export_method, asset.css_size, asset.consumer, asset.loading,
@@ -187,7 +189,11 @@ it("keeps all Gate B sources in the approved directory and records production pr
     hashes.add(asset.sha256);
     expect(asset.sources.length, asset.path).toBeGreaterThan(0);
     const sources = await Promise.all(asset.sources.map(async (source) => {
-      expect(source.path).toMatch(/^docs\/design\/assets\/reviews\//);
+      if (asset.disposition === "promoted-phase-2e") {
+        expect(source.path).toBe(`${approvedDirectory}/${asset.path.replace("install-warm/", "install/")}`);
+      } else {
+        expect(source.path).toMatch(/^docs\/design\/assets\/reviews\//);
+      }
       expect(source.path.split("/")).not.toContain("..");
       const sourceBytes = await readFile(path.join(repository, source.path));
       expect(sha256(sourceBytes), source.path).toBe(source.sha256);
@@ -227,6 +233,25 @@ it("keeps all Gate B sources in the approved directory and records production pr
         expect(frame.data.some((value, offset) => offset % 4 === 3 && value > 0),
           `${asset.path} frame ${index}`).toBe(true);
       }
+      continue;
+    }
+    if (asset.disposition === "promoted-phase-2e") {
+      expect(asset.export_method).toBe("recolor-background (docs/design/assets/reviews/2026-11-11-phase-2e/recolor-install-icons.mjs)");
+      expect(sources).toHaveLength(1);
+      const original = PNG.sync.read(sources[0]);
+      expect([original.width, original.height]).toEqual([png.width, png.height]);
+      let changed = 0;
+      for (let offset = 0; offset < original.data.length; offset += 4) {
+        const [r, g, b, a] = original.data.subarray(offset, offset + 4);
+        const [rr, gg, bb, aa] = png.data.subarray(offset, offset + 4);
+        const selected = a > 0 && b > r && b > g && b <= 192;
+        const differs = r !== rr || g !== gg || b !== bb || a !== aa;
+        if (selected !== differs || aa !== a || (aa > 0 && bb <= 192 && bb - rr > 12)) {
+          throw new Error(`${asset.path}: invalid recolor at pixel ${offset / 4}`);
+        }
+        if (differs) changed++;
+      }
+      expect(changed).toBeGreaterThan(0);
       continue;
     }
     expect(sources).toHaveLength(asset.frames);
