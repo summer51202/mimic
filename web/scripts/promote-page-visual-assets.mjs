@@ -39,16 +39,28 @@ const phase2c = ["desktop", "phone"].flatMap((variant) => [
   `motion/mimiku-idle-${variant}.png`,
   `motion/mimiku-record-ledger-${variant}.png`,
 ]);
+const phase2d = [
+  ...["nav-home", "nav-adventure-log", "nav-guild", "nav-tasks", "nav-settings", "action-record-expense"]
+    .map((name) => `icons/ui/${name}.png`),
+  ...["favicon-16", "favicon-32", "icon-192", "icon-512", "icon-maskable-192", "icon-maskable-512"]
+    .map((name) => `icons/install/${name}.png`),
+];
 
 const dispositions = new Map([
   ...phase2a.map((path) => [path, "promoted-phase-2a"]),
   ...phase2b.map((path) => [path, "promoted-phase-2b"]),
   ...phase2c.map((path) => [path, "promoted-phase-2c"]),
+  ...phase2d.map((path) => [path, "promoted-phase-2d"]),
 ]);
+const args = process.argv.slice(2);
+if (args.length > 1 || (args.length === 1 && args[0] !== "--phase-2d")) {
+  throw new Error("Usage: npm run assets:promote -- [--phase-2d]");
+}
 
 const manifestText = await readFile(manifestPath, "utf8");
 const manifest = JSON.parse(manifestText);
-const assets = Array.from(dispositions.keys(), (path) => {
+const paths = args.length ? phase2d : [...dispositions.keys()];
+const assets = paths.map((path) => {
   const asset = manifest.assets.find((entry) => entry.path === path);
   if (!asset) throw new Error(`Missing approved manifest entry: ${path}`);
   return asset;
@@ -75,4 +87,4 @@ for (const asset of assets) {
 const updated = JSON.stringify(manifest, null, 2) + "\n";
 const formatted = manifestText.includes("\r\n") ? updated.replaceAll("\n", "\r\n") : updated;
 if (formatted !== manifestText) await writeFile(manifestPath, formatted);
-console.log(`Verified SHA-256 for ${assets.length} Phase 2A–2C assets.`);
+console.log(`Verified SHA-256 for ${assets.length} ${args.length ? "Phase 2D" : "Phase 2A–2D"} assets.`);

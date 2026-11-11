@@ -167,7 +167,7 @@ it("keeps all Gate B sources in the approved directory and records production pr
   for (const asset of assets) {
     expect(asset.path).toMatch(/^[a-z0-9-]+(?:\/[a-z0-9-]+)*\.(png|json)$/);
     expect(publicPaths.has(path.normalize(asset.path))).toBe(false);
-    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c"].includes(asset.disposition)) {
+    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c", "promoted-phase-2d"].includes(asset.disposition)) {
       expect(asset.runtime_target).toBe(`web/public/pixel-ui/v1/${asset.path}`);
     } else {
       expect(asset.runtime_target).toBeNull();
