@@ -15,6 +15,7 @@ import { majorToMinorString } from '@/shared/finance/major-to-minor';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { PixelField } from '@/shared/ui/pixel-field';
+import { LedgerIcon, PixelNotebook } from '@/shared/ui/pixel-notebook';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
 import type { PooledWorkspaceData } from './pooled-queries';
@@ -138,14 +139,12 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
   }
 
   return <main className="pooled-page">
-    <header className="pooled-hero"><div><p className="pooled-eyebrow">POOLED FUND · 共同基金</p><h1>{space.name}</h1>
+    <header className="pooled-hero"><div><p className="pooled-eyebrow ledger-with-icon"><LedgerIcon name="mode-pooled" />POOLED FUND · 共同基金</p><h1>{space.name}</h1>
       <p>{group.name} · {space.currency} · {manager ? '寶箱管理者' : '參與者'}</p></div>
-      <div className="pooled-hero-actions">{active && <PixelButton type="button" disabled={!online || busy} onClick={() => setDialog('expense')}>新增基金支出</PixelButton>}
-        {active && manager && <PixelButton type="button" emphasis="secondary" disabled={!online || busy} onClick={() => { setEditingCommitment(undefined); setDialog('commitment'); }}>建立投入排程</PixelButton>}</div>
     </header>
     {!active && <BlockedExpenseDrafts actorUserId={currentUserId} groupId={group.id} spaceId={space.id}
       mode="POOLED_FUND" spaceVersion={space.version} />}
-    {!online && <p role="status" className="pooled-offline">目前離線；已確認資料維持不變。已開啟的支出表單會保存未提交草稿，重新連線後仍需手動檢視與送出。</p>}
+    {!online && <p role="status" className="pooled-offline ledger-with-icon"><LedgerIcon name="status-offline" size={32} />目前離線；已確認資料維持不變。已開啟的支出表單會保存未提交草稿，重新連線後仍需手動檢視與送出。</p>}
     {notice && <p role="status" className="pooled-notice">{notice}</p>}
     {error && <div role="alert" className="pooled-alert"><p>{error}</p><PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void refresh()}>重新讀取</PixelButton></div>}
 
@@ -155,34 +154,59 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
       <PixelPanel className="pooled-balance-card"><p>已送出待收款</p><strong data-testid="pooled-sent-awaiting">{money(workspace.summary.sent_awaiting_receipt_minor)}</strong><span>已扣帳面餘額，不再保留</span></PixelPanel>
       <PixelPanel className="pooled-balance-card"><p>可用餘額</p><strong data-testid="pooled-available">{money(workspace.summary.available_balance_minor)}</strong><span>帳面餘額扣除待付代墊</span></PixelPanel>
     </section>
-    {workspace.summary.shortfall_minor !== '0' && <div role="alert" className="pooled-shortfall"><strong>資金缺口 {money(workspace.summary.shortfall_minor)}</strong><span>真實支出已保留。請補一筆投入或調整未來排程。</span></div>}
+    {workspace.summary.shortfall_minor !== '0' && <div role="alert" className="pooled-shortfall"><strong className="ledger-with-icon"><LedgerIcon name="event-shortfall" size={32} />資金缺口 {money(workspace.summary.shortfall_minor)}</strong><span>真實支出已保留。請補一筆投入或調整未來排程。</span></div>}
 
-    <PixelPanel><div className="pooled-section-heading"><div><p>CONTRIBUTION TRAIL</p><h2>投入排程與實際投入</h2></div></div>
-      {!workspace.commitments.length ? <p>還沒有排程。管理者可建立規則；只有參與者本人能確認自己的實際投入。</p> : <ul className="pooled-ledger">
-        {workspace.commitments.map((commitment) => <li key={commitment.id}><div className="pooled-row-heading"><div><strong>{commitment.name}</strong>
-          <span>{commitment.cadence === 'MONTHLY' ? '每月' : '每週'} · 每 {commitment.interval} 期</span></div>
-          {active && manager && commitment.status === 'ACTIVE' && <PixelButton type="button" emphasis="ghost" onClick={() => { setEditingCommitment(commitment); setDialog('commitment'); }}>編輯投入金額</PixelButton>}</div>
-          <ul className="pooled-occurrences">{commitment.occurrences.map((item) => <li key={item.id}><div><strong>{nameFor(item.participant_user_id)}</strong>
-            <span>{item.due_on} · {money(item.amount_minor)} · {item.status === 'EXPECTED' ? timingLabel(item.timing) : occurrenceLabel(item.status)}</span></div>
-            {active && item.status === 'EXPECTED' && <div className="pooled-row-actions">
-              {item.participant_user_id === currentUserId && <><PixelButton type="button" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'confirm', item.version)}>確認已投入</PixelButton>
-                <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'skip', item.version)}>略過這次</PixelButton></>}
-              {manager && <PixelButton type="button" emphasis="ghost" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'cancel', item.version)}>取消這次</PixelButton>}
-            </div>}
-          </li>)}</ul></li>)}
+    <PixelNotebook titleId="pooled-contributions-title">
+      <div className="pooled-section-heading"><div><p>CONTRIBUTION TRAIL</p><h2 id="pooled-contributions-title">投入排程與實際投入</h2></div>
+        {active && manager && <PixelButton type="button" emphasis="secondary" disabled={!online || busy} onClick={() => { setEditingCommitment(undefined); setDialog('commitment'); }}>建立投入排程</PixelButton>}
+      </div>
+      {!workspace.commitments.length ? <p>還沒有排程。管理者可建立規則；只有參與者本人能確認自己的實際投入。</p> : <ul className="notebook-list">
+        {workspace.commitments.map((commitment) => <li key={commitment.id}>
+          <div className="pooled-row-heading"><div><strong>{commitment.name}</strong>
+            <span className="notebook-secondary">{commitment.cadence === 'MONTHLY' ? '每月' : '每週'} · 每 {commitment.interval} 期</span></div>
+            {active && manager && commitment.status === 'ACTIVE' && <PixelButton type="button" emphasis="ghost" onClick={() => { setEditingCommitment(commitment); setDialog('commitment'); }}>編輯投入金額</PixelButton>}
+          </div>
+          <ul className="notebook-list">{commitment.occurrences.map((item) => <li key={item.id} className="notebook-row">
+            <LedgerIcon name="event-contribution" />
+            <div><time>投入 · {item.due_on}</time><p><strong>{nameFor(item.participant_user_id)}</strong></p>
+              <p>{item.status === 'EXPECTED' ? timingLabel(item.timing) : occurrenceLabel(item.status)}</p></div>
+            <div className="notebook-amount">
+              <strong>{money(item.amount_minor)}</strong>
+              {active && item.status === 'EXPECTED' && <div>
+                {item.participant_user_id === currentUserId && <><PixelButton type="button" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'confirm', item.version)}>確認已投入</PixelButton>
+                  <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'skip', item.version)}>略過這次</PixelButton></>}
+                {manager && <PixelButton type="button" emphasis="ghost" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'cancel', item.version)}>取消這次</PixelButton>}
+              </div>}
+            </div>
+          </li>)}</ul>
+        </li>)}
       </ul>}
-    </PixelPanel>
+    </PixelNotebook>
 
-    <PixelPanel><div className="pooled-section-heading"><div><p>FUND SPENDING</p><h2>基金支出與代墊</h2></div></div>
-      {!workspace.expenses.length ? <p>還沒有基金支出。</p> : <ul className="pooled-ledger">{workspace.expenses.map((expense) => <li key={expense.record.id}>
-        <div className="pooled-row-heading"><div><strong>{expense.record.title}</strong><span>{money(expense.record.amount_minor)} · {expense.payment_source === 'FUND_PAID' ? '基金直接支付' : `${nameFor(expense.advanced_by_user_id!)}先代墊`}</span></div>
-          {expense.reimbursement && <span className="pooled-status">{workflowLabel(expense.reimbursement.status)}</span>}</div>
-        <span>{expense.record.occurred_on} · {termName(expense.record.category_id)}{expense.record.tag_ids.map((id) => ` · #${termName(id)}`).join('')}</span>
-        {expense.record.note && <span>{expense.record.note}</span>}
-        {expense.reimbursement?.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, false)}>確認送出代墊款</PixelButton>}
-        {expense.reimbursement?.status === 'SENT' && expense.reimbursement.participant_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, true)}>確認收到代墊款</PixelButton>}
-      </li>)}</ul>}
-    </PixelPanel>
+    <PixelNotebook titleId="pooled-expenses-title">
+      <div className="pooled-section-heading"><div><p>FUND SPENDING</p><h2 id="pooled-expenses-title">基金支出與代墊</h2></div>
+        {active && <PixelButton type="button" disabled={!online || busy} onClick={() => setDialog('expense')}>新增基金支出</PixelButton>}
+      </div>
+      {!workspace.expenses.length ? <p>還沒有基金支出。</p> : <ul className="notebook-list">{workspace.expenses.map((expense) => {
+        const fundPaid = expense.payment_source === 'FUND_PAID';
+        return <li key={expense.record.id} className="notebook-row">
+          <LedgerIcon name={fundPaid ? 'event-expense' : 'event-reimbursement'} />
+          <div>
+            <time>{fundPaid ? '基金支出' : '代墊'} · {expense.record.occurred_on}</time>
+            <h3>{expense.record.title}</h3>
+            <p>{fundPaid ? '基金直接支付' : `${nameFor(expense.advanced_by_user_id!)}先代墊`}</p>
+            <p>{termName(expense.record.category_id)}{expense.record.tag_ids.map((id) => ` · #${termName(id)}`).join('')}</p>
+            {expense.record.note && <p>{expense.record.note}</p>}
+            {expense.reimbursement && <span className="pooled-status notebook-secondary">{workflowLabel(expense.reimbursement.status)}</span>}
+          </div>
+          <div className="notebook-amount">
+            <strong>{money(expense.record.amount_minor)}</strong>
+            {expense.reimbursement?.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, false)}>確認送出代墊款</PixelButton>}
+            {expense.reimbursement?.status === 'SENT' && expense.reimbursement.participant_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, true)}>確認收到代墊款</PixelButton>}
+          </div>
+        </li>;
+      })}</ul>}
+    </PixelNotebook>
 
     <PixelPanel><div className="pooled-section-heading"><div><p>PARTICIPANTS</p><h2>寶箱參與者</h2></div></div>
       <ul className="pooled-participants">{data.participants.filter((person) => person.effective_to === null).map((person) => <li key={person.id}><span>{person.display_name} · {person.role === 'MANAGER' ? '管理者' : '參與者'}</span>

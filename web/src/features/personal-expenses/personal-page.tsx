@@ -8,6 +8,7 @@ import { formatMinorUnit } from '@/shared/finance/minor-unit';
 import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
+import { LedgerIcon, NotebookOfflineNotice, PixelNotebook } from '@/shared/ui/pixel-notebook';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { TaxonomyManager } from '../taxonomy/taxonomy-manager';
 import { PersonalBoxForm } from './personal-box-form';
@@ -112,7 +113,7 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
     finally { setBusy(false); }
   }
   return <div className="personal-page">
-    <header className="personal-heading"><div><p className="personal-eyebrow">PERSONAL EXPENSES · 個人記帳</p><h1>我的寶箱</h1><p>把日常花費記下來，慢慢看懂自己的生活。</p></div>
+    <header className="personal-heading"><div><p className="personal-eyebrow ledger-with-icon"><LedgerIcon name="mode-personal" />PERSONAL EXPENSES · 個人記帳</p><h1>我的寶箱</h1><p>把日常花費記下來，慢慢看懂自己的生活。</p></div>
       <PixelButton onClick={() => setDialog('box')}>新增寶箱</PixelButton></header>
     {space && space.status !== 'ACTIVE' && <BlockedExpenseDrafts actorUserId={space.owner_user_id!} groupId={null} spaceId={space.id}
       mode="PERSONAL_EXPENSES" spaceVersion={space.version} />}
@@ -129,14 +130,15 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
         <PixelPanel className="personal-total"><p>{monthData.month} 月支出 · {monthData.currency}</p><strong data-testid="monthly-spending">{money(monthData.spending_minor)}</strong><p>僅計入「{space.name}」的支出</p></PixelPanel>
         <PixelPanel><h2>花在哪裡</h2>{monthData.categories.length ? <ul className="personal-breakdown">{monthData.categories.map(category => <li key={category.category_id}><span>{category.category_name}</span><strong>{money(category.spending_minor)}</strong></li>)}</ul> : <p>這個月還沒有支出。</p>}</PixelPanel>
       </div>
-      <section aria-labelledby="personal-records-title"><div className="personal-heading"><h2 id="personal-records-title">日常支出</h2><PixelButton disabled={space.status !== 'ACTIVE'} onClick={() => { setEditing(undefined); setDialog('expense'); }}>記一筆支出</PixelButton></div>
-        <ul className="personal-records">{monthData.items.map(record => <li key={record.id}><div>{record.entry_type === 'SHARED_REFERENCE' && <div className="personal-record-source"><span className="personal-source-badge">來自共同分帳</span>{record.source_locked && <span className="personal-lock-badge">來源已鎖定</span>}</div>}<time>{record.occurred_on}</time><h3>{record.title}</h3><p>{record.category_name}{record.tag_ids.map(id => ` · ${termName(id)}`).join('')}</p>{record.note && <p>{record.note}</p>}</div><div className="personal-record-actions"><strong>{money(record.amount_minor)}</strong><div>
+      <PixelNotebook titleId="personal-records-title"><div className="personal-heading"><h2 id="personal-records-title">日常支出</h2><PixelButton disabled={space.status !== 'ACTIVE'} onClick={() => { setEditing(undefined); setDialog('expense'); }}>記一筆支出</PixelButton></div>
+        {!online && <NotebookOfflineNotice />}
+        <ul className="notebook-list personal-records">{monthData.items.map(record => <li key={record.id} className="notebook-row"><LedgerIcon name="event-expense" /><div>{record.entry_type === 'SHARED_REFERENCE' && <div className="personal-record-source"><span className="personal-source-badge">來自共同分帳</span>{record.source_locked && <span className="personal-lock-badge notebook-secondary"><LedgerIcon name="status-lock" size={32} />來源已鎖定</span>}</div>}<time>{record.entry_type === 'MANUAL' && '支出 · '}{record.occurred_on}</time><h3>{record.title}</h3><p>{record.category_name}{record.tag_ids.map(id => ` · ${termName(id)}`).join('')}</p>{record.note && <p>{record.note}</p>}</div><div className="notebook-amount"><strong>{money(record.amount_minor)}</strong><div>
           {record.entry_type === 'MANUAL' ? <><PixelButton emphasis="ghost" disabled={space.status !== 'ACTIVE'} aria-label={`編輯 ${record.title}`} onClick={() => { setEditing(record); setDialog('expense'); }}>編輯</PixelButton>
           <PixelButton emphasis="ghost" disabled={space.status !== 'ACTIVE'} aria-label={`刪除 ${record.title}`} onClick={() => { setEditing(record); setError(''); setDialog('delete'); }}>刪除</PixelButton></> : <><PixelButton emphasis="ghost" disabled={space.status !== 'ACTIVE'} aria-label={`編輯私人資訊－${record.title}`} onClick={() => { setEditing(record); setDialog('reference'); }}>編輯私人資訊</PixelButton>
           <PixelButton emphasis="ghost" disabled={space.status !== 'ACTIVE'} aria-label={`移除私人參照－${record.title}`} onClick={() => { setEditing(record); setError(''); setDialog('remove-reference'); }}>移除參照</PixelButton></>}
         </div></div></li>)}</ul>
         {monthData.next_cursor && <PixelButton emphasis="secondary" onClick={() => void more()} disabled={busy || !online}>載入更多</PixelButton>}
-      </section>
+      </PixelNotebook>
       <PixelButton emphasis="secondary" onClick={() => setDialog('taxonomy')}>管理類別與標籤</PixelButton>
     </>}
     <PixelDialog open={dialog === 'box'} title="新增個人寶箱" onClose={() => setDialog(null)} closeLabel="關閉">

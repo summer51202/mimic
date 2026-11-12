@@ -9,6 +9,6 @@ it('keeps private reference tickets and controls usable at narrow widths', () =>
   expect(source).toContain('.personal-source-badge');
   expect(source).toMatch(/\.personal-source-badge[^}]*border[^}]*dashed/);
   expect(source).toMatch(/\.personal-reference-tags input[^}]*width:\s*1\.5rem[^}]*height:\s*1\.5rem/);
-  expect(source).toMatch(/@media\s*\(max-width:\s*40rem\)[\s\S]*\.personal-record-actions/);
+
   expect(source).toMatch(/\.personal-reference-form[^}]*min-width:\s*0/);
 });

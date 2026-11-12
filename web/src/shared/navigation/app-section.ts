@@ -14,6 +14,7 @@ const appSections: AppSection[] = [
 ];
 
 export function currentAppSection(pathname: string): AppSection | undefined {
+  if (pathname.startsWith("/app/spaces/")) return "/app/groups";
   return appSections.find(
     (section) => pathname === section || pathname.startsWith(`${section}/`),
   );

@@ -17,6 +17,7 @@ interface PixelAppShellProps {
 
 export function PixelAppShell({ children }: PixelAppShellProps) {
   const pathname = usePathname();
+  const showsQuickAction = pathname !== "/app";
   const currentSection = currentAppSection(pathname);
   const quickHref = quickExpenseHref(pathname, useSearchParams().toString());
 
@@ -31,9 +32,9 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
         <div className={styles.desktopOnly}>
           <AppNavigation currentSection={currentSection} variant="desktop" />
         </div>
-        <main className={styles.main}>{children}</main>
+        <main className={styles.main} data-quick-action={showsQuickAction || undefined}>{children}</main>
       </div>
-      {(currentSection !== "/app" || pathname !== "/app") &&
+      {showsQuickAction &&
         <Link className={styles.quickAction} href={quickHref}>
           <NavigationIcon name="action-record-expense" size={32} />
           記一筆支出

@@ -1,0 +1,113 @@
+.notebook {
+  display: grid;
+  gap: var(--mimic-space-3);
+  min-width: 0;
+  padding: var(--notebook-phone-inset);
+  border-image: var(--notebook-frame);
+  box-shadow: inset 0 0 0 2px var(--mimic-color-wood);
+  background-color: var(--mimic-color-notebook-field);
+  color: var(--mimic-color-notebook-text);
+  overflow-wrap: anywhere;
+  image-rendering: pixelated;
+}
+
+.notebook :where(p, time, :global(.notebook-secondary)) {
+  color: var(--mimic-color-notebook-text-soft);
+}
+
+.notebook :is(button, a, input, select, textarea, [tabindex]):not(:disabled):focus-visible {
+  outline: 3px solid var(--mimic-color-focus);
+  outline-offset: 0;
+  box-shadow: 0 0 0 5px var(--mimic-color-notebook-text);
+}
+
+.notebook :global(.notebook-list) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notebook :global(.notebook-row) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.5rem 1rem;
+  padding: 1rem 0;
+  min-width: 0;
+}
+
+.notebook :global(.notebook-row:not(:last-child)) {
+  border-bottom: 2px dashed var(--mimic-color-notebook-rule);
+}
+
+.notebook :global(.notebook-amount) {
+  grid-column: 2;
+  display: grid;
+  justify-items: start;
+  min-width: 0;
+  gap: 0.5rem;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+.notebook :global(.notebook-amount) > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.notebook :global(.notebook-amount) button {
+  max-width: 100%;
+}
+
+.icon,
+.fixedIcon {
+  display: inline-flex;
+  flex: none;
+}
+
+.icon img,
+.fixedIcon img {
+  width: 32px;
+  height: 32px;
+  image-rendering: auto;
+}
+
+.withIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+@media (min-resolution: 1.5dppx) {
+  .icon img,
+  .fixedIcon img {
+    image-rendering: pixelated;
+  }
+}
+
+@container app-content (min-width: 48rem) {
+  .notebook {
+    padding: var(--notebook-desktop-inset);
+  }
+
+  .icon img {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+  }
+
+  .notebook :global(.notebook-row) {
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 40%);
+  }
+
+  .notebook :global(.notebook-amount) {
+    grid-column: 3;
+    justify-items: end;
+    text-align: right;
+  }
+
+  .notebook :global(.notebook-amount) > div {
+    justify-content: flex-end;
+  }
+}

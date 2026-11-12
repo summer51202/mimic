@@ -13,7 +13,7 @@ const pngSignature = "89504e470d0a1a0a";
 
 const assets = [["mimiku-hero.png", 1672, 941]] as const;
 
-it("ships exactly the approved Phase 2A–2E consumers with their SHA-256 values", async () => {
+it("ships exactly the approved Phase 2A–2F consumers with their SHA-256 values", async () => {
   const runtime = "web/public/pixel-ui/v1";
   const directory = path.resolve(process.cwd(), "../", runtime);
   const expected = new Set([
@@ -34,9 +34,8 @@ it("ships exactly the approved Phase 2A–2E consumers with their SHA-256 values
     scene.architecture.asset_id,
     ...scene.layers.map(({ asset_id }) => asset_id).filter((asset) => !expected.has(asset)),
     `motion/mimiku-idle-${variant}.png`,
-    `motion/mimiku-record-ledger-${variant}.png`,
   ]);
-  expect(phase2c).toHaveLength(10);
+  expect(phase2c).toHaveLength(8);
   const home = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2c");
   expect(home.map(({ path }) => path).sort()).toEqual(phase2c.sort());
   const added = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2b");
@@ -69,12 +68,33 @@ it("ships exactly the approved Phase 2A–2E consumers with their SHA-256 values
   ];
   const configs = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2e1");
   expect(configs.map(({ path }) => path).sort()).toEqual(phase2e1);
+  const phase2f = [
+    "frames/frame-notebook.png",
+    ...["event-expense", "event-contribution", "event-reimbursement", "event-shortfall",
+      "status-lock", "status-offline", "mode-personal", "mode-shared", "mode-pooled"]
+      .map((name) => `icons/ui/${name}.png`),
+    ...["desktop", "phone"].map((variant) => `motion/mimiku-record-ledger-inkline-${variant}.png`),
+  ];
+  const notebook = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2f");
+  expect(notebook.map(({ path }) => path).sort()).toEqual(phase2f.sort());
+  const master = manifest.assets.find(({ path }) => path === "mimiku/action-record-ledger-inkline.png")!;
+  expect(master.export_method).toBe("local-paper-sample-composite-2r");
+  for (const variant of ["desktop", "phone"]) {
+    const ledger = notebook.find(({ path }) => path === `motion/mimiku-record-ledger-inkline-${variant}.png`);
+    expect(ledger?.sources).toContainEqual({
+      path: `docs/design/assets/approved/page-visual-v1/${master.path}`,
+      sha256: master.sha256,
+    });
+    expect(manifest.assets.find(({ path }) => path === `motion/mimiku-record-ledger-${variant}.png`))
+      .toMatchObject({ disposition: "superseded-phase-2f", runtime_target: null });
+  }
+
   const files = (await readdir(directory, { recursive: true, withFileTypes: true }))
     .filter((entry) => !entry.isDirectory())
     .map((entry) => path.relative(directory, path.join(entry.parentPath, entry.name)).replaceAll("\\", "/"));
-  expect(files.sort()).toEqual([...expected, ...phase2b, ...phase2c, ...phase2d, ...phase2e1, ...phase2e].sort());
+  expect(files.sort()).toEqual([...expected, ...phase2b, ...phase2c, ...phase2d, ...phase2e1, ...phase2e, ...phase2f].sort());
 
-  for (const asset of [...promoted, ...added, ...home, ...icons, ...configs, ...warm]) {
+  for (const asset of [...promoted, ...added, ...home, ...icons, ...configs, ...warm, ...notebook]) {
     expect(asset.runtime_target).toBe(`${runtime}/${asset.path}`);
     const bytes = await readFile(path.join(directory, asset.path));
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(asset.sha256);

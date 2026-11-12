@@ -87,7 +87,8 @@ describe('PooledWorkspace', () => {
     expect(screen.getByRole('button', { name: '開始結清' })).toBeVisible();
     expect(screen.getByRole('button', { name: '確認已投入' })).toBeVisible();
     expect(screen.getByRole('button', { name: '略過這次' })).toBeVisible();
-    expect(screen.getByText('2026-09-12 · 餐飲 · #晚餐')).toBeVisible();
+    expect(screen.getByText('代墊 · 2026-09-12')).toBeVisible();
+    expect(screen.getByText('餐飲 · #晚餐')).toBeVisible();
     expect(screen.getByText('聚餐收據已留存')).toBeVisible();
   });
 

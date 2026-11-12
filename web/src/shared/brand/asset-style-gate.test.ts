@@ -134,7 +134,7 @@ it("keeps all Gate B sources in the approved directory and records production pr
   )) as { assets: ProductionAsset[]; gate: string; schema_version: number };
   expect(gate).toBe("B2-2");
   expect(schema_version).toBe(1);
-  expect(assets).toHaveLength(131);
+  expect(assets).toHaveLength(134);
   const decisions = await readFile(path.join(path.dirname(reviewManifestPath), "decision-log.md"), "utf8");
   const b2Decisions = decisions.slice(decisions.indexOf("### Gate B2-1 partial approval"));
   const approvals = new Map([...b2Decisions.matchAll(
@@ -167,13 +167,15 @@ it("keeps all Gate B sources in the approved directory and records production pr
   for (const asset of assets) {
     expect(asset.path).toMatch(/^[a-z0-9-]+(?:\/[a-z0-9-]+)*\.(png|json)$/);
     expect(publicPaths.has(path.normalize(asset.path))).toBe(false);
-    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c", "promoted-phase-2d", "promoted-phase-2e1", "promoted-phase-2e"].includes(asset.disposition)) {
+    const revisedLedger = /(?:action|mimiku)-record-ledger-inkline/.test(asset.path);
+    const supersededLedger = /(?:action|mimiku)-record-ledger(?:-(?:desktop|phone))?\.png$/.test(asset.path);
+    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c", "promoted-phase-2d", "promoted-phase-2e1", "promoted-phase-2e", "promoted-phase-2f"].includes(asset.disposition)) {
       expect(asset.runtime_target).toBe(`web/public/pixel-ui/v1/${asset.path}`);
     } else {
       expect(asset.runtime_target).toBeNull();
       expect(asset.disposition).toBe(asset.path.startsWith("icons/install/")
         ? "superseded-phase-2e"
-        : "staged-only-until-consumer-plan");
+        : supersededLedger ? "superseded-phase-2f" : "staged-only-until-consumer-plan");
     }
     for (const value of [
       asset.export_method, asset.css_size, asset.consumer, asset.loading,
@@ -191,6 +193,8 @@ it("keeps all Gate B sources in the approved directory and records production pr
     const sources = await Promise.all(asset.sources.map(async (source) => {
       if (asset.disposition === "promoted-phase-2e") {
         expect(source.path).toBe(`${approvedDirectory}/${asset.path.replace("install-warm/", "install/")}`);
+      } else if (revisedLedger && source.path.startsWith(approvedDirectory + "/")) {
+        expect(source.path).toMatch(/record-ledger/);
       } else {
         expect(source.path).toMatch(/^docs\/design\/assets\/reviews\//);
       }
@@ -250,6 +254,31 @@ it("keeps all Gate B sources in the approved directory and records production pr
           throw new Error(`${asset.path}: invalid recolor at pixel ${offset / 4}`);
         }
         if (differs) changed++;
+      }
+      expect(changed).toBeGreaterThan(0);
+      continue;
+    }
+    if (revisedLedger) {
+      const original = PNG.sync.read(sources[0]);
+      const variant = asset.path.match(/-(desktop|phone)\.png$/)?.[1] ?? "master";
+      const mask = PNG.sync.read(await readFile(path.join(repository,
+        `docs/design/assets/reviews/2026-11-12-phase-2f/ledger-inkline-2r-${variant}-mask.png`)));
+      expect([mask.width, mask.height]).toEqual([png.width, png.height]);
+      expect([original.width, original.height]).toEqual([png.width, png.height]);
+      const strokes = variant === "master" ? PNG.sync.read(sources[2]) : null;
+      if (strokes) {
+        expect(asset.export_method).toBe("local-paper-sample-composite-2r");
+        expect([strokes.width, strokes.height]).toEqual([png.width, png.height]);
+      }
+      let changed = 0;
+      for (let i = 0; i < png.data.length; i += 4) {
+        if (strokes?.data[i + 3] && strokes.data.readUInt32LE(i) !== png.data.readUInt32LE(i)) {
+          throw Error(`Ink stroke changed at pixel ${i / 4}`);
+        }
+        if (png.data[i + 3] !== original.data[i + 3]) throw Error(`Alpha changed in ${asset.path} at pixel ${i / 4}`);
+        if (png.data.readUInt32LE(i) === original.data.readUInt32LE(i)) continue;
+        if (!mask.data[i + 3]) throw Error(`Outside paper mask in ${asset.path} at pixel ${i / 4}`);
+        changed++;
       }
       expect(changed).toBeGreaterThan(0);
       continue;

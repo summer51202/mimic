@@ -3,6 +3,9 @@ import { describe, expect, it } from "vitest";
 import { currentAppSection, quickExpenseHref } from "./app-section";
 
 describe("currentAppSection", () => {
+  it("selects groups for shared and pooled space pages", () => {
+    expect(currentAppSection("/app/spaces/00000000-0000-4000-8000-000000000001")).toBe("/app/groups");
+  });
   it.each([
     ["/app", "/app"],
     ["/app/personal", "/app/personal"],

@@ -1,5 +1,9 @@
 /* Canonical runtime palette for UI code and newly exported runtime artwork. */
 :root {
+  --mimic-color-notebook-field: #ead7ac;
+  --mimic-color-notebook-text: #211a18;
+  --mimic-color-notebook-text-soft: #5a4636;
+  --mimic-color-notebook-rule: #8a5a35;
   --mimic-color-ink: #17213a;
   --mimic-color-ink-soft: #31405f;
   --mimic-color-coin: #f4b83f;

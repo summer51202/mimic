@@ -9,3 +9,10 @@ it("uses the dialogue field color for the global HUD", () => {
   expect(hud).toBe("#211a18");
   expect(hud).toBe(field);
 });
+
+it("uses the approved notebook center color", () => {
+  const tokens = readFileSync("src/styles/tokens.css", "utf8");
+  const frames = JSON.parse(readFileSync("public/pixel-ui/v1/frames/frames.json", "utf8"));
+  expect(tokens.match(/--mimic-color-notebook-field:\s*(#[\da-f]{6});/i)?.[1])
+    .toBe(frames.frames.notebook.centerColor);
+});

@@ -8,6 +8,7 @@ import { formatMinorUnit, parseMinorUnit } from '@/shared/finance/minor-unit';
 import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
+import { LedgerIcon, NotebookOfflineNotice, PixelNotebook } from '@/shared/ui/pixel-notebook';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
 import { SharedExpenseForm } from './shared-expense-form';
@@ -95,9 +96,8 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
     finally { setBusy(false); }
   }
   return <main className="shared-page">
-    <header className="shared-hero"><div><p className="shared-eyebrow">SHARED EXPENSES · 共同分帳</p><h1>{space.name}</h1><p>{group.name} · {space.currency} · {manager ? '寶箱管理者' : '參與者'}</p>
-      {!active && <p className="shared-archive-state">已封存 · 唯讀</p>}</div>
-      {active && <PixelButton onClick={() => { setEditing(undefined); setDialog('expense'); }}>新增共同支出</PixelButton>}</header>
+    <header className="shared-hero"><div><p className="shared-eyebrow ledger-with-icon"><LedgerIcon name="mode-shared" />SHARED EXPENSES · 共同分帳</p><h1>{space.name}</h1><p>{group.name} · {space.currency} · {manager ? '寶箱管理者' : '參與者'}</p>
+      {!active && <p className="shared-archive-state">已封存 · 唯讀</p>}</div></header>
     {!active && <BlockedExpenseDrafts actorUserId={group.current_user_id} groupId={group.id} spaceId={space.id}
       mode="SHARED_EXPENSES" spaceVersion={space.version} />}
     {notice && <p role="status" className="shared-notice">{notice}</p>}
@@ -110,12 +110,15 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
       })}</ul></PixelPanel></section>
     <SettlementPanel spaceId={space.id} spaceVersion={space.version} currency={space.currency} timezone={space.timezone} currentUserId={group.current_user_id}
       manager={active && manager} batches={data.batches.items} nameFor={nameFor} onChanged={async () => { await refresh(); setNotice('結算狀態已更新。'); }} />
-    <PixelPanel><div className="shared-section-heading"><h2>共同支出</h2></div>
+    <PixelNotebook titleId="shared-expenses-title"><div className="shared-section-heading"><h2 id="shared-expenses-title">共同支出</h2>
+      {active && <PixelButton onClick={() => { setEditing(undefined); setDialog('expense'); }}>新增共同支出</PixelButton>}
+    </div>
+      {!online && <NotebookOfflineNotice />}
       <SharedExpenseList expenses={data.expenses.items} currency={space.currency} currentUserId={group.current_user_id} manager={manager} readOnly={!active} nameFor={nameFor}
         onEdit={record => { setEditing(record); setDialog('expense'); }} onDelete={record => { setEditing(record); setDialog('delete'); setError(''); }}
         onReference={record => { setEditing(record); setDialog('reference'); setError(''); }} />
       {data.expenses.next_cursor && <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void moreExpenses()}>載入更多共同支出</PixelButton>}
-    </PixelPanel>
+    </PixelNotebook>
     <PixelDialog open={dialog === 'expense'} title={editing ? '編輯共同支出' : '新增共同支出'} closeLabel="關閉" onClose={() => setDialog(null)} closeDisabled={busy}>
       {dialog === 'expense' && <SharedExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'} groupId={group.id} spaceId={space.id} spaceVersion={space.version} writable={active} currency={space.currency} timezone={space.timezone}
         currentUserId={group.current_user_id} participants={data.participants} terms={data.terms} record={editing}
