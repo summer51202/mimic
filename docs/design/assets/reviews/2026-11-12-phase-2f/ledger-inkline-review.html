@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 2F 書頁墨線審閱</title>
+<style>
+  body { background:#fbf3e3; color:#211a18; font:16px/1.5 system-ui,sans-serif; margin:24px; }
+  h1,h2,h3 { margin:0 0 .5em; }
+  section { margin-block:2rem; }
+  .scroll { overflow:auto; }
+  .row { display:flex; width:max-content; gap:16px; }
+  figure { margin:0; }
+  figcaption { font-weight:700; }
+  .frame { background-color:#decbb0; background-repeat:no-repeat; image-rendering:pixelated; }
+  video { max-width:min(100%, 800px); }
+</style>
+</head>
+<body>
+<h1>Phase 2F 書頁墨線審閱</h1>
+<p>每格並列原圖、新圖及紙面遮罩。橘色差異遮罩可用來確認實際改動的位置。</p>
+<section aria-labelledby="residual-title">
+  <h2 id="residual-title">2R 紙面殘影檢查</h2>
+  <p>由左至右為原圖、首輪合成、2R。由上至下為影格 1–5。僅顯示紙面，亮度 200–245 展開到 0–255，放大 3 倍。</p>
+  <div class="scroll"><img src="ledger-inkline-2r-residual.png" width="864" height="720" alt="五格紙面以高對比並列原圖、首輪合成與 2R"></div>
+</section>
+<main id="frames"></main>
+<section>
+  <h2>Home 實際播放</h2>
+  <figure><figcaption>1440 × 900</figcaption><video controls preload="none" src="home-ledger-2r-1440x900.webm"></video></figure>
+  <figure><figcaption>390 × 844</figcaption><video controls preload="none" src="home-ledger-2r-390x844.webm"></video></figure>
+</section>
+<script>
+  const approved = "../../approved/page-visual-v1/";
+  const entries = [
+    ["512 master 原尺寸", 512, 512, 1, "mimiku/action-record-ledger", "", "master"],
+    ["512 master 放大 3 倍", 512, 512, 3, "mimiku/action-record-ledger", "", "master"],
+    ["桌機動態條", 118, 123, 3, "motion/mimiku-record-ledger", "-desktop", "desktop"],
+    ["手機動態條", 96, 100, 3, "motion/mimiku-record-ledger", "-phone", "phone"],
+  ];
+  for (const [title, width, height, scale, stem, suffix, variant] of entries) {
+    const section = document.createElement("section");
+    const heading = document.createElement("h2");
+    heading.textContent = title;
+    section.append(heading);
+    for (let index = 0; index < 5; index++) {
+      const label = document.createElement("h3");
+      label.textContent = `影格 ${index + 1}`;
+      const scroll = document.createElement("div");
+      scroll.className = "scroll";
+      const row = document.createElement("div");
+      row.className = "row";
+      for (const [caption, file] of [
+        ["原圖", approved + stem + suffix + ".png"],
+        ["新圖", approved + stem + "-inkline" + suffix + ".png"],
+        ["紙面遮罩", `ledger-inkline-2r-${variant}-mask.png`],
+        ["實際差異", `ledger-inkline-2r-${variant}-diff.png`],
+      ]) {
+        const figure = document.createElement("figure");
+        const figcaption = document.createElement("figcaption");
+        figcaption.textContent = caption;
+        const frame = document.createElement("div");
+        frame.className = "frame";
+        frame.style.cssText = `width:${width * scale}px;height:${height * scale}px;background-image:url(${file});background-size:${width * scale * 5}px ${height * scale}px;background-position-x:${-index * width * scale}px`;
+        figure.append(figcaption, frame);
+        row.append(figure);
+      }
+      scroll.append(row);
+      section.append(label, scroll);
+    }
+    document.getElementById("frames").append(section);
+  }
+</script>
+</body>
+</html>

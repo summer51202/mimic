@@ -2462,3 +2462,35 @@
 **Decisions:** 安裝圖示 install-warm（舊紀錄 superseded）；頂欄字樣連 /；已登入 header 返回基地；停用專屬色票；ink 不改。
 
 **Known gaps / follow-ups:** 頂欄字樣焦點框壓到最後一個字母，下一輪加內距；push 後確認 CI 與 staging。
+
+## 2026-11-12 — Phase 2F 記帳筆記本
+
+**Task:** 依 Phase 2F 規格實作三種寶箱的帳目區及 Home ledger 素材，交付視覺審核。
+**Scope:** Web 帳目、應用導覽、核准與 runtime 素材、Phase 2F 測試和審閱證據。
+**What changed:**
+- 三種寶箱使用共用九宮格筆記本，加入事件、狀態與模式圖示，並處理焦點及手機排列。
+- 修正群組寶箱的導覽狀態、浮動記帳鈕留白及 Wordmark 焦點框。
+- 保留舊核准素材，以遮罩合成書頁墨線，並沿用 Motion 2R 推導兩張新動態條。
+**Decisions:** 先證實舊 master 可逐位元組重現兩張原動態條，再以相同映射推導新檔及遮罩。
+**Known gaps / follow-ups:** 驗證、例外及視覺審核素材見 Phase 2F 的 verification.md。
+
+## 2026-11-12 — Phase 2F 2R 書頁亮度
+
+**Task:** 只重做 §6 的書頁補片，交付視覺審核。
+**Scope:** Ledger master 與動態條、素材推廣及測試、墨線審閱頁與 Home 影片。
+**What changed:**
+- 從每格遮罩外未修改的紙面取樣重做補片，沿用首輪 ImageGen 墨線像素。
+- 以 Motion 2R 推導兩張動態條，新增亮度、殘影與遮罩證據。
+**Decisions:** 保留首輪數字與錄影，2R 證據另存。沿用既有 timing ID。
+**Known gaps / follow-ups:** 視覺審核結果及驗證見 Phase 2F verification.md 的 2R 小節。
+
+## 2026-11-12 — Phase 2F 核准與 commit（Claude）
+
+**Task:** 審閱 Phase 2F 與 2R，Ed 核准後記錄並分批 commit。
+**Scope:** decision-log、devlog、Phase 2F 素材、實作與審閱紀錄、claude/mimic-handoff.md。
+**What changed:**
+- 審閱者重算 10 個推廣素材、3 個 -inkline 檔與 motion-timing 的 hash，比對書頁遮罩（遮罩外與 alpha 零差異）、補片亮度與殘影，抽 Home 錄影影格確認 ledger 播完回到待機。
+- Ed 核准：筆記本外框（左側裝訂帶重複可接受）、暖色文字、每列 event 圖示、三項小修；2R 書頁補片亮度差 ≤ 0.5。
+- decision-log 新增 Phase 2F 一節；分三批 commit（art → feat → docs）。
+**Decisions:** record-ledger 的「Mimiku」字樣視為 2C 以來的缺陷，修正後舊檔標 superseded-phase-2f，不覆寫。
+**Known gaps / follow-ups:** 記帳完成播 record-ledger、其他帳目區筆記本化、SettlementPanel 的英文狀態、未定義的 --mimic-font-pixel、Vitest 5 秒逾時；Ed push 後確認 CI 與 staging。
