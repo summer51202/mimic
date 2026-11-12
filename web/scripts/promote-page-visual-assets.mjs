@@ -37,7 +37,6 @@ const phase2c = ["desktop", "phone"].flatMap((variant) => [
   `scenes/home/${variant}-ground-light.png`,
   `scenes/home/actors/mimiku-${variant}.png`,
   `motion/mimiku-idle-${variant}.png`,
-  `motion/mimiku-record-ledger-${variant}.png`,
 ]);
 const phase2d = [
   ...["nav-home", "nav-adventure-log", "nav-guild", "nav-tasks", "nav-settings", "action-record-expense"]
@@ -53,7 +52,20 @@ const phase2e1 = [
   "scenes/landing/layout.json",
 ];
 
+const retiredLedger = ["desktop", "phone"].map((variant) => `motion/mimiku-record-ledger-${variant}.png`);
+const ledgerTiming = "motion/motion-timing.json";
+const ledgerMaster = "mimiku/action-record-ledger-inkline.png";
+const ledgerStrips = ["desktop", "phone"].map((variant) => `motion/mimiku-record-ledger-inkline-${variant}.png`);
+const phase2f = [
+  ...ledgerStrips,
+  "frames/frame-notebook.png",
+  ...["event-expense", "event-contribution", "event-reimbursement", "event-shortfall",
+    "status-lock", "status-offline", "mode-personal", "mode-shared", "mode-pooled"]
+    .map((name) => `icons/ui/${name}.png`),
+];
+
 const dispositions = new Map([
+  ...phase2f.map((path) => [path, "promoted-phase-2f"]),
   ...phase2a.map((path) => [path, "promoted-phase-2a"]),
   ...phase2b.map((path) => [path, "promoted-phase-2b"]),
   ...phase2c.map((path) => [path, "promoted-phase-2c"]),
@@ -62,6 +74,7 @@ const dispositions = new Map([
   ...phase2e.map((path) => [path, "promoted-phase-2e"]),
 ]);
 const selections = new Map([
+  ["--phase-2f", { paths: [...phase2f, ledgerTiming], label: "Phase 2F" }],
   ["--phase-2d", { paths: phase2d, label: "Phase 2D" }],
   ["--phase-2e1", { paths: phase2e1, label: "Phase 2E-1" }],
   ["--phase-2e", { paths: phase2e, label: "Phase 2E" }],
@@ -69,10 +82,10 @@ const selections = new Map([
 const args = process.argv.slice(2);
 const selection = args.length ? selections.get(args[0]) : {
   paths: [...dispositions.keys()],
-  label: "Phase 2A–2E",
+  label: "Phase 2A–2F",
 };
 if (args.length > 1 || !selection) {
-  throw new Error("Usage: npm run assets:promote -- [--phase-2d|--phase-2e1|--phase-2e]");
+  throw new Error("Usage: npm run assets:promote -- [--phase-2d|--phase-2e1|--phase-2e|--phase-2f]");
 }
 
 const manifestText = await readFile(manifestPath, "utf8");
@@ -90,6 +103,16 @@ async function verifyHash(file, asset) {
 
 // Validate every source before changing any runtime file.
 for (const asset of assets) await verifyHash(join(approved, asset.path), asset);
+if (assets.some(({ path }) => ledgerStrips.includes(path))) {
+  const master = manifest.assets.find(({ path }) => path === ledgerMaster);
+  if (!master) throw new Error(`Missing approved manifest entry: ${ledgerMaster}`);
+  await verifyHash(join(approved, ledgerMaster), master);
+  for (const strip of assets.filter(({ path }) => ledgerStrips.includes(path))) {
+    if (!strip.sources.some(({ path, sha256 }) => path.endsWith(`/${ledgerMaster}`) && sha256 === master.sha256)) {
+      throw new Error(`Stale ledger master lineage: ${strip.path}`);
+    }
+  }
+}
 
 for (const asset of assets) {
   const target = `${runtime}/${asset.path}`;
@@ -107,6 +130,11 @@ if (formatted !== manifestText) await writeFile(manifestPath, formatted);
 if (selection.paths.includes(phase2e[0])) {
   for (const name of installIcons) {
     await rm(join(root, runtime, "icons/install", `${name}.png`), { force: true });
+  }
+}
+if (selection.paths.includes(phase2f[0])) {
+  for (const asset of retiredLedger) {
+    await rm(join(root, runtime, asset), { force: true });
   }
 }
 console.log(`Verified SHA-256 for ${assets.length} ${selection.label} assets.`);

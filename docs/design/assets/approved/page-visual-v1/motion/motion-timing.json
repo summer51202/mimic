@@ -24,7 +24,7 @@
         "reduced_motion_final": "frame 0"
       },
       "ledger": {
-        "asset_id": "motion/mimiku-record-ledger-desktop.png",
+        "asset_id": "motion/mimiku-record-ledger-inkline-desktop.png",
         "sha256": "45ae5b2d20baa2d0cedc7e33219c9600a5beb260af1d6e7cdaa3a26cbbde9083",
         "frames": 5,
         "frame_ms": [
@@ -87,7 +87,7 @@
         "reduced_motion_final": "frame 0"
       },
       "ledger": {
-        "asset_id": "motion/mimiku-record-ledger-phone.png",
+        "asset_id": "motion/mimiku-record-ledger-inkline-phone.png",
         "sha256": "f5aecd67b8299d53598bde6ef971bf2c7400ab330322963b4ffff87ed84a39c2",
         "frames": 5,
         "frame_ms": [

@@ -449,8 +449,8 @@
       "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
       "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/frames/frame-notebook.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "frames/frame-parchment.png",
@@ -749,8 +749,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/event-contribution.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "icons/ui/event-correction.png",
@@ -799,8 +799,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/event-expense.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "icons/ui/event-reimbursement.png",
@@ -824,8 +824,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/event-reimbursement.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "icons/ui/event-return.png",
@@ -899,8 +899,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/event-shortfall.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "icons/ui/mode-personal.png",
@@ -924,8 +924,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/mode-personal.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "icons/ui/mode-pooled.png",
@@ -949,8 +949,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/mode-pooled.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "icons/ui/mode-shared.png",
@@ -974,8 +974,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/mode-shared.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "icons/ui/nav-adventure-log.png",
@@ -1124,8 +1124,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/status-lock.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "icons/ui/status-offline.png",
@@ -1149,8 +1149,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/status-offline.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "mimiku/action-adventure-complete.png",
@@ -1294,6 +1294,47 @@
       ],
       "export_method": "copy",
       "sha256": "6d2da052a1417372cc4f924d5b215a1a5aa11940167bd1bf23e4e980d2905757",
+      "width": 2560,
+      "height": 512,
+      "frames": 5,
+      "frame_width": 512,
+      "frame_height": 512,
+      "alpha": true,
+      "css_size": "96–160 CSS px companion, aligned to the consumer slot",
+      "consumer": "Record expense confirmation",
+      "loading": "Load on demand with the named consumer after promotion.",
+      "accessibility": "Decorative frames beside live dialogue or status.",
+      "fallback": "Preserve live dialogue and status in the reserved companion layout.",
+      "reduced_motion": "Use final frame 4 (zero-based) and show full live copy immediately.",
+      "runtime_target": null,
+      "disposition": "superseded-phase-2f",
+      "frame_ms": [
+        100,
+        100,
+        100,
+        100,
+        100
+      ],
+      "final_frame": 4
+    },
+    {
+      "path": "mimiku/action-record-ledger-inkline.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/mimiku/action-record-ledger.png",
+          "sha256": "6d2da052a1417372cc4f924d5b215a1a5aa11940167bd1bf23e4e980d2905757"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-11-12-phase-2f/ledger-inkline-imagegen.png",
+          "sha256": "69b4bb6d1429369b63760bd42101131bd9067ec40fb2c408d35505d26a128a76"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-11-12-phase-2f/ledger-inkline-2r-strokes.png",
+          "sha256": "ac94e6cb1e92716300359c8ecc07ee47a9cd0130028f017caaee2e5e121301c5"
+        }
+      ],
+      "export_method": "local-paper-sample-composite-2r",
+      "sha256": "c70551c68e36d20bcd11e7c474baab896882eff25ac37958f74729f39fc0fd24",
       "width": 2560,
       "height": 512,
       "frames": 5,
@@ -1769,8 +1810,41 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 4.",
-      "runtime_target": "web/public/pixel-ui/v1/motion/mimiku-record-ledger-desktop.png",
-      "disposition": "promoted-phase-2c"
+      "runtime_target": null,
+      "disposition": "superseded-phase-2f"
+    },
+    {
+      "path": "motion/mimiku-record-ledger-inkline-desktop.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/motion/mimiku-record-ledger-desktop.png",
+          "sha256": "45ae5b2d20baa2d0cedc7e33219c9600a5beb260af1d6e7cdaa3a26cbbde9083"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-11-12-phase-2f/ledger-inkline-imagegen.png",
+          "sha256": "69b4bb6d1429369b63760bd42101131bd9067ec40fb2c408d35505d26a128a76"
+        },
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/mimiku/action-record-ledger-inkline.png",
+          "sha256": "c70551c68e36d20bcd11e7c474baab896882eff25ac37958f74729f39fc0fd24"
+        }
+      ],
+      "export_method": "motion-2r-register-and-horizontal-sprite-sheet",
+      "sha256": "e2248e30cbd4db4ed6457f6c5e0bc6ee7f7a1ba27e1e33b08ce688544880743e",
+      "width": 590,
+      "height": 123,
+      "frames": 5,
+      "frame_width": 118,
+      "frame_height": 123,
+      "alpha": true,
+      "css_size": "118 × 123 logical px",
+      "consumer": "Home Mimiku",
+      "loading": "On demand with the action.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 4.",
+      "runtime_target": "web/public/pixel-ui/v1/motion/mimiku-record-ledger-inkline-desktop.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "motion/mimiku-record-ledger-phone.png",
@@ -1810,8 +1884,41 @@
       "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
       "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
       "reduced_motion": "Hold frame 4.",
-      "runtime_target": "web/public/pixel-ui/v1/motion/mimiku-record-ledger-phone.png",
-      "disposition": "promoted-phase-2c"
+      "runtime_target": null,
+      "disposition": "superseded-phase-2f"
+    },
+    {
+      "path": "motion/mimiku-record-ledger-inkline-phone.png",
+      "sources": [
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/motion/mimiku-record-ledger-phone.png",
+          "sha256": "f5aecd67b8299d53598bde6ef971bf2c7400ab330322963b4ffff87ed84a39c2"
+        },
+        {
+          "path": "docs/design/assets/reviews/2026-11-12-phase-2f/ledger-inkline-imagegen.png",
+          "sha256": "69b4bb6d1429369b63760bd42101131bd9067ec40fb2c408d35505d26a128a76"
+        },
+        {
+          "path": "docs/design/assets/approved/page-visual-v1/mimiku/action-record-ledger-inkline.png",
+          "sha256": "c70551c68e36d20bcd11e7c474baab896882eff25ac37958f74729f39fc0fd24"
+        }
+      ],
+      "export_method": "motion-2r-register-and-horizontal-sprite-sheet",
+      "sha256": "dcdbcbfb26f5faf68fd20d02b48458a4632de78884add3b7f18a3d6938b13fc0",
+      "width": 480,
+      "height": 100,
+      "frames": 5,
+      "frame_width": 96,
+      "frame_height": 100,
+      "alpha": true,
+      "css_size": "96 × 100 logical px",
+      "consumer": "Home Mimiku",
+      "loading": "On demand with the action.",
+      "accessibility": "Run at most one primary animation, never steal focus, and support keyboard skip and prefers-reduced-motion.",
+      "fallback": "Show final states and full dialogue immediately with no nonessential movement.",
+      "reduced_motion": "Hold frame 4.",
+      "runtime_target": "web/public/pixel-ui/v1/motion/mimiku-record-ledger-inkline-phone.png",
+      "disposition": "promoted-phase-2f"
     },
     {
       "path": "motion/motion-timing.json",
@@ -1826,7 +1933,7 @@
         }
       ],
       "export_method": "project-review-metadata",
-      "sha256": "674fd84b067217695e099df7025873ffb0855c194d035f81448f7f72f51f927f",
+      "sha256": "939505ed9b3f3871587af5a076894a0c6c94077283a66a25649767766c674695",
       "width": null,
       "height": null,
       "frames": 0,
