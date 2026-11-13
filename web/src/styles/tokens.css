@@ -1,5 +1,7 @@
 /* Canonical runtime palette for UI code and newly exported runtime artwork. */
 :root {
+  --mimic-font-pixel: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+
   --mimic-color-notebook-field: #ead7ac;
   --mimic-color-notebook-text: #211a18;
   --mimic-color-notebook-text-soft: #5a4636;

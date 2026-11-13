@@ -1,0 +1,33 @@
+.companion {
+  position: fixed;
+  z-index: 39;
+  left: max(16px, env(safe-area-inset-left));
+  bottom: var(--mimic-quick-action-bottom, 84px);
+  pointer-events: none;
+}
+
+.sheet {
+  background-repeat: no-repeat;
+  background-size: calc(100% * var(--sheet-frames)) 100%;
+  background-position: calc(var(--frame, 0) * var(--frame-width) * -1) 0;
+  width: var(--frame-width);
+  image-rendering: pixelated;
+}
+
+.sheet[data-variant="phone"] {
+  --frame-width: 96px;
+  height: 100px;
+}
+
+.sheet[data-variant="desktop"] {
+  --frame-width: 118px;
+  height: 123px;
+}
+
+@media (min-width: 768px) {
+  .companion {
+    left: auto;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: calc(var(--mimic-quick-action-bottom, 24px) + var(--mimic-quick-action-height, 48px) + 12px);
+  }
+}

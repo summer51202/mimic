@@ -9,7 +9,7 @@ export type ScenePlayback = {
   play: (scene: HTMLElement, variant: SceneVariant, reduced: boolean) => (() => void) | undefined;
 };
 
-const pauseKey = "mimic.landing.animation-paused";
+export const pauseKey = "mimic.landing.animation-paused";
 
 export function useSceneMotion(
   stageRef: RefObject<HTMLDivElement | null>,

@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { appFetch } from '@/shared/api/app-fetch';
 import { financialSpaceSchema } from '@/shared/api/financial-space-contracts';
@@ -6,6 +7,8 @@ import { sharedBatchPageSchema, sharedCorrectionPageSchema, sharedExpenseMutatio
   sharedParticipantSchema, sharedSummarySchema, type SharedExpense } from '@/shared/api/shared-finance-contracts';
 import { formatMinorUnit, parseMinorUnit } from '@/shared/finance/minor-unit';
 import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
+import { clearQuickExpense } from '@/shared/navigation/clear-quick-expense';
+import { useRecordLedgerCompanion } from '@/shared/scene/record-ledger-companion';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { LedgerIcon, NotebookOfflineNotice, PixelNotebook } from '@/shared/ui/pixel-notebook';
@@ -21,6 +24,7 @@ import { SharedLifecyclePanel } from '../shared-settlements/shared-lifecycle-pan
 import { PersonalReferenceForm } from './personal-reference-form';
 
 export function SharedWorkspace({ initial, quick = false }: { initial: SharedWorkspaceData; quick?: boolean }) {
+  const router = useRouter();
   const [data, setData] = useState(initial);
   const [dialog, setDialog] = useState<'expense' | 'delete' | 'correction' | 'reference' | null>(
     quick && initial.space.status === 'ACTIVE' ? 'expense' : null,
@@ -32,15 +36,26 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
   const deleteAttempt = useRef({ fingerprint: '', id: '' });
   const previousQuick = useRef(quick);
   const online = useOnline();
+  const { celebrate, companion, preload } = useRecordLedgerCompanion();
   const { space, group } = data;
   useEffect(() => {
-    if (quick && !previousQuick.current && space.status === 'ACTIVE') setDialog('expense');
+    if (quick && !previousQuick.current && space.status === 'ACTIVE') {
+      setEditing(undefined);
+      setDialog('expense');
+    }
     previousQuick.current = quick;
   }, [quick, space.status]);
+  useEffect(() => {
+    if (dialog === 'expense' && !editing) preload();
+  }, [dialog, editing, preload]);
   const manager = space.role === 'MANAGER';
   const active = space.status === 'ACTIVE';
   const nameFor = (id: string) => data.participants.find(person => person.user_id === id)?.display_name ?? '已離開的參與者';
   const money = (minor: string) => formatMinorUnit(minor, space.currency, 'zh-TW');
+  function closeExpense() {
+    if (!editing) clearQuickExpense(router);
+    setDialog(null); setEditing(undefined);
+  }
   const lockKind = (record: SharedExpense | undefined) => {
     if (!record) return undefined;
     const batch = data.batches.items.find(item => item.status !== 'CANCELED' && item.period_start <= record.occurred_on && item.period_end >= record.occurred_on);
@@ -119,12 +134,17 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
         onReference={record => { setEditing(record); setDialog('reference'); setError(''); }} />
       {data.expenses.next_cursor && <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void moreExpenses()}>載入更多共同支出</PixelButton>}
     </PixelNotebook>
-    <PixelDialog open={dialog === 'expense'} title={editing ? '編輯共同支出' : '新增共同支出'} closeLabel="關閉" onClose={() => setDialog(null)} closeDisabled={busy}>
+    <PixelDialog open={dialog === 'expense'} title={editing ? '編輯共同支出' : '新增共同支出'} closeLabel="關閉" onClose={closeExpense} closeDisabled={busy}>
       {dialog === 'expense' && <SharedExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'} groupId={group.id} spaceId={space.id} spaceVersion={space.version} writable={active} currency={space.currency} timezone={space.timezone}
         currentUserId={group.current_user_id} participants={data.participants} terms={data.terms} record={editing}
         lockKind={lockKind(editing)}
         onCorrection={record => { setEditing(applyExpenseCorrections(record, data.corrections.items)); setDialog('correction'); }}
-        onSaved={async result => { setDialog(null); setEditing(undefined); setNotice(`已確認「${result.record.title}」${money(result.record.amount_minor)}。`); try { await refresh(); } catch { setError('已確認儲存，但摘要更新失敗；請重新讀取。'); } }}
+        onSaved={async ({ record }) => {
+          closeExpense();
+          setNotice(`已確認「${record.title}」${money(record.amount_minor)}。`);
+          if (!editing) celebrate({ context: group.id, activityKey: `${record.occurred_on}/${record.id}` });
+          try { await refresh(); } catch { setError('已確認儲存，但摘要更新失敗；請重新讀取。'); }
+        }}
         onReload={async () => (await refresh()).expenses.items.find(item => item.id === editing?.id)} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'reference'} title="加入我的帳本" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
@@ -150,5 +170,6 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
     <SharedLifecyclePanel space={space} currentUserId={group.current_user_id} participants={data.participants} members={data.members}
       onChanged={async () => { try { await refresh(); setNotice('寶箱參與者或狀態已更新。'); }
         catch { window.location.assign(`/app/groups/${group.id}`); } }} />
+    {companion}
   </main>;
 }

@@ -6,6 +6,8 @@ import { expenseMutationSchema, personalMonthSchema, personalReferenceMutationSc
 import { taxonomyTermSchema } from '@/shared/api/taxonomy-contracts';
 import { formatMinorUnit } from '@/shared/finance/minor-unit';
 import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
+import { clearQuickExpense } from '@/shared/navigation/clear-quick-expense';
+import { useRecordLedgerCompanion } from '@/shared/scene/record-ledger-companion';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { LedgerIcon, NotebookOfflineNotice, PixelNotebook } from '@/shared/ui/pixel-notebook';
@@ -32,11 +34,18 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
   const referenceRemoveAttempt = useRef({ fingerprint: '', id: '' });
   const previousQuick = useRef(quick);
   const online = useOnline();
+  const { celebrate, companion, preload } = useRecordLedgerCompanion();
   const space = data.selected;
   useEffect(() => {
-    if (quick && !previousQuick.current && space?.status === 'ACTIVE') setDialog('expense');
+    if (quick && !previousQuick.current && space?.status === 'ACTIVE') {
+      setEditing(undefined);
+      setDialog('expense');
+    }
     previousQuick.current = quick;
   }, [quick, space?.status]);
+  useEffect(() => {
+    if (dialog === 'expense' && !editing) preload();
+  }, [dialog, editing, preload]);
   const money = (minor: string) => formatMinorUnit(minor, monthData?.currency ?? 'TWD', 'zh-TW');
   function termName(id: string) {
     const term = terms.find(item => item.id === id);
@@ -53,10 +62,19 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
     const latestTerms = [...taxonomyTermSchema.array().parse(categories.data), ...taxonomyTermSchema.array().parse(tags.data)];
     setMonthData(latest); setTerms(latestTerms); setError(''); return latest;
   }
-  async function saved(result: ExpenseMutation) {
-    setDialog(null); setEditing(undefined);
+  async function saved(result: ExpenseMutation, creating = false) {
+    if (creating) closeExpense();
+    else { setDialog(null); setEditing(undefined); }
     setNotice(result.record.status === 'DELETED' ? `已刪除「${result.record.title}」，月支出將重新計算。` : `已儲存「${result.record.title}」${money(result.record.amount_minor)}。`);
+    const { record } = result;
+    if (creating && record.status !== 'DELETED') {
+      celebrate({ context: 'personal', activityKey: `${record.occurred_on}/${record.id}` });
+    }
     try { await refresh(); } catch { setError('已確認儲存，但月支出更新失敗；目前顯示先前資料，請重新讀取。'); }
+  }
+  function closeExpense() {
+    if (!editing) clearQuickExpense(router);
+    setDialog(null); setEditing(undefined);
   }
   async function referenceSaved(result: PersonalReferenceMutation) {
     setDialog(null); setEditing(undefined);
@@ -144,11 +162,11 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
     <PixelDialog open={dialog === 'box'} title="新增個人寶箱" onClose={() => setDialog(null)} closeLabel="關閉">
       {dialog === 'box' && <PersonalBoxForm onCreated={created => { setDialog(null); router.push(`/app/personal?space=${created.id}`); }} />}
     </PixelDialog>
-    <PixelDialog open={dialog === 'expense'} title={editing ? '編輯支出' : '記一筆支出'} onClose={() => setDialog(null)} closeLabel="關閉">
+    <PixelDialog open={dialog === 'expense'} title={editing ? '編輯支出' : '記一筆支出'} onClose={closeExpense} closeLabel="關閉">
       {dialog === 'expense' && space && <PersonalExpenseForm key={editing ? `${editing.id}:${editing.version}` : 'new'}
         actorUserId={space.owner_user_id!} spaceId={space.id} spaceVersion={monthData?.space_version ?? space.version}
         writable={space.status === 'ACTIVE'} currency={space.currency} timezone={space.timezone}
-        record={editing?.entry_type === 'MANUAL' ? editing : undefined} terms={terms} onSaved={result => void saved(result)}
+        record={editing?.entry_type === 'MANUAL' ? editing : undefined} terms={terms} onSaved={result => void saved(result, !editing)}
         onReload={async () => (await refresh())?.items.find(item => item.id === editing?.id && item.entry_type === 'MANUAL') as Extract<PersonalMonthEntry, { entry_type: 'MANUAL' }> | undefined} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'reference'} title="編輯共同分帳的私人資訊" onClose={() => setDialog(null)} closeLabel="關閉">
@@ -169,5 +187,6 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
       <PixelButton emphasis="danger" onClick={() => void removeReference()} disabled={busy || !online}>確認移除</PixelButton>
       <PixelButton emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>重新讀取最新資料</PixelButton>
     </PixelDialog>
+    {companion}
   </div>;
 }

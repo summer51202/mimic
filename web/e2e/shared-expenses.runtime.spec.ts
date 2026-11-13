@@ -260,10 +260,10 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
     const partnerPage = await partnerContext.newPage();
     await openSpaceFromGroup(partnerPage, group.id, '旅行分帳');
     await clickHydrated(partnerPage.getByRole('button', { name: '確認已付款' }));
-    await expect(partnerPage.getByText('SENT', { exact: true })).toBeVisible();
+    await expect(partnerPage.getByText('已付款，待收款', { exact: true })).toBeVisible();
     await page.reload();
     await clickHydrated(page.getByRole('button', { name: '確認已收款' }));
-    await expect(page.getByText('COMPLETED', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('已收款', { exact: true })).toBeVisible();
     await expect(page.getByText(new RegExp(`${accounts.owner.displayName}.*已結清`))).toBeVisible();
     await expect(page.getByText(new RegExp(`${accounts.partner.displayName}.*已結清`))).toBeVisible();
 
@@ -282,6 +282,7 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
     await page.getByLabel(`更正後分攤－${accounts.partner.displayName}`).fill('4.80');
     await page.getByRole('button', { name: '確認建立更正' }).click();
     await expect(page.getByText(new RegExp(`${accounts.owner.displayName}.*應付.*1.2`))).toBeVisible();
+    await expect(page.locator('[data-record-ledger-companion]')).toBeHidden();
     await expect(page.getByText(new RegExp(`${accounts.partner.displayName}.*應收.*1.2`))).toBeVisible();
     expect((await data<SharedExpense>(ownerSession, `/spaces/${spaceId}/shared-expenses/${source.id}`)).title).toBe('住宿（已檢視）');
 
@@ -290,10 +291,11 @@ test('shared bookkeeping lifecycle uses real persisted responses', async ({ page
     await page.getByRole('button', { name: '建立批次並鎖定期間' }).click();
     await expect(page.getByText(`${today} → ${today}`)).toBeVisible();
     await clickHydrated(page.getByRole('button', { name: '確認已付款' }));
-    await expect(page.getByText('SENT', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('已付款，待收款', { exact: true })).toBeVisible();
     await partnerPage.reload();
     await clickHydrated(partnerPage.getByRole('button', { name: '確認已收款' }));
-    await expect(partnerPage.getByText('COMPLETED', { exact: true })).toHaveCount(2);
+    await expect(partnerPage.getByText('已完成', { exact: true })).toHaveCount(1);
+    await expect(partnerPage.getByText('已收款', { exact: true })).toHaveCount(1);
 
     await page.reload();
     let managerGuardObserved = false;

@@ -9,6 +9,17 @@ import { PixelField } from '@/shared/ui/pixel-field';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
 
+const batchLabels: Record<SharedBatch['status'], string> = {
+  PENDING: '進行中',
+  COMPLETED: '已完成',
+  CANCELED: '已取消',
+};
+const transferLabels: Record<SharedTransfer['status'], string> = {
+  AWAITING_PAYMENT: '待付款',
+  SENT: '已付款，待收款',
+  COMPLETED: '已收款',
+};
+
 function today(timezone: string) {
   const parts = new Intl.DateTimeFormat('en', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
   return ['year', 'month', 'day'].map(key => parts.find(part => part.type === key)!.value).join('-');
@@ -68,10 +79,10 @@ export function SettlementPanel({ spaceId, spaceVersion, currency, timezone, cur
     <p>這些狀態由使用者自行確認，不代表銀行或 Mimic 已驗證實際轉帳。</p>
     {error && <p role="alert">{error}</p>}
     {!batches.length ? <p>還沒有結算批次。位置確認後，由管理者選擇截止日。</p> : <ol className="settlement-trail">{batches.map(batch => <li key={batch.id}>
-      <div className="shared-section-heading"><strong>{batch.period_start} → {batch.period_end}</strong><span>{batch.status}</span></div>
+      <div className="shared-section-heading"><strong>{batch.period_start} → {batch.period_end}</strong><span>{batchLabels[batch.status]}</span></div>
       {batch.transfers.length ? <ul>{batch.transfers.map(transfer => <li key={transfer.id}>
         <span>{nameFor(transfer.from_user_id)} → {nameFor(transfer.to_user_id)}</span>
-        <strong>{formatMinorUnit(transfer.amount_minor, currency, 'zh-TW')}</strong><span>{transfer.status}</span>
+        <strong>{formatMinorUnit(transfer.amount_minor, currency, 'zh-TW')}</strong><span>{transferLabels[transfer.status]}</span>
         {transfer.status === 'AWAITING_PAYMENT' && transfer.from_user_id === currentUserId && <PixelButton disabled={!online || busy} onClick={() => void confirm(batch, transfer, false)}>確認已付款</PixelButton>}
         {transfer.status === 'SENT' && transfer.to_user_id === currentUserId && <PixelButton disabled={!online || busy} onClick={() => void confirm(batch, transfer, true)}>確認已收款</PixelButton>}
       </li>)}</ul> : <p>本期位置已平衡，批次已直接完成。</p>}

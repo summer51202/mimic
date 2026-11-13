@@ -35,7 +35,7 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
         <main className={styles.main} data-quick-action={showsQuickAction || undefined}>{children}</main>
       </div>
       {showsQuickAction &&
-        <Link className={styles.quickAction} href={quickHref}>
+        <Link className={styles.quickAction} href={quickHref} scroll={quickHref.split("?")[0] !== pathname}>
           <NavigationIcon name="action-record-expense" size={32} />
           記一筆支出
         </Link>}

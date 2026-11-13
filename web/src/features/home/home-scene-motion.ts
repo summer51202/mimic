@@ -1,5 +1,6 @@
 import timing from "../../../public/pixel-ui/v1/motion/motion-timing.json";
 import { sceneAssetRoot } from "@/shared/scene/geometry";
+import { homeActivityStorageKey, isNewerHomeActivity } from "@/shared/scene/home-activity";
 import { drawFrame, loadSheet, playSceneFrames } from "@/shared/scene/sprite";
 import type { ScenePlayback } from "@/shared/scene/use-scene-motion";
 
@@ -15,10 +16,10 @@ export function homePlayback(context: string, activityKey: string): ScenePlaybac
       if (entered) return;
       entered = true;
       try {
-        const key = `mimic.home.latest-activity.${context}`;
+        const key = homeActivityStorageKey(context);
         const previous = localStorage.getItem(key);
         localStorage.setItem(key, activityKey);
-        pendingLedger = !paused && previous !== null && activityKey > previous;
+        pendingLedger = !paused && previous !== null && isNewerHomeActivity(activityKey, previous);
       } catch {
         // The scene still works when browser storage is unavailable.
       }

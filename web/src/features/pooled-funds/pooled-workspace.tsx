@@ -12,6 +12,8 @@ import { sharedParticipantSchema } from '@/shared/api/shared-finance-contracts';
 import { formatMinorUnit } from '@/shared/finance/minor-unit';
 import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
 import { majorToMinorString } from '@/shared/finance/major-to-minor';
+import { clearQuickExpense } from '@/shared/navigation/clear-quick-expense';
+import { useRecordLedgerCompanion } from '@/shared/scene/record-ledger-companion';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { PixelField } from '@/shared/ui/pixel-field';
@@ -35,11 +37,15 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
   const attempts = useRef(new Map<string, string>());
   const previousQuick = useRef(quick);
   const online = useOnline();
+  const { celebrate, companion, preload } = useRecordLedgerCompanion();
   const { space, group, workspace } = data;
   useEffect(() => {
     if (quick && !previousQuick.current && space.status === 'ACTIVE') setDialog('expense');
     previousQuick.current = quick;
   }, [quick, space.status]);
+  useEffect(() => {
+    if (dialog === 'expense') preload();
+  }, [dialog, preload]);
   const manager = space.role === 'MANAGER';
   const active = space.status === 'ACTIVE';
   const closing = space.status === 'CLOSING';
@@ -50,6 +56,11 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
   const current = data.participants.find((person) => person.user_id === currentUserId && person.effective_to === null);
   const activeIds = new Set(data.participants.filter((person) => person.effective_to === null).map((person) => person.user_id));
   const candidates = data.members.filter((member) => member.status.toLowerCase() === 'active' && !activeIds.has(member.user_id));
+
+  function closeExpense() {
+    clearQuickExpense(router);
+    setDialog(null);
+  }
 
   async function refresh(clearError = true) {
     const [spaceResponse, workspaceResponse, participantsResponse] = await Promise.all([
@@ -84,15 +95,15 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
     return messages[failure.code] ?? '目前不能完成此操作；請檢查狀態並重新讀取。';
   }
 
-  async function mutation(path: string, payload: object, fingerprint: string, parse: (value: unknown) => unknown, success: string, durableRequestId?: string) {
+  async function mutation<T>(path: string, payload: object, fingerprint: string, parse: (value: unknown) => T, success: string, durableRequestId?: string) {
     if (!online || busy) return false;
     setBusy(true); setError('');
     try {
       const response = await appFetch<{ data: unknown }>(path, { method: 'POST', body: JSON.stringify({
         request_id: durableRequestId ?? requestId(fingerprint), ...payload,
       }) });
-      parse(response.data); attempts.current.delete(fingerprint);
-      await refresh(); setNotice(success); return true;
+      const result = parse(response.data); attempts.current.delete(fingerprint);
+      await refresh(); setNotice(success); return result;
     } catch (failure) {
       setError(explain(failure));
       if (failure instanceof AppClientError && failure.code === 'SPACE_VERSION_CONFLICT') {
@@ -245,17 +256,25 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
           finally { setBusy(false); }
         }} />}
     </PixelDialog>
-    <PixelDialog open={dialog === 'expense'} title="新增基金支出" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
+    <PixelDialog open={dialog === 'expense'} title="新增基金支出" closeLabel="關閉" closeDisabled={busy} onClose={closeExpense}>
       {dialog === 'expense' && <PooledExpenseForm actorUserId={currentUserId} groupId={group.id} spaceId={space.id} spaceVersion={space.version} writable={active}
         currency={space.currency} openedOn={space.opened_on} participants={data.participants} busy={busy}
-        onSubmit={async (payload, durableRequestId) => { const ok = await mutation(`/api/app/spaces/${space.id}/pooled-funds/expenses`, payload, 'pooled-expense-draft',
-          pooledExpenseMutationSchema.parse, '基金支出已記錄。', durableRequestId); if (ok) setDialog(null); return ok; }} />}
+        onSubmit={async (payload, durableRequestId) => {
+          const result = await mutation(`/api/app/spaces/${space.id}/pooled-funds/expenses`, payload, 'pooled-expense-draft',
+            pooledExpenseMutationSchema.parse, '基金支出已記錄。', durableRequestId);
+          if (!result) return false;
+          const { record } = result;
+          closeExpense();
+          celebrate({ context: group.id, activityKey: `${record.occurred_on}/${record.id}` });
+          return true;
+        }} />}
     </PixelDialog>
     <PixelDialog open={dialog === 'returns'} title="指定基金退回" description="逐一指定收款人與金額；系統不會自動平分。" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
       {dialog === 'returns' && <ReturnPlanForm currency={space.currency} participants={data.participants} total={workspace.summary.book_balance_minor} busy={busy || !online}
         onSubmit={async (returns, fingerprint) => { const ok = await mutation(`/api/app/spaces/${space.id}/pooled-funds/return-plans`, { version: space.version, returns }, fingerprint,
           pooledReturnPlanSchema.parse, '基金退回計畫已建立。'); if (ok) setDialog(null); }} />}
     </PixelDialog>
+    {companion}
   </main>;
 }
 
