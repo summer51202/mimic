@@ -2494,3 +2494,26 @@
 - decision-log 新增 Phase 2F 一節；分三批 commit（art → feat → docs）。
 **Decisions:** record-ledger 的「Mimiku」字樣視為 2C 以來的缺陷，修正後舊檔標 superseded-phase-2f，不覆寫。
 **Known gaps / follow-ups:** 記帳完成播 record-ledger、其他帳目區筆記本化、SettlementPanel 的英文狀態、未定義的 --mimic-font-pixel、Vitest 5 秒逾時；Ed push 後確認 CI 與 staging。
+
+## 2026-11-13 — Phase 2G 記帳完成動畫
+
+**Task:** 依核准規格為個人記帳、共同支出與基金支出新增完成動畫，停在 Ed 的視覺審核。
+**Scope:** Web 三種記帳工作區、共用場景播放與 Home 活動 key、快速記帳導覽、結算標籤、字型 token、素材雜湊和審核驗證。
+**What changed:**
+- 新增支出成功時顯示 Mimiku，沿用兩種尺寸的 inkline 動態條、暫停偏好與 Home 去重。
+- 基線重現浮動鈕第二次無效後，在新增對話框關閉時清除 quick 查詢參數。
+- 翻譯結算狀態、定義 Mimic ID 字型 token，並同步修正 timing SHA-256 與 manifest。
+**Decisions:** 沿用 2 秒停留、600 ms 載入期限與現有 Home 字串排序。浮動連結於同一路徑開表單時保留列表位置。
+**Known gaps / follow-ups:** 瀏覽器、逐像素、錄影與 Linux 驗證結果見本輪 verification.md。Home 同日 UUID 排序維持既有契約。
+
+## 2026-11-13 — Phase 2G 核准與 commit（Claude）
+
+**Task:** 審閱 Phase 2G，Ed 核准後記錄並分批 commit。
+**Scope:** decision-log、devlog、Phase 2G 資料修正、實作與審閱紀錄、claude/mimic-handoff.md。
+**What changed:**
+- 審閱者重算 motion-timing 與 manifest hash（只有預期的四處差異）、檢查三頁新增判定與 Home key 抽函式，從 personal 390 錄影抽影格確認 0→4、約每 100 ms 換格、第 4 格停約 1.9 秒後消失。
+- pooled 390 截圖拍到時小夥伴已消失，改從錄影抽影格存成 pooled-390x844-video-frame.png。
+- Ed 核准：浮動小夥伴短暫遮住內容可接受；浮動鈕在同頁開表單時保留捲動位置。
+- decision-log 新增 Phase 2G 一節；分三批 commit（fix 資料 → feat 實作 → docs）。
+**Decisions:** 不另跑一輪 Codex 補拍截圖，以錄影影格作為證據。
+**Known gaps / follow-ups:** Home ledger 依賴 UUID v4 排序；其他帳目區筆記本化；Ed push 後確認 CI 與 staging，並在手機上實看小夥伴。
