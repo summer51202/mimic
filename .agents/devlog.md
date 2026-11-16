@@ -2517,3 +2517,24 @@
 - decision-log 新增 Phase 2G 一節；分三批 commit（fix 資料 → feat 實作 → docs）。
 **Decisions:** 不另跑一輪 Codex 補拍截圖，以錄影影格作為證據。
 **Known gaps / follow-ups:** Home ledger 依賴 UUID v4 排序；其他帳目區筆記本化；Ed push 後確認 CI 與 staging，並在手機上實看小夥伴。
+
+## 2026-11-13 — Phase 2H Home ledger 觸發與 CI 逾時
+
+**Task:** 依 Phase 2H 規格修正 Home ledger 觸發、保護 Vitest 逾時，驗證分批部署相容性及畫面回歸。
+**Scope:** Backend Home 參與者投影、Web Home 與三種記帳確認流程、Vitest、Jest 與 Playwright。
+**What changed:**
+- 由已載入的 ACTIVE 支出與授權私人參照投影 latest_recorded，建立時間相同時比較 ID。
+- Home 與記帳小夥伴共用 latest-recorded 游標，依伺服器建立時間去重。Home 清理目前情境的舊 key。
+- 將 Web 測試與 hook 的預設逾時調整為 20 秒。
+**Decisions:** Web 合約接受缺少 latest_recorded 的舊 API。驗證案例涵蓋實際分批部署及以支出日期呈現的卡片。
+**Known gaps / follow-ups:** 兩次部署皆完成後再將 latest_recorded 改為必填。驗證結果見 Phase 2H verification.md。
+
+## 2026-11-16 — Phase 2H 審閱與 commit（Claude）
+
+**Task:** 審閱 Phase 2H（純技術輪），記錄並依兩次部署順序分批 commit。
+**Scope:** decision-log、devlog、Phase 2H web、後端與審閱紀錄、claude/mimic-handoff.md。
+**What changed:**
+- 審閱者檢查後端 latestRecorded（無新查詢、同毫秒比 ID）、web 合約 optional、新 key 的數值比較、Home 清理舊 key、損壞舊值會在下次進 Home 被覆寫、2G 小夥伴改寫新 key。
+- decision-log 新增 Phase 2H 一節；commit 順序 web → docs → 後端，第一次 push 只推到 docs。
+**Decisions:** 純技術輪，不需 Ed 視覺核准；Ed 已在 spec 階段決定觸發規則與分兩次 push。
+**Known gaps / follow-ups:** 兩次部署完成後把 latest_recorded 改必填；高負載下仍有既有影像測試可能超過 20 秒。
