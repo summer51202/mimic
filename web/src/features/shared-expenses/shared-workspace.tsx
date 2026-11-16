@@ -142,7 +142,7 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
         onSaved={async ({ record }) => {
           closeExpense();
           setNotice(`已確認「${record.title}」${money(record.amount_minor)}。`);
-          if (!editing) celebrate({ context: group.id, activityKey: `${record.occurred_on}/${record.id}` });
+          if (!editing) celebrate({ context: group.id, record });
           try { await refresh(); } catch { setError('已確認儲存，但摘要更新失敗；請重新讀取。'); }
         }}
         onReload={async () => (await refresh()).expenses.items.find(item => item.id === editing?.id)} />}

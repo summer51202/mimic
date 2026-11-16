@@ -6,7 +6,7 @@ import type { ScenePlayback } from "@/shared/scene/use-scene-motion";
 
 export const homeMotion = timing.variants;
 
-export function homePlayback(context: string, activityKey: string): ScenePlayback {
+export function homePlayback(context: string, activityKey: string | null): ScenePlayback {
   let entered = false;
   let pendingLedger = false;
   return {
@@ -16,6 +16,8 @@ export function homePlayback(context: string, activityKey: string): ScenePlaybac
       if (entered) return;
       entered = true;
       try {
+        localStorage.removeItem(`mimic.home.latest-activity.${context}`);
+        if (activityKey === null) return;
         const key = homeActivityStorageKey(context);
         const previous = localStorage.getItem(key);
         localStorage.setItem(key, activityKey);

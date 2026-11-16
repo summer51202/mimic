@@ -44,12 +44,12 @@ function HomeRoom({ variant }: { variant: SceneVariant }) {
   </div>;
 }
 
-export function HomeScene({ cards, online, taskCount, context, activity, adventure, openQuick }: {
+export function HomeScene({ cards, online, taskCount, context, activityKey, adventure, openQuick }: {
   cards: HomeCard[];
   online: boolean;
   taskCount: number;
   context: string;
-  activity?: { id: string; occurred_on: string };
+  activityKey: string | null;
   adventure: ReactNode;
   openQuick: boolean;
 }) {
@@ -57,7 +57,6 @@ export function HomeScene({ cards, online, taskCount, context, activity, adventu
   const cardRef = useRef<HTMLDivElement>(null);
   const dialogueRef = useRef<HTMLDivElement>(null);
   const textScaleRef = useRef<HTMLSpanElement>(null);
-  const activityKey = activity ? `${activity.occurred_on}/${activity.id}` : "";
   const playback = useMemo(() => homePlayback(context, activityKey), [context, activityKey]);
   const paused = useSceneMotion(stageRef, null, playback);
   const line = !online ? "現在離線，我先幫你看著最後的狀態。"

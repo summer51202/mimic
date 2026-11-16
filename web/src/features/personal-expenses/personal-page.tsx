@@ -68,7 +68,7 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
     setNotice(result.record.status === 'DELETED' ? `已刪除「${result.record.title}」，月支出將重新計算。` : `已儲存「${result.record.title}」${money(result.record.amount_minor)}。`);
     const { record } = result;
     if (creating && record.status !== 'DELETED') {
-      celebrate({ context: 'personal', activityKey: `${record.occurred_on}/${record.id}` });
+      celebrate({ context: 'personal', record });
     }
     try { await refresh(); } catch { setError('已確認儲存，但月支出更新失敗；目前顯示先前資料，請重新讀取。'); }
   }

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import type { Group } from '@/shared/api/domain-contracts';
 import type { HomeCard, HomeResponse } from '@/shared/api/home-contracts';
 import { formatMinorUnit, parseMinorUnit } from '@/shared/finance/minor-unit';
+import { homeActivityKey, isNewerHomeActivity } from '@/shared/scene/home-activity';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { formatGeneratedAt } from '@/shared/ui/format-generated-at';
 import { useOnline } from '../personal-expenses/use-online';
@@ -23,6 +24,17 @@ function latestActivity(cards: HomeCard[]) {
         latest = { card, activity };
       }
     }
+  }
+  return latest;
+}
+
+function latestRecordedKey(cards: HomeCard[]) {
+  let latest: string | null = null;
+  for (const card of cards) {
+    if (card.access !== 'PARTICIPANT' || !card.latest_recorded) continue;
+    const { recorded_at, id } = card.latest_recorded;
+    const key = homeActivityKey(recorded_at, id);
+    if (latest === null || isNewerHomeActivity(key, latest)) latest = key;
   }
   return latest;
 }
@@ -50,7 +62,7 @@ export function HomePage({ data, groups, openQuick }: { data: HomeResponse; grou
     <HomeScene
       cards={data.cards} openQuick={openQuick} online={online} taskCount={data.task_count}
       context={data.context.kind === 'PERSONAL' ? 'personal' : data.context.id}
-      activity={latest?.activity}
+      activityKey={latestRecordedKey(data.cards)}
       adventure={<PixelPanel className="home-adventure">
         <h1>{title}</h1>
         {latest ? <Link href={participantHref(latest.card)}>

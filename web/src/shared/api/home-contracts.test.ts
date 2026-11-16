@@ -1,10 +1,22 @@
 import { describe, expect, it } from 'vitest';
-import { homeResponseSchema, taskCenterSchema } from './home-contracts';
+import { homeCardSchema, homeResponseSchema, taskCenterSchema } from './home-contracts';
 
 const base = { access: 'PARTICIPANT', id: '00000000-0000-4000-8000-000000000001', name: 'Daily',
   currency: 'TWD', status: 'ACTIVE', recent_activity: [] };
 
 describe('P6 home contracts', () => {
+  it('accepts old and new participant cards while keeping the new field strict and private', () => {
+    const card = { ...base, mode: 'PERSONAL_EXPENSES', month: '2026-09', spending_minor: '0', recent_categories: [] };
+    const recorded = { id: base.id, recorded_at: '2026-09-12T08:00:00+08:00' };
+    expect(homeCardSchema.parse(card)).not.toHaveProperty('latest_recorded');
+    expect(homeCardSchema.parse({ ...card, latest_recorded: null })).toHaveProperty('latest_recorded', null);
+    expect(homeCardSchema.parse({ ...card, latest_recorded: recorded })).toHaveProperty('latest_recorded', recorded);
+    expect(homeCardSchema.safeParse({ ...card, latest_recorded: { ...recorded, title: 'private' } }).success).toBe(false);
+    expect(homeCardSchema.safeParse({ ...card, latest_recorded: { ...recorded, recorded_at: '2026-09-12' } }).success).toBe(false);
+    expect(homeCardSchema.safeParse({ access: 'GOVERNANCE', id: base.id, name: 'Private', mode: 'POOLED_FUND',
+      status: 'ACTIVE', latest_recorded: null }).success).toBe(false);
+  });
+
   it('keeps mode summaries discriminated and money canonical strings', () => {
     const response = homeResponseSchema.parse({ context: { kind: 'PERSONAL' }, task_count: 0,
       generated_at: '2026-09-12T00:00:00.000Z', cards: [{ ...base, mode: 'PERSONAL_EXPENSES', month: '2026-09',

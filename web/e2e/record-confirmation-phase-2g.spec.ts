@@ -81,6 +81,7 @@ const modes = [
 ] as const;
 type Mode = typeof modes[number];
 const companion = (page: Page) => page.locator("[data-record-ledger-companion]");
+const recordedKeyPattern = /^\d{4}-\d{2}-\d{2}T[^|]+\|[0-9a-f-]{36}$/;
 const floating = (page: Page) => page.getByRole("link", { name: "記一筆支出", exact: true });
 const urlFor = (name: Mode["name"], space: Space) =>
   name === "personal" ? `/app/personal?space=${space.id}` : `/app/spaces/${space.id}`;
@@ -164,22 +165,35 @@ for (const [width, height] of [[360, 780], [390, 844], [768, 1024], [1440, 900]]
         await fillExpense(dialog, `確認記帳 ${mode.name} ${width}`, mode);
         await companion(page).evaluate(host => {
           const frames: { index: number; elapsed: number }[] = [];
-          let shown: number | undefined;
+          const hidden = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "hidden")!;
+          let shownAt: number | undefined;
+          let hiddenAt: number | undefined;
           let scroll = 0;
+          // Sample the visibility writes synchronously. React work can delay the observer callback.
+          Object.defineProperty(host, "hidden", {
+            configurable: true,
+            get() { return hidden.get!.call(this); },
+            set(value: boolean) {
+              hidden.set!.call(this, value);
+              if (value && shownAt !== undefined) hiddenAt = performance.now();
+              if (!value && shownAt === undefined) {
+                shownAt = performance.now();
+                scroll = window.scrollY;
+              }
+            },
+          });
           const observer = new MutationObserver(() => {
             if (host.hasAttribute("hidden")) {
-              if (shown === undefined) return;
+              if (shownAt === undefined || hiddenAt === undefined) return;
               observer.disconnect();
-              host.setAttribute("data-playback-trace", JSON.stringify({ frames, elapsed: performance.now() - shown, scroll, endScroll: window.scrollY }));
+              Reflect.deleteProperty(host, "hidden");
+              host.setAttribute("data-playback-trace", JSON.stringify({ frames, elapsed: hiddenAt - shownAt, scroll, endScroll: window.scrollY }));
               return;
             }
-            if (shown === undefined) {
-              shown = performance.now();
-              scroll = window.scrollY;
-            }
+            if (shownAt === undefined) return;
             const sprite = host.querySelector<HTMLElement>("[data-variant]:not([hidden])")!;
             const frame = Number(sprite.style.getPropertyValue("--frame"));
-            if (frames.at(-1)?.index !== frame) frames.push({ index: frame, elapsed: performance.now() - shown });
+            if (frames.at(-1)?.index !== frame) frames.push({ index: frame, elapsed: performance.now() - shownAt });
           });
           observer.observe(host, { attributes: true, subtree: true, attributeFilter: ["hidden", "style"] });
         });
@@ -221,7 +235,7 @@ for (const [width, height] of [[360, 780], [390, 844], [768, 1024], [1440, 900]]
 test("reduced motion holds frame four and explicit pause leaves the Home key alone", async ({ context, page }, info) => {
   test.skip(info.project.name !== "desktop", "Preference behavior is independent of viewport");
   const fixture = await setup(context, info);
-  const key = "mimic.home.latest-activity.personal";
+  const key = "mimic.home.latest-recorded.personal";
   const url = urlFor("personal", fixture.personal);
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(url);
@@ -235,7 +249,7 @@ test("reduced motion holds frame four and explicit pause leaves the Home key alo
   await expect(companion(page).locator("[data-variant]:visible")).toHaveCSS("--frame", "4");
   await expect(companion(page)).toBeHidden({ timeout: 2500 });
   const seen = await page.evaluate(key => localStorage.getItem(key), key);
-  expect(seen).toMatch(/^\d{4}-\d{2}-\d{2}\//);
+  expect(seen).toMatch(recordedKeyPattern);
   await page.evaluate(() => localStorage.setItem("mimic.landing.animation-paused", "true"));
   await trigger.click();
   await fillExpense(dialog, "暫停動態記帳", mode);
@@ -277,7 +291,7 @@ test("edit, delete, offline submission and server errors leave the companion hid
   await submit.click();
   await expect(dialog.getByRole("alert")).toBeVisible();
   await expect(companion(page)).toBeHidden();
-  expect(await page.evaluate(() => localStorage.getItem("mimic.home.latest-activity.personal"))).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem("mimic.home.latest-recorded.personal"))).toBeNull();
 });
 
 for (const mode of modes) {
@@ -289,7 +303,7 @@ for (const mode of modes) {
       : await setup(context, info).then(data => ({ session: data.session, space: data[mode.name], group: data.group.id }));
     const { space } = fixture;
     const home = fixture.group ? `/app?group=${fixture.group}` : "/app";
-    const key = `mimic.home.latest-activity.${fixture.group ?? "personal"}`;
+    const key = `mimic.home.latest-recorded.${fixture.group ?? "personal"}`;
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto(`${home}${personal ? "?" : "&"}quick=1`);
     const chooser = page.getByRole("dialog", { name: "要記在哪個寶箱？" });
@@ -301,7 +315,7 @@ for (const mode of modes) {
     await dialog.getByRole("button", { name: mode.submit }).click();
     await expect(companion(page)).toBeVisible();
     const seen = await page.evaluate(key => localStorage.getItem(key), key);
-    expect(seen).toMatch(/^\d{4}-\d{2}-\d{2}\//);
+    expect(seen).toMatch(recordedKeyPattern);
     console.log(JSON.stringify({ context: mode.name, before, seen }));
 
     await page.addInitScript(watchHomeInit);
@@ -316,22 +330,14 @@ for (const mode of modes) {
     const { data: owner } = await ownerResponse.json();
     const path = { personal: "personal-expenses", shared: "shared-expenses", pooled: "pooled-funds/expenses" }[mode.name];
     const payload = {
-      title: "從 API 新增的支出", amount_minor: "2500", occurred_on: seen!.split("/")[0],
+      title: "從 API 新增的支出", amount_minor: "2500", occurred_on: space.opened_on,
       ...(mode.name === "shared" && {
         payers: [{ user_id: owner.id, amount_minor: "2500" }],
         allocations: [{ user_id: owner.id, amount_minor: "2500" }],
       }),
       ...(mode.name === "pooled" && { payment_source: "FUND_PAID" }),
     };
-    let latest = "";
-    for (let attempt = 0; attempt < 5 && latest <= seen!; attempt++) {
-      const { record } = await api<{ record: { id: string; occurred_on: string } }>(
-        fixture.session, `/spaces/${space.id}/${path}`, { ...payload, request_id: crypto.randomUUID() },
-      );
-      latest = `${record.occurred_on}/${record.id}`;
-    }
-    // Use a deterministic cursor when random v4 UUIDs all sort before the seen record.
-    if (latest <= seen!) await page.evaluate(key => localStorage.setItem(key, "0"), key);
+    await api(fixture.session, `/spaces/${space.id}/${path}`, { ...payload, request_id: crypto.randomUUID() });
     await page.goto(home);
     await expect(page.locator("html")).toHaveAttribute("data-home-ledger-seen", "true");
   });

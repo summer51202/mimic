@@ -243,6 +243,7 @@ test("selects the scene at 639/640 content pixels and renders the same geometry 
 
 test("reduced motion shows the new ledger result once and respects the shared pause setting", async ({ page, context }, info) => {
   const f = await fixture(context, info);
+  await f.record();
   const url = `/app?group=${f.group.id}`;
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(url);
@@ -288,6 +289,7 @@ for (const [width, height] of [[1920, 1080], [390, 844]]) {
     const video = page.video();
     try {
       const f = await fixture(context, info);
+      await f.record();
       const url = `/app?group=${f.group.id}`;
       await page.goto(url);
       const { room, pause } = controls(page);

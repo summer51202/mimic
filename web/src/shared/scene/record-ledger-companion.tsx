@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, type CSSProperties } from "react";
 import timing from "../../../public/pixel-ui/v1/motion/motion-timing.json";
 import { sceneAssetRoot } from "./geometry";
-import { homeActivityStorageKey, isNewerHomeActivity } from "./home-activity";
+import { homeActivityKey, homeActivityStorageKey, isNewerHomeActivity } from "./home-activity";
 import { drawFrame, loadSheet, playSceneFrames } from "./sprite";
 import { pauseKey, type SceneVariant } from "./use-scene-motion";
 import styles from "./record-ledger-companion.module.css";
@@ -71,7 +71,7 @@ export function useRecordLedgerCompanion() {
     };
   }, []);
 
-  function celebrate({ context, activityKey }: { context: string; activityKey: string }) {
+  function celebrate({ context, record }: { context: string; record: { created_at: string; id: string } }) {
     const host = container.current;
     if (!host || isPaused() || document.hidden || stop.current) return;
     const variant = currentVariant();
@@ -99,7 +99,7 @@ export function useRecordLedgerCompanion() {
         draw(0);
         stop.current = undefined;
       };
-      markActivitySeen(context, activityKey);
+      markActivitySeen(context, homeActivityKey(record.created_at, record.id));
     }
 
     if (layer.hasAttribute("data-loaded")) {

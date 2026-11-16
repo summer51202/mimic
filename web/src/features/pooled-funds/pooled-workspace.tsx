@@ -265,7 +265,7 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
           if (!result) return false;
           const { record } = result;
           closeExpense();
-          celebrate({ context: group.id, activityKey: `${record.occurred_on}/${record.id}` });
+          celebrate({ context: group.id, record });
           return true;
         }} />}
     </PixelDialog>
