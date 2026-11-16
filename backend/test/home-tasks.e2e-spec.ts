@@ -78,14 +78,51 @@ describe('participant-private home and task projections', () => {
       payers: [{ user_id: f.users[0].id, amount_minor: '9007199254740993' }],
       allocations: [{ user_id: f.users[0].id, amount_minor: '1' }, { user_id: f.users[1].id, amount_minor: '9007199254740992' }],
     }).expect(201)).body.data.record;
-    await f.call('post', `/spaces/${personal.id}/personal-references`, 1)
-      .send({ request_id: randomUUID(), source_expense_id: source.id }).expect(201);
+    const { reference } = (await f.call('post', `/spaces/${personal.id}/personal-references`, 1)
+      .send({ request_id: randomUUID(), source_expense_id: source.id }).expect(201)).body.data;
 
     const home = (await f.call('get', '/home', 1).expect(200)).body.data;
     expect(home.cards).toEqual(expect.arrayContaining([expect.objectContaining({
       id: personal.id, mode: 'PERSONAL_EXPENSES', spending_minor: '9007199254740992',
       recent_activity: [expect.objectContaining({ title: 'Exact linked expense', amount_minor: '9007199254740992' })],
+      latest_recorded: { id: reference.id, recorded_at: reference.created_at },
     })]));
+    const groupHome = (await f.call('get', `/home?group_id=${f.groupId}`, 1).expect(200)).body.data;
+    expect(groupHome.cards.find((card: { id: string }) => card.id === shared.id)).toMatchObject({
+      latest_recorded: { id: source.id, recorded_at: source.created_at },
+    });
+  });
+
+  it('projects the latest creation independently of expense date, edit and deletion', async () => {
+    const personal = (await f.call('post', '/me/spaces')
+      .send({ name: 'Creation order', mode: 'PERSONAL_EXPENSES' }).expect(201)).body.data;
+    const root = `/spaces/${personal.id}/personal-expenses`;
+    const card = async () => (await f.call('get', '/home').expect(200)).body.data.cards
+      .find((item: { id: string }) => item.id === personal.id);
+    const input = (title: string, occurred_on = personal.opened_on) => ({
+      request_id: randomUUID(), title, occurred_on, amount_minor: '100',
+    });
+    const record = async (title: string, date?: string) => (await f.call('post', root)
+      .send(input(title, date)).expect(201)).body.data.record;
+    const recorded = (row: { id: string; created_at: string }) => ({ id: row.id, recorded_at: row.created_at });
+
+    expect(await card()).toMatchObject({ latest_recorded: null, recent_activity: [] });
+    let previous;
+    for (let index = 0; index < 4; index++) {
+      previous = await record(`Same day ${index}`);
+      expect((await card()).latest_recorded).toEqual(recorded(previous));
+    }
+    const backdate = new Date(`${personal.opened_on}T00:00:00.000Z`);
+    backdate.setUTCDate(backdate.getUTCDate() - 30);
+    const backfill = await record('Backfill', backdate.toISOString().slice(0, 10));
+    const afterBackfill = await card();
+    expect(afterBackfill.latest_recorded).toEqual(recorded(backfill));
+    expect(afterBackfill.recent_activity).toHaveLength(3);
+    expect(afterBackfill.recent_activity.map((item: { id: string }) => item.id)).not.toContain(backfill.id);
+    await f.call('patch', `${root}/${backfill.id}`).send({ ...input('Edited backfill', backfill.occurred_on), version: 1 }).expect(200);
+    expect((await card()).latest_recorded).toEqual(recorded(backfill));
+    await f.call('post', `${root}/${backfill.id}/delete`).send({ request_id: randomUUID(), version: 2 }).expect(200);
+    expect((await card()).latest_recorded).toEqual(recorded(previous));
   });
 
   it('maps reimbursement and shared-transfer send/receive tasks to the responsible actor', async () => {

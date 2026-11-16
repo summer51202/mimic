@@ -9,6 +9,15 @@ import { HomeCard, ParticipantHomeCard } from './home.types';
 type Tx = Prisma.TransactionClient;
 type ParticipantSpace = FinancialSpace & { participants: Array<{ role: 'MANAGER' | 'PARTICIPANT'; effectiveFrom: Date }> };
 
+function latestRecorded(rows: ReadonlyArray<{ id: string; createdAt: Date }>): ParticipantHomeCard['latest_recorded'] {
+  let latest: (typeof rows)[number] | undefined;
+  for (const row of rows) {
+    if (!latest || row.createdAt > latest.createdAt ||
+      (row.createdAt.getTime() === latest.createdAt.getTime() && row.id > latest.id)) latest = row;
+  }
+  return latest ? { id: latest.id, recorded_at: latest.createdAt.toISOString() } : null;
+}
+
 @Injectable()
 export class HomeService {
   constructor(private readonly prisma: PrismaService, private readonly spaces: FinancialSpacesService) {}
@@ -143,7 +152,7 @@ export class HomeService {
           return source.mode === 'SHARED_EXPENSES' && source.currency === space.currency
             && participant?.user.status === 'ACTIVE' && participant.effectiveFrom <= this.spaces.today(source.timezone)
             && source.group?.members.length === 1;
-        }).map((reference) => ({ id: reference.id, title: reference.sourceExpense.title,
+        }).map((reference) => ({ id: reference.id, createdAt: reference.createdAt, title: reference.sourceExpense.title,
           occurredOn: reference.sourceExpense.occurredOn, amountMinor: reference.sourceExpense.sharedAllocations[0]?.amountMinor ?? 0n,
           categoryId: reference.sourceExpense.categoryId, category: reference.sourceExpense.category }));
         const personalRows = [...rows, ...linked].sort((a, b) => b.occurredOn.getTime() - a.occurredOn.getTime() || b.id.localeCompare(a.id));
@@ -156,13 +165,15 @@ export class HomeService {
         return { access: 'PARTICIPANT', id: space.id, name: space.name, mode: space.mode, currency: space.currency, status: space.status,
           month, spending_minor: current.reduce((sum, row) => sum + row.amountMinor, 0n).toString(), recent_categories: [...categories]
             .map(([category_id, item]) => ({ category_id, category_name: item.category_name, spending_minor: item.spending.toString() }))
-            .sort((a, b) => BigInt(a.spending_minor) > BigInt(b.spending_minor) ? -1 : 1).slice(0, 3), recent_activity: recent };
+            .sort((a, b) => BigInt(a.spending_minor) > BigInt(b.spending_minor) ? -1 : 1).slice(0, 3), recent_activity: recent,
+          latest_recorded: latestRecorded(personalRows) };
       }
       if (space.mode === 'SHARED_EXPENSES') {
         const values = shared.get(space.id) ?? { spending: 0n, position: 0n };
         const batch = pendingBatches.find((row) => row.spaceId === space.id);
         return { access: 'PARTICIPANT', id: space.id, name: space.name, mode: space.mode, currency: space.currency, status: space.status,
           spending_minor: values.spending.toString(), current_user_position_minor: values.position.toString(), recent_activity: recent,
+          latest_recorded: latestRecorded(rows),
           pending_batch: batch ? { id: batch.id, period_end: batch.periodEnd.toISOString().slice(0, 10) } : null };
       }
       const summary = pooled.get(space.id) ?? { bookBalance: 0n, pendingReimbursement: 0n, availableBalance: 0n, shortfall: 0n };
@@ -172,6 +183,7 @@ export class HomeService {
       return { access: 'PARTICIPANT', id: space.id, name: space.name, mode: space.mode, currency: space.currency, status: space.status,
         book_balance_minor: summary.bookBalance.toString(), pending_reimbursement_minor: summary.pendingReimbursement.toString(),
         available_balance_minor: summary.availableBalance.toString(), shortfall_minor: summary.shortfall.toString(), recent_activity: recent,
+        latest_recorded: latestRecorded(rows),
         next_occurrence: next && due ? { id: next.id, due_on: due, amount_minor: next.amountMinor.toFixed(0),
           timing: due < today ? 'OVERDUE' : due === today ? 'DUE' : 'UPCOMING' } : null };
     });

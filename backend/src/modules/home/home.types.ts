@@ -15,6 +15,7 @@ export interface GovernanceHomeCard {
 export interface ParticipantHomeCardBase {
   access: 'PARTICIPANT'; id: string; name: string; currency: string;
   status: FinancialSpaceStatus; recent_activity: HomeActivity[];
+  latest_recorded: { id: string; recorded_at: string } | null;
 }
 
 export type ParticipantHomeCard = ParticipantHomeCardBase & (
