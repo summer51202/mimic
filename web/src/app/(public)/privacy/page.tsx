@@ -1,28 +1,30 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import styles from "@/shared/brand/hero.module.css";
-import { POLICY_EFFECTIVE_DATE, publicCopy } from "@/shared/brand/public-copy";
+import { POLICY_EFFECTIVE_DATE } from "@/shared/brand/public-copy";
 
-export const metadata: Metadata = {
-  title: "隱私權 | mimic",
-  description: "mimic 預發布版本隱私權說明。",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("landing.policy.privacy");
+  return { title: t("metaTitle"), description: t("metaDescription") };
+}
 
-export default function PrivacyPage() {
+export default async function PrivacyPage() {
+  const t = await getTranslations("landing.policy");
   return (
     <section className={styles.contentPage} aria-labelledby="privacy-title">
-      <p className={styles.policyBadge}>預發布版本</p>
+      <p className={styles.policyBadge}>{t("badge")}</p>
       <h1 id="privacy-title" className={styles.pageTitle}>
-        隱私權說明
+        {t("privacy.title")}
       </h1>
-      <p className={styles.pageLead}>{publicCopy.policy.privacyStatus}</p>
+      <p className={styles.pageLead}>{t("privacy.lead")}</p>
       <dl className={styles.policyFacts}>
         <div>
-          <dt>生效日期</dt>
+          <dt>{t("effective")}</dt>
           <dd>{POLICY_EFFECTIVE_DATE}</dd>
         </div>
         <div>
-          <dt>目前狀態</dt>
-          <dd>上線前草稿，僅用於標示未來政策頁位置。</dd>
+          <dt>{t("status")}</dt>
+          <dd>{t("privacy.draft")}</dd>
         </div>
       </dl>
     </section>

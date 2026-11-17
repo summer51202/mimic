@@ -86,3 +86,17 @@
     align-items: center;
   }
 }
+
+.language {
+  min-width: 0;
+  padding: var(--mimic-space-3);
+  border: 2px solid var(--mimic-color-line);
+}
+
+.language label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mimic-space-2);
+  min-height: 44px;
+  margin-inline-end: var(--mimic-space-4);
+}

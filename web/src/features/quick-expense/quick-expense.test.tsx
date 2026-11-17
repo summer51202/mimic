@@ -10,7 +10,7 @@ afterEach(() => {
 });
 const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, '0')}`;
 const card = (mode: 'PERSONAL_EXPENSES' | 'SHARED_EXPENSES' | 'POOLED_FUND', n: number): Extract<HomeCard, { access: 'PARTICIPANT' }> => {
-  const base = { access: 'PARTICIPANT' as const, id: id(n), name: `${mode}-${n}`, currency: 'TWD', status: 'ACTIVE' as const, recent_activity: [] };
+  const base = { access: 'PARTICIPANT' as const, id: id(n), name: `${mode}-${n}`, currency: 'TWD', status: 'ACTIVE' as const, recent_activity: [], latest_recorded: null };
   if (mode === 'PERSONAL_EXPENSES') return { ...base, mode, month: '2026-09', spending_minor: '0', recent_categories: [] };
   if (mode === 'SHARED_EXPENSES') return { ...base, mode, spending_minor: '0', current_user_position_minor: '0', pending_batch: null };
   return { ...base, mode, book_balance_minor: '0', pending_reimbursement_minor: '0', available_balance_minor: '0', shortfall_minor: '0', next_occurrence: null };

@@ -1,37 +1,25 @@
 import { hasSession } from "@/shared/auth/has-session";
 import { Hero } from "@/shared/brand/hero";
 import styles from "@/shared/brand/hero.module.css";
+import { getTranslations } from "next-intl/server";
 
-const signals = [
-  {
-    title: "共同基金",
-    text: "為共同目標建立基金，讓每筆出資與支出都回到同一個清楚的帳務脈絡。",
-  },
-  {
-    title: "彈性分帳",
-    text: "支援等分、比例、固定金額與混合分帳，也能保留多人付款的真實金流。",
-  },
-  {
-    title: "結算鎖定",
-    text: "完成結算後鎖定期間，修正用新交易補上，讓共同帳務不被回頭改寫。",
-  },
-];
+const signals = ["fund", "split", "lock"] as const;
 
 export default async function PublicHome() {
-  const authenticated = await hasSession();
+  const [authenticated, t] = await Promise.all([hasSession(), getTranslations("landing")]);
   return (
     <>
       <Hero authenticated={authenticated} />
       <section
         id="features"
         className={styles.nextBand}
-        aria-label="mimic 功能摘要"
+        aria-label={t("summary")}
       >
         <div className={styles.nextBandInner}>
           {signals.map((signal) => (
-            <article className={styles.signal} key={signal.title}>
-              <h2 className={styles.signalTitle}>{signal.title}</h2>
-              <p className={styles.signalText}>{signal.text}</p>
+            <article className={styles.signal} key={signal}>
+              <h2 className={styles.signalTitle}>{t(`signals.${signal}.title`)}</h2>
+              <p className={styles.signalText}>{t(`signals.${signal}.text`)}</p>
             </article>
           ))}
         </div>

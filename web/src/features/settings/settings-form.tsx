@@ -1,8 +1,10 @@
 "use client";
 
+import { useTranslations, type Messages } from "next-intl";
 import { type FormEvent, useRef, useState } from "react";
 
 import { AppClientError, appFetch } from "@/shared/api/app-fetch";
+import { LanguageSettings } from "@/shared/i18n/language-switch";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelField } from "@/shared/ui/pixel-field";
 import { PixelNotice } from "@/shared/ui/pixel-notice";
@@ -10,22 +12,20 @@ import { PixelNotice } from "@/shared/ui/pixel-notice";
 import { displayNameSchema, type SettingsProfile } from "./settings-schema";
 import styles from "./settings.module.css";
 
-const invalidDisplayName =
-  "Enter a display name between 1 and 100 characters.";
-
 interface SettingsFormProps {
   profile: SettingsProfile;
   onLogout?: (path: string) => void;
 }
 
 type Notice = {
-  message: string;
+  message: keyof Messages["settings"];
   variant: "error" | "success";
 };
 
 export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
+  const t = useTranslations("settings");
   const [displayName, setDisplayName] = useState(profile.display_name);
-  const [displayNameError, setDisplayNameError] = useState<string | null>(null);
+  const [displayNameInvalid, setDisplayNameInvalid] = useState(false);
   const [notice, setNotice] = useState<Notice | null>(null);
   const [saving, setSaving] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
@@ -42,13 +42,13 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
     const parsed = displayNameSchema.safeParse({ displayName });
 
     if (!parsed.success) {
-      setDisplayNameError(invalidDisplayName);
+      setDisplayNameInvalid(true);
       setNotice(null);
       displayNameRef.current?.focus();
       return;
     }
 
-    setDisplayNameError(null);
+    setDisplayNameInvalid(false);
     setNotice(null);
     setSaving(true);
 
@@ -58,7 +58,7 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
         method: "PATCH",
       });
       setDisplayName(result.data.display_name);
-      setNotice({ message: "Profile saved.", variant: "success" });
+      setNotice({ message: "saved", variant: "success" });
     } catch (error) {
       setNotice({ message: profileErrorMessage(error), variant: "error" });
     } finally {
@@ -70,7 +70,7 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
     if (navigator.clipboard?.writeText) {
       try {
         await navigator.clipboard.writeText(profile.mimic_id);
-        setNotice({ message: "Mimic ID copied.", variant: "success" });
+        setNotice({ message: "copied", variant: "success" });
         return;
       } catch {
         selectMimicId();
@@ -94,7 +94,7 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
 
     identity?.focus();
     setNotice({
-      message: "Mimic ID selected. Copy it from the page.",
+      message: "selected",
       variant: "success",
     });
   }
@@ -112,7 +112,7 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
       navigate(onLogout, "/login");
     } catch {
       setNotice({
-        message: "Unable to sign out right now. Please retry.",
+        message: "logoutError",
         variant: "error",
       });
       setLoggingOut(false);
@@ -122,54 +122,56 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
   return (
     <div className={styles.settingsContent}>
       {notice ? (
-        <PixelNotice variant={notice.variant}>{notice.message}</PixelNotice>
+        <PixelNotice variant={notice.variant}>{t(notice.message)}</PixelNotice>
       ) : null}
 
       <section className={styles.identity} aria-labelledby="account-identity-title">
         <div>
-          <p className={styles.kicker}>account identity</p>
-          <h2 id="account-identity-title">Your Mimic ID</h2>
-          <p>Use this stable ID to tell members apart when display names change.</p>
+          <p className={styles.kicker}>{t("identity")}</p>
+          <h2 id="account-identity-title">{t("idTitle")}</h2>
+          <p>{t("idHelp")}</p>
         </div>
         <div className={styles.mimicIdRow}>
           <code ref={mimicIdRef} className={styles.mimicId} tabIndex={-1}>
             {profile.mimic_id}
           </code>
           <PixelButton emphasis="secondary" onClick={copyMimicId} type="button">
-            Copy ID
+            {t("copyId")}
           </PixelButton>
         </div>
       </section>
 
       <form className={styles.form} noValidate onSubmit={saveProfile}>
         <PixelField
-          label="Email"
+          label={t("email")}
           name="email"
           readOnly
           value={profile.email}
         />
         <PixelField
           ref={displayNameRef}
-          error={displayNameError}
-          label="Display name"
+          error={displayNameInvalid ? t("invalidDisplayName") : undefined}
+          label={t("displayName")}
           maxLength={100}
           name="displayName"
           onChange={(event) => {
             setDisplayName(event.target.value);
-            setDisplayNameError(null);
+            setDisplayNameInvalid(false);
           }}
           required
           value={displayName}
         />
         <PixelButton disabled={saving || loggingOut} type="submit">
-          {saving ? "Saving..." : "Save changes"}
+          {t(saving ? "saving" : "save")}
         </PixelButton>
       </form>
 
+      <LanguageSettings className={styles.language} />
+
       <section className={styles.session} aria-labelledby="session-title">
         <div>
-          <h2 id="session-title">Session</h2>
-          <p>Sign out of Mimic on this device.</p>
+          <h2 id="session-title">{t("session")}</h2>
+          <p>{t("signoutInfo")}</p>
         </div>
         <PixelButton
           disabled={saving || loggingOut}
@@ -177,19 +179,19 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
           onClick={logout}
           type="button"
         >
-          {loggingOut ? "Signing out..." : "Sign out"}
+          {t(loggingOut ? "signingOut" : "signout")}
         </PixelButton>
       </section>
     </div>
   );
 }
 
-function profileErrorMessage(error: unknown): string {
+function profileErrorMessage(error: unknown): keyof Messages["settings"] {
   if (error instanceof AppClientError && error.status === 401) {
-    return "Your session expired. Sign in again, then retry.";
+    return "expired";
   }
 
-  return "The service is temporarily unavailable. Mimiku kept your changes.";
+  return "service";
 }
 
 function navigate(onLogout: SettingsFormProps["onLogout"], path: string) {

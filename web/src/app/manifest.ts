@@ -1,13 +1,15 @@
 import type { MetadataRoute } from "next";
 
-const tagline = "一起存，一起花，一起在異世界探險吧!";
+import { getLocale, getTranslations } from "next-intl/server";
+import { htmlLang } from "@/i18n/config";
 
-export default function manifest(): MetadataRoute.Manifest {
+export default async function manifest(): Promise<MetadataRoute.Manifest> {
+  const [locale, t] = await Promise.all([getLocale(), getTranslations()]);
   return {
-    name: "mimic",
-    short_name: "mimic",
-    description: `咪咪庫 / Mimiku - ${tagline}`,
-    lang: "zh-Hant",
+    name: t("brand.name"),
+    short_name: t("brand.name"),
+    description: t("pwa.manifestDescription", { speaker: t("brand.speaker"), tagline: t("brand.tagline") }),
+    lang: htmlLang(locale),
     start_url: "/",
     scope: "/",
     display: "standalone",

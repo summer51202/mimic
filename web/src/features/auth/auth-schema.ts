@@ -3,10 +3,10 @@ import { z } from "zod";
 const emailSchema = z
   .string()
   .trim()
-  .min(1, "請輸入電子郵件。")
-  .email("請輸入有效的電子郵件地址。");
+  .min(1, "emailRequired")
+  .email("emailInvalid");
 
-const passwordRequiredSchema = z.string().min(1, "請輸入密碼。");
+const passwordRequiredSchema = z.string().min(1, "passwordRequired");
 
 export const loginSchema = z.object({
   email: emailSchema,
@@ -14,9 +14,9 @@ export const loginSchema = z.object({
 });
 
 export const registerSchema = z.object({
-  displayName: z.string().trim().min(1, "請輸入顯示名稱。"),
+  displayName: z.string().trim().min(1, "displayNameRequired"),
   email: emailSchema,
-  password: z.string().min(6, "密碼至少需要 6 個字元。"),
+  password: z.string().min(6, "passwordTooShort"),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;

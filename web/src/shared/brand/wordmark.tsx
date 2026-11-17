@@ -5,11 +5,13 @@ type WordmarkElement = "div" | "span" | "p" | "h1" | "h2";
 
 type WordmarkProps<TElement extends WordmarkElement = "div"> = {
   as?: TElement;
+  subtitle?: string;
 } & Omit<ComponentPropsWithoutRef<TElement>, "children">;
 
 export function Wordmark<TElement extends WordmarkElement = "div">({
   as,
   className,
+  subtitle = `${brand.characterNameZh} / ${brand.characterNameEn}`,
   ...props
 }: WordmarkProps<TElement>) {
   const Component = (as ?? "div") as ElementType;
@@ -18,9 +20,7 @@ export function Wordmark<TElement extends WordmarkElement = "div">({
   return (
     <Component {...props} className={classes}>
       <span className="mimic-wordmark__product">{brand.productName}</span>
-      <span className="mimic-wordmark__character">
-        {brand.characterNameZh} / {brand.characterNameEn}
-      </span>
+      <span className="mimic-wordmark__character">{subtitle}</span>
     </Component>
   );
 }

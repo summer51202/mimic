@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { postToApi } from "@/shared/api/server-api";
+import { syncLocaleAfterAuthentication } from "@/shared/i18n/locale-cookie";
 import {
   type AuthPayload,
   authRouteErrorResponse,
@@ -27,6 +28,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     const response = NextResponse.json({ user: payload.user });
 
     setAuthSessionCookies(response, payload);
+    await syncLocaleAfterAuthentication(request, response, payload);
 
     return response;
   } catch (error) {

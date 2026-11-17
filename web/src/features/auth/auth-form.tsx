@@ -1,11 +1,14 @@
 "use client";
 
+import { useLocale, useTranslations, type Messages } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { type FormEvent, useId, useMemo, useRef, useState } from "react";
+import { type FormEvent, useId, useRef, useState } from "react";
 import { ZodError } from "zod";
 
+import { LOCALE_COOKIE, resolveLocale } from "@/i18n/config";
+import { LanguageSwitch } from "@/shared/i18n/language-switch";
 import { pixelUiFiles, pixelUiRoles } from "@/shared/brand/pixel-ui-assets";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelPanel } from "@/shared/ui/pixel-panel";
@@ -21,7 +24,7 @@ import styles from "./auth-form.module.css";
 
 type AuthMode = "login" | "register";
 
-type FieldErrors = Partial<Record<"displayName" | "email" | "password", string>>;
+type FieldErrors = Partial<Record<"displayName" | "email" | "password", ValidationKey>>;
 
 type AuthFormProps = {
   mode: AuthMode;
@@ -38,37 +41,28 @@ type AuthErrorBody = {
 
 const fallbackPath = "/app";
 
-const authErrorMessages: Record<string, string> = {
-  CSRF_INVALID:
-    "驗證已過期，請重新送出一次。咪咪庫會幫你重新確認安全狀態。",
-  EMAIL_ALREADY_REGISTERED:
-    "這個電子郵件已經註冊，請改用登入。咪咪庫幫你守住原本填好的資料。",
-  INVALID_CREDENTIALS:
-    "請重新檢查電子郵件和密碼。咪咪庫會在這裡陪你再試一次。",
-  INVALID_JSON:
-    "資料格式暫時無法送出，請重新整理後再試。咪咪庫先幫你停一下。",
-  UPSTREAM_UNAVAILABLE:
-    "服務暫時沒有回應，請稍後再送出一次。咪咪庫先幫你保留表單內容。",
-  VALIDATION_ERROR:
-    "資料有欄位需要調整，請檢查後再送出。咪咪庫正在旁邊看著。",
-};
+const authErrorKeys = ["CSRF_INVALID", "EMAIL_ALREADY_REGISTERED", "INVALID_CREDENTIALS", "INVALID_JSON",
+  "UPSTREAM_UNAVAILABLE", "VALIDATION_ERROR"] as const;
+type AuthErrorKey = keyof Messages["auth"]["errors"];
+type ValidationKey = keyof Messages["auth"]["validation"];
 
 export function AuthForm({ mode, returnTo }: AuthFormProps) {
+  const locale = useLocale();
+  const t = useTranslations();
   const router = useRouter();
   const formId = useId();
   const passwordRef = useRef<HTMLInputElement>(null);
   const isSubmittingRef = useRef(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
-  const [formError, setFormError] = useState<string | null>(null);
+  const [formError, setFormError] = useState<AuthErrorKey | null>(null);
   const [hasAuthError, setHasAuthError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const copy = useMemo(() => authCopy[mode], [mode]);
   const formErrorId = `${formId}-form-error`;
   const emailErrorId = `${formId}-email-error`;
   const passwordErrorId = `${formId}-password-error`;
   const displayNameErrorId = `${formId}-display-name-error`;
-  const switchHref = buildSwitchHref(copy.switchHref, returnTo);
+  const switchHref = buildSwitchHref(mode === "login" ? "/register" : "/login", returnTo);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -109,11 +103,19 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
         throw new AuthSubmissionError(await readAuthErrorCode(response));
       }
 
-      router.replace(validatedReturnTo(returnTo));
+      const destination = validatedReturnTo(returnTo);
+      const preference = document.cookie.split(";").map((entry) => entry.trim())
+        .find((entry) => entry.startsWith(`${LOCALE_COOKIE}=`));
+      const persistedLocale = resolveLocale(preference?.slice(LOCALE_COOKIE.length + 1));
+      if (persistedLocale !== locale) {
+        window.location.replace(destination);
+      } else {
+        router.replace(destination);
+      }
     } catch (error) {
       setHasAuthError(true);
       clearPassword();
-      setFormError(messageForError(error));
+      setFormError(keyForError(error));
     } finally {
       isSubmittingRef.current = false;
       setIsSubmitting(false);
@@ -138,9 +140,7 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
                 : pixelUiFiles.characters.idle
             }
             alt={
-              hasAuthError
-                ? "咪咪庫正在認真確認登入狀態"
-                : "咪咪庫在入口等你"
+              t(hasAuthError ? "auth.altError" : "auth.alt")
             }
             width={512}
             height={512}
@@ -150,12 +150,12 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
         </div>
 
         <div className={styles.content}>
-          <p className={styles.kicker}>咪咪庫 / Mimiku</p>
+          <p className={styles.kicker}>{t("brand.speaker")}</p>
           <h1 id={`${formId}-title`} className={styles.title}>
-            {copy.title}
+            {t(`auth.${mode}.title`)}
           </h1>
           <p className={styles.description} id={`${formId}-description`}>
-            {copy.description}
+            {t(`auth.${mode}.description`)}
           </p>
 
           {formError ? (
@@ -165,7 +165,7 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
               role="alert"
               aria-live="polite"
             >
-              {formError}
+              {t(`auth.errors.${formError}`)}
             </div>
           ) : null}
 
@@ -180,10 +180,10 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
             {mode === "register" ? (
               <Field
                 autoComplete="name"
-                error={fieldErrors.displayName}
+                error={fieldErrors.displayName ? t(`auth.validation.${fieldErrors.displayName}`) : undefined}
                 errorId={displayNameErrorId}
                 id={`${formId}-display-name`}
-                label="顯示名稱"
+                label={t("auth.displayName")}
                 name="displayName"
                 type="text"
               />
@@ -191,10 +191,10 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
 
             <Field
               autoComplete="email"
-              error={fieldErrors.email}
+              error={fieldErrors.email ? t(`auth.validation.${fieldErrors.email}`) : undefined}
               errorId={emailErrorId}
               id={`${formId}-email`}
-              label="電子郵件"
+              label={t("auth.email")}
               name="email"
               type="email"
             />
@@ -203,12 +203,12 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
               autoComplete={
                 mode === "login" ? "current-password" : "new-password"
               }
-              description={mode === "register" ? "至少 6 個字元。" : undefined}
-              error={fieldErrors.password}
+              description={mode === "register" ? t("auth.passwordHint") : undefined}
+              error={fieldErrors.password ? t(`auth.validation.${fieldErrors.password}`) : undefined}
               errorId={passwordErrorId}
               id={`${formId}-password`}
               inputRef={passwordRef}
-              label="密碼"
+              label={t("auth.password")}
               name="password"
               type="password"
             />
@@ -218,13 +218,14 @@ export function AuthForm({ mode, returnTo }: AuthFormProps) {
               disabled={isSubmitting}
               type="submit"
             >
-              {isSubmitting ? copy.submittingLabel : copy.submitLabel}
+              {t(`auth.${mode}.${isSubmitting ? "submittingLabel" : "submitLabel"}`)}
             </PixelButton>
           </form>
 
           <p className={styles.switchPrompt}>
-            {copy.switchPrompt}{" "}
-            <Link href={switchHref}>{copy.switchLabel}</Link>
+            {t(`auth.${mode}.switchPrompt`)}{" "}
+            <Link href={switchHref}>{t(`auth.${mode}.switchLabel`)}</Link>{" "}
+            <LanguageSwitch className={styles.languageSwitch} />
           </p>
         </div>
       </PixelPanel>
@@ -336,7 +337,7 @@ function fieldErrorsFromZod(error: ZodError): FieldErrors {
       (field === "displayName" || field === "email" || field === "password") &&
       !fieldErrors[field]
     ) {
-      fieldErrors[field] = issue.message;
+      fieldErrors[field] = issue.message as ValidationKey;
     }
   }
 
@@ -391,12 +392,12 @@ async function readAuthErrorCode(response: Response): Promise<string> {
   return "UPSTREAM_UNAVAILABLE";
 }
 
-function messageForError(error: unknown): string {
+function keyForError(error: unknown): AuthErrorKey {
   if (error instanceof AuthSubmissionError) {
-    return authErrorMessages[error.code] ?? authErrorMessages.UPSTREAM_UNAVAILABLE;
+    return authErrorKeys.find((key) => key === error.code) ?? "UPSTREAM_UNAVAILABLE";
   }
 
-  return "連線暫時失敗，請稍後再送出一次。咪咪庫先把密碼欄清空，其他資料已保留。";
+  return "network";
 }
 
 function validatedReturnTo(returnTo: string | null | undefined): string {
@@ -418,24 +419,3 @@ class AuthSubmissionError extends Error {
     super(code);
   }
 }
-
-const authCopy = {
-  login: {
-    description: "登入後繼續整理你的 mimic 共享紀錄。",
-    submitLabel: "登入 mimic",
-    submittingLabel: "登入中...",
-    switchHref: "/register",
-    switchLabel: "建立帳號",
-    switchPrompt: "還沒有帳號嗎？",
-    title: "登入 mimic",
-  },
-  register: {
-    description: "建立帳號後，咪咪庫會幫你接住共享紀錄的第一步。",
-    submitLabel: "建立帳號",
-    submittingLabel: "建立中...",
-    switchHref: "/login",
-    switchLabel: "前往登入",
-    switchPrompt: "已經有帳號了？",
-    title: "建立 mimic 帳號",
-  },
-} as const;

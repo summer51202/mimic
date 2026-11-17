@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { PixelDialogue } from "@/shared/ui/pixel-dialogue";
 import { sceneFit, sceneImageRendering } from "../scene/geometry";
 import { ScenePauseButton } from "../scene/scene-pause-button";
-import { brand } from "./brand";
+import { useTranslations } from "next-intl";
 import { useLandingAnimation } from "./landing-animation";
 import { useLandingInteractions } from "./landing-interactions";
 import { LandingRoom } from "./landing-room";
@@ -27,6 +27,7 @@ function nearestSnap(viewport: HTMLElement) {
 }
 
 export function LandingStage({ authenticated }: { authenticated: boolean }) {
+  const t = useTranslations();
   const stageRef = useRef<HTMLDivElement>(null);
   const dialogueRef = useRef<HTMLDivElement>(null);
   const textScaleRef = useRef<HTMLSpanElement>(null);
@@ -123,21 +124,21 @@ export function LandingStage({ authenticated }: { authenticated: boolean }) {
       <LandingRoom name="desktop" interactions={interactions} />
       <LandingRoom name="phone" interactions={interactions} />
       <div className={styles.arrows}>
-        <button type="button" className={styles.control} aria-label="往左探索" aria-disabled={segment === 0}
+        <button type="button" className={styles.control} aria-label={t("landing.exploreLeft")} aria-disabled={segment === 0}
           onClick={() => { if (segment !== 0) explore(-1); }}>◀</button>
-        <button type="button" className={styles.control} aria-label="往右探索" aria-disabled={segment === 2}
+        <button type="button" className={styles.control} aria-label={t("landing.exploreRight")} aria-disabled={segment === 2}
           onClick={() => { if (segment !== 2) explore(1); }}>▶</button>
       </div>
       <span ref={textScaleRef} className={styles.textScale} aria-hidden="true" />
       <div ref={dialogueRef} className={styles.dialogueBox}>
         <PixelDialogue
-          speaker={`${brand.characterNameZh} / ${brand.characterNameEn}`}
+          speaker={t("brand.speaker")}
           actions={<Link className={styles.cta} href={authenticated ? "/app" : "/register"}>
-            {authenticated ? "返回基地" : "開始冒險"}
+            {t(authenticated ? "landing.base" : "landing.start")}
           </Link>}
         >
           <p className={styles.line}>
-            {!interactions.line && <span>{brand.tagline}</span>}
+            {!interactions.line && <span>{t("brand.tagline")}</span>}
             <span aria-live="polite" aria-atomic="true">
               {interactions.line && <span key={interactions.line.id}>{interactions.line.text}</span>}
             </span>

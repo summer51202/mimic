@@ -1,4 +1,5 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, screen, waitFor } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import userEvent from "@testing-library/user-event";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -208,11 +209,11 @@ describe("InviteAcceptPanel", () => {
   it("renders login and register links for logged-out users", () => {
     render(<InviteAcceptPanel authenticated={false} code="abcDEF123_-4" />);
 
-    expect(screen.getByRole("link", { name: "Log in to accept" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "登入以接受邀請" })).toHaveAttribute(
       "href",
       "/login?returnTo=%2Finvite%2FabcDEF123_-4",
     );
-    expect(screen.getByRole("link", { name: "Create account" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "建立帳號" })).toHaveAttribute(
       "href",
       "/register?returnTo=%2Finvite%2FabcDEF123_-4",
     );
@@ -231,7 +232,7 @@ describe("InviteAcceptPanel", () => {
     );
 
     expect(fetch).not.toHaveBeenCalled();
-    await user.click(screen.getByRole("button", { name: "Accept invite" }));
+    await user.click(screen.getByRole("button", { name: "接受邀請" }));
 
     await waitFor(() =>
       expect(onSuccess).toHaveBeenCalledWith("/app/groups/group_1"),
@@ -261,9 +262,9 @@ describe("InviteAcceptPanel", () => {
 
     render(<InviteAcceptPanel authenticated code="abcDEF123_-4" />);
 
-    await user.click(screen.getByRole("button", { name: "Accept invite" }));
+    await user.click(screen.getByRole("button", { name: "接受邀請" }));
     const submit = await screen.findByRole("button", {
-      name: "Accepting...",
+      name: "接受邀請中...",
     });
     expect(submit).toBeDisabled();
 
@@ -288,7 +289,7 @@ describe("InviteAcceptPanel", () => {
       const user = userEvent.setup();
       render(<InviteAcceptPanel authenticated code="abcDEF123_-4" />);
 
-      await user.click(screen.getByRole("button", { name: "Accept invite" }));
+      await user.click(screen.getByRole("button", { name: "接受邀請" }));
 
       expect(await screen.findByText(message)).toBeVisible();
     }

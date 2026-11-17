@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 

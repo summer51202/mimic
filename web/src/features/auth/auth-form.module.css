@@ -143,3 +143,15 @@
     font-size: 1.65rem;
   }
 }
+
+.languageSwitch {
+  display: inline-block;
+  min-height: 44px;
+  padding-inline: var(--mimic-space-2);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}

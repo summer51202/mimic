@@ -125,12 +125,12 @@ for (const viewport of viewports) {
         await create.finish();
       }
       await page.goto("/app/settings");
-      await page.getByRole("textbox", { name: "Display name" }).fill("Phase 2E test name");
+      await page.getByRole("textbox", { name: "顯示名稱" }).fill("Phase 2E test name");
       const save = await holdMutation(page, "**/api/app/me", "PATCH");
       try {
-        await page.getByRole("button", { name: "Save changes" }).click();
+        await page.getByRole("button", { name: "儲存變更" }).click();
         await save.started;
-        for (const name of ["Saving...", "Sign out"]) {
+        for (const name of ["儲存中...", "登出"]) {
           const button = page.getByRole("button", { name, exact: true });
           await expect(button).toBeDisabled();
           await expectDisabledStyle(button, light);

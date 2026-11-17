@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { hasSession } from "@/shared/auth/has-session";
@@ -10,10 +11,10 @@ vi.mock("@/shared/auth/has-session", () => ({
 
 import PublicHome from "./page";
 import PublicLayout from "./layout";
-import FeaturesPage, { metadata as featuresMetadata } from "./features/page";
-import InvitePage, { metadata as inviteMetadata } from "./invite/[code]/page";
-import PrivacyPage, { metadata as privacyMetadata } from "./privacy/page";
-import TermsPage, { metadata as termsMetadata } from "./terms/page";
+import FeaturesPage, { generateMetadata as featuresMetadata } from "./features/page";
+import InvitePage, { generateMetadata as inviteMetadata } from "./invite/[code]/page";
+import PrivacyPage, { generateMetadata as privacyMetadata } from "./privacy/page";
+import TermsPage, { generateMetadata as termsMetadata } from "./terms/page";
 
 const metadataTitle = (metadata: { title?: unknown }) =>
   typeof metadata.title === "string" ? metadata.title : "";
@@ -37,19 +38,19 @@ afterEach(() => {
 });
 
 describe("public route metadata", () => {
-  it("exports unique mimic metadata titles for each public route", () => {
+  it("exports unique mimic metadata titles for each public route", async () => {
     const titles = [
-      metadataTitle(featuresMetadata),
-      metadataTitle(privacyMetadata),
-      metadataTitle(termsMetadata),
-      metadataTitle(inviteMetadata),
+      metadataTitle(await featuresMetadata()),
+      metadataTitle(await privacyMetadata()),
+      metadataTitle(await termsMetadata()),
+      metadataTitle(await inviteMetadata()),
     ];
 
     expect(titles).toEqual([
       "功能 | mimic",
       "隱私權 | mimic",
       "服務條款 | mimic",
-      "Invite | mimic",
+      "邀請 | mimic",
     ]);
     expect(new Set(titles).size).toBe(titles.length);
     expect(titles.every((title) => title.includes("mimic"))).toBe(true);
@@ -75,8 +76,8 @@ describe("public pages", () => {
     render(await PublicHome());
     expect(screen.getByRole("link", { name })).toHaveAttribute("href", href);
   });
-  it("renders the feature page with shared finance terminology", () => {
-    render(<FeaturesPage />);
+  it("renders the feature page with shared finance terminology", async () => {
+    render(await FeaturesPage());
 
     expect(
       screen.getByRole("heading", { level: 1, name: "mimic 功能" }),
@@ -87,9 +88,9 @@ describe("public pages", () => {
     expect(screen.getByRole("heading", { name: "結算鎖定" })).toBeInTheDocument();
   });
 
-  it("renders pre-release policy shells with the effective date", () => {
-    render(<PrivacyPage />);
-    render(<TermsPage />);
+  it("renders pre-release policy shells with the effective date", async () => {
+    render(await PrivacyPage());
+    render(await TermsPage());
 
     expect(screen.getAllByText("預發布版本")).toHaveLength(2);
     expect(screen.getAllByText("2026-07-23")).toHaveLength(2);
@@ -105,13 +106,13 @@ describe("public pages", () => {
       authenticated: false,
       code: "ABCD1234XYZ_",
     });
-    expect(screen.getByRole("heading", { name: "Join this shared money quest." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "加入這個共同理財任務" })).toBeInTheDocument();
     expect(screen.getByText("ABCD1234XYZ_")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Log in to accept" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "登入以接受邀請" })).toHaveAttribute(
       "href",
       "/login?returnTo=%2Finvite%2FABCD1234XYZ_",
     );
-    expect(screen.getByRole("link", { name: "Create account" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "建立帳號" })).toHaveAttribute(
       "href",
       "/register?returnTo=%2Finvite%2FABCD1234XYZ_",
     );
@@ -142,8 +143,8 @@ describe("public pages", () => {
       authenticated: true,
       code: "ABCD1234XYZ_",
     });
-    expect(screen.getByRole("button", { name: "Accept invite" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Log in to accept" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "接受邀請" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "登入以接受邀請" })).not.toBeInTheDocument();
   });
 
   it("renders a clear invalid invitation state for malformed codes", async () => {
@@ -158,9 +159,9 @@ describe("public pages", () => {
       authenticated: true,
       code: "",
     });
-    expect(screen.getByRole("heading", { name: "Join this shared money quest." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "加入這個共同理財任務" })).toBeInTheDocument();
     expect(screen.getByText("這個邀請不存在或已失效。")).toBeInTheDocument();
     expect(screen.queryByText("bad code!")).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: "Log in to accept" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "登入以接受邀請" })).not.toBeInTheDocument();
   });
 });

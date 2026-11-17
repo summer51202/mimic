@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
+import { render } from '@/test/render-with-intl';
 import { afterEach, describe, expect, it } from 'vitest';
 import { HomePage } from './home-page';
 
@@ -6,7 +7,7 @@ afterEach(cleanup);
 const id = '00000000-0000-4000-8000-000000000001';
 const response = { context: { kind: 'PERSONAL' as const }, generated_at: '2026-09-12T00:00:00.000Z', task_count: 2,
   cards: [{ access: 'PARTICIPANT' as const, id, name: '日常', mode: 'PERSONAL_EXPENSES' as const, currency: 'TWD' as const,
-    status: 'ACTIVE' as const, month: '2026-09', spending_minor: '9007199254740993', recent_categories: [], recent_activity: [] }] };
+    status: 'ACTIVE' as const, month: '2026-09', spending_minor: '9007199254740993', recent_categories: [], recent_activity: [], latest_recorded: null }] };
 
 describe('P6 home', () => {
   it('renders mode-specific meaning without a universal balance', () => {

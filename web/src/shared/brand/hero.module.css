@@ -49,9 +49,17 @@
   color: var(--mimic-color-dialogue-text);
 }
 
+.navLink:where(button) {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
 .navLink:hover { text-decoration: underline; }
 
-.siteHeader a:focus-visible {
+.siteHeader :is(a, button):focus-visible {
   outline: 3px solid var(--mimic-color-focus);
   outline-offset: -3px;
 }
@@ -372,7 +380,7 @@
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 544px) {
   .brandLink :global(.mimic-wordmark__character) {
     display: none;
   }
@@ -390,7 +398,9 @@
     padding: 0 0.45rem;
     font-size: 0.9rem;
   }
+}
 
+@media (max-width: 380px) {
   .title {
     font-size: 2.6rem;
   }

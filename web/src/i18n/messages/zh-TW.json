@@ -1,0 +1,241 @@
+{
+  "brand": {
+    "name": "mimic",
+    "description": "mimic 財務空間",
+    "speaker": "咪咪庫 / Mimiku",
+    "character": "咪咪庫",
+    "tagline": "一起存，一起花，一起在異世界探險吧!"
+  },
+  "common": {
+    "features": "功能",
+    "home": "回首頁"
+  },
+  "language": {
+    "target": "English",
+    "legend": "語言",
+    "changed": "語言已切換為中文。",
+    "deviceOnly": "只在這台裝置生效，稍後會再同步。",
+    "traditionalChinese": "中文（繁體）",
+    "english": "English"
+  },
+  "nav": {
+    "header": {
+      "label": "主要導覽",
+      "base": "返回基地",
+      "login": "登入"
+    },
+    "home": "首頁",
+    "chests": "我的寶箱",
+    "parties": "共同群組",
+    "quests": "任務",
+    "settings": "設定",
+    "comingSoon": "{label}（即將推出）"
+  },
+  "landing": {
+    "exploreLeft": "往左探索",
+    "exploreRight": "往右探索",
+    "scene": "洞窟場景，可左右捲動",
+    "base": "返回基地",
+    "start": "開始冒險",
+    "summary": "mimic 功能摘要",
+    "props": {
+      "chest": "舊寶箱",
+      "carving": "岩壁上的刻痕",
+      "bats": "蝙蝠",
+      "torch": "火把"
+    },
+    "lines": {
+      "open": "那是普通的寶箱，不是我親戚喔！",
+      "close": "還是蓋好比較安心。",
+      "carving": "這是⋯⋯很久以前的我？原來早就有冒險者陪著我了。",
+      "bats": "噓——牠們白天在睡覺啦。",
+      "torch": "小心火！我可是木頭做的⋯⋯"
+    },
+    "signals": {
+      "fund": {
+        "title": "共同基金",
+        "text": "為共同目標建立基金，讓每筆出資與支出都回到同一個清楚的帳務脈絡。"
+      },
+      "split": {
+        "title": "彈性分帳",
+        "text": "支援等分、比例、固定金額與混合分帳，也能保留多人付款的真實金流。"
+      },
+      "lock": {
+        "title": "結算鎖定",
+        "text": "完成結算後鎖定期間，修正用新交易補上，讓共同帳務不被回頭改寫。"
+      }
+    },
+    "features": {
+      "metaTitle": "功能 | mimic",
+      "metaDescription": "mimic 的共同基金、出資、支出分帳與結算鎖定功能。",
+      "title": "mimic 功能",
+      "alt": "咪咪庫正在整理共同基金與分帳紀錄",
+      "fund": {
+        "title": "共同基金",
+        "body": "為旅行、房租、約會、寵物照護或任何共同目標建立基金。每一筆收支都歸屬到指定基金，讓餘額、用途與責任邊界保持清楚。"
+      },
+      "contribution": {
+        "title": "出資紀錄",
+        "body": "記錄定期出資、一次性出資、調整與更正。mimic 以實際入金與成員分攤建立部位，方便追蹤誰已多付、誰仍需補足。"
+      },
+      "split": {
+        "title": "支出分帳",
+        "body": "支援等分、比例、固定金額與混合分帳，也能記錄多人付款。每筆支出會拆成付款人與分攤人，保留真實的金流脈絡。"
+      },
+      "lock": {
+        "title": "結算鎖定",
+        "body": "完成結算後，該期間會被鎖定，不能回頭修改舊交易。若發現錯誤，請用新的更正交易留下清楚的審計軌跡。"
+      }
+    },
+    "policy": {
+      "badge": "預發布版本",
+      "effective": "生效日期",
+      "status": "目前狀態",
+      "privacy": {
+        "title": "隱私權說明",
+        "metaTitle": "隱私權 | mimic",
+        "metaDescription": "mimic 預發布版本隱私權說明。",
+        "lead": "本頁是預發布版本的隱私權說明殼層，正式上線前會補齊資料處理、保留期間、第三方服務與使用者權利等內容。",
+        "draft": "上線前草稿，僅用於標示未來政策頁位置。"
+      },
+      "terms": {
+        "title": "服務條款",
+        "metaTitle": "服務條款 | mimic",
+        "metaDescription": "mimic 預發布版本服務條款。",
+        "lead": "本頁是預發布版本的服務條款殼層，正式上線前會補齊帳號、服務使用、責任限制、終止與準據法等內容。",
+        "draft": "上線前草稿，僅用於標示未來條款頁位置。"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "description": "登入後繼續整理你的 mimic 共享紀錄。",
+      "submitLabel": "登入 mimic",
+      "submittingLabel": "登入中...",
+      "switchLabel": "建立帳號",
+      "switchPrompt": "還沒有帳號嗎？",
+      "title": "登入 mimic"
+    },
+    "register": {
+      "description": "建立帳號後，咪咪庫會幫你接住共享紀錄的第一步。",
+      "submitLabel": "建立帳號",
+      "submittingLabel": "建立中...",
+      "switchLabel": "前往登入",
+      "switchPrompt": "已經有帳號了？",
+      "title": "建立 mimic 帳號"
+    },
+    "altError": "咪咪庫正在認真確認登入狀態",
+    "alt": "咪咪庫在入口等你",
+    "displayName": "顯示名稱",
+    "email": "電子郵件",
+    "password": "密碼",
+    "passwordHint": "至少 6 個字元。",
+    "validation": {
+      "emailRequired": "請輸入電子郵件。",
+      "emailInvalid": "請輸入有效的電子郵件地址。",
+      "passwordRequired": "請輸入密碼。",
+      "displayNameRequired": "請輸入顯示名稱。",
+      "passwordTooShort": "密碼至少需要 6 個字元。"
+    },
+    "errors": {
+      "CSRF_INVALID": "驗證已過期，請重新送出一次。咪咪庫會幫你重新確認安全狀態。",
+      "EMAIL_ALREADY_REGISTERED": "這個電子郵件已經註冊，請改用登入。咪咪庫幫你守住原本填好的資料。",
+      "INVALID_CREDENTIALS": "請重新檢查電子郵件和密碼。咪咪庫會在這裡陪你再試一次。",
+      "INVALID_JSON": "資料格式暫時無法送出，請重新整理後再試。咪咪庫先幫你停一下。",
+      "UPSTREAM_UNAVAILABLE": "服務暫時沒有回應，請稍後再送出一次。咪咪庫先幫你保留表單內容。",
+      "VALIDATION_ERROR": "資料有欄位需要調整，請檢查後再送出。咪咪庫正在旁邊看著。",
+      "network": "連線暫時失敗，請稍後再送出一次。咪咪庫先把密碼欄清空，其他資料已保留。"
+    }
+  },
+  "shell": {
+    "record": "記一筆支出",
+    "returnToLanding": "回到 mimic 入口頁",
+    "play": "播放動畫",
+    "pause": "暫停動畫"
+  },
+  "settings": {
+    "title": "設定",
+    "intro": "管理你的帳號與公開識別資訊。",
+    "kicker": "帳號",
+    "invalidDisplayName": "請輸入 1 至 100 個字元的顯示名稱。",
+    "saved": "已儲存個人資料。",
+    "copied": "已複製 Mimic ID。",
+    "selected": "已選取 Mimic ID，請從頁面複製。",
+    "logoutError": "目前無法登出，請再試一次。",
+    "identity": "帳號識別資訊",
+    "idTitle": "你的 Mimic ID",
+    "idHelp": "即使成員變更顯示名稱，也能用固定的 Mimic ID 辨認。",
+    "copyId": "複製 ID",
+    "email": "電子郵件",
+    "displayName": "顯示名稱",
+    "saving": "儲存中...",
+    "save": "儲存變更",
+    "session": "登入狀態",
+    "signoutInfo": "在這台裝置登出 mimic。",
+    "signingOut": "登出中...",
+    "signout": "登出",
+    "expired": "登入已過期，請重新登入後再試。",
+    "service": "服務暫時無法使用，咪咪庫已保留你的修改。"
+  },
+  "routeState": {
+    "forbidden": {
+      "title": "無法存取寶箱",
+      "message": "你沒有這個寶箱的存取權限。"
+    },
+    "not-found": {
+      "title": "找不到寶箱",
+      "message": "找不到這個寶箱。"
+    },
+    "unavailable": {
+      "title": "寶箱連線暫停",
+      "message": "咪咪庫暫時連不上寶箱，資料已妥善保管，請稍後再試。"
+    },
+    "unknown": {
+      "title": "發生錯誤",
+      "message": "咪咪庫開啟這個畫面時遇到了問題。"
+    },
+    "loading": {
+      "title": "正在開啟寶箱",
+      "message": "咪咪庫正在開啟寶箱…"
+    },
+    "sharedLoading": {
+      "title": "正在打開共同分帳寶箱…",
+      "message": "金額與位置確認完成前不會顯示推測值。"
+    },
+    "alt": "咪咪庫正在守衛",
+    "kicker": "mimic 復原紀錄",
+    "retry": "重試",
+    "return": "返回總覽",
+    "global": "發生錯誤，請重新整理後再試。"
+  },
+  "pwa": {
+    "offlineTitle": "mimic 離線中",
+    "offlineDocumentTitle": "mimic offline",
+    "manifestDescription": "{speaker} - {tagline}",
+    "updateTitle": "mimic 有新版本",
+    "updateDirty": "先保留目前輸入內容，完成或清空表單後再更新。",
+    "updateReady": "更新已準備好，可以切換到最新的離線外殼。",
+    "update": "更新"
+  },
+  "invite": {
+    "metaTitle": "邀請 | mimic",
+    "metaDescription": "接受 mimic 的私人共享帳務邀請。",
+    "kicker": "mimic 邀請",
+    "title": "加入這個共同理財任務",
+    "description": "咪咪庫在這裡只會確認邀請碼，接受前群組資訊會保持私密。",
+    "altClosed": "咪咪庫守著已關閉的邀請",
+    "alt": "咪咪庫拿著邀請",
+    "login": "登入以接受邀請",
+    "register": "建立帳號",
+    "accepting": "接受邀請中...",
+    "accept": "接受邀請",
+    "errors": {
+      "INVITE_NOT_FOUND": "這個邀請不存在或已失效。",
+      "INVITE_ALREADY_USED": "這個邀請已經使用過。",
+      "INVITE_EXPIRED": "這個邀請已過期，請管理者重新產生。",
+      "INVITE_EMAIL_MISMATCH": "請使用受邀的電子郵件帳號登入。",
+      "ALREADY_GROUP_MEMBER": "你已經是這個群組的成員。",
+      "unavailable": "服務暫時沒有回應，請稍後再送出一次。咪咪庫先幫你保留表單內容。"
+    }
+  }
+}

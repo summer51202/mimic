@@ -1,28 +1,30 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import styles from "@/shared/brand/hero.module.css";
-import { POLICY_EFFECTIVE_DATE, publicCopy } from "@/shared/brand/public-copy";
+import { POLICY_EFFECTIVE_DATE } from "@/shared/brand/public-copy";
 
-export const metadata: Metadata = {
-  title: "服務條款 | mimic",
-  description: "mimic 預發布版本服務條款。",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("landing.policy.terms");
+  return { title: t("metaTitle"), description: t("metaDescription") };
+}
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const t = await getTranslations("landing.policy");
   return (
     <section className={styles.contentPage} aria-labelledby="terms-title">
-      <p className={styles.policyBadge}>預發布版本</p>
+      <p className={styles.policyBadge}>{t("badge")}</p>
       <h1 id="terms-title" className={styles.pageTitle}>
-        服務條款
+        {t("terms.title")}
       </h1>
-      <p className={styles.pageLead}>{publicCopy.policy.termsStatus}</p>
+      <p className={styles.pageLead}>{t("terms.lead")}</p>
       <dl className={styles.policyFacts}>
         <div>
-          <dt>生效日期</dt>
+          <dt>{t("effective")}</dt>
           <dd>{POLICY_EFFECTIVE_DATE}</dd>
         </div>
         <div>
-          <dt>目前狀態</dt>
-          <dd>上線前草稿，僅用於標示未來條款頁位置。</dd>
+          <dt>{t("status")}</dt>
+          <dd>{t("terms.draft")}</dd>
         </div>
       </dl>
     </section>

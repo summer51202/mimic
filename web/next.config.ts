@@ -3,6 +3,9 @@ import { readFileSync } from "node:fs";
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 import withSerwistInit from "@serwist/next";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -55,7 +58,7 @@ const withSerwist = withSerwistInit({
   ],
 });
 
-export default withSentryConfig(withSerwist(nextConfig), {
+export default withSentryConfig(withSerwist(withNextIntl(nextConfig)), {
   org: process.env.SENTRY_ORG,
   project: process.env.SENTRY_PROJECT,
   silent: true,

@@ -1,29 +1,47 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { htmlLang } from "@/i18n/config";
 import { RegisterServiceWorker } from "@/shared/pwa/register-service-worker";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "mimic",
-  description: "mimic web application",
-  icons: {
-    icon: [16, 32].map((size) => ({
-      url: `/pixel-ui/v1/icons/install-warm/favicon-${size}.png`,
-      sizes: `${size}x${size}`,
-      type: "image/png",
-    })),
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("brand");
+  return {
+    title: t("name"),
+    description: t("description"),
+    icons: {
+      icon: [16, 32].map((size) => ({
+        url: `/pixel-ui/v1/icons/install-warm/favicon-${size}.png`,
+        sizes: `${size}x${size}`,
+        type: "image/png",
+      })),
+    },
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
+  const { auth, brand, common, invite, language, landing, nav, pwa, routeState, settings, shell } = messages;
   return (
-    <html lang="zh-Hant">
+    <html lang={htmlLang(locale)}>
       <body>
-        {children}
-        <RegisterServiceWorker />
+        <NextIntlClientProvider messages={{
+          auth, brand, common, invite, language, pwa, routeState, settings, shell,
+          nav: { home: nav.home, chests: nav.chests, parties: nav.parties, quests: nav.quests,
+            settings: nav.settings, comingSoon: nav.comingSoon },
+          landing: {
+            base: landing.base, start: landing.start, exploreLeft: landing.exploreLeft,
+            exploreRight: landing.exploreRight, props: landing.props, lines: landing.lines, scene: landing.scene,
+          },
+        }}>
+          {children}
+          <RegisterServiceWorker />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

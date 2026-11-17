@@ -286,7 +286,7 @@ export async function createInvite(
 }
 
 export async function registerFromInvite(page: Page, account: TestAccount) {
-  await page.getByRole("link", { name: "Create account" }).click();
+  await page.getByRole("link", { name: "建立帳號" }).click();
   await page.locator('input[name="displayName"]').fill(account.displayName);
   await page.locator('input[name="email"]').fill(account.email);
   await page.locator('input[name="password"]').fill(account.password);

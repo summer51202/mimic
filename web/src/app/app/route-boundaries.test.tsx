@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -142,12 +143,12 @@ describe("authenticated route boundaries", () => {
       <AppReadFailure error={new ApiError(403, "FORBIDDEN")} />,
     );
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "You do not have access to this treasury.",
+      "你沒有這個寶箱的存取權限。",
     );
 
     rerender(<AppReadFailure error={new ApiUnavailableError()} />);
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Mimiku cannot reach the treasury right now.",
+      "咪咪庫暫時連不上寶箱",
     );
   });
 
@@ -155,7 +156,7 @@ describe("authenticated route boundaries", () => {
     const user = userEvent.setup();
     render(<AppReadFailure error={new ApiUnavailableError()} />);
 
-    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await user.click(screen.getByRole("button", { name: "重試" }));
 
     expect(refreshMock).toHaveBeenCalledTimes(1);
   });
@@ -170,13 +171,13 @@ describe("authenticated route boundaries", () => {
     const reset = vi.fn();
     render(<AppError error={new Error("boom")} reset={reset} />);
 
-    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await user.click(screen.getByRole("button", { name: "重試" }));
 
     expect(reset).toHaveBeenCalledTimes(1);
     expect(captureExceptionMock).toHaveBeenCalledTimes(1);
     expect(captureExceptionMock).toHaveBeenCalledWith(expect.any(Error));
     expect(screen.queryByText("boom")).not.toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Return to overview" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "返回總覽" })).toHaveAttribute(
       "href",
       "/app",
     );
@@ -188,8 +189,8 @@ describe("authenticated route boundaries", () => {
 
     rerender(<AppNotFound />);
     const state = screen.getByRole("alert");
-    expect(state).toHaveTextContent("This treasury could not be found.");
-    expect(screen.getByRole("link", { name: "Return to overview" })).toHaveAttribute(
+    expect(state).toHaveTextContent("找不到這個寶箱。");
+    expect(screen.getByRole("link", { name: "返回總覽" })).toHaveAttribute(
       "href",
       "/app/groups",
     );
@@ -208,7 +209,7 @@ describe("authenticated route boundaries", () => {
     listGroupsMock.mockRejectedValue(new ApiUnavailableError());
     render(await AppPage({ searchParams: Promise.resolve({}) }));
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Mimiku cannot reach the treasury right now.",
+      "咪咪庫暫時連不上寶箱",
     );
     expect(loadHomeMock).not.toHaveBeenCalled();
   });
@@ -228,9 +229,9 @@ describe("authenticated route boundaries", () => {
     render(await AppPage({ searchParams: Promise.resolve({}) }));
 
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Mimiku cannot reach the treasury right now.",
+      "咪咪庫暫時連不上寶箱",
     );
-    expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "重試" })).toBeInTheDocument();
   });
 
   it("keeps the groups page success path and delegates 404 reads", async () => {
@@ -271,14 +272,14 @@ describe("authenticated route boundaries", () => {
     });
 
     render(await SettingsPage());
-    expect(screen.getByRole("heading", { name: "Settings" })).toBeVisible();
+    expect(screen.getByRole("heading", { name: "設定" })).toBeVisible();
     expect(screen.getByText("settings:MIMIC-2345-6789")).toBeVisible();
 
     cleanup();
     getSettingsProfileMock.mockRejectedValueOnce(new ApiUnavailableError());
     render(await SettingsPage());
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Mimiku cannot reach the treasury right now.",
+      "咪咪庫暫時連不上寶箱",
     );
   });
 

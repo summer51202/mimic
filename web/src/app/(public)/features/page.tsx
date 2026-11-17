@@ -1,31 +1,33 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { pixelUiFiles } from "@/shared/brand/pixel-ui-assets";
 import styles from "@/shared/brand/hero.module.css";
-import { publicCopy } from "@/shared/brand/public-copy";
+import { featureKeys } from "@/shared/brand/public-copy";
 
-export const metadata: Metadata = {
-  title: "功能 | mimic",
-  description: "mimic 的共同基金、出資、支出分帳與結算鎖定功能。",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("landing.features");
+  return { title: t("metaTitle"), description: t("metaDescription") };
+}
 
-export default function FeaturesPage() {
+export default async function FeaturesPage() {
+  const t = await getTranslations();
   return (
     <section className={styles.contentPage} aria-labelledby="features-title">
       <div className={styles.contentHero}>
         <div>
           <p className={styles.kicker}>
-            {publicCopy.characterNameZh} / {publicCopy.characterNameEn}
+            {t("brand.speaker")}
           </p>
           <h1 id="features-title" className={styles.pageTitle}>
-            mimic 功能
+            {t("landing.features.title")}
           </h1>
-          <p className={styles.pageLead}>{publicCopy.tagline}</p>
+          <p className={styles.pageLead}>{t("brand.tagline")}</p>
         </div>
         <Image
           className={`${styles.pageMascot} pixel-art`}
           src={pixelUiFiles.characters.thinking}
-          alt="咪咪庫正在整理共同基金與分帳紀錄"
+          alt={t("landing.features.alt")}
           width={512}
           height={512}
           sizes="(max-width: 760px) 9rem, 12rem"
@@ -34,10 +36,10 @@ export default function FeaturesPage() {
       </div>
 
       <div className={styles.featureGrid}>
-        {publicCopy.features.map((feature) => (
-          <article className={styles.featureItem} key={feature.title}>
-            <h2 className={styles.featureTitle}>{feature.title}</h2>
-            <p className={styles.featureText}>{feature.body}</p>
+        {featureKeys.map((feature) => (
+          <article className={styles.featureItem} key={feature}>
+            <h2 className={styles.featureTitle}>{t(`landing.features.${feature}.title`)}</h2>
+            <p className={styles.featureText}>{t(`landing.features.${feature}.body`)}</p>
           </article>
         ))}
       </div>

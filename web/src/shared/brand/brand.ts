@@ -1,6 +1,9 @@
+import zh from "@/i18n/messages/zh-TW.json";
+import en from "@/i18n/messages/en.json";
+
 export const brand = {
-  productName: "mimic",
-  characterNameZh: "咪咪庫",
-  characterNameEn: "Mimiku",
-  tagline: "一起存，一起花，一起在異世界探險吧!",
+  productName: zh.brand.name,
+  characterNameZh: zh.brand.character,
+  characterNameEn: en.brand.character,
+  tagline: zh.brand.tagline,
 } as const;

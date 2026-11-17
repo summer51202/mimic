@@ -155,23 +155,20 @@ test.describe("with the Phase 2H API", () => {
   });
 });
 
-test("loads Home from the actual 8089cc6 API with no playback or new cursor writes", async ({ context, page }, info) => {
-  test.skip(!oldBackend, "Run with tree A web and the unmodified 8089cc6 API");
+test("shows the existing Home error state without writing a cursor when latest_recorded is missing", async ({ context, page }, info) => {
+  test.skip(!info.project.metadata.phase2iMissingHome, "Run via playwright.phase-2i-missing-home.config.ts");
   const f = await personalFixture(context, info);
-  const first = await f.add("舊 API 支出");
-  await page.goto("/");
-  await page.evaluate(key => localStorage.setItem(key, "2026-11-12/old-id"), legacyKey);
-  await expectLedger(page, false);
-  await expect(page.getByRole("link", { name: /舊 API 支出 · 日常帳本/ })).toBeVisible();
-  expect(await readKey(page)).toBeNull();
-  expect(await readKey(page, legacyKey)).toBeNull();
-  const oldHome = await page.request.get("/api/app/home");
-  expect(oldHome.ok()).toBe(true);
-  expect((await oldHome.json()).data.cards[0]).not.toHaveProperty("latest_recorded");
+  await f.add("缺少最新記帳欄位測試");
+  const pageErrors: Error[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error));
 
-  await page.evaluate(([key, value]) => localStorage.setItem(key, value), [personalKey, keyFor(first)]);
-  await f.add("舊 API 新增支出");
-  await expectLedger(page, false);
-  await expect(page.getByRole("heading", { name: "日常帳本" })).toBeVisible();
-  expect(await readKey(page)).toBe(keyFor(first));
+  await page.goto("/app");
+  const errorState = page.getByRole("alert").filter({ has: page.getByRole("heading", { name: "發生錯誤" }) });
+  await expect(errorState).toBeVisible();
+  await expect(errorState.getByRole("button", { name: "重試" })).toBeVisible();
+  await expect(page.locator("[data-home-scene]")).toHaveCount(0);
+  expect(await page.evaluate(() =>
+    Object.keys(localStorage).filter((key) => key.startsWith("mimic.home.latest-recorded.")),
+  )).toEqual([]);
+  expect(pageErrors).toEqual([]);
 });

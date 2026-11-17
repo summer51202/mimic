@@ -1,15 +1,16 @@
+import { useTranslations } from "next-intl";
 import { boxStyle } from "../scene/geometry";
 import { Fragment } from "react";
 import type { CSSProperties } from "react";
 import { landingAssetRoot, landingScene, sceneLayers } from "./landing-scene";
 import { batFlightMs, landingMotion } from "./landing-motion";
-import { propNames, type LandingProp, type useLandingInteractions } from "./landing-interactions";
+import { propKeys, type LandingProp, type useLandingInteractions } from "./landing-interactions";
 import styles from "./landing-stage.module.css";
 
 type Variant = keyof typeof landingScene;
 
 function isProp(id: string): id is LandingProp {
-  return Object.hasOwn(propNames, id);
+  return propKeys.some((key) => key === id);
 }
 
 // Flame centers within the approved torch artwork, in logical pixels.
@@ -23,6 +24,7 @@ export function LandingRoom({ name, interactions }: {
   name: Variant;
   interactions: ReturnType<typeof useLandingInteractions>;
 }) {
+  const t = useTranslations();
   const scene = landingScene[name];
   const layers = sceneLayers(name);
   const phone = name === "phone";
@@ -35,7 +37,7 @@ export function LandingRoom({ name, interactions }: {
       className={styles.viewport}
       data-landing-viewport={name}
       role={phone ? "region" : undefined}
-      aria-label={phone ? "洞窟場景，可左右捲動" : undefined}
+      aria-label={phone ? t("landing.scene") : undefined}
       tabIndex={phone ? 0 : undefined}
       style={{
         "--stage-width": scene.width,
@@ -96,9 +98,9 @@ export function LandingRoom({ name, interactions }: {
               style: boxStyle(hit),
               "data-landing-target": id,
             };
-            if (!isProp(id)) return <a key={id} {...props} href="#features" aria-label="功能" />;
+            if (!isProp(id)) return <a key={id} {...props} href="#features" aria-label={t("common.features")} />;
             return (
-              <button key={id} {...props} type="button" aria-label={propNames[id]}
+              <button key={id} {...props} type="button" aria-label={t(`landing.props.${id === "torchHigh" || id === "torchLow" ? "torch" : id}`)}
                 aria-pressed={id === "chest" ? open : undefined}
                 data-chest-playing={id === "chest" && chestPlaying ? "" : undefined}
                 onClick={() => activate(id)}
@@ -106,7 +108,7 @@ export function LandingRoom({ name, interactions }: {
             );
           })}
         </div>
-        <span aria-hidden="true" data-sign-label className={styles.signLabel} style={boxStyle(scene.signLabel)}><span>功能</span></span>
+        <span aria-hidden="true" data-sign-label className={styles.signLabel} style={boxStyle(scene.signLabel)}><span>{t("common.features")}</span></span>
         {phone && [0, 1, 2].map((segment) => (
           <span key={segment} aria-hidden="true" data-snap={segment} className={styles.snap} />
         ))}

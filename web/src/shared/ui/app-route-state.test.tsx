@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -11,7 +12,7 @@ describe("AppRouteState", () => {
     render(<AppRouteState variant="unavailable" />);
 
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Mimiku cannot reach the treasury right now. Your data is safe. Try again in a moment.",
+      "咪咪庫暫時連不上寶箱，資料已妥善保管，請稍後再試。",
     );
   });
 
@@ -20,7 +21,7 @@ describe("AppRouteState", () => {
     const onRetry = vi.fn();
     render(<AppRouteState onRetry={onRetry} variant="unknown" />);
 
-    await user.click(screen.getByRole("button", { name: "Retry" }));
+    await user.click(screen.getByRole("button", { name: "重試" }));
 
     expect(onRetry).toHaveBeenCalledTimes(1);
   });
@@ -28,7 +29,7 @@ describe("AppRouteState", () => {
   it("links back to the overview", () => {
     render(<AppRouteState returnHref="/app" variant="forbidden" />);
 
-    expect(screen.getByRole("link", { name: "Return to overview" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "返回總覽" })).toHaveAttribute(
       "href",
       "/app",
     );
@@ -38,7 +39,7 @@ describe("AppRouteState", () => {
     render(<AppRouteState variant="loading" />);
 
     expect(screen.getByRole("status")).toHaveTextContent(
-      "Mimiku is opening the treasury...",
+      "咪咪庫正在開啟寶箱…",
     );
   });
 
@@ -48,7 +49,7 @@ describe("AppRouteState", () => {
     render(<AppRouteState returnHref="/app/groups" variant="not-found" />);
 
     const state = screen.getByRole("alert");
-    expect(state).toHaveTextContent("This treasury could not be found.");
+    expect(state).toHaveTextContent("找不到這個寶箱。");
     expect(state).not.toHaveTextContent(privateGroupId);
     expect(state).not.toHaveTextContent(privateFundId);
   });

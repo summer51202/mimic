@@ -1,0 +1,241 @@
+{
+  "brand": {
+    "name": "mimic",
+    "description": "mimic shared money space",
+    "speaker": "Mimiku",
+    "character": "Mimiku",
+    "tagline": "Save together, spend together, and adventure together in another world!"
+  },
+  "common": {
+    "features": "Features",
+    "home": "Return home"
+  },
+  "language": {
+    "target": "中文",
+    "legend": "Language",
+    "changed": "Language changed to English.",
+    "deviceOnly": "Applied on this device only. We'll sync it later.",
+    "traditionalChinese": "中文（繁體）",
+    "english": "English"
+  },
+  "nav": {
+    "header": {
+      "label": "Main navigation",
+      "base": "Base",
+      "login": "Log in"
+    },
+    "home": "Home",
+    "chests": "My Chests",
+    "parties": "Parties",
+    "quests": "Quests",
+    "settings": "Settings",
+    "comingSoon": "{label} (coming soon)"
+  },
+  "landing": {
+    "exploreLeft": "Explore left",
+    "exploreRight": "Explore right",
+    "scene": "Cave scene, scroll left or right",
+    "base": "Back to base",
+    "start": "Start adventure",
+    "summary": "mimic feature overview",
+    "props": {
+      "chest": "Old chest",
+      "carving": "Wall carving",
+      "bats": "Bats",
+      "torch": "Torch"
+    },
+    "lines": {
+      "open": "That's just a regular chest. No relation, I promise!",
+      "close": "Better keep the lid on. Feels safer.",
+      "carving": "Is this… me, long ago? Guess I've had adventurers with me all along.",
+      "bats": "Shh — they sleep during the day.",
+      "torch": "Careful with the fire! I'm made of wood, you know…"
+    },
+    "signals": {
+      "fund": {
+        "title": "Pooled funds",
+        "text": "Start a fund for a shared goal and track every contribution and expense in one place."
+      },
+      "split": {
+        "title": "Flexible splits",
+        "text": "Split expenses equally, by ratio, by fixed amount, or with a mix of methods. See who actually paid."
+      },
+      "lock": {
+        "title": "Settlement lock",
+        "text": "Settling up locks the period. Record corrections as new transactions to keep your shared history intact."
+      }
+    },
+    "features": {
+      "metaTitle": "Features | mimic",
+      "metaDescription": "Explore pooled funds, contribution records, expense splitting, and settlement locks in mimic.",
+      "title": "mimic features",
+      "alt": "Mimiku organizing pooled funds and split expenses",
+      "fund": {
+        "title": "Pooled funds",
+        "body": "Create a fund for travel, rent, dates, pet care, or any shared goal. Track deposits and expenses in the fund they belong to, so everyone can see its balance, purpose, and responsibilities."
+      },
+      "contribution": {
+        "title": "Contribution records",
+        "body": "Record recurring and one-time contributions, adjustments, and corrections. mimic tracks actual deposits and member shares so you can see who paid extra and who still needs to top up."
+      },
+      "split": {
+        "title": "Split expenses",
+        "body": "Split expenses equally, by ratio, by fixed amount, or using a mix. Record multiple payers and see who paid and who shares each expense."
+      },
+      "lock": {
+        "title": "Settlement lock",
+        "body": "Once you settle up, the period locks and past transactions can't be edited. Add a correction as a new transaction to keep a clear audit trail."
+      }
+    },
+    "policy": {
+      "badge": "Prerelease",
+      "effective": "Effective date",
+      "status": "Current status",
+      "privacy": {
+        "title": "Privacy notice",
+        "metaTitle": "Privacy notice | mimic",
+        "metaDescription": "Privacy notice for the mimic prerelease.",
+        "lead": "This is the placeholder privacy notice for the prerelease. Details about data processing, retention, third-party services, and user rights will be added before launch.",
+        "draft": "Prelaunch draft. This page marks where the future privacy notice will appear."
+      },
+      "terms": {
+        "title": "Terms of service",
+        "metaTitle": "Terms of service | mimic",
+        "metaDescription": "Terms of service for the mimic prerelease.",
+        "lead": "This is the placeholder terms of service for the prerelease. Details about accounts, service use, limits on liability, termination, and governing law will be added before launch.",
+        "draft": "Prelaunch draft. This page marks where the future terms will appear."
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "description": "Log in to pick up where you left off with your shared records.",
+      "submitLabel": "Log in",
+      "submittingLabel": "Logging in…",
+      "switchLabel": "Sign up",
+      "switchPrompt": "New to mimic?",
+      "title": "Log in to mimic"
+    },
+    "register": {
+      "description": "Sign up and Mimiku will help you get started with shared records.",
+      "submitLabel": "Sign up",
+      "submittingLabel": "Signing up…",
+      "switchLabel": "Log in",
+      "switchPrompt": "Already have an account?",
+      "title": "Sign up for mimic"
+    },
+    "altError": "Mimiku checking your login",
+    "alt": "Mimiku waiting at the entrance",
+    "displayName": "Display name",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 6 characters.",
+    "validation": {
+      "emailRequired": "Enter your email.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Enter your password.",
+      "displayNameRequired": "Enter a display name.",
+      "passwordTooShort": "Use at least 6 characters for your password."
+    },
+    "errors": {
+      "CSRF_INVALID": "Your security check expired. Try again and Mimiku will run it again.",
+      "EMAIL_ALREADY_REGISTERED": "This email already has an account. Log in instead. Mimiku kept what you entered.",
+      "INVALID_CREDENTIALS": "Check your email and password, then try again. Mimiku is here with you.",
+      "INVALID_JSON": "Mimiku couldn't send the form. Refresh the page and try again.",
+      "UPSTREAM_UNAVAILABLE": "The service isn't responding. Try again in a moment. Mimiku kept what you entered.",
+      "VALIDATION_ERROR": "Check the highlighted fields and submit again. Mimiku is right here.",
+      "network": "The connection failed. Try again in a moment. Mimiku cleared the password and kept the other fields."
+    }
+  },
+  "shell": {
+    "record": "Record expense",
+    "returnToLanding": "Return to mimic landing page",
+    "play": "Play animation",
+    "pause": "Pause animation"
+  },
+  "settings": {
+    "title": "Settings",
+    "intro": "Manage your account and public identity.",
+    "kicker": "Account",
+    "invalidDisplayName": "Enter a display name between 1 and 100 characters.",
+    "saved": "Profile saved.",
+    "copied": "Mimic ID copied.",
+    "selected": "Mimic ID selected. Copy it from the page.",
+    "logoutError": "Couldn't log out. Try again.",
+    "identity": "Account identity",
+    "idTitle": "Your Mimic ID",
+    "idHelp": "Use this stable ID to tell members apart when display names change.",
+    "copyId": "Copy ID",
+    "email": "Email",
+    "displayName": "Display name",
+    "saving": "Saving…",
+    "save": "Save changes",
+    "session": "Session",
+    "signoutInfo": "Log out of mimic on this device.",
+    "signingOut": "Logging out…",
+    "signout": "Log out",
+    "expired": "Your session expired. Log in again, then retry.",
+    "service": "The service is temporarily unavailable. Mimiku kept your changes."
+  },
+  "routeState": {
+    "forbidden": {
+      "title": "Chest access blocked",
+      "message": "You don't have access to this chest."
+    },
+    "not-found": {
+      "title": "Chest not found",
+      "message": "This chest couldn't be found."
+    },
+    "unavailable": {
+      "title": "Chest connection paused",
+      "message": "Mimiku can't reach the chest right now. Your data is safe. Try again in a moment."
+    },
+    "unknown": {
+      "title": "Something went wrong",
+      "message": "Mimiku hit an unexpected problem while opening this screen."
+    },
+    "loading": {
+      "title": "Opening chest",
+      "message": "Mimiku is opening the chest…"
+    },
+    "sharedLoading": {
+      "title": "Opening shared chest…",
+      "message": "Amounts and balances appear once they're confirmed."
+    },
+    "alt": "Mimiku standing guard",
+    "kicker": "mimic recovery log",
+    "retry": "Retry",
+    "return": "Return to overview",
+    "global": "Something went wrong. Please refresh and try again."
+  },
+  "pwa": {
+    "offlineTitle": "mimic is offline",
+    "offlineDocumentTitle": "mimic offline",
+    "manifestDescription": "{speaker} - {tagline}",
+    "updateTitle": "A new version of mimic is available",
+    "updateDirty": "Finish or clear the form before updating to keep what you've entered.",
+    "updateReady": "The update is ready. Switch to the latest offline version.",
+    "update": "Update"
+  },
+  "invite": {
+    "metaTitle": "Invite | mimic",
+    "metaDescription": "Accept a private mimic shared money invite.",
+    "kicker": "mimic invite",
+    "title": "Join this shared money quest",
+    "description": "Mimiku only checks the invite code here. Party details stay private until you accept.",
+    "altClosed": "Mimiku guarding a closed invite",
+    "alt": "Mimiku holding an invite",
+    "login": "Log in to accept",
+    "register": "Sign up",
+    "accepting": "Accepting…",
+    "accept": "Accept invite",
+    "errors": {
+      "INVITE_NOT_FOUND": "This invite is invalid or no longer available.",
+      "INVITE_ALREADY_USED": "This invite has already been used.",
+      "INVITE_EXPIRED": "This invite expired. Ask an admin to create a new one.",
+      "INVITE_EMAIL_MISMATCH": "Log in with the email address that was invited.",
+      "ALREADY_GROUP_MEMBER": "You're already a member of this party.",
+      "unavailable": "The service isn't responding. Try again in a moment. Mimiku kept what you entered."
+    }
+  }
+}

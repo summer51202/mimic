@@ -1,5 +1,8 @@
 /// <reference lib="webworker" />
 
+import zh from "@/i18n/messages/zh-TW.json";
+import en from "@/i18n/messages/en.json";
+
 import type {
   PrecacheEntry,
   SerwistGlobalConfig,
@@ -133,7 +136,7 @@ const offlineFallbackHtml = `<!doctype html>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>mimic offline</title>
+    <title>${en.pwa.offlineDocumentTitle}</title>
     <meta name="theme-color" content="#f4bd32" />
     <style>
       body {
@@ -162,8 +165,12 @@ const offlineFallbackHtml = `<!doctype html>
   </head>
   <body>
     <main>
-      <h1>mimic 離線中</h1>
-      <p>一起存，一起花，一起在異世界探險吧!</p>
+      <h1>${zh.pwa.offlineTitle}</h1>
+      <p>${zh.brand.tagline}</p>
+      <section lang="en">
+        <h2>${en.pwa.offlineTitle}</h2>
+        <p>${en.brand.tagline}</p>
+      </section>
     </main>
   </body>
 </html>`;

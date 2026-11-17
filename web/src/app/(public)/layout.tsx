@@ -1,5 +1,5 @@
 import { hasSession } from "@/shared/auth/has-session";
-import { brand } from "@/shared/brand/brand";
+import { getTranslations } from "next-intl/server";
 import styles from "@/shared/brand/hero.module.css";
 import { SiteHeader } from "@/shared/brand/site-header";
 
@@ -8,16 +8,15 @@ export default async function PublicLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [authenticated, t] = await Promise.all([hasSession(), getTranslations("brand")]);
   return (
     <div className={styles.publicShell}>
-      <SiteHeader authenticated={await hasSession()} />
+      <SiteHeader authenticated={authenticated} />
       <main className={styles.main}>{children}</main>
       <footer className={styles.siteFooter}>
         <div className={styles.footerInner}>
-          <span>{brand.productName}</span>
-          <span>
-            {brand.characterNameZh} / {brand.characterNameEn}
-          </span>
+          <span>{t("name")}</span>
+          <span>{t("speaker")}</span>
         </div>
       </footer>
     </div>

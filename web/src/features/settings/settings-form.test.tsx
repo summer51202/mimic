@@ -1,4 +1,5 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, screen, waitFor } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -33,10 +34,10 @@ describe("SettingsForm", () => {
   it("shows immutable account identity and only edits display name", () => {
     render(<SettingsForm profile={profile} />);
 
-    expect(screen.getByLabelText("Email")).toHaveValue(profile.email);
-    expect(screen.getByLabelText("Email")).toHaveAttribute("readonly");
+    expect(screen.getByLabelText("電子郵件")).toHaveValue(profile.email);
+    expect(screen.getByLabelText("電子郵件")).toHaveAttribute("readonly");
     expect(screen.getByText(profile.mimic_id)).toBeVisible();
-    expect(screen.getByLabelText("Display name")).toHaveValue("Edward");
+    expect(screen.getByLabelText("顯示名稱")).toHaveValue("Edward");
     expect(screen.getAllByRole("textbox")).toHaveLength(2);
   });
 
@@ -47,16 +48,16 @@ describe("SettingsForm", () => {
     });
     render(<SettingsForm profile={profile} />);
 
-    await user.clear(screen.getByLabelText("Display name"));
-    await user.type(screen.getByLabelText("Display name"), "  Edward Lee  ");
-    await user.click(screen.getByRole("button", { name: "Save changes" }));
+    await user.clear(screen.getByLabelText("顯示名稱"));
+    await user.type(screen.getByLabelText("顯示名稱"), "  Edward Lee  ");
+    await user.click(screen.getByRole("button", { name: "儲存變更" }));
 
-    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Profile saved."));
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("已儲存個人資料。"));
     expect(appFetchMock).toHaveBeenCalledWith("/api/app/me", {
       body: JSON.stringify({ display_name: "Edward Lee" }),
       method: "PATCH",
     });
-    expect(screen.getByLabelText("Display name")).toHaveValue("Edward Lee");
+    expect(screen.getByLabelText("顯示名稱")).toHaveValue("Edward Lee");
   });
 
   it("locks duplicate saves while the update is pending", async () => {
@@ -64,9 +65,9 @@ describe("SettingsForm", () => {
     appFetchMock.mockReturnValueOnce(new Promise(() => undefined));
     render(<SettingsForm profile={profile} />);
 
-    const save = screen.getByRole("button", { name: "Save changes" });
+    const save = screen.getByRole("button", { name: "儲存變更" });
     await user.click(save);
-    expect(await screen.findByRole("button", { name: "Saving..." })).toBeDisabled();
+    expect(await screen.findByRole("button", { name: "儲存中..." })).toBeDisabled();
     await user.click(save);
 
     expect(appFetchMock).toHaveBeenCalledTimes(1);
@@ -75,21 +76,21 @@ describe("SettingsForm", () => {
   it("keeps invalid or failed edits focused and editable", async () => {
     const user = userEvent.setup();
     render(<SettingsForm profile={profile} />);
-    const input = screen.getByLabelText("Display name");
+    const input = screen.getByLabelText("顯示名稱");
 
     await user.clear(input);
-    await user.click(screen.getByRole("button", { name: "Save changes" }));
+    await user.click(screen.getByRole("button", { name: "儲存變更" }));
     expect(input).toHaveFocus();
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Enter a display name between 1 and 100 characters.",
+      "請輸入 1 至 100 個字元的顯示名稱。",
     );
     expect(appFetchMock).not.toHaveBeenCalled();
 
     await user.type(input, "New name");
     appFetchMock.mockRejectedValueOnce(new Error("offline"));
-    await user.click(screen.getByRole("button", { name: "Save changes" }));
+    await user.click(screen.getByRole("button", { name: "儲存變更" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The service is temporarily unavailable. Mimiku kept your changes.",
+      "服務暫時無法使用，咪咪庫已保留你的修改。",
     );
     expect(input).toHaveValue("New name");
   });
@@ -101,13 +102,13 @@ describe("SettingsForm", () => {
     );
     render(<SettingsForm profile={profile} />);
 
-    await user.type(screen.getByLabelText("Display name"), " Lee");
-    await user.click(screen.getByRole("button", { name: "Save changes" }));
+    await user.type(screen.getByLabelText("顯示名稱"), " Lee");
+    await user.click(screen.getByRole("button", { name: "儲存變更" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Your session expired. Sign in again, then retry.",
+      "登入已過期，請重新登入後再試。",
     );
-    expect(screen.getByLabelText("Display name")).toHaveValue("Edward Lee");
+    expect(screen.getByLabelText("顯示名稱")).toHaveValue("Edward Lee");
   });
 
   it("copies the exact Mimic ID", async () => {
@@ -116,10 +117,10 @@ describe("SettingsForm", () => {
     vi.stubGlobal("navigator", { clipboard: { writeText } });
     render(<SettingsForm profile={profile} />);
 
-    await user.click(screen.getByRole("button", { name: "Copy ID" }));
+    await user.click(screen.getByRole("button", { name: "複製 ID" }));
 
     expect(writeText).toHaveBeenCalledWith(profile.mimic_id);
-    expect(screen.getByRole("status")).toHaveTextContent("Mimic ID copied.");
+    expect(screen.getByRole("status")).toHaveTextContent("已複製 Mimic ID。");
   });
 
   it("selects and focuses the Mimic ID when clipboard is unavailable", async () => {
@@ -135,13 +136,13 @@ describe("SettingsForm", () => {
     render(<SettingsForm profile={profile} />);
     const identity = screen.getByText(profile.mimic_id);
 
-    await user.click(screen.getByRole("button", { name: "Copy ID" }));
+    await user.click(screen.getByRole("button", { name: "複製 ID" }));
 
     expect(range.selectNodeContents).toHaveBeenCalledWith(identity);
     expect(selection.addRange).toHaveBeenCalledWith(range);
     expect(identity).toHaveFocus();
     expect(screen.getByRole("status")).toHaveTextContent(
-      "Mimic ID selected. Copy it from the page.",
+      "已選取 Mimic ID，請從頁面複製。",
     );
   });
 
@@ -160,12 +161,12 @@ describe("SettingsForm", () => {
     render(<SettingsForm profile={profile} />);
     const identity = screen.getByText(profile.mimic_id);
 
-    await user.click(screen.getByRole("button", { name: "Copy ID" }));
+    await user.click(screen.getByRole("button", { name: "複製 ID" }));
 
     expect(selection.addRange).toHaveBeenCalledWith(range);
     expect(identity).toHaveFocus();
     expect(screen.getByRole("status")).toHaveTextContent(
-      "Mimic ID selected. Copy it from the page.",
+      "已選取 Mimic ID，請從頁面複製。",
     );
   });
 
@@ -175,7 +176,7 @@ describe("SettingsForm", () => {
     appFetchMock.mockResolvedValueOnce({ ok: true });
     render(<SettingsForm profile={profile} onLogout={onLogout} />);
 
-    await user.click(screen.getByRole("button", { name: "Sign out" }));
+    await user.click(screen.getByRole("button", { name: "登出" }));
 
     await waitFor(() => expect(onLogout).toHaveBeenCalledWith("/login"));
     expect(appFetchMock).toHaveBeenCalledWith("/api/auth/logout", {
@@ -189,10 +190,10 @@ describe("SettingsForm", () => {
     appFetchMock.mockRejectedValueOnce(new Error("offline"));
     render(<SettingsForm profile={profile} onLogout={onLogout} />);
 
-    await user.click(screen.getByRole("button", { name: "Sign out" }));
+    await user.click(screen.getByRole("button", { name: "登出" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Unable to sign out right now. Please retry.",
+      "目前無法登出，請再試一次。",
     );
     expect(onLogout).not.toHaveBeenCalled();
   });

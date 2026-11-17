@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -11,7 +12,7 @@ import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelFrame } from "@/shared/ui/pixel-frame";
 import { PixelNotice } from "@/shared/ui/pixel-notice";
 
-import { inviteErrorMessage, inviteMessages } from "./invite-errors";
+import { inviteErrorKey, type InviteErrorCode } from "./invite-errors";
 import { parseInviteCode } from "./invite-schema";
 import styles from "./invitation-flow.module.css";
 
@@ -28,9 +29,10 @@ export function InviteAcceptPanel({
   onSuccess,
   titleId,
 }: InviteAcceptPanelProps) {
+  const t = useTranslations("invite");
   const validCode = parseInviteCode(code);
-  const [error, setError] = useState<string | null>(
-    validCode ? null : inviteMessages.INVITE_NOT_FOUND,
+  const [error, setError] = useState<InviteErrorCode | null>(
+    validCode ? null : "INVITE_NOT_FOUND",
   );
   const [pending, setPending] = useState(false);
   const returnTo = useMemo(
@@ -56,7 +58,7 @@ export function InviteAcceptPanel({
       );
       navigate(onSuccess, `/app/groups/${result.data.group_id}`);
     } catch (caught) {
-      setError(inviteErrorMessage(caught));
+      setError(inviteErrorKey(caught));
       setPending(false);
     }
   }
@@ -65,15 +67,14 @@ export function InviteAcceptPanel({
     <PixelFrame className={styles.panel}>
       <div className={styles.hero}>
         <div>
-          <p className={styles.meta}>mimic invite</p>
-          <h1 id={titleId}>Join this shared money quest.</h1>
+          <p className={styles.meta}>{t("kicker")}</p>
+          <h1 id={titleId}>{t("title")}</h1>
           <p className={styles.meta}>
-            Mimiku only checks the invite code here. Group details stay private
-            until you accept.
+            {t("description")}
           </p>
         </div>
         <Image
-          alt={error ? "Mimiku guarding a closed invite" : "Mimiku holding an invite"}
+          alt={t(error ? "altClosed" : "alt")}
           className="pixel-art"
           height={512}
           priority
@@ -82,21 +83,21 @@ export function InviteAcceptPanel({
           width={512}
         />
       </div>
-      {error ? <PixelNotice variant="error">{error}</PixelNotice> : null}
+      {error ? <PixelNotice variant="error">{t(`errors.${error}`)}</PixelNotice> : null}
       {validCode ? <p className={styles.code}>{validCode}</p> : null}
       {!authenticated && validCode ? (
         <div className={styles.actions}>
           <Link href={`/login?returnTo=${encodeURIComponent(returnTo)}`}>
-            Log in to accept
+            {t("login")}
           </Link>
           <Link href={`/register?returnTo=${encodeURIComponent(returnTo)}`}>
-            Create account
+            {t("register")}
           </Link>
         </div>
       ) : null}
       {authenticated && validCode ? (
         <PixelButton disabled={pending} onClick={acceptInvite} type="button">
-          {pending ? "Accepting..." : "Accept invite"}
+          {t(pending ? "accepting" : "accept")}
         </PixelButton>
       ) : null}
     </PixelFrame>

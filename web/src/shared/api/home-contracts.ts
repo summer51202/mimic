@@ -9,7 +9,7 @@ const status = z.enum(['ACTIVE', 'CLOSING', 'ARCHIVED']);
 const activity = z.object({ id: uuid, title: z.string().min(1).max(200), occurred_on: z.iso.date(), amount_minor: unsigned }).strict();
 const participant = { access: z.literal('PARTICIPANT'), id: uuid, name: z.string().min(1).max(100),
   currency: currencySchema, status, recent_activity: z.array(activity).max(3),
-  latest_recorded: z.object({ id: uuid, recorded_at: iso }).strict().nullable().optional() };
+  latest_recorded: z.object({ id: uuid, recorded_at: iso }).strict().nullable() };
 
 const personalCard = z.object({ ...participant, mode: z.literal('PERSONAL_EXPENSES'), month: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/),
   spending_minor: unsigned, recent_categories: z.array(z.object({ category_id: uuid, category_name: z.string().min(1), spending_minor: unsigned }).strict()).max(3) }).strict();

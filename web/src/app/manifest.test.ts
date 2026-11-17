@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import manifest from "./manifest";
 
 describe("manifest", () => {
-  it("describes mimic as an installable standalone app", () => {
-    const appManifest = manifest();
+  it("describes mimic as an installable standalone app", async () => {
+    const appManifest = await manifest();
 
     expect(appManifest.name).toBe("mimic");
     expect(appManifest.short_name).toBe("mimic");

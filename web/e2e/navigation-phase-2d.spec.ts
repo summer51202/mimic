@@ -84,7 +84,7 @@ for (const [width, height] of viewports) {
       try {
         const page = await client.newPage();
         await page.goto("/app/settings");
-        await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
+        await expect(page.getByRole("heading", { name: "設定" })).toBeVisible();
         const header = page.locator("header").first();
         const nav = page.getByRole("navigation", { name: navigationName });
         await expect(header).toHaveCSS("height", "64px");
@@ -163,7 +163,7 @@ for (const [width, height] of [[390, 844], [1440, 900]]) {
     await page.setViewportSize({ width, height });
     await page.route("**/pixel-ui/v1/icons/ui/*.png", (route) => route.abort());
     await page.goto("/app/settings");
-    await expect(page.getByRole("heading", { name: "Settings", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "設定", exact: true })).toBeVisible();
     const nav = page.getByRole("navigation", { name: navigationName });
     for (const [label, icon] of items) {
       const link = nav.getByRole("link", { name: label, exact: true });

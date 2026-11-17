@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
@@ -16,6 +18,8 @@ interface PixelAppShellProps {
 }
 
 export function PixelAppShell({ children }: PixelAppShellProps) {
+  const t = useTranslations("shell");
+  const brandText = useTranslations("brand");
   const pathname = usePathname();
   const showsQuickAction = pathname !== "/app";
   const currentSection = currentAppSection(pathname);
@@ -24,8 +28,8 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
   return (
     <div className={styles.shell}>
       <header className={styles.topBar}>
-        <Link aria-label="回到 mimic 入口頁" className={styles.wordmarkLink} href="/">
-          <Wordmark as="span" className="mimic-wordmark--dark" />
+        <Link aria-label={t("returnToLanding")} className={styles.wordmarkLink} href="/">
+          <Wordmark as="span" className="mimic-wordmark--dark" subtitle={brandText("speaker")} />
         </Link>
       </header>
       <div className={styles.body}>
@@ -37,7 +41,7 @@ export function PixelAppShell({ children }: PixelAppShellProps) {
       {showsQuickAction &&
         <Link className={styles.quickAction} href={quickHref} scroll={quickHref.split("?")[0] !== pathname}>
           <NavigationIcon name="action-record-expense" size={32} />
-          記一筆支出
+          {t("record")}
         </Link>}
       <div className={styles.mobileOnly}>
         <AppNavigation currentSection={currentSection} variant="mobile" />

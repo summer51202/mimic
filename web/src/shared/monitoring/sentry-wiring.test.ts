@@ -49,6 +49,6 @@ test("every Next.js Sentry surface enforces the shared privacy policy", () => {
   expect(nextConfig).toContain("withSentryConfig");
   expect(nextConfig).toContain("removeDebugLogging: true");
   expect(nextConfig).not.toContain("disableLogger");
-  expect(nextConfig).toContain("withSerwist(nextConfig)");
+  expect(nextConfig).toContain("withSentryConfig(withSerwist(withNextIntl(nextConfig))");
   expect(nextConfig).toContain('output: "standalone"');
 });

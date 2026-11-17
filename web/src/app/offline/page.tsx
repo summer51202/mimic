@@ -1,9 +1,11 @@
+import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import Link from "next/link";
 
 import { pixelUiFiles } from "@/shared/brand/pixel-ui-assets";
 
-export default function OfflinePage() {
+export default async function OfflinePage() {
+  const t = await getTranslations();
   return (
     <main
       style={{
@@ -26,7 +28,7 @@ export default function OfflinePage() {
         }}
       >
         <Image
-          alt="咪咪庫 / Mimiku"
+          alt={t("brand.speaker")}
           className="pixel-art"
           height={128}
           priority
@@ -35,13 +37,13 @@ export default function OfflinePage() {
           width={128}
         />
         <h1 style={{ fontSize: "clamp(1.75rem, 6vw, 3rem)" }}>
-          mimic 離線中
+          {t("pwa.offlineTitle")}
         </h1>
         <p style={{ lineHeight: 1.6 }}>
-          一起存，一起花，一起在異世界探險吧!
+          {t("brand.tagline")}
         </p>
         <Link className="pixel-button" data-emphasis="primary" href="/">
-          回首頁
+          {t("common.home")}
         </Link>
       </section>
     </main>

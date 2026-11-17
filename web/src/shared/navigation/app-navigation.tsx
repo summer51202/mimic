@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 import { NavigationIcon } from "./navigation-icon";
@@ -16,31 +17,32 @@ const navigationItems = [
   {
     icon: "nav-home",
     href: "/app",
-    label: "首頁",
+    label: "home",
     status: "available",
   },
-  { icon: "nav-adventure-log", href: "/app/personal", label: "我的寶箱", status: "available" },
+  { icon: "nav-adventure-log", href: "/app/personal", label: "chests", status: "available" },
   {
     icon: "nav-guild",
     href: "/app/groups",
-    label: "共同群組",
+    label: "parties",
     status: "available",
   },
   {
     icon: "nav-tasks",
     href: "/app/tasks",
-    label: "任務",
+    label: "quests",
     status: "available",
   },
   {
     icon: "nav-settings",
     href: "/app/settings",
-    label: "設定",
+    label: "settings",
     status: "available",
   },
 ] as const;
 
 export function AppNavigation({ currentSection, variant }: AppNavigationProps) {
+  const t = useTranslations("nav");
   return (
     <nav
       aria-label="Primary app sections"
@@ -58,18 +60,18 @@ export function AppNavigation({ currentSection, variant }: AppNavigationProps) {
                 href={item.href}
               >
                 <NavigationIcon name={item.icon} size={variant === "desktop" ? 48 : 32} />
-                <span className={styles.label}>{item.label}</span>
+                <span className={styles.label}>{t(item.label)}</span>
               </Link>
             ) : (
               <button
-                aria-label={`${item.label} (coming soon)`}
+                aria-label={t("comingSoon", { label: t(item.label) })}
                 className={styles.link}
                 data-disabled="true"
                 disabled
                 type="button"
               >
                 <NavigationIcon name={item.icon} size={variant === "desktop" ? 48 : 32} />
-                <span className={styles.label}>{item.label}</span>
+                <span className={styles.label}>{t(item.label)}</span>
               </button>
             )}
           </li>

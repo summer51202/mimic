@@ -57,7 +57,7 @@ test("pixel public shell remains responsive and raster sharp", async ({
 test("login return to invite survives keyboard-only navigation", async ({ page }) => {
   await page.goto("/invite/abcDEF123_-4");
 
-  await page.getByRole("link", { name: "Log in to accept" }).focus();
+  await page.getByRole("link", { name: "登入以接受邀請" }).focus();
   await page.keyboard.press("Enter");
 
   await expect(page).toHaveURL(

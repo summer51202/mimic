@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 import { InviteAcceptPanel } from "@/features/invitations/invite-accept-panel";
 import { parseInviteCode } from "@/features/invitations/invite-schema";
@@ -11,10 +12,10 @@ type InvitePageProps = {
   }>;
 };
 
-export const metadata: Metadata = {
-  title: "Invite | mimic",
-  description: "Accept a private mimic shared money invite.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("invite");
+  return { title: t("metaTitle"), description: t("metaDescription") };
+}
 
 export default async function InvitePage({ params }: InvitePageProps) {
   const [{ code }, authenticated] = await Promise.all([params, hasSession()]);

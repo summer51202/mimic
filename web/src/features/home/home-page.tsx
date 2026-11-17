@@ -31,7 +31,7 @@ function latestActivity(cards: HomeCard[]) {
 function latestRecordedKey(cards: HomeCard[]) {
   let latest: string | null = null;
   for (const card of cards) {
-    if (card.access !== 'PARTICIPANT' || !card.latest_recorded) continue;
+    if (card.access !== 'PARTICIPANT' || card.latest_recorded === null) continue;
     const { recorded_at, id } = card.latest_recorded;
     const key = homeActivityKey(recorded_at, id);
     if (latest === null || isNewerHomeActivity(key, latest)) latest = key;

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,36 +19,12 @@ interface AppRouteStateProps {
   returnHref?: string;
 }
 
-const copy: Record<AppRouteStateVariant, { title: string; message: string }> = {
-  forbidden: {
-    title: "Treasury access blocked",
-    message: "You do not have access to this treasury.",
-  },
-  "not-found": {
-    title: "Treasury not found",
-    message: "This treasury could not be found.",
-  },
-  unavailable: {
-    title: "Treasury connection paused",
-    message:
-      "Mimiku cannot reach the treasury right now. Your data is safe. Try again in a moment.",
-  },
-  unknown: {
-    title: "Something went wrong",
-    message: "Mimiku hit an unexpected problem while opening this screen.",
-  },
-  loading: {
-    title: "Opening treasury",
-    message: "Mimiku is opening the treasury...",
-  },
-};
-
 export function AppRouteState({
   variant,
   onRetry,
   returnHref,
 }: AppRouteStateProps) {
-  const content = copy[variant];
+  const t = useTranslations("routeState");
 
   return (
     <section
@@ -57,7 +34,7 @@ export function AppRouteState({
     >
       <PixelFrame className={styles.frame} variant="treasury">
         <Image
-          alt="Mimiku standing guard"
+          alt={t("alt")}
           className={styles.mimiku}
           height={512}
           src={pixelUiRoles.blockingError}
@@ -65,19 +42,19 @@ export function AppRouteState({
           width={512}
         />
         <div className={styles.copy}>
-          <p className={styles.kicker}>mimic recovery log</p>
-          <h1 id="app-route-state-title">{content.title}</h1>
-          <p>{content.message}</p>
+          <p className={styles.kicker}>{t("kicker")}</p>
+          <h1 id="app-route-state-title">{t(`${variant}.title`)}</h1>
+          <p>{t(`${variant}.message`)}</p>
           {onRetry || returnHref ? (
             <div className={styles.actions}>
               {onRetry ? (
                 <PixelButton onClick={onRetry} type="button">
-                  Retry
+                  {t("retry")}
                 </PixelButton>
               ) : null}
               {returnHref ? (
                 <Link className="pixel-button" href={returnHref}>
-                  Return to overview
+                  {t("return")}
                 </Link>
               ) : null}
             </div>

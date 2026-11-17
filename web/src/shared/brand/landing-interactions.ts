@@ -1,29 +1,15 @@
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { batFlightMs, chestTimelines, playLandingFrames, type ChestFrame } from "./landing-motion";
 
-export const propNames = {
-  chest: "舊寶箱",
-  carving: "岩壁上的刻痕",
-  bats: "蝙蝠",
-  torch: "火把",
-  torchHigh: "火把",
-  torchLow: "火把",
-};
-
-export type LandingProp = keyof typeof propNames;
-
-const lines = {
-  open: "那是普通的寶箱，不是我親戚喔！",
-  close: "還是蓋好比較安心。",
-  carving: "這是⋯⋯很久以前的我？原來早就有冒險者陪著我了。",
-  bats: "噓——牠們白天在睡覺啦。",
-  torch: "小心火！我可是木頭做的⋯⋯",
-};
+export const propKeys = ["chest", "carving", "bats", "torch", "torchHigh", "torchLow"] as const;
+export type LandingProp = (typeof propKeys)[number];
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
 const reducedMotion = () => window.matchMedia(motionQuery).matches;
 
 export function useLandingInteractions() {
+  const t = useTranslations("landing.lines");
   const [line, setLine] = useState<{ text: string; id: number }>();
   const [chest, setChest] = useState<ChestFrame>("closed");
   const [open, setOpen] = useState(false);
@@ -80,7 +66,7 @@ export function useLandingInteractions() {
       if (primary.current) return;
       const action = open ? "close" : "open";
       const target = open ? "closed" : "open";
-      speak(lines[action]);
+      speak(t(action));
       if (reducedMotion()) {
         setChest(target);
         setOpen(!open);
@@ -104,7 +90,7 @@ export function useLandingInteractions() {
       return;
     }
     if (prop === "carving") {
-      speak(lines.carving);
+      speak(t("carving"));
       if (revealed) return;
       if (primary.current) pendingCarving.current = true;
       else revealCarving();
@@ -112,7 +98,7 @@ export function useLandingInteractions() {
     }
     const timers = secondaryTimers.current;
     if (prop === "bats" && timers.has(prop)) return;
-    speak(prop === "bats" ? lines.bats : lines.torch);
+    speak(t(prop === "bats" ? "bats" : "torch"));
     if (reducedMotion() || timers.has(prop)) return;
     setFeedback((active) => ({ ...active, [prop]: true }));
     timers.set(prop, setTimeout(() => {

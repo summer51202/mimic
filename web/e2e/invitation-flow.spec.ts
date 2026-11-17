@@ -16,7 +16,7 @@ test("keeps invalid invitation links terminal and private", async ({ page }) => 
 
   await expect(page.getByText(inviteMessages.INVITE_NOT_FOUND)).toBeVisible();
   await expect(page.getByText("bad-code")).toHaveCount(0);
-  await expect(page.getByRole("link", { name: "Log in to accept" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "登入以接受邀請" })).toHaveCount(0);
 });
 
 test.describe("backend-backed invitation flows", () => {

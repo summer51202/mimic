@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import { describe, expect, it, vi } from "vitest";
 import { brand } from "@/shared/brand/brand";
 import PublicLayout from "./(public)/layout";

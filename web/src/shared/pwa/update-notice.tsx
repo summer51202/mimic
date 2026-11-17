@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 type UpdateNoticeProps = {
@@ -30,6 +31,7 @@ export function UpdateNotice({
   onUpdate,
 }: UpdateNoticeProps) {
   const prefersReducedMotion = usePrefersReducedMotion();
+  const t = useTranslations("pwa");
 
   if (!isVisible) {
     return null;
@@ -58,11 +60,9 @@ export function UpdateNotice({
           : "transform 160ms ease, opacity 160ms ease",
       }}
     >
-      <p style={{ fontWeight: 800 }}>mimic 有新版本</p>
+      <p style={{ fontWeight: 800 }}>{t("updateTitle")}</p>
       <p style={{ lineHeight: 1.5 }}>
-        {isDirty
-          ? "先保留目前輸入內容，完成或清空表單後再更新。"
-          : "更新已準備好，可以切換到最新的離線外殼。"}
+        {t(isDirty ? "updateDirty" : "updateReady")}
       </p>
       <button
         className="pixel-button"
@@ -71,7 +71,7 @@ export function UpdateNotice({
         onClick={onUpdate}
         disabled={isDirty}
       >
-        更新
+        {t("update")}
       </button>
     </aside>
   );
