@@ -2538,3 +2538,23 @@
 - decision-log 新增 Phase 2H 一節；commit 順序 web → docs → 後端，第一次 push 只推到 docs。
 **Decisions:** 純技術輪，不需 Ed 視覺核准；Ed 已在 spec 階段決定觸發規則與分兩次 push。
 **Known gaps / follow-ups:** 兩次部署完成後把 latest_recorded 改必填；高負載下仍有既有影像測試可能超過 20 秒。
+
+## 2026-11-17 — Phase 2I-1 Web 多語系
+
+**Task:** 依 Phase 2I-1 與 2R–2R4 實作繁中和英文切換，並完成本輪視覺驗證。  
+**Scope:** Web i18n 與 auth API、公開頁、App 外殼、設定、狀態頁、PWA、Home 契約、Vitest、Playwright 和 Phase 2I 驗證資產。  
+**What changed:**
+
+- 以 `mimic-locale` cookie 選擇語言，首次造訪預設繁中，登入／註冊及切換時依規格同步帳號。
+- 中英訊息檔供公開頁、登入／註冊、外殼、設定與 PWA 使用。公開頁英文 header 用 `Base`，緊湊版上限 544 px。
+- Web 的 participant card 要求 `latest_recorded`，仍接受 `null`。加入獨立的 loopback 缺欄位案例驗證既有 Home 錯誤畫面和游標行為。
+
+**Decisions:** 按鈕與 radio 切換使用 `router.refresh()` 以保留焦點。登入時若新採用的帳號語言和原頁不同，使用完整文件導覽來更新根 layout。  
+**Known gaps / follow-ups:** 驗證結果、證據與待決項目見 Phase 2I `verification.md`。2I-2 和日文另案處理。
+
+## 2026-11-17 — Phase 2I-1 審閱與核准（Claude）
+
+**Task:** 審閱 Phase 2I-1（含 2R–2R5），記錄核准並 commit。  
+**What changed:** decision-log 新增 Phase 2I-1 條目；210 張逐像素相同的中文前後截圖移到未追蹤的 `.tmp/phase-2i-pixel-archive/`，以 `pixel-regression-sha256.txt` 保留雜湊。  
+**Checks:** 自行重算 88 組中文像素（Landing header 以下 11、Home 44、三種寶箱 33）全部相同；看過英文 360／390／1440 截圖，沒有截斷或溢出。  
+**Follow-ups:** 2I-2（App 內頁＋後端分類名稱）、2I-b 日文。
