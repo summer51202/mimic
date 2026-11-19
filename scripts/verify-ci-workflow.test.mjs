@@ -403,3 +403,247 @@ test("container CI rejects a missing dedicated backup runtime step", () => {
     /containers must define exactly one Verify PostgreSQL 18 backup runtime step/,
   );
 });
+
+// Phase 2I-2T: PostgreSQL-backed backend suites run in a dedicated CI job.
+const backendDatabaseStepNames = {
+  migrateOnly: "Migrate fresh migration-only database without seed",
+  testOnly: "Test migration-only database",
+  migrateSpaces: "Migrate fresh financial spaces database",
+  testSpaces: "Test financial spaces database",
+};
+
+function backendDatabaseWorkflow(mutate) {
+  const workflow = parseWorkflowYaml(workflowSource);
+  const job = workflow.jobs["backend-db"];
+  assert.ok(job, "backend-db job must exist before mutating it");
+  mutate(workflow, job);
+  return workflow;
+}
+
+function backendDatabaseStep(job, key) {
+  const step = job.steps.find(
+    (candidate) => candidate.name === backendDatabaseStepNames[key],
+  );
+  assert.ok(step, `missing ${backendDatabaseStepNames[key]}`);
+  return step;
+}
+
+function withoutStep(job, key) {
+  job.steps = job.steps.filter(
+    (step) => step.name !== backendDatabaseStepNames[key],
+  );
+}
+
+function assertBackendDatabaseRejects(mutate, message) {
+  const workflow = backendDatabaseWorkflow(mutate);
+  assert.throws(() => validateCiWorkflow(workflow), message);
+}
+
+test("backend-db runs both PostgreSQL suites on separate fresh loopback databases", () => {
+  const workflow = parseWorkflowYaml(workflowSource);
+  const job = workflow.jobs["backend-db"];
+  assert.equal(job.name, "Backend database");
+  assert.match(
+    job.services.postgres.image,
+    /^postgres:18(?:\.\d+)?@sha256:[0-9a-f]{64}$/,
+  );
+  assert.deepEqual(job.services.postgres.ports, ["127.0.0.1:5432:5432"]);
+  assert.match(job.services.postgres.options, /--health-cmd "pg_isready /);
+
+  const names = job.steps.map((step) => step.name);
+  const order = Object.values(backendDatabaseStepNames).map((name) =>
+    names.indexOf(name),
+  );
+  assert.ok(order.every((index) => index >= 0), "all four database steps exist");
+  assert.deepEqual([...order].sort((a, b) => a - b), order, "steps are in order");
+
+  const onlyUrl = new URL(backendDatabaseStep(job, "testOnly").env.DATABASE_URL);
+  const spacesUrl = new URL(backendDatabaseStep(job, "testSpaces").env.DATABASE_URL);
+  assert.equal(onlyUrl.pathname, "/mimic_migration_only_test");
+  assert.equal(spacesUrl.pathname, "/mimic_financial_spaces_test");
+  assert.equal(onlyUrl.hostname, "127.0.0.1");
+  assert.equal(spacesUrl.hostname, "127.0.0.1");
+  assert.ok(!JSON.stringify(workflow).includes("secrets."));
+});
+
+test("backend-db rejects a workflow without the job", () => {
+  assertBackendDatabaseRejects(
+    (workflow) => {
+      delete workflow.jobs["backend-db"];
+    },
+    /missing backend-db job/,
+  );
+});
+
+for (const key of Object.keys(backendDatabaseStepNames)) {
+  test(`backend-db rejects removing "${backendDatabaseStepNames[key]}"`, () => {
+    assertBackendDatabaseRejects(
+      (_workflow, job) => withoutStep(job, key),
+      /backend-db job must run exactly/,
+    );
+  });
+}
+
+test("backend-db rejects removing both database test steps", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      withoutStep(job, "testOnly");
+      withoutStep(job, "testSpaces");
+    },
+    /backend-db job must run exactly/,
+  );
+});
+
+test("backend-db rejects running the migration-only suite before its migration", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      const migrate = backendDatabaseStep(job, "migrateOnly");
+      const testStep = backendDatabaseStep(job, "testOnly");
+      const a = job.steps.indexOf(migrate);
+      const b = job.steps.indexOf(testStep);
+      [job.steps[a], job.steps[b]] = [job.steps[b], job.steps[a]];
+    },
+    /backend-db job must run exactly/,
+  );
+});
+
+test("backend-db rejects ignoring database test failures", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      backendDatabaseStep(job, "testSpaces").run += " || true";
+    },
+    /backend-db job must run exactly/,
+  );
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      backendDatabaseStep(job, "testOnly")["continue-on-error"] = true;
+    },
+    /must use only name, env, and run/,
+  );
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      backendDatabaseStep(job, "testOnly").if = "false";
+    },
+    /must use only name, env, and run/,
+  );
+});
+
+test("backend-db rejects a conditional or tolerated job", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      job.if = "false";
+    },
+    /backend-db job must use only/,
+  );
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      job["continue-on-error"] = true;
+    },
+    /backend-db job must use only/,
+  );
+});
+
+test("backend-db rejects seeding any CI database", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      const at = job.steps.indexOf(backendDatabaseStep(job, "testOnly"));
+      job.steps.splice(at, 0, {
+        name: "Seed",
+        env: { ...backendDatabaseStep(job, "testOnly").env },
+        run: "npx prisma db seed",
+      });
+    },
+    /backend-db job must run exactly/,
+  );
+  assertBackendDatabaseRejects(
+    (workflow) => {
+      workflow.jobs.backend.steps.push({ name: "Seed", run: "npm run prisma:seed" });
+    },
+    /CI must never seed a database/,
+  );
+});
+
+test("backend-db rejects sharing one database between the seeded and unseeded suites", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      for (const key of ["migrateSpaces", "testSpaces"]) {
+        backendDatabaseStep(job, key).env.DATABASE_URL =
+          backendDatabaseStep(job, "testOnly").env.DATABASE_URL;
+      }
+    },
+    /DATABASE_URL must target 127\.0\.0\.1:5432\/mimic_financial_spaces_test/,
+  );
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      job.env.DATABASE_URL = backendDatabaseStep(job, "testOnly").env.DATABASE_URL;
+    },
+    /backend-db job env must set only the JWT CI values/,
+  );
+});
+
+test("backend-db rejects a non-loopback database URL", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      const step = backendDatabaseStep(job, "testSpaces");
+      step.env.DATABASE_URL = step.env.DATABASE_URL.replace("127.0.0.1", "db.example.com");
+    },
+    /must target 127\.0\.0\.1:5432\/mimic_financial_spaces_test/,
+  );
+});
+
+test("backend-db rejects an unpinned or non-18 PostgreSQL image", () => {
+  for (const image of [
+    "postgres:18",
+    "postgres:latest",
+    "postgres:16@sha256:" + "0".repeat(64),
+    "postgres:17.6@sha256:" + "0".repeat(64),
+  ]) {
+    assertBackendDatabaseRejects(
+      (_workflow, job) => {
+        job.services.postgres.image = image;
+      },
+      /must pin a postgres:18 image by sha256 digest/,
+    );
+  }
+});
+
+test("backend-db rejects publishing PostgreSQL beyond the runner loopback", () => {
+  for (const ports of [["5432:5432"], ["0.0.0.0:5432:5432"], ["5432"]]) {
+    assertBackendDatabaseRejects(
+      (_workflow, job) => {
+        job.services.postgres.ports = ports;
+      },
+      /must publish only 127\.0\.0\.1:5432:5432/,
+    );
+  }
+});
+
+test("backend-db rejects a PostgreSQL service without a health check", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      job.services.postgres.options = "--shm-size 256m";
+    },
+    /must define a pg_isready health check/,
+  );
+});
+
+test("backend-db rejects repository secrets for database credentials", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      job.services.postgres.env.POSTGRES_PASSWORD = "${{ secrets.POSTGRES_PASSWORD }}";
+    },
+    /backend-db job must not read repository secrets/,
+  );
+});
+
+test("backend-db rejects an extra command that could alter later steps", () => {
+  assertBackendDatabaseRejects(
+    (_workflow, job) => {
+      job.steps.splice(2, 0, {
+        name: "Unexpected",
+        run: "printf '%s\\n' 'SKIP=1' >> \"$GITHUB_ENV\"",
+      });
+    },
+    /backend-db job must run exactly/,
+  );
+});

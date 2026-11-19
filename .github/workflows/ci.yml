@@ -64,6 +64,64 @@ jobs:
       - name: HTTP E2E
         run: npm run test:e2e -- --runInBand
 
+  backend-db:
+    name: Backend database
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        # postgres:18 resolved to 18.7 on 2026-11-19 (Railway runs PostgreSQL 18).
+        image: postgres:18.7@sha256:e754b839f447639b7004895f4d8a4bfcb4e9dbe3a1bc035f27f646562a16fd61
+        env:
+          # CI-only throwaway credentials for a runner-local database; not secrets.
+          POSTGRES_USER: mimic_ci
+          POSTGRES_PASSWORD: mimic-ci-postgres-only
+          POSTGRES_DB: postgres
+        ports:
+          - 127.0.0.1:5432:5432
+        options: >-
+          --health-cmd "pg_isready --host=127.0.0.1 --port=5432 --username=mimic_ci --dbname=postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      JWT_ACCESS_SECRET: mimic-ci-access-secret
+      JWT_REFRESH_SECRET: mimic-ci-refresh-secret
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Generate Prisma client
+        run: npm run prisma:generate
+      - name: Migrate fresh migration-only database without seed
+        env:
+          DATABASE_URL: postgresql://mimic_ci:mimic-ci-postgres-only@127.0.0.1:5432/mimic_migration_only_test?schema=public
+        run: npm run prisma:migrate:deploy
+      - name: Test migration-only database
+        env:
+          DATABASE_URL: postgresql://mimic_ci:mimic-ci-postgres-only@127.0.0.1:5432/mimic_migration_only_test?schema=public
+        run: npm run test:migration-only-db
+      - name: Migrate fresh financial spaces database
+        env:
+          DATABASE_URL: postgresql://mimic_ci:mimic-ci-postgres-only@127.0.0.1:5432/mimic_financial_spaces_test?schema=public
+        run: npm run prisma:migrate:deploy
+      - name: Test financial spaces database
+        env:
+          DATABASE_URL: postgresql://mimic_ci:mimic-ci-postgres-only@127.0.0.1:5432/mimic_financial_spaces_test?schema=public
+        run: npm run test:spaces-db
+
   web:
     name: Web PWA
     runs-on: ubuntu-latest

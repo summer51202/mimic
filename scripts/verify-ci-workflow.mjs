@@ -149,6 +149,157 @@ function validateBackupRuntimeStep(job) {
   );
 }
 
+const backendDatabaseJobName = "backend-db";
+const allowedBackendDatabaseJobKeys = [
+  "defaults",
+  "env",
+  "name",
+  "runs-on",
+  "services",
+  "steps",
+  "timeout-minutes",
+];
+const postgresServiceImagePattern = /^postgres:18(?:\.\d+)?@sha256:[0-9a-f]{64}$/;
+const postgresServicePort = "127.0.0.1:5432:5432";
+const migrationOnlyDatabasePath = "/mimic_migration_only_test";
+const spacesDatabasePath = "/mimic_financial_spaces_test";
+const backendDatabaseRunCommands = [
+  "npm ci",
+  "npm run prisma:generate",
+  "npm run prisma:migrate:deploy",
+  "npm run test:migration-only-db",
+  "npm run prisma:migrate:deploy",
+  "npm run test:spaces-db",
+];
+const backendDatabaseStepKeys = ["env", "name", "run"];
+
+function assertLoopbackDatabaseUrl(raw, expectedPath, label) {
+  invariant(typeof raw === "string", `${label} must set DATABASE_URL`);
+  invariant(!raw.includes("${{"), `${label} DATABASE_URL must not use expressions`);
+  let url;
+  try {
+    url = new URL(raw);
+  } catch {
+    throw new Error(`${label} DATABASE_URL must be a valid URL`);
+  }
+  invariant(
+    url.protocol === "postgresql:" &&
+      url.hostname === "127.0.0.1" &&
+      url.port === "5432" &&
+      url.pathname === expectedPath,
+    `${label} DATABASE_URL must target 127.0.0.1:5432${expectedPath}`,
+  );
+}
+
+function validateBackendDatabaseJob(job) {
+  const label = backendDatabaseJobName;
+  const keys = Object.keys(job).sort();
+  invariant(
+    keys.length === allowedBackendDatabaseJobKeys.length &&
+      keys.every((key, index) => key === allowedBackendDatabaseJobKeys[index]),
+    `${label} job must use only name, runs-on, timeout-minutes, services, env, defaults, and steps`,
+  );
+  invariant(
+    !JSON.stringify(job).includes("secrets."),
+    `${label} job must not read repository secrets`,
+  );
+
+  invariant(
+    isMapping(job.env) &&
+      Object.keys(job.env).sort().join(",") ===
+        "JWT_ACCESS_SECRET,JWT_REFRESH_SECRET",
+    `${label} job env must set only the JWT CI values`,
+  );
+  invariant(
+    isMapping(job.defaults) &&
+      Object.keys(job.defaults).join(",") === "run" &&
+      isMapping(job.defaults.run) &&
+      Object.keys(job.defaults.run).join(",") === "working-directory" &&
+      job.defaults.run["working-directory"] === "backend",
+    `${label} job defaults must only set working-directory: backend`,
+  );
+
+  invariant(
+    isMapping(job.services) &&
+      Object.keys(job.services).join(",") === "postgres",
+    `${label} job must define only a postgres service`,
+  );
+  const postgres = job.services.postgres;
+  invariant(
+    isMapping(postgres) &&
+      Object.keys(postgres).sort().join(",") === "env,image,options,ports",
+    `${label} postgres service must use only image, env, ports, and options`,
+  );
+  invariant(
+    typeof postgres.image === "string" &&
+      postgresServiceImagePattern.test(postgres.image),
+    `${label} postgres service must pin a postgres:18 image by sha256 digest`,
+  );
+  invariant(
+    Array.isArray(postgres.ports) &&
+      postgres.ports.length === 1 &&
+      postgres.ports[0] === postgresServicePort,
+    `${label} postgres service must publish only ${postgresServicePort}`,
+  );
+  invariant(
+    typeof postgres.options === "string" &&
+      postgres.options.includes("--health-cmd") &&
+      postgres.options.includes("pg_isready"),
+    `${label} postgres service must define a pg_isready health check`,
+  );
+  invariant(
+    isMapping(postgres.env) &&
+      typeof postgres.env.POSTGRES_USER === "string" &&
+      typeof postgres.env.POSTGRES_PASSWORD === "string" &&
+      postgres.env.POSTGRES_DB === "postgres",
+    `${label} postgres service must use inline CI-only credentials and the default postgres database`,
+  );
+
+  invariant(Array.isArray(job.steps), `${label} job steps must be a sequence`);
+  const runSteps = job.steps.filter((step) => Object.hasOwn(step ?? {}, "run"));
+  invariant(
+    runSteps.length === backendDatabaseRunCommands.length &&
+      runSteps.every(
+        (step, index) => step.run === backendDatabaseRunCommands[index],
+      ),
+    `${label} job must run exactly: ${backendDatabaseRunCommands.join(" -> ")}`,
+  );
+  invariant(
+    job.steps.length === runSteps.length + 2,
+    `${label} job must only add checkout and setup-node around its run steps`,
+  );
+  for (const step of runSteps) {
+    const stepKeys = Object.keys(step).sort();
+    invariant(
+      stepKeys.every((key) => backendDatabaseStepKeys.includes(key)),
+      `${label} run step "${step.name}" must use only name, env, and run`,
+    );
+  }
+
+  const [, , migrateOnly, testOnly, migrateSpaces, testSpaces] = runSteps;
+  invariant(
+    !Object.hasOwn(runSteps[0], "env") && !Object.hasOwn(runSteps[1], "env"),
+    `${label} install and generate steps must not set env`,
+  );
+  for (const [step, path] of [
+    [migrateOnly, migrationOnlyDatabasePath],
+    [testOnly, migrationOnlyDatabasePath],
+    [migrateSpaces, spacesDatabasePath],
+    [testSpaces, spacesDatabasePath],
+  ]) {
+    invariant(
+      isMapping(step.env) && Object.keys(step.env).join(",") === "DATABASE_URL",
+      `${label} step "${step.name}" env must set only DATABASE_URL`,
+    );
+    assertLoopbackDatabaseUrl(step.env.DATABASE_URL, path, `${label} step "${step.name}"`);
+  }
+  invariant(
+    migrateOnly.env.DATABASE_URL === testOnly.env.DATABASE_URL &&
+      migrateSpaces.env.DATABASE_URL === testSpaces.env.DATABASE_URL,
+    `${label} must migrate the same database each test suite uses`,
+  );
+}
+
 export function validateCiWorkflow(workflow) {
   invariant(isMapping(workflow.permissions), "top-level permissions must be a mapping");
   invariant(
@@ -160,7 +311,7 @@ export function validateCiWorkflow(workflow) {
   invariant(!Object.hasOwn(workflow, "env"), "top-level env is not allowed");
   invariant(isMapping(workflow.jobs), "jobs must be a mapping");
 
-  const requiredJobs = ["naming", "backend", "web", "containers"];
+  const requiredJobs = ["naming", "backend", backendDatabaseJobName, "web", "containers"];
   for (const jobName of requiredJobs) {
     const job = workflow.jobs[jobName];
     invariant(isMapping(job), `missing ${jobName} job`);
@@ -184,7 +335,10 @@ export function validateCiWorkflow(workflow) {
   }
 
   const references = validateActionReferences(workflow);
-  invariant(references.length === 8, "expected checkout and setup-node in all four jobs");
+  invariant(
+    references.length === requiredJobs.length * 2,
+    "expected checkout and setup-node in every required job",
+  );
 
   const namingCommands = runCommands(workflow.jobs.naming);
   requireCommand("naming", namingCommands, "node --test scripts/verify-mimic-naming.test.mjs");
@@ -204,6 +358,14 @@ export function validateCiWorkflow(workflow) {
     typeof workflow.jobs.backend.env?.JWT_ACCESS_SECRET === "string" &&
       typeof workflow.jobs.backend.env?.JWT_REFRESH_SECRET === "string",
     "backend CI must set both JWT secrets",
+  );
+
+  validateBackendDatabaseJob(workflow.jobs[backendDatabaseJobName]);
+  invariant(
+    !Object.values(workflow.jobs).some((job) =>
+      runCommands(job).some((command) => /\bseed\b|prisma:seed/.test(command)),
+    ),
+    "CI must never seed a database",
   );
 
   const webCommands = runCommands(workflow.jobs.web);
