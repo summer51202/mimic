@@ -1,0 +1,601 @@
+# SHA-256 PNG bytes | before / after | decoded RGBA comparison (tolerance 0)
+9ff0bc3427035239f83a2c062311782f224be047428587a8c2f5b3396dd1ec67  A-home-idle-768x1024-zh-before.png
+9ff0bc3427035239f83a2c062311782f224be047428587a8c2f5b3396dd1ec67  A-home-idle-768x1024-zh-after.png
+# {"name":"A-home-idle-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:58 UTC","狀態時間：2026-11-18 09:58 UTC"]}
+678c4a2a363938e69748a4f2210b16038d0551bb90a96b10feef6a201cc9e098  A-home-idle-1024x768-zh-before.png
+678c4a2a363938e69748a4f2210b16038d0551bb90a96b10feef6a201cc9e098  A-home-idle-1024x768-zh-after.png
+# {"name":"A-home-idle-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:58 UTC","狀態時間：2026-11-18 09:58 UTC"]}
+47b17f2a808af3c66eb16a6644e378f05263e7d9d72fc1625ae318bc9acbdfb4  A-home-idle-1280x720-zh-before.png
+47b17f2a808af3c66eb16a6644e378f05263e7d9d72fc1625ae318bc9acbdfb4  A-home-idle-1280x720-zh-after.png
+# {"name":"A-home-idle-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:58 UTC","狀態時間：2026-11-18 09:58 UTC"]}
+e5b8bedae6d933056fead517688d831785341dfa2ddf12dfb0cf113a1bdf1530  A-home-idle-1366x768-zh-before.png
+e5b8bedae6d933056fead517688d831785341dfa2ddf12dfb0cf113a1bdf1530  A-home-idle-1366x768-zh-after.png
+# {"name":"A-home-idle-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:58 UTC","狀態時間：2026-11-18 09:58 UTC"]}
+96c87e936da759fcf144efcfd8f08c3cc0a866a128adfd62df6eaa2a4e7d4b3f  A-home-idle-1440x900-zh-before.png
+96c87e936da759fcf144efcfd8f08c3cc0a866a128adfd62df6eaa2a4e7d4b3f  A-home-idle-1440x900-zh-after.png
+# {"name":"A-home-idle-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+8258efa13ab34e9f4d5d586ae02cc43c35547d2b9b79623d13b4ac5e0f93e648  A-home-idle-1536x864-zh-before.png
+8258efa13ab34e9f4d5d586ae02cc43c35547d2b9b79623d13b4ac5e0f93e648  A-home-idle-1536x864-zh-after.png
+# {"name":"A-home-idle-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+242a9730a041bbb2dbbb580614d9dd38a0f1f5c1c7a80eae6e8ed9774be026e3  A-home-idle-1920x1080-zh-before.png
+242a9730a041bbb2dbbb580614d9dd38a0f1f5c1c7a80eae6e8ed9774be026e3  A-home-idle-1920x1080-zh-after.png
+# {"name":"A-home-idle-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+b37eaf941b8d66e7f4ae7f0a47edcaa701b17ef72bd638de5f131b879b65eaa6  A-home-idle-2560x1440-zh-before.png
+b37eaf941b8d66e7f4ae7f0a47edcaa701b17ef72bd638de5f131b879b65eaa6  A-home-idle-2560x1440-zh-after.png
+# {"name":"A-home-idle-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+3c00837d7772e040bebf8f7536e48db86ba9a194d379df45b66282b946b1de01  A-home-idle-360x780-zh-before.png
+3c00837d7772e040bebf8f7536e48db86ba9a194d379df45b66282b946b1de01  A-home-idle-360x780-zh-after.png
+# {"name":"A-home-idle-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+84f5cee1231536a270e9cc7494b2e61d0327bd0e99baefd3f765cd199fe40e6a  A-home-idle-390x844-zh-before.png
+84f5cee1231536a270e9cc7494b2e61d0327bd0e99baefd3f765cd199fe40e6a  A-home-idle-390x844-zh-after.png
+# {"name":"A-home-idle-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+9625f0055f466ab48a4e517383af3d65faedbc69b08a88c48ec230f75c095c90  A-home-idle-430x932-zh-before.png
+9625f0055f466ab48a4e517383af3d65faedbc69b08a88c48ec230f75c095c90  A-home-idle-430x932-zh-after.png
+# {"name":"A-home-idle-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+521bc77e0a14c0c0aaf1982ad593b05752d1b509f23014844a99c8274ae31e63  A-home-empty-768x1024-zh-before.png
+521bc77e0a14c0c0aaf1982ad593b05752d1b509f23014844a99c8274ae31e63  A-home-empty-768x1024-zh-after.png
+# {"name":"A-home-empty-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+768d88b2814962c46317e3c95f9801ae497029f3c1d66a689dcf90ef89c5bf1d  A-home-empty-1024x768-zh-before.png
+768d88b2814962c46317e3c95f9801ae497029f3c1d66a689dcf90ef89c5bf1d  A-home-empty-1024x768-zh-after.png
+# {"name":"A-home-empty-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+a94fef6729fe3bffb6cd0ef8784dded9cd580b7b6a3d9a4f100b3cbb235b9747  A-home-empty-1280x720-zh-before.png
+a94fef6729fe3bffb6cd0ef8784dded9cd580b7b6a3d9a4f100b3cbb235b9747  A-home-empty-1280x720-zh-after.png
+# {"name":"A-home-empty-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+9cf97b609a2064c1063f39c04eb7a6dae32ef4f1429c8965a2cff547b3054e71  A-home-empty-1366x768-zh-before.png
+9cf97b609a2064c1063f39c04eb7a6dae32ef4f1429c8965a2cff547b3054e71  A-home-empty-1366x768-zh-after.png
+# {"name":"A-home-empty-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 09:59 UTC","狀態時間：2026-11-18 09:59 UTC"]}
+ffaf4156946b4a37e17a425ea4e6b2a0b6825df50158ea7cdbdf434f83e801c2  A-home-empty-1440x900-zh-before.png
+ffaf4156946b4a37e17a425ea4e6b2a0b6825df50158ea7cdbdf434f83e801c2  A-home-empty-1440x900-zh-after.png
+# {"name":"A-home-empty-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:00 UTC","狀態時間：2026-11-18 10:00 UTC"]}
+9c22d5348e3590648a20714ad875d9fc2dc8e5a419992bde4343c00e19330077  A-home-empty-1536x864-zh-before.png
+9c22d5348e3590648a20714ad875d9fc2dc8e5a419992bde4343c00e19330077  A-home-empty-1536x864-zh-after.png
+# {"name":"A-home-empty-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:00 UTC","狀態時間：2026-11-18 10:00 UTC"]}
+f712e3566a1dcf3b1627ef3d61a1cb6ffe4115a3fb1fe7423cf9fc2391540759  A-home-empty-1920x1080-zh-before.png
+f712e3566a1dcf3b1627ef3d61a1cb6ffe4115a3fb1fe7423cf9fc2391540759  A-home-empty-1920x1080-zh-after.png
+# {"name":"A-home-empty-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:00 UTC","狀態時間：2026-11-18 10:00 UTC"]}
+8ee8276e56f782fd25bc90531b5ade493374856e30995b7a88f3ccc956b4db69  A-home-empty-2560x1440-zh-before.png
+8ee8276e56f782fd25bc90531b5ade493374856e30995b7a88f3ccc956b4db69  A-home-empty-2560x1440-zh-after.png
+# {"name":"A-home-empty-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:00 UTC","狀態時間：2026-11-18 10:00 UTC"]}
+2ec6ae25b897fa9df3ecafad30ec0ce1a6b02ebaa19216284467e474d6f5f345  A-home-empty-360x780-zh-before.png
+2ec6ae25b897fa9df3ecafad30ec0ce1a6b02ebaa19216284467e474d6f5f345  A-home-empty-360x780-zh-after.png
+# {"name":"A-home-empty-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:06 UTC","狀態時間：2026-11-18 10:06 UTC"]}
+2daf327d49933f7a9afc038fbd84d3c58bb8fca6adde1e43cc1c44d025dca6cd  A-home-empty-390x844-zh-before.png
+2daf327d49933f7a9afc038fbd84d3c58bb8fca6adde1e43cc1c44d025dca6cd  A-home-empty-390x844-zh-after.png
+# {"name":"A-home-empty-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:00 UTC","狀態時間：2026-11-18 10:00 UTC"]}
+7142d81f85404bd2e7100c6f404dd3dd6fbb646d2785a5ef76ddcc6297ef1a01  A-home-empty-430x932-zh-before.png
+7142d81f85404bd2e7100c6f404dd3dd6fbb646d2785a5ef76ddcc6297ef1a01  A-home-empty-430x932-zh-after.png
+# {"name":"A-home-empty-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:00 UTC","狀態時間：2026-11-18 10:00 UTC"]}
+0caa4132028974a59d6b39aa937f95c6ef0efc9bc4f6625bcdc7f5060983480f  A-home-ready-768x1024-zh-before.png
+0caa4132028974a59d6b39aa937f95c6ef0efc9bc4f6625bcdc7f5060983480f  A-home-ready-768x1024-zh-after.png
+# {"name":"A-home-ready-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:00 UTC","狀態時間：2026-11-18 10:00 UTC"]}
+ec3cb2050c6ba150f8933eb43c1d9f06940559c0c5c50b5050478fcb8846e95f  A-home-ready-1024x768-zh-before.png
+ec3cb2050c6ba150f8933eb43c1d9f06940559c0c5c50b5050478fcb8846e95f  A-home-ready-1024x768-zh-after.png
+# {"name":"A-home-ready-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:00 UTC","狀態時間：2026-11-18 10:00 UTC"]}
+4826d67958eb0ad510763b6dd93cc6bf82d21183d9fc641a8eb426d3a740c35e  A-home-ready-1280x720-zh-before.png
+4826d67958eb0ad510763b6dd93cc6bf82d21183d9fc641a8eb426d3a740c35e  A-home-ready-1280x720-zh-after.png
+# {"name":"A-home-ready-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:01 UTC","狀態時間：2026-11-18 10:01 UTC"]}
+5928d0cde0360ed99dabab55ae0d07675d415c39d94af9322ae9bd6827c27d29  A-home-ready-1366x768-zh-before.png
+5928d0cde0360ed99dabab55ae0d07675d415c39d94af9322ae9bd6827c27d29  A-home-ready-1366x768-zh-after.png
+# {"name":"A-home-ready-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:01 UTC","狀態時間：2026-11-18 10:01 UTC"]}
+0688efef095b406cbe0c237f0020282816645868a31484ca57c00d7770f15b42  A-home-ready-1440x900-zh-before.png
+0688efef095b406cbe0c237f0020282816645868a31484ca57c00d7770f15b42  A-home-ready-1440x900-zh-after.png
+# {"name":"A-home-ready-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:01 UTC","狀態時間：2026-11-18 10:01 UTC"]}
+97609d5571efacf89ed248db01cc7d5904ae359a057bb996d19b6b941cdc1abe  A-home-ready-1536x864-zh-before.png
+97609d5571efacf89ed248db01cc7d5904ae359a057bb996d19b6b941cdc1abe  A-home-ready-1536x864-zh-after.png
+# {"name":"A-home-ready-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:01 UTC","狀態時間：2026-11-18 10:01 UTC"]}
+626633ee4917123c4489a451c9a253e120494a2b173b36bbaa62b5d5da208b4a  A-home-ready-1920x1080-zh-before.png
+626633ee4917123c4489a451c9a253e120494a2b173b36bbaa62b5d5da208b4a  A-home-ready-1920x1080-zh-after.png
+# {"name":"A-home-ready-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:01 UTC","狀態時間：2026-11-18 10:01 UTC"]}
+5c28e41787ea94b08e0d88f3828b371f4e0df38da698d70a64b49f1ace92c0be  A-home-ready-2560x1440-zh-before.png
+5c28e41787ea94b08e0d88f3828b371f4e0df38da698d70a64b49f1ace92c0be  A-home-ready-2560x1440-zh-after.png
+# {"name":"A-home-ready-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:01 UTC","狀態時間：2026-11-18 10:01 UTC"]}
+a745ec2d089a9998a54ffca5b06979edc8bb54be92595050cfbe10c1f741b97e  A-home-ready-360x780-zh-before.png
+a745ec2d089a9998a54ffca5b06979edc8bb54be92595050cfbe10c1f741b97e  A-home-ready-360x780-zh-after.png
+# {"name":"A-home-ready-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:01 UTC","狀態時間：2026-11-18 10:01 UTC"]}
+0a6f317e69cfefa933534e5881893a30aaadc80c0fa1439229f527f3c4abc1c9  A-home-ready-390x844-zh-before.png
+0a6f317e69cfefa933534e5881893a30aaadc80c0fa1439229f527f3c4abc1c9  A-home-ready-390x844-zh-after.png
+# {"name":"A-home-ready-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:01 UTC","狀態時間：2026-11-18 10:01 UTC"]}
+70136c78e3d13a5481cb4fababe8d9e89a0d108a7154050ceea34f88ef2b927d  A-home-ready-430x932-zh-before.png
+70136c78e3d13a5481cb4fababe8d9e89a0d108a7154050ceea34f88ef2b927d  A-home-ready-430x932-zh-after.png
+# {"name":"A-home-ready-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+51a9c1332f2a242179149274a2f079720179e97a590341bbfbf6daf4e5f4e60b  A-home-offline-768x1024-zh-before.png
+51a9c1332f2a242179149274a2f079720179e97a590341bbfbf6daf4e5f4e60b  A-home-offline-768x1024-zh-after.png
+# {"name":"A-home-offline-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+248a4807d916673951826a01d3725e60deb1891a7ff288a6a6967257fc471d6b  A-home-offline-1024x768-zh-before.png
+248a4807d916673951826a01d3725e60deb1891a7ff288a6a6967257fc471d6b  A-home-offline-1024x768-zh-after.png
+# {"name":"A-home-offline-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+474d6f99e8175a9d19dfc6d14bcea5842ab41c80a93b436b0475ae1e2ea73dda  A-home-offline-1280x720-zh-before.png
+474d6f99e8175a9d19dfc6d14bcea5842ab41c80a93b436b0475ae1e2ea73dda  A-home-offline-1280x720-zh-after.png
+# {"name":"A-home-offline-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+fff565c7a1106ca65eb9ead75485d182c2b184bb737e76a40deb92347c2b881d  A-home-offline-1366x768-zh-before.png
+fff565c7a1106ca65eb9ead75485d182c2b184bb737e76a40deb92347c2b881d  A-home-offline-1366x768-zh-after.png
+# {"name":"A-home-offline-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+0d308dfece33bd82bea30fd495054e878e0d987a2f3317f2801a4f82cd9134b7  A-home-offline-1440x900-zh-before.png
+0d308dfece33bd82bea30fd495054e878e0d987a2f3317f2801a4f82cd9134b7  A-home-offline-1440x900-zh-after.png
+# {"name":"A-home-offline-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+2bff92ed9610732f2dc0a88ec45623b7e565bf71a677f8de82e9366cfdb33303  A-home-offline-1536x864-zh-before.png
+2bff92ed9610732f2dc0a88ec45623b7e565bf71a677f8de82e9366cfdb33303  A-home-offline-1536x864-zh-after.png
+# {"name":"A-home-offline-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+3ee5e04140954fd7fe8b175119fba869e2fab7b682fbe7f395b25ba678922d77  A-home-offline-1920x1080-zh-before.png
+3ee5e04140954fd7fe8b175119fba869e2fab7b682fbe7f395b25ba678922d77  A-home-offline-1920x1080-zh-after.png
+# {"name":"A-home-offline-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+6d0be411c33744b1786255ba2921317f32ad62926e734b41a5925d2d7044b8d3  A-home-offline-2560x1440-zh-before.png
+6d0be411c33744b1786255ba2921317f32ad62926e734b41a5925d2d7044b8d3  A-home-offline-2560x1440-zh-after.png
+# {"name":"A-home-offline-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+0bb2b5b1b20625a8ad80c2f8dc235aec4659a191d4d94c76d56991965aef59f3  A-home-offline-360x780-zh-before.png
+0bb2b5b1b20625a8ad80c2f8dc235aec4659a191d4d94c76d56991965aef59f3  A-home-offline-360x780-zh-after.png
+# {"name":"A-home-offline-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+034c0a423f9897b6d9b49f9324695010a77a90c79e9067e8c853fb63ce780434  A-home-offline-390x844-zh-before.png
+034c0a423f9897b6d9b49f9324695010a77a90c79e9067e8c853fb63ce780434  A-home-offline-390x844-zh-after.png
+# {"name":"A-home-offline-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:02 UTC","狀態時間：2026-11-18 10:02 UTC"]}
+f3da1d814f44e2751aed7726f456a9940bf57cd7e05c3fc3da13968bc524ceec  A-home-offline-430x932-zh-before.png
+f3da1d814f44e2751aed7726f456a9940bf57cd7e05c3fc3da13968bc524ceec  A-home-offline-430x932-zh-after.png
+# {"name":"A-home-offline-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:03 UTC","狀態時間：2026-11-18 10:03 UTC"]}
+211e3cc59b8e4caf52615bb592582cf438a38fe20973643684a0649fedf6cfe6  A-personal-768x1024-zh-before.png
+211e3cc59b8e4caf52615bb592582cf438a38fe20973643684a0649fedf6cfe6  A-personal-768x1024-zh-after.png
+# {"name":"A-personal-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+e13c160b66253696bf7c2071408b0bd8c02849b245c76ae1b432aec3fc014d69  A-personal-1024x768-zh-before.png
+e13c160b66253696bf7c2071408b0bd8c02849b245c76ae1b432aec3fc014d69  A-personal-1024x768-zh-after.png
+# {"name":"A-personal-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+baf5bd097c622f57c67336c254741d33ff431aa8449abe92febf7b5fcb13414d  A-personal-1280x720-zh-before.png
+baf5bd097c622f57c67336c254741d33ff431aa8449abe92febf7b5fcb13414d  A-personal-1280x720-zh-after.png
+# {"name":"A-personal-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+cb55b0d0b3d188612d2f3fe40fe6ad29e87d996e0613d848134f0f104c3cbcc1  A-personal-1366x768-zh-before.png
+cb55b0d0b3d188612d2f3fe40fe6ad29e87d996e0613d848134f0f104c3cbcc1  A-personal-1366x768-zh-after.png
+# {"name":"A-personal-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+c3959f5c3487e95c4c6e4fc9d8ebbfb855a5fb66e38cde047b30b1ea837fd7cc  A-personal-1440x900-zh-before.png
+c3959f5c3487e95c4c6e4fc9d8ebbfb855a5fb66e38cde047b30b1ea837fd7cc  A-personal-1440x900-zh-after.png
+# {"name":"A-personal-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+a6dc500481b0d0e540a60cc36798f67acfcde67fe0b20c3889eaa4001468ceaa  A-personal-1536x864-zh-before.png
+a6dc500481b0d0e540a60cc36798f67acfcde67fe0b20c3889eaa4001468ceaa  A-personal-1536x864-zh-after.png
+# {"name":"A-personal-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+2f8ec0b1e7ba7ec8c0e775ba1ed09e13b0a5dee84d2a708663e60ed93bcff513  A-personal-1920x1080-zh-before.png
+2f8ec0b1e7ba7ec8c0e775ba1ed09e13b0a5dee84d2a708663e60ed93bcff513  A-personal-1920x1080-zh-after.png
+# {"name":"A-personal-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+48d9194881309d47c0fcb1f2011c166aeb938fc24cabda804c73e7071065a7f3  A-personal-2560x1440-zh-before.png
+48d9194881309d47c0fcb1f2011c166aeb938fc24cabda804c73e7071065a7f3  A-personal-2560x1440-zh-after.png
+# {"name":"A-personal-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+925bd9d7d30772c6ed7352c51cccdfb79d908680168e727d7ff483807c77e9ce  A-personal-360x780-zh-before.png
+925bd9d7d30772c6ed7352c51cccdfb79d908680168e727d7ff483807c77e9ce  A-personal-360x780-zh-after.png
+# {"name":"A-personal-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+631d0df2fb57df996fe31d017bddee9a606c0117067e39ebb8183b6f15127277  A-personal-390x844-zh-before.png
+631d0df2fb57df996fe31d017bddee9a606c0117067e39ebb8183b6f15127277  A-personal-390x844-zh-after.png
+# {"name":"A-personal-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+17c0f981a54c7a782e8573166dfc6cc339bea2ad98b988f8d28cac5071b91220  A-personal-430x932-zh-before.png
+17c0f981a54c7a782e8573166dfc6cc339bea2ad98b988f8d28cac5071b91220  A-personal-430x932-zh-after.png
+# {"name":"A-personal-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+a4dbb02882565922553a7197114d0bea1a9b8ffe3a2187fcdd3c8828b883f8b7  A-shared-768x1024-zh-before.png
+a4dbb02882565922553a7197114d0bea1a9b8ffe3a2187fcdd3c8828b883f8b7  A-shared-768x1024-zh-after.png
+# {"name":"A-shared-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+af80dc39c4cf2b836cf31f5c75f46281ffcdffea415ca0241ae4ccf4f4adc000  A-shared-1024x768-zh-before.png
+af80dc39c4cf2b836cf31f5c75f46281ffcdffea415ca0241ae4ccf4f4adc000  A-shared-1024x768-zh-after.png
+# {"name":"A-shared-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+75e2f6d2719cb842ab2a0d1c9a20a2c1504c1895df929155192a295fa6b34c7e  A-shared-1280x720-zh-before.png
+75e2f6d2719cb842ab2a0d1c9a20a2c1504c1895df929155192a295fa6b34c7e  A-shared-1280x720-zh-after.png
+# {"name":"A-shared-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+129d9066585ab751052dd9f0f6272e136ffc722c38df8f3ae348f7e8853e6fd1  A-shared-1366x768-zh-before.png
+129d9066585ab751052dd9f0f6272e136ffc722c38df8f3ae348f7e8853e6fd1  A-shared-1366x768-zh-after.png
+# {"name":"A-shared-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+0e10a9c1d7682bb4d3c5f1e978ce1f9f0041cda90bd58c9da78bd3d0f318e41d  A-shared-1440x900-zh-before.png
+0e10a9c1d7682bb4d3c5f1e978ce1f9f0041cda90bd58c9da78bd3d0f318e41d  A-shared-1440x900-zh-after.png
+# {"name":"A-shared-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+8e92b5d7ce6bc794a7797aee74ec3b53d1b512ff83d403590a6d734580b1a85a  A-shared-1536x864-zh-before.png
+8e92b5d7ce6bc794a7797aee74ec3b53d1b512ff83d403590a6d734580b1a85a  A-shared-1536x864-zh-after.png
+# {"name":"A-shared-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+8d41bf9391936ae668ca65ffe5b168455eb24cbf8251d960827fc718028a6d95  A-shared-1920x1080-zh-before.png
+8d41bf9391936ae668ca65ffe5b168455eb24cbf8251d960827fc718028a6d95  A-shared-1920x1080-zh-after.png
+# {"name":"A-shared-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+95ff2b860ac79040f4209c63fe19ec55082b5e7ff6004986acce2858ed238012  A-shared-2560x1440-zh-before.png
+95ff2b860ac79040f4209c63fe19ec55082b5e7ff6004986acce2858ed238012  A-shared-2560x1440-zh-after.png
+# {"name":"A-shared-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+fce71a232b108319e5a3081245cafa7229e59eaf15f5c360f776813143449565  A-shared-360x780-zh-before.png
+fce71a232b108319e5a3081245cafa7229e59eaf15f5c360f776813143449565  A-shared-360x780-zh-after.png
+# {"name":"A-shared-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+7062499c5df85f1c9029451e9ec21e9c2d80ad9c82bdcd612a1c8da09870ae8b  A-shared-390x844-zh-before.png
+7062499c5df85f1c9029451e9ec21e9c2d80ad9c82bdcd612a1c8da09870ae8b  A-shared-390x844-zh-after.png
+# {"name":"A-shared-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+b4e468fdfee6ffbb4c0b04db31c3ccd83a85337013201fb457361ce6e833c94a  A-shared-430x932-zh-before.png
+b4e468fdfee6ffbb4c0b04db31c3ccd83a85337013201fb457361ce6e833c94a  A-shared-430x932-zh-after.png
+# {"name":"A-shared-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+628d0ad0bcfed9ba76ee8158dad6d48d4e9c12a93505c7fb204a0b9548d5b616  A-fund-768x1024-zh-before.png
+628d0ad0bcfed9ba76ee8158dad6d48d4e9c12a93505c7fb204a0b9548d5b616  A-fund-768x1024-zh-after.png
+# {"name":"A-fund-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+4ca6eca25199d115665fcd83d439e7d2ba527d348cc57f57d0f90b845c14ff53  A-fund-1024x768-zh-before.png
+4ca6eca25199d115665fcd83d439e7d2ba527d348cc57f57d0f90b845c14ff53  A-fund-1024x768-zh-after.png
+# {"name":"A-fund-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+2ca3dfeff2ba31a117b1805cd1edca49b8f1bfe2d255f671d4f386a3a2275015  A-fund-1280x720-zh-before.png
+2ca3dfeff2ba31a117b1805cd1edca49b8f1bfe2d255f671d4f386a3a2275015  A-fund-1280x720-zh-after.png
+# {"name":"A-fund-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+7b18afe1fe17d37e2512124cc80f5ecccc327020e45fa4e5ae52fe25669ecdd1  A-fund-1366x768-zh-before.png
+7b18afe1fe17d37e2512124cc80f5ecccc327020e45fa4e5ae52fe25669ecdd1  A-fund-1366x768-zh-after.png
+# {"name":"A-fund-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+a6e560121581537bf469d76e22217b8be71be092dfd056d395b4a17fb11e3839  A-fund-1440x900-zh-before.png
+a6e560121581537bf469d76e22217b8be71be092dfd056d395b4a17fb11e3839  A-fund-1440x900-zh-after.png
+# {"name":"A-fund-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+07d425eef2cbe17d62d59671b841e473b2a9155196588c715883c545386a9f70  A-fund-1536x864-zh-before.png
+07d425eef2cbe17d62d59671b841e473b2a9155196588c715883c545386a9f70  A-fund-1536x864-zh-after.png
+# {"name":"A-fund-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+f38dc5765b26732ef8448649e323cf310c1ea8a696f2f9f9a61518104dcfa0b8  A-fund-1920x1080-zh-before.png
+f38dc5765b26732ef8448649e323cf310c1ea8a696f2f9f9a61518104dcfa0b8  A-fund-1920x1080-zh-after.png
+# {"name":"A-fund-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+f8eded9500fa35da211d4aa6752db0ff83334574d5a353a61c3bcd7c1f81d8e3  A-fund-2560x1440-zh-before.png
+f8eded9500fa35da211d4aa6752db0ff83334574d5a353a61c3bcd7c1f81d8e3  A-fund-2560x1440-zh-after.png
+# {"name":"A-fund-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+cfdcbfa87dd59e99d147f8c7b706a2c8bae8b5c7fc1fefb4276141678b8d7bf0  A-fund-360x780-zh-before.png
+cfdcbfa87dd59e99d147f8c7b706a2c8bae8b5c7fc1fefb4276141678b8d7bf0  A-fund-360x780-zh-after.png
+# {"name":"A-fund-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+c8161a60957439d301ad61c45f282abfecf613b2cba7086e9101efc77dc40ab5  A-fund-390x844-zh-before.png
+c8161a60957439d301ad61c45f282abfecf613b2cba7086e9101efc77dc40ab5  A-fund-390x844-zh-after.png
+# {"name":"A-fund-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+0c9da1c747196358c94ed71b3be09dc541d93d97da153b136796c80cf97a11d2  A-fund-430x932-zh-before.png
+0c9da1c747196358c94ed71b3be09dc541d93d97da153b136796c80cf97a11d2  A-fund-430x932-zh-after.png
+# {"name":"A-fund-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+fbf4b0e967c7a68d9b2c44e153c99bf78b4b0ffcd07d1bb78e6bd577a7ea0c6d  A-tasks-768x1024-zh-before.png
+fbf4b0e967c7a68d9b2c44e153c99bf78b4b0ffcd07d1bb78e6bd577a7ea0c6d  A-tasks-768x1024-zh-after.png
+# {"name":"A-tasks-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+7c786b3beaee32894240412623522ac2b803c047b6025cf60513a22e24252073  A-tasks-1024x768-zh-before.png
+7c786b3beaee32894240412623522ac2b803c047b6025cf60513a22e24252073  A-tasks-1024x768-zh-after.png
+# {"name":"A-tasks-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+af1ca57e8952ef268bcd1b15c5c56bd1c78b3fd41b55f69d1ceaf20932675127  A-tasks-1280x720-zh-before.png
+af1ca57e8952ef268bcd1b15c5c56bd1c78b3fd41b55f69d1ceaf20932675127  A-tasks-1280x720-zh-after.png
+# {"name":"A-tasks-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+71406c5307ad10e311e5a47a7bdba107aba9a942c87cc756ecd06e19a7d47736  A-tasks-1366x768-zh-before.png
+71406c5307ad10e311e5a47a7bdba107aba9a942c87cc756ecd06e19a7d47736  A-tasks-1366x768-zh-after.png
+# {"name":"A-tasks-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+21f76707ad6d1fcc0bf4591b4b7f5fd5fb62e2f0376ece3da5a4b68c76697b2d  A-tasks-1440x900-zh-before.png
+21f76707ad6d1fcc0bf4591b4b7f5fd5fb62e2f0376ece3da5a4b68c76697b2d  A-tasks-1440x900-zh-after.png
+# {"name":"A-tasks-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+25ad16e6b31e3e3f87e64a5282ef5bafa62f9413a8a4ed4ef554cd8f111a6aba  A-tasks-1536x864-zh-before.png
+25ad16e6b31e3e3f87e64a5282ef5bafa62f9413a8a4ed4ef554cd8f111a6aba  A-tasks-1536x864-zh-after.png
+# {"name":"A-tasks-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+7ac08e04f5258419357c30a177eb499d3447d9be9ca1841aea05ddfc2c329802  A-tasks-1920x1080-zh-before.png
+7ac08e04f5258419357c30a177eb499d3447d9be9ca1841aea05ddfc2c329802  A-tasks-1920x1080-zh-after.png
+# {"name":"A-tasks-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+40ba9a8f576ef4953f252585ede7ae54fbf02c97f1681890c15199f3edd3d1ee  A-tasks-2560x1440-zh-before.png
+40ba9a8f576ef4953f252585ede7ae54fbf02c97f1681890c15199f3edd3d1ee  A-tasks-2560x1440-zh-after.png
+# {"name":"A-tasks-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+96dc9b5e2ea314c741c729a3c7ca0a33a87516e989835d2bf78e7409bf022fff  A-tasks-360x780-zh-before.png
+96dc9b5e2ea314c741c729a3c7ca0a33a87516e989835d2bf78e7409bf022fff  A-tasks-360x780-zh-after.png
+# {"name":"A-tasks-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+77eaeb91c868817670a4b7890e899a0e017d6c6d61304a3a9e86f714efe00784  A-tasks-390x844-zh-before.png
+77eaeb91c868817670a4b7890e899a0e017d6c6d61304a3a9e86f714efe00784  A-tasks-390x844-zh-after.png
+# {"name":"A-tasks-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:05 UTC","狀態時間：2026-11-18 10:05 UTC"]}
+b9e128b48b3ae3a205cf0cf1d3c8701ac6c2fff1f1fa4c10f7aa431ca1fa703a  A-tasks-430x932-zh-before.png
+b9e128b48b3ae3a205cf0cf1d3c8701ac6c2fff1f1fa4c10f7aa431ca1fa703a  A-tasks-430x932-zh-after.png
+# {"name":"A-tasks-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 10:06 UTC","狀態時間：2026-11-18 10:06 UTC"]}
+0b2f3f3ffe800a6c668fe563666b86ca466a5a5fee0fa356449d69a0432196eb  A-landing-768x1024-zh-before.png
+0b2f3f3ffe800a6c668fe563666b86ca466a5a5fee0fa356449d69a0432196eb  A-landing-768x1024-zh-after.png
+# {"name":"A-landing-768x1024","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":768,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":768,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+99ba89e957b7608e683c10a66113422b5ae00e448b0a57b129acacec25115749  A-landing-1024x768-zh-before.png
+99ba89e957b7608e683c10a66113422b5ae00e448b0a57b129acacec25115749  A-landing-1024x768-zh-after.png
+# {"name":"A-landing-1024x768","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":1024,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":1024,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+876d9b1bbbaf2915a45d3c2e8e165e9a644e2736dcd82fe8abb006879e3d62da  A-landing-1280x720-zh-before.png
+876d9b1bbbaf2915a45d3c2e8e165e9a644e2736dcd82fe8abb006879e3d62da  A-landing-1280x720-zh-after.png
+# {"name":"A-landing-1280x720","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":1280,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":1280,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+92cba7e9a7bdb3f7d9b148fa47ba7cfc233e41a1e328cd4fac64bf5f1a7061a7  A-landing-1366x768-zh-before.png
+92cba7e9a7bdb3f7d9b148fa47ba7cfc233e41a1e328cd4fac64bf5f1a7061a7  A-landing-1366x768-zh-after.png
+# {"name":"A-landing-1366x768","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":1366,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":1366,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+46707e3c091c35c791e925218c21c44b3ddffeea9512b4076ea2558b75f9c852  A-landing-1440x900-zh-before.png
+46707e3c091c35c791e925218c21c44b3ddffeea9512b4076ea2558b75f9c852  A-landing-1440x900-zh-after.png
+# {"name":"A-landing-1440x900","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":1440,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":1440,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+ed75c1c939f34cf26b45de9356ae3648c3e9077fb4ee0be2f529a9864c7d9690  A-landing-1536x864-zh-before.png
+ed75c1c939f34cf26b45de9356ae3648c3e9077fb4ee0be2f529a9864c7d9690  A-landing-1536x864-zh-after.png
+# {"name":"A-landing-1536x864","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":1536,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":1536,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+105920dc2df1a99c950b0ce0abf9d6be40f577ab4ba02ba3e331afb3b4a68542  A-landing-1920x1080-zh-before.png
+105920dc2df1a99c950b0ce0abf9d6be40f577ab4ba02ba3e331afb3b4a68542  A-landing-1920x1080-zh-after.png
+# {"name":"A-landing-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":1920,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":1920,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+bd5a87e681de38bc8ff03bb7940c5fa482665eaad1a2451cc952a68549ae1fd6  A-landing-2560x1440-zh-before.png
+bd5a87e681de38bc8ff03bb7940c5fa482665eaad1a2451cc952a68549ae1fd6  A-landing-2560x1440-zh-after.png
+# {"name":"A-landing-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":2560,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":2560,"height":70,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+5acb141f75102c86d9ebaeb28d2d37b6e8d2a949d6fdbf5e4f4d6b35b33f2998  A-landing-360x780-zh-before.png
+5acb141f75102c86d9ebaeb28d2d37b6e8d2a949d6fdbf5e4f4d6b35b33f2998  A-landing-360x780-zh-after.png
+# {"name":"A-landing-360x780","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":360,"height":66,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":360,"height":66,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+ce50480c875a92284a3b82f43fe515e68ade59cbf931060c14592f1d32ce36e0  A-landing-390x844-zh-before.png
+ce50480c875a92284a3b82f43fe515e68ade59cbf931060c14592f1d32ce36e0  A-landing-390x844-zh-after.png
+# {"name":"A-landing-390x844","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":390,"height":66,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":390,"height":66,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+d500b977c3b796f18fb29c9615f8929240fefb79daacffb38a31880340d06c97  A-landing-430x932-zh-before.png
+d500b977c3b796f18fb29c9615f8929240fefb79daacffb38a31880340d06c97  A-landing-430x932-zh-after.png
+# {"name":"A-landing-430x932","pixels":0,"bounds":null,"allowed":false,"before":{"x":0,"y":0,"width":430,"height":66,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"after":{"x":0,"y":0,"width":430,"height":66,"text":"mimic咪咪庫 / MimikuEnglish功能登入"},"clocks":[null,null]}
+8a0c3e9418f3ed509e69ba3b449072c2686e022b67512b9b03d71e1995214419  A-quick-390x844-zh-before.png
+8a0c3e9418f3ed509e69ba3b449072c2686e022b67512b9b03d71e1995214419  A-quick-390x844-zh-after.png
+# {"name":"A-quick-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:30 UTC","狀態時間：2026-11-18 03:30 UTC"]}
+3dc3a500c9802cda9e5d2d4e0b1fc79c0c19f165dd167948f2c24fe96aae65f5  A-personal-add-390x844-zh-before.png
+3dc3a500c9802cda9e5d2d4e0b1fc79c0c19f165dd167948f2c24fe96aae65f5  A-personal-add-390x844-zh-after.png
+# {"name":"A-personal-add-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+762fd57ab89d3ed0af90924b5763e2178107b7a774c1d58d06d061f71ccffd24  A-shared-add-390x844-zh-before.png
+762fd57ab89d3ed0af90924b5763e2178107b7a774c1d58d06d061f71ccffd24  A-shared-add-390x844-zh-after.png
+# {"name":"A-shared-add-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+f0ca5154ac9f150bdfdfe9840f7cb56cf1c8a718288cea70c9caebfa92ec33da  A-reference-390x844-zh-before.png
+f0ca5154ac9f150bdfdfe9840f7cb56cf1c8a718288cea70c9caebfa92ec33da  A-reference-390x844-zh-after.png
+# {"name":"A-reference-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+6af9e546891315d7a887ba4ff8a59702fefe1fbe87f18976c2b79d5fa0d4be91  A-taxonomy-390x844-zh-before.png
+6af9e546891315d7a887ba4ff8a59702fefe1fbe87f18976c2b79d5fa0d4be91  A-taxonomy-390x844-zh-after.png
+# {"name":"A-taxonomy-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+7062499c5df85f1c9029451e9ec21e9c2d80ad9c82bdcd612a1c8da09870ae8b  A-settlement-390x844-zh-before.png
+7062499c5df85f1c9029451e9ec21e9c2d80ad9c82bdcd612a1c8da09870ae8b  A-settlement-390x844-zh-after.png
+# {"name":"A-settlement-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+6f9d1f97c3773f63190909b7515211d8985df5b65bc201afe7deac7de025d71e  A-start-settlement-390x844-zh-before.png
+da85373cc857edf54f171481e6529093e8c6d243cd87ee65e467c26b743159ff  A-start-settlement-390x844-zh-after.png
+# {"name":"A-start-settlement-390x844","pixels":3749,"bounds":[36,359,333,398],"allowed":true,"before":{"x":36,"y":356,"width":318,"height":48,"text":"截止日由 backend 推導連續期間並快照支出、位置與更正。"},"after":{"x":36,"y":356,"width":318,"height":48,"text":"截止日之前的支出、位置與更正會被快照，這段期間隨即鎖定。"},"clocks":[null,null]}
+1d419703ff793414aaa33c8b5febd8a400ba31f5e1ee020f400f3bd59de5dc09  A-correction-390x844-zh-before.png
+1d419703ff793414aaa33c8b5febd8a400ba31f5e1ee020f400f3bd59de5dc09  A-correction-390x844-zh-after.png
+# {"name":"A-correction-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+cad7771e214f9a1683479d0dff71ec1f553cf10edf8b32453b50ff2226078cc2  A-lifecycle-390x844-zh-before.png
+cad7771e214f9a1683479d0dff71ec1f553cf10edf8b32453b50ff2226078cc2  A-lifecycle-390x844-zh-after.png
+# {"name":"A-lifecycle-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+c22ef3611f098cdaaa0330e022d8955e35ef62d4d523e177efbf9b129a403ae3  A-fund-schedule-390x844-zh-before.png
+c22ef3611f098cdaaa0330e022d8955e35ef62d4d523e177efbf9b129a403ae3  A-fund-schedule-390x844-zh-after.png
+# {"name":"A-fund-schedule-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+0617eb00d9ce4ff0462badd0ffa712f5d296d31377951ece8a5a5ae62676695b  A-fund-expense-390x844-zh-before.png
+0617eb00d9ce4ff0462badd0ffa712f5d296d31377951ece8a5a5ae62676695b  A-fund-expense-390x844-zh-after.png
+# {"name":"A-fund-expense-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+8e0b342ee8b29ca68256e05fb60c7211b6448fa9a98df494830b56f0d2cbe350  A-fund-returns-390x844-zh-before.png
+8e0b342ee8b29ca68256e05fb60c7211b6448fa9a98df494830b56f0d2cbe350  A-fund-returns-390x844-zh-after.png
+# {"name":"A-fund-returns-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+24d89bbc6116f90883996c24bf994abb449aee1c16b6cbcacf11dccdfdbf47d3  A-draft-recovery-390x844-zh-before.png
+24d89bbc6116f90883996c24bf994abb449aee1c16b6cbcacf11dccdfdbf47d3  A-draft-recovery-390x844-zh-after.png
+# {"name":"A-draft-recovery-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+4eab32e8624bbd6a692844801a023daa382d1747a291ef58aed941f07142a685  B-home-idle-768x1024-zh-before.png
+4eab32e8624bbd6a692844801a023daa382d1747a291ef58aed941f07142a685  B-home-idle-768x1024-zh-after.png
+# {"name":"B-home-idle-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:31 UTC","狀態時間：2026-11-18 03:31 UTC"]}
+39a828f0c56e758913133ba53478bd3aa663f8412b38ceca5119ba4eb3b53bcc  B-home-idle-1024x768-zh-before.png
+39a828f0c56e758913133ba53478bd3aa663f8412b38ceca5119ba4eb3b53bcc  B-home-idle-1024x768-zh-after.png
+# {"name":"B-home-idle-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:31 UTC","狀態時間：2026-11-18 03:31 UTC"]}
+d4f92b05171c0b8941f6fdcebfa177ad8c8bfcf6a34b7a7e58b859691988c04b  B-home-idle-1280x720-zh-before.png
+d4f92b05171c0b8941f6fdcebfa177ad8c8bfcf6a34b7a7e58b859691988c04b  B-home-idle-1280x720-zh-after.png
+# {"name":"B-home-idle-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:31 UTC","狀態時間：2026-11-18 03:31 UTC"]}
+9f92c03794bea10d03b721488b80907cf5dd4cc543f8bb9b42a98e4b915bd485  B-home-idle-1366x768-zh-before.png
+9f92c03794bea10d03b721488b80907cf5dd4cc543f8bb9b42a98e4b915bd485  B-home-idle-1366x768-zh-after.png
+# {"name":"B-home-idle-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:31 UTC","狀態時間：2026-11-18 03:31 UTC"]}
+d542378adf331451786e28919adf692ae5bcd58cd444a23235e244b0a9da2c95  B-home-idle-1440x900-zh-before.png
+d542378adf331451786e28919adf692ae5bcd58cd444a23235e244b0a9da2c95  B-home-idle-1440x900-zh-after.png
+# {"name":"B-home-idle-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:31 UTC","狀態時間：2026-11-18 03:31 UTC"]}
+9125c5778eae7ccd0048cc9e553ba6691e933f7814ea8ae308d0b029ae4a2de1  B-home-idle-1536x864-zh-before.png
+9125c5778eae7ccd0048cc9e553ba6691e933f7814ea8ae308d0b029ae4a2de1  B-home-idle-1536x864-zh-after.png
+# {"name":"B-home-idle-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:31 UTC","狀態時間：2026-11-18 03:31 UTC"]}
+c9730b50373bf33b406cfc227412e22b05278db17461fbdd7ae3e9aff78b5c41  B-home-idle-1920x1080-zh-before.png
+c9730b50373bf33b406cfc227412e22b05278db17461fbdd7ae3e9aff78b5c41  B-home-idle-1920x1080-zh-after.png
+# {"name":"B-home-idle-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:31 UTC","狀態時間：2026-11-18 03:31 UTC"]}
+db00997a31b48155793b6ac38967ccfa32887b2656ee63582b27973b05c93e70  B-home-idle-2560x1440-zh-before.png
+db00997a31b48155793b6ac38967ccfa32887b2656ee63582b27973b05c93e70  B-home-idle-2560x1440-zh-after.png
+# {"name":"B-home-idle-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:31 UTC","狀態時間：2026-11-18 03:31 UTC"]}
+8c920bdec68eab342bc402f1726f79d1ee694d706fc8a55fbd2617c3c348b1fd  B-home-idle-360x780-zh-before.png
+8c920bdec68eab342bc402f1726f79d1ee694d706fc8a55fbd2617c3c348b1fd  B-home-idle-360x780-zh-after.png
+# {"name":"B-home-idle-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+3f09cc47678036cb112dcb06a99654e411fafdd942da86addebce8121c683f05  B-home-idle-390x844-zh-before.png
+3f09cc47678036cb112dcb06a99654e411fafdd942da86addebce8121c683f05  B-home-idle-390x844-zh-after.png
+# {"name":"B-home-idle-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+d59aeb0a0d1a8e17144a7f5639d4299e76527790b24e0277cf4de1b101b6cc1c  B-home-idle-430x932-zh-before.png
+d59aeb0a0d1a8e17144a7f5639d4299e76527790b24e0277cf4de1b101b6cc1c  B-home-idle-430x932-zh-after.png
+# {"name":"B-home-idle-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+28e67d25e5482eb6bbcdb573d673497971962594a3cb8cb9983c3a570555b998  B-home-empty-768x1024-zh-before.png
+28e67d25e5482eb6bbcdb573d673497971962594a3cb8cb9983c3a570555b998  B-home-empty-768x1024-zh-after.png
+# {"name":"B-home-empty-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+51ad7e51bbed6717fcd58487e140bee453f8495b875b8976a4f4b13f32e7072f  B-home-empty-1024x768-zh-before.png
+51ad7e51bbed6717fcd58487e140bee453f8495b875b8976a4f4b13f32e7072f  B-home-empty-1024x768-zh-after.png
+# {"name":"B-home-empty-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+c49e23d335de738ddea5e161bf8149d4d3d3d61d88240a41c4381558112ed324  B-home-empty-1280x720-zh-before.png
+c49e23d335de738ddea5e161bf8149d4d3d3d61d88240a41c4381558112ed324  B-home-empty-1280x720-zh-after.png
+# {"name":"B-home-empty-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+5631d8b5c744fb96a5755ca03ebe4c66dedcc77f26dc99cbe9dc2a7563fc24e8  B-home-empty-1366x768-zh-before.png
+5631d8b5c744fb96a5755ca03ebe4c66dedcc77f26dc99cbe9dc2a7563fc24e8  B-home-empty-1366x768-zh-after.png
+# {"name":"B-home-empty-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+9910b1e326a1a2cf34d7e7c42640e8c66921f61f5c3b92188385d84e4a60f24f  B-home-empty-1440x900-zh-before.png
+9910b1e326a1a2cf34d7e7c42640e8c66921f61f5c3b92188385d84e4a60f24f  B-home-empty-1440x900-zh-after.png
+# {"name":"B-home-empty-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+dc95f0af14a40b3ddc940fe9817fa40cb53bb305fbfa548865ab7ea09716e31f  B-home-empty-1536x864-zh-before.png
+dc95f0af14a40b3ddc940fe9817fa40cb53bb305fbfa548865ab7ea09716e31f  B-home-empty-1536x864-zh-after.png
+# {"name":"B-home-empty-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+d82ba40eef09e20161befd74fe8516fbad49e946d369d57686904f5964eb261c  B-home-empty-1920x1080-zh-before.png
+d82ba40eef09e20161befd74fe8516fbad49e946d369d57686904f5964eb261c  B-home-empty-1920x1080-zh-after.png
+# {"name":"B-home-empty-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+286efc619d2d9cdb75a62f67ecd8c3d65964a0aacf8de2491359c4661498ce1d  B-home-empty-2560x1440-zh-before.png
+286efc619d2d9cdb75a62f67ecd8c3d65964a0aacf8de2491359c4661498ce1d  B-home-empty-2560x1440-zh-after.png
+# {"name":"B-home-empty-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+897f8ba733299ef7385129fff10fa56c70b59822f1efd4ba8ba329279106bd6d  B-home-empty-360x780-zh-before.png
+897f8ba733299ef7385129fff10fa56c70b59822f1efd4ba8ba329279106bd6d  B-home-empty-360x780-zh-after.png
+# {"name":"B-home-empty-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:32 UTC","狀態時間：2026-11-18 03:32 UTC"]}
+030799ef9e7b9330d0c59c8415d6aa33f2aa8930d264bdb9c2fd87d9045b1a4e  B-home-empty-390x844-zh-before.png
+030799ef9e7b9330d0c59c8415d6aa33f2aa8930d264bdb9c2fd87d9045b1a4e  B-home-empty-390x844-zh-after.png
+# {"name":"B-home-empty-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+84904ce83a7b77c4c8979149bb099e773da347c7c7fe0276973816da933f76cf  B-home-empty-430x932-zh-before.png
+84904ce83a7b77c4c8979149bb099e773da347c7c7fe0276973816da933f76cf  B-home-empty-430x932-zh-after.png
+# {"name":"B-home-empty-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+106d1490a47180bfe49e0b4468a0141d41645e0f9effcdd7fe8b8b3fd54b479f  B-home-ready-768x1024-zh-before.png
+8160da9f3166c60ffed58381bfe945b2f014653bc2ae689d9ad90b9d10cfef31  B-home-ready-768x1024-zh-after.png
+# {"name":"B-home-ready-768x1024","pixels":257,"bounds":[385,994,415,1006],"allowed":true,"before":{"x":318.03125,"y":991,"width":371.9375,"height":17,"text":"近期分類：Food"},"after":{"x":318.03125,"y":991,"width":371.9375,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+25f1f3d7cf6d17ee8ca9323b37f8176a022137e01b16bbc0bce5398e9a3b8492  B-home-ready-1024x768-zh-before.png
+41bb70d72e6f6b36612b346641d736d4fc43f41cb5d7d76c9681e2ab9d7c4427  B-home-ready-1024x768-zh-after.png
+# {"name":"B-home-ready-1024x768","pixels":248,"bounds":[393,874,423,886],"allowed":true,"before":{"x":325.71875,"y":871.0625,"width":612.5625,"height":17,"text":"近期分類：Food"},"after":{"x":325.71875,"y":871.0625,"width":612.5625,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+c4ed0c14da77c76b32be0e8eeb141ce962ee6f5001b7c315fc97c225bc3c46b5  B-home-ready-1280x720-zh-before.png
+0b8c00c5c5e8950f3b7dea40a5afac5908062c0b104b19cde380d1038de2a07b  B-home-ready-1280x720-zh-after.png
+# {"name":"B-home-ready-1280x720","pixels":251,"bounds":[400,892,430,904],"allowed":true,"before":{"x":333.390625,"y":889,"width":853.21875,"height":17,"text":"近期分類：Food"},"after":{"x":333.390625,"y":889,"width":853.21875,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+97a9fae043afe4abba3ddab1d8de65654c863de5be3313bddac2448df1448a7d  B-home-ready-1366x768-zh-before.png
+6064e727173fd8d873eff67e5fe3bae72c9b9c6c219ab625bf55f82d49940ce4  B-home-ready-1366x768-zh-after.png
+# {"name":"B-home-ready-1366x768","pixels":255,"bounds":[402,928,432,940],"allowed":true,"before":{"x":335,"y":925,"width":936,"height":17,"text":"近期分類：Food"},"after":{"x":335,"y":925,"width":936,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+94f24d509a19278e5040c55bc4f2ec3154365b1b831c7ccee0a42f84f8d42434  B-home-ready-1440x900-zh-before.png
+41e4d567f2ec542cc51e92428e15d13f0912f9ccb1123920ff44b82b70f9d5a0  B-home-ready-1440x900-zh-after.png
+# {"name":"B-home-ready-1440x900","pixels":255,"bounds":[402,994,432,1006],"allowed":true,"before":{"x":335,"y":991,"width":1010,"height":17,"text":"近期分類：Food"},"after":{"x":335,"y":991,"width":1010,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+ac025601636071bdaf03140cb66a004789d4cdf2b8f75bdc422d77e63f13b634  B-home-ready-1536x864-zh-before.png
+c6bf447266680429d8cee2a842afedf70a575753318afba6e11115e8c1449747  B-home-ready-1536x864-zh-after.png
+# {"name":"B-home-ready-1536x864","pixels":255,"bounds":[428,1000,458,1012],"allowed":true,"before":{"x":361,"y":997,"width":1054,"height":17,"text":"近期分類：Food"},"after":{"x":361,"y":997,"width":1054,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+509b27aa96b196925536882101614df3b32732a95419c5c89f2720c9176e6418  B-home-ready-1920x1080-zh-before.png
+f7a835cad1c008f8dc4185b3f98c5edd3d58b3122c7b790e76415a4908c2a837  B-home-ready-1920x1080-zh-after.png
+# {"name":"B-home-ready-1920x1080","pixels":255,"bounds":[620,1019,650,1031],"allowed":true,"before":{"x":553,"y":1015.75,"width":1054,"height":17,"text":"近期分類：Food"},"after":{"x":553,"y":1015.75,"width":1054,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+e75322d28ed01393f1f3632601628c7d9233ae37f13d62e2081ef85e919aeaf2  B-home-ready-2560x1440-zh-before.png
+b4fb25d7108d5e93e0c49fc8bb7b15a6fd58891d401a638a898d621b541efbb8  B-home-ready-2560x1440-zh-after.png
+# {"name":"B-home-ready-2560x1440","pixels":255,"bounds":[940,1019,970,1031],"allowed":true,"before":{"x":873,"y":1015.75,"width":1054,"height":17,"text":"近期分類：Food"},"after":{"x":873,"y":1015.75,"width":1054,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+e2e5ea9fdd9474abfdcd0a9f299e02a7a73855fc429620f9eae43a276d8e4340  B-home-ready-360x780-zh-before.png
+0bc2b1b2bba9413715c44ada31547242290cf551b38509fde186e1116311e3bc  B-home-ready-360x780-zh-after.png
+# {"name":"B-home-ready-360x780","pixels":255,"bounds":[122,997,152,1009],"allowed":true,"before":{"x":55,"y":994,"width":250,"height":17,"text":"近期分類：Food"},"after":{"x":55,"y":994,"width":250,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+c3946dd35435e70f5b36b916de72a5cd75992892cbaf093955afc86ad259ccc2  B-home-ready-390x844-zh-before.png
+04dfacc1a98eee1882af365e450555d41647ebaf51ed099fae70de7afd43f581  B-home-ready-390x844-zh-after.png
+# {"name":"B-home-ready-390x844","pixels":255,"bounds":[122,997,152,1009],"allowed":true,"before":{"x":55,"y":994,"width":280,"height":17,"text":"近期分類：Food"},"after":{"x":55,"y":994,"width":280,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:33 UTC","狀態時間：2026-11-18 03:33 UTC"]}
+176b22be9a41c0a7ac42f0e34def7094e013ed8d7738b14f38fe6ebe003936a5  B-home-ready-430x932-zh-before.png
+bdcc0f7bcd349535064381b4c9b33adbc32b44976b6b75002ea3221729fad604  B-home-ready-430x932-zh-after.png
+# {"name":"B-home-ready-430x932","pixels":255,"bounds":[122,997,152,1009],"allowed":true,"before":{"x":55,"y":994,"width":320,"height":17,"text":"近期分類：Food"},"after":{"x":55,"y":994,"width":320,"height":17,"text":"近期分類：飲食"},"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+0313908d0aee7441cc8da709a41876c0300a57252d17acb9d3776b48851262a2  B-home-offline-768x1024-zh-before.png
+0313908d0aee7441cc8da709a41876c0300a57252d17acb9d3776b48851262a2  B-home-offline-768x1024-zh-after.png
+# {"name":"B-home-offline-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+30a55e175c6109d4807bd3220cdcfa9f7b6b4043b14723d3e4b9b4f614268022  B-home-offline-1024x768-zh-before.png
+30a55e175c6109d4807bd3220cdcfa9f7b6b4043b14723d3e4b9b4f614268022  B-home-offline-1024x768-zh-after.png
+# {"name":"B-home-offline-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+b1f07b9244c516112cfc2d526f9c3799f91124b554ea2f94980df3ed46392f67  B-home-offline-1280x720-zh-before.png
+b1f07b9244c516112cfc2d526f9c3799f91124b554ea2f94980df3ed46392f67  B-home-offline-1280x720-zh-after.png
+# {"name":"B-home-offline-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+1805041dd2972ba75bbcdca1f11c200e050a7e2831a1d56994ee73d34f42d656  B-home-offline-1366x768-zh-before.png
+1805041dd2972ba75bbcdca1f11c200e050a7e2831a1d56994ee73d34f42d656  B-home-offline-1366x768-zh-after.png
+# {"name":"B-home-offline-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+e252bde983ebdda9c26bc355d6e564c15027360c227d116b7af5d4075809a377  B-home-offline-1440x900-zh-before.png
+e252bde983ebdda9c26bc355d6e564c15027360c227d116b7af5d4075809a377  B-home-offline-1440x900-zh-after.png
+# {"name":"B-home-offline-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+445fee0f296d65652a1b5fae74535a9fab503c5848f16f56b60b9778f4422ec3  B-home-offline-1536x864-zh-before.png
+445fee0f296d65652a1b5fae74535a9fab503c5848f16f56b60b9778f4422ec3  B-home-offline-1536x864-zh-after.png
+# {"name":"B-home-offline-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+543b6fb47b8f29a28aa7ae192fb364790604ae8c2efe4d5c91a25286f2b52a35  B-home-offline-1920x1080-zh-before.png
+543b6fb47b8f29a28aa7ae192fb364790604ae8c2efe4d5c91a25286f2b52a35  B-home-offline-1920x1080-zh-after.png
+# {"name":"B-home-offline-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+5eaec648ec5cea7643d01852913ad82e71acac3c418b96c547407de9399ccd3c  B-home-offline-2560x1440-zh-before.png
+5eaec648ec5cea7643d01852913ad82e71acac3c418b96c547407de9399ccd3c  B-home-offline-2560x1440-zh-after.png
+# {"name":"B-home-offline-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+1904eac62b4726cfa154cb26ae97d52145ceaa6f70097965a09bef1aebbd0a13  B-home-offline-360x780-zh-before.png
+1904eac62b4726cfa154cb26ae97d52145ceaa6f70097965a09bef1aebbd0a13  B-home-offline-360x780-zh-after.png
+# {"name":"B-home-offline-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+d86f01ee633362ae7ee7dd6399b38a1ef76781a523c72652ddc400965b674325  B-home-offline-390x844-zh-before.png
+d86f01ee633362ae7ee7dd6399b38a1ef76781a523c72652ddc400965b674325  B-home-offline-390x844-zh-after.png
+# {"name":"B-home-offline-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+fad0287d543544a451f4902d150340a24f7d1521966f88017798cbe5f3cf8458  B-home-offline-430x932-zh-before.png
+fad0287d543544a451f4902d150340a24f7d1521966f88017798cbe5f3cf8458  B-home-offline-430x932-zh-after.png
+# {"name":"B-home-offline-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:34 UTC","狀態時間：2026-11-18 03:34 UTC"]}
+211e3cc59b8e4caf52615bb592582cf438a38fe20973643684a0649fedf6cfe6  B-personal-768x1024-zh-before.png
+211e3cc59b8e4caf52615bb592582cf438a38fe20973643684a0649fedf6cfe6  B-personal-768x1024-zh-after.png
+# {"name":"B-personal-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+e13c160b66253696bf7c2071408b0bd8c02849b245c76ae1b432aec3fc014d69  B-personal-1024x768-zh-before.png
+e13c160b66253696bf7c2071408b0bd8c02849b245c76ae1b432aec3fc014d69  B-personal-1024x768-zh-after.png
+# {"name":"B-personal-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+baf5bd097c622f57c67336c254741d33ff431aa8449abe92febf7b5fcb13414d  B-personal-1280x720-zh-before.png
+baf5bd097c622f57c67336c254741d33ff431aa8449abe92febf7b5fcb13414d  B-personal-1280x720-zh-after.png
+# {"name":"B-personal-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+cb55b0d0b3d188612d2f3fe40fe6ad29e87d996e0613d848134f0f104c3cbcc1  B-personal-1366x768-zh-before.png
+cb55b0d0b3d188612d2f3fe40fe6ad29e87d996e0613d848134f0f104c3cbcc1  B-personal-1366x768-zh-after.png
+# {"name":"B-personal-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+c3959f5c3487e95c4c6e4fc9d8ebbfb855a5fb66e38cde047b30b1ea837fd7cc  B-personal-1440x900-zh-before.png
+c3959f5c3487e95c4c6e4fc9d8ebbfb855a5fb66e38cde047b30b1ea837fd7cc  B-personal-1440x900-zh-after.png
+# {"name":"B-personal-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+a6dc500481b0d0e540a60cc36798f67acfcde67fe0b20c3889eaa4001468ceaa  B-personal-1536x864-zh-before.png
+a6dc500481b0d0e540a60cc36798f67acfcde67fe0b20c3889eaa4001468ceaa  B-personal-1536x864-zh-after.png
+# {"name":"B-personal-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+2f8ec0b1e7ba7ec8c0e775ba1ed09e13b0a5dee84d2a708663e60ed93bcff513  B-personal-1920x1080-zh-before.png
+2f8ec0b1e7ba7ec8c0e775ba1ed09e13b0a5dee84d2a708663e60ed93bcff513  B-personal-1920x1080-zh-after.png
+# {"name":"B-personal-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+48d9194881309d47c0fcb1f2011c166aeb938fc24cabda804c73e7071065a7f3  B-personal-2560x1440-zh-before.png
+48d9194881309d47c0fcb1f2011c166aeb938fc24cabda804c73e7071065a7f3  B-personal-2560x1440-zh-after.png
+# {"name":"B-personal-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+925bd9d7d30772c6ed7352c51cccdfb79d908680168e727d7ff483807c77e9ce  B-personal-360x780-zh-before.png
+925bd9d7d30772c6ed7352c51cccdfb79d908680168e727d7ff483807c77e9ce  B-personal-360x780-zh-after.png
+# {"name":"B-personal-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+631d0df2fb57df996fe31d017bddee9a606c0117067e39ebb8183b6f15127277  B-personal-390x844-zh-before.png
+631d0df2fb57df996fe31d017bddee9a606c0117067e39ebb8183b6f15127277  B-personal-390x844-zh-after.png
+# {"name":"B-personal-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+17c0f981a54c7a782e8573166dfc6cc339bea2ad98b988f8d28cac5071b91220  B-personal-430x932-zh-before.png
+17c0f981a54c7a782e8573166dfc6cc339bea2ad98b988f8d28cac5071b91220  B-personal-430x932-zh-after.png
+# {"name":"B-personal-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+a4dbb02882565922553a7197114d0bea1a9b8ffe3a2187fcdd3c8828b883f8b7  B-shared-768x1024-zh-before.png
+a4dbb02882565922553a7197114d0bea1a9b8ffe3a2187fcdd3c8828b883f8b7  B-shared-768x1024-zh-after.png
+# {"name":"B-shared-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+af80dc39c4cf2b836cf31f5c75f46281ffcdffea415ca0241ae4ccf4f4adc000  B-shared-1024x768-zh-before.png
+af80dc39c4cf2b836cf31f5c75f46281ffcdffea415ca0241ae4ccf4f4adc000  B-shared-1024x768-zh-after.png
+# {"name":"B-shared-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+75e2f6d2719cb842ab2a0d1c9a20a2c1504c1895df929155192a295fa6b34c7e  B-shared-1280x720-zh-before.png
+75e2f6d2719cb842ab2a0d1c9a20a2c1504c1895df929155192a295fa6b34c7e  B-shared-1280x720-zh-after.png
+# {"name":"B-shared-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+129d9066585ab751052dd9f0f6272e136ffc722c38df8f3ae348f7e8853e6fd1  B-shared-1366x768-zh-before.png
+129d9066585ab751052dd9f0f6272e136ffc722c38df8f3ae348f7e8853e6fd1  B-shared-1366x768-zh-after.png
+# {"name":"B-shared-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+0e10a9c1d7682bb4d3c5f1e978ce1f9f0041cda90bd58c9da78bd3d0f318e41d  B-shared-1440x900-zh-before.png
+0e10a9c1d7682bb4d3c5f1e978ce1f9f0041cda90bd58c9da78bd3d0f318e41d  B-shared-1440x900-zh-after.png
+# {"name":"B-shared-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+8e92b5d7ce6bc794a7797aee74ec3b53d1b512ff83d403590a6d734580b1a85a  B-shared-1536x864-zh-before.png
+8e92b5d7ce6bc794a7797aee74ec3b53d1b512ff83d403590a6d734580b1a85a  B-shared-1536x864-zh-after.png
+# {"name":"B-shared-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+8d41bf9391936ae668ca65ffe5b168455eb24cbf8251d960827fc718028a6d95  B-shared-1920x1080-zh-before.png
+8d41bf9391936ae668ca65ffe5b168455eb24cbf8251d960827fc718028a6d95  B-shared-1920x1080-zh-after.png
+# {"name":"B-shared-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+95ff2b860ac79040f4209c63fe19ec55082b5e7ff6004986acce2858ed238012  B-shared-2560x1440-zh-before.png
+95ff2b860ac79040f4209c63fe19ec55082b5e7ff6004986acce2858ed238012  B-shared-2560x1440-zh-after.png
+# {"name":"B-shared-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+fce71a232b108319e5a3081245cafa7229e59eaf15f5c360f776813143449565  B-shared-360x780-zh-before.png
+fce71a232b108319e5a3081245cafa7229e59eaf15f5c360f776813143449565  B-shared-360x780-zh-after.png
+# {"name":"B-shared-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+7062499c5df85f1c9029451e9ec21e9c2d80ad9c82bdcd612a1c8da09870ae8b  B-shared-390x844-zh-before.png
+7062499c5df85f1c9029451e9ec21e9c2d80ad9c82bdcd612a1c8da09870ae8b  B-shared-390x844-zh-after.png
+# {"name":"B-shared-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+b4e468fdfee6ffbb4c0b04db31c3ccd83a85337013201fb457361ce6e833c94a  B-shared-430x932-zh-before.png
+b4e468fdfee6ffbb4c0b04db31c3ccd83a85337013201fb457361ce6e833c94a  B-shared-430x932-zh-after.png
+# {"name":"B-shared-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+8c6e554f9184c22902f782013dcb4ae6f3e773632ea8dd6226b78425aade837e  B-fund-768x1024-zh-before.png
+8c6e554f9184c22902f782013dcb4ae6f3e773632ea8dd6226b78425aade837e  B-fund-768x1024-zh-after.png
+# {"name":"B-fund-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+750520fa37e4b890bae26066cb0a9e03f9c28a5b11d62e326f3f157b4008a3da  B-fund-1024x768-zh-before.png
+750520fa37e4b890bae26066cb0a9e03f9c28a5b11d62e326f3f157b4008a3da  B-fund-1024x768-zh-after.png
+# {"name":"B-fund-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+3743d602d02326544e4e78166abe21c5dbcb6baa86402e2428f3c3da181bcfbe  B-fund-1280x720-zh-before.png
+3743d602d02326544e4e78166abe21c5dbcb6baa86402e2428f3c3da181bcfbe  B-fund-1280x720-zh-after.png
+# {"name":"B-fund-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+2872b55cd5ba4ca989610de7730da02b6967adfb139e2e43f21c30f055b9d6f1  B-fund-1366x768-zh-before.png
+2872b55cd5ba4ca989610de7730da02b6967adfb139e2e43f21c30f055b9d6f1  B-fund-1366x768-zh-after.png
+# {"name":"B-fund-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+a62830eca798717bd2b2efe2897b143396e04e2f9fea1ae2db5f40403a1d11a8  B-fund-1440x900-zh-before.png
+a62830eca798717bd2b2efe2897b143396e04e2f9fea1ae2db5f40403a1d11a8  B-fund-1440x900-zh-after.png
+# {"name":"B-fund-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+7ea74ec7f84cb5359fe3df296e2494cecc6e53b69976385f715a45e0376f0cbd  B-fund-1536x864-zh-before.png
+7ea74ec7f84cb5359fe3df296e2494cecc6e53b69976385f715a45e0376f0cbd  B-fund-1536x864-zh-after.png
+# {"name":"B-fund-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+c9fecfa414cdaa635f80a0739d9a3b2d00218e331ac01ba1f553bfe86d05cad6  B-fund-1920x1080-zh-before.png
+c9fecfa414cdaa635f80a0739d9a3b2d00218e331ac01ba1f553bfe86d05cad6  B-fund-1920x1080-zh-after.png
+# {"name":"B-fund-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+c35358be1b47cf1c78bab47f94e4d2d9016a64e4d7dd3cea7ac14221c44dce46  B-fund-2560x1440-zh-before.png
+c35358be1b47cf1c78bab47f94e4d2d9016a64e4d7dd3cea7ac14221c44dce46  B-fund-2560x1440-zh-after.png
+# {"name":"B-fund-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+9859b128627c311f380874c08d6429f95e081c0a680d5602e222307bf3fa9019  B-fund-360x780-zh-before.png
+9859b128627c311f380874c08d6429f95e081c0a680d5602e222307bf3fa9019  B-fund-360x780-zh-after.png
+# {"name":"B-fund-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+3ff5d536a5473f00ecbf2693efb02c865c1690fe641a458621f5742f98c457a3  B-fund-390x844-zh-before.png
+3ff5d536a5473f00ecbf2693efb02c865c1690fe641a458621f5742f98c457a3  B-fund-390x844-zh-after.png
+# {"name":"B-fund-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+b6f46ab6ec3b8b3c627308779556a23306cb176468926b25c0734bb599c3d705  B-fund-430x932-zh-before.png
+b6f46ab6ec3b8b3c627308779556a23306cb176468926b25c0734bb599c3d705  B-fund-430x932-zh-after.png
+# {"name":"B-fund-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":[null,null]}
+579c40dc73b5070c832419d6738220b3f47240389dacc6a25436f107fad2c33e  B-tasks-768x1024-zh-before.png
+579c40dc73b5070c832419d6738220b3f47240389dacc6a25436f107fad2c33e  B-tasks-768x1024-zh-after.png
+# {"name":"B-tasks-768x1024","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+74bd44b914a1aab322804d85c22b8c9881807688d522326c2a8ee5c7f28aa695  B-tasks-1024x768-zh-before.png
+74bd44b914a1aab322804d85c22b8c9881807688d522326c2a8ee5c7f28aa695  B-tasks-1024x768-zh-after.png
+# {"name":"B-tasks-1024x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+1a258f305fb8aef1247dc7ca44e6c8f7e26659f6dba9f5fb54c58f96989e7c8b  B-tasks-1280x720-zh-before.png
+1a258f305fb8aef1247dc7ca44e6c8f7e26659f6dba9f5fb54c58f96989e7c8b  B-tasks-1280x720-zh-after.png
+# {"name":"B-tasks-1280x720","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+4f6cd5a3053be8b406aa07a117b69215939ea63bcf8b625a4873c0306d84eddd  B-tasks-1366x768-zh-before.png
+4f6cd5a3053be8b406aa07a117b69215939ea63bcf8b625a4873c0306d84eddd  B-tasks-1366x768-zh-after.png
+# {"name":"B-tasks-1366x768","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+4975d50a3412205cf959a7580db5ba2a007a5608034f4d251f4898e10e295bd4  B-tasks-1440x900-zh-before.png
+4975d50a3412205cf959a7580db5ba2a007a5608034f4d251f4898e10e295bd4  B-tasks-1440x900-zh-after.png
+# {"name":"B-tasks-1440x900","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+711e179e355e449c3c49f2be6b44053e510bcf8cc6af23f6c7877db729e5493b  B-tasks-1536x864-zh-before.png
+711e179e355e449c3c49f2be6b44053e510bcf8cc6af23f6c7877db729e5493b  B-tasks-1536x864-zh-after.png
+# {"name":"B-tasks-1536x864","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+b0269f5b747d29de6e47c4033b7a241e83bbd0faa0198f56eb8475f63e3aa19d  B-tasks-1920x1080-zh-before.png
+b0269f5b747d29de6e47c4033b7a241e83bbd0faa0198f56eb8475f63e3aa19d  B-tasks-1920x1080-zh-after.png
+# {"name":"B-tasks-1920x1080","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+eb3a1df7e82d81ac221137c3c114ef804ba6d56bd85868258816aaf93b641cce  B-tasks-2560x1440-zh-before.png
+eb3a1df7e82d81ac221137c3c114ef804ba6d56bd85868258816aaf93b641cce  B-tasks-2560x1440-zh-after.png
+# {"name":"B-tasks-2560x1440","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+0dee81a2265bd5fc33fdab902ce2e14cf8d85ffcf98761573fee87bea0e757d4  B-tasks-360x780-zh-before.png
+0dee81a2265bd5fc33fdab902ce2e14cf8d85ffcf98761573fee87bea0e757d4  B-tasks-360x780-zh-after.png
+# {"name":"B-tasks-360x780","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}
+97a2bb5bc7c3e98033d2f2c6de119b4703e24476c9e8bb0c2db0817a978dcc5d  B-tasks-390x844-zh-before.png
+97a2bb5bc7c3e98033d2f2c6de119b4703e24476c9e8bb0c2db0817a978dcc5d  B-tasks-390x844-zh-after.png
+# {"name":"B-tasks-390x844","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:38 UTC","狀態時間：2026-11-18 03:38 UTC"]}
+c35415950e72beffb6824d2035ae1913f1095d6e71ce86390e1550ae1330ced8  B-tasks-430x932-zh-before.png
+c35415950e72beffb6824d2035ae1913f1095d6e71ce86390e1550ae1330ced8  B-tasks-430x932-zh-after.png
+# {"name":"B-tasks-430x932","pixels":0,"bounds":null,"allowed":false,"before":null,"after":null,"clocks":["狀態時間：2026-11-18 03:37 UTC","狀態時間：2026-11-18 03:37 UTC"]}

@@ -2558,3 +2558,57 @@
 **What changed:** decision-log 新增 Phase 2I-1 條目；210 張逐像素相同的中文前後截圖移到未追蹤的 `.tmp/phase-2i-pixel-archive/`，以 `pixel-regression-sha256.txt` 保留雜湊。  
 **Checks:** 自行重算 88 組中文像素（Landing header 以下 11、Home 44、三種寶箱 33）全部相同；看過英文 360／390／1440 截圖，沒有截斷或溢出。  
 **Follow-ups:** 2I-2（App 內頁＋後端分類名稱）、2I-b 日文。
+
+## 2026-11-18 — Phase 2I-2 App 多語系與分類名稱
+
+**Task:** 實作 App 內頁中英文與依帳號語言顯示的系統分類，停在視覺審核。
+**Scope:** `web/src`、`web/e2e`、`backend/src/modules`、`backend/test`、Phase 2I-2 審核資料。
+**What changed:**
+- App 文字遷移至 next-intl，支出金額與邀請到期日依語言格式化，擴充整個 Web src 的文案檢查。
+- 分類與 Home 共用名稱本地化，驗證帳號 locale。兩樹 Linux CI 與專用 PostgreSQL 套件已通過。
+- 保存三種英文視窗尺寸的 production 截圖，以及暫停前完成的 A 組像素結果。
+
+**Decisions:** locale 省略時不更新，顯式 null 與不支援語言回 400。Home 保留既有群組名稱，固定個人入口在英文顯示 Personal。
+**Known gaps / follow-ups:** 英文分帳摘要於 390×844 把金額擠到第二行，依 §4 停止。A 組 Home 1024×768 另有 38 個時間文字像素差異。待決項目、量測和截圖見 Phase 2I-2 verification.md。
+
+## 2026-11-18 — Phase 2I-2 2R 複驗
+
+**Task:** 依 2R 還原繁中文字節點、更新英文文案並完成剩餘的視覺與瀏覽器驗證。
+**Scope:** Web 訊息檔、Home／支出／基金／任務等 JSX、Playwright、規格術語表與審核證據。
+**What changed:**
+- 用 ICU rich slots 保留原 JSX 的相鄰文字節點。23 組 DOM 比對符合規格，Home 1024×768 重拍差異為 0。
+- 統一英文術語與邀請文案，依新 §4 檢查金額，重拍三個英文尺寸。
+- 完成 A／B 200 組零容差比對及 400 張 PNG 的 SHA-256、兩份 WSL Docker CI 和既有瀏覽器回歸。
+
+**Decisions:** 用無 DOM 外層的 React fragments 保留插值分隔。DOM 比對排除 script／style 內容，核准的結算說明為唯一文案例外。
+**Known gaps / follow-ups:** 進入使用者視覺審核。既有兩項選用的 2B 錄影維持略過。
+
+## 2026-11-18 — Phase 2I-2 2R2 英文 ISO 日期
+
+**Task:** 依 §2R2 保持英文 App 內頁 ISO 日期與時間完整，並重驗繁中畫面。
+**Scope:** Web 日期訊息、日期呈現元件、Playwright 版面斷言與視覺審閱證據。
+**What changed:**
+- 英文 rich 訊息以行內盒顯示 ISO 日期、月份、期間和更新時間，繁中既有文字與節點切分維持原樣。
+- 英文三個指定尺寸通過，更新 102 張審閱截圖。中文 23 組 DOM 與上一輪結論相同，88 對 A 組整頁 RGBA 最終差異為零。
+- WSL Docker 的 Web PWA job 與兩種 production Web 映像驗證通過。
+**Decisions:** 以行內盒包住整段結算期間，讓 Chrome 的 client rect 只有一個。先保留 360×780 Home empty 兩像素差異的初拍，再依零容差重拍。
+**Known gaps / follow-ups:** 停在使用者視覺審閱。
+
+## 2026-11-19 — Phase 2I-2 2R3 英文 Home 日期底線
+
+**Task:** 修復英文日期盒的連結底線繼承，補 e2e 並更新 Home 視覺證據。
+**Scope:** web/src/shared/i18n/nowrap-date.tsx、web/e2e/i18n-phase-2i2.spec.ts、2I-2 規格與審閱資料。
+**What changed:**
+- 日期盒新增 textDecoration inherit，保留 inline-block 與 nowrap。
+- 依使用者確認，e2e 檢查原本有底線的連結，其日期盒也要含 underline，非空 Home 狀態另確認實際受檢。
+- 英文三尺寸 e2e 通過，更新五個 Home 狀態共 15 張 production 截圖。
+- WSL Docker node:22 的 web-only 與 all Web PWA job 都通過，各 135 套、702 項 Vitest，含 lint、typecheck 與 build。
+**Decisions:** 原規格的所有連結斷言會涵蓋既有 text-decoration none 的卡片，使用者確認限於原本有底線的連結，已同步規格。中文訊息沒有 nowrap 標籤，依 2R3 免重拍中文像素。
+**Known gaps / follow-ups:** 停在使用者視覺審核。
+
+## 2026-11-19 — Phase 2I-2 審閱與核准（Claude）
+
+**Task:** 審閱 Phase 2I-2（含 2R–2R3），記錄核准並分三批 commit。
+**What changed:** 新增 2I-2 規格（2R 停止點、2R2 英文日期、2R3 連結底線）；decision-log 新增 Phase 2I-2 條目；逐像素相同的中文前後截圖留在未追蹤的 `.tmp/phase-2i2-pixel-archive/`，以 `pixel-regression-sha256.txt` 保留雜湊。
+**Checks:** 自行重算 200 對中文像素（A 組只有核准的結算說明、B 組只有「近期分類」那一行不同，差異都在元素範圍內）；看過英文 360／1440 全部截圖與 390 抽樣，沒有截斷或溢出；確認 2R2 後日期不再斷開、2R3 後連結底線連續。
+**Follow-ups:** 兩次 push（web＋docs → 後端）；2I-b 日文；系統標籤英文名檢查。
