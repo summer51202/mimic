@@ -1,5 +1,6 @@
 import { createSpaceTestApp } from './helpers/space-test-app';
 import { assertSpacesTestDatabase } from './helpers/financial-spaces-db';
+import { CATEGORY_CATALOG } from '../src/modules/taxonomy/system-taxonomy';
 
 assertSpacesTestDatabase(process.env.DATABASE_URL);
 describe('taxonomy authenticated lifecycle', () => {
@@ -45,5 +46,52 @@ describe('taxonomy authenticated lifecycle', () => {
     await call('post', `/me/taxonomy/${target.id}/archive`).send({ version: 1 }).expect(200);
     expect(await prisma.taxonomyAuditEvent.count({ where: { termId: target.id, action: 'ARCHIVE' } })).toBe(1);
     await call('patch', '/me/taxonomy/20000000-0000-4000-8000-000000000016').send({ version: 1, name: 'Change default' }).expect(403);
+  });
+
+  it('localizes management lists and space pickers by actor locale with an explicit override', async () => {
+    const { call, groupId, users } = fixture;
+    const { id: foodId } = CATEGORY_CATALOG.find(term => term.systemKey === 'category.food')!;
+    const space = (await call('post', `/groups/${groupId}/spaces`)
+      .send({ name: 'Localized picker', mode: 'SHARED_EXPENSES' }).expect(201)).body.data;
+    await call('post', `/spaces/${space.id}/participants`).send({ user_id: users[1].id, version: 1 }).expect(201);
+    const custom = (await call('post', `/groups/${groupId}/taxonomy`, 2)
+      .send({ kind: 'CATEGORY', name: '團購 Lunch' }).expect(201)).body.data;
+    await call('patch', '/me').send({ locale: 'zh-TW' }).expect(200);
+    await call('patch', '/me', 1).send({ locale: 'en' }).expect(200);
+
+    for (const [actor, localeQuery, name] of [[0, '', '飲食'], [1, '', 'Food'], [1, '&locale=zh-TW', '飲食']] as const) {
+      const personal = await call('get', `/me/taxonomy?kind=CATEGORY${localeQuery}`, actor).expect(200);
+      expect(personal.body.data).toContainEqual(expect.objectContaining({ id: foodId, name }));
+      const group = await call('get', `/groups/${groupId}/taxonomy?kind=CATEGORY${localeQuery}`, actor).expect(200);
+      expect(group.body.data).toEqual(expect.arrayContaining([
+        expect.objectContaining({ id: foodId, name }),
+        expect.objectContaining({ id: custom.id, name: custom.name }),
+      ]));
+      const picker = await call('get', `/spaces/${space.id}/taxonomy?kind=CATEGORY${localeQuery}`, actor).expect(200);
+      expect(picker.body.data.terms).toEqual(expect.arrayContaining([
+        expect.objectContaining({ id: foodId, name }),
+        expect.objectContaining({ id: custom.id, name: custom.name }),
+      ]));
+    }
+
+    for (const q of ['Food', '飲食']) {
+      const response = await call('get', `/spaces/${space.id}/taxonomy?kind=CATEGORY&q=${encodeURIComponent(q)}`).expect(200);
+      expect(response.body.data.terms).toEqual([expect.objectContaining({ id: foodId, name: '飲食' })]);
+    }
+    await call('get', '/me/taxonomy?kind=CATEGORY&locale=ja').expect(400);
+  });
+
+  it('accepts supported profile locales and preserves the current profile on invalid values', async () => {
+    const { call, users, prisma } = fixture;
+    for (const locale of ['ja', 'en', 'zh-TW']) {
+      const response = await call('patch', '/me').send({ locale }).expect(200);
+      expect(response.body.data.locale).toBe(locale);
+      expect((await prisma.user.findUniqueOrThrow({ where: { id: users[0].id } })).locale).toBe(locale);
+    }
+    for (const locale of ['fr', null]) {
+      const response = await call('patch', '/me').send({ locale }).expect(400);
+      expect(response.body).toMatchObject({ statusCode: 400, error: 'Bad Request', message: [expect.stringContaining('locale')] });
+    }
+    expect((await call('get', '/me').expect(200)).body.data.locale).toBe('zh-TW');
   });
 });

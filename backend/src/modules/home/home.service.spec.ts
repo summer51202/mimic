@@ -1,6 +1,6 @@
 import { HomeService } from './home.service';
 
-it('projects the latest created expense beyond the recent activity window without additional queries', async () => {
+it('projects the latest created expense beyond the recent activity window without per-expense queries', async () => {
   const day = (value: number) => new Date(Date.UTC(2026, 10, value));
   const space = { id: 'personal', name: 'Daily', mode: 'PERSONAL_EXPENSES', currency: 'TWD', status: 'ACTIVE' };
   const row = (id: string, occurredOn: Date, createdAt: Date) => ({
@@ -10,8 +10,9 @@ it('projects the latest created expense beyond the recent activity window withou
     row('backfilled-a', day(1), day(13)), row('backfilled-b', day(1), day(13))];
   const financialSpace = { findMany: jest.fn().mockResolvedValueOnce([space]).mockResolvedValueOnce([]) };
   const expenseRecord = { findMany: jest.fn().mockResolvedValue(expenses) };
+  const user = { findUnique: jest.fn().mockResolvedValue({ locale: 'en' }) };
   const empty = { findMany: jest.fn().mockResolvedValue([]) };
-  const tx = { financialSpace, expenseRecord, personalExpenseReference: empty, sharedSettlementBatch: empty,
+  const tx = { user, financialSpace, expenseRecord, personalExpenseReference: empty, sharedSettlementBatch: empty,
     pooledContributionOccurrence: empty, pooledReimbursement: empty, sharedSettlementTransfer: empty };
   const prisma = { $transaction: (work: (client: unknown) => unknown) => work(tx) };
   const service = new HomeService(prisma as never, { today: () => day(13) } as never);
@@ -21,6 +22,7 @@ it('projects the latest created expense beyond the recent activity window withou
     recent_activity: expenses.slice(0, 3).map((expense) => expect.objectContaining({ id: expense.id })) });
   expect(expenseRecord.findMany).toHaveBeenCalledTimes(1);
   expect(empty.findMany).toHaveBeenCalledTimes(6);
+  expect(user.findUnique).toHaveBeenCalledTimes(1);
 });
 
 describe('HomeService task privacy query', () => {

@@ -3,6 +3,7 @@ import { FinancialSpace, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { FinancialSpacesService } from '../financial-spaces/financial-spaces.service';
 import { pooledSummary } from '../pooled-funds/pooled-values';
+import { localizedTermName, resolveUserLocale } from '../taxonomy/term-locale';
 import { compareTasks, HomeTask, occurrenceUrgency } from './home-projection';
 import { HomeCard, ParticipantHomeCard } from './home.types';
 
@@ -120,7 +121,8 @@ export class HomeService {
   private async participantCards(tx: Tx, actorId: string, spaces: ParticipantSpace[]): Promise<ParticipantHomeCard[]> {
     const ids = spaces.map((space) => space.id);
     if (!ids.length) return [];
-    const [expenses, references, pendingBatches, pooled] = await Promise.all([
+    const [locale, expenses, references, pendingBatches, pooled] = await Promise.all([
+      resolveUserLocale(tx, actorId),
       tx.expenseRecord.findMany({ where: { spaceId: { in: ids }, status: 'ACTIVE' }, include: { category: true }, orderBy: [{ occurredOn: 'desc' }, { id: 'desc' }] }),
       tx.personalExpenseReference.findMany({ where: {
         personalSpaceId: { in: ids }, ownerUserId: actorId, status: 'ACTIVE', sourceExpense: { status: 'ACTIVE' },
@@ -161,7 +163,7 @@ export class HomeService {
         const current = personalRows.filter((row) => row.occurredOn.toISOString().slice(0, 7) === month);
         const categories = new Map<string, { category_name: string; spending: bigint }>();
         for (const row of current) { const old = categories.get(row.categoryId); categories.set(row.categoryId,
-          { category_name: row.category.name, spending: (old?.spending ?? 0n) + row.amountMinor }); }
+          { category_name: localizedTermName(row.category, locale), spending: (old?.spending ?? 0n) + row.amountMinor }); }
         return { access: 'PARTICIPANT', id: space.id, name: space.name, mode: space.mode, currency: space.currency, status: space.status,
           month, spending_minor: current.reduce((sum, row) => sum + row.amountMinor, 0n).toString(), recent_categories: [...categories]
             .map(([category_id, item]) => ({ category_id, category_name: item.category_name, spending_minor: item.spending.toString() }))

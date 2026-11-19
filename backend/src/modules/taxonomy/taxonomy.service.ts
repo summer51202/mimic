@@ -7,6 +7,7 @@ import { canMerge, normalizeTermName, rankTermIds, resolveCanonical } from './ta
 import { CreateTaxonomyDto, MergeTaxonomyDto, RenameTaxonomyDto, TaxonomyQueryDto } from './dto/taxonomy.dto';
 import { TaxonomyPickerResult, TaxonomyTermProjection } from './taxonomy.types';
 import { UNCATEGORIZED_ID } from './system-taxonomy';
+import { localizedTermName, resolveUserLocale } from './term-locale';
 
 @Injectable()
 export class TaxonomyService {
@@ -30,17 +31,16 @@ export class TaxonomyService {
     return tx.taxonomyTerm.findMany({ where: { scopeKey: { in: ['SYSTEM', this.scopeKey(actorId, groupId)] } }, orderBy: { id: 'asc' } });
   }
   private project(term: TaxonomyTerm, all: TaxonomyTerm[], locale = 'zh-TW'): TaxonomyTermProjection {
-    const translations = term.translations;
-    const localized = translations && typeof translations === 'object' && !Array.isArray(translations) ? translations[locale] : null;
-    return { id: term.id, kind: term.kind, scope: term.scope, name: typeof localized === 'string' ? localized : term.name,
+    return { id: term.id, kind: term.kind, scope: term.scope, name: localizedTermName(term, locale),
       status: term.status, canonical_id: resolveCanonical(term.id, new Map(all.map(item => [item.id, item]))), version: term.version };
   }
   list(actorId: string, groupId: string | null, query: TaxonomyQueryDto): Promise<TaxonomyTermProjection[]> {
     return this.prisma.$transaction(async tx => {
       await this.requireScope(tx, actorId, groupId);
       const all = await this.terms(tx, actorId, groupId);
+      const locale = query.locale ?? await resolveUserLocale(tx, actorId);
       return all.filter(term => term.kind === query.kind && (query.include_inactive === 'true' || term.status === 'ACTIVE'))
-        .map(term => this.project(term, all, query.locale));
+        .map(term => this.project(term, all, locale));
     }, { isolationLevel: 'RepeatableRead' });
   }
   create(actorId: string, groupId: string | null, dto: CreateTaxonomyDto) {
@@ -162,10 +162,11 @@ export class TaxonomyService {
     return this.prisma.$transaction(async tx => {
       const { space } = await this.spaces.requireParticipant(tx, spaceId, actorId);
       const all = await this.terms(tx, actorId, space.groupId);
+      const locale = query.locale ?? await resolveUserLocale(tx, actorId);
       const map = new Map(all.map(term => [term.id, term]));
       const search = query.q?.trim().normalize('NFKC').toLocaleLowerCase('en-US') ?? '';
       const available = all.filter(term => term.kind === query.kind && term.status === 'ACTIVE')
-        .map(term => this.project(term, all, query.locale))
+        .map(term => this.project(term, all, locale))
         .filter(term => term.name.toLocaleLowerCase('en-US').includes(search) || map.get(term.id)!.name.toLocaleLowerCase('en-US').includes(search));
       const eligible = new Set(available.map(term => term.id));
       const canonical = (ids: string[]) => [...new Set(ids.filter(id => map.has(id)).map(id => resolveCanonical(id, map)))].filter(id => eligible.has(id));

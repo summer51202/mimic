@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { createSpaceTestApp } from './helpers/space-test-app';
 import { assertSpacesTestDatabase } from './helpers/financial-spaces-db';
 import { sharedSettlementCase } from './helpers/shared-settlement-case';
+import { CATEGORY_CATALOG } from '../src/modules/taxonomy/system-taxonomy';
 
 assertSpacesTestDatabase(process.env.DATABASE_URL);
 
@@ -124,6 +125,25 @@ describe('participant-private home and task projections', () => {
     await f.call('post', `${root}/${backfill.id}/delete`).send({ request_id: randomUUID(), version: 2 }).expect(200);
     expect((await card()).latest_recorded).toEqual(recorded(previous));
   });
+
+  it.each([[0, 'zh-TW', '飲食'], [1, 'en', 'Food']] as const)(
+    'localizes personal home categories for actor %i with profile locale %s',
+    async (actor, locale, categoryName) => {
+      const { id: foodId } = CATEGORY_CATALOG.find(term => term.systemKey === 'category.food')!;
+      await f.call('patch', '/me', actor).send({ locale }).expect(200);
+      const personal = (await f.call('post', '/me/spaces', actor)
+        .send({ name: 'Localized personal home', mode: 'PERSONAL_EXPENSES' }).expect(201)).body.data;
+      await f.call('post', `/spaces/${personal.id}/personal-expenses`, actor).send({
+        request_id: randomUUID(), title: 'Lunch', occurred_on: personal.opened_on, amount_minor: '150', category_id: foodId,
+      }).expect(201);
+
+      const home = (await f.call('get', '/home', actor).expect(200)).body.data;
+      expect(home.cards).toContainEqual(expect.objectContaining({
+        id: personal.id,
+        recent_categories: [{ category_id: foodId, category_name: categoryName, spending_minor: '150' }],
+      }));
+    },
+  );
 
   it('maps reimbursement and shared-transfer send/receive tasks to the responsible actor', async () => {
     const advance = (await f.call('post', `/spaces/${spaceId}/pooled-funds/expenses`).send({

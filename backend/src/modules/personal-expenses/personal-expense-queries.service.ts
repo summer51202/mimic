@@ -1,12 +1,13 @@
 import { createHash } from 'crypto';
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
-import { Prisma, TaxonomyTerm } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { FinancialSpacesService } from '../financial-spaces/financial-spaces.service';
 import { ExpenseRecordsService } from '../expense-records/expense-records.service';
 import { PersonalMonth, PersonalMonthEntry } from '../expense-records/expense-records.types';
 import { monthBounds } from '../expense-records/expense-values';
 import { resolveCanonical } from '../taxonomy/taxonomy-policy';
+import { localizedTermName, resolveUserLocale } from '../taxonomy/term-locale';
 import { PersonalMonthQueryDto } from './dto/personal-expense.dto';
 import { comparePersonalEntries, isReferenceSourceLocked } from './personal-reference-policy';
 @Injectable()
@@ -40,7 +41,7 @@ export class PersonalExpenseQueriesService {
         return source.mode === 'SHARED_EXPENSES' && source.currency === space.currency && participant?.user.status === 'ACTIVE'
           && participant.effectiveFrom <= this.spaces.today(source.timezone) && source.group?.members.length === 1;
       });
-      const locale = (await tx.user.findUnique({ where: { id: actorId }, select: { locale: true } }))?.locale ?? 'zh-TW';
+      const locale = await resolveUserLocale(tx, actorId);
       const scopes = ['SYSTEM', `PERSONAL:${actorId}`,
         ...new Set(authorized.map(reference => `GROUP:${reference.sourceExpense.space.groupId!}`))];
       const terms = await tx.taxonomyTerm.findMany({ where: { scopeKey: { in: scopes } } });
@@ -49,7 +50,7 @@ export class PersonalExpenseQueriesService {
         const canonicalId = resolveCanonical(id, termMap);
         const term = termMap.get(canonicalId);
         if (!term) throw new ConflictException('TAXONOMY_SELECTION_INVALID');
-        return { id: canonicalId, name: this.termName(term, locale) };
+        return { id: canonicalId, name: localizedTermName(term, locale) };
       };
       const manual: PersonalMonthEntry[] = records.map(record => ({
         ...this.records.project(record, space.currency), entry_type: 'MANUAL' as const,
@@ -103,10 +104,4 @@ export class PersonalExpenseQueriesService {
     }, { isolationLevel: 'RepeatableRead' });
   }
 
-  private termName(term: TaxonomyTerm, locale: string): string {
-    const translations = term.translations;
-    const localized = translations && typeof translations === 'object' && !Array.isArray(translations)
-      ? translations[locale] : null;
-    return typeof localized === 'string' ? localized : term.name;
-  }
 }
