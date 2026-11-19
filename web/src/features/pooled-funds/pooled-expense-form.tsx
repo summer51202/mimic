@@ -1,4 +1,5 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import type { SharedParticipant } from '@/shared/api/shared-finance-contracts';
 import { DraftRecovery } from '@/shared/drafts/draft-recovery';
@@ -14,6 +15,7 @@ export function PooledExpenseForm({ actorUserId, groupId, spaceId, spaceVersion,
   currency: string; openedOn: string; participants: SharedParticipant[]; busy: boolean;
   onSubmit: (payload: Record<string, unknown>, requestId: string) => Promise<boolean>;
 }) {
+  const t = useTranslations('pooled');
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState(openedOn);
@@ -40,7 +42,7 @@ export function PooledExpenseForm({ actorUserId, groupId, spaceId, spaceVersion,
     if (value.payment_source === 'PARTICIPANT_ADVANCED') {
       const participant = participants.find(person => person.user_id === value.advanced_by_user_id);
       if (!participant || participant.effective_to !== null || participant.effective_from > value.occurred_on) {
-        setError('參與權限已變更，這份代墊草稿不能直接恢復。請丟棄後依目前參與者重新輸入。');
+        setError(t('advanceDraftBlocked'));
         return;
       }
     }
@@ -53,25 +55,25 @@ export function PooledExpenseForm({ actorUserId, groupId, spaceId, spaceVersion,
       const payload = { amount_minor: majorToMinorString(amount, currency), occurred_on: date, title: title.trim(),
         payment_source: source, ...(source === 'PARTICIPANT_ADVANCED' ? { advanced_by_user_id: advancedBy } : {}) };
       const saved = draft.persist(draftPayload);
-      if (!saved) { setError('這個裝置目前無法保存草稿，尚未送出。請保留此頁並稍後再試。'); return; }
+      if (!saved) { setError(t('draftSaveUnconfirmed')); return; }
       if (await onSubmit(payload, saved.request_id)) draft.discard();
-    } catch { setError('請填寫名稱、日期、正數金額與代墊參與者。'); }
+    } catch { setError(t('invalidExpense')); }
   }
   const disabled = busy || recoveryPending;
   return <form className="pooled-form" onSubmit={submit}>
     <DraftRecovery load={draft.load} reviewed={draft.reviewed} onReview={reviewDraft} onDiscard={draft.discard} />
-    <PixelField label="支出名稱" value={title} onChange={(event) => change(setTitle, event.target.value)} required disabled={disabled} />
-    <PixelField label="金額" inputMode="decimal" value={amount} onChange={(event) => change(setAmount, event.target.value)} required disabled={disabled} />
-    <PixelField label="支出日期" type="date" value={date} onChange={(event) => change(setDate, event.target.value)} required disabled={disabled} />
-    <fieldset disabled={disabled}><legend>付款來源</legend><label><input aria-label="基金直接支付" type="radio" name="source" checked={source === 'FUND_PAID'} onChange={() => change(setSource, 'FUND_PAID')} />基金直接支付</label>
-      <label><input aria-label="參與者先代墊" type="radio" name="source" checked={source === 'PARTICIPANT_ADVANCED'} onChange={() => change(setSource, 'PARTICIPANT_ADVANCED')} />參與者先代墊</label></fieldset>
-    {source === 'PARTICIPANT_ADVANCED' && <label className="pixel-field">代墊參與者<select disabled={disabled} aria-label="代墊參與者" required className="pixel-field__input" value={advancedBy} onChange={(event) => change(setAdvancedBy, event.target.value)}>
-      <option value="">選擇參與者</option>{participants.filter((person) => person.effective_to === null).map((person) => <option key={person.user_id} value={person.user_id}>{person.display_name}</option>)}</select></label>}
-    {!online && <p role="status">目前離線，尚未入帳。草稿會保留在這個裝置；重新連線後仍需檢視並手動送出。</p>}
-    {draft.storageError && <p role="alert">這個裝置目前無法保存草稿。請不要關閉此頁。</p>}
+    <PixelField label={t('expenseName')} value={title} onChange={(event) => change(setTitle, event.target.value)} required disabled={disabled} />
+    <PixelField label={t('amount')} inputMode="decimal" value={amount} onChange={(event) => change(setAmount, event.target.value)} required disabled={disabled} />
+    <PixelField label={t('expenseDate')} type="date" value={date} onChange={(event) => change(setDate, event.target.value)} required disabled={disabled} />
+    <fieldset disabled={disabled}><legend>{t('paymentSource')}</legend><label><input aria-label={t('paidFromFund')} type="radio" name="source" checked={source === 'FUND_PAID'} onChange={() => change(setSource, 'FUND_PAID')} />{t('paidFromFund')}</label>
+      <label><input aria-label={t('frontedByParticipant')} type="radio" name="source" checked={source === 'PARTICIPANT_ADVANCED'} onChange={() => change(setSource, 'PARTICIPANT_ADVANCED')} />{t('frontedByParticipant')}</label></fieldset>
+    {source === 'PARTICIPANT_ADVANCED' && <label className="pixel-field">{t('frontedBy')}<select disabled={disabled} aria-label={t('frontedBy')} required className="pixel-field__input" value={advancedBy} onChange={(event) => change(setAdvancedBy, event.target.value)}>
+      <option value="">{t('chooseParticipant')}</option>{participants.filter((person) => person.effective_to === null).map((person) => <option key={person.user_id} value={person.user_id}>{person.display_name}</option>)}</select></label>}
+    {!online && <p role="status">{t('expenseOffline')}</p>}
+    {draft.storageError && <p role="alert">{t('draftStorageAlert')}</p>}
     {error && <p role="alert">{error}</p>}
     <PixelButton disabled={!online || disabled || !writable || !title.trim() || !amount || (source === 'PARTICIPANT_ADVANCED' && !advancedBy)}>
-      {draft.reviewed ? '重新送出草稿' : '記錄基金支出'}
+      {draft.reviewed ? t('resendDraft') : t('recordExpense')}
     </PixelButton>
   </form>;
 }

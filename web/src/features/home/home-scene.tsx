@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import layout from "../../../public/pixel-ui/v1/scenes/home/layout.json";
 import type { HomeCard } from "@/shared/api/home-contracts";
 import { boxStyle, layersWithArchitecture, sceneAssetRoot } from "@/shared/scene/geometry";
@@ -53,15 +54,16 @@ export function HomeScene({ cards, online, taskCount, context, activityKey, adve
   adventure: ReactNode;
   openQuick: boolean;
 }) {
+  const t = useTranslations();
   const stageRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const dialogueRef = useRef<HTMLDivElement>(null);
   const textScaleRef = useRef<HTMLSpanElement>(null);
   const playback = useMemo(() => homePlayback(context, activityKey), [context, activityKey]);
   const paused = useSceneMotion(stageRef, null, playback);
-  const line = !online ? "現在離線，我先幫你看著最後的狀態。"
-    : !cards.length ? "這裡還空空的，先建立一個寶箱吧！"
-      : taskCount > 0 ? `有 ${taskCount} 件事等你確認喔。` : "今天要記點什麼嗎？";
+  const line = !online ? t("home.scene.offline")
+    : !cards.length ? t("home.scene.empty")
+      : taskCount > 0 ? t("home.scene.quests", { count: taskCount }) : t("home.scene.ready");
 
   useLayoutEffect(() => {
     if (typeof ResizeObserver === "undefined") return;
@@ -107,7 +109,7 @@ export function HomeScene({ cards, online, taskCount, context, activityKey, adve
         <span ref={textScaleRef} className={styles.textScale} aria-hidden="true" />
         <div ref={cardRef} className={styles.card} data-home-card>{adventure}</div>
         <div ref={dialogueRef} className={styles.dialogue} data-home-dialogue>
-          <PixelDialogue speaker="咪咪庫 / Mimiku" actions={<QuickExpense cards={cards} initiallyOpen={openQuick} />}>
+          <PixelDialogue speaker={t("brand.speaker")} actions={<QuickExpense cards={cards} initiallyOpen={openQuick} />}>
             <p className={styles.line}>{line}</p>
           </PixelDialogue>
         </div>

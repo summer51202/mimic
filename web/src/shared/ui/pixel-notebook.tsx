@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import { useTranslations } from "next-intl";
 import frames from "../../../public/pixel-ui/v1/frames/frames.json";
 import { NavigationIcon } from "@/shared/navigation/navigation-icon";
 import styles from "./pixel-notebook.module.css";
@@ -32,10 +33,11 @@ export function LedgerIcon({ name, size }: { name: string; size?: 32 }) {
 }
 
 export function NotebookOfflineNotice() {
+  const t = useTranslations("common");
   return (
     <p role="status" className={styles.withIcon}>
       <LedgerIcon name="status-offline" size={32} />
-      目前離線；已確認資料維持不變。
+      {t("notebookOffline")}
     </p>
   );
 }

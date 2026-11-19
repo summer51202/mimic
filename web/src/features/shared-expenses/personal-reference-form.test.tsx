@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { render } from "@/test/render-with-intl";
+import { cleanup, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { AppClientError } from '@/shared/api/app-fetch';

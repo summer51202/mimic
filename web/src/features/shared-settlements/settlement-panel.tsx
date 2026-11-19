@@ -1,24 +1,15 @@
 "use client";
+import { nowrapDate } from '@/shared/i18n/nowrap-date';
+import { useTranslations } from 'next-intl';
 import { useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import { sharedBatchSchema, type SharedBatch, type SharedTransfer } from '@/shared/api/shared-finance-contracts';
-import { formatMinorUnit } from '@/shared/finance/minor-unit';
+import { useFormatMoney } from '@/shared/i18n/format';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { PixelField } from '@/shared/ui/pixel-field';
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
-
-const batchLabels: Record<SharedBatch['status'], string> = {
-  PENDING: '進行中',
-  COMPLETED: '已完成',
-  CANCELED: '已取消',
-};
-const transferLabels: Record<SharedTransfer['status'], string> = {
-  AWAITING_PAYMENT: '待付款',
-  SENT: '已付款，待收款',
-  COMPLETED: '已收款',
-};
 
 function today(timezone: string) {
   const parts = new Intl.DateTimeFormat('en', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
@@ -29,6 +20,9 @@ export function SettlementPanel({ spaceId, spaceVersion, currency, timezone, cur
   spaceId: string; spaceVersion: number; currency: string; timezone: string; currentUserId: string; manager: boolean; batches: SharedBatch[];
   nameFor: (id: string) => string; onChanged: (batch: SharedBatch) => void | Promise<void>;
 }) {
+  const t = useTranslations('settlement.round');
+  const common = useTranslations('common');
+  const formatMoney = useFormatMoney();
   const [starting, setStarting] = useState(false);
   const [periodEnd, setPeriodEnd] = useState(today(timezone));
   const [busy, setBusy] = useState(false);
@@ -41,17 +35,17 @@ export function SettlementPanel({ spaceId, spaceVersion, currency, timezone, cur
     const id = crypto.randomUUID(); attempts.current.set(fingerprint, id); return id;
   }
   function explain(failure: unknown) {
-    if (!(failure instanceof AppClientError)) return '尚未確認操作結果。相同操作重試不會重複過帳。';
+    if (!(failure instanceof AppClientError)) return t('unconfirmed');
     const messages: Record<string, string> = {
-      SHARED_BATCH_PENDING: '已有結算批次進行中，請先完成或在付款前取消。',
-      SHARED_PERIOD_INVALID: '結算截止日必須接續上一期，且不能晚於今天。',
-      SHARED_BATCH_CANNOT_CANCEL: '已有付款人確認付款，這個批次必須由所有收款人完成。',
-      SHARED_BATCH_VERSION_CONFLICT: '批次已變更，請重新讀取後再操作。',
-      SHARED_TRANSFER_VERSION_CONFLICT: '轉帳狀態已變更，請重新讀取後再操作。',
-      SHARED_TRANSFER_STATE_CONFLICT: '轉帳順序不符：付款人確認後，才能由收款人確認。',
-      SHARED_TRANSFER_ACTOR_REQUIRED: '只有這筆轉帳指定的付款人或收款人能確認。',
+      SHARED_BATCH_PENDING: t('pendingRound'),
+      SHARED_PERIOD_INVALID: t('invalidCutoff'),
+      SHARED_BATCH_CANNOT_CANCEL: t('cannotCancel'),
+      SHARED_BATCH_VERSION_CONFLICT: t('roundChanged'),
+      SHARED_TRANSFER_VERSION_CONFLICT: t('transferChanged'),
+      SHARED_TRANSFER_STATE_CONFLICT: t('wrongTransferOrder'),
+      SHARED_TRANSFER_ACTOR_REQUIRED: t('wrongTransferActor'),
     };
-    return messages[failure.code] ?? '操作未完成，請重新讀取最新批次後再試。';
+    return messages[failure.code] ?? t('incomplete');
   }
   async function mutate(path: string, version: number, action: string, extra: object = {}) {
     if (!online || busy) return;
@@ -74,25 +68,30 @@ export function SettlementPanel({ spaceId, spaceVersion, currency, timezone, cur
     await mutate(`/api/app/spaces/${spaceId}/shared-settlements/${batch.id}/transfers/${transfer.id}/${received ? 'received' : 'sent'}`,
       transfer.version, received ? 'received' : 'sent');
   }
-  return <PixelPanel className="shared-settlements"><div className="shared-section-heading"><div><p>SETTLEMENT TRAIL</p><h2>結算批次</h2></div>
-    {manager && <PixelButton disabled={!online || busy} onClick={() => setStarting(true)}>開始結算批次</PixelButton>}</div>
-    <p>這些狀態由使用者自行確認，不代表銀行或 Mimic 已驗證實際轉帳。</p>
+  return <PixelPanel className="shared-settlements"><div className="shared-section-heading"><div><p>{t('eyebrow')}</p><h2>{t('heading')}</h2></div>
+    {manager && <PixelButton disabled={!online || busy} onClick={() => setStarting(true)}>{t('start')}</PixelButton>}</div>
+    <p>{t('selfReported')}</p>
     {error && <p role="alert">{error}</p>}
-    {!batches.length ? <p>還沒有結算批次。位置確認後，由管理者選擇截止日。</p> : <ol className="settlement-trail">{batches.map(batch => <li key={batch.id}>
-      <div className="shared-section-heading"><strong>{batch.period_start} → {batch.period_end}</strong><span>{batchLabels[batch.status]}</span></div>
+    {!batches.length ? <p>{t('empty')}</p> : <ol className="settlement-trail">{batches.map(batch => <li key={batch.id}>
+      <div className="shared-section-heading"><strong>{t.rich('periodRange', {
+        nowrap: nowrapDate,
+        start: () => <>{batch.period_start}</>, end: () => <>{batch.period_end}</>,
+      })}</strong><span>{t(`batchStatus.${batch.status}`)}</span></div>
       {batch.transfers.length ? <ul>{batch.transfers.map(transfer => <li key={transfer.id}>
-        <span>{nameFor(transfer.from_user_id)} → {nameFor(transfer.to_user_id)}</span>
-        <strong>{formatMinorUnit(transfer.amount_minor, currency, 'zh-TW')}</strong><span>{transferLabels[transfer.status]}</span>
-        {transfer.status === 'AWAITING_PAYMENT' && transfer.from_user_id === currentUserId && <PixelButton disabled={!online || busy} onClick={() => void confirm(batch, transfer, false)}>確認已付款</PixelButton>}
-        {transfer.status === 'SENT' && transfer.to_user_id === currentUserId && <PixelButton disabled={!online || busy} onClick={() => void confirm(batch, transfer, true)}>確認已收款</PixelButton>}
-      </li>)}</ul> : <p>本期位置已平衡，批次已直接完成。</p>}
+        <span>{t.rich('transferDirection', {
+          sender: () => <>{nameFor(transfer.from_user_id)}</>, recipient: () => <>{nameFor(transfer.to_user_id)}</>,
+        })}</span>
+        <strong>{formatMoney(transfer.amount_minor, currency)}</strong><span>{t(`transferStatus.${transfer.status}`)}</span>
+        {transfer.status === 'AWAITING_PAYMENT' && transfer.from_user_id === currentUserId && <PixelButton disabled={!online || busy} onClick={() => void confirm(batch, transfer, false)}>{t('confirmPayment')}</PixelButton>}
+        {transfer.status === 'SENT' && transfer.to_user_id === currentUserId && <PixelButton disabled={!online || busy} onClick={() => void confirm(batch, transfer, true)}>{t('confirmReceipt')}</PixelButton>}
+      </li>)}</ul> : <p>{t('autoCompleted')}</p>}
       {manager && batch.status === 'PENDING' && batch.transfers.every(transfer => transfer.status === 'AWAITING_PAYMENT') &&
-        <PixelButton emphasis="secondary" disabled={!online || busy} onClick={() => void mutate(`/api/app/spaces/${spaceId}/shared-settlements/${batch.id}/cancel`, batch.version, 'cancel')}>取消批次</PixelButton>}
+        <PixelButton emphasis="secondary" disabled={!online || busy} onClick={() => void mutate(`/api/app/spaces/${spaceId}/shared-settlements/${batch.id}/cancel`, batch.version, 'cancel')}>{t('cancel')}</PixelButton>}
     </li>)}</ol>}
-    <PixelDialog open={starting} title="開始結算批次" closeLabel="關閉" closeDisabled={busy} onClose={() => setStarting(false)}>
-      <form onSubmit={start} className="shared-form"><p>截止日由 backend 推導連續期間並快照支出、位置與更正。</p>
-        <PixelField label="結算截止日" type="date" value={periodEnd} onChange={event => setPeriodEnd(event.target.value)} required disabled={busy} />
-        {error && <p role="alert">{error}</p>}<PixelButton disabled={!online || busy}>{busy ? '建立中…' : '建立批次並鎖定期間'}</PixelButton>
+    <PixelDialog open={starting} title={t('start')} closeLabel={common('close')} closeDisabled={busy} onClose={() => setStarting(false)}>
+      <form onSubmit={start} className="shared-form"><p>{t('cutoffDescription')}</p>
+        <PixelField label={t('cutoff')} type="date" value={periodEnd} onChange={event => setPeriodEnd(event.target.value)} required disabled={busy} />
+        {error && <p role="alert">{error}</p>}<PixelButton disabled={!online || busy}>{busy ? t('creating') : t('createAndLock')}</PixelButton>
       </form>
     </PixelDialog>
   </PixelPanel>;

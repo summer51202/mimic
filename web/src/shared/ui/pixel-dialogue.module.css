@@ -13,6 +13,8 @@
   image-rendering: pixelated;
 }
 
+.copy:lang(en) { hyphens: auto; }
+
 .copy {
   flex: 1 1 8rem;
   min-width: 0;

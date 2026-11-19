@@ -105,10 +105,10 @@ for (const viewport of viewports) {
       await requireLocalBackend();
       await signInWithApiSession(context, uniqueAccounts(info).owner);
       await page.goto("/app/groups/new");
-      await page.getByRole("textbox", { name: "Group name" }).fill("Phase 2E test group");
+      await page.getByRole("textbox", { name: "群組名稱" }).fill("Phase 2E test group");
       const create = await holdMutation(page, "**/api/app/groups", "POST");
       try {
-        const button = page.getByRole("button", { name: "Create group", exact: true });
+        const button = page.getByRole("button", { name: "建立群組", exact: true });
         await button.click();
         await create.started;
         await expect(button).toBeDisabled();

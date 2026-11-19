@@ -35,9 +35,9 @@ test.describe("backend-backed invitation flows", () => {
     await ownerPage.goto(`/app/groups/${group.id}/invite`);
 
     await expect(
-      ownerPage.getByRole("heading", { name: "Bring a partner into this quest." }),
+      ownerPage.getByRole("heading", { name: "邀請夥伴加入這場冒險。" }),
     ).toBeVisible();
-    await expect(ownerPage.getByLabel("Invite email")).toBeVisible();
+    await expect(ownerPage.getByLabel("邀請對象的電子郵件")).toBeVisible();
     await expect(ownerPage.getByText(group.id)).toHaveCount(0);
   } finally {
     await owner.close();

@@ -7,3 +7,4 @@
 .quick-expense-list{display:grid;gap:10px;padding:0;list-style:none}.quick-expense-list a{display:flex;min-height:52px;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:2px solid var(--mimic-color-hud-dark);color:inherit;text-decoration:none;overflow-wrap:anywhere}.quick-expense-list span{flex-shrink:0}
 @media(max-width:540px){.quick-expense-list a{align-items:flex-start;flex-direction:column}.quick-expense-list span{flex-shrink:1}}
 @media(prefers-reduced-motion:reduce){.space-home *{scroll-behavior:auto!important}}
+.space-card:lang(en),.quick-expense-list a:lang(en){hyphens:auto}

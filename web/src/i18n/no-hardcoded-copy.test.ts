@@ -1,32 +1,57 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import ts from "typescript";
 import { expect, it } from "vitest";
 
-const scope = [
-  "app/(public)/layout.tsx", "app/(public)/page.tsx", "app/(public)/features/page.tsx",
-  "app/(public)/privacy/page.tsx", "app/(public)/terms/page.tsx", "app/(public)/invite/[code]/page.tsx",
-  "shared/brand/site-header.tsx", "shared/brand/landing-stage.tsx", "shared/brand/landing-interactions.ts",
-  "shared/brand/landing-room.tsx", "shared/brand/public-copy.ts", "shared/brand/brand.ts",
-  "features/invitations/invite-accept-panel.tsx", "features/invitations/invite-errors.ts",
-  "app/(auth)/login/page.tsx", "app/(auth)/register/page.tsx",
-  "features/auth/auth-form.tsx", "features/auth/auth-schema.ts",
-  "shared/navigation/app-navigation.tsx", "shared/navigation/pixel-app-shell.tsx",
-  "shared/pwa/update-notice.tsx", "shared/scene/scene-pause-button.tsx",
-  "app/app/settings/page.tsx", "features/settings/settings-form.tsx",
-  "shared/ui/app-route-state.tsx", "app/app/error.tsx", "app/app/not-found.tsx", "app/app/loading.tsx",
-  "app/app/spaces/[spaceId]/loading.tsx", "app/global-error.tsx", "shared/api/errors.ts",
-  "app/layout.tsx", "app/manifest.ts", "app/sw.ts", "app/offline/page.tsx",
-  "shared/i18n/language-switch.tsx",
-];
+const textAttributes = new Set(["aria-label", "title", "alt", "placeholder", "label"]);
+const sourceRoot = join(process.cwd(), "src");
+const invariantCopy = new Set([
+  "mimic", "Mimic ID", "Mimiku", // Product name, public identifier, and character name.
+  "TWD", "USD", "JPY", // Currency codes are identifiers.
+]);
 
-it("keeps hardcoded CJK copy out of the Phase 2I-1 source files", () => {
+function sourceFiles(directory: string): string[] {
+  return readdirSync(join(sourceRoot, directory), { withFileTypes: true })
+    .flatMap((entry) => {
+      const path = directory ? `${directory}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) return path === "test" || path === "i18n/messages" ? [] : sourceFiles(path);
+      return !/\.test\./.test(path) && /\.(?:[cm]?[jt]sx?|css|json|svg|html)$/.test(path) ? [path] : [];
+    });
+}
+
+it("keeps hardcoded user-facing copy out of src", () => {
   const found: string[] = [];
-  for (const path of scope) {
-    const source = readFileSync(join(process.cwd(), "src", path), "utf8");
-    for (const [index, line] of source.split("\n").entries()) {
-      if (line.includes('aria-label="Primary app sections"') || /\/\/ i18n-exempt: \S/.test(line)) continue;
-      if (/[\u3040-\u30ff\u3400-\u9fff]/.test(line)) found.push(`${path}:${index + 1}`);
+  for (const path of sourceFiles("").sort()) {
+    const source = readFileSync(join(sourceRoot, path), "utf8");
+    const lines = source.split("\n");
+    const exempt = (line: string) => /\/\/ i18n-exempt: \S/.test(line);
+    for (const [index, line] of lines.entries()) {
+      if (!exempt(line) && /[\u3040-\u30ff\u3400-\u9fff]/.test(line)) {
+        found.push(`${path}:${index + 1} [CJK] ${line.trim()}`);
+      }
     }
+    if (!path.endsWith(".tsx")) continue;
+    const ast = ts.createSourceFile(path, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+    function check(node: ts.Node, value: string, attribute?: string) {
+      const copy = value.trim();
+      const { line } = ast.getLineAndCharacterOfPosition(node.getStart(ast));
+      if (!/\p{Script=Latin}/u.test(copy) || invariantCopy.has(copy) || exempt(lines[line])) return;
+      // The app navigation locator is a stable e2e contract.
+      if (attribute === "aria-label" && copy === "Primary app sections") return;
+      found.push(`${path}:${line + 1} [English] ${copy}`);
+    }
+    function visit(node: ts.Node) {
+      if (ts.isJsxText(node)) check(node, node.text);
+      if (ts.isJsxAttribute(node) && textAttributes.has(node.name.getText(ast))) {
+        const initializer = node.initializer;
+        const value = initializer && ts.isJsxExpression(initializer) ? initializer.expression : initializer;
+        if (value && (ts.isStringLiteral(value) || ts.isNoSubstitutionTemplateLiteral(value))) {
+          check(value, value.text, node.name.getText(ast));
+        }
+      }
+      ts.forEachChild(node, visit);
+    }
+    visit(ast);
   }
-  expect(found).toEqual([]);
+  expect(found, found.join("\n")).toEqual([]);
 });

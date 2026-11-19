@@ -66,6 +66,8 @@
   overflow-wrap: anywhere;
 }
 
+.card:lang(en), .dialogue:lang(en) { hyphens: auto; }
+
 .card {
   left: var(--card-x, 12px);
   top: var(--card-y, 16px);

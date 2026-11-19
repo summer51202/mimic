@@ -1,5 +1,5 @@
 import { cleanup, screen, waitFor } from "@testing-library/react";
-import { render } from "@/test/render-with-intl";
+import { IntlTestProvider, render } from "@/test/render-with-intl";
 import userEvent from "@testing-library/user-event";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -60,11 +60,11 @@ describe("InviteCreatePanel", () => {
 
     render(<InviteCreatePanel groupId="group_1" />);
 
-    await user.type(screen.getByLabelText("Invite email"), " USER@Example.COM ");
-    await user.click(screen.getByRole("button", { name: "Generate invite" }));
+    await user.type(screen.getByLabelText("邀請對象的電子郵件"), " USER@Example.COM ");
+    await user.click(screen.getByRole("button", { name: "產生邀請" }));
 
     await screen.findByText("abcDEF123_-4");
-    expect(screen.getByText(/Expires/)).toHaveTextContent("2026");
+    expect(screen.getByText(/到期：/)).toHaveTextContent("2026");
     expect(fetch).toHaveBeenNthCalledWith(2, "/api/app/groups/group_1/invites", {
       body: JSON.stringify({ invited_email: "user@example.com" }),
       headers: {
@@ -90,9 +90,9 @@ describe("InviteCreatePanel", () => {
 
     render(<InviteCreatePanel groupId="group_1" />);
 
-    await user.click(screen.getByRole("button", { name: "Generate invite" }));
+    await user.click(screen.getByRole("button", { name: "產生邀請" }));
     const submit = await screen.findByRole("button", {
-      name: "Generating...",
+      name: "產生中…",
     });
     expect(submit).toBeDisabled();
 
@@ -106,6 +106,23 @@ describe("InviteSharePanel", () => {
     cleanup();
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
+    vi.unstubAllEnvs();
+  });
+
+  it("formats the expiration in Traditional Chinese", () => {
+    vi.stubEnv("TZ", "UTC");
+    render(<InviteSharePanel invite={{ ...mockInvite(), expires_at: "2026-01-02T15:04:00.000Z" }} />);
+
+    expect(screen.getByText(/^到期：/).textContent).toMatchInlineSnapshot('"到期：2026年1月2日 下午3:04"');
+  });
+
+  it("formats the expiration in US English", () => {
+    vi.stubEnv("TZ", "UTC");
+    render(<InviteSharePanel invite={{ ...mockInvite(), expires_at: "2026-01-02T15:04:00.000Z" }} />, {
+      wrapper: ({ children }) => <IntlTestProvider locale="en">{children}</IntlTestProvider>,
+    });
+
+    expect(screen.getByText(/^Expires/).textContent).toMatchInlineSnapshot('"Expires Jan 2, 2026, 3:04 PM"');
   });
 
   it("copies the invite code and URL and only calls Web Share after an explicit click", async () => {
@@ -122,19 +139,21 @@ describe("InviteSharePanel", () => {
     );
 
     expect(share).not.toHaveBeenCalled();
-    await user.click(screen.getByRole("button", { name: "Copy code" }));
+    await user.click(screen.getByRole("button", { name: "複製邀請碼" }));
     expect(writeText).toHaveBeenNthCalledWith(1, "abcDEF123_-4");
 
-    await user.click(screen.getByRole("button", { name: "Copy link" }));
+    await user.click(screen.getByRole("button", { name: "複製連結" }));
     expect(writeText).toHaveBeenNthCalledWith(
       2,
       "https://app.example/invite/abcDEF123_-4",
     );
 
-    await user.click(screen.getByRole("button", { name: "Share invite" }));
-    expect(share).toHaveBeenCalledWith(
-      expect.objectContaining({ url: "https://app.example/invite/abcDEF123_-4" }),
-    );
+    await user.click(screen.getByRole("button", { name: "分享邀請" }));
+    expect(share).toHaveBeenCalledWith({
+      text: "加入我的 mimic 共同群組。",
+      title: "mimic 邀請",
+      url: "https://app.example/invite/abcDEF123_-4",
+    });
   });
 
   it("selects the invite code as a manual fallback", async () => {
@@ -158,14 +177,14 @@ describe("InviteSharePanel", () => {
     );
 
     const code = screen.getByText("abcDEF123_-4");
-    await user.click(screen.getByRole("button", { name: "Copy code" }));
+    await user.click(screen.getByRole("button", { name: "複製邀請碼" }));
 
     expect(range.selectNodeContents).toHaveBeenCalledWith(code);
     expect(selection.removeAllRanges).toHaveBeenCalled();
     expect(selection.addRange).toHaveBeenCalledWith(range);
     expect(code).toHaveFocus();
     expect(screen.getByRole("status")).toHaveTextContent(
-      "Invite code selected. Copy it from the page.",
+      "已選取邀請碼，請從頁面複製。",
     );
   });
 
@@ -183,10 +202,10 @@ describe("InviteSharePanel", () => {
     const input = screen.getByDisplayValue("https://app.example/invite/abcDEF123_-4");
     const select = vi.spyOn(input as HTMLInputElement, "select");
 
-    await user.click(screen.getByRole("button", { name: "Copy link" }));
+    await user.click(screen.getByRole("button", { name: "複製連結" }));
 
     expect(select).toHaveBeenCalled();
-    expect(screen.queryByRole("button", { name: "Share invite" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "分享邀請" })).not.toBeInTheDocument();
   });
 });
 

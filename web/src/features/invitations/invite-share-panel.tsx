@@ -1,7 +1,9 @@
 "use client";
 
+import { useLocale, useTranslations } from "next-intl";
 import { useMemo, useRef, useState } from "react";
 
+import { intlLocale } from "@/i18n/config";
 import type { InviteCreated } from "@/shared/api/domain-contracts";
 import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelField } from "@/shared/ui/pixel-field";
@@ -16,9 +18,12 @@ type InviteSharePanelProps = {
 };
 
 export function InviteSharePanel({ invite, origin }: InviteSharePanelProps) {
+  const t = useTranslations("invite.app");
+  const locale = useLocale();
+  const inviteText = useTranslations("invite");
   const codeRef = useRef<HTMLParagraphElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<"codeCopied" | "codeSelected" | "linkCopied" | "linkSelected" | null>(null);
   const inviteUrl = useMemo(
     () =>
       new URL(
@@ -28,11 +33,15 @@ export function InviteSharePanel({ invite, origin }: InviteSharePanelProps) {
     [invite.invite_code, origin],
   );
   const canShare = typeof navigator !== "undefined" && "share" in navigator;
+  const expiry = new Intl.DateTimeFormat(intlLocale(locale), {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(invite.expires_at));
 
   async function copyCode() {
     if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(invite.invite_code);
-      setNotice("Invite code copied.");
+      setNotice("codeCopied");
       return;
     }
 
@@ -47,19 +56,19 @@ export function InviteSharePanel({ invite, origin }: InviteSharePanelProps) {
     }
 
     code?.focus();
-    setNotice("Invite code selected. Copy it from the page.");
+    setNotice("codeSelected");
   }
 
   async function copyInvite() {
     if (navigator.clipboard?.writeText) {
       await navigator.clipboard.writeText(inviteUrl);
-      setNotice("Invite link copied.");
+      setNotice("linkCopied");
       return;
     }
 
     inputRef.current?.focus();
     inputRef.current?.select();
-    setNotice("Invite link selected. Copy it from the field.");
+    setNotice("linkSelected");
   }
 
   async function shareInvite() {
@@ -68,49 +77,42 @@ export function InviteSharePanel({ invite, origin }: InviteSharePanelProps) {
     }
 
     await navigator.share({
-      text: "Join my mimic shared money space.",
-      title: "mimic invite",
+      text: t("shareText"),
+      title: inviteText("kicker"),
       url: inviteUrl,
     });
   }
 
   return (
     <PixelFrame className={styles.panel}>
-      {notice ? <PixelNotice variant="success">{notice}</PixelNotice> : null}
-      <p className={styles.meta}>Invite code</p>
+      {notice ? <PixelNotice variant="success">{t(notice)}</PixelNotice> : null}
+      <p className={styles.meta}>{t("code")}</p>
       <p ref={codeRef} className={styles.code} tabIndex={-1}>
         {invite.invite_code}
       </p>
       <PixelField
         ref={inputRef}
         className={styles.urlField}
-        label="Invite link"
+        label={t("link")}
         readOnly
         value={inviteUrl}
       />
       <p className={styles.meta}>
-        Expires {formatExpiry(invite.expires_at)}
+        {t("expiry", { time: expiry })}
       </p>
       <div className={styles.shareActions}>
         <PixelButton onClick={copyCode} type="button">
-          Copy code
+          {t("copyCode")}
         </PixelButton>
         <PixelButton onClick={copyInvite} type="button" emphasis="secondary">
-          Copy link
+          {t("copyLink")}
         </PixelButton>
         {canShare ? (
           <PixelButton onClick={shareInvite} type="button" emphasis="secondary">
-            Share invite
+            {t("share")}
           </PixelButton>
         ) : null}
       </div>
     </PixelFrame>
   );
-}
-
-function formatExpiry(value: string): string {
-  return new Intl.DateTimeFormat("zh-TW", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
 }

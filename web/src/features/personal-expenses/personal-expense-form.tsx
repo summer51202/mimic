@@ -1,4 +1,6 @@
 "use client";
+import { nowrapDate } from '@/shared/i18n/nowrap-date';
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import { expenseMutationSchema, type ExpenseMutation, type PersonalExpense } from '@/shared/api/personal-expense-contracts';
@@ -7,7 +9,7 @@ import type { PersonalExpenseDraftPayload } from '@/shared/drafts/expense-draft'
 import { useExpenseDraft } from '@/shared/drafts/use-expense-draft';
 import type { TaxonomyTerm } from '@/shared/api/taxonomy-contracts';
 import { majorToMinorString } from '@/shared/finance/major-to-minor';
-import { formatMinorUnit } from '@/shared/finance/minor-unit';
+import { useFormatMoney } from '@/shared/i18n/format';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelField } from '@/shared/ui/pixel-field';
 import { TaxonomyPicker } from '../taxonomy/taxonomy-picker';
@@ -29,6 +31,10 @@ export function PersonalExpenseForm({ actorUserId, spaceId, spaceVersion, writab
   terms?: TaxonomyTerm[];
   onSaved: (result: ExpenseMutation) => void; onReload?: () => Promise<PersonalExpense | undefined>;
 }) {
+  const t = useTranslations('personal.expense');
+  const common = useTranslations('common');
+  const drafts = useTranslations('drafts');
+  const formatMoney = useFormatMoney();
   const [title, setTitle] = useState(record?.title ?? '');
   const [amount, setAmount] = useState(() => editAmount(record, currency));
   const [date, setDate] = useState(record?.occurred_on ?? today(timezone));
@@ -72,11 +78,11 @@ export function PersonalExpenseForm({ actorUserId, spaceId, spaceVersion, writab
     setError('');
     let amountMinor: string;
     try { amountMinor = majorToMinorString(amount, currency); }
-    catch { setError('請輸入符合幣別小數位數的正數金額。'); return; }
+    catch { setError(t('invalidAmount')); return; }
     const payload = { amount_minor: amountMinor, occurred_on: date, title: title.trim(), note: note.trim() || null,
       ...(category ? { category_id: category } : {}), tag_ids: [...tags].sort(), ...(record ? { version } : {}) };
     const savedDraft = draft.persist(draftPayload);
-    if (!savedDraft) { setError('這個裝置目前無法保存草稿，尚未送出。請保留此頁並稍後再試。'); return; }
+    if (!savedDraft) { setError(t('draftUnavailable')); return; }
     setBusy(true);
     try {
       const response = await appFetch<{ data: unknown }>(`/api/app/spaces/${spaceId}/personal-expenses${record ? `/${record.id}` : ''}`, {
@@ -87,12 +93,12 @@ export function PersonalExpenseForm({ actorUserId, spaceId, spaceVersion, writab
       onSaved(result);
     } catch (failure) {
       if (failure instanceof AppClientError && failure.status === 409) {
-        setConflict(true); setError('資料已變更，請重新讀取最新資料並檢查後再操作。你的輸入仍保留在此。');
+        setConflict(true); setError(t('conflict'));
       } else if (failure instanceof AppClientError && [403, 404].includes(failure.status)) {
-        setError('目前的帳號或寶箱權限已變更。草稿仍保留在這個裝置，請重新開啟寶箱確認。');
+        setError(t('accessChanged'));
       } else if (failure instanceof AppClientError && failure.status === 400) {
-        setError('伺服器未接受這份草稿。請檢查日期、金額與類別後再手動重試。');
-      } else setError('尚未確認入帳。草稿已保存在這個裝置；相同內容重試不會重複記帳。');
+        setError(t('rejected'));
+      } else setError(t('unconfirmed'));
     } finally { setBusy(false); }
   }
   async function reviewLatest() {
@@ -100,23 +106,28 @@ export function PersonalExpenseForm({ actorUserId, spaceId, spaceVersion, writab
     setBusy(true);
     try {
       const refreshed = await onReload();
-      if (record && (!refreshed || refreshed.status !== 'ACTIVE')) { setError('這筆支出已不在目前清單，請關閉表單後檢查。輸入仍保留。'); return; }
+      if (record && (!refreshed || refreshed.status !== 'ACTIVE')) { setError(t('missing')); return; }
       setLatest(refreshed); setVersion(refreshed?.version); setConflict(false); setError('');
-    } catch { setError('重新讀取失敗，輸入仍保留。請稍後再試。'); }
+    } catch { setError(t('reloadFailed')); }
     finally { setBusy(false); }
   }
   return <form onSubmit={submit} className="personal-form">
     <DraftRecovery load={draft.load} reviewed={draft.reviewed} onReview={reviewDraft} onDiscard={draft.discard} />
-    <PixelField label="支出名稱" value={title} onChange={e => change(setTitle, e.target.value)} required maxLength={200} disabled={busy || recoveryPending} />
-    <PixelField label={`金額（${currency}）`} inputMode="decimal" value={amount} onChange={e => change(setAmount, e.target.value)} required disabled={busy || recoveryPending} />
-    <PixelField label="支出日期" type="date" value={date} max={today(timezone)} onChange={e => change(setDate, e.target.value)} required disabled={busy || recoveryPending} />
+    <PixelField label={t('title')} value={title} onChange={e => change(setTitle, e.target.value)} required maxLength={200} disabled={busy || recoveryPending} />
+    <PixelField label={t('amount', { currency })} inputMode="decimal" value={amount} onChange={e => change(setAmount, e.target.value)} required disabled={busy || recoveryPending} />
+    <PixelField label={t('date')} type="date" value={date} max={today(timezone)} onChange={e => change(setDate, e.target.value)} required disabled={busy || recoveryPending} />
     <TaxonomyPicker spaceId={spaceId} categoryId={category} tagIds={tags} historicalTerms={terms} onChange={(id, ids) => { setDirty(true); setCategory(id); setTags(ids); }} disabled={busy || recoveryPending} />
-    <PixelField label="備註" value={note} onChange={e => change(setNote, e.target.value)} maxLength={2000} disabled={busy || recoveryPending} />
-    {!online && <p role="status">目前離線，尚未入帳。草稿會保留在這個裝置；重新連線後仍需檢視並手動送出。</p>}
-    {draft.storageError && <p role="alert">這個裝置目前無法保存草稿。請不要關閉此頁。</p>}
+    <PixelField label={t('note')} value={note} onChange={e => change(setNote, e.target.value)} maxLength={2000} disabled={busy || recoveryPending} />
+    {!online && <p role="status">{t('offline')}</p>}
+    {draft.storageError && <p role="alert">{t('storageError')}</p>}
     {error && <p role="alert">{error}</p>}
-    {latest && <p role="status">最新紀錄：「{latest.title}」{formatMinorUnit(latest.amount_minor, currency, 'zh-TW')}（{latest.occurred_on}）。上方保留你的輸入，請比較後再儲存。</p>}
-    {conflict && onReload && <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void reviewLatest()}>重新讀取最新資料</PixelButton>}
-    <PixelButton type="submit" disabled={!online || busy || conflict || !writable || recoveryPending}>{busy ? '確認中…' : draft.reviewed ? '重新送出草稿' : record ? '儲存修改' : '確認記帳'}</PixelButton>
+    {latest && <p role="status">{t.rich('latest', {
+      nowrap: nowrapDate,
+      title: () => <>{latest.title}</>,
+      amount: () => <>{formatMoney(latest.amount_minor, currency)}</>,
+      date: () => <>{latest.occurred_on}</>,
+    })}</p>}
+    {conflict && onReload && <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void reviewLatest()}>{common('loadLatest')}</PixelButton>}
+    <PixelButton type="submit" disabled={!online || busy || conflict || !writable || recoveryPending}>{busy ? common('confirming') : draft.reviewed ? drafts('resend') : record ? common('saveChanges') : t('save')}</PixelButton>
   </form>;
 }

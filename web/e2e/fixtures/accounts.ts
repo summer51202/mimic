@@ -248,8 +248,8 @@ export async function createGroup(
   currency = "TWD",
 ): Promise<CreatedGroup> {
   await page.goto("/app/groups/new");
-  await page.getByLabel("Group name").fill(name);
-  await page.getByLabel("Currency").fill(currency);
+  await page.getByLabel("群組名稱").fill(name);
+  await page.getByLabel("幣別").fill(currency);
   await Promise.all([
     page.waitForURL(
       (url) =>
@@ -274,15 +274,15 @@ export async function createInvite(
   email: string,
 ): Promise<string> {
   await page.goto(`/app/groups/${groupId}/invite`);
-  await page.getByLabel("Invite email").fill(email);
-  await expect(page.getByLabel("Invite email")).toHaveValue(email);
-  await page.getByRole("button", { name: "Generate invite" }).click();
-  await expect(page.getByLabel("Invite link")).toHaveValue(
+  await page.getByLabel("邀請對象的電子郵件").fill(email);
+  await expect(page.getByLabel("邀請對象的電子郵件")).toHaveValue(email);
+  await page.getByRole("button", { name: "產生邀請" }).click();
+  await expect(page.getByLabel("邀請連結")).toHaveValue(
     /\/invite\/[A-Za-z0-9_-]{12}$/,
     { timeout: 15_000 },
   );
 
-  return page.getByLabel("Invite link").inputValue();
+  return page.getByLabel("邀請連結").inputValue();
 }
 
 export async function registerFromInvite(page: Page, account: TestAccount) {

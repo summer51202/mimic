@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 import type { Group } from "@/shared/api/domain-contracts";
@@ -10,6 +11,7 @@ interface GroupListProps {
 }
 
 export function GroupList({ groups }: GroupListProps) {
+  const t = useTranslations("groups");
   return (
     <PixelFrame data-frame="group-list">
       <ul className={styles.groupList}>
@@ -18,11 +20,11 @@ export function GroupList({ groups }: GroupListProps) {
             <Link className={styles.groupIdentity} data-contain-text href={`/app/groups/${group.id}`}>
               <strong className={styles.groupName} data-contain-text>{group.name}</strong>
               <span>
-                {group.group_type} · {group.default_currency}
+                {t("typeAndCurrency", { type: t(group.group_type.toLowerCase() === "couple" ? "duo" : "party"), currency: group.default_currency })}
               </span>
             </Link>
             <Link href={`/app?group=${encodeURIComponent(group.id)}`}>
-              Open treasury
+              {t("openChests")}
             </Link>
           </li>
         ))}

@@ -1,8 +1,9 @@
+import { render } from "@/test/render-with-intl";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { PixelButton } from "./pixel-button";
@@ -173,7 +174,7 @@ describe("pixel UI primitives", () => {
 
     const dialog = screen.getByRole("dialog", { name: "Archive group" });
     const closeButton = screen.getByRole("button", {
-      name: "Close dialog",
+      name: "關閉對話框",
     });
 
     expect(closeButton).toBeDisabled();

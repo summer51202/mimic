@@ -1,4 +1,6 @@
 'use client';
+import { nowrapDate } from '@/shared/i18n/nowrap-date';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
@@ -9,7 +11,7 @@ import {
   pooledReturnPlanSchema, pooledWorkspaceSchema, type PooledCommitment, type PooledExpense,
 } from '@/shared/api/pooled-finance-contracts';
 import { sharedParticipantSchema } from '@/shared/api/shared-finance-contracts';
-import { formatMinorUnit } from '@/shared/finance/minor-unit';
+import { useFormatMoney } from '@/shared/i18n/format';
 import { BlockedExpenseDrafts } from '@/shared/drafts/blocked-expense-drafts';
 import { majorToMinorString } from '@/shared/finance/major-to-minor';
 import { clearQuickExpense } from '@/shared/navigation/clear-quick-expense';
@@ -26,6 +28,9 @@ import { PooledExpenseForm } from './pooled-expense-form';
 type Dialog = 'commitment' | 'expense' | 'returns' | null;
 
 export function PooledWorkspace({ initial, quick = false }: { initial: PooledWorkspaceData; quick?: boolean }) {
+  const t = useTranslations('pooled');
+  const common = useTranslations('common');
+  const formatMoney = useFormatMoney();
   const router = useRouter();
   const [data, setData] = useState(initial);
   const [dialog, setDialog] = useState<Dialog>(quick && initial.space.status === 'ACTIVE' ? 'expense' : null);
@@ -50,9 +55,9 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
   const active = space.status === 'ACTIVE';
   const closing = space.status === 'CLOSING';
   const currentUserId = group.current_user_id;
-  const money = (minor: string) => formatMinorUnit(minor, space.currency, 'zh-TW');
-  const nameFor = (id: string) => data.participants.find((person) => person.user_id === id)?.display_name ?? '已離開的參與者';
-  const termName = (id: string) => data.terms.find((term) => term.id === id)?.name ?? '已封存項目';
+  const money = (minor: string) => formatMoney(minor, space.currency);
+  const nameFor = (id: string) => data.participants.find((person) => person.user_id === id)?.display_name ?? t('formerParticipant');
+  const termName = (id: string) => data.terms.find((term) => term.id === id)?.name ?? t('archivedTerm');
   const current = data.participants.find((person) => person.user_id === currentUserId && person.effective_to === null);
   const activeIds = new Set(data.participants.filter((person) => person.effective_to === null).map((person) => person.user_id));
   const candidates = data.members.filter((member) => member.status.toLowerCase() === 'active' && !activeIds.has(member.user_id));
@@ -82,17 +87,17 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
   }
 
   function explain(failure: unknown) {
-    if (!(failure instanceof AppClientError)) return '操作結果尚未確認。請重新讀取後再試。';
+    if (!(failure instanceof AppClientError)) return t('unconfirmed');
     const messages: Record<string, string> = {
-      SPACE_VERSION_CONFLICT: '寶箱資料已變更。已保留安全輸入，請重新讀取後再試。',
-      POOLED_OCCURRENCE_PENDING: '仍有預期投入未處理，請先確認、略過或取消。',
-      POOLED_REIMBURSEMENT_PENDING: '仍有代墊款未完成雙方確認。',
-      POOLED_RETURN_PENDING: '仍有基金退回尚未完成收款確認。',
-      POOLED_SHORTFALL: '目前仍有資金缺口，請先補足投入。',
-      POOLED_RETURN_TOTAL_INVALID: '退回金額必須明確指定，且合計等於帳面餘額。',
-      POOLED_SPACE_STATE_CONFLICT: '這個動作不適用於目前的寶箱狀態。',
+      SPACE_VERSION_CONFLICT: t('chestChanged'),
+      POOLED_OCCURRENCE_PENDING: t('contributionPending'),
+      POOLED_REIMBURSEMENT_PENDING: t('reimbursementPending'),
+      POOLED_RETURN_PENDING: t('returnPending'),
+      POOLED_SHORTFALL: t('shortfallPending'),
+      POOLED_RETURN_TOTAL_INVALID: t('invalidReturnTotal'),
+      POOLED_SPACE_STATE_CONFLICT: t('wrongChestState'),
     };
-    return messages[failure.code] ?? '目前不能完成此操作；請檢查狀態並重新讀取。';
+    return messages[failure.code] ?? t('incomplete');
   }
 
   async function mutation<T>(path: string, payload: object, fingerprint: string, parse: (value: unknown) => T, success: string, durableRequestId?: string) {
@@ -134,59 +139,67 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
 
   async function occurrenceAction(id: string, action: 'confirm' | 'skip' | 'cancel', version: number) {
     await mutation(`/api/app/spaces/${space.id}/pooled-funds/occurrences/${id}/${action}`, { version },
-      `occurrence:${id}:${action}:${version}`, pooledOccurrenceMutationSchema.parse, action === 'confirm' ? '已確認實際投入。' : '投入狀態已更新。');
+      `occurrence:${id}:${action}:${version}`, pooledOccurrenceMutationSchema.parse, action === 'confirm' ? t('actualContributionConfirmed') : t('contributionUpdated'));
   }
 
   async function reimbursementAction(expense: PooledExpense, received: boolean) {
     const row = expense.reimbursement!;
     await mutation(`/api/app/spaces/${space.id}/pooled-funds/reimbursements/${row.id}/${received ? 'received' : 'sent'}`, { version: row.version },
       `reimbursement:${row.id}:${received}:${row.version}`, pooledReimbursementMutationSchema.parse,
-      received ? '已確認收到代墊款。' : '已確認基金送出代墊款。');
+      received ? t('reimbursementReceived') : t('reimbursementSent'));
   }
 
   async function returnAction(id: string, version: number, received: boolean) {
     await mutation(`/api/app/spaces/${space.id}/pooled-funds/returns/${id}/${received ? 'received' : 'sent'}`, { version },
-      `return:${id}:${received}:${version}`, pooledReturnMutationSchema.parse, received ? '已確認收到基金退回。' : '已確認送出基金退回。');
+      `return:${id}:${received}:${version}`, pooledReturnMutationSchema.parse, received ? t('returnReceived') : t('returnSent'));
   }
 
   return <main className="pooled-page">
-    <header className="pooled-hero"><div><p className="pooled-eyebrow ledger-with-icon"><LedgerIcon name="mode-pooled" />POOLED FUND · 共同基金</p><h1>{space.name}</h1>
-      <p>{group.name} · {space.currency} · {manager ? '寶箱管理者' : '參與者'}</p></div>
+    <header className="pooled-hero"><div><p className="pooled-eyebrow ledger-with-icon"><LedgerIcon name="mode-pooled" />{t('fundEyebrow')}</p><h1>{space.name}</h1>
+      <p>{t.rich('chestDetails', {
+        party: () => <>{group.name}</>, currency: () => <>{space.currency}</>,
+        role: () => <>{manager ? t('chestKeeper') : t('participant')}</>,
+      })}</p></div>
     </header>
     {!active && <BlockedExpenseDrafts actorUserId={currentUserId} groupId={group.id} spaceId={space.id}
       mode="POOLED_FUND" spaceVersion={space.version} />}
-    {!online && <p role="status" className="pooled-offline ledger-with-icon"><LedgerIcon name="status-offline" size={32} />目前離線；已確認資料維持不變。已開啟的支出表單會保存未提交草稿，重新連線後仍需手動檢視與送出。</p>}
+    {!online && <p role="status" className="pooled-offline ledger-with-icon"><LedgerIcon name="status-offline" size={32} />{t('offline')}</p>}
     {notice && <p role="status" className="pooled-notice">{notice}</p>}
-    {error && <div role="alert" className="pooled-alert"><p>{error}</p><PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void refresh()}>重新讀取</PixelButton></div>}
+    {error && <div role="alert" className="pooled-alert"><p>{error}</p><PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void refresh()}>{common('reload')}</PixelButton></div>}
 
     <section className="pooled-vault" aria-labelledby="pooled-balance-title">
-      <PixelPanel className="pooled-balance-card pooled-balance-card--book"><p id="pooled-balance-title">帳面餘額</p><strong data-testid="pooled-book">{money(workspace.summary.book_balance_minor)}</strong><span>只含已確認的金流</span></PixelPanel>
-      <PixelPanel className="pooled-balance-card"><p>待付代墊</p><strong data-testid="pooled-pending">{money(workspace.summary.pending_reimbursement_minor)}</strong><span>尚未由管理者送出</span></PixelPanel>
-      <PixelPanel className="pooled-balance-card"><p>已送出待收款</p><strong data-testid="pooled-sent-awaiting">{money(workspace.summary.sent_awaiting_receipt_minor)}</strong><span>已扣帳面餘額，不再保留</span></PixelPanel>
-      <PixelPanel className="pooled-balance-card"><p>可用餘額</p><strong data-testid="pooled-available">{money(workspace.summary.available_balance_minor)}</strong><span>帳面餘額扣除待付代墊</span></PixelPanel>
+      <PixelPanel className="pooled-balance-card pooled-balance-card--book"><p id="pooled-balance-title">{t('ledgerBalance')}</p><strong data-testid="pooled-book">{money(workspace.summary.book_balance_minor)}</strong><span>{t('confirmedOnly')}</span></PixelPanel>
+      <PixelPanel className="pooled-balance-card"><p>{t('frontedUnpaid')}</p><strong data-testid="pooled-pending">{money(workspace.summary.pending_reimbursement_minor)}</strong><span>{t('awaitingKeeper')}</span></PixelPanel>
+      <PixelPanel className="pooled-balance-card"><p>{t('sentAwaitingReceipt')}</p><strong data-testid="pooled-sent-awaiting">{money(workspace.summary.sent_awaiting_receipt_minor)}</strong><span>{t('deductedFromLedger')}</span></PixelPanel>
+      <PixelPanel className="pooled-balance-card"><p>{t('availableBalance')}</p><strong data-testid="pooled-available">{money(workspace.summary.available_balance_minor)}</strong><span>{t('availableExplanation')}</span></PixelPanel>
     </section>
-    {workspace.summary.shortfall_minor !== '0' && <div role="alert" className="pooled-shortfall"><strong className="ledger-with-icon"><LedgerIcon name="event-shortfall" size={32} />資金缺口 {money(workspace.summary.shortfall_minor)}</strong><span>真實支出已保留。請補一筆投入或調整未來排程。</span></div>}
+    {workspace.summary.shortfall_minor !== '0' && <div role="alert" className="pooled-shortfall"><strong className="ledger-with-icon"><LedgerIcon name="event-shortfall" size={32} />{t.rich('shortfall', {
+      amount: () => <>{money(workspace.summary.shortfall_minor)}</>,
+    })}</strong><span>{t('coverShortfall')}</span></div>}
 
     <PixelNotebook titleId="pooled-contributions-title">
-      <div className="pooled-section-heading"><div><p>CONTRIBUTION TRAIL</p><h2 id="pooled-contributions-title">投入排程與實際投入</h2></div>
-        {active && manager && <PixelButton type="button" emphasis="secondary" disabled={!online || busy} onClick={() => { setEditingCommitment(undefined); setDialog('commitment'); }}>建立投入排程</PixelButton>}
+      <div className="pooled-section-heading"><div><p>{t('contributionEyebrow')}</p><h2 id="pooled-contributions-title">{t('contributionHeading')}</h2></div>
+        {active && manager && <PixelButton type="button" emphasis="secondary" disabled={!online || busy} onClick={() => { setEditingCommitment(undefined); setDialog('commitment'); }}>{t('createSchedule')}</PixelButton>}
       </div>
-      {!workspace.commitments.length ? <p>還沒有排程。管理者可建立規則；只有參與者本人能確認自己的實際投入。</p> : <ul className="notebook-list">
+      {!workspace.commitments.length ? <p>{t('emptySchedules')}</p> : <ul className="notebook-list">
         {workspace.commitments.map((commitment) => <li key={commitment.id}>
           <div className="pooled-row-heading"><div><strong>{commitment.name}</strong>
-            <span className="notebook-secondary">{commitment.cadence === 'MONTHLY' ? '每月' : '每週'} · 每 {commitment.interval} 期</span></div>
-            {active && manager && commitment.status === 'ACTIVE' && <PixelButton type="button" emphasis="ghost" onClick={() => { setEditingCommitment(commitment); setDialog('commitment'); }}>編輯投入金額</PixelButton>}
+            <span className="notebook-secondary">{t.rich('scheduleSummary', {
+              cadence: () => <>{commitment.cadence === 'MONTHLY' ? t('monthly') : t('weekly')}</>,
+              count: commitment.interval, interval: chunks => <>{chunks}</>,
+            })}</span></div>
+            {active && manager && commitment.status === 'ACTIVE' && <PixelButton type="button" emphasis="ghost" onClick={() => { setEditingCommitment(commitment); setDialog('commitment'); }}>{t('editSchedule')}</PixelButton>}
           </div>
           <ul className="notebook-list">{commitment.occurrences.map((item) => <li key={item.id} className="notebook-row">
             <LedgerIcon name="event-contribution" />
-            <div><time>投入 · {item.due_on}</time><p><strong>{nameFor(item.participant_user_id)}</strong></p>
-              <p>{item.status === 'EXPECTED' ? timingLabel(item.timing) : occurrenceLabel(item.status)}</p></div>
+            <div><time>{t.rich('contributionDate', { nowrap: nowrapDate, date: () => <>{item.due_on}</> })}</time><p><strong>{nameFor(item.participant_user_id)}</strong></p>
+              <p>{item.status === 'EXPECTED' ? t(`timing.${item.timing ?? 'OVERDUE'}`) : t(`occurrenceStatus.${item.status}`)}</p></div>
             <div className="notebook-amount">
               <strong>{money(item.amount_minor)}</strong>
               {active && item.status === 'EXPECTED' && <div>
-                {item.participant_user_id === currentUserId && <><PixelButton type="button" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'confirm', item.version)}>確認已投入</PixelButton>
-                  <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'skip', item.version)}>略過這次</PixelButton></>}
-                {manager && <PixelButton type="button" emphasis="ghost" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'cancel', item.version)}>取消這次</PixelButton>}
+                {item.participant_user_id === currentUserId && <><PixelButton type="button" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'confirm', item.version)}>{t('confirmContribution')}</PixelButton>
+                  <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'skip', item.version)}>{t('skipContribution')}</PixelButton></>}
+                {manager && <PixelButton type="button" emphasis="ghost" disabled={busy || !online} onClick={() => void occurrenceAction(item.id, 'cancel', item.version)}>{t('cancelContribution')}</PixelButton>}
               </div>}
             </div>
           </li>)}</ul>
@@ -195,58 +208,70 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
     </PixelNotebook>
 
     <PixelNotebook titleId="pooled-expenses-title">
-      <div className="pooled-section-heading"><div><p>FUND SPENDING</p><h2 id="pooled-expenses-title">基金支出與代墊</h2></div>
-        {active && <PixelButton type="button" disabled={!online || busy} onClick={() => setDialog('expense')}>新增基金支出</PixelButton>}
+      <div className="pooled-section-heading"><div><p>{t('expensesEyebrow')}</p><h2 id="pooled-expenses-title">{t('expensesHeading')}</h2></div>
+        {active && <PixelButton type="button" disabled={!online || busy} onClick={() => setDialog('expense')}>{t('addExpense')}</PixelButton>}
       </div>
-      {!workspace.expenses.length ? <p>還沒有基金支出。</p> : <ul className="notebook-list">{workspace.expenses.map((expense) => {
+      {!workspace.expenses.length ? <p>{t('emptyExpenses')}</p> : <ul className="notebook-list">{workspace.expenses.map((expense) => {
         const fundPaid = expense.payment_source === 'FUND_PAID';
         return <li key={expense.record.id} className="notebook-row">
           <LedgerIcon name={fundPaid ? 'event-expense' : 'event-reimbursement'} />
           <div>
-            <time>{fundPaid ? '基金支出' : '代墊'} · {expense.record.occurred_on}</time>
+            <time>{t.rich('expenseTypeAndDate', {
+              nowrap: nowrapDate,
+              type: () => <>{fundPaid ? t('fundExpense') : t('advance')}</>, date: () => <>{expense.record.occurred_on}</>,
+            })}</time>
             <h3>{expense.record.title}</h3>
-            <p>{fundPaid ? '基金直接支付' : `${nameFor(expense.advanced_by_user_id!)}先代墊`}</p>
-            <p>{termName(expense.record.category_id)}{expense.record.tag_ids.map((id) => ` · #${termName(id)}`).join('')}</p>
+            <p>{fundPaid ? t('paidFromFund') : t('frontedByName', { name: nameFor(expense.advanced_by_user_id!) })}</p>
+            <p>{t.rich('categoryAndTags', {
+              category: () => <>{termName(expense.record.category_id)}</>,
+              tags: () => <>{expense.record.tag_ids.map(id => t('tagFragment', { tag: termName(id) })).join('')}</>,
+            })}</p>
             {expense.record.note && <p>{expense.record.note}</p>}
-            {expense.reimbursement && <span className="pooled-status notebook-secondary">{workflowLabel(expense.reimbursement.status)}</span>}
+            {expense.reimbursement && <span className="pooled-status notebook-secondary">{t(`workflowStatus.${expense.reimbursement.status}`)}</span>}
           </div>
           <div className="notebook-amount">
             <strong>{money(expense.record.amount_minor)}</strong>
-            {expense.reimbursement?.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, false)}>確認送出代墊款</PixelButton>}
-            {expense.reimbursement?.status === 'SENT' && expense.reimbursement.participant_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, true)}>確認收到代墊款</PixelButton>}
+            {expense.reimbursement?.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, false)}>{t('confirmReimbursementSent')}</PixelButton>}
+            {expense.reimbursement?.status === 'SENT' && expense.reimbursement.participant_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void reimbursementAction(expense, true)}>{t('confirmReimbursementReceived')}</PixelButton>}
           </div>
         </li>;
       })}</ul>}
     </PixelNotebook>
 
-    <PixelPanel><div className="pooled-section-heading"><div><p>PARTICIPANTS</p><h2>寶箱參與者</h2></div></div>
-      <ul className="pooled-participants">{data.participants.filter((person) => person.effective_to === null).map((person) => <li key={person.id}><span>{person.display_name} · {person.role === 'MANAGER' ? '管理者' : '參與者'}</span>
-        {manager && person.user_id !== currentUserId && <PixelButton type="button" emphasis="ghost" disabled={busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants/${person.id}/end`, { version: space.version }, `已結束 ${person.display_name} 的參與。`)}>結束參與</PixelButton>}</li>)}</ul>
-      {active && manager && candidates.length > 0 && <div className="pooled-add"><label className="pixel-field">加入參與者<select aria-label="加入參與者" className="pixel-field__input" value={selectedParticipant} onChange={(event) => setSelectedParticipant(event.target.value)}>
-        <option value="">選擇群組成員</option>{candidates.map((member) => <option value={member.user_id} key={member.user_id}>{member.display_name} · {member.mimic_id}</option>)}</select></label>
-        <PixelButton type="button" disabled={!selectedParticipant || busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants`, { user_id: selectedParticipant, version: space.version }, '已加入寶箱參與者。')}>加入寶箱</PixelButton></div>}
-      {current && <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void leave()}>離開這個寶箱</PixelButton>}
+    <PixelPanel><div className="pooled-section-heading"><div><p>{t('participantsEyebrow')}</p><h2>{t('participantsHeading')}</h2></div></div>
+      <ul className="pooled-participants">{data.participants.filter((person) => person.effective_to === null).map((person) => <li key={person.id}><span>{t.rich('participantWithRole', {
+        name: () => <>{person.display_name}</>, role: () => <>{person.role === 'MANAGER' ? t('keeper') : t('participant')}</>,
+      })}</span>
+        {manager && person.user_id !== currentUserId && <PixelButton type="button" emphasis="ghost" disabled={busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants/${person.id}/end`, { version: space.version }, t('participantEnded', { name: person.display_name }))}>{t('endParticipation')}</PixelButton>}</li>)}</ul>
+      {active && manager && candidates.length > 0 && <div className="pooled-add"><label className="pixel-field">{t('addParticipant')}<select aria-label={t('addParticipant')} className="pixel-field__input" value={selectedParticipant} onChange={(event) => setSelectedParticipant(event.target.value)}>
+        <option value="">{t('chooseMember')}</option>{candidates.map((member) => <option value={member.user_id} key={member.user_id}>{t.rich('memberOption', {
+          name: () => <>{member.display_name}</>, mimicId: () => <>{member.mimic_id}</>,
+        })}</option>)}</select></label>
+        <PixelButton type="button" disabled={!selectedParticipant || busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants`, { user_id: selectedParticipant, version: space.version }, t('participantAdded'))}>{t('addToChest')}</PixelButton></div>}
+      {current && <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void leave()}>{t('leaveChest')}</PixelButton>}
     </PixelPanel>
 
-    <PixelPanel className="pooled-closing"><div className="pooled-section-heading"><div><p>CLOSE THE VAULT</p><h2>{active ? '準備結清' : closing ? '基金退回' : '已封存'}</h2></div></div>
+    <PixelPanel className="pooled-closing"><div className="pooled-section-heading"><div><p>{t('closingEyebrow')}</p><h2>{active ? t('readyToClose') : closing ? t('fundReturn') : t('archived')}</h2></div></div>
       {active && manager && <PixelButton type="button" emphasis="danger" disabled={busy || !online} onClick={() => void mutation(`/api/app/spaces/${space.id}/pooled-funds/closing`, { version: space.version },
-        `closing:${space.version}`, pooledLifecycleMutationSchema.parse, '寶箱已進入結清；不再接受新金流。')}>開始結清</PixelButton>}
-      {closing && !workspace.return_plan && workspace.summary.book_balance_minor !== '0' && manager && <PixelButton type="button" onClick={() => setDialog('returns')}>指定基金退回</PixelButton>}
-      {workspace.return_plan && <ul className="pooled-ledger">{workspace.return_plan.returns.map((item) => <li key={item.id}><div><strong>{nameFor(item.recipient_user_id)}</strong><span>{money(item.amount_minor)} · {workflowLabel(item.status)}</span></div>
-        {item.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, false)}>確認送出退回款</PixelButton>}
-        {item.status === 'SENT' && item.recipient_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, true)}>確認收到退回款</PixelButton>}</li>)}</ul>}
+        `closing:${space.version}`, pooledLifecycleMutationSchema.parse, t('closingStarted'))}>{t('startClosing')}</PixelButton>}
+      {closing && !workspace.return_plan && workspace.summary.book_balance_minor !== '0' && manager && <PixelButton type="button" onClick={() => setDialog('returns')}>{t('specifyReturns')}</PixelButton>}
+      {workspace.return_plan && <ul className="pooled-ledger">{workspace.return_plan.returns.map((item) => <li key={item.id}><div><strong>{nameFor(item.recipient_user_id)}</strong><span>{t.rich('returnAmountAndStatus', {
+        amount: () => <>{money(item.amount_minor)}</>, status: () => <>{t(`workflowStatus.${item.status}`)}</>,
+      })}</span></div>
+        {item.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, false)}>{t('confirmReturnSent')}</PixelButton>}
+        {item.status === 'SENT' && item.recipient_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, true)}>{t('confirmReturnReceived')}</PixelButton>}</li>)}</ul>}
       {closing && manager && <PixelButton type="button" emphasis="danger" disabled={busy || !online} onClick={() => void mutation(`/api/app/spaces/${space.id}/pooled-funds/archive`, { version: space.version },
-        `archive:${space.version}`, pooledLifecycleMutationSchema.parse, '共同基金已封存。')}>封存共同基金</PixelButton>}
+        `archive:${space.version}`, pooledLifecycleMutationSchema.parse, t('fundArchived'))}>{t('archiveFund')}</PixelButton>}
     </PixelPanel>
 
-    <PixelDialog open={dialog === 'commitment'} title={editingCommitment ? '編輯投入金額' : '建立投入排程'} closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
+    <PixelDialog open={dialog === 'commitment'} title={editingCommitment ? t('editSchedule') : t('createSchedule')} closeLabel={common('close')} closeDisabled={busy} onClose={() => setDialog(null)}>
       {dialog === 'commitment' && <CommitmentForm space={space} participants={data.participants} commitment={editingCommitment} busy={busy || !online}
         onSubmit={async (payload, fingerprint) => {
           const path = editingCommitment ? `/api/app/spaces/${space.id}/pooled-funds/commitments/${editingCommitment.id}` : `/api/app/spaces/${space.id}/pooled-funds/commitments`;
           const method = editingCommitment ? 'PATCH' : 'POST';
           setBusy(true); setError('');
           try { const response = await appFetch<{ data: unknown }>(path, { method, body: JSON.stringify({ request_id: requestId(fingerprint), ...payload }) });
-            pooledCommitmentSchema.parse(response.data); attempts.current.delete(fingerprint); await refresh(); setDialog(null); setNotice('投入排程已儲存。'); }
+            pooledCommitmentSchema.parse(response.data); attempts.current.delete(fingerprint); await refresh(); setDialog(null); setNotice(t('scheduleSaved')); }
           catch (failure) {
             setError(explain(failure));
             if (failure instanceof AppClientError && failure.code === 'SPACE_VERSION_CONFLICT') {
@@ -256,12 +281,12 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
           finally { setBusy(false); }
         }} />}
     </PixelDialog>
-    <PixelDialog open={dialog === 'expense'} title="新增基金支出" closeLabel="關閉" closeDisabled={busy} onClose={closeExpense}>
+    <PixelDialog open={dialog === 'expense'} title={t('addExpense')} closeLabel={common('close')} closeDisabled={busy} onClose={closeExpense}>
       {dialog === 'expense' && <PooledExpenseForm actorUserId={currentUserId} groupId={group.id} spaceId={space.id} spaceVersion={space.version} writable={active}
         currency={space.currency} openedOn={space.opened_on} participants={data.participants} busy={busy}
         onSubmit={async (payload, durableRequestId) => {
           const result = await mutation(`/api/app/spaces/${space.id}/pooled-funds/expenses`, payload, 'pooled-expense-draft',
-            pooledExpenseMutationSchema.parse, '基金支出已記錄。', durableRequestId);
+            pooledExpenseMutationSchema.parse, t('expenseRecorded'), durableRequestId);
           if (!result) return false;
           const { record } = result;
           closeExpense();
@@ -269,10 +294,10 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
           return true;
         }} />}
     </PixelDialog>
-    <PixelDialog open={dialog === 'returns'} title="指定基金退回" description="逐一指定收款人與金額；系統不會自動平分。" closeLabel="關閉" closeDisabled={busy} onClose={() => setDialog(null)}>
+    <PixelDialog open={dialog === 'returns'} title={t('specifyReturns')} description={t('returnDescription')} closeLabel={common('close')} closeDisabled={busy} onClose={() => setDialog(null)}>
       {dialog === 'returns' && <ReturnPlanForm currency={space.currency} participants={data.participants} total={workspace.summary.book_balance_minor} busy={busy || !online}
         onSubmit={async (returns, fingerprint) => { const ok = await mutation(`/api/app/spaces/${space.id}/pooled-funds/return-plans`, { version: space.version, returns }, fingerprint,
-          pooledReturnPlanSchema.parse, '基金退回計畫已建立。'); if (ok) setDialog(null); }} />}
+          pooledReturnPlanSchema.parse, t('returnPlanCreated')); if (ok) setDialog(null); }} />}
     </PixelDialog>
     {companion}
   </main>;
@@ -282,6 +307,7 @@ function CommitmentForm({ space, participants, commitment, busy, onSubmit }: {
   space: PooledWorkspaceData['space']; participants: PooledWorkspaceData['participants']; commitment?: PooledCommitment; busy: boolean;
   onSubmit: (payload: Record<string, unknown>, fingerprint: string) => Promise<void>;
 }) {
+  const t = useTranslations('pooled');
   const [name, setName] = useState(commitment?.name ?? '');
   const [cadence, setCadence] = useState<'WEEKLY' | 'MONTHLY'>(commitment?.cadence ?? 'MONTHLY');
   const [interval, setInterval] = useState(String(commitment?.interval ?? 1));
@@ -302,36 +328,38 @@ function CommitmentForm({ space, participants, commitment, busy, onSubmit }: {
         : { version: space.version, name: name.trim(), cadence, interval: Number(interval), starts_on: startsOn,
           ends_on: endsOn || null, generate_through: generateThrough, default_amount_minor: defaultMinor, overrides: overrideRows };
       await onSubmit(payload, `commitment:${commitment?.id ?? 'new'}:${JSON.stringify(payload)}`);
-    } catch { setError('請輸入有效排程與正數金額。'); }
+    } catch { setError(t('invalidSchedule')); }
   }
   return <form className="pooled-form" onSubmit={submit}>
-    {!commitment && <><PixelField label="排程名稱" value={name} onChange={(event) => setName(event.target.value)} required maxLength={100} />
-      <label className="pixel-field">頻率<select aria-label="頻率" className="pixel-field__input" value={cadence} onChange={(event) => setCadence(event.target.value as typeof cadence)}><option value="MONTHLY">每月</option><option value="WEEKLY">每週</option></select></label>
-      <PixelField label="每幾期" type="number" min="1" max="52" value={interval} onChange={(event) => setInterval(event.target.value)} required />
-      <PixelField label="開始日期" type="date" value={startsOn} onChange={(event) => setStartsOn(event.target.value)} required />
-      <PixelField label="結束日期" type="date" value={endsOn} onChange={(event) => setEndsOn(event.target.value)} />
-      <PixelField label="產生到" type="date" value={generateThrough} onChange={(event) => setGenerateThrough(event.target.value)} required /></>}
-    <PixelField label="預設投入金額" inputMode="decimal" value={defaultAmount} onChange={(event) => setDefaultAmount(event.target.value)} required />
-    <fieldset><legend>指定金額（留白使用預設）</legend>{participants.filter((person) => person.effective_to === null).map((person) => <PixelField key={person.user_id}
-      label={`${person.display_name}的指定金額`} inputMode="decimal" value={overrides[person.user_id] ?? ''} onChange={(event) => setOverrides((current) => ({ ...current, [person.user_id]: event.target.value }))} />)}</fieldset>
-    {error && <p role="alert">{error}</p>}<PixelButton disabled={busy}>{busy ? '儲存中…' : '儲存投入排程'}</PixelButton>
+    {!commitment && <><PixelField label={t('scheduleName')} value={name} onChange={(event) => setName(event.target.value)} required maxLength={100} />
+      <label className="pixel-field">{t('frequency')}<select aria-label={t('frequency')} className="pixel-field__input" value={cadence} onChange={(event) => setCadence(event.target.value as typeof cadence)}><option value="MONTHLY">{t('monthly')}</option><option value="WEEKLY">{t('weekly')}</option></select></label>
+      <PixelField label={t('repeatEvery')} type="number" min="1" max="52" value={interval} onChange={(event) => setInterval(event.target.value)} required />
+      <PixelField label={t('startDate')} type="date" value={startsOn} onChange={(event) => setStartsOn(event.target.value)} required />
+      <PixelField label={t('endDate')} type="date" value={endsOn} onChange={(event) => setEndsOn(event.target.value)} />
+      <PixelField label={t('generateUntil')} type="date" value={generateThrough} onChange={(event) => setGenerateThrough(event.target.value)} required /></>}
+    <PixelField label={t('defaultAmount')} inputMode="decimal" value={defaultAmount} onChange={(event) => setDefaultAmount(event.target.value)} required />
+    <fieldset><legend>{t('overrideLegend')}</legend>{participants.filter((person) => person.effective_to === null).map((person) => <PixelField key={person.user_id}
+      label={t('overrideAmount', { name: person.display_name })} inputMode="decimal" value={overrides[person.user_id] ?? ''} onChange={(event) => setOverrides((current) => ({ ...current, [person.user_id]: event.target.value }))} />)}</fieldset>
+    {error && <p role="alert">{error}</p>}<PixelButton disabled={busy}>{busy ? t('saving') : t('saveSchedule')}</PixelButton>
   </form>;
 }
 
 function ReturnPlanForm({ currency, participants, total, busy, onSubmit }: { currency: string; participants: PooledWorkspaceData['participants']; total: string; busy: boolean;
   onSubmit: (returns: Array<{ recipient_user_id: string; amount_minor: string }>, fingerprint: string) => Promise<void> }) {
+  const t = useTranslations('pooled');
+  const formatMoney = useFormatMoney();
   const [amounts, setAmounts] = useState<Record<string, string>>({}); const [error, setError] = useState('');
   async function submit(event: FormEvent) {
     event.preventDefault(); setError('');
     try { const returns = participants.flatMap((person) => amounts[person.user_id]?.trim()
       ? [{ recipient_user_id: person.user_id, amount_minor: majorToMinorString(amounts[person.user_id], currency) }] : []);
       if (!returns.length) throw new Error(); await onSubmit(returns, `returns:${JSON.stringify(returns)}`); }
-    catch { setError('請明確指定至少一位收款人與正數金額。'); }
+    catch { setError(t('invalidReturnAmount')); }
   }
-  return <form className="pooled-form" onSubmit={submit}><p className="pooled-return-total">待指定：{formatMinorUnit(total, currency, 'zh-TW')}</p>
-    {participants.filter((person) => person.effective_to === null).map((person) => <PixelField key={person.user_id} label={`${person.display_name}的退回金額`}
+  return <form className="pooled-form" onSubmit={submit}><p className="pooled-return-total">{t.rich('remainingToAssign', { amount: () => <>{formatMoney(total, currency)}</> })}</p>
+    {participants.filter((person) => person.effective_to === null).map((person) => <PixelField key={person.user_id} label={t('returnAmount', { name: person.display_name })}
       inputMode="decimal" value={amounts[person.user_id] ?? ''} onChange={(event) => setAmounts((current) => ({ ...current, [person.user_id]: event.target.value }))} />)}
-    {error && <p role="alert">{error}</p>}<PixelButton disabled={busy}>建立退回計畫</PixelButton></form>;
+    {error && <p role="alert">{error}</p>}<PixelButton disabled={busy}>{t('createReturnPlan')}</PixelButton></form>;
 }
 
 function minorToInput(minor: string, currency: string) {
@@ -340,6 +368,3 @@ function minorToInput(minor: string, currency: string) {
   const padded = minor.padStart(digits + 1, '0');
   return `${padded.slice(0, -digits)}.${padded.slice(-digits)}`;
 }
-function timingLabel(value: 'UPCOMING' | 'DUE' | 'OVERDUE' | null) { return value === 'UPCOMING' ? '即將到期' : value === 'DUE' ? '今天到期' : '已逾期'; }
-function occurrenceLabel(value: string) { return value === 'CONFIRMED' ? '已確認投入' : value === 'SKIPPED' ? '已略過' : '已取消'; }
-function workflowLabel(value: string) { return value === 'AWAITING_PAYMENT' ? '待付款' : value === 'SENT' ? '已送出，待收款確認' : '已完成'; }

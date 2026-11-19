@@ -10,7 +10,7 @@ function flatten(messages: object, parent = ""): Record<string, string> {
   }));
 }
 
-function parameters(elements: MessageFormatElement[]) {
+function parameters(elements: MessageFormatElement[], allowEnglishNowrap = false) {
   const names = new Set<string>();
   function visit(nodes: MessageFormatElement[]) {
     for (const node of nodes) {
@@ -27,7 +27,8 @@ function parameters(elements: MessageFormatElement[]) {
           for (const option of Object.values(node.options)) visit(option.value);
           break;
         case TYPE.tag:
-          names.add(node.value);
+          // English ISO dates have a presentation-only wrapper. Check its arguments as usual.
+          if (!allowEnglishNowrap || node.value !== "nowrap") names.add(node.value);
           visit(node.children);
           break;
       }
@@ -44,6 +45,6 @@ it("keeps both message catalogs complete and ICU arguments compatible", () => {
   for (const [key, message] of Object.entries(source)) {
     expect(message.trim(), key).not.toBe("");
     expect(translated[key].trim(), key).not.toBe("");
-    expect(parameters(parse(translated[key])), key).toEqual(parameters(parse(message)));
+    expect(parameters(parse(translated[key]), true), key).toEqual(parameters(parse(message)));
   }
 });

@@ -238,11 +238,11 @@ describe("authenticated route boundaries", () => {
     listGroupsMock.mockResolvedValueOnce([{ id: "group-1" }]);
     render(await GroupsPage());
     expect(screen.getByText("groups:1")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Create group" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "建立群組" })).toHaveAttribute(
       "href",
       "/app/groups/new",
     );
-    expect(screen.getByRole("link", { name: "Join group" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "加入群組" })).toHaveAttribute(
       "href",
       "/app/groups/join",
     );
@@ -256,8 +256,8 @@ describe("authenticated route boundaries", () => {
   it("renders the manual join route without a QR placeholder", () => {
     render(<JoinGroupPage />);
 
-    expect(screen.getByRole("heading", { name: "Join group" })).toBeInTheDocument();
-    expect(screen.getByLabelText("Invite code or link")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "加入群組" })).toBeInTheDocument();
+    expect(screen.getByLabelText("邀請碼或連結")).toBeInTheDocument();
     expect(screen.queryByText(/qr/i)).not.toBeInTheDocument();
   });
 

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 import type { Group } from "@/shared/api/domain-contracts";
@@ -10,12 +11,13 @@ interface GroupSwitcherProps {
 }
 
 export function GroupSwitcher({ groups, selectedGroupId }: GroupSwitcherProps) {
+  const t = useTranslations("groups");
   if (groups.length === 0) {
     return null;
   }
 
   return (
-    <nav aria-label="選擇共同寶庫" className={styles.groupSwitcher}>
+    <nav aria-label={t("choose")} className={styles.groupSwitcher}>
       {groups.map((group) => {
         const selected = group.id === selectedGroupId;
 

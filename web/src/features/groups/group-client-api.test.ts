@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { AppClientError, appFetch } from "@/shared/api/app-fetch";
 
-import { groupErrorMessage } from "./group-client-api";
+import { groupErrorKey } from "./group-client-api";
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -78,8 +78,8 @@ describe("appFetch", () => {
     }).catch((caught: unknown) => caught);
 
     expect(error).toBeInstanceOf(AppClientError);
-    expect(groupErrorMessage(error)).toBe(
-      "Your session expired. Sign in again, then retry.",
+    expect(groupErrorKey(error)).toBe(
+      "settings.expired",
     );
     expect(fetchMock).toHaveBeenCalledTimes(5);
     expect(
@@ -107,8 +107,8 @@ describe("appFetch", () => {
       method: "POST",
     }).catch((caught: unknown) => caught);
 
-    expect(groupErrorMessage(error)).toBe(
-      "Your session expired. Sign in again, then retry.",
+    expect(groupErrorKey(error)).toBe(
+      "settings.expired",
     );
     expect(
       fetchMock.mock.calls.filter(
@@ -129,8 +129,8 @@ describe("appFetch", () => {
       method: "POST",
     }).catch((caught: unknown) => caught);
 
-    expect(groupErrorMessage(error)).toBe(
-      "The service is temporarily unavailable. Mimiku kept your changes.",
+    expect(groupErrorKey(error)).toBe(
+      "settings.service",
     );
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });

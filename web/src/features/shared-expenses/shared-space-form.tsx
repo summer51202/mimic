@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import { appFetch } from '@/shared/api/app-fetch';
 import { financialSpaceSchema, type FinancialSpace } from '@/shared/api/financial-space-contracts';
@@ -9,6 +10,7 @@ import { useOnline } from '../personal-expenses/use-online';
 export function SharedSpaceForm({ groupId, defaultCurrency, onCreated }: {
   groupId: string; defaultCurrency: string; onCreated: (space: FinancialSpace) => void;
 }) {
+  const t = useTranslations();
   const [name, setName] = useState('');
   const [currency, setCurrency] = useState(defaultCurrency);
   const [busy, setBusy] = useState(false);
@@ -25,17 +27,17 @@ export function SharedSpaceForm({ groupId, defaultCurrency, onCreated }: {
       });
       onCreated(financialSpaceSchema.parse(response.data));
     } catch {
-      setError('尚未確認寶箱是否建立。請先關閉並重新整理群組清單，再決定是否重試。');
+      setError(t('shared.space.unconfirmed'));
     } finally { setBusy(false); }
   }
   return <form onSubmit={submit} className="shared-form">
-    <p>只有寶箱參與者能讀取分帳金額與紀錄。建立者會成為第一位管理者。</p>
-    <PixelField label="寶箱名稱" required maxLength={100} value={name} onChange={event => setName(event.target.value)} disabled={busy} />
-    <label className="pixel-field">幣別<select aria-label="幣別" className="pixel-field__input" value={currency} onChange={event => setCurrency(event.target.value)} disabled={busy}>
+    <p>{t('shared.space.permissions')}</p>
+    <PixelField label={t('common.chestName')} required maxLength={100} value={name} onChange={event => setName(event.target.value)} disabled={busy} />
+    <label className="pixel-field">{t('common.currency')}<select aria-label={t('common.currency')} className="pixel-field__input" value={currency} onChange={event => setCurrency(event.target.value)} disabled={busy}>
       {['TWD', 'USD', 'JPY', 'EUR', 'HKD', 'CNY', 'KRW', 'KWD'].map(code => <option key={code}>{code}</option>)}
     </select></label>
-    {!online && <p role="status">目前離線，尚未建立寶箱。</p>}
+    {!online && <p role="status">{t('shared.space.offline')}</p>}
     {error && <p role="alert">{error}</p>}
-    <PixelButton disabled={!online || busy}>{busy ? '建立中…' : '建立共同分帳'}</PixelButton>
+    <PixelButton disabled={!online || busy}>{busy ? t('shared.space.creating') : t('shared.space.submit')}</PixelButton>
   </form>;
 }

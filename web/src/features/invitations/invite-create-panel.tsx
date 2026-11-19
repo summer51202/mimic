@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { type FormEvent, useState } from "react";
 import { ZodError } from "zod";
@@ -12,7 +13,7 @@ import { PixelField } from "@/shared/ui/pixel-field";
 import { PixelFrame } from "@/shared/ui/pixel-frame";
 import { PixelNotice } from "@/shared/ui/pixel-notice";
 
-import { inviteErrorMessage } from "./invite-errors";
+import { inviteErrorKey, type InviteErrorCode } from "./invite-errors";
 import { InviteSharePanel } from "./invite-share-panel";
 import { inviteCreateSchema } from "./invite-schema";
 import styles from "./invitation-flow.module.css";
@@ -23,10 +24,12 @@ type InviteCreatePanelProps = {
 };
 
 export function InviteCreatePanel({ groupId, onCreated }: InviteCreatePanelProps) {
+  const t = useTranslations("invite.app");
   const [email, setEmail] = useState("");
   const [invite, setInvite] = useState<InviteCreated | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [fieldError, setFieldError] = useState<string | null>(null);
+  const inviteErrors = useTranslations("invite.errors");
+  const [error, setError] = useState<InviteErrorCode | null>(null);
+  const [invalidEmail, setInvalidEmail] = useState(false);
   const [pending, setPending] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -37,7 +40,7 @@ export function InviteCreatePanel({ groupId, onCreated }: InviteCreatePanelProps
     }
 
     setError(null);
-    setFieldError(null);
+    setInvalidEmail(false);
     setPending(true);
 
     try {
@@ -58,9 +61,9 @@ export function InviteCreatePanel({ groupId, onCreated }: InviteCreatePanelProps
       onCreated?.(result.data);
     } catch (caught) {
       if (caught instanceof ZodError) {
-        setFieldError("Enter a valid email or leave it blank.");
+        setInvalidEmail(true);
       } else {
-        setError(inviteErrorMessage(caught));
+        setError(inviteErrorKey(caught));
       }
     } finally {
       setPending(false);
@@ -72,15 +75,14 @@ export function InviteCreatePanel({ groupId, onCreated }: InviteCreatePanelProps
       <PixelFrame className={styles.panel}>
         <div className={styles.hero}>
           <div>
-            <p className={styles.meta}>Party invite</p>
-            <h2>Bring a partner into this quest.</h2>
+            <p className={styles.meta}>{t("createKicker")}</p>
+            <h2>{t("createTitle")}</h2>
             <p className={styles.meta}>
-              Generate a private invite. Email is optional, but a locked invite
-              can only be accepted by that account.
+              {t("createIntro")}
             </p>
           </div>
           <Image
-            alt="Mimiku carrying a fresh invite"
+            alt={t("alt")}
             className="pixel-art"
             height={512}
             priority
@@ -89,19 +91,19 @@ export function InviteCreatePanel({ groupId, onCreated }: InviteCreatePanelProps
             width={512}
           />
         </div>
-        {error ? <PixelNotice variant="error">{error}</PixelNotice> : null}
+        {error ? <PixelNotice variant="error">{inviteErrors(error)}</PixelNotice> : null}
         <form className={styles.panel} onSubmit={handleSubmit}>
           <PixelField
-            error={fieldError}
-            label="Invite email"
+            error={invalidEmail ? t("invalidEmail") : null}
+            label={t("email")}
             name="invitedEmail"
             onChange={(event) => setEmail(event.target.value)}
-            placeholder="friend@example.com"
+            placeholder={t("emailPlaceholder")}
             type="email"
             value={email}
           />
           <PixelButton disabled={pending} type="submit">
-            {pending ? "Generating..." : "Generate invite"}
+            {t(pending ? "generating" : "generate")}
           </PixelButton>
         </form>
       </PixelFrame>

@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { render } from "@/test/render-with-intl";
+import { cleanup, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { HomeTask, TaskCenter as TaskCenterData } from '@/shared/api/home-contracts';
 import { TaskCenter } from './task-center';

@@ -9,6 +9,7 @@ import {
   useId,
   useRef,
 } from "react";
+import { useTranslations } from "next-intl";
 
 import { PixelButton } from "./pixel-button";
 import { PixelFrame } from "./pixel-frame";
@@ -29,7 +30,7 @@ export function PixelDialog({
   children,
   className,
   closeDisabled = false,
-  closeLabel = "Close dialog",
+  closeLabel,
   description,
   onCancel: onCancelEvent,
   onClose,
@@ -38,6 +39,7 @@ export function PixelDialog({
   title,
   ...props
 }: PixelDialogProps) {
+  const t = useTranslations("common");
   const dialogId = useId();
   const titleId = `${dialogId}-title`;
   const descriptionId = description ? `${dialogId}-description` : undefined;
@@ -125,12 +127,12 @@ export function PixelDialog({
           </h2>
           <PixelButton
             emphasis="ghost"
-            iconOnlyLabel={closeLabel}
+            iconOnlyLabel={closeLabel ?? t("closeDialog")}
             disabled={closeDisabled}
             onClick={onClose}
             type="button"
           >
-            <span aria-hidden="true">X</span>
+            <span aria-hidden="true">X</span>{/* // i18n-exempt: Decorative close glyph. */}
           </PixelButton>
         </div>
         {description ? (

@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -18,8 +19,8 @@ describe("JoinGroupForm", () => {
 
     render(<JoinGroupForm onSuccess={onSuccess} />);
 
-    await user.type(screen.getByLabelText("Invite code or link"), entry);
-    await user.click(screen.getByRole("button", { name: "Review invite" }));
+    await user.type(screen.getByLabelText("邀請碼或連結"), entry);
+    await user.click(screen.getByRole("button", { name: "查看邀請" }));
 
     expect(onSuccess).toHaveBeenCalledWith("/invite/abcDEF123_-4");
   });
@@ -29,15 +30,15 @@ describe("JoinGroupForm", () => {
 
     render(<JoinGroupForm onSuccess={vi.fn()} />);
 
-    const input = screen.getByLabelText("Invite code or link");
+    const input = screen.getByLabelText("邀請碼或連結");
     await user.type(input, "not an invite");
-    await user.click(screen.getByRole("button", { name: "Review invite" }));
+    await user.click(screen.getByRole("button", { name: "查看邀請" }));
 
     expect(input).toHaveValue("not an invite");
     expect(input).toHaveFocus();
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Enter a valid 12-character invite code or invite link.",
+      "請輸入有效的 12 個字元邀請碼或邀請連結。",
     );
 
     await user.type(input, " yet");
@@ -49,12 +50,12 @@ describe("JoinGroupForm", () => {
 
     render(<JoinGroupForm onSuccess={vi.fn()} />);
 
-    const input = screen.getByLabelText("Invite code or link");
-    await user.click(screen.getByRole("button", { name: "Review invite" }));
+    const input = screen.getByLabelText("邀請碼或連結");
+    await user.click(screen.getByRole("button", { name: "查看邀請" }));
 
     expect(input).toHaveFocus();
     expect(screen.getByRole("alert")).toHaveTextContent(
-      "Enter a valid 12-character invite code or invite link.",
+      "請輸入有效的 12 個字元邀請碼或邀請連結。",
     );
   });
 });

@@ -25,6 +25,13 @@
   overflow-wrap: anywhere;
 }
 
+.groupName:lang(en),
+.memberName:lang(en),
+.memberMeta:lang(en),
+.memberMeta span:lang(en) {
+  hyphens: auto;
+}
+
 .header h1 {
   color: var(--mimic-color-hud-dark);
   font-size: clamp(2rem, 7vw, 3rem);
@@ -157,6 +164,14 @@
 .archiveForm > * {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.dangerZone > :lang(en),
+.dangerZone p:lang(en),
+.archiveExplanation:lang(en),
+.archiveForm:lang(en),
+.archiveForm > :lang(en) {
+  hyphens: auto;
 }
 
 .dangerZone p,

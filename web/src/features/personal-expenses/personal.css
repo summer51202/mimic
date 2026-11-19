@@ -8,6 +8,10 @@
 .personal-breakdown { list-style: none; padding: 0; margin: 0; }
 .personal-breakdown li { display: flex; justify-content: space-between; gap: 1rem; padding: .4rem 0; overflow-wrap: anywhere; }
 .personal-records li > div { min-width: 0; overflow-wrap: anywhere; }
+
+.personal-total > strong:lang(en),
+.personal-breakdown li:lang(en),
+.personal-records li > div:lang(en) { hyphens: auto; }
 .personal-records time, .personal-records p { font-size: .875rem; }
 .personal-record-source { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin-bottom: .4rem; }
 .personal-source-badge, .personal-lock-badge { display: inline-flex; align-items: center; min-height: 1.75rem; padding: .2rem .5rem; font-size: .75rem; font-weight: 700; }

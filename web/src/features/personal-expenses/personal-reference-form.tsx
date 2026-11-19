@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import {
@@ -18,6 +19,8 @@ export function PersonalReferenceForm({ spaceId, reference, terms, onSaved, onRe
   onSaved: (result: PersonalReferenceMutation) => void;
   onReload?: () => Promise<PersonalReferenceEntry | undefined>;
 }) {
+  const t = useTranslations('personal.reference');
+  const common = useTranslations('common');
   const [note, setNote] = useState(reference.note ?? '');
   const [tags, setTags] = useState(reference.tag_ids);
   const [version, setVersion] = useState(reference.version);
@@ -49,9 +52,9 @@ export function PersonalReferenceForm({ spaceId, reference, terms, onSaved, onRe
     } catch (failure) {
       if (failure instanceof AppClientError && failure.status === 409) {
         setConflict(true);
-        setError('資料版本已變更。重新讀取最新資料並比較後再儲存；你的私人輸入仍保留。');
+        setError(t('conflict'));
       } else {
-        setError('尚未確認儲存。相同內容重試會沿用同一個請求識別，不會重複修改。');
+        setError(t('unconfirmed'));
       }
     } finally { setBusy(false); }
   }
@@ -62,26 +65,28 @@ export function PersonalReferenceForm({ spaceId, reference, terms, onSaved, onRe
     try {
       const refreshed = await onReload();
       if (!refreshed) {
-        setError('這筆私人參照已不在目前清單。你的輸入仍保留，請關閉後檢查。');
+        setError(t('missing'));
         return;
       }
       setLatest(refreshed); setVersion(refreshed.version); setConflict(false); setError('');
-    } catch { setError('重新讀取失敗，私人輸入仍保留。請稍後再試。'); }
+    } catch { setError(t('reloadFailed')); }
     finally { setBusy(false); }
   }
 
   return <form className="personal-reference-form" onSubmit={submit}>
-    <p className="personal-reference-ticket">共同交易的金額、日期、付款與分攤維持唯讀；這裡只整理你的私人資訊。</p>
-    {reference.source_locked && <p className="personal-reference-lock">來源已鎖定。若需修正共同交易，請在共同分帳建立新一期更正。</p>}
-    {availableTags.length > 0 && <fieldset className="personal-reference-tags"><legend>私人標籤</legend>
+    <p className="personal-reference-ticket">{t('sharedReadOnly')}</p>
+    {reference.source_locked && <p className="personal-reference-lock">{t('locked')}</p>}
+    {availableTags.length > 0 && <fieldset className="personal-reference-tags"><legend>{t('tags')}</legend>
       {availableTags.map(tag => <label key={tag.id}><input type="checkbox" checked={tags.includes(tag.id)} onChange={() => toggle(tag.id)} disabled={busy} />{tag.name}</label>)}
     </fieldset>}
-    <PixelField label="私人備註" value={note} onChange={event => { setNote(event.target.value); setConflict(false); }} maxLength={2000} disabled={busy}
-      description="只有你能在個人帳本看到。" />
-    {!online && <p role="status">目前離線，尚未儲存。私人輸入只暫留在這個表單。</p>}
+    <PixelField label={t('note')} value={note} onChange={event => { setNote(event.target.value); setConflict(false); }} maxLength={2000} disabled={busy}
+      description={t('privacy')} />
+    {!online && <p role="status">{t('offline')}</p>}
     {error && <p role="alert">{error}</p>}
-    {latest && <p role="status">最新私人資訊：{latest.note ? `「${latest.note}」` : '沒有備註'}。上方仍保留你的輸入，請比較後再儲存。</p>}
-    {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>重新讀取最新資料</PixelButton>}
-    <PixelButton type="submit" disabled={busy || !online || conflict}>{busy ? '確認中…' : '儲存私人資訊'}</PixelButton>
+    {latest && <p role="status">{latest.note
+      ? t.rich('latestWithNote', { note: latest.note, privateNote: (chunks) => <>{chunks}</> })
+      : t.rich('latestWithoutNote', { privateNote: (chunks) => <>{chunks}</> })}</p>}
+    {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>{common('loadLatest')}</PixelButton>}
+    <PixelButton type="submit" disabled={busy || !online || conflict}>{busy ? common('confirming') : t('save')}</PixelButton>
   </form>;
 }

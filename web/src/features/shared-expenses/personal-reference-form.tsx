@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from 'next-intl';
 import { useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import { personalReferenceMutationSchema, type PersonalReferenceMutation } from '@/shared/api/personal-expense-contracts';
@@ -14,6 +15,7 @@ export function PersonalReferenceForm({ sourceExpenseId, sourceLocked, personalS
   onSaved: (result: PersonalReferenceMutation, personalSpaceId: string) => void;
   onReload?: () => Promise<unknown>;
 }) {
+  const t = useTranslations();
   const [spaceId, setSpaceId] = useState(personalSpaces[0]?.id ?? '');
   const [note, setNote] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -44,8 +46,8 @@ export function PersonalReferenceForm({ sourceExpenseId, sourceLocked, personalS
       onSaved(personalReferenceMutationSchema.parse(response.data), spaceId);
     } catch (failure) {
       if (failure instanceof AppClientError && failure.status === 409) {
-        setConflict(true); setError('這筆支出已加入或資料已變更。重新讀取共同分帳後再確認。');
-      } else setError('尚未確認加入。相同內容重試會沿用同一個請求識別，不會建立重複參照。');
+        setConflict(true); setError(t('shared.reference.conflict'));
+      } else setError(t('shared.reference.unconfirmed'));
     } finally { setBusy(false); }
   }
 
@@ -53,31 +55,33 @@ export function PersonalReferenceForm({ sourceExpenseId, sourceLocked, personalS
     if (!onReload) return;
     setBusy(true);
     try { await onReload(); setConflict(false); setError(''); }
-    catch { setError('重新讀取失敗，私人輸入仍保留。'); }
+    catch { setError(t('shared.reference.reloadFailed')); }
     finally { setBusy(false); }
   }
 
   if (!personalSpaces.length) return <div className="personal-reference-empty">
-    <p>沒有可用的同幣別個人寶箱。先建立個人寶箱，再回來加入這筆分攤。</p>
-    <a className="pixel-link" href="/app/personal">建立個人寶箱</a>
+    <p>{t('shared.reference.noMatchingChest')}</p>
+    <a className="pixel-link" href="/app/personal">{t('shared.reference.createPersonal')}</a>
   </div>;
 
   return <form className="personal-reference-form" onSubmit={submit}>
-    <p className="personal-reference-ticket">只連結你的分攤，不會複製共同交易。</p>
-    {sourceLocked && <p className="personal-reference-lock">來源期間已永久鎖定；這筆參照會保留已鎖定的共同內容。</p>}
-    <label className="pixel-field"><span className="pixel-field__label">加入到</span>
-      <select className="pixel-field__input" aria-label="加入到" value={spaceId} onChange={event => { setSpaceId(event.target.value); setConflict(false); }} disabled={busy}>
-        {personalSpaces.map(space => <option value={space.id} key={space.id}>{space.name} · {space.currency}</option>)}
+    <p className="personal-reference-ticket">{t('shared.reference.linkOnly')}</p>
+    {sourceLocked && <p className="personal-reference-lock">{t('shared.reference.locked')}</p>}
+    <label className="pixel-field"><span className="pixel-field__label">{t('shared.reference.destination')}</span>
+      <select className="pixel-field__input" aria-label={t('shared.reference.destination')} value={spaceId} onChange={event => { setSpaceId(event.target.value); setConflict(false); }} disabled={busy}>
+        {personalSpaces.map(space => <option value={space.id} key={space.id}>{t.rich('common.nameCurrency', {
+          name: () => <>{space.name}</>, currency: () => <>{space.currency}</>,
+        })}</option>)}
       </select></label>
-    {availableTags.length > 0 && <fieldset className="personal-reference-tags"><legend>私人標籤</legend>
+    {availableTags.length > 0 && <fieldset className="personal-reference-tags"><legend>{t('common.privateTags')}</legend>
       {availableTags.map(tag => <label key={tag.id}><input type="checkbox" checked={tags.includes(tag.id)}
         onChange={() => toggle(tag.id)} disabled={busy} />{tag.name}</label>)}
     </fieldset>}
-    <PixelField label="私人備註" value={note} onChange={event => { setNote(event.target.value); setConflict(false); }} maxLength={2000}
-      description="只有你能在個人帳本看到。" disabled={busy} />
-    {!online && <p role="status">目前離線，尚未加入。私人輸入只暫留在這個表單。</p>}
+    <PixelField label={t('common.privateNote')} value={note} onChange={event => { setNote(event.target.value); setConflict(false); }} maxLength={2000}
+      description={t('shared.reference.privateDescription')} disabled={busy} />
+    {!online && <p role="status">{t('shared.reference.offline')}</p>}
     {error && <p role="alert">{error}</p>}
-    {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>重新讀取共同分帳</PixelButton>}
-    <PixelButton disabled={busy || !online || conflict}>{busy ? '確認中…' : '加入我的帳本'}</PixelButton>
+    {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>{t('shared.reference.reload')}</PixelButton>}
+    <PixelButton disabled={busy || !online || conflict}>{busy ? t('common.confirming') : t('common.addToLedger')}</PixelButton>
   </form>;
 }

@@ -1,6 +1,8 @@
 "use client";
+import { nowrapDate } from '@/shared/i18n/nowrap-date';
+import { useTranslations } from 'next-intl';
 import type { SharedExpense } from '@/shared/api/shared-finance-contracts';
-import { formatMinorUnit } from '@/shared/finance/minor-unit';
+import { useFormatMoney } from '@/shared/i18n/format';
 import { LedgerIcon } from '@/shared/ui/pixel-notebook';
 import { PixelButton } from '@/shared/ui/pixel-button';
 
@@ -9,18 +11,25 @@ export function SharedExpenseList({ expenses, currency, currentUserId, manager, 
   onEdit: (expense: SharedExpense) => void; onDelete: (expense: SharedExpense) => void;
   onReference?: (expense: SharedExpense) => void;
 }) {
-  if (!expenses.length) return <p>還沒有共同支出。從第一筆付款與分攤開始。</p>;
+  const t = useTranslations();
+  const money = useFormatMoney();
+  const namedAmount = (id: string, amount: string) => t('shared.list.namedAmount', { name: nameFor(id), amount: money(amount, currency) });
+  if (!expenses.length) return <p>{t('shared.list.empty')}</p>;
   return <ul className="notebook-list">{expenses.map(expense => <li key={expense.id} className="notebook-row">
     <LedgerIcon name="event-expense" />
-    <div><time>共同支出 · {expense.occurred_on}</time><h3>{expense.title}</h3>
-      <p>付款：{expense.payers.map(row => `${nameFor(row.user_id)} ${formatMinorUnit(row.amount_minor, currency, 'zh-TW')}`).join('、')}</p>
-      <p>分攤：{expense.allocations.map(row => `${nameFor(row.user_id)} ${formatMinorUnit(row.amount_minor, currency, 'zh-TW')}`).join('、')}</p>
-    </div><div className="notebook-amount"><strong>{formatMinorUnit(expense.amount_minor, currency, 'zh-TW')}</strong>
+    <div><time>{t.rich('shared.list.date', { nowrap: nowrapDate, date: () => <>{expense.occurred_on}</> })}</time><h3>{expense.title}</h3>
+      <p>{t.rich('shared.list.payments', {
+        items: () => <>{expense.payers.map(row => namedAmount(row.user_id, row.amount_minor)).join(t('common.listSeparator'))}</>,
+      })}</p>
+      <p>{t.rich('shared.list.shares', {
+        items: () => <>{expense.allocations.map(row => namedAmount(row.user_id, row.amount_minor)).join(t('common.listSeparator'))}</>,
+      })}</p>
+    </div><div className="notebook-amount"><strong>{money(expense.amount_minor, currency)}</strong>
       {onReference && expense.allocations.some(row => row.user_id === currentUserId && row.amount_minor !== '0')
-        && <PixelButton emphasis="secondary" aria-label={`加入我的帳本－${expense.title}`} onClick={() => onReference(expense)}>加入我的帳本</PixelButton>}
+        && <PixelButton emphasis="secondary" aria-label={t('shared.list.addToLedger', { title: expense.title })} onClick={() => onReference(expense)}>{t('common.addToLedger')}</PixelButton>}
       {!readOnly && (manager || expense.created_by === currentUserId) && <div>
-        <PixelButton emphasis="ghost" aria-label={`編輯 ${expense.title}`} onClick={() => onEdit(expense)}>編輯</PixelButton>
-        <PixelButton emphasis="ghost" aria-label={`刪除 ${expense.title}`} onClick={() => onDelete(expense)}>刪除</PixelButton>
+        <PixelButton emphasis="ghost" aria-label={t('shared.list.edit', { title: expense.title })} onClick={() => onEdit(expense)}>{t('common.edit')}</PixelButton>
+        <PixelButton emphasis="ghost" aria-label={t('shared.list.delete', { title: expense.title })} onClick={() => onDelete(expense)}>{t('common.delete')}</PixelButton>
       </div>}
     </div>
   </li>)}</ul>;

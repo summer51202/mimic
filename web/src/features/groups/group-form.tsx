@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type FormEvent, useState } from "react";
 
 import type { Group, GroupDetail } from "@/shared/api/domain-contracts";
@@ -8,7 +9,7 @@ import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelField } from "@/shared/ui/pixel-field";
 import { PixelNotice } from "@/shared/ui/pixel-notice";
 
-import { groupErrorMessage } from "./group-client-api";
+import { groupErrorKey } from "./group-client-api";
 import {
   createGroupSchema,
   renameGroupSchema,
@@ -26,6 +27,8 @@ interface GroupFormProps {
 }
 
 export function GroupForm({ group, mode, onSuccess }: GroupFormProps) {
+  const t = useTranslations("groups");
+  const translate = useTranslations();
   const [name, setName] = useState(group?.name ?? "");
   const [groupType, setGroupType] = useState<CreateGroupValues["groupType"]>(
     group?.group_type === "group" ? "group" : "couple",
@@ -33,7 +36,7 @@ export function GroupForm({ group, mode, onSuccess }: GroupFormProps) {
   const [defaultCurrency, setDefaultCurrency] = useState(
     group?.default_currency ?? "TWD",
   );
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ReturnType<typeof groupErrorKey> | null>(null);
   const [pending, setPending] = useState(false);
   const isCreate = mode === "create";
 
@@ -74,16 +77,16 @@ export function GroupForm({ group, mode, onSuccess }: GroupFormProps) {
         onSuccess?.(`/app/groups/${group.id}`);
       }
     } catch (caught) {
-      setError(groupErrorMessage(caught));
+      setError(groupErrorKey(caught));
       setPending(false);
     }
   }
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
-      {error ? <PixelNotice variant="error">{error}</PixelNotice> : null}
+      {error ? <PixelNotice variant="error">{translate(error)}</PixelNotice> : null}
       <PixelField
-        label="Group name"
+        label={t("name")}
         name="name"
         onChange={(event) => setName(event.target.value)}
         required
@@ -92,7 +95,7 @@ export function GroupForm({ group, mode, onSuccess }: GroupFormProps) {
       {isCreate ? (
         <>
           <fieldset className={styles.radioGroup}>
-            <legend>Group type</legend>
+            <legend>{t("type")}</legend>
             <label>
               <input
                 checked={groupType === "couple"}
@@ -100,7 +103,7 @@ export function GroupForm({ group, mode, onSuccess }: GroupFormProps) {
                 onChange={() => setGroupType("couple")}
                 type="radio"
               />
-              Couple
+              {t("duo")}
             </label>
             <label>
               <input
@@ -109,11 +112,11 @@ export function GroupForm({ group, mode, onSuccess }: GroupFormProps) {
                 onChange={() => setGroupType("group")}
                 type="radio"
               />
-              Group
+              {t("party")}
             </label>
           </fieldset>
           <PixelField
-            label="Currency"
+            label={t("currency")}
             maxLength={3}
             name="defaultCurrency"
             onChange={(event) => setDefaultCurrency(event.target.value)}
@@ -123,7 +126,7 @@ export function GroupForm({ group, mode, onSuccess }: GroupFormProps) {
         </>
       ) : null}
       <PixelButton disabled={pending} type="submit">
-        {isCreate ? "Create group" : "Save name"}
+        {t(isCreate ? "create" : "saveName")}
       </PixelButton>
     </form>
   );

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import type { TaxonomyTerm } from '@/shared/api/taxonomy-contracts';
@@ -32,6 +33,7 @@ export function SharedExpenseForm({ groupId, spaceId, spaceVersion, writable, cu
   lockKind?: 'PENDING' | 'PERMANENT';
   onCorrection?: (record: SharedExpense) => void;
 }) {
+  const t = useTranslations();
   const [title, setTitle] = useState(record?.title ?? '');
   const [amount, setAmount] = useState(record ? majorFromMinor(record.amount_minor, currency) : '');
   const [date, setDate] = useState(record?.occurred_on ?? today(timezone));
@@ -73,7 +75,7 @@ export function SharedExpenseForm({ groupId, spaceId, spaceVersion, writable, cu
     const validIds = new Set(participants.filter(person => person.effective_to === null
       && person.effective_from <= value.occurred_on).map(person => person.user_id));
     if ([...value.payer_ids, ...value.allocation_ids].some(id => !validIds.has(id))) {
-      setError('參與權限已變更，這份草稿不能直接恢復。請丟棄草稿後依目前參與者重新輸入。');
+      setError(t('shared.form.draftPermissions'));
       return;
     }
     draft.review(); setTitle(value.title); setAmount(value.amount); setDate(value.occurred_on); setNote(value.note);
@@ -96,7 +98,7 @@ export function SharedExpenseForm({ groupId, spaceId, spaceVersion, writable, cu
       const payload = { amount_minor, occurred_on: date, title: title.trim(), note: note.trim() || null,
         ...(category ? { category_id: category } : {}), tag_ids: [...tags].sort(), payers, allocations, ...(record ? { version } : {}) };
       const savedDraft = draft.persist(draftPayload);
-      if (!savedDraft) { setError('這個裝置目前無法保存草稿，尚未送出。請保留此頁並稍後再試。'); return; }
+      if (!savedDraft) { setError(t('shared.form.draftStoragePending')); return; }
       setBusy(true);
       const response = await appFetch<{ data: unknown }>(`/api/app/spaces/${spaceId}/shared-expenses${record ? `/${record.id}` : ''}`, {
         method: record ? 'PATCH' : 'POST', body: JSON.stringify({ ...payload, request_id: savedDraft.request_id }),
@@ -108,52 +110,52 @@ export function SharedExpenseForm({ groupId, spaceId, spaceVersion, writable, cu
           const resolvedLock = failure.code === 'SHARED_PERIOD_TEMPORARY_LOCK' ? 'PENDING'
             : failure.code === 'SHARED_PERIOD_PERMANENT_LOCK' ? 'PERMANENT' : lockKind;
           setLocked(resolvedLock === 'PERMANENT'); setError(resolvedLock === 'PENDING'
-            ? '進行中的結算批次暫時鎖定這個期間。付款前可由管理者取消；否則請完成批次。'
-            : '這個期間已永久鎖定，原紀錄不能再改寫。請在下一個開放期間建立更正。');
+            ? t('shared.form.pendingLock')
+            : t('shared.form.permanentLock'));
         } else {
-          setConflict(true); setError('資料版本已變更。請重新讀取最新內容；目前輸入仍保留。');
+          setConflict(true); setError(t('shared.form.versionChanged'));
         }
       } else if (failure instanceof Error && failure.message === 'SHARED_TOTAL_MISMATCH') {
-        setError('付款金額與分攤金額都必須分別等於總金額。');
+        setError(t('shared.form.unbalanced'));
       } else if (failure instanceof AppClientError && [403, 404].includes(failure.status)) {
-        setError('目前的帳號、群組或寶箱權限已變更。草稿仍保留，請重新開啟寶箱確認。');
+        setError(t('shared.form.permissionChanged'));
       } else if (failure instanceof AppClientError && failure.status === 400) {
-        setError('伺服器未接受這份草稿。請檢查日期、金額、參與者與分類後再手動重試。');
-      } else setError('尚未確認入帳。草稿已保存在這個裝置；相同內容重試不會重複記帳。');
+        setError(t('shared.form.draftRejected'));
+      } else setError(t('shared.form.unconfirmed'));
     } finally { setBusy(false); }
   }
   async function refreshVersion() {
     if (!onReload) return;
     setBusy(true);
     try { const latest = await onReload(); setVersion(latest?.version); setConflict(false); setError(''); }
-    catch { setError('重新讀取失敗，輸入仍保留。'); }
+    catch { setError(t('shared.form.reloadFailed')); }
     finally { setBusy(false); }
   }
   return <form onSubmit={submit} className="shared-form">
     <DraftRecovery load={draft.load} reviewed={draft.reviewed} onReview={reviewDraft} onDiscard={draft.discard} />
-    <PixelField label="支出名稱" value={title} onChange={event => change(setTitle, event.target.value)} required maxLength={200} disabled={busy || recoveryPending} />
-    <PixelField label={`總金額（${currency}）`} inputMode="decimal" value={amount} onChange={event => change(setAmount, event.target.value)} required disabled={busy || recoveryPending} />
-    <PixelField label="支出日期" type="date" value={date} max={today(timezone)} onChange={event => change(setDate, event.target.value)} required disabled={busy || recoveryPending} />
-    <fieldset><legend>誰先付款</legend>{eligible.map(person => <div className="shared-amount-row" key={person.user_id}>
-      <label><input disabled={busy || recoveryPending} type="checkbox" aria-label={`付款人－${person.display_name}`} checked={payerIds.includes(person.user_id)} onChange={() => toggle(person.user_id, payerIds, setPayerIds)} />{person.display_name}</label>
-      {payerIds.includes(person.user_id) && <PixelField label={`付款金額－${person.display_name}`} inputMode="decimal" value={payerValues[person.user_id] ?? ''}
+    <PixelField label={t('shared.form.title')} value={title} onChange={event => change(setTitle, event.target.value)} required maxLength={200} disabled={busy || recoveryPending} />
+    <PixelField label={t('shared.form.total', { currency })} inputMode="decimal" value={amount} onChange={event => change(setAmount, event.target.value)} required disabled={busy || recoveryPending} />
+    <PixelField label={t('shared.form.date')} type="date" value={date} max={today(timezone)} onChange={event => change(setDate, event.target.value)} required disabled={busy || recoveryPending} />
+    <fieldset><legend>{t('shared.form.payers')}</legend>{eligible.map(person => <div className="shared-amount-row" key={person.user_id}>
+      <label><input disabled={busy || recoveryPending} type="checkbox" aria-label={t('shared.form.payerName', { name: person.display_name })} checked={payerIds.includes(person.user_id)} onChange={() => toggle(person.user_id, payerIds, setPayerIds)} />{person.display_name}</label>
+      {payerIds.includes(person.user_id) && <PixelField label={t('shared.form.payerAmount', { name: person.display_name })} inputMode="decimal" value={payerValues[person.user_id] ?? ''}
         placeholder={payerIds.length === 1 ? amount : ''} disabled={busy || recoveryPending} onChange={event => change(setPayerValues, { ...payerValues, [person.user_id]: event.target.value })} />}
     </div>)}</fieldset>
-    <fieldset><legend>如何分攤</legend><label className="pixel-field">分攤方式<select disabled={busy || recoveryPending} aria-label="分攤方式" className="pixel-field__input" value={allocationMode} onChange={event => change(setAllocationMode, event.target.value as 'EQUAL' | 'FIXED')}>
-      <option value="EQUAL">平均分攤</option><option value="FIXED">指定金額</option></select></label>
+    <fieldset><legend>{t('shared.form.split')}</legend><label className="pixel-field">{t('shared.form.splitMethod')}<select disabled={busy || recoveryPending} aria-label={t('shared.form.splitMethod')} className="pixel-field__input" value={allocationMode} onChange={event => change(setAllocationMode, event.target.value as 'EQUAL' | 'FIXED')}>
+      <option value="EQUAL">{t('shared.form.equal')}</option><option value="FIXED">{t('shared.form.fixed')}</option></select></label>
       {eligible.map(person => <div className="shared-amount-row" key={person.user_id}>
-        <label><input disabled={busy || recoveryPending} type="checkbox" aria-label={`分攤人－${person.display_name}`} checked={allocationIds.includes(person.user_id)} onChange={() => toggle(person.user_id, allocationIds, setAllocationIds)} />{person.display_name}</label>
-        {allocationMode === 'FIXED' && allocationIds.includes(person.user_id) && <PixelField label={`分攤金額－${person.display_name}`} inputMode="decimal" value={allocationValues[person.user_id] ?? ''}
+        <label><input disabled={busy || recoveryPending} type="checkbox" aria-label={t('shared.form.shareName', { name: person.display_name })} checked={allocationIds.includes(person.user_id)} onChange={() => toggle(person.user_id, allocationIds, setAllocationIds)} />{person.display_name}</label>
+        {allocationMode === 'FIXED' && allocationIds.includes(person.user_id) && <PixelField label={t('shared.form.shareAmount', { name: person.display_name })} inputMode="decimal" value={allocationValues[person.user_id] ?? ''}
           disabled={busy || recoveryPending} onChange={event => change(setAllocationValues, { ...allocationValues, [person.user_id]: event.target.value })} />}
       </div>)}
     </fieldset>
     <TaxonomyPicker spaceId={spaceId} categoryId={category} tagIds={tags} historicalTerms={terms} onChange={(id, ids) => { setDirty(true); setCategory(id); setTags(ids); }} disabled={busy || recoveryPending} />
-    <PixelField label="共同備註" value={note} onChange={event => change(setNote, event.target.value)} maxLength={2000} disabled={busy || recoveryPending} />
-    {!online && <p role="status">目前離線，尚未入帳。草稿會保留在這個裝置；重新連線後仍需檢視並手動送出。</p>}
-    {draft.storageError && <p role="alert">這個裝置目前無法保存草稿。請不要關閉此頁。</p>}
+    <PixelField label={t('shared.form.note')} value={note} onChange={event => change(setNote, event.target.value)} maxLength={2000} disabled={busy || recoveryPending} />
+    {!online && <p role="status">{t('shared.form.offline')}</p>}
+    {draft.storageError && <p role="alert">{t('shared.form.storageError')}</p>}
     {error && <p role="alert">{error}</p>}
-    {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void refreshVersion()} disabled={busy || !online}>重新讀取最新資料</PixelButton>}
-    {locked && lockKind !== 'PENDING' && record && onCorrection && <PixelButton type="button" emphasis="secondary" onClick={() => onCorrection(record)}>建立不可變更的更正</PixelButton>}
-    <PixelButton disabled={!online || busy || conflict || !writable || recoveryPending}>{busy ? '確認中…' : draft.reviewed ? '重新送出草稿' : record ? '儲存修改' : '確認記帳'}</PixelButton>
+    {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void refreshVersion()} disabled={busy || !online}>{t('common.loadLatest')}</PixelButton>}
+    {locked && lockKind !== 'PENDING' && record && onCorrection && <PixelButton type="button" emphasis="secondary" onClick={() => onCorrection(record)}>{t('shared.createCorrection')}</PixelButton>}
+    <PixelButton disabled={!online || busy || conflict || !writable || recoveryPending}>{busy ? t('common.confirming') : draft.reviewed ? t('drafts.resend') : record ? t('common.saveChanges') : t('common.saveExpense')}</PixelButton>
   </form>;
 }

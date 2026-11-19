@@ -2,56 +2,55 @@
 
 import { AppClientError } from "@/shared/api/app-fetch";
 
-export function groupErrorMessage(error: unknown): string {
+export function groupErrorKey(error: unknown) {
   if (!(error instanceof AppClientError)) {
-    return "The service is temporarily unavailable. Mimiku kept your changes.";
+    return "settings.service";
   }
 
   if (error.code === "GROUP_NAME_TAKEN") {
-    return "This group name is already used.";
+    return "groups.errors.nameTaken";
   }
 
   if (error.code === "GROUP_RECONCILIATION_REQUIRED") {
-    return "Settle open balances before leaving.";
+    return "groups.errors.reconcile";
   }
 
   if (error.status === 403) {
-    return "You do not have permission to change this group.";
+    return "groups.errors.forbidden";
   }
 
   if (error.status === 401) {
-    return "Your session expired. Sign in again, then retry.";
+    return "settings.expired";
   }
 
-  return "The service is temporarily unavailable. Mimiku kept your changes.";
+  return "settings.service";
 }
 
-export function archiveGroupErrorMessage(error: unknown): string {
-  const unavailable =
-    "The service is temporarily unavailable. Mimiku kept this group.";
+export function archiveGroupErrorKey(error: unknown) {
+  const unavailable = "groups.errors.archiveUnavailable";
 
   if (!(error instanceof AppClientError)) {
     return unavailable;
   }
 
   if (error.code === "GROUP_HAS_OTHER_ACTIVE_MEMBERS") {
-    return "Other active members must leave first.";
+    return "groups.errors.remainingMembers";
   }
 
   if (error.code === "GROUP_HAS_FINANCIAL_HISTORY") {
-    return "Groups with financial history cannot be deleted.";
+    return "groups.errors.financialHistory";
   }
 
   if (error.code === "OWNER_REQUIRED") {
-    return "Only an owner can delete an empty group.";
+    return "groups.errors.ownerRequired";
   }
 
   if (error.code === "GROUP_ACCESS_DENIED") {
-    return "You no longer have access to this group.";
+    return "groups.errors.accessDenied";
   }
 
   if (error.status === 401) {
-    return "Your session expired. Sign in again, then retry.";
+    return "settings.expired";
   }
 
   return unavailable;

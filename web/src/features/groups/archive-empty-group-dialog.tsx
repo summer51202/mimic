@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   type FormEvent,
   useLayoutEffect,
@@ -12,7 +13,7 @@ import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelDialog } from "@/shared/ui/pixel-dialog";
 import { PixelField } from "@/shared/ui/pixel-field";
 
-import { archiveGroupErrorMessage } from "./group-client-api";
+import { archiveGroupErrorKey } from "./group-client-api";
 import styles from "./group-management.module.css";
 
 interface ArchiveEmptyGroupDialogProps {
@@ -26,7 +27,7 @@ interface ArchiveEmptyGroupDialogProps {
 interface ArchiveDialogState {
   confirmation: string;
   context: string;
-  error: string | null;
+  error: ReturnType<typeof archiveGroupErrorKey> | null;
   pending: boolean;
 }
 
@@ -37,6 +38,8 @@ export function ArchiveEmptyGroupDialog({
   onSuccess,
   open,
 }: ArchiveEmptyGroupDialogProps) {
+  const t = useTranslations("groups");
+  const translate = useTranslations();
   const context = `${groupId}\u001f${groupName}\u001f${open ? "open" : "closed"}`;
   const [state, setState] = useState<ArchiveDialogState>(() =>
     emptyState(context),
@@ -117,7 +120,7 @@ export function ArchiveEmptyGroupDialog({
 
       setState((current) => ({
         ...current,
-        error: archiveGroupErrorMessage(caught),
+        error: archiveGroupErrorKey(caught),
         pending: false,
       }));
     }
@@ -126,21 +129,19 @@ export function ArchiveEmptyGroupDialog({
   return (
     <PixelDialog
       closeDisabled={pending}
-      description="Delete from view is available only for groups where bookkeeping has not started."
+      description={t("deleteDescription")}
       onClose={closeDialog}
       open={open}
-      title={`Delete ${groupName}`}
+      title={t("deleteTitle", { name: groupName })}
     >
       <p className={styles.archiveExplanation}>
-        The empty group will be removed from view and archived.
-        Historical membership, invites, and audit records are retained. There
-        is currently no self-service restore.
+        {t("archiveExplanation")}
       </p>
       <form className={styles.archiveForm} onSubmit={archiveGroup}>
         <PixelField
           autoComplete="off"
-          error={error}
-          label="Type the group name to confirm"
+          error={error ? translate(error) : null}
+          label={t("confirmName")}
           onChange={(event) =>
             setState((current) => ({
               ...current,
@@ -151,16 +152,12 @@ export function ArchiveEmptyGroupDialog({
           value={confirmation}
         />
         <PixelButton
-          aria-label={
-            pending
-              ? "Deleting group..."
-              : "Delete empty group permanently from view"
-          }
+          aria-label={t(pending ? "deleting" : "deleteLabel")}
           disabled={!confirmed || pending}
           emphasis="danger"
           type="submit"
         >
-          {pending ? "Deleting group..." : "Delete empty group"}
+          {t(pending ? "deleting" : "deleteEmpty")}
         </PixelButton>
       </form>
     </PixelDialog>

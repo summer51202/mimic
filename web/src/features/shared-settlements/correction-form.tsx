@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from 'next-intl';
 import { useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import { sharedCorrectionSchema, type SharedCorrection, type SharedExpense, type SharedParticipant } from '@/shared/api/shared-finance-contracts';
@@ -22,6 +23,7 @@ export function CorrectionForm({ spaceId, currency, timezone, sourceExpense, sou
   spaceId: string; currency: string; timezone: string; sourceExpense: SharedExpense; sourceRevision: number; participants: SharedParticipant[];
   onSaved: (correction: SharedCorrection) => void; onReload?: () => Promise<number>;
 }) {
+  const t = useTranslations('settlement.correction');
   const [date, setDate] = useState(today(timezone));
   const [reason, setReason] = useState('');
   const [voided, setVoided] = useState(false);
@@ -34,7 +36,7 @@ export function CorrectionForm({ spaceId, currency, timezone, sourceExpense, sou
   const [error, setError] = useState('');
   const online = useOnline();
   const attempt = useRef({ fingerprint: '', id: '' });
-  const nameFor = (id: string) => participants.find(person => person.user_id === id)?.display_name ?? '已離開的參與者';
+  const nameFor = (id: string) => participants.find(person => person.user_id === id)?.display_name ?? t('formerParticipant');
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (!online || busy || conflict) return;
@@ -55,33 +57,33 @@ export function CorrectionForm({ spaceId, currency, timezone, sourceExpense, sou
       onSaved(sharedCorrectionSchema.parse(response.data));
     } catch (failure) {
       if (failure instanceof AppClientError && failure.code === 'SHARED_CORRECTION_VERSION_CONFLICT') {
-        setConflict(true); setError('來源已有新的更正。請重新讀取版本並比較；你的目標與原因仍保留。');
+        setConflict(true); setError(t('sourceChanged'));
       } else if (failure instanceof AppClientError && (failure.code === 'SHARED_CORRECTION_PERIOD_INVALID' || failure.code === 'SHARED_PERIOD_LOCKED')) {
-        setError('更正日期必須位於最新完成批次之後的開放期間。');
+        setError(t('invalidDate'));
       } else if (failure instanceof Error && failure.message === 'SHARED_TOTAL_MISMATCH') {
-        setError('更正後的付款與分攤都必須分別等於更正後總額。');
-      } else setError('更正尚未確認。相同內容重試不會建立重複更正。');
+        setError(t('invalidTotals'));
+      } else setError(t('unconfirmed'));
     } finally { setBusy(false); }
   }
   async function reload() {
     if (!onReload) return;
     setBusy(true);
     try { setRevision(await onReload()); setConflict(false); setError(''); }
-    catch { setError('重新讀取失敗，更正內容仍保留。'); }
+    catch { setError(t('reloadFailed')); }
     finally { setBusy(false); }
   }
   return <form className="shared-form" onSubmit={submit}>
-    <p>原始紀錄「{sourceExpense.title}」保持不變；這會在新期間新增一筆有來源連結的更正。</p>
-    <PixelField label="更正日期" type="date" value={date} max={today(timezone)} onChange={event => setDate(event.target.value)} required disabled={busy} />
-    <PixelField label="更正原因" value={reason} onChange={event => setReason(event.target.value)} required maxLength={2000} disabled={busy} />
-    <label><input type="checkbox" checked={voided} onChange={event => setVoided(event.target.checked)} disabled={busy} />將這筆支出更正為作廢</label>
-    {!voided && <><PixelField label={`更正後總金額（${currency}）`} inputMode="decimal" value={amount} onChange={event => setAmount(event.target.value)} required />
-      <fieldset><legend>更正後付款</legend>{sourceExpense.payers.map(row => <PixelField key={row.user_id} label={`更正後付款－${nameFor(row.user_id)}`} inputMode="decimal"
+    <p>{t.rich('originalEntry', { title: () => <>{sourceExpense.title}</> })}</p>
+    <PixelField label={t('date')} type="date" value={date} max={today(timezone)} onChange={event => setDate(event.target.value)} required disabled={busy} />
+    <PixelField label={t('reason')} value={reason} onChange={event => setReason(event.target.value)} required maxLength={2000} disabled={busy} />
+    <label><input type="checkbox" checked={voided} onChange={event => setVoided(event.target.checked)} disabled={busy} />{t('void')}</label>
+    {!voided && <><PixelField label={t('correctedTotal', { currency })} inputMode="decimal" value={amount} onChange={event => setAmount(event.target.value)} required />
+      <fieldset><legend>{t('payments')}</legend>{sourceExpense.payers.map(row => <PixelField key={row.user_id} label={t('correctedPayment', { name: nameFor(row.user_id) })} inputMode="decimal"
         value={payerValues[row.user_id]} onChange={event => setPayerValues({ ...payerValues, [row.user_id]: event.target.value })} required />)}</fieldset>
-      <fieldset><legend>更正後分攤</legend>{sourceExpense.allocations.map(row => <PixelField key={row.user_id} label={`更正後分攤－${nameFor(row.user_id)}`} inputMode="decimal"
+      <fieldset><legend>{t('shares')}</legend>{sourceExpense.allocations.map(row => <PixelField key={row.user_id} label={t('correctedShare', { name: nameFor(row.user_id) })} inputMode="decimal"
         value={allocationValues[row.user_id]} onChange={event => setAllocationValues({ ...allocationValues, [row.user_id]: event.target.value })} required />)}</fieldset></>}
-    {!online && <p role="status">目前離線，不能建立高影響更正。</p>}{error && <p role="alert">{error}</p>}
-    {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>重新讀取來源版本</PixelButton>}
-    <PixelButton disabled={busy || !online || conflict}>{busy ? '建立中…' : '確認建立更正'}</PixelButton>
+    {!online && <p role="status">{t('offline')}</p>}{error && <p role="alert">{error}</p>}
+    {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>{t('reload')}</PixelButton>}
+    <PixelButton disabled={busy || !online || conflict}>{busy ? t('creating') : t('create')}</PixelButton>
   </form>;
 }

@@ -1,4 +1,5 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, screen, waitFor } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -42,12 +43,12 @@ describe("GroupForm", () => {
 
     render(<GroupForm mode="create" onSuccess={onSuccess} />);
 
-    await user.type(screen.getByLabelText("Group name"), "  我們的生活基金  ");
-    await user.click(screen.getByRole("radio", { name: "Couple" }));
-    await user.clear(screen.getByLabelText("Currency"));
-    await user.type(screen.getByLabelText("Currency"), "twd");
-    await user.click(screen.getByRole("button", { name: "Create group" }));
-    await user.click(screen.getByRole("button", { name: "Create group" }));
+    await user.type(screen.getByLabelText("群組名稱"), "  我們的生活基金  ");
+    await user.click(screen.getByRole("radio", { name: "雙人" }));
+    await user.clear(screen.getByLabelText("幣別"));
+    await user.type(screen.getByLabelText("幣別"), "twd");
+    await user.click(screen.getByRole("button", { name: "建立群組" }));
+    await user.click(screen.getByRole("button", { name: "建立群組" }));
 
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith("/app/groups/g1"));
 
@@ -78,13 +79,13 @@ describe("GroupForm", () => {
 
     render(<GroupForm mode="create" />);
 
-    await user.type(screen.getByLabelText("Group name"), "我們的生活基金");
-    await user.click(screen.getByRole("button", { name: "Create group" }));
+    await user.type(screen.getByLabelText("群組名稱"), "我們的生活基金");
+    await user.click(screen.getByRole("button", { name: "建立群組" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "This group name is already used.",
+      "這個群組名稱已被使用。",
     );
-    expect(screen.getByLabelText("Group name")).toHaveValue("我們的生活基金");
+    expect(screen.getByLabelText("群組名稱")).toHaveValue("我們的生活基金");
   });
 
   it("keeps form values and shows a session-expired error when refresh is rejected", async () => {
@@ -101,13 +102,13 @@ describe("GroupForm", () => {
 
     render(<GroupForm mode="create" />);
 
-    await user.type(screen.getByLabelText("Group name"), "我們的生活基金");
-    await user.click(screen.getByRole("button", { name: "Create group" }));
+    await user.type(screen.getByLabelText("群組名稱"), "我們的生活基金");
+    await user.click(screen.getByRole("button", { name: "建立群組" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Your session expired. Sign in again, then retry.",
+      "登入已過期，請重新登入後再試。",
     );
-    expect(screen.getByLabelText("Group name")).toHaveValue("我們的生活基金");
+    expect(screen.getByLabelText("群組名稱")).toHaveValue("我們的生活基金");
     expect(
       vi.mocked(fetch).mock.calls.filter(
         ([input]) => String(input) === "/api/app/groups",

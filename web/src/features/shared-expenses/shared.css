@@ -8,6 +8,11 @@
   overflow-wrap: anywhere;
 }
 
+.shared-page :where(p, span, strong, h1, h2, h3, label):lang(en),
+.shared-space-list :is(a, div):lang(en) {
+  hyphens: auto;
+}
+
 .shared-page .pixel-button {
   min-height: 2.75rem;
   touch-action: manipulation;

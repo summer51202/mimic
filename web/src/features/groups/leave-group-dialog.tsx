@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { appFetch } from "@/shared/api/app-fetch";
@@ -7,7 +8,7 @@ import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelDialog } from "@/shared/ui/pixel-dialog";
 import { PixelNotice } from "@/shared/ui/pixel-notice";
 
-import { groupErrorMessage } from "./group-client-api";
+import { groupErrorKey } from "./group-client-api";
 
 interface LeaveGroupDialogProps {
   groupId: string;
@@ -24,7 +25,9 @@ export function LeaveGroupDialog({
   onSuccess,
   open,
 }: LeaveGroupDialogProps) {
-  const [error, setError] = useState<string | null>(null);
+  const t = useTranslations("groups");
+  const translate = useTranslations();
+  const [error, setError] = useState<ReturnType<typeof groupErrorKey> | null>(null);
   const [pending, setPending] = useState(false);
 
   if (!open) {
@@ -45,25 +48,24 @@ export function LeaveGroupDialog({
       });
       navigate(onSuccess, "/app");
     } catch (caught) {
-      setError(groupErrorMessage(caught));
+      setError(groupErrorKey(caught));
       setPending(false);
     }
   }
 
   return (
     <PixelDialog
-      description="NestJS will reject departure until reconciliation rules are satisfied."
+      description={t("leaveDescription")}
       onClose={onClose}
       open={open}
-      title={`Leave ${groupName}`}
+      title={t("leaveTitle", { name: groupName })}
     >
-      {error ? <PixelNotice variant="error">{error}</PixelNotice> : null}
+      {error ? <PixelNotice variant="error">{translate(error)}</PixelNotice> : null}
       <p>
-        Leaving keeps your historical records in place. Settle open balances
-        first if Mimiku blocks the exit.
+        {t("leaveHistory")}
       </p>
       <PixelButton disabled={pending} emphasis="danger" onClick={leaveGroup}>
-        Leave group
+        {t("leave")}
       </PixelButton>
     </PixelDialog>
   );

@@ -1,4 +1,5 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import { afterEach, describe, expect, it } from "vitest";
 
 import type { Group } from "@/shared/api/domain-contracts";

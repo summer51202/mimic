@@ -1,4 +1,5 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, screen, waitFor } from "@testing-library/react";
+import { render } from "@/test/render-with-intl";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -60,8 +61,8 @@ describe("group detail actions", () => {
     render(<GroupDetailView group={group} members={members} />);
 
     expect(screen.getByRole("heading", { name: "我們的生活基金" })).toBeVisible();
-    expect(screen.getByText("Owner")).toBeVisible();
-    expect(screen.getByText("Member")).toBeVisible();
+    expect(screen.getByText("擁有者")).toBeVisible();
+    expect(screen.getByText("成員", { selector: "span" })).toBeVisible();
     expect(screen.getByText("MIMIC-2345-6789")).toBeVisible();
     expect(screen.getByText("MIMIC-ABCD-EFGH")).toBeVisible();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -138,10 +139,10 @@ describe("group detail actions", () => {
       <GroupDetailView group={group} members={members} onRefresh={onRefresh} />,
     );
 
-    await user.click(screen.getByRole("button", { name: "Rename group" }));
-    await user.clear(screen.getByLabelText("Group name"));
-    await user.type(screen.getByLabelText("Group name"), "  新寶庫  ");
-    await user.click(screen.getByRole("button", { name: "Save name" }));
+    await user.click(screen.getByRole("button", { name: "重新命名群組" }));
+    await user.clear(screen.getByLabelText("群組名稱"));
+    await user.type(screen.getByLabelText("群組名稱"), "  新寶庫  ");
+    await user.click(screen.getByRole("button", { name: "儲存名稱" }));
 
     await waitFor(() => expect(onRefresh).toHaveBeenCalledTimes(1));
     expect(appFetchMock).toHaveBeenCalledWith("/api/app/groups/g1", {
@@ -158,12 +159,12 @@ describe("group detail actions", () => {
 
     render(<LeaveGroupDialog groupId="g1" groupName="我們的生活基金" open />);
 
-    await user.click(screen.getByRole("button", { name: "Leave group" }));
+    await user.click(screen.getByRole("button", { name: "離開群組" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Settle open balances before leaving.",
+      "請先結清款項再離開群組。",
     );
-    expect(screen.getByRole("dialog", { name: "Leave 我們的生活基金" })).toBeVisible();
+    expect(screen.getByRole("dialog", { name: "離開「我們的生活基金」" })).toBeVisible();
   });
 
   it("routes to /app after a successful leave", async () => {
@@ -181,7 +182,7 @@ describe("group detail actions", () => {
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: "Leave group" }));
+    await user.click(screen.getByRole("button", { name: "離開群組" }));
 
     await waitFor(() => expect(onSuccess).toHaveBeenCalledWith("/app"));
   });
@@ -192,7 +193,7 @@ describe("group detail actions", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: "Delete empty group" }),
+      screen.getByRole("button", { name: "刪除空群組" }),
     ).toBeVisible();
 
     rerender(
@@ -203,7 +204,7 @@ describe("group detail actions", () => {
     );
 
     expect(
-      screen.queryByRole("button", { name: "Delete empty group" }),
+      screen.queryByRole("button", { name: "刪除空群組" }),
     ).not.toBeInTheDocument();
   });
 
@@ -213,7 +214,7 @@ describe("group detail actions", () => {
       <GroupDetailView group={group} members={members} />,
     );
 
-    await user.click(screen.getByRole("button", { name: "Delete empty group" }));
+    await user.click(screen.getByRole("button", { name: "刪除空群組" }));
     expect(screen.getByRole("dialog")).toBeVisible();
 
     rerender(
@@ -236,31 +237,31 @@ describe("group detail actions", () => {
       new AppClientError(409, "GROUP_HAS_FINANCIAL_HISTORY"),
     );
     render(<GroupDetailView group={group} members={members} />);
-    const trigger = screen.getByRole("button", { name: "Delete empty group" });
+    const trigger = screen.getByRole("button", { name: "刪除空群組" });
 
     await user.click(trigger);
     const confirmation = screen.getByLabelText(
-      "Type the group name to confirm",
+      "輸入群組名稱以確認",
     );
     await user.type(confirmation, group.name);
     await user.click(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     );
     expect(await screen.findByRole("alert")).toBeVisible();
-    await user.click(screen.getByRole("button", { name: "Close dialog" }));
+    await user.click(screen.getByRole("button", { name: "關閉對話框" }));
 
     await waitFor(() => expect(trigger).toHaveFocus());
     await user.click(trigger);
 
-    expect(screen.getByLabelText("Type the group name to confirm")).toHaveValue(
+    expect(screen.getByLabelText("輸入群組名稱以確認")).toHaveValue(
       "",
     );
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     ).toBeDisabled();
   });
@@ -268,10 +269,10 @@ describe("group detail actions", () => {
   it("restores focus to the archive trigger after Escape", async () => {
     const user = userEvent.setup();
     render(<GroupDetailView group={group} members={members} />);
-    const trigger = screen.getByRole("button", { name: "Delete empty group" });
+    const trigger = screen.getByRole("button", { name: "刪除空群組" });
 
     await user.click(trigger);
-    await user.click(screen.getByLabelText("Type the group name to confirm"));
+    await user.click(screen.getByLabelText("輸入群組名稱以確認"));
     await user.keyboard("{Escape}");
 
     await waitFor(() => expect(trigger).toHaveFocus());
@@ -282,10 +283,10 @@ describe("group detail actions", () => {
     const user = userEvent.setup();
     render(<GroupDetailView group={group} members={members} />);
 
-    await user.click(screen.getByRole("button", { name: "Delete empty group" }));
-    const confirmation = screen.getByLabelText("Type the group name to confirm");
+    await user.click(screen.getByRole("button", { name: "刪除空群組" }));
+    const confirmation = screen.getByLabelText("輸入群組名稱以確認");
     const submit = screen.getByRole("button", {
-      name: "Delete empty group permanently from view",
+      name: "永久從清單刪除空群組",
     });
 
     expect(submit).toBeDisabled();
@@ -306,12 +307,12 @@ describe("ArchiveEmptyGroupDialog", () => {
       <ArchiveEmptyGroupDialog groupId="g1" groupName={group.name} open />,
     );
     await user.type(
-      screen.getByLabelText("Type the group name to confirm"),
+      screen.getByLabelText("輸入群組名稱以確認"),
       group.name,
     );
     expect(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     ).toBeEnabled();
 
@@ -319,12 +320,12 @@ describe("ArchiveEmptyGroupDialog", () => {
       <ArchiveEmptyGroupDialog groupId="g2" groupName="Another group" open />,
     );
 
-    expect(screen.getByLabelText("Type the group name to confirm")).toHaveValue(
+    expect(screen.getByLabelText("輸入群組名稱以確認")).toHaveValue(
       "",
     );
     expect(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     ).toBeDisabled();
   });
@@ -345,12 +346,12 @@ describe("ArchiveEmptyGroupDialog", () => {
     );
 
     await user.type(
-      screen.getByLabelText("Type the group name to confirm"),
+      screen.getByLabelText("輸入群組名稱以確認"),
       group.name,
     );
     await user.click(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     );
 
@@ -362,10 +363,10 @@ describe("ArchiveEmptyGroupDialog", () => {
   });
 
   it.each([
-    ["GROUP_HAS_OTHER_ACTIVE_MEMBERS", "Other active members must leave first."],
-    ["GROUP_HAS_FINANCIAL_HISTORY", "Groups with financial history cannot be deleted."],
-    ["OWNER_REQUIRED", "Only an owner can delete an empty group."],
-    ["GROUP_ACCESS_DENIED", "You no longer have access to this group."],
+    ["GROUP_HAS_OTHER_ACTIVE_MEMBERS", "其他有效成員必須先離開群組。"],
+    ["GROUP_HAS_FINANCIAL_HISTORY", "已有記帳紀錄的群組無法刪除。"],
+    ["OWNER_REQUIRED", "只有擁有者可以刪除空群組。"],
+    ["GROUP_ACCESS_DENIED", "你已沒有此群組的存取權限。"],
   ])(
     "keeps the confirmation recoverable after %s",
     async (code, message) => {
@@ -382,12 +383,12 @@ describe("ArchiveEmptyGroupDialog", () => {
       );
 
       const confirmation = screen.getByLabelText(
-        "Type the group name to confirm",
+        "輸入群組名稱以確認",
       );
       await user.type(confirmation, group.name);
       await user.click(
         screen.getByRole("button", {
-          name: "Delete empty group permanently from view",
+          name: "永久從清單刪除空群組",
         }),
       );
 
@@ -412,17 +413,17 @@ describe("ArchiveEmptyGroupDialog", () => {
     );
 
     await user.type(
-      screen.getByLabelText("Type the group name to confirm"),
+      screen.getByLabelText("輸入群組名稱以確認"),
       group.name,
     );
     const submit = screen.getByRole("button", {
-      name: "Delete empty group permanently from view",
+      name: "永久從清單刪除空群組",
     });
-    const close = screen.getByRole("button", { name: "Close dialog" });
+    const close = screen.getByRole("button", { name: "關閉對話框" });
     await user.click(submit);
 
     expect(
-      await screen.findByRole("button", { name: "Deleting group..." }),
+      await screen.findByRole("button", { name: "正在刪除群組…" }),
     ).toBeDisabled();
     expect(close).toBeDisabled();
     await user.click(submit);
@@ -450,12 +451,12 @@ describe("ArchiveEmptyGroupDialog", () => {
       />,
     );
     await user.type(
-      screen.getByLabelText("Type the group name to confirm"),
+      screen.getByLabelText("輸入群組名稱以確認"),
       group.name,
     );
     await user.click(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     );
 
@@ -484,12 +485,12 @@ describe("ArchiveEmptyGroupDialog", () => {
       />,
     );
     await user.type(
-      screen.getByLabelText("Type the group name to confirm"),
+      screen.getByLabelText("輸入群組名稱以確認"),
       group.name,
     );
     await user.click(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     );
 
@@ -505,12 +506,12 @@ describe("ArchiveEmptyGroupDialog", () => {
     await Promise.resolve();
 
     expect(onSuccess).not.toHaveBeenCalled();
-    expect(screen.getByLabelText("Type the group name to confirm")).toHaveValue(
+    expect(screen.getByLabelText("輸入群組名稱以確認")).toHaveValue(
       "",
     );
     expect(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     ).toBeDisabled();
   });
@@ -527,12 +528,12 @@ describe("ArchiveEmptyGroupDialog", () => {
       <ArchiveEmptyGroupDialog groupId="g1" groupName={group.name} open />,
     );
     await user.type(
-      screen.getByLabelText("Type the group name to confirm"),
+      screen.getByLabelText("輸入群組名稱以確認"),
       group.name,
     );
     await user.click(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     );
 
@@ -543,12 +544,12 @@ describe("ArchiveEmptyGroupDialog", () => {
     await Promise.resolve();
 
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    expect(screen.getByLabelText("Type the group name to confirm")).toHaveValue(
+    expect(screen.getByLabelText("輸入群組名稱以確認")).toHaveValue(
       "",
     );
     expect(
       screen.getByRole("button", {
-        name: "Delete empty group permanently from view",
+        name: "永久從清單刪除空群組",
       }),
     ).toBeDisabled();
   });

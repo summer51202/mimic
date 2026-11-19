@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useId, useState } from "react";
 
@@ -31,6 +32,7 @@ export function GroupDetailView({
   pooledSpaces = [],
   onRefresh,
 }: GroupDetailViewProps) {
+  const t = useTranslations("groups");
   const [renaming, setRenaming] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const isOwner = group.role.toLowerCase() === "owner";
@@ -49,39 +51,39 @@ export function GroupDetailView({
   return (
     <section className={styles.page}>
       <header className={styles.header} data-frame="group-detail-header">
-        <p>group detail</p>
+        <p>{t("details")}</p>
         <h1 className={styles.groupName} data-contain-text>{group.name}</h1>
         <p>
-          {group.group_type} · {group.default_currency}
+          {t("typeAndCurrency", { type: t(group.group_type.toLowerCase() === "couple" ? "duo" : "party"), currency: group.default_currency })}
         </p>
       </header>
 
       <div className={styles.actions}>
         <Link className="pixel-button" href={`/app/groups/${group.id}/invite`}>
-          Invite members
+          {t("inviteMembers")}
         </Link>
         <PixelButton onClick={() => setRenaming((value) => !value)} type="button">
-          Rename group
+          {t("renameParty")}
         </PixelButton>
         <PixelButton
           emphasis="danger"
           onClick={() => setLeaving(true)}
           type="button"
         >
-          Leave group
+          {t("leave")}
         </PixelButton>
       </div>
 
       <div className={styles.grid}>
         <PixelFrame>
-          <h2>Members</h2>
+          <h2>{t("members")}</h2>
           <MemberRoster members={members} />
         </PixelFrame>
         <SharedSpaceList groupId={group.id} spaces={sharedSpaces} defaultCurrency={group.default_currency} />
         <PooledSpaceList groupId={group.id} spaces={pooledSpaces} defaultCurrency={group.default_currency} />
         {renaming ? (
           <PixelFrame>
-            <h2>Rename</h2>
+            <h2>{t("rename")}</h2>
             <GroupForm group={group} mode="rename" onSuccess={refresh} />
           </PixelFrame>
         ) : null}
@@ -112,6 +114,7 @@ function OwnerArchiveControls({
   groupId: string;
   groupName: string;
 }) {
+  const t = useTranslations("groups");
   const [archiving, setArchiving] = useState(false);
   const dangerZoneHeadingId = useId();
 
@@ -122,15 +125,15 @@ function OwnerArchiveControls({
         className={styles.dangerZone}
       >
         <div>
-          <h2 id={dangerZoneHeadingId}>Danger zone</h2>
-          <p>Remove a group only when bookkeeping has not started.</p>
+          <h2 id={dangerZoneHeadingId}>{t("dangerZone")}</h2>
+          <p>{t("dangerDescription")}</p>
         </div>
         <PixelButton
           emphasis="danger"
           onClick={() => setArchiving(true)}
           type="button"
         >
-          Delete empty group
+          {t("deleteEmpty")}
         </PixelButton>
       </section>
       <ArchiveEmptyGroupDialog

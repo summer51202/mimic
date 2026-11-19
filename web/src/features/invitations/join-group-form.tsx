@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { type FormEvent, useRef, useState } from "react";
 
 import styles from "@/features/groups/group-management.module.css";
@@ -8,16 +9,14 @@ import { PixelField } from "@/shared/ui/pixel-field";
 
 import { parseInviteEntry } from "./invite-entry";
 
-const invalidInviteMessage =
-  "Enter a valid 12-character invite code or invite link.";
-
 interface JoinGroupFormProps {
   onSuccess?: (path: string) => void;
 }
 
 export function JoinGroupForm({ onSuccess }: JoinGroupFormProps) {
+  const t = useTranslations("invite.join");
   const [entry, setEntry] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [invalid, setInvalid] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -26,7 +25,7 @@ export function JoinGroupForm({ onSuccess }: JoinGroupFormProps) {
     const inviteCode = parseInviteEntry(entry);
 
     if (!inviteCode) {
-      setError(invalidInviteMessage);
+      setInvalid(true);
       inputRef.current?.focus();
       return;
     }
@@ -40,19 +39,19 @@ export function JoinGroupForm({ onSuccess }: JoinGroupFormProps) {
         ref={inputRef}
         autoCapitalize="none"
         autoComplete="off"
-        description="Paste the 12-character code or the complete invitation link."
-        error={error}
-        label="Invite code or link"
+        description={t("entryHint")}
+        error={invalid ? t("invalidEntry") : null}
+        label={t("entryLabel")}
         name="invite"
         onChange={(event) => {
           setEntry(event.target.value);
-          setError(null);
+          setInvalid(false);
         }}
         required
         spellCheck={false}
         value={entry}
       />
-      <PixelButton type="submit">Review invite</PixelButton>
+      <PixelButton type="submit">{t("review")}</PixelButton>
     </form>
   );
 }

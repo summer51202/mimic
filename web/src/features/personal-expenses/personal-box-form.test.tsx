@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import { render } from '@/test/render-with-intl';
 import userEvent from '@testing-library/user-event';
 import { expect, it, vi } from 'vitest';
 import { PersonalBoxForm } from './personal-box-form';

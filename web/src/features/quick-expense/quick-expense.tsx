@@ -1,5 +1,6 @@
 "use client";
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useMemo, useState, useSyncExternalStore } from 'react';
 import type { HomeCard } from '@/shared/api/home-contracts';
 import { PixelButton } from '@/shared/ui/pixel-button';
@@ -15,12 +16,12 @@ function rememberRecent(id: string) {
   try { window.localStorage.setItem(recentKey, id); }
   catch { /* A storage policy cannot prevent navigation. */ }
 }
-const modeLabel = { PERSONAL_EXPENSES: '個人記帳', SHARED_EXPENSES: '共同分帳', POOLED_FUND: '共同基金' } as const;
 function destination(card: Extract<HomeCard, { access: 'PARTICIPANT' }>) {
   return card.mode === 'PERSONAL_EXPENSES' ? `/app/personal?space=${card.id}&quick=1` : `/app/spaces/${card.id}?quick=1`;
 }
 
 export function QuickExpense({ cards, initiallyOpen = false }: { cards: HomeCard[]; initiallyOpen?: boolean }) {
+  const t = useTranslations();
   const eligible = useMemo(() => cards.filter(
     (card): card is Extract<HomeCard, { access: 'PARTICIPANT' }> => card.access === 'PARTICIPANT' && card.status === 'ACTIVE',
   ), [cards]);
@@ -28,17 +29,20 @@ export function QuickExpense({ cards, initiallyOpen = false }: { cards: HomeCard
   const recent = useSyncExternalStore(() => () => undefined, readRecent, () => '');
   const online = useOnline();
   const ordered = [...eligible].sort((left, right) => Number(right.id === recent) - Number(left.id === recent));
-  if (!eligible.length) return <Link className="quick-expense quick-expense--empty" href={cards.some((card) => card.mode !== 'PERSONAL_EXPENSES') ? '/app/groups' : '/app/personal'}>先建立可記帳的寶箱</Link>;
+  if (!eligible.length) return <Link className="quick-expense quick-expense--empty" href={cards.some((card) => card.mode !== 'PERSONAL_EXPENSES') ? '/app/groups' : '/app/personal'}>{t('home.quick.createFirst')}</Link>;
   if (eligible.length === 1) return online
     ? <Link className="quick-expense" href={destination(eligible[0])}
-      onClick={() => rememberRecent(eligible[0].id)}>記一筆支出</Link>
-    : <span aria-disabled="true" className="quick-expense">記一筆支出</span>;
+      onClick={() => rememberRecent(eligible[0].id)}>{t('common.recordExpense')}</Link>
+    : <span aria-disabled="true" className="quick-expense">{t('common.recordExpense')}</span>;
   return <>
-    <PixelButton type="button" disabled={!online} onClick={() => setOpen(true)}>記一筆支出</PixelButton>
-    <PixelDialog open={open} title="要記在哪個寶箱？" closeLabel="關閉快速記帳" onClose={() => setOpen(false)}>
-      <p>已優先排列最近成功使用的寶箱。每種寶箱會開啟自己的記帳規則。</p>
+    <PixelButton type="button" disabled={!online} onClick={() => setOpen(true)}>{t('common.recordExpense')}</PixelButton>
+    <PixelDialog open={open} title={t('home.quick.pickChest')} closeLabel={t('home.quick.close')} onClose={() => setOpen(false)}>
+      <p>{t('home.quick.description')}</p>
       <ul className="quick-expense-list">{ordered.map((card) => <li key={card.id}><Link href={destination(card)}
-        onClick={() => rememberRecent(card.id)}><strong>{card.name}</strong><span>{modeLabel[card.mode]} · {card.currency}</span></Link></li>)}</ul>
+        onClick={() => rememberRecent(card.id)}><strong>{card.name}</strong><span>{t.rich('common.modeCurrency', {
+          mode: () => <>{t(`common.mode.${card.mode}`)}</>,
+          currency: () => <>{card.currency}</>,
+        })}</span></Link></li>)}</ul>
     </PixelDialog>
   </>;
 }

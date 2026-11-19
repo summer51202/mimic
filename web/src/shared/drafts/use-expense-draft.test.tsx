@@ -1,4 +1,5 @@
-import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { render } from "@/test/render-with-intl";
+import { act, cleanup, fireEvent, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { saveExpenseDraft, type DraftContext, type PersonalExpenseDraftPayload } from './expense-draft';
 import { DraftRecovery } from './draft-recovery';

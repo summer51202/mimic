@@ -5,3 +5,4 @@
 .task-card{display:grid;grid-template-columns:1fr auto;gap:8px 20px;min-width:0;padding:18px;border:3px solid var(--mimic-color-hud-dark);background:var(--mimic-color-surface);box-shadow:5px 5px 0 var(--mimic-color-line);color:inherit;text-decoration:none;overflow-wrap:anywhere}
 .task-card h2,.task-card p{margin:0}.task-card strong{grid-column:2;grid-row:2/4;align-self:center;font-size:clamp(1.2rem,4vw,1.8rem);font-variant-numeric:tabular-nums}.task-card__urgency{font-weight:700;color:var(--mimic-color-coin-deep)}.task-card--overdue{border-color:var(--mimic-color-heart-critical)}.task-card--overdue .task-card__urgency{color:var(--mimic-color-heart-critical)}
 .task-center__generated{opacity:.75}@media(max-width:540px){.task-center__hero{align-items:flex-start;flex-direction:column}.task-card{grid-template-columns:1fr}.task-card strong{grid-column:1;grid-row:auto}.task-card span:last-child{justify-self:end}}
+.task-card:lang(en){hyphens:auto}

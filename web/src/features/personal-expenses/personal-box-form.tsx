@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from 'react';
 import { appFetch } from '@/shared/api/app-fetch';
 import { financialSpaceSchema, type FinancialSpace } from '@/shared/api/financial-space-contracts';
@@ -6,6 +7,7 @@ import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelField } from '@/shared/ui/pixel-field';
 import { useOnline } from './use-online';
 export function PersonalBoxForm({ onCreated }: { onCreated: (space: FinancialSpace) => void }) {
+  const t = useTranslations('personal.box');
   const [name, setName] = useState('');
   const [currency, setCurrency] = useState('TWD');
   const [busy, setBusy] = useState(false);
@@ -20,17 +22,17 @@ export function PersonalBoxForm({ onCreated }: { onCreated: (space: FinancialSpa
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       }) });
       onCreated(financialSpaceSchema.parse(result.data));
-    } catch { setError('無法確認寶箱是否建立，請重新整理清單後再試。'); }
+    } catch { setError(t('createUnconfirmed')); }
     finally { setBusy(false); }
   }
   return <form onSubmit={submit} className="personal-form">
-    <p>只有你能讀取此寶箱的支出。第一筆記帳後，幣別與時區即固定。</p>
-    <PixelField label="寶箱名稱" required maxLength={100} value={name} onChange={e => setName(e.target.value)} disabled={busy} />
-    <label className="pixel-field">幣別<select value={currency} onChange={e => setCurrency(e.target.value)} disabled={busy} className="pixel-field__input">
+    <p>{t('privacy')}</p>
+    <PixelField label={t('name')} required maxLength={100} value={name} onChange={e => setName(e.target.value)} disabled={busy} />
+    <label className="pixel-field">{t('currency')}<select value={currency} onChange={e => setCurrency(e.target.value)} disabled={busy} className="pixel-field__input">
       {['TWD', 'USD', 'JPY', 'EUR', 'HKD', 'CNY', 'KRW', 'KWD'].map(code => <option key={code}>{code}</option>)}
     </select></label>
     {error && <p role="alert">{error}</p>}
-    {!online && <p role="status">目前離線，尚未建立寶箱。</p>}
-    <PixelButton disabled={busy || !online}>{busy ? '建立中…' : '建立個人寶箱'}</PixelButton>
+    {!online && <p role="status">{t('offline')}</p>}
+    <PixelButton disabled={busy || !online}>{busy ? t('creating') : t('create')}</PixelButton>
   </form>;
 }

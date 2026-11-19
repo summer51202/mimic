@@ -1,3 +1,5 @@
+.notebook:lang(en) { hyphens: auto; }
+
 .notebook {
   display: grid;
   gap: var(--mimic-space-3);

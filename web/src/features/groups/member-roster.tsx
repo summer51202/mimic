@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 import type { Member } from "@/shared/api/domain-contracts";
@@ -10,12 +11,13 @@ interface MemberRosterProps {
 }
 
 export function MemberRoster({ members }: MemberRosterProps) {
+  const t = useTranslations("groups");
   return (
     <ul className={styles.roster} data-frame="member-roster">
       {members.map((member, index) => (
         <li className={styles.member} key={member.user_id}>
           <Image
-            alt={`Avatar for ${member.display_name}`}
+            alt={t("avatar", { name: member.display_name })}
             data-pixel-avatar
             height={48}
             src={pixelUiFiles.avatars[index % pixelUiFiles.avatars.length]}
@@ -27,15 +29,19 @@ export function MemberRoster({ members }: MemberRosterProps) {
             <span className={styles.memberMimicId} data-contain-text>
               {member.mimic_id}
             </span>
-            <span data-contain-text>{member.status}</span>
+            <span data-contain-text>{t(statusKey(member.status))}</span>
           </div>
-          <span className={styles.role}>{roleLabel(member.role)}</span>
+          <span className={styles.role}>{t(member.role.toLowerCase() === "owner" ? "owner" : "member")}</span>
         </li>
       ))}
     </ul>
   );
 }
 
-function roleLabel(role: string): string {
-  return role.toLowerCase() === "owner" ? "Owner" : "Member";
+function statusKey(status: string) {
+  switch (status.toLowerCase()) {
+    case "left": return "left";
+    case "removed": return "removed";
+    default: return "active";
+  }
 }
