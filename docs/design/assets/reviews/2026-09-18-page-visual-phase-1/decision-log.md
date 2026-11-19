@@ -473,3 +473,15 @@ Technical round, no visual review. Spec `docs/superpowers/specs/2026-11-19-phase
 - Not covered here: PostgreSQL 18 and the WSL Docker CI run; GitHub Actions on push is the gate.
 
 Deployment: one push of `main`. After Railway deploys `mimic-api`, the user checks on staging: system categories and tags listed; Uncategorized saves; Chinese Home recent categories show 飲食; English shows Food / `Top categories: Food`.
+
+### Phase 2I-2T approved — database tests in CI (technical) — 2026-11-19
+
+Technical round, no visual review. Implemented by a separate Claude session at the user's request; reviewed in this session. Verification `docs/design/assets/reviews/2026-11-19-phase-2i2t/verification.md` (SHA-256 `e94266b200924eaf5da4c5de9e8690b83d544397e482b47701847876d5e25aed`).
+
+- Why: after 2I-2S, `test:spaces-db` and `test:migration-only-db` needed PostgreSQL and were not in CI, so a "data only written by seed" gap could reach staging again.
+- Change: new CI job `backend-db` ("Backend database"), the other four jobs unchanged byte for byte. Service `postgres:18.7@sha256:e754b839…` bound to `127.0.0.1:5432` only, TCP `pg_isready` health check, throwaway CI credentials in the workflow (no secrets), `POSTGRES_DB: postgres`. Steps: `npm ci` → `prisma:generate` → `migrate deploy` on a fresh `/mimic_migration_only_test` (no seed) → `test:migration-only-db` → `migrate deploy` on a fresh `/mimic_financial_spaces_test` → `test:spaces-db`; `DATABASE_URL` only at step level; timeout 10 minutes. `scripts/verify-ci-workflow.mjs` now requires five jobs and checks this job's service, step order, URLs and that no step seeds; tests 32 → 50.
+- `.github/workflows/ci.yml` is protected for the remote tools; the user copied the candidate from `.tmp/2i2t/ci.yml` (SHA-256 `12fb00c9e2fb2c98…`, matched on the device).
+- Evidence (cloud workspace, PostgreSQL 18.7 from apt): migration-only 6/6 and spaces-db 20 suites / 156 in about 63 s; red when the system-taxonomy migration is removed (5 failed / 1 passed). actionlint 1.7.12: only the pre-existing SC2034 in the containers job. Mutations (deleting the two test steps, deleting the job, disabling the new validator) are all caught by the contract. Reviewer: diff is a pure addition of the job; contract tests 50/50 on the device with the copied ci.yml.
+- Not proven until the push: the service port binding on a GitHub runner and the real job time.
+
+Follow-ups: the containers job's SC2034 warning (needs a containers-hash review).

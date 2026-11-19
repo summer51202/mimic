@@ -2631,3 +2631,18 @@
 **What changed:** spec 補 2R（筆數 31、接受 IS DISTINCT FROM 與獨立的 migration-only 測試 DB）；decision-log 新增 Phase 2I-2S 條目。
 **Checks:** 自行解析 migration 的 31 筆 VALUES，與 CATEGORY_CATALOG＋TAG_CATALOG 逐欄比對 0 差異；確認 DO UPDATE 不改 status／version／合併狀態；確認新 e2e 已從 CI 的 test:e2e 排除；確認 web 沒有變更。
 **Follow-ups:** Ed push 後在 staging 實測系統分類、未分類存檔、Home 飲食／Food；之後評估把 DB 測試加進 CI。
+
+## 2026-11-19 — Phase 2I-2T 資料庫測試加進 CI（Claude，獨立 session）
+
+**Task:** 把 `test:migration-only-db`、`test:spaces-db` 加進 CI（postgres:18 service），純技術輪，不改產品程式、migration、web/。
+**What changed:** ci.yml 新增獨立 job `backend-db`「Backend database」：`postgres:18.7@sha256:e754b839…` service，只綁 `127.0.0.1:5432`，TCP `pg_isready` health check，CI 專用假帳密寫在 workflow；步驟 npm ci → prisma:generate → migrate deploy（`/mimic_migration_only_test`，不 seed）→ test:migration-only-db → migrate deploy（`/mimic_financial_spaces_test`）→ test:spaces-db，`DATABASE_URL` 只放在 step；timeout 10 分鐘。`scripts/verify-ci-workflow.mjs` 新增 `validateBackendDatabaseJob()`（必要 job 改五個、逐字逐序的 run 指令、loopback URL、digest 固定、禁止 secrets 與 seed），測試 32 → 50 項。
+**Checks:** 雲端 PostgreSQL 18.7 照 workflow 實跑：migration-only 6/6（7.6 s）、spaces-db 20 套 156 項（37.5 s），DB 步驟合計約 63 s；移開 taxonomy migration 時 migration-only 5 敗 1 過（擋得住 2I-2S 那類問題）。actionlint 1.7.12 只有 containers job 既有的 SC2034。突變：刪兩個測試步驟或整個 job → actionlint 仍 exit 0、合約拒絕（31／43 項敗）；拿掉驗證器新檢查 → 16 項敗。裝置上從 web/ 跑合約 50/50（候選 ci.yml）、naming 全過；沒有 Vitest 讀 ci.yml。
+**Decisions:** 獨立 job 而非加進 Backend：Backend 的 unit／HTTP 環境不變、平行不拉長 CI、失敗歸因清楚；合約用逐條規則而非整個 job hash，升級 digest 時不必改 hash。
+**Known gaps / follow-ups:** `.github/workflows/ci.yml` 是遠端受保護檔案，候選版在 `.tmp/2i2t/ci.yml`，需 Ed 複製到位（SHA-256 `12fb00c9…`），否則新合約測試在舊 ci.yml 上會 7 過 43 敗；ci.yml 與兩個 scripts 要同一個 commit。真正的 GitHub Actions（runner 上的 loopback port 綁定、實際耗時）要等 push 後確認。未 commit／stage／push，停在小德審閱。
+
+## 2026-11-19 — Phase 2I-2T 審閱與核准（Claude）
+
+**Task:** 審閱另一個 session 實作的 CI 資料庫測試 job，記錄並 commit。
+**What changed:** decision-log 新增 Phase 2I-2T 條目。ci.yml 是遠端工具保護檔，由 Ed 從 `.tmp/2i2t/ci.yml` 手動複製。
+**Checks:** ci.yml 的 SHA-256 與候選版相同；diff 確認只新增 `backend-db` job；在裝置上用複製後的 ci.yml 跑合約測試 50/50。
+**Follow-ups:** push 後看 GitHub Actions 五個 job 與 Backend database 的實際耗時；containers job 的 SC2034。
