@@ -1,0 +1,16 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": "..",
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/test/system-taxonomy-migration.e2e-spec.ts"
+  ],
+  "testTimeout": 30000,
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  }
+}

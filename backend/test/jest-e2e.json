@@ -27,7 +27,8 @@
     "pooled-reimbursements.e2e-spec.ts",
     "pooled-lifecycle.e2e-spec.ts",
     "pooled-lifecycle-concurrency.e2e-spec.ts",
-    "home-tasks.e2e-spec.ts"
+    "home-tasks.e2e-spec.ts",
+    "system-taxonomy-migration.e2e-spec.ts"
   ],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
