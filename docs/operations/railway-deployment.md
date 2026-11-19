@@ -201,6 +201,8 @@ without publishing the API. If deeper direct diagnostics are required, use an
 approved Railway shell/SSH inside the environment and the private service URL;
 do not generate a public API domain merely for smoke testing.
 
+Also confirm the system taxonomy exists: `taxonomy_terms` has 31 `scope='SYSTEM'` rows (16 categories including Uncategorized, 15 tags), written by migration `20261119000100_system_taxonomy_terms` and never by seed; without them any expense without a custom category fails with `SYSTEM_TAXONOMY_MISSING`.
+
 Verify that the deployed Git SHA equals the reviewed remote `main` SHA,
 then inspect one synthetic API and Web Sentry error. Stored events may contain
 only the privacy allowlist documented in the component READMEs. Only after all

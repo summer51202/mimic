@@ -2612,3 +2612,22 @@
 **What changed:** 新增 2I-2 規格（2R 停止點、2R2 英文日期、2R3 連結底線）；decision-log 新增 Phase 2I-2 條目；逐像素相同的中文前後截圖留在未追蹤的 `.tmp/phase-2i2-pixel-archive/`，以 `pixel-regression-sha256.txt` 保留雜湊。
 **Checks:** 自行重算 200 對中文像素（A 組只有核准的結算說明、B 組只有「近期分類」那一行不同，差異都在元素範圍內）；看過英文 360／1440 全部截圖與 390 抽樣，沒有截斷或溢出；確認 2R2 後日期不再斷開、2R3 後連結底線連續。
 **Follow-ups:** 兩次 push（web＋docs → 後端）；2I-b 日文；系統標籤英文名檢查。
+
+## 2026-11-19 — Phase 2I-2S 系統分類寫入 migration（Claude 實作）
+
+**Task:** 依 2I-2S 規格，讓只跑 `prisma migrate deploy` 的資料庫（staging／production）也有系統分類，修正選「未分類」記帳 500 `SYSTEM_TAXONOMY_MISSING`。
+**Scope:** backend/prisma/migrations（新 migration、migration-contract.spec.ts）、backend/test（no-seed e2e、DB guard、jest 設定、jest-e2e 排除）、backend/package.json、docs/operations/railway-deployment.md 一行、2I-2S verification。
+**What changed:**
+- 新增 `20261119000100_system_taxonomy_terms`：由 `.tmp/` 腳本從 catalog 產生 31 筆 `INSERT … ON CONFLICT ("system_key") DO UPDATE`，內容相同時不更新；不改 status／merged_into_id／version、不寫 audit。
+- `migration-contract.spec.ts` 依序折疊所有系統分類 migration 後逐欄比對 catalog，並註明不得修改已部署的 migration。
+- 新增 `npm run test:migration-only-db`（DB 限 loopback `/mimic_migration_only_test`，seed 拒絕此 DB）：未分類 201、zh-TW／en 分類清單、Home 近期分類「飲食」。
+- 雲端 PostgreSQL 16 驗證：0ffdf91 紅燈 500、加 migration 後 201；seed 過的 DB 套用前後 17 欄 hash 相同；重跑 `INSERT 0 0`；unit 38 套 346 項、HTTP 37 項、spaces-db 20 套 156 項、naming 全過。
+**Decisions:** 規格寫 30 筆／15 類別，但 catalog 有 16 類別（含未分類）＋15 標籤＝31 筆，以 catalog 為準。no-seed 測試另開 DB 與 jest 設定，因為 spaces-db 的 helper 每次都會 seed。
+**Known gaps / follow-ups:** 未 commit；未跑 WSL Docker CI 四個 job、PostgreSQL 18；`migrate diff` 有 0ffdf91 就存在的約束命名差異（輸出與基準相同）；請確認 origin（裝置追蹤 ref 為 0ffdf91）。停在小德審閱。
+
+## 2026-11-19 — Phase 2I-2S 審閱與核准（Claude）
+
+**Task:** 審閱另一個 session 實作的系統分類 migration，記錄並 commit。
+**What changed:** spec 補 2R（筆數 31、接受 IS DISTINCT FROM 與獨立的 migration-only 測試 DB）；decision-log 新增 Phase 2I-2S 條目。
+**Checks:** 自行解析 migration 的 31 筆 VALUES，與 CATEGORY_CATALOG＋TAG_CATALOG 逐欄比對 0 差異；確認 DO UPDATE 不改 status／version／合併狀態；確認新 e2e 已從 CI 的 test:e2e 排除；確認 web 沒有變更。
+**Follow-ups:** Ed push 後在 staging 實測系統分類、未分類存檔、Home 飲食／Food；之後評估把 DB 測試加進 CI。
