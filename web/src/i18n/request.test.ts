@@ -18,7 +18,7 @@ describe("request locale", () => {
   it.each([
     [undefined, "zh-TW"],
     ["en", "en"],
-    ["ja", "zh-TW"],
+    ["ja", "ja"],
   ])("uses the locale cookie %s to select %s", async (value, locale) => {
     get.mockReturnValue(value === undefined ? undefined : { value });
     const config = await getRequestConfig({ requestLocale: Promise.resolve(undefined) });

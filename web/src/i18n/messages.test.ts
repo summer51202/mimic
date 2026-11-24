@@ -2,6 +2,7 @@ import { parse, TYPE, type MessageFormatElement } from "@formatjs/icu-messagefor
 import { expect, it } from "vitest";
 import en from "./messages/en.json";
 import zh from "./messages/zh-TW.json";
+import ja from "./messages/ja.json";
 
 function flatten(messages: object, parent = ""): Record<string, string> {
   return Object.fromEntries(Object.entries(messages).flatMap(([key, value]) => {
@@ -10,7 +11,7 @@ function flatten(messages: object, parent = ""): Record<string, string> {
   }));
 }
 
-function parameters(elements: MessageFormatElement[], allowEnglishNowrap = false) {
+function parameters(elements: MessageFormatElement[], allowTranslatedNowrap = false) {
   const names = new Set<string>();
   function visit(nodes: MessageFormatElement[]) {
     for (const node of nodes) {
@@ -27,8 +28,8 @@ function parameters(elements: MessageFormatElement[], allowEnglishNowrap = false
           for (const option of Object.values(node.options)) visit(option.value);
           break;
         case TYPE.tag:
-          // English ISO dates have a presentation-only wrapper. Check its arguments as usual.
-          if (!allowEnglishNowrap || node.value !== "nowrap") names.add(node.value);
+          // Translated ISO dates have a presentation-only wrapper. Check its arguments as usual.
+          if (!allowTranslatedNowrap || node.value !== "nowrap") names.add(node.value);
           visit(node.children);
           break;
       }
@@ -38,13 +39,15 @@ function parameters(elements: MessageFormatElement[], allowEnglishNowrap = false
   return [...names].sort();
 }
 
-it("keeps both message catalogs complete and ICU arguments compatible", () => {
+it("keeps all three message catalogs complete and ICU arguments compatible", () => {
   const source = flatten(zh);
-  const translated = flatten(en);
-  expect(Object.keys(translated).sort()).toEqual(Object.keys(source).sort());
-  for (const [key, message] of Object.entries(source)) {
-    expect(message.trim(), key).not.toBe("");
-    expect(translated[key].trim(), key).not.toBe("");
-    expect(parameters(parse(translated[key]), true), key).toEqual(parameters(parse(message)));
+  for (const catalog of [en, ja]) {
+    const translated = flatten(catalog);
+    expect(Object.keys(translated).sort()).toEqual(Object.keys(source).sort());
+    for (const [key, message] of Object.entries(source)) {
+      expect(message.trim(), key).not.toBe("");
+      expect(translated[key].trim(), key).not.toBe("");
+      expect(parameters(parse(translated[key]), true), key).toEqual(parameters(parse(message)));
+    }
   }
 });

@@ -42,12 +42,14 @@
     "nameCurrency": "<name></name> · <currency></currency>"
   },
   "language": {
-    "target": "English",
     "legend": "語言",
     "changed": "語言已切換為中文。",
     "deviceOnly": "只在這台裝置生效，稍後會再同步。",
     "traditionalChinese": "中文（繁體）",
-    "english": "English"
+    "english": "English",
+    "japanese": "日本語",
+    "menuLabel": "語言：{current}",
+    "currentShort": "中文"
   },
   "nav": {
     "header": {
@@ -881,7 +883,7 @@
     "createReturnPlan": "建立退回計畫",
     "shortfall": "資金缺口 <amount></amount>",
     "chestDetails": "<party></party> · <currency></currency> · <role></role>",
-    "scheduleSummary": "<cadence></cadence> · 每 <interval>{count}</interval> 期",
+    "scheduleSummary": "<cadence></cadence> · 每 <interval>{count}</interval> 期{frequency, select, MONTHLY {} WEEKLY {} other {}}",
     "contributionDate": "投入 · <date></date>",
     "expenseTypeAndDate": "<type></type> · <date></date>",
     "frontedByName": "{name}先代墊",

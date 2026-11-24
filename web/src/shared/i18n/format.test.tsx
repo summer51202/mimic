@@ -5,6 +5,14 @@ import { IntlTestProvider } from "@/test/render-with-intl";
 import { getFormatMoney, useFormatMoney } from "./format";
 
 describe("localized money helpers", () => {
+  it("uses ja-JP for Japanese money", () => {
+    const { result } = renderHook(useFormatMoney, {
+      wrapper: ({ children }) => <IntlTestProvider locale="ja">{children}</IntlTestProvider>,
+    });
+    for (const currency of ["TWD", "JPY", "USD"]) {
+      expect(result.current("123450", currency)).toBe(formatMinorUnit("123450", currency, "ja-JP"));
+    }
+  });
   it("preserves the current Traditional Chinese formatting", async () => {
     const { result } = renderHook(useFormatMoney, { wrapper: IntlTestProvider });
     const formatOnServer = await getFormatMoney();

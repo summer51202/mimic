@@ -42,12 +42,14 @@
     "nameCurrency": "<name></name> · <currency></currency>"
   },
   "language": {
-    "target": "中文",
     "legend": "Language",
     "changed": "Language changed to English.",
     "deviceOnly": "Applied on this device only. We'll sync it later.",
     "traditionalChinese": "中文（繁體）",
-    "english": "English"
+    "english": "English",
+    "japanese": "日本語",
+    "menuLabel": "Language: {current}",
+    "currentShort": "EN"
   },
   "nav": {
     "header": {
@@ -881,7 +883,7 @@
     "createReturnPlan": "Create return plan",
     "shortfall": "Shortfall <amount></amount>",
     "chestDetails": "<party></party> · <currency></currency> · <role></role>",
-    "scheduleSummary": "<cadence></cadence> · every{count, plural, one {<interval></interval> period} other { <interval>#</interval> periods}}",
+    "scheduleSummary": "<cadence></cadence> · every{count, plural, one {<interval></interval> {frequency, select, MONTHLY {month} WEEKLY {week} other {}}} other { <interval>#</interval> {frequency, select, MONTHLY {months} WEEKLY {weeks} other {}}}}",
     "contributionDate": "Contribution · <nowrap><date></date></nowrap>",
     "expenseTypeAndDate": "<type></type> · <nowrap><date></date></nowrap>",
     "frontedByName": "Fronted by {name}",

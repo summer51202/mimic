@@ -185,6 +185,7 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
         {workspace.commitments.map((commitment) => <li key={commitment.id}>
           <div className="pooled-row-heading"><div><strong>{commitment.name}</strong>
             <span className="notebook-secondary">{t.rich('scheduleSummary', {
+              frequency: commitment.cadence,
               cadence: () => <>{commitment.cadence === 'MONTHLY' ? t('monthly') : t('weekly')}</>,
               count: commitment.interval, interval: chunks => <>{chunks}</>,
             })}</span></div>

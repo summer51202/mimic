@@ -21,11 +21,19 @@ function request(locale: unknown, session = false, csrf = true) {
 describe("POST /api/locale", () => {
   beforeEach(() => vi.mocked(authenticatedApi).mockReset());
 
-  it.each(["ja", "en-US", null])("rejects %s", async (locale) => {
+  it.each(["fr", "en-US", null])("rejects %s", async (locale) => {
     const response = await POST(request(locale));
     expect(response.status).toBe(400);
     expect(await response.json()).toEqual({ error: { code: "LOCALE_UNSUPPORTED" } });
     expect(response.cookies.get("mimic-locale")).toBeUndefined();
+  });
+
+  it("accepts Japanese and synchronizes the account", async () => {
+    const input = request("ja", true);
+    const response = await POST(input);
+    expect(response.status).toBe(200);
+    expect(response.cookies.get("mimic-locale")?.value).toBe("ja");
+    expect(authenticatedApi).toHaveBeenCalledWith(input, "/me", { method: "PATCH", body: { locale: "ja" } });
   });
 
   it("requires the existing double-submit CSRF token", async () => {

@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 
 import zh from "@/i18n/messages/zh-TW.json";
+import ja from "@/i18n/messages/ja.json";
 import en from "@/i18n/messages/en.json";
 
 import type {
@@ -170,6 +171,10 @@ const offlineFallbackHtml = `<!doctype html>
       <section lang="en">
         <h2>${en.pwa.offlineTitle}</h2>
         <p>${en.brand.tagline}</p>
+      </section>
+      <section lang="ja">
+        <h2>${ja.pwa.offlineTitle}</h2>
+        <p>${ja.brand.tagline}</p>
       </section>
     </main>
   </body>

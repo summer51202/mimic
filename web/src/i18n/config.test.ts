@@ -5,7 +5,7 @@ describe("locale mappings", () => {
   it.each([
     [undefined, "zh-TW"],
     ["", "zh-TW"],
-    ["ja", "zh-TW"],
+    ["ja", "ja"],
     ["en-US", "zh-TW"],
     ["zh-TW", "zh-TW"],
     ["en", "en"],

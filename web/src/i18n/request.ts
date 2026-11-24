@@ -5,6 +5,7 @@ import { LOCALE_COOKIE, resolveLocale } from "./config";
 const loadMessages = {
   "zh-TW": () => import("./messages/zh-TW.json"),
   en: () => import("./messages/en.json"),
+  ja: () => import("./messages/ja.json"),
 };
 
 export default getRequestConfig(async () => {

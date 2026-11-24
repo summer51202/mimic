@@ -5,6 +5,7 @@ import type { ReactElement, ReactNode } from "react";
 import { DEFAULT_LOCALE, type EnabledLocale } from "@/i18n/config";
 import en from "@/i18n/messages/en.json";
 import zh from "@/i18n/messages/zh-TW.json";
+import ja from "@/i18n/messages/ja.json";
 
 export function IntlTestProvider({
   children,
@@ -15,7 +16,7 @@ export function IntlTestProvider({
 }) {
   return (
     <AppRouterContext.Provider value={testRouter}>
-      <NextIntlClientProvider locale={locale} messages={locale === "en" ? en : zh} timeZone="UTC">
+      <NextIntlClientProvider locale={locale} messages={locale === "en" ? en : locale === "ja" ? ja : zh} timeZone="UTC">
         {children}
       </NextIntlClientProvider>
     </AppRouterContext.Provider>

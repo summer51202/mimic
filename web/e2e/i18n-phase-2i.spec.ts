@@ -2,6 +2,10 @@ import { expect, test, type Page } from "@playwright/test";
 import { registerByApi, requireBackend, uniqueAccounts, type TestAccount } from "./fixtures/accounts";
 
 const cookieName = "mimic-locale";
+async function chooseLanguage(page: Page, name: string) {
+  await page.locator('button[aria-haspopup="menu"]').click();
+  await page.getByRole("menuitemradio", { name, exact: true }).click();
+}
 
 async function login(page: Page, account: TestAccount) {
   await page.goto("/login");
@@ -15,21 +19,24 @@ test("defaults to Chinese and keeps the public language across navigation", asyn
   await context.setExtraHTTPHeaders({ "Accept-Language": "en-US,en;q=0.9" });
   await page.goto("/");
   const root = page.locator("html");
-  const english = page.getByRole("banner").getByRole("button", { name: "English", exact: true });
+  const english = page.getByRole("banner").getByRole("button", { name: "語言：中文", exact: true });
   await expect(root).toHaveAttribute("lang", "zh-Hant");
   await expect(page.getByRole("link", { name: "開始冒險" })).toBeVisible();
   expect((await context.cookies()).find((cookie) => cookie.name === cookieName)).toBeUndefined();
-  await expect(english).toHaveAttribute("lang", "en");
+  await expect(english.locator("span:visible").first()).toHaveAttribute("lang", "zh-Hant");
   await page.keyboard.press("Tab");
   await page.keyboard.press("Tab");
   await expect(english).toBeFocused();
   const switching = page.waitForResponse((response) =>
     new URL(response.url()).pathname === "/api/locale" && response.request().method() === "POST");
   await page.keyboard.press("Enter");
+  await expect(page.getByRole("menu")).toBeVisible();
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Enter");
   expect((await switching).ok()).toBe(true);
   await expect(root).toHaveAttribute("lang", "en");
-  const chinese = page.getByRole("banner").getByRole("button", { name: "中文", exact: true });
-  await expect(chinese).toHaveAttribute("lang", "zh-Hant");
+  const chinese = page.getByRole("banner").getByRole("button", { name: "Language: English", exact: true });
+  await expect(chinese.locator("span:visible").first()).toHaveAttribute("lang", "en");
   await expect(chinese).toBeFocused();
   expect((await context.cookies()).find((cookie) => cookie.name === cookieName)?.value).toBe("en");
   await page.reload();
@@ -43,21 +50,21 @@ test("defaults to Chinese and keeps the public language across navigation", asyn
     await expect(root).toHaveAttribute("lang", "en");
     await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
   }
-  await chinese.click();
+  await chooseLanguage(page, "中文（繁體）");
   await expect(root).toHaveAttribute("lang", "zh-Hant");
   await expect(page.getByRole("heading", { name: "加入這個共同理財任務" })).toBeVisible();
 });
 
 test("auth pages switch languages and show English validation", async ({ page }) => {
   await page.goto("/login");
-  await page.getByRole("button", { name: "English", exact: true }).click();
+  await chooseLanguage(page, "English");
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await page.getByRole("button", { name: "Log in", exact: true }).click();
   await expect(page.getByText("Enter your email.")).toBeVisible();
   await page.goto("/register");
-  await page.getByRole("button", { name: "中文", exact: true }).click();
+  await chooseLanguage(page, "中文（繁體）");
   await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hant");
-  await page.getByRole("button", { name: "English", exact: true }).click();
+  await chooseLanguage(page, "English");
   await page.getByRole("button", { name: "Sign up", exact: true }).click();
   await expect(page.getByText("Enter a display name.")).toBeVisible();
 });

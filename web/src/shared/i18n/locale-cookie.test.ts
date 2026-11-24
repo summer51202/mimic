@@ -16,7 +16,8 @@ describe("locale after login or registration", () => {
     ["zh-TW", "en", "zh-TW", undefined],
     [undefined, "zh-TW", undefined, "zh-TW"],
     [undefined, "en", undefined, "en"],
-    [undefined, "ja", undefined, undefined],
+    [undefined, "ja", undefined, "ja"],
+    ["ja", "en", "ja", undefined],
     ["en", "ja", "en", undefined],
     ["en", undefined, "en", undefined],
   ])("reconciles device %s with account %s", async (device, account, patch, cookie) => {

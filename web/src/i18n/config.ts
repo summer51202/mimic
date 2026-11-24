@@ -1,5 +1,5 @@
 export const SUPPORTED_LOCALES = ["zh-TW", "en", "ja"] as const;
-export const ENABLED_LOCALES = ["zh-TW", "en"] as const;
+export const ENABLED_LOCALES = ["zh-TW", "en", "ja"] as const;
 export const DEFAULT_LOCALE = "zh-TW";
 export const LOCALE_COOKIE = "mimic-locale";
 
