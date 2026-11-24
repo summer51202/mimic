@@ -78,7 +78,9 @@ describe('taxonomy authenticated lifecycle', () => {
       const response = await call('get', `/spaces/${space.id}/taxonomy?kind=CATEGORY&q=${encodeURIComponent(q)}`).expect(200);
       expect(response.body.data.terms).toEqual([expect.objectContaining({ id: foodId, name: '飲食' })]);
     }
-    await call('get', '/me/taxonomy?kind=CATEGORY&locale=ja').expect(400);
+    const japanese = await call('get', '/me/taxonomy?kind=CATEGORY&locale=ja').expect(200);
+    expect(japanese.body.data).toContainEqual(expect.objectContaining({ id: foodId, name: '食費' }));
+    await call('get', '/me/taxonomy?kind=CATEGORY&locale=fr').expect(400);
   });
 
   it('accepts supported profile locales and preserves the current profile on invalid values', async () => {

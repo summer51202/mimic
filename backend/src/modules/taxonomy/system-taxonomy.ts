@@ -5,6 +5,39 @@ export interface SystemTerm {
 }
 
 export const UNCATEGORIZED_ID = '20000000-0000-4000-8000-000000000016';
+const japanese: Record<string, string> = {
+  "category.food": "食費",
+  "category.household": "日用品",
+  "category.housing": "住居費",
+  "category.utilities": "水道光熱費・通信費",
+  "category.transportation": "交通費",
+  "category.shopping": "ショッピング",
+  "category.entertainment": "娯楽",
+  "category.travel": "旅行",
+  "category.health": "健康・医療",
+  "category.education": "教育",
+  "category.pets": "ペット",
+  "category.family": "家族・育児",
+  "category.subscriptions": "サブスク",
+  "category.gifts": "プレゼント",
+  "category.insurance_taxes": "保険・税金",
+  "category.uncategorized": "未分類",
+  "tag.breakfast": "朝食",
+  "tag.lunch": "昼食",
+  "tag.dinner": "夕食",
+  "tag.coffee": "コーヒー",
+  "tag.delivery": "デリバリー",
+  "tag.supermarket": "スーパー",
+  "tag.public_transit": "公共交通機関",
+  "tag.taxi": "タクシー",
+  "tag.parking": "駐車料金",
+  "tag.fuel": "ガソリン",
+  "tag.date": "デート",
+  "tag.family": "家族",
+  "tag.friends": "友だち",
+  "tag.travel": "旅行",
+  "tag.work_reimbursement": "経費精算"
+};
 const categories = [
   ['food', '飲食', 'Food'], ['household', '日用品', 'Household supplies'],
   ['housing', '住房', 'Housing'], ['utilities', '水電與通訊', 'Utilities and communications'],
@@ -26,14 +59,14 @@ const tags: ReadonlyArray<readonly [string, string, readonly string[]]> = [
 export const CATEGORY_CATALOG: SystemTerm[] = categories.map(([key, zh, en], i) => ({
   id: `20000000-0000-4000-8000-0000000000${String(i + 1).padStart(2, '0')}`,
   kind: 'CATEGORY', scope: 'SYSTEM', scopeKey: 'SYSTEM', systemKey: `category.${key}`,
-  name: en, normalizedName: en.toLowerCase(), translations: { 'zh-TW': zh, en }, categoryKeys: [],
+  name: en, normalizedName: en.toLowerCase(), translations: { 'zh-TW': zh, en, ja: japanese[`category.${key}`] }, categoryKeys: [],
 }));
 export const TAG_CATALOG: SystemTerm[] = tags.map(([key, zh, contexts], i) => {
   const en = key[0].toUpperCase() + key.slice(1).replaceAll('_', ' ');
   return {
     id: `20000000-0000-4000-8000-0000000010${String(i + 1).padStart(2, '0')}`,
     kind: 'TAG', scope: 'SYSTEM', scopeKey: 'SYSTEM', systemKey: `tag.${key}`,
-    name: en, normalizedName: en.toLowerCase(), translations: { 'zh-TW': zh, en },
+    name: en, normalizedName: en.toLowerCase(), translations: { 'zh-TW': zh, en, ja: japanese[`tag.${key}`] },
     categoryKeys: contexts.map(context => `category.${context}`),
   };
 });

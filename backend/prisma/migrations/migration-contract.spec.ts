@@ -114,13 +114,28 @@ describe('Prisma migration contracts', () => {
     const migrations = readdirSync(__dirname, { withFileTypes: true })
       .filter(entry => entry.isDirectory()).map(entry => entry.name).sort()
       .map(name => ({ name, sql: readFileSync(join(__dirname, name, 'migration.sql'), 'utf8').replace(/\r\n/g, '\n') }))
-      .filter(migration => migration.sql.includes('INSERT INTO "taxonomy_terms"'));
+      .filter(migration => migration.sql.includes('INSERT INTO "taxonomy_terms"') || migration.name === '20261119000200_system_taxonomy_ja');
     expect(migrations.map(migration => migration.name)).toContain('20261119000100_system_taxonomy_terms');
 
     const columns = ['id', 'kind', 'scope', 'scopeKey', 'systemKey', 'name', 'normalizedName', 'translations',
       'categoryKeys', 'status', 'version', 'createdAt', 'updatedAt'] as const;
     const state = new Map<string, Row>();
     for (const { name, sql } of migrations) {
+      if (name === '20261119000200_system_taxonomy_ja') {
+        expect(sql).toContain('UPDATE "taxonomy_terms" AS term');
+        expect(sql).toContain('term."translations" IS DISTINCT FROM source.translations');
+        const assignments = sql.split('SET ')[1].split('FROM ')[0];
+        expect([...assignments.matchAll(/"([a-z_]+)"\s*=/g)].map(match => match[1]))
+          .toEqual(['translations', 'updated_at']);
+        const rows = [...sql.matchAll(/^  \('([^']+)', '((?:[^']|'')*)'::JSONB\)/gm)];
+        expect(rows).toHaveLength(31);
+        expect(new Set(rows.map(row => row[1])).size).toBe(31);
+        for (const [, key, json] of rows) {
+          expect(state.has(key)).toBe(true);
+          state.get(key)!.translations = JSON.parse(json.replaceAll("''", "'"));
+        }
+        continue;
+      }
       expect(sql).toContain('INSERT INTO "taxonomy_terms" ("id", "kind", "scope", "scope_key", "system_key", "name", "normalized_name", "translations", "category_keys", "status", "version", "created_at", "updated_at") VALUES');
       const update = /ON CONFLICT \("system_key"\) DO UPDATE SET([\s\S]*?)(WHERE[\s\S]*)?;/.exec(sql);
       expect(update).not.toBeNull();

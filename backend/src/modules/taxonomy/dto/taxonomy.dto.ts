@@ -22,6 +22,6 @@ export class TaxonomyQueryDto extends SpaceRequestDto {
   @IsEnum(TaxonomyKind) kind: TaxonomyKind;
   @ValidateIf((_o, value) => value !== undefined) @IsUUID() category_id?: string;
   @ValidateIf((_o, value) => value !== undefined) @IsString() @Length(0, 60) q?: string;
-  @ValidateIf((_o, value) => value !== undefined) @IsIn(['zh-TW', 'en']) locale?: string;
+  @ValidateIf((_o, value) => value !== undefined) @IsIn(['zh-TW', 'en', 'ja']) locale?: string;
   @ValidateIf((_o, value) => value !== undefined) @IsIn(['true', 'false']) include_inactive?: string;
 }
