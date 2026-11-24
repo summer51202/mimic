@@ -1,0 +1,625 @@
+A-correction-390x844-zh-after.png
+A-correction-390x844-zh-before.png
+A-draft-recovery-390x844-zh-2r7-after.png
+A-draft-recovery-390x844-zh-2r7-before.png
+A-fund-1024x768-en-2r7-after.png
+A-fund-1024x768-en-2r7-before.png
+A-fund-1280x720-en-2r7-after.png
+A-fund-1280x720-en-2r7-before.png
+A-fund-1366x768-en-2r7-after.png
+A-fund-1366x768-en-2r7-before.png
+A-fund-1440x900-en-2r7-after.png
+A-fund-1440x900-en-2r7-before.png
+A-fund-1536x864-en-2r7-after.png
+A-fund-1536x864-en-2r7-before.png
+A-fund-1920x1080-en-2r7-after.png
+A-fund-1920x1080-en-2r7-before.png
+A-fund-2560x1440-en-2r7-after.png
+A-fund-2560x1440-en-2r7-before.png
+A-fund-360x780-en-2r7-after.png
+A-fund-360x780-en-2r7-before.png
+A-fund-390x844-en-2r7-after.png
+A-fund-390x844-en-2r7-before.png
+A-fund-390x844-zh-after.png
+A-fund-390x844-zh-before.png
+A-fund-430x932-en-2r7-after.png
+A-fund-430x932-en-2r7-before.png
+A-fund-768x1024-en-2r7-after.png
+A-fund-768x1024-en-2r7-before.png
+A-fund-expense-390x844-zh-after.png
+A-fund-expense-390x844-zh-before.png
+A-fund-returns-390x844-zh-2r7-after.png
+A-fund-returns-390x844-zh-2r7-before.png
+A-fund-returns-390x844-zh-after.png
+A-fund-returns-390x844-zh-before.png
+A-fund-returns-390x844-zh-mask.png
+A-fund-schedule-390x844-zh-after.png
+A-fund-schedule-390x844-zh-before.png
+A-home-empty-360x780-zh-after.png
+A-home-empty-360x780-zh-before.png
+A-home-empty-360x780-zh-mask.png
+A-home-empty-390x844-en-2r7-after.png
+A-home-empty-390x844-en-2r7-before.png
+A-home-empty-390x844-zh-after.png
+A-home-empty-390x844-zh-before.png
+A-home-empty-430x932-en-2r7-after.png
+A-home-empty-430x932-en-2r7-before.png
+A-home-idle-360x780-zh-after.png
+A-home-idle-360x780-zh-before.png
+A-home-idle-360x780-zh-mask.png
+A-home-idle-390x844-en-2r7-after.png
+A-home-idle-390x844-en-2r7-before.png
+A-home-idle-390x844-zh-after.png
+A-home-idle-390x844-zh-before.png
+A-home-idle-430x932-zh-after.png
+A-home-idle-430x932-zh-before.png
+A-home-idle-430x932-zh-mask.png
+A-home-offline-390x844-en-2r7-after.png
+A-home-offline-390x844-en-2r7-before.png
+A-home-offline-390x844-zh-after.png
+A-home-offline-390x844-zh-before.png
+A-home-ready-390x844-en-2r7-after.png
+A-home-ready-390x844-en-2r7-before.png
+A-home-ready-390x844-zh-after.png
+A-home-ready-390x844-zh-before.png
+A-home-ready-430x932-zh-2r7-after.png
+A-home-ready-430x932-zh-2r7-before.png
+A-home-ready-430x932-zh-after.png
+A-home-ready-430x932-zh-before.png
+A-home-ready-430x932-zh-mask.png
+A-landing-1024x768-en-2r7-after.png
+A-landing-1024x768-en-2r7-before.png
+A-landing-1024x768-zh-after.png
+A-landing-1024x768-zh-before.png
+A-landing-1024x768-zh-mask.png
+A-landing-1280x720-en-2r7-after.png
+A-landing-1280x720-en-2r7-before.png
+A-landing-1280x720-zh-after.png
+A-landing-1280x720-zh-before.png
+A-landing-1280x720-zh-mask.png
+A-landing-1366x768-en-2r7-after.png
+A-landing-1366x768-en-2r7-before.png
+A-landing-1366x768-zh-after.png
+A-landing-1366x768-zh-before.png
+A-landing-1366x768-zh-mask.png
+A-landing-1440x900-en-2r7-after.png
+A-landing-1440x900-en-2r7-before.png
+A-landing-1440x900-zh-after.png
+A-landing-1440x900-zh-before.png
+A-landing-1440x900-zh-mask.png
+A-landing-1536x864-en-2r7-after.png
+A-landing-1536x864-en-2r7-before.png
+A-landing-1536x864-zh-after.png
+A-landing-1536x864-zh-before.png
+A-landing-1536x864-zh-mask.png
+A-landing-1920x1080-en-2r7-after.png
+A-landing-1920x1080-en-2r7-before.png
+A-landing-1920x1080-zh-after.png
+A-landing-1920x1080-zh-before.png
+A-landing-1920x1080-zh-mask.png
+A-landing-2560x1440-en-2r7-after.png
+A-landing-2560x1440-en-2r7-before.png
+A-landing-2560x1440-zh-after.png
+A-landing-2560x1440-zh-before.png
+A-landing-2560x1440-zh-mask.png
+A-landing-360x780-en-2r7-after.png
+A-landing-360x780-en-2r7-before.png
+A-landing-360x780-zh-after.png
+A-landing-360x780-zh-before.png
+A-landing-360x780-zh-mask.png
+A-landing-390x844-en-2r7-after.png
+A-landing-390x844-en-2r7-before.png
+A-landing-390x844-zh-after.png
+A-landing-390x844-zh-before.png
+A-landing-390x844-zh-mask.png
+A-landing-430x932-en-2r7-after.png
+A-landing-430x932-en-2r7-before.png
+A-landing-430x932-zh-after.png
+A-landing-430x932-zh-before.png
+A-landing-430x932-zh-mask.png
+A-landing-768x1024-en-2r7-after.png
+A-landing-768x1024-en-2r7-before.png
+A-landing-768x1024-zh-after.png
+A-landing-768x1024-zh-before.png
+A-landing-768x1024-zh-mask.png
+A-lifecycle-390x844-zh-after.png
+A-lifecycle-390x844-zh-before.png
+A-login-390x844-en-2r7-review-after.png
+A-login-390x844-en-2r7-review-before.png
+A-login-390x844-zh-2r7-review-after.png
+A-login-390x844-zh-2r7-review-before.png
+A-personal-390x844-en-2r7-after.png
+A-personal-390x844-en-2r7-before.png
+A-personal-390x844-zh-after.png
+A-personal-390x844-zh-before.png
+A-personal-430x932-en-2r7-after.png
+A-personal-430x932-en-2r7-before.png
+A-personal-add-390x844-zh-2r7-after.png
+A-personal-add-390x844-zh-2r7-before.png
+A-personal-add-390x844-zh-after.png
+A-personal-add-390x844-zh-before.png
+A-personal-add-390x844-zh-mask.png
+A-quick-390x844-zh-after.png
+A-quick-390x844-zh-before.png
+A-reference-390x844-zh-after.png
+A-reference-390x844-zh-before.png
+A-register-390x844-zh-2r7-review-after.png
+A-register-390x844-zh-2r7-review-before.png
+A-settings-390x844-zh-2r7-review-after.png
+A-settings-390x844-zh-2r7-review-before.png
+A-settlement-390x844-zh-after.png
+A-settlement-390x844-zh-before.png
+A-shared-390x844-en-2r7-after.png
+A-shared-390x844-en-2r7-before.png
+A-shared-390x844-zh-after.png
+A-shared-390x844-zh-before.png
+A-shared-add-390x844-zh-after.png
+A-shared-add-390x844-zh-before.png
+A-start-settlement-390x844-zh-after.png
+A-start-settlement-390x844-zh-before.png
+A-tasks-390x844-en-2r7-after.png
+A-tasks-390x844-en-2r7-before.png
+A-tasks-390x844-zh-after.png
+A-tasks-390x844-zh-before.png
+A-tasks-430x932-en-2r7-after.png
+A-tasks-430x932-en-2r7-before.png
+A-taxonomy-390x844-zh-after.png
+A-taxonomy-390x844-zh-before.png
+B-fund-390x844-en-2r7-after.png
+B-fund-390x844-en-2r7-before.png
+B-fund-390x844-ja-2r7-after.png
+B-fund-390x844-ja-2r7-before.png
+B-fund-390x844-zh-2r7-after.png
+B-fund-390x844-zh-2r7-before.png
+B-home-empty-2560x1440-zh-after.png
+B-home-empty-2560x1440-zh-before.png
+B-home-empty-2560x1440-zh-mask.png
+B-home-empty-360x780-ja-2r7-after.png
+B-home-empty-360x780-ja-2r7-before.png
+B-home-empty-390x844-en-2r7-after.png
+B-home-empty-390x844-en-2r7-before.png
+B-home-empty-390x844-ja-2r7-after.png
+B-home-empty-390x844-ja-2r7-before.png
+B-home-empty-390x844-zh-after.png
+B-home-empty-390x844-zh-before.png
+B-home-idle-390x844-en-2r7-after.png
+B-home-idle-390x844-en-2r7-before.png
+B-home-idle-390x844-ja-2r7-after.png
+B-home-idle-390x844-ja-2r7-before.png
+B-home-idle-390x844-zh-after.png
+B-home-idle-390x844-zh-before.png
+B-home-offline-360x780-ja-2r7-after.png
+B-home-offline-360x780-ja-2r7-before.png
+B-home-offline-390x844-en-2r7-after.png
+B-home-offline-390x844-en-2r7-before.png
+B-home-offline-390x844-ja-2r7-after.png
+B-home-offline-390x844-ja-2r7-before.png
+B-home-offline-390x844-zh-after.png
+B-home-offline-390x844-zh-before.png
+B-home-ready-360x780-en-2r7-after.png
+B-home-ready-360x780-en-2r7-before.png
+B-home-ready-390x844-en-2r7-after.png
+B-home-ready-390x844-en-2r7-before.png
+B-home-ready-390x844-ja-2r7-after.png
+B-home-ready-390x844-ja-2r7-before.png
+B-home-ready-390x844-zh-after.png
+B-home-ready-390x844-zh-before.png
+B-personal-360x780-ja-2r7-after.png
+B-personal-360x780-ja-2r7-before.png
+B-personal-390x844-en-2r7-after.png
+B-personal-390x844-en-2r7-before.png
+B-personal-390x844-ja-2r7-after.png
+B-personal-390x844-ja-2r7-before.png
+B-personal-390x844-zh-after.png
+B-personal-390x844-zh-before.png
+B-personal-430x932-en-2r7-after.png
+B-personal-430x932-en-2r7-before.png
+B-shared-390x844-en-2r7-after.png
+B-shared-390x844-en-2r7-before.png
+B-shared-390x844-ja-2r7-after.png
+B-shared-390x844-ja-2r7-before.png
+B-shared-390x844-zh-2r7-after.png
+B-shared-390x844-zh-2r7-before.png
+B-tasks-390x844-en-2r7-after.png
+B-tasks-390x844-en-2r7-before.png
+B-tasks-390x844-ja-2r7-after.png
+B-tasks-390x844-ja-2r7-before.png
+B-tasks-390x844-zh-2r7-after.png
+B-tasks-390x844-zh-2r7-before.png
+B-tasks-430x932-ja-2r7-after.png
+B-tasks-430x932-ja-2r7-before.png
+app-personal-smoke-ja-1440x900.png
+app-personal-smoke-ja-360x800.png
+app-personal-smoke-ja-390x844.png
+app-route-error-ja-1440x900.png
+app-route-error-ja-360x800.png
+app-route-error-ja-390x844.png
+app-route-loading-ja-1440x900.png
+app-route-loading-ja-360x800.png
+app-route-loading-ja-390x844.png
+app-settings-smoke-ja-1440x900.png
+app-settings-smoke-ja-360x800.png
+app-settings-smoke-ja-390x844.png
+app-smoke-ja-1440x900.png
+app-smoke-ja-360x800.png
+app-smoke-ja-390x844.png
+app-tasks-smoke-ja-1440x900.png
+app-tasks-smoke-ja-360x800.png
+app-tasks-smoke-ja-390x844.png
+draft-blocked-ja-1440x900.png
+draft-blocked-ja-360x800.png
+draft-blocked-ja-390x844.png
+draft-corrupt-ja-1440x900.png
+draft-corrupt-ja-360x800.png
+draft-corrupt-ja-390x844.png
+draft-recovery-ja-1440x900.png
+draft-recovery-ja-360x800.png
+draft-recovery-ja-390x844.png
+features-default-ja-1440x900.png
+features-default-ja-360x800.png
+features-default-ja-390x844.png
+features-smoke-ja-1440x900.png
+features-smoke-ja-360x800.png
+features-smoke-ja-390x844.png
+fund-closing-ja-1440x900.png
+fund-closing-ja-360x800.png
+fund-closing-ja-390x844.png
+fund-closing-panel-ja-1440x900.png
+fund-closing-panel-ja-360x800.png
+fund-closing-panel-ja-390x844.png
+fund-expense-ja-1440x900.png
+fund-expense-ja-360x800.png
+fund-expense-ja-390x844.png
+fund-overdue-contribution-ja-1440x900.png
+fund-overdue-contribution-ja-360x800.png
+fund-overdue-contribution-ja-390x844.png
+fund-ready-ja-1440x900.png
+fund-ready-ja-360x800.png
+fund-ready-ja-390x844.png
+fund-return-awaiting-receipt-ja-1440x900.png
+fund-return-awaiting-receipt-ja-360x800.png
+fund-return-awaiting-receipt-ja-390x844.png
+fund-return-form-ja-1440x900.png
+fund-return-form-ja-360x800.png
+fund-return-form-ja-390x844.png
+fund-return-plan-ja-1440x900.png
+fund-return-plan-ja-360x800.png
+fund-return-plan-ja-390x844.png
+fund-schedule-ja-1440x900.png
+fund-schedule-ja-360x800.png
+fund-schedule-ja-390x844.png
+global-error-default-ja-1440x900.png
+global-error-default-ja-360x800.png
+global-error-default-ja-390x844.png
+groups-create-ja-1440x900.png
+groups-create-ja-360x800.png
+groups-create-ja-390x844.png
+groups-delete-ja-1440x900.png
+groups-delete-ja-360x800.png
+groups-delete-ja-390x844.png
+groups-detail-ja-1440x900.png
+groups-detail-ja-360x800.png
+groups-detail-ja-390x844.png
+groups-join-ja-1440x900.png
+groups-join-ja-360x800.png
+groups-join-ja-390x844.png
+groups-leave-ja-1440x900.png
+groups-leave-ja-360x800.png
+groups-leave-ja-390x844.png
+groups-list-ja-1440x900.png
+groups-list-ja-360x800.png
+groups-list-ja-390x844.png
+header-2r-en-signed-in-Arial-320x720.png
+header-2r-en-signed-in-Liberation-Sans-320x720.png
+header-2r-en-signed-in-Roboto-320x720.png
+header-2r-en-signed-out-Arial-320x720.png
+header-2r-en-signed-out-Liberation-Sans-320x720.png
+header-2r-en-signed-out-Roboto-320x720.png
+header-2r-ja-signed-in-Arial-320x720.png
+header-2r-ja-signed-in-Liberation-Sans-320x720.png
+header-2r-ja-signed-in-Roboto-320x720.png
+header-2r-ja-signed-out-Arial-320x720.png
+header-2r-ja-signed-out-Liberation-Sans-320x720.png
+header-2r-ja-signed-out-Roboto-320x720.png
+header-2r-zh-TW-signed-in-Arial-320x720.png
+header-2r-zh-TW-signed-in-Liberation-Sans-320x720.png
+header-2r-zh-TW-signed-in-Roboto-320x720.png
+header-2r-zh-TW-signed-out-Arial-320x720.png
+header-2r-zh-TW-signed-out-Liberation-Sans-320x720.png
+header-2r-zh-TW-signed-out-Roboto-320x720.png
+header-preflight-en-signed-in-Arial-320x720.png
+header-preflight-en-signed-in-Liberation-Sans-320x720.png
+header-preflight-en-signed-in-Roboto-320x720.png
+header-preflight-en-signed-out-Arial-320x720.png
+header-preflight-en-signed-out-Liberation-Sans-320x720.png
+header-preflight-en-signed-out-Roboto-320x720.png
+header-preflight-ja-signed-in-Arial-320x720.png
+header-preflight-ja-signed-in-Liberation-Sans-320x720.png
+header-preflight-ja-signed-in-Roboto-320x720.png
+header-preflight-ja-signed-out-Arial-320x720.png
+header-preflight-ja-signed-out-Liberation-Sans-320x720.png
+header-preflight-ja-signed-out-Roboto-320x720.png
+header-preflight-zh-TW-signed-in-Arial-320x720.png
+header-preflight-zh-TW-signed-in-Liberation-Sans-320x720.png
+header-preflight-zh-TW-signed-in-Roboto-320x720.png
+header-preflight-zh-TW-signed-out-Arial-320x720.png
+header-preflight-zh-TW-signed-out-Liberation-Sans-320x720.png
+header-preflight-zh-TW-signed-out-Roboto-320x720.png
+home-empty-ja-1440x900.png
+home-empty-ja-360x800.png
+home-empty-ja-390x844.png
+home-offline-ja-1440x900.png
+home-offline-ja-360x800.png
+home-offline-ja-390x844.png
+home-quests-1-ja-1440x900.png
+home-quests-1-ja-360x800.png
+home-quests-1-ja-390x844.png
+home-quests-2-ja-1440x900.png
+home-quests-2-ja-360x800.png
+home-quests-2-ja-390x844.png
+home-quick-expense-ja-1440x900.png
+home-quick-expense-ja-360x800.png
+home-quick-expense-ja-390x844.png
+home-ready-ja-1440x900.png
+home-ready-ja-360x800.png
+home-ready-ja-390x844.png
+home-shell-ja-1440x900.png
+home-shell-ja-360x800.png
+home-shell-ja-390x844.png
+invite-create-ja-1440x900.png
+invite-create-ja-360x800.png
+invite-create-ja-390x844.png
+invite-invalid-ja-1440x900.png
+invite-invalid-ja-360x800.png
+invite-invalid-ja-390x844.png
+invite-share-ja-1440x900.png
+invite-share-ja-360x800.png
+invite-share-ja-390x844.png
+invite-valid-ja-1440x900.png
+invite-valid-ja-360x800.png
+invite-valid-ja-390x844.png
+japanese-kanji-font-probe-390x844.png
+landing-bats-ja-1440x900.png
+landing-bats-ja-360x800.png
+landing-carving-ja-1440x900.png
+landing-carving-ja-360x800.png
+landing-chest-closed-ja-1440x900.png
+landing-chest-closed-ja-360x800.png
+landing-chest-open-ja-1440x900.png
+landing-chest-open-ja-360x800.png
+landing-initial-ja-1440x900.png
+landing-initial-ja-360x800.png
+landing-initial-ja-390x844.png
+landing-language-menu-2r2-en-1440x900.png
+landing-language-menu-2r2-en-320x800.png
+landing-language-menu-2r2-en-359x800.png
+landing-language-menu-2r2-en-360x800.png
+landing-language-menu-2r2-en-390x844.png
+landing-language-menu-2r2-en-544x844.png
+landing-language-menu-2r2-ja-1440x900.png
+landing-language-menu-2r2-ja-320x800.png
+landing-language-menu-2r2-ja-359x800.png
+landing-language-menu-2r2-ja-360x800.png
+landing-language-menu-2r2-ja-390x844.png
+landing-language-menu-2r2-ja-544x844.png
+landing-language-menu-2r2-zh-TW-1440x900.png
+landing-language-menu-2r2-zh-TW-320x800.png
+landing-language-menu-2r2-zh-TW-359x800.png
+landing-language-menu-2r2-zh-TW-360x800.png
+landing-language-menu-2r2-zh-TW-390x844.png
+landing-language-menu-2r2-zh-TW-544x844.png
+landing-language-menu-en-360x800.png
+landing-language-menu-ja-360x800.png
+landing-language-menu-zh-TW-360x800.png
+landing-segment-1-ja-360x800.png
+landing-segment-1-ja-390x844.png
+landing-segment-2-ja-360x800.png
+landing-segment-2-ja-390x844.png
+landing-segment-3-ja-360x800.png
+landing-segment-3-ja-390x844.png
+landing-smoke-ja-1440x900.png
+landing-smoke-ja-360x800.png
+landing-smoke-ja-390x844.png
+landing-torch-ja-1440x900.png
+landing-torch-ja-360x800.png
+login-default-ja-1440x900.png
+login-default-ja-360x800.png
+login-default-ja-390x844.png
+login-language-menu-2r2-en-1440x900.png
+login-language-menu-2r2-en-320x800.png
+login-language-menu-2r2-en-359x800.png
+login-language-menu-2r2-en-360x800.png
+login-language-menu-2r2-en-390x844.png
+login-language-menu-2r2-en-544x844.png
+login-language-menu-2r2-ja-1440x900.png
+login-language-menu-2r2-ja-320x800.png
+login-language-menu-2r2-ja-359x800.png
+login-language-menu-2r2-ja-360x800.png
+login-language-menu-2r2-ja-390x844.png
+login-language-menu-2r2-ja-544x844.png
+login-language-menu-2r2-zh-TW-1440x900.png
+login-language-menu-2r2-zh-TW-320x800.png
+login-language-menu-2r2-zh-TW-359x800.png
+login-language-menu-2r2-zh-TW-360x800.png
+login-language-menu-2r2-zh-TW-390x844.png
+login-language-menu-2r2-zh-TW-544x844.png
+login-language-menu-en-360x800.png
+login-language-menu-ja-360x800.png
+login-language-menu-zh-TW-360x800.png
+login-smoke-ja-1440x900.png
+login-smoke-ja-360x800.png
+login-smoke-ja-390x844.png
+login-validation-ja-1440x900.png
+login-validation-ja-360x800.png
+login-validation-ja-390x844.png
+not-found-default-ja-1440x900.png
+not-found-default-ja-360x800.png
+not-found-default-ja-390x844.png
+offline-default-ja-1440x900.png
+offline-default-ja-360x800.png
+offline-default-ja-390x844.png
+personal-add-ja-1440x900.png
+personal-add-ja-360x800.png
+personal-add-ja-390x844.png
+personal-delete-ja-1440x900.png
+personal-delete-ja-360x800.png
+personal-delete-ja-390x844.png
+personal-edit-ja-1440x900.png
+personal-edit-ja-360x800.png
+personal-edit-ja-390x844.png
+personal-ready-ja-1440x900.png
+personal-ready-ja-360x800.png
+personal-ready-ja-390x844.png
+personal-taxonomy-ja-1440x900.png
+personal-taxonomy-ja-360x800.png
+personal-taxonomy-ja-390x844.png
+privacy-default-ja-1440x900.png
+privacy-default-ja-360x800.png
+privacy-default-ja-390x844.png
+register-default-ja-1440x900.png
+register-default-ja-360x800.png
+register-default-ja-390x844.png
+register-language-menu-2r2-en-1440x900.png
+register-language-menu-2r2-en-320x800.png
+register-language-menu-2r2-en-359x800.png
+register-language-menu-2r2-en-360x800.png
+register-language-menu-2r2-en-390x844.png
+register-language-menu-2r2-en-544x844.png
+register-language-menu-2r2-ja-1440x900.png
+register-language-menu-2r2-ja-320x800.png
+register-language-menu-2r2-ja-359x800.png
+register-language-menu-2r2-ja-360x800.png
+register-language-menu-2r2-ja-390x844.png
+register-language-menu-2r2-ja-544x844.png
+register-language-menu-2r2-zh-TW-1440x900.png
+register-language-menu-2r2-zh-TW-320x800.png
+register-language-menu-2r2-zh-TW-359x800.png
+register-language-menu-2r2-zh-TW-360x800.png
+register-language-menu-2r2-zh-TW-390x844.png
+register-language-menu-2r2-zh-TW-544x844.png
+register-smoke-ja-1440x900.png
+register-smoke-ja-360x800.png
+register-smoke-ja-390x844.png
+register-validation-ja-1440x900.png
+register-validation-ja-360x800.png
+register-validation-ja-390x844.png
+settings-default-ja-1440x900.png
+settings-default-ja-360x800.png
+settings-default-ja-390x844.png
+settings-language-changed-ja-1440x900.png
+settings-language-changed-ja-360x800.png
+settings-language-changed-ja-390x844.png
+settings-language-ja-1440x900.png
+settings-language-ja-360x800.png
+settings-language-ja-390x844.png
+shared-add-ja-1440x900.png
+shared-add-ja-360x800.png
+shared-add-ja-390x844.png
+shared-correction-ja-1440x900.png
+shared-correction-ja-360x800.png
+shared-correction-ja-390x844.png
+shared-delete-ja-1440x900.png
+shared-delete-ja-360x800.png
+shared-delete-ja-390x844.png
+shared-edit-ja-1440x900.png
+shared-edit-ja-360x800.png
+shared-edit-ja-390x844.png
+shared-lifecycle-ja-1440x900.png
+shared-lifecycle-ja-360x800.png
+shared-lifecycle-ja-390x844.png
+shared-ready-ja-1440x900.png
+shared-ready-ja-360x800.png
+shared-ready-ja-390x844.png
+shared-reference-ja-1440x900.png
+shared-reference-ja-360x800.png
+shared-reference-ja-390x844.png
+shared-settlement-ja-1440x900.png
+shared-settlement-ja-360x800.png
+shared-settlement-ja-390x844.png
+shared-settlement-mixed-ja-1440x900.png
+shared-settlement-mixed-ja-360x800.png
+shared-settlement-mixed-ja-390x844.png
+shared-start-settlement-ja-1440x900.png
+shared-start-settlement-ja-360x800.png
+shared-start-settlement-ja-390x844.png
+tasks-ready-ja-1440x900.png
+tasks-ready-ja-360x800.png
+tasks-ready-ja-390x844.png
+terms-default-ja-1440x900.png
+terms-default-ja-360x800.png
+terms-default-ja-390x844.png
+update-notice-default-ja-1440x900.png
+update-notice-default-ja-360x800.png
+update-notice-default-ja-390x844.png
+
+# 2026-11-24 小德審閱：下列 70 檔（非 390×844 的預期差異配對：landing 中英、fund 英文）移到 .tmp/phase-2ib-pixel-archive/，SHA-256 仍記在 pixel-regression-sha256.txt。
+# moved: A-fund-1024x768-en-2r7-before.png
+# moved: A-fund-1024x768-en-2r7-after.png
+# moved: A-fund-1280x720-en-2r7-before.png
+# moved: A-fund-1280x720-en-2r7-after.png
+# moved: A-fund-1366x768-en-2r7-before.png
+# moved: A-fund-1366x768-en-2r7-after.png
+# moved: A-fund-1440x900-en-2r7-before.png
+# moved: A-fund-1440x900-en-2r7-after.png
+# moved: A-fund-1536x864-en-2r7-before.png
+# moved: A-fund-1536x864-en-2r7-after.png
+# moved: A-fund-1920x1080-en-2r7-before.png
+# moved: A-fund-1920x1080-en-2r7-after.png
+# moved: A-fund-2560x1440-en-2r7-before.png
+# moved: A-fund-2560x1440-en-2r7-after.png
+# moved: A-fund-360x780-en-2r7-before.png
+# moved: A-fund-360x780-en-2r7-after.png
+# moved: A-fund-430x932-en-2r7-before.png
+# moved: A-fund-430x932-en-2r7-after.png
+# moved: A-fund-768x1024-en-2r7-before.png
+# moved: A-fund-768x1024-en-2r7-after.png
+# moved: A-landing-1024x768-en-2r7-before.png
+# moved: A-landing-1024x768-en-2r7-after.png
+# moved: A-landing-1024x768-zh-before.png
+# moved: A-landing-1024x768-zh-after.png
+# moved: A-landing-1024x768-zh-mask.png
+# moved: A-landing-1280x720-en-2r7-before.png
+# moved: A-landing-1280x720-en-2r7-after.png
+# moved: A-landing-1280x720-zh-before.png
+# moved: A-landing-1280x720-zh-after.png
+# moved: A-landing-1280x720-zh-mask.png
+# moved: A-landing-1366x768-en-2r7-before.png
+# moved: A-landing-1366x768-en-2r7-after.png
+# moved: A-landing-1366x768-zh-before.png
+# moved: A-landing-1366x768-zh-after.png
+# moved: A-landing-1366x768-zh-mask.png
+# moved: A-landing-1440x900-en-2r7-before.png
+# moved: A-landing-1440x900-en-2r7-after.png
+# moved: A-landing-1440x900-zh-before.png
+# moved: A-landing-1440x900-zh-after.png
+# moved: A-landing-1440x900-zh-mask.png
+# moved: A-landing-1536x864-en-2r7-before.png
+# moved: A-landing-1536x864-en-2r7-after.png
+# moved: A-landing-1536x864-zh-before.png
+# moved: A-landing-1536x864-zh-after.png
+# moved: A-landing-1536x864-zh-mask.png
+# moved: A-landing-1920x1080-en-2r7-before.png
+# moved: A-landing-1920x1080-en-2r7-after.png
+# moved: A-landing-1920x1080-zh-before.png
+# moved: A-landing-1920x1080-zh-after.png
+# moved: A-landing-1920x1080-zh-mask.png
+# moved: A-landing-2560x1440-en-2r7-before.png
+# moved: A-landing-2560x1440-en-2r7-after.png
+# moved: A-landing-2560x1440-zh-before.png
+# moved: A-landing-2560x1440-zh-after.png
+# moved: A-landing-2560x1440-zh-mask.png
+# moved: A-landing-360x780-en-2r7-before.png
+# moved: A-landing-360x780-en-2r7-after.png
+# moved: A-landing-360x780-zh-before.png
+# moved: A-landing-360x780-zh-after.png
+# moved: A-landing-360x780-zh-mask.png
+# moved: A-landing-430x932-en-2r7-before.png
+# moved: A-landing-430x932-en-2r7-after.png
+# moved: A-landing-430x932-zh-before.png
+# moved: A-landing-430x932-zh-after.png
+# moved: A-landing-430x932-zh-mask.png
+# moved: A-landing-768x1024-en-2r7-before.png
+# moved: A-landing-768x1024-en-2r7-after.png
+# moved: A-landing-768x1024-zh-before.png
+# moved: A-landing-768x1024-zh-after.png
+# moved: A-landing-768x1024-zh-mask.png

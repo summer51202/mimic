@@ -1,0 +1,170 @@
+[
+  {
+    "route": "/",
+    "locale": "zh-TW",
+    "width": 140,
+    "left": 109.625,
+    "right": 249.625,
+    "viewport": 360,
+    "items": [
+      {
+        "text": "中文（繁體）",
+        "width": 120,
+        "scroll": 120,
+        "checked": "true"
+      },
+      {
+        "text": "English",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "日本語",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      }
+    ]
+  },
+  {
+    "route": "/login",
+    "locale": "zh-TW",
+    "width": 140,
+    "left": 152.359375,
+    "right": 292.359375,
+    "viewport": 360,
+    "items": [
+      {
+        "text": "中文（繁體）",
+        "width": 120,
+        "scroll": 120,
+        "checked": "true"
+      },
+      {
+        "text": "English",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "日本語",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      }
+    ]
+  },
+  {
+    "route": "/",
+    "locale": "en",
+    "width": 140,
+    "left": 50.109375,
+    "right": 190.109375,
+    "viewport": 360,
+    "items": [
+      {
+        "text": "中文（繁體）",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "English",
+        "width": 120,
+        "scroll": 120,
+        "checked": "true"
+      },
+      {
+        "text": "日本語",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      }
+    ]
+  },
+  {
+    "route": "/login",
+    "locale": "en",
+    "width": 140,
+    "left": 166.65625,
+    "right": 306.65625,
+    "viewport": 360,
+    "items": [
+      {
+        "text": "中文（繁體）",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "English",
+        "width": 120,
+        "scroll": 120,
+        "checked": "true"
+      },
+      {
+        "text": "日本語",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      }
+    ]
+  },
+  {
+    "route": "/",
+    "locale": "ja",
+    "width": 140,
+    "left": 95.75,
+    "right": 235.75,
+    "viewport": 360,
+    "items": [
+      {
+        "text": "中文（繁體）",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "English",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "日本語",
+        "width": 120,
+        "scroll": 120,
+        "checked": "true"
+      }
+    ]
+  },
+  {
+    "route": "/login",
+    "locale": "ja",
+    "width": 140,
+    "left": -16.546875,
+    "right": 123.453125,
+    "viewport": 360,
+    "items": [
+      {
+        "text": "中文（繁體）",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "English",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "日本語",
+        "width": 120,
+        "scroll": 120,
+        "checked": "true"
+      }
+    ]
+  }
+]

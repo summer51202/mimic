@@ -1,0 +1,319 @@
+{
+  "name": "A-fund-returns-390x844",
+  "pixels": 4,
+  "groups": [
+    {
+      "pixels": 1,
+      "bounds": [
+        160,
+        1997,
+        161,
+        1998
+      ],
+      "maxChannelDelta": 2,
+      "points": [
+        {
+          "x": 160,
+          "y": 1997,
+          "delta": 2
+        }
+      ],
+      "image": "A-fund-returns-390x844-stop-group-1-8x.png"
+    },
+    {
+      "pixels": 1,
+      "bounds": [
+        162,
+        1997,
+        163,
+        1998
+      ],
+      "maxChannelDelta": 4,
+      "points": [
+        {
+          "x": 162,
+          "y": 1997,
+          "delta": 4
+        }
+      ],
+      "image": "A-fund-returns-390x844-stop-group-2-8x.png"
+    },
+    {
+      "pixels": 1,
+      "bounds": [
+        227,
+        1997,
+        228,
+        1998
+      ],
+      "maxChannelDelta": 3,
+      "points": [
+        {
+          "x": 227,
+          "y": 1997,
+          "delta": 3
+        }
+      ],
+      "image": "A-fund-returns-390x844-stop-group-3-8x.png"
+    },
+    {
+      "pixels": 1,
+      "bounds": [
+        229,
+        1997,
+        230,
+        1998
+      ],
+      "maxChannelDelta": 2,
+      "points": [
+        {
+          "x": 229,
+          "y": 1997,
+          "delta": 2
+        }
+      ],
+      "image": "A-fund-returns-390x844-stop-group-4-8x.png"
+    }
+  ],
+  "qualification": [
+    {
+      "name": "A-fund-returns-390x844",
+      "pixels": 4,
+      "groups": [
+        {
+          "pixels": 1,
+          "bounds": [
+            160,
+            1997,
+            161,
+            1998
+          ],
+          "maxChannelDelta": 2,
+          "points": [
+            {
+              "x": 160,
+              "y": 1997,
+              "delta": 2
+            }
+          ],
+          "image": "A-fund-returns-390x844-group-1-2r5-8x.png",
+          "failure": "No hit-tested corner with equal selector and rect",
+          "beforeHits": [
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > main:nth-child(1) > dialog:nth-child(9)",
+              "rect": {
+                "left": 8,
+                "top": 1400.796875,
+                "right": 382,
+                "bottom": 1867.1875
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > main:nth-child(1)",
+              "rect": {
+                "left": 16,
+                "top": 88,
+                "right": 374,
+                "bottom": 1908
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 64,
+                "right": 390,
+                "bottom": 2056
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 64,
+                "right": 390,
+                "bottom": 2056
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 390,
+                "bottom": 2056
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 390,
+                "bottom": 2056
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 390,
+                "bottom": 844
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            }
+          ],
+          "afterHits": [
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > main:nth-child(1) > dialog:nth-child(9)",
+              "rect": {
+                "left": 8,
+                "top": 1400.796875,
+                "right": 382,
+                "bottom": 1867.1875
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > main:nth-child(1)",
+              "rect": {
+                "left": 16,
+                "top": 88,
+                "right": 374,
+                "bottom": 1908
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 64,
+                "right": 390,
+                "bottom": 2056
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 64,
+                "right": 390,
+                "bottom": 2056
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 390,
+                "bottom": 2056
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 390,
+                "bottom": 2056
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 390,
+                "bottom": 844
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

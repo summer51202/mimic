@@ -2646,3 +2646,93 @@
 **What changed:** decision-log 新增 Phase 2I-2T 條目。ci.yml 是遠端工具保護檔，由 Ed 從 `.tmp/2i2t/ci.yml` 手動複製。
 **Checks:** ci.yml 的 SHA-256 與候選版相同；diff 確認只新增 `backend-db` job；在裝置上用複製後的 ci.yml 跑合約測試 50/50。
 **Follow-ups:** push 後看 GitHub Actions 五個 job 與 Backend database 的實際耗時；containers job 的 SC2034。
+
+## 2026-11-19 — Phase 2I-b header 前置量測停止
+
+**Task:** 依核准規格實作日文，先驗證明確的 header 停止條件。
+**Scope:** docs/design/assets/reviews/2026-11-19-phase-2ib/；.tmp/phase-2ib-baseline 與本輪量測腳本；本 devlog 只追加。
+**What changed:**
+- 建立 7bca944 乾淨 worktree（checkout core.autocrlf=false），未修改產品程式。
+- 以既有 header CSS 與規格指定文字建立 DOM 量測原型；320 px 六組狀態、三字族共 18 組，留下 JSON、截圖與 verification.md。
+- Liberation Sans 英文未登入需要 284.50 px／可用 288 px，餘裕 3.50 px；Arial 指定下實際使用 Arial Black，英文未登入需要 313.02 px，Log in 換行。
+**Decisions:** 依 spec §4／§8.6 停止，不縮短文案、不調整版面；診斷原型不視為日文功能完成。
+**Known gaps / follow-ups:** 等 Ed 決定 header 方案後恢復；backend／web 實作、兩樹 CI、Docker、專用 DB、舊 API、像素回歸及全頁日文驗收均未執行。兩份日文來源原地保留；未 stage／commit／push。
+
+
+## 2026-11-19 — Phase 2I-b 2R 通過，WSL 權限停止
+
+**Task:** 實作 2R 的窄螢幕 EN 語言按鈕，從 header 繼續日文階段。
+**Scope:** web/src/shared/i18n/、i18n config/request/messages/tests、globals.css、locale route test、test provider、web/e2e/i18n-phase-2ib.spec.ts；本輪審閱資料夾。
+**What changed:**
+- 共用語言按鈕加入完整／短自稱 span、選單與 aria 名稱，359.98 px 以下英文顯示 EN；加入日本語選項、定稿 ja.json 與限定日文字型。
+- 三語 × 兩狀態 × 三字族 × 七寬度共 126 格實際元件量測全部通過；320 最小餘裕 10.33 px。
+- 局部 Vitest 六檔 23 項通過；新增 2R e2e 尚未執行。保留舊前置證據並更新 verification.md。
+**Decisions:** header 通過後檢查指定 WSL Docker，wsl --exec sh -lc docker version 回傳存取被拒／Wsl/E_ACCESSDENIED，依使用者明確停止指示停止；不改用其他環境跑 CI。
+**Known gaps / follow-ups:** 部分實作未完成、不可部署。backend／migration／DTO、排程摘要、fallback／manifest、glossary、兩樹 CI／Docker、專用 DB、舊 API、DOM／像素回歸及日文全頁驗收均未完成；須解決 WSL 後恢復。兩份日文來源 hash 未變；header-preflight.* 與原 18 圖保留。未 stage／commit／push。
+
+
+## 2026-11-19 — Phase 2I-b 實作與日文選單溢出停止
+
+**Task:** 授權提升 WSL 權限後繼續日文實作及完整驗證。
+**Scope:** backend taxonomy catalog／DTO、ja migration／contract／DB tests；web i18n／language menu／schedule／fallback／tests／e2e；docs/i18n/glossary.md 與本輪審閱資料。
+**What changed:**
+- 補日文分類與只更新 translations／updated_at 的 31 筆新 migration；完成三語排程摘要與 fallback、術語表。審閱日文僅改 spec 授權 keys。
+- 只有後端樹 WSL Docker node:22 五 job 通過；DB migration-only 8／8、financial-spaces 156／156；全部樹 naming／backend 通過，其他 job 未完成。
+- production 日文 App／彈窗 360／390／1440 三矩陣通過；語言 e2e 10／10。A DOM 112、B DOM 13 組一致；完整像素回歸尚未開始。
+- 日文登入頁 360 px 展開語言選單時，left=-16.546875、width=140，左側溢出 16.55 px，已保存截圖與 JSON。
+**Decisions:** 依 spec §4／§8.6 即刻停止，未自行改選單定位、版面或文案；WSL E_ACCESSDENIED 已由授權提升執行解決。
+**Known gaps / follow-ups:** 等 Ed 決定選單定位，然後補完 CI／Docker runtime、舊 API fallback、全套 e2e、public 截圖、A／B 三語 DOM／RGBA 容差 0 與 SHA-256 歸檔。verification.md 詳列通過／中止／未跑。原文案與前置 18 圖保留；未 stage／commit／push。
+
+
+## 2026-11-23 — Phase 2I-b 2R2 語言選單定位
+
+**Task:** 實作並驗證 2R2 選單自動翻轉。
+**Scope:** LanguageSwitch、定位測試、審閱量測及截圖。
+**What changed:** 開啟時依邊界決定 data-align 與 translateX。Chrome 54/54 格已量測，0 格超界。Vitest 7/7、e2e 2/2 通過。
+**Decisions:** 選單保持開啟時，resize 會重新量測。
+**Known gaps / follow-ups:** 最終 CI、相容性、完整回歸與歸檔待完成。
+
+
+## 2026-11-23 — Phase 2I-b 修正 Next.js 開發環境警告
+
+**Task:** 追查 2R2 截圖中的 Next.js 2 Issues，改以 production 重驗。
+**Scope:** LanguageSwitch 選單容器與驗證紀錄。
+**What changed:** 選單展開時不再把 div 插入登入提示的 p。使用 span 保留 role 與定位。
+**Decisions:** 兩則 React 警告來自同一個無效巢狀。7bca944 基線及修正後 dev 對照均為零則。
+**Known gaps / follow-ups:** Production 截圖及後續 CI／回歸的實測結果見 verification.md。
+
+
+## 2026-11-23 — Phase 2I-b 2R5 圓角驗證停止
+
+**Task:** 重驗 2R5 圓角例外並續跑三語回歸與 e2e。
+**Scope:** 審閱資料、RGBA／DOM、專用 e2e。
+**What changed:** 六組符合 computed radius、selector、rect 條件。已標記原 PNG 的 SHA-256 並保留 8 倍對照。基金退回彈窗有四個差異像素，第一群未命中合格角落。
+**Decisions:** 角落歸屬用 elementsFromPoint 的像素中心，完整像素格 bounding box 另列。依 2R5 停止，維持零容差。
+**Known gaps / follow-ups:** 三語回歸、全套 e2e、基線失敗重現與最終歸檔中止。詳見 verification.md。
+
+
+## 2026-11-24 — Phase 2I-b 2R6 全頁座標驗證停止
+
+**Task:** 依 2R6 使用完整 PNG 尺寸與 querySelectorAll 驗證角落。
+**Scope:** 回歸證據與審閱紀錄。
+**What changed:** A-home-idle 的 360×1195 viewport 令 active 導覽上緣由原 viewport 的 718 移到 1133，原 PNG 差異 y=721 不在量測 rect；已保留前後 selector、rect、radius、c、viewport 與 8 倍圖。
+**Decisions:** 重現時照 2R6 指定尺寸，沒有改用原 viewport 判通過；首組失敗即停止。
+**Known gaps / follow-ups:** 其餘六組 2R6、三語回歸、全套 e2e 與最終歸檔未執行。
+
+
+## 2026-11-24 — Phase 2I-b 2R7 視覺審核
+
+**Task:** 依 2R7 重拍差異配對、完成三語回歸與專用環境的全套 e2e。
+**Scope:** Phase 2I-b 審閱資料、PNG 歸檔、SHA-256 清單與驗證紀錄。
+**What changed:** 七組舊差異重拍後五組逐像素相同、兩組符合 aa-noise。三語矩陣無不合規差異，保留原 PNG 與雜湊，核對 972 張 PNG。補齊日文公開與狀態截圖。全套 e2e 為 549 通過、2 失敗、237 略過。
+**Decisions:** 擷取後立即量 rect 與 scroll，沿用原 viewport、彈窗與零容差。日文 B 組完成，7bca944 Web 沒有日文 A 組對照。
+**Known gaps / follow-ups:** 兩個 phone viewport 測試在 7bca944 重現相同斷言，待視覺審核。
+
+
+## 2026-11-24 — Phase 2I-b 核准（小德審閱）
+
+**Task:** 審閱 Phase 2I-b 日文，經 Ed 核准後 commit。
+**Scope:** backend（taxonomy ja migration、DTO）、web（ja.json、語言選單、:lang(ja)、排程摘要、離線頁與 global-error）、docs（spec、glossary、審閱資料夾、decision-log）。
+**What changed:** 小德逐一比對三份訊息檔與 7bca944 及審閱定稿、看過 15 組 aa-noise 放大圖與日文截圖，確認英文排程摘要差異；把 70 個非 390×844 的預期差異配對移到 .tmp/phase-2ib-pixel-archive/，審閱資料夾約 105 MB。
+**Decisions:** Ed 核准直接上線；後端先 push，web 後 push。2R6 的前提錯誤，由 2R7（擷取當下量 rect）取代。
+**Known gaps / follow-ups:** phone 寬度的兩個 e2e 為既有問題；系統標籤英文名未改；Railway 部署後請 Ed 在 staging 實測日文。

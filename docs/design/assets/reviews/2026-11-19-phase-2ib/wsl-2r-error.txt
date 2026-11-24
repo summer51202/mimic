@@ -1,0 +1,4 @@
+Command argv: ["wsl.exe", "--exec", "sh", "-lc", "docker version"]
+Exit: 4294967295
+存取被拒。 
+錯誤碼: Wsl/E_ACCESSDENIED

@@ -1,0 +1,44 @@
+{
+  "status": "STOP: spec 4 menu boundary and 8.6 Japanese overflow",
+  "failure": {
+    "route": "/login",
+    "locale": "ja",
+    "width": 140,
+    "left": -16.546875,
+    "right": 123.453125,
+    "viewport": 360,
+    "items": [
+      {
+        "text": "中文（繁體）",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "English",
+        "width": 120,
+        "scroll": 120,
+        "checked": "false"
+      },
+      {
+        "text": "日本語",
+        "width": 120,
+        "scroll": 120,
+        "checked": "true"
+      }
+    ]
+  },
+  "completedMenuCells": 6,
+  "dom": {
+    "A": 112,
+    "B": 13,
+    "mismatches": 0
+  },
+  "screenshotCount": 229,
+  "japaneseScreenshotCount": 200,
+  "reviewedJapaneseUnchangedBeyondApprovedKeys": true,
+  "sourceHashes": {
+    "final": "f7869b371563e8b6deb56ed9b91fa5e0332a0767fcea9ef21f3c1ef1a302af6f",
+    "review": "74157fb47a6c06f493267ddef7212e5dc138d6fd7c9960c972fc518804ef4da4"
+  }
+}

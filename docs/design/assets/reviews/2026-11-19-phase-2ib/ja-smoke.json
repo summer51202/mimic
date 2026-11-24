@@ -1,0 +1,1035 @@
+[
+  {
+    "route": "/",
+    "width": 360,
+    "height": 800,
+    "lang": "ja",
+    "pageWidth": 360,
+    "viewport": 360,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "日本語\n▾",
+        "width": 70,
+        "scroll": 70,
+        "lineTops": [
+          25,
+          22
+        ]
+      },
+      {
+        "text": "",
+        "width": 110,
+        "scroll": 110,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 44,
+        "scroll": 44,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 54,
+        "scroll": 54,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 54,
+        "scroll": 54,
+        "lineTops": []
+      },
+      {
+        "text": "◀",
+        "width": 40,
+        "scroll": 40,
+        "lineTops": [
+          346
+        ]
+      },
+      {
+        "text": "▶",
+        "width": 40,
+        "scroll": 40,
+        "lineTops": [
+          346
+        ]
+      },
+      {
+        "text": "アニメーションを一時停止",
+        "width": 138,
+        "scroll": 138,
+        "lineTops": [
+          90
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/features",
+    "width": 360,
+    "height": 800,
+    "lang": "ja",
+    "pageWidth": 360,
+    "viewport": 360,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "日本語\n▾",
+        "width": 70,
+        "scroll": 70,
+        "lineTops": [
+          25,
+          22
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/login",
+    "width": 360,
+    "height": 800,
+    "lang": "ja",
+    "pageWidth": 360,
+    "viewport": 360,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "ログイン",
+        "width": 272,
+        "scroll": 272,
+        "lineTops": [
+          582
+        ]
+      },
+      {
+        "text": "日本語 ▾",
+        "width": 81,
+        "scroll": 81,
+        "lineTops": [
+          676
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/register",
+    "width": 360,
+    "height": 800,
+    "lang": "ja",
+    "pageWidth": 360,
+    "viewport": 360,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "新規登録",
+        "width": 272,
+        "scroll": 272,
+        "lineTops": [
+          701
+        ]
+      },
+      {
+        "text": "日本語 ▾",
+        "width": 81,
+        "scroll": 81,
+        "lineTops": [
+          795
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app",
+    "width": 360,
+    "height": 800,
+    "lang": "ja",
+    "pageWidth": 360,
+    "viewport": 360,
+    "nav": [
+      {
+        "text": "ホーム",
+        "width": 26,
+        "scroll": 26,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "マイ宝箱",
+        "width": 40,
+        "scroll": 40,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "パーティー",
+        "width": 41,
+        "scroll": 41,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "クエスト",
+        "width": 35,
+        "scroll": 35,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "設定",
+        "width": 23,
+        "scroll": 23,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "アニメーションを一時停止",
+        "width": 150,
+        "scroll": 150,
+        "lineTops": [
+          484
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/personal",
+    "width": 360,
+    "height": 800,
+    "lang": "ja",
+    "pageWidth": 360,
+    "viewport": 360,
+    "nav": [
+      {
+        "text": "ホーム",
+        "width": 26,
+        "scroll": 26,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "マイ宝箱",
+        "width": 40,
+        "scroll": 40,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "パーティー",
+        "width": 41,
+        "scroll": 41,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "クエスト",
+        "width": 35,
+        "scroll": 35,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "設定",
+        "width": 23,
+        "scroll": 23,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "宝箱を追加",
+        "width": 108,
+        "scroll": 108,
+        "lineTops": [
+          244
+        ]
+      },
+      {
+        "text": "支出を記録",
+        "width": 108,
+        "scroll": 108,
+        "lineTops": [
+          909
+        ]
+      },
+      {
+        "text": "編集",
+        "width": 64,
+        "scroll": 64,
+        "lineTops": [
+          1078
+        ]
+      },
+      {
+        "text": "削除",
+        "width": 64,
+        "scroll": 64,
+        "lineTops": [
+          1078
+        ]
+      },
+      {
+        "text": "カテゴリとタグを管理",
+        "width": 292,
+        "scroll": 292,
+        "lineTops": [
+          1208
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/settings",
+    "width": 360,
+    "height": 800,
+    "lang": "ja",
+    "pageWidth": 360,
+    "viewport": 360,
+    "nav": [
+      {
+        "text": "ホーム",
+        "width": 26,
+        "scroll": 26,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "マイ宝箱",
+        "width": 40,
+        "scroll": 40,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "パーティー",
+        "width": 41,
+        "scroll": 41,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "クエスト",
+        "width": 35,
+        "scroll": 35,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "設定",
+        "width": 23,
+        "scroll": 23,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "ID をコピー",
+        "width": 98,
+        "scroll": 98,
+        "lineTops": [
+          416
+        ]
+      },
+      {
+        "text": "変更を保存",
+        "width": 268,
+        "scroll": 268,
+        "lineTops": [
+          676
+        ]
+      },
+      {
+        "text": "ログアウト",
+        "width": 268,
+        "scroll": 268,
+        "lineTops": [
+          955
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/tasks",
+    "width": 360,
+    "height": 800,
+    "lang": "ja",
+    "pageWidth": 360,
+    "viewport": 360,
+    "nav": [
+      {
+        "text": "ホーム",
+        "width": 26,
+        "scroll": 26,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "マイ宝箱",
+        "width": 40,
+        "scroll": 40,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "パーティー",
+        "width": 41,
+        "scroll": 41,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "クエスト",
+        "width": 35,
+        "scroll": 35,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "設定",
+        "width": 23,
+        "scroll": 23,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      }
+    ],
+    "buttons": [],
+    "issues": []
+  },
+  {
+    "route": "/",
+    "width": 390,
+    "height": 844,
+    "lang": "ja",
+    "pageWidth": 390,
+    "viewport": 390,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "日本語\n▾",
+        "width": 70,
+        "scroll": 70,
+        "lineTops": [
+          25,
+          22
+        ]
+      },
+      {
+        "text": "",
+        "width": 110,
+        "scroll": 110,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 44,
+        "scroll": 44,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 54,
+        "scroll": 54,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 54,
+        "scroll": 54,
+        "lineTops": []
+      },
+      {
+        "text": "◀",
+        "width": 40,
+        "scroll": 40,
+        "lineTops": [
+          346
+        ]
+      },
+      {
+        "text": "▶",
+        "width": 40,
+        "scroll": 40,
+        "lineTops": [
+          346
+        ]
+      },
+      {
+        "text": "アニメーションを一時停止",
+        "width": 138,
+        "scroll": 138,
+        "lineTops": [
+          90
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/features",
+    "width": 390,
+    "height": 844,
+    "lang": "ja",
+    "pageWidth": 390,
+    "viewport": 390,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "日本語\n▾",
+        "width": 70,
+        "scroll": 70,
+        "lineTops": [
+          25,
+          22
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/login",
+    "width": 390,
+    "height": 844,
+    "lang": "ja",
+    "pageWidth": 390,
+    "viewport": 390,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "ログイン",
+        "width": 302,
+        "scroll": 302,
+        "lineTops": [
+          582
+        ]
+      },
+      {
+        "text": "日本語 ▾",
+        "width": 81,
+        "scroll": 81,
+        "lineTops": [
+          676
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/register",
+    "width": 390,
+    "height": 844,
+    "lang": "ja",
+    "pageWidth": 390,
+    "viewport": 390,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "新規登録",
+        "width": 302,
+        "scroll": 302,
+        "lineTops": [
+          701
+        ]
+      },
+      {
+        "text": "日本語 ▾",
+        "width": 81,
+        "scroll": 81,
+        "lineTops": [
+          795
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app",
+    "width": 390,
+    "height": 844,
+    "lang": "ja",
+    "pageWidth": 390,
+    "viewport": 390,
+    "nav": [
+      {
+        "text": "ホーム",
+        "width": 26,
+        "scroll": 26,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "マイ宝箱",
+        "width": 40,
+        "scroll": 40,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "パーティー",
+        "width": 41,
+        "scroll": 41,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "クエスト",
+        "width": 35,
+        "scroll": 35,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "設定",
+        "width": 23,
+        "scroll": 23,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "アニメーションを一時停止",
+        "width": 150,
+        "scroll": 150,
+        "lineTops": [
+          484
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/personal",
+    "width": 390,
+    "height": 844,
+    "lang": "ja",
+    "pageWidth": 390,
+    "viewport": 390,
+    "nav": [
+      {
+        "text": "ホーム",
+        "width": 26,
+        "scroll": 26,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "マイ宝箱",
+        "width": 40,
+        "scroll": 40,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "パーティー",
+        "width": 41,
+        "scroll": 41,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "クエスト",
+        "width": 35,
+        "scroll": 35,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "設定",
+        "width": 23,
+        "scroll": 23,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "宝箱を追加",
+        "width": 108,
+        "scroll": 108,
+        "lineTops": [
+          244
+        ]
+      },
+      {
+        "text": "支出を記録",
+        "width": 108,
+        "scroll": 108,
+        "lineTops": [
+          909
+        ]
+      },
+      {
+        "text": "編集",
+        "width": 64,
+        "scroll": 64,
+        "lineTops": [
+          1078
+        ]
+      },
+      {
+        "text": "削除",
+        "width": 64,
+        "scroll": 64,
+        "lineTops": [
+          1078
+        ]
+      },
+      {
+        "text": "カテゴリとタグを管理",
+        "width": 322,
+        "scroll": 322,
+        "lineTops": [
+          1208
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/settings",
+    "width": 390,
+    "height": 844,
+    "lang": "ja",
+    "pageWidth": 390,
+    "viewport": 390,
+    "nav": [
+      {
+        "text": "ホーム",
+        "width": 26,
+        "scroll": 26,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "マイ宝箱",
+        "width": 40,
+        "scroll": 40,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "パーティー",
+        "width": 41,
+        "scroll": 41,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "クエスト",
+        "width": 35,
+        "scroll": 35,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "設定",
+        "width": 23,
+        "scroll": 23,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      }
+    ],
+    "buttons": [
+      {
+        "text": "ID をコピー",
+        "width": 98,
+        "scroll": 98,
+        "lineTops": [
+          418
+        ]
+      },
+      {
+        "text": "変更を保存",
+        "width": 298,
+        "scroll": 298,
+        "lineTops": [
+          678
+        ]
+      },
+      {
+        "text": "ログアウト",
+        "width": 298,
+        "scroll": 298,
+        "lineTops": [
+          957
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/tasks",
+    "width": 390,
+    "height": 844,
+    "lang": "ja",
+    "pageWidth": 390,
+    "viewport": 390,
+    "nav": [
+      {
+        "text": "ホーム",
+        "width": 26,
+        "scroll": 26,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "マイ宝箱",
+        "width": 40,
+        "scroll": 40,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "パーティー",
+        "width": 41,
+        "scroll": 41,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "クエスト",
+        "width": 35,
+        "scroll": 35,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      },
+      {
+        "text": "設定",
+        "width": 23,
+        "scroll": 23,
+        "font": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+      }
+    ],
+    "buttons": [],
+    "issues": []
+  },
+  {
+    "route": "/",
+    "width": 1440,
+    "height": 900,
+    "lang": "ja",
+    "pageWidth": 1440,
+    "viewport": 1440,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "日本語\n▾",
+        "width": 86,
+        "scroll": 86,
+        "lineTops": [
+          26,
+          22
+        ]
+      },
+      {
+        "text": "",
+        "width": 156,
+        "scroll": 156,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 29,
+        "scroll": 29,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 78,
+        "scroll": 78,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 31,
+        "scroll": 31,
+        "lineTops": []
+      },
+      {
+        "text": "",
+        "width": 72,
+        "scroll": 72,
+        "lineTops": []
+      },
+      {
+        "text": "アニメーションを一時停止",
+        "width": 138,
+        "scroll": 138,
+        "lineTops": [
+          94
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/features",
+    "width": 1440,
+    "height": 900,
+    "lang": "ja",
+    "pageWidth": 1440,
+    "viewport": 1440,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "日本語\n▾",
+        "width": 86,
+        "scroll": 86,
+        "lineTops": [
+          26,
+          22
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/login",
+    "width": 1440,
+    "height": 900,
+    "lang": "ja",
+    "pageWidth": 1440,
+    "viewport": 1440,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "ログイン",
+        "width": 512,
+        "scroll": 512,
+        "lineTops": [
+          565
+        ]
+      },
+      {
+        "text": "日本語 ▾",
+        "width": 81,
+        "scroll": 81,
+        "lineTops": [
+          633
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/register",
+    "width": 1440,
+    "height": 900,
+    "lang": "ja",
+    "pageWidth": 1440,
+    "viewport": 1440,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "新規登録",
+        "width": 512,
+        "scroll": 512,
+        "lineTops": [
+          624
+        ]
+      },
+      {
+        "text": "日本語 ▾",
+        "width": 81,
+        "scroll": 81,
+        "lineTops": [
+          692
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app",
+    "width": 1440,
+    "height": 900,
+    "lang": "ja",
+    "pageWidth": 1440,
+    "viewport": 1440,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "アニメーションを一時停止",
+        "width": 150,
+        "scroll": 150,
+        "lineTops": [
+          116
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/personal",
+    "width": 1440,
+    "height": 900,
+    "lang": "ja",
+    "pageWidth": 1440,
+    "viewport": 1440,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "宝箱を追加",
+        "width": 108,
+        "scroll": 108,
+        "lineTops": [
+          183
+        ]
+      },
+      {
+        "text": "支出を記録",
+        "width": 108,
+        "scroll": 108,
+        "lineTops": [
+          648
+        ]
+      },
+      {
+        "text": "編集",
+        "width": 64,
+        "scroll": 64,
+        "lineTops": [
+          746
+        ]
+      },
+      {
+        "text": "削除",
+        "width": 64,
+        "scroll": 64,
+        "lineTops": [
+          746
+        ]
+      },
+      {
+        "text": "カテゴリとタグを管理",
+        "width": 1020,
+        "scroll": 1020,
+        "lineTops": [
+          884
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/settings",
+    "width": 1440,
+    "height": 900,
+    "lang": "ja",
+    "pageWidth": 1440,
+    "viewport": 1440,
+    "nav": [],
+    "buttons": [
+      {
+        "text": "ID をコピー",
+        "width": 98,
+        "scroll": 98,
+        "lineTops": [
+          362
+        ]
+      },
+      {
+        "text": "変更を保存",
+        "width": 1076,
+        "scroll": 1076,
+        "lineTops": [
+          624
+        ]
+      },
+      {
+        "text": "ログアウト",
+        "width": 93,
+        "scroll": 93,
+        "lineTops": [
+          797
+        ]
+      }
+    ],
+    "issues": []
+  },
+  {
+    "route": "/app/tasks",
+    "width": 1440,
+    "height": 900,
+    "lang": "ja",
+    "pageWidth": 1440,
+    "viewport": 1440,
+    "nav": [],
+    "buttons": [],
+    "issues": []
+  }
+]

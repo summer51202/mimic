@@ -1,0 +1,344 @@
+[
+  {
+    "name": "A-home-idle-360x780",
+    "pixels": 2,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          73,
+          721,
+          74,
+          722
+        ],
+        "maxChannelDelta": 12,
+        "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+        "rects": {
+          "before": {
+            "left": 12,
+            "top": 718,
+            "right": 76,
+            "bottom": 772
+          },
+          "after": {
+            "left": 12,
+            "top": 718,
+            "right": 76,
+            "bottom": 772
+          }
+        },
+        "image": "A-home-idle-360x780-group-1-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          75,
+          721,
+          76,
+          722
+        ],
+        "maxChannelDelta": 5,
+        "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+        "rects": {
+          "before": {
+            "left": 12,
+            "top": 718,
+            "right": 76,
+            "bottom": 772
+          },
+          "after": {
+            "left": 12,
+            "top": 718,
+            "right": 76,
+            "bottom": 772
+          }
+        },
+        "image": "A-home-idle-360x780-group-2-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "A-home-idle-430x932",
+    "pixels": 2,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          87,
+          873,
+          88,
+          874
+        ],
+        "maxChannelDelta": 12,
+        "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+        "rects": {
+          "before": {
+            "left": 12,
+            "top": 870,
+            "right": 90,
+            "bottom": 924
+          },
+          "after": {
+            "left": 12,
+            "top": 870,
+            "right": 90,
+            "bottom": 924
+          }
+        },
+        "image": "A-home-idle-430x932-group-1-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          89,
+          873,
+          90,
+          874
+        ],
+        "maxChannelDelta": 5,
+        "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+        "rects": {
+          "before": {
+            "left": 12,
+            "top": 870,
+            "right": 90,
+            "bottom": 924
+          },
+          "after": {
+            "left": 12,
+            "top": 870,
+            "right": 90,
+            "bottom": 924
+          }
+        },
+        "image": "A-home-idle-430x932-group-2-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "A-home-empty-360x780",
+    "pixels": 2,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          73,
+          721,
+          74,
+          722
+        ],
+        "maxChannelDelta": 12,
+        "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+        "rects": {
+          "before": {
+            "left": 12,
+            "top": 718,
+            "right": 76,
+            "bottom": 772
+          },
+          "after": {
+            "left": 12,
+            "top": 718,
+            "right": 76,
+            "bottom": 772
+          }
+        },
+        "image": "A-home-empty-360x780-group-1-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          75,
+          721,
+          76,
+          722
+        ],
+        "maxChannelDelta": 5,
+        "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+        "rects": {
+          "before": {
+            "left": 12,
+            "top": 718,
+            "right": 76,
+            "bottom": 772
+          },
+          "after": {
+            "left": 12,
+            "top": 718,
+            "right": 76,
+            "bottom": 772
+          }
+        },
+        "image": "A-home-empty-360x780-group-2-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "A-home-ready-430x932",
+    "pixels": 2,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          87,
+          873,
+          88,
+          874
+        ],
+        "maxChannelDelta": 12,
+        "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+        "rects": {
+          "before": {
+            "left": 12,
+            "top": 870,
+            "right": 90,
+            "bottom": 924
+          },
+          "after": {
+            "left": 12,
+            "top": 870,
+            "right": 90,
+            "bottom": 924
+          }
+        },
+        "image": "A-home-ready-430x932-group-1-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          89,
+          873,
+          90,
+          874
+        ],
+        "maxChannelDelta": 5,
+        "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+        "rects": {
+          "before": {
+            "left": 12,
+            "top": 870,
+            "right": 90,
+            "bottom": 924
+          },
+          "after": {
+            "left": 12,
+            "top": 870,
+            "right": 90,
+            "bottom": 924
+          }
+        },
+        "image": "A-home-ready-430x932-group-2-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "A-personal-add-390x844",
+    "pixels": 5,
+    "groups": [
+      {
+        "pixels": 2,
+        "bounds": [
+          373,
+          444,
+          374,
+          446
+        ],
+        "maxChannelDelta": 17,
+        "selector": "dialog[open]",
+        "rects": {
+          "before": {
+            "left": 16,
+            "top": 443,
+            "right": 374,
+            "bottom": 1255
+          },
+          "after": {
+            "left": 16,
+            "top": 443,
+            "right": 374,
+            "bottom": 1255
+          }
+        },
+        "image": "A-personal-add-390x844-group-1-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          44,
+          944,
+          45,
+          945
+        ],
+        "maxChannelDelta": 1,
+        "selector": "dialog[open] > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > fieldset:nth-child(4) > label:nth-child(3) > select:nth-child(1)",
+        "rects": {
+          "before": {
+            "left": 44,
+            "top": 943,
+            "right": 346,
+            "bottom": 987
+          },
+          "after": {
+            "left": 44,
+            "top": 943,
+            "right": 346,
+            "bottom": 987
+          }
+        },
+        "image": "A-personal-add-390x844-group-2-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          44,
+          946,
+          45,
+          947
+        ],
+        "maxChannelDelta": 7,
+        "selector": "dialog[open] > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > fieldset:nth-child(4) > label:nth-child(3) > select:nth-child(1)",
+        "rects": {
+          "before": {
+            "left": 44,
+            "top": 943,
+            "right": 346,
+            "bottom": 987
+          },
+          "after": {
+            "left": 44,
+            "top": 943,
+            "right": 346,
+            "bottom": 987
+          }
+        },
+        "image": "A-personal-add-390x844-group-3-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          46,
+          946,
+          47,
+          947
+        ],
+        "maxChannelDelta": 1,
+        "selector": "dialog[open] > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > fieldset:nth-child(4) > label:nth-child(3) > select:nth-child(1)",
+        "rects": {
+          "before": {
+            "left": 44,
+            "top": 943,
+            "right": 346,
+            "bottom": 987
+          },
+          "after": {
+            "left": 44,
+            "top": 943,
+            "right": 346,
+            "bottom": 987
+          }
+        },
+        "image": "A-personal-add-390x844-group-4-8x.png"
+      }
+    ]
+  }
+]

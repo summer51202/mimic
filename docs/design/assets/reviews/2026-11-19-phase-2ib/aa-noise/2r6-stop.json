@@ -1,0 +1,404 @@
+{
+  "name": "A-home-idle-360x780",
+  "pixels": 2,
+  "groups": [
+    {
+      "pixels": 1,
+      "bounds": [
+        73,
+        721,
+        74,
+        722
+      ],
+      "maxChannelDelta": 12,
+      "points": [
+        {
+          "x": 73,
+          "y": 721,
+          "delta": 12
+        }
+      ],
+      "image": "A-home-idle-360x780-2r6-stop-group-1-8x.png"
+    },
+    {
+      "pixels": 1,
+      "bounds": [
+        75,
+        721,
+        76,
+        722
+      ],
+      "maxChannelDelta": 5,
+      "points": [
+        {
+          "x": 75,
+          "y": 721,
+          "delta": 5
+        }
+      ],
+      "image": "A-home-idle-360x780-2r6-stop-group-2-8x.png"
+    }
+  ],
+  "before": {
+    "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+    "viewport": {
+      "width": 360,
+      "height": 1195
+    },
+    "activeNav": [
+      {
+        "rect": {
+          "x": 12,
+          "y": 1133,
+          "width": 64,
+          "height": 54,
+          "top": 1133,
+          "right": 76,
+          "bottom": 1187,
+          "left": 12
+        },
+        "topLeftRadius": "4px",
+        "topRightRadius": "4px"
+      }
+    ],
+    "original": {
+      "width": 360,
+      "height": 780
+    },
+    "originalNav": [
+      {
+        "rect": {
+          "x": 12,
+          "y": 718,
+          "width": 64,
+          "height": 54,
+          "top": 718,
+          "right": 76,
+          "bottom": 772,
+          "left": 12
+        },
+        "topLeftRadius": "4px",
+        "topRightRadius": "4px"
+      }
+    ]
+  },
+  "after": {
+    "selector": "nav[data-variant=\"mobile\"] [data-current=\"true\"]",
+    "viewport": {
+      "width": 360,
+      "height": 1195
+    },
+    "activeNav": [
+      {
+        "rect": {
+          "x": 12,
+          "y": 1133,
+          "width": 64,
+          "height": 54,
+          "top": 1133,
+          "right": 76,
+          "bottom": 1187,
+          "left": 12
+        },
+        "topLeftRadius": "4px",
+        "topRightRadius": "4px"
+      }
+    ],
+    "original": {
+      "width": 360,
+      "height": 780
+    },
+    "originalNav": [
+      {
+        "rect": {
+          "x": 12,
+          "y": 718,
+          "width": 64,
+          "height": 54,
+          "top": 718,
+          "right": 76,
+          "bottom": 772,
+          "left": 12
+        },
+        "topLeftRadius": "4px",
+        "topRightRadius": "4px"
+      }
+    ]
+  },
+  "c": 4,
+  "validation": [
+    {
+      "name": "A-home-idle-360x780",
+      "pixels": 2,
+      "viewport": {
+        "width": 360,
+        "height": 1195
+      },
+      "groups": [
+        {
+          "pixels": 1,
+          "bounds": [
+            73,
+            721,
+            74,
+            722
+          ],
+          "maxChannelDelta": 12,
+          "points": [
+            {
+              "x": 73,
+              "y": 721,
+              "delta": 12
+            }
+          ],
+          "image": "A-home-idle-360x780-group-1-2r6-8x.png",
+          "failure": "No enumerated corner with equal selector and rect at full PNG viewport",
+          "beforeHits": [
+            {
+              "selector": "html",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 64,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 64,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1)",
+              "rect": {
+                "left": 16,
+                "top": 88,
+                "right": 344,
+                "bottom": 1091
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2)",
+              "rect": {
+                "left": 32,
+                "top": 712,
+                "right": 328,
+                "bottom": 815
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2) > p:nth-child(1)",
+              "rect": {
+                "left": 32,
+                "top": 712,
+                "right": 328,
+                "bottom": 754
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            }
+          ],
+          "afterHits": [
+            {
+              "selector": "html",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 0,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 64,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2)",
+              "rect": {
+                "left": 0,
+                "top": 64,
+                "right": 360,
+                "bottom": 1195
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1)",
+              "rect": {
+                "left": 16,
+                "top": 88,
+                "right": 344,
+                "bottom": 1091
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2)",
+              "rect": {
+                "left": 32,
+                "top": 712,
+                "right": 328,
+                "bottom": 815
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            },
+            {
+              "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > div:nth-child(2) > p:nth-child(1)",
+              "rect": {
+                "left": 32,
+                "top": 712,
+                "right": 328,
+                "bottom": 754
+              },
+              "radii": [
+                "0px",
+                "0px",
+                "0px",
+                "0px"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

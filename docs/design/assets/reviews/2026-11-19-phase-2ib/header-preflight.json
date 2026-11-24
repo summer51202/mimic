@@ -1,0 +1,1303 @@
+{
+  "method": "7bca944 rendered header; DOM-only prototype of specified current-name plus text arrow, unchanged layout CSS. Not a completed LanguageSwitch implementation or pixel regression.",
+  "browser": "158.0.8127.37",
+  "results": [
+    {
+      "locale": "zh-TW",
+      "authenticated": false,
+      "font": "Arial",
+      "viewport": 320,
+      "available": 288,
+      "required": 224.5625,
+      "margin": 63.4375,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 66.671875,
+          "naturalWidth": 66.671875,
+          "lineTops": [
+            18
+          ],
+          "overflow": false
+        },
+        {
+          "text": "中文\n▾",
+          "width": 55.515625,
+          "naturalWidth": 55.515625,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "功能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "登入",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "微軟正黑體",
+            "postScriptName": "MicrosoftJhengHeiBold",
+            "isCustomFont": false,
+            "glyphCount": 2
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Arial Black",
+            "postScriptName": "Arial-Black",
+            "isCustomFont": false,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-TW",
+      "authenticated": true,
+      "font": "Arial",
+      "viewport": 320,
+      "available": 288,
+      "required": 253.359375,
+      "margin": 34.640625,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 66.671875,
+          "naturalWidth": 66.671875,
+          "lineTops": [
+            18
+          ],
+          "overflow": false
+        },
+        {
+          "text": "中文\n▾",
+          "width": 55.515625,
+          "naturalWidth": 55.515625,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "功能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "返回基地",
+          "width": 71.984375,
+          "naturalWidth": 71.984375,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "微軟正黑體",
+            "postScriptName": "MicrosoftJhengHeiBold",
+            "isCustomFont": false,
+            "glyphCount": 2
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Arial Black",
+            "postScriptName": "Arial-Black",
+            "isCustomFont": false,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "en",
+      "authenticated": false,
+      "font": "Arial",
+      "viewport": 320,
+      "available": 288,
+      "required": 313.015625,
+      "margin": -25.015625,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 66.671875,
+          "naturalWidth": 66.671875,
+          "lineTops": [
+            18
+          ],
+          "overflow": false
+        },
+        {
+          "text": "English\n▾",
+          "width": 84.453125,
+          "naturalWidth": 84.453125,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Features",
+          "width": 83.484375,
+          "naturalWidth": 83.484375,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Log in",
+          "width": 43.203125,
+          "naturalWidth": 62.40625,
+          "lineTops": [
+            15,
+            29
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "Arial Black",
+            "postScriptName": "Arial-Black",
+            "isCustomFont": false,
+            "glyphCount": 7
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Arial Black",
+            "postScriptName": "Arial-Black",
+            "isCustomFont": false,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "en",
+      "authenticated": true,
+      "font": "Arial",
+      "viewport": 320,
+      "available": 288,
+      "required": 304.203125,
+      "margin": -16.203125,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 66.671875,
+          "naturalWidth": 66.671875,
+          "lineTops": [
+            18
+          ],
+          "overflow": false
+        },
+        {
+          "text": "English\n▾",
+          "width": 84.453125,
+          "naturalWidth": 84.453125,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Features",
+          "width": 83.484375,
+          "naturalWidth": 83.484375,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Base",
+          "width": 53.59375,
+          "naturalWidth": 53.59375,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "Arial Black",
+            "postScriptName": "Arial-Black",
+            "isCustomFont": false,
+            "glyphCount": 7
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Arial Black",
+            "postScriptName": "Arial-Black",
+            "isCustomFont": false,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "authenticated": false,
+      "font": "Arial",
+      "viewport": 320,
+      "available": 288,
+      "required": 252.828125,
+      "margin": 35.171875,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 66.671875,
+          "naturalWidth": 66.671875,
+          "lineTops": [
+            18
+          ],
+          "overflow": false
+        },
+        {
+          "text": "日本語\n▾",
+          "width": 69.90625,
+          "naturalWidth": 69.90625,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "機能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "ログイン",
+          "width": 57.0625,
+          "naturalWidth": 57.0625,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Yu Gothic UI",
+            "postScriptName": "YuGothicUI-Bold",
+            "isCustomFont": false,
+            "glyphCount": 3
+          },
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Arial Black",
+            "postScriptName": "Arial-Black",
+            "isCustomFont": false,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "authenticated": true,
+      "font": "Arial",
+      "viewport": 320,
+      "available": 288,
+      "required": 250.984375,
+      "margin": 37.015625,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 66.671875,
+          "naturalWidth": 66.671875,
+          "lineTops": [
+            18
+          ],
+          "overflow": false
+        },
+        {
+          "text": "日本語\n▾",
+          "width": 69.90625,
+          "naturalWidth": 69.90625,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "機能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        },
+        {
+          "text": "拠点へ",
+          "width": 55.21875,
+          "naturalWidth": 55.21875,
+          "lineTops": [
+            22
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Yu Gothic UI",
+            "postScriptName": "YuGothicUI-Bold",
+            "isCustomFont": false,
+            "glyphCount": 3
+          },
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Arial Black",
+            "postScriptName": "Arial-Black",
+            "isCustomFont": false,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-TW",
+      "authenticated": false,
+      "font": "Roboto",
+      "viewport": 320,
+      "available": 288,
+      "required": 213.734375,
+      "margin": 74.265625,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 55.84375,
+          "naturalWidth": 55.84375,
+          "lineTops": [
+            20
+          ],
+          "overflow": false
+        },
+        {
+          "text": "中文\n▾",
+          "width": 55.515625,
+          "naturalWidth": 55.515625,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "功能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "登入",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "微軟正黑體",
+            "postScriptName": "MicrosoftJhengHeiBold",
+            "isCustomFont": false,
+            "glyphCount": 2
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Roboto Black",
+            "postScriptName": "Roboto-Black",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-TW",
+      "authenticated": true,
+      "font": "Roboto",
+      "viewport": 320,
+      "available": 288,
+      "required": 242.53125,
+      "margin": 45.46875,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 55.84375,
+          "naturalWidth": 55.84375,
+          "lineTops": [
+            20
+          ],
+          "overflow": false
+        },
+        {
+          "text": "中文\n▾",
+          "width": 55.515625,
+          "naturalWidth": 55.515625,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "功能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "返回基地",
+          "width": 71.984375,
+          "naturalWidth": 71.984375,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "微軟正黑體",
+            "postScriptName": "MicrosoftJhengHeiBold",
+            "isCustomFont": false,
+            "glyphCount": 2
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Roboto Black",
+            "postScriptName": "Roboto-Black",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "en",
+      "authenticated": false,
+      "font": "Roboto",
+      "viewport": 320,
+      "available": 288,
+      "required": 271.84375,
+      "margin": 16.15625,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 55.84375,
+          "naturalWidth": 55.84375,
+          "lineTops": [
+            20
+          ],
+          "overflow": false
+        },
+        {
+          "text": "English\n▾",
+          "width": 74.59375,
+          "naturalWidth": 74.59375,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Features",
+          "width": 71.1875,
+          "naturalWidth": 71.1875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Log in",
+          "width": 54.21875,
+          "naturalWidth": 54.21875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Roboto Black",
+            "postScriptName": "Roboto-Black",
+            "isCustomFont": true,
+            "glyphCount": 7
+          },
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Roboto Black",
+            "postScriptName": "Roboto-Black",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "en",
+      "authenticated": true,
+      "font": "Roboto",
+      "viewport": 320,
+      "available": 288,
+      "required": 264.15625,
+      "margin": 23.84375,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 55.84375,
+          "naturalWidth": 55.84375,
+          "lineTops": [
+            20
+          ],
+          "overflow": false
+        },
+        {
+          "text": "English\n▾",
+          "width": 74.59375,
+          "naturalWidth": 74.59375,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Features",
+          "width": 71.1875,
+          "naturalWidth": 71.1875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Base",
+          "width": 46.53125,
+          "naturalWidth": 46.53125,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Roboto Black",
+            "postScriptName": "Roboto-Black",
+            "isCustomFont": true,
+            "glyphCount": 7
+          },
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Roboto Black",
+            "postScriptName": "Roboto-Black",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "authenticated": false,
+      "font": "Roboto",
+      "viewport": 320,
+      "available": 288,
+      "required": 242,
+      "margin": 46,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 55.84375,
+          "naturalWidth": 55.84375,
+          "lineTops": [
+            20
+          ],
+          "overflow": false
+        },
+        {
+          "text": "日本語\n▾",
+          "width": 69.90625,
+          "naturalWidth": 69.90625,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "機能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "ログイン",
+          "width": 57.0625,
+          "naturalWidth": 57.0625,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Yu Gothic UI",
+            "postScriptName": "YuGothicUI-Bold",
+            "isCustomFont": false,
+            "glyphCount": 3
+          },
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Roboto Black",
+            "postScriptName": "Roboto-Black",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "authenticated": true,
+      "font": "Roboto",
+      "viewport": 320,
+      "available": 288,
+      "required": 240.15625,
+      "margin": 47.84375,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 55.84375,
+          "naturalWidth": 55.84375,
+          "lineTops": [
+            20
+          ],
+          "overflow": false
+        },
+        {
+          "text": "日本語\n▾",
+          "width": 69.90625,
+          "naturalWidth": 69.90625,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "機能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        },
+        {
+          "text": "拠点へ",
+          "width": 55.21875,
+          "naturalWidth": 55.21875,
+          "lineTops": [
+            23
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Yu Gothic UI",
+            "postScriptName": "YuGothicUI-Bold",
+            "isCustomFont": false,
+            "glyphCount": 3
+          },
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Roboto Black",
+            "postScriptName": "Roboto-Black",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-TW",
+      "authenticated": false,
+      "font": "Liberation Sans",
+      "viewport": 320,
+      "available": 288,
+      "required": 215.703125,
+      "margin": 72.296875,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 57.8125,
+          "naturalWidth": 57.8125,
+          "lineTops": [
+            21
+          ],
+          "overflow": false
+        },
+        {
+          "text": "中文\n▾",
+          "width": 55.515625,
+          "naturalWidth": 55.515625,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "功能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "登入",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "微軟正黑體",
+            "postScriptName": "MicrosoftJhengHeiBold",
+            "isCustomFont": false,
+            "glyphCount": 2
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Liberation Sans",
+            "postScriptName": "LiberationSans-Bold",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "zh-TW",
+      "authenticated": true,
+      "font": "Liberation Sans",
+      "viewport": 320,
+      "available": 288,
+      "required": 244.5,
+      "margin": 43.5,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 57.8125,
+          "naturalWidth": 57.8125,
+          "lineTops": [
+            21
+          ],
+          "overflow": false
+        },
+        {
+          "text": "中文\n▾",
+          "width": 55.515625,
+          "naturalWidth": 55.515625,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "功能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "返回基地",
+          "width": 71.984375,
+          "naturalWidth": 71.984375,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "微軟正黑體",
+            "postScriptName": "MicrosoftJhengHeiBold",
+            "isCustomFont": false,
+            "glyphCount": 2
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Liberation Sans",
+            "postScriptName": "LiberationSans-Bold",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "en",
+      "authenticated": false,
+      "font": "Liberation Sans",
+      "viewport": 320,
+      "available": 288,
+      "required": 284.5,
+      "margin": 3.5,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 57.8125,
+          "naturalWidth": 57.8125,
+          "lineTops": [
+            21
+          ],
+          "overflow": false
+        },
+        {
+          "text": "English\n▾",
+          "width": 78.71875,
+          "naturalWidth": 78.71875,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Features",
+          "width": 74.40625,
+          "naturalWidth": 74.40625,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Log in",
+          "width": 57.5625,
+          "naturalWidth": 57.5625,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "Liberation Sans",
+            "postScriptName": "LiberationSans-Bold",
+            "isCustomFont": true,
+            "glyphCount": 7
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Liberation Sans",
+            "postScriptName": "LiberationSans-Bold",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "en",
+      "authenticated": true,
+      "font": "Liberation Sans",
+      "viewport": 320,
+      "available": 288,
+      "required": 275.75,
+      "margin": 12.25,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 57.8125,
+          "naturalWidth": 57.8125,
+          "lineTops": [
+            21
+          ],
+          "overflow": false
+        },
+        {
+          "text": "English\n▾",
+          "width": 78.71875,
+          "naturalWidth": 78.71875,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Features",
+          "width": 74.40625,
+          "naturalWidth": 74.40625,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "Base",
+          "width": 48.8125,
+          "naturalWidth": 48.8125,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "Liberation Sans",
+            "postScriptName": "LiberationSans-Bold",
+            "isCustomFont": true,
+            "glyphCount": 7
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Liberation Sans",
+            "postScriptName": "LiberationSans-Bold",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "authenticated": false,
+      "font": "Liberation Sans",
+      "viewport": 320,
+      "available": 288,
+      "required": 243.96875,
+      "margin": 44.03125,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 57.8125,
+          "naturalWidth": 57.8125,
+          "lineTops": [
+            21
+          ],
+          "overflow": false
+        },
+        {
+          "text": "日本語\n▾",
+          "width": 69.90625,
+          "naturalWidth": 69.90625,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "機能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "ログイン",
+          "width": 57.0625,
+          "naturalWidth": 57.0625,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Yu Gothic UI",
+            "postScriptName": "YuGothicUI-Bold",
+            "isCustomFont": false,
+            "glyphCount": 3
+          },
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Liberation Sans",
+            "postScriptName": "LiberationSans-Bold",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    },
+    {
+      "locale": "ja",
+      "authenticated": true,
+      "font": "Liberation Sans",
+      "viewport": 320,
+      "available": 288,
+      "required": 242.125,
+      "margin": 45.875,
+      "items": [
+        {
+          "text": "mimic",
+          "width": 57.8125,
+          "naturalWidth": 57.8125,
+          "lineTops": [
+            21
+          ],
+          "overflow": false
+        },
+        {
+          "text": "日本語\n▾",
+          "width": 69.90625,
+          "naturalWidth": 69.90625,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "機能",
+          "width": 43.1875,
+          "naturalWidth": 43.1875,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        },
+        {
+          "text": "拠点へ",
+          "width": 55.21875,
+          "naturalWidth": 55.21875,
+          "lineTops": [
+            24
+          ],
+          "overflow": false
+        }
+      ],
+      "horizontalOverflow": false,
+      "fontsUsed": {
+        "header button": [
+          {
+            "familyName": "Yu Gothic UI",
+            "postScriptName": "YuGothicUI-Bold",
+            "isCustomFont": false,
+            "glyphCount": 3
+          },
+          {
+            "familyName": "Cambria Math",
+            "postScriptName": "CambriaMath",
+            "isCustomFont": false,
+            "glyphCount": 1
+          }
+        ],
+        "header nav > a .mimic-wordmark__product": [
+          {
+            "familyName": "Liberation Sans",
+            "postScriptName": "LiberationSans-Bold",
+            "isCustomFont": true,
+            "glyphCount": 5
+          }
+        ]
+      }
+    }
+  ]
+}

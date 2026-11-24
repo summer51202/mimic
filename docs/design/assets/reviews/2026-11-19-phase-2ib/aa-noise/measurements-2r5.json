@@ -1,0 +1,485 @@
+[
+  {
+    "name": "A-home-idle-360x780",
+    "pixels": 2,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          73,
+          721,
+          74,
+          722
+        ],
+        "maxChannelDelta": 12,
+        "points": [
+          {
+            "x": 73,
+            "y": 721,
+            "delta": 12
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(3) > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)",
+        "rect": {
+          "left": 12,
+          "top": 718,
+          "right": 76,
+          "bottom": 772
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-home-idle-360x780-group-1-2r5-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          75,
+          721,
+          76,
+          722
+        ],
+        "maxChannelDelta": 5,
+        "points": [
+          {
+            "x": 75,
+            "y": 721,
+            "delta": 5
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(3) > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)",
+        "rect": {
+          "left": 12,
+          "top": 718,
+          "right": 76,
+          "bottom": 772
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-home-idle-360x780-group-2-2r5-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "A-home-idle-430x932",
+    "pixels": 2,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          87,
+          873,
+          88,
+          874
+        ],
+        "maxChannelDelta": 12,
+        "points": [
+          {
+            "x": 87,
+            "y": 873,
+            "delta": 12
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(3) > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)",
+        "rect": {
+          "left": 12,
+          "top": 870,
+          "right": 90,
+          "bottom": 924
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-home-idle-430x932-group-1-2r5-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          89,
+          873,
+          90,
+          874
+        ],
+        "maxChannelDelta": 5,
+        "points": [
+          {
+            "x": 89,
+            "y": 873,
+            "delta": 5
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(3) > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)",
+        "rect": {
+          "left": 12,
+          "top": 870,
+          "right": 90,
+          "bottom": 924
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-home-idle-430x932-group-2-2r5-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "A-home-empty-360x780",
+    "pixels": 2,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          73,
+          721,
+          74,
+          722
+        ],
+        "maxChannelDelta": 12,
+        "points": [
+          {
+            "x": 73,
+            "y": 721,
+            "delta": 12
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(3) > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)",
+        "rect": {
+          "left": 12,
+          "top": 718,
+          "right": 76,
+          "bottom": 772
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-home-empty-360x780-group-1-2r5-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          75,
+          721,
+          76,
+          722
+        ],
+        "maxChannelDelta": 5,
+        "points": [
+          {
+            "x": 75,
+            "y": 721,
+            "delta": 5
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(3) > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)",
+        "rect": {
+          "left": 12,
+          "top": 718,
+          "right": 76,
+          "bottom": 772
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-home-empty-360x780-group-2-2r5-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "A-home-ready-430x932",
+    "pixels": 2,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          87,
+          873,
+          88,
+          874
+        ],
+        "maxChannelDelta": 12,
+        "points": [
+          {
+            "x": 87,
+            "y": 873,
+            "delta": 12
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(3) > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)",
+        "rect": {
+          "left": 12,
+          "top": 870,
+          "right": 90,
+          "bottom": 924
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-home-ready-430x932-group-1-2r5-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          89,
+          873,
+          90,
+          874
+        ],
+        "maxChannelDelta": 5,
+        "points": [
+          {
+            "x": 89,
+            "y": 873,
+            "delta": 5
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(3) > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(1) > a:nth-child(1)",
+        "rect": {
+          "left": 12,
+          "top": 870,
+          "right": 90,
+          "bottom": 924
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-home-ready-430x932-group-2-2r5-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "A-personal-add-390x844",
+    "pixels": 5,
+    "groups": [
+      {
+        "pixels": 2,
+        "bounds": [
+          373,
+          444,
+          374,
+          446
+        ],
+        "maxChannelDelta": 17,
+        "points": [
+          {
+            "x": 373,
+            "y": 444,
+            "delta": 17
+          },
+          {
+            "x": 373,
+            "y": 445,
+            "delta": 5
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > dialog:nth-child(7)",
+        "rect": {
+          "left": 16,
+          "top": 443,
+          "right": 374,
+          "bottom": 1255
+        },
+        "computedRadius": {
+          "before": "0px",
+          "after": "0px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-right",
+        "image": "A-personal-add-390x844-group-1-2r5-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          44,
+          944,
+          45,
+          945
+        ],
+        "maxChannelDelta": 1,
+        "points": [
+          {
+            "x": 44,
+            "y": 944,
+            "delta": 1
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > dialog:nth-child(7) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > fieldset:nth-child(4) > label:nth-child(3) > select:nth-child(1)",
+        "rect": {
+          "left": 44,
+          "top": 943,
+          "right": 346,
+          "bottom": 987
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-left",
+        "image": "A-personal-add-390x844-group-2-2r5-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          44,
+          946,
+          45,
+          947
+        ],
+        "maxChannelDelta": 7,
+        "points": [
+          {
+            "x": 44,
+            "y": 946,
+            "delta": 7
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > dialog:nth-child(7) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > fieldset:nth-child(4) > label:nth-child(3) > select:nth-child(1)",
+        "rect": {
+          "left": 44,
+          "top": 943,
+          "right": 346,
+          "bottom": 987
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-left",
+        "image": "A-personal-add-390x844-group-3-2r5-8x.png"
+      },
+      {
+        "pixels": 1,
+        "bounds": [
+          46,
+          946,
+          47,
+          947
+        ],
+        "maxChannelDelta": 1,
+        "points": [
+          {
+            "x": 46,
+            "y": 946,
+            "delta": 1
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > dialog:nth-child(7) > div:nth-child(1) > div:nth-child(2) > form:nth-child(1) > fieldset:nth-child(4) > label:nth-child(3) > select:nth-child(1)",
+        "rect": {
+          "left": 44,
+          "top": 943,
+          "right": 346,
+          "bottom": 987
+        },
+        "computedRadius": {
+          "before": "4px",
+          "after": "4px"
+        },
+        "c": {
+          "before": 4,
+          "after": 4
+        },
+        "corner": "top-left",
+        "image": "A-personal-add-390x844-group-4-2r5-8x.png"
+      }
+    ]
+  },
+  {
+    "name": "B-home-empty-2560x1440",
+    "pixels": 1,
+    "groups": [
+      {
+        "pixels": 1,
+        "bounds": [
+          850,
+          852,
+          851,
+          853
+        ],
+        "maxChannelDelta": 2,
+        "points": [
+          {
+            "x": 850,
+            "y": 852,
+            "delta": 2
+          }
+        ],
+        "selector": "html > body:nth-child(2) > div:nth-child(2) > div:nth-child(2) > main:nth-child(2) > div:nth-child(1) > div:nth-child(3)",
+        "rect": {
+          "left": 850,
+          "top": 844.75,
+          "right": 1950,
+          "bottom": 970.75
+        },
+        "computedRadius": {
+          "before": "8px",
+          "after": "8px"
+        },
+        "c": {
+          "before": 8,
+          "after": 8
+        },
+        "corner": "top-left",
+        "image": "B-home-empty-2560x1440-group-1-2r5-8x.png"
+      }
+    ]
+  }
+]

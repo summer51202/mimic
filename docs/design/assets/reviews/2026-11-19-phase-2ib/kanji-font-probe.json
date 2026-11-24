@@ -1,0 +1,25 @@
+{
+  "ja-probe": {
+    "fonts": [
+      {
+        "familyName": "Yu Gothic UI",
+        "postScriptName": "YuGothicUI-Regular",
+        "isCustomFont": false,
+        "glyphCount": 3
+      }
+    ],
+    "computed": "Arial, Helvetica, \"Hiragino Sans\", \"Hiragino Kaku Gothic ProN\", \"Yu Gothic UI\", \"Yu Gothic\", Meiryo, \"Noto Sans JP\", sans-serif"
+  },
+  "zh-probe": {
+    "fonts": [
+      {
+        "familyName": "微軟正黑體",
+        "postScriptName": "MicrosoftJhengHeiRegular",
+        "isCustomFont": false,
+        "glyphCount": 3
+      }
+    ],
+    "computed": "Arial, Helvetica, sans-serif"
+  },
+  "rgbaDifferences": 11229
+}
