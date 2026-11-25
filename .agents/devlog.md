@@ -2788,3 +2788,11 @@
 **What changed:** Ed 核准整體外觀與兩項修正；小德核對素材 SHA、三語訊息檔、更正金額欄位與審閱資料夾無重複檔，記錄 decision-log。
 **Decisions:** 審閱資料夾 32.16 MB 照收（皆為各格位最後一版）；i1/decision-log.md 併入權威 decision-log 後刪除。
 **Known gaps / follow-ups:** 日文新字串 3 句待審閱；基金更正 UI、桌機公告板按鈕橫排、Mimiku action-settlement 時機留待之後。
+
+## 2026-11-25 — P1 收尾：輸入框寬度修正、展示資料腳本、Avatar spec 與像素回歸標準
+
+**Task:** 驗證並 commit 4 個未 commit 的檔案（globals.css、demo-data.mjs、Avatar spec、像素回歸標準）。
+**Scope:** web/src/app/globals.css、web/scripts/demo-data.mjs、docs/superpowers/specs/2026-11-25-phase-avatar-design.md、docs/design/pixel-regression-standard.md。
+**What changed:** `.pixel-field__input` 加上 `max-width: 100%; min-width: 0;`；新增展示資料腳本；Avatar spec（只 commit，不實作）與像素回歸標準入庫。lint 0 錯誤、typecheck 通過、Vitest 138 檔 725 項通過。demo-data 在本機 production build 六步全 ✓，重跑冪等。溢出檢查（三語 × 320／360，展示隊長與 55 字顯示名稱成員兩種視角，含 56 字個人寶箱）：/app 頁面 144 格、新增／編輯彈窗 144 格全部不溢出。像素回歸（基線 1b5594e 乾淨 worktree，三語 × 320／390／1440）：一般資料 141／144 零差異，長名稱資料只有預期的兩個彈窗不同。
+**Decisions:** 一般資料下「新增共同支出」彈窗在 320 寬三語都有差異，依標準停下回報。原因是基線輸入框固有寬度大於容器（付款金額 +3 px；en 的分類／標籤欄位 +31 px，越過 fieldset 邊框），屬於同一個 bug。Ed 同意列為預期差異，不縮小修正範圍。全高比對確認差異只來自欄位寬度和連帶的換行，360 寬三語零差異。長名稱資料的「加入我的帳本」彈窗，基線 dialog.scrollWidth 是 1023／1049 px，候選等於 clientWidth。
+**Known gaps / follow-ups:** 截圖、SHA-256 清單與證據放在 .tmp/p1/（不進 git）。尚未 push；staging 跑 demo-data 及隔天補上更正資料要等 Ed 同意。
