@@ -2736,3 +2736,55 @@
 **What changed:** 小德逐一比對三份訊息檔與 7bca944 及審閱定稿、看過 15 組 aa-noise 放大圖與日文截圖，確認英文排程摘要差異；把 70 個非 390×844 的預期差異配對移到 .tmp/phase-2ib-pixel-archive/，審閱資料夾約 105 MB。
 **Decisions:** Ed 核准直接上線；後端先 push，web 後 push。2R6 的前提錯誤，由 2R7（擷取當下量 rect）取代。
 **Known gaps / follow-ups:** phone 寬度的兩個 e2e 為既有問題；系統標籤英文名未改；Railway 部署後請 Ed 在 staging 實測日文。
+
+
+## 2026-11-24 — Guild G1 視覺候選
+
+**Task:** 依 G1 製作 event-return 候選與靜態視覺審閱。
+**Scope:** 本 g1/ 目錄；暫存工具 .tmp/guild-g1/。
+**What changed:** 三張 ImageGen 原圖、48×48 候選、完整色盤、三底色兩尺寸圖示比較、三語公告板與更正行、320/390 A/B 彈窗、對比報告。
+**Decisions:** 不推廣素材；對比不足用 .board 局部示意覆寫。
+**Known gaps / follow-ups:** 等 Ed 選圖與 A/B。320 A 內容 196px，已列 §7.6。日文公告板文案為暫定，需 I1 核對正式既有字串；未寫 .agents/devlog.md。
+
+## 2026-11-24 — 公會 I1 實作與停止點
+
+**Task:** 依 2R 實作 Phase 公會 I1，並從 11317ce 執行 DOM 與像素回歸。  
+**Scope:** Web、已核可素材、術語表、I1 審閱紀錄。  
+**What changed:** 推廣四個素材，調整摘要、彈窗與公告板，接上更正分頁、三語標示與圖示。  
+**Decisions:** 使用 event-return 02、手機彈窗 B 與 board 專用 danger 外觀。  
+**Known gaps / follow-ups:** §7.7 日文 Home ready 360×800 的 API 時間戳跨分鐘。停在 DOM 比對。其餘回歸矩陣、三語審閱截圖及完整 CI 驗收待續。
+
+## 2026-11-25 — 公會 I1 2R15 驗證完成
+
+**Task:** 續跑 2R15 像素回歸、彈窗矩陣與 WSL Node 22 CI。
+**Scope:** I1 審閱證據、Web 素材契約測試與本機專用測試資料。
+**What changed:** 保留 144 對零容差通過結果。基金、任務板與更正樣本三語驗證通過，補齊 81 格彈窗成對證據。兩套素材契約納入四個 Guild promotion，CI 五個 job 與兩個 Web Dockerfile 通過。
+**Decisions:** E 遮罩納入每層非 inset 陰影與可見 outline。更正使用正式 API 驗證 25＋1 筆的分頁。
+**Known gaps / follow-ups:** 停在 Ed 視覺審核。
+
+
+## 2026-11-25 — 公會 I1 2R16 修正輪停止點
+
+**Task:** 修正基金摘要的殘留裝飾與共同分帳更正標示的圖示配置。
+**Scope:** 基金與共同分帳 Web 樣式、公會 I1 production 基線與回歸證據。
+**What changed:** 保存修正前映像。停用摘要本子內的基金量條，將更正專用標示改為左圖右文。
+**Decisions:** 採用 2R14／2R15 與 2R13 軟體繪製旗標。
+**Known gaps / follow-ups:** 英文共同分帳 320×568 的更正範圍外仍有 1 個差異像素，超過容差。停止續跑，候選截圖覆蓋、審閱資料整理與完整 CI 待續。
+
+
+## 2026-11-25 — 公會 I1 2R17 回歸與容量停止點
+
+**Task:** 納入 E 文字外溢，續跑 2R16 回歸、CI 與審閱資料歸檔。
+**Scope:** 擷取腳本、I1 驗證證據、候選截圖與 SHA-256 清單。
+**What changed:** 三語預期差異 36 格、其他頁面 216 格、彈窗 162 格及五個 WSL Node 22 CI job 通過。更新 18 張候選圖，歸檔 216 張。
+**Decisions:** 用兩側擷取當下的 Range 矩形加 2 px 驗證文字外溢，彈窗在相同捲動位置比對。
+**Known gaps / follow-ups:** 歸檔後 32.16 MB，超過 30 MB。驗證文件列出前 20 大檔案，停在容量門檻。
+
+
+## 2026-11-25 — 公會 Phase 核准（小德審閱）
+
+**Task:** 審閱公會 I1 與 2R16／2R17 修正輪，取得 Ed 核准並 commit。
+**Scope:** 素材推廣、web、spec、審閱資料夾、decision-log。
+**What changed:** Ed 核准整體外觀與兩項修正；小德核對素材 SHA、三語訊息檔、更正金額欄位與審閱資料夾無重複檔，記錄 decision-log。
+**Decisions:** 審閱資料夾 32.16 MB 照收（皆為各格位最後一版）；i1/decision-log.md 併入權威 decision-log 後刪除。
+**Known gaps / follow-ups:** 日文新字串 3 句待審閱；基金更正 UI、桌機公告板按鈕橫排、Mimiku action-settlement 時機留待之後。

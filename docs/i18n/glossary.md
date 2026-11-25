@@ -106,7 +106,7 @@
 | 開始結算批次／取消批次 | Start settlement round / Cancel round |  |  |
 | 建立批次並鎖定期間 | Create round and lock period |  |  |
 | 期間／開放期間／永久鎖定 | Period / Open period / Permanently locked |  |  |
-| 作廢 | Void |  |  |
+| 作廢 | Void | 無効 |  |
 | 更正原因 | Reason for correction |  |  |
 | 原始紀錄 | Original entry |  |  |
 | 稽核紀錄 | Audit history |  |  |

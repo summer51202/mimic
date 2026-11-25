@@ -1,0 +1,1 @@
+{"flags":["--disable-gpu","--disable-gpu-rasterization","--disable-partial-raster","--force-color-profile=srgb","--disable-lcd-text"],"results":{"shared-zh-TW-320x568":{"dom":true,"pixels":true,"widths":[320,320],"dimensions":[[320,1695],[320,1695]],"asOf":null},"shared-zh-TW-360x800":{"dom":true,"pixels":true,"widths":[360,360],"dimensions":[[360,1658],[360,1658]],"asOf":null}}}
