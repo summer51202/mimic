@@ -524,8 +524,8 @@
       "accessibility": "Treat frame pixels as decorative and preserve landmark structure.",
       "fallback": "Retain semantic grouping, padding, content order, and controls without border art.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/frames/frame-wood.png",
+      "disposition": "promoted-phase-guild"
     },
     {
       "path": "frames/frames.json",
@@ -774,8 +774,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/event-correction.png",
+      "disposition": "promoted-phase-guild"
     },
     {
       "path": "icons/ui/event-expense.png",
@@ -831,12 +831,12 @@
       "path": "icons/ui/event-return.png",
       "sources": [
         {
-          "path": "docs/design/assets/reviews/2026-09-18-page-visual-phase-1/samples/event-status/optical-48/event-return.png",
-          "sha256": "7d8a32b3aa7edd388380541e05b150c523bccf12961d8fa3d0aca0ed92d20fa1"
+          "path": "docs/design/assets/reviews/2026-11-19-phase-guild/g1/candidates/event-return-02.png",
+          "sha256": "a27c68888bd5757d6c9a9960f0d4fd0ff272bd4ae53d4af6c0c86a19dcabde64"
         }
       ],
       "export_method": "copy",
-      "sha256": "7d8a32b3aa7edd388380541e05b150c523bccf12961d8fa3d0aca0ed92d20fa1",
+      "sha256": "a27c68888bd5757d6c9a9960f0d4fd0ff272bd4ae53d4af6c0c86a19dcabde64",
       "width": 48,
       "height": 48,
       "frames": 1,
@@ -849,8 +849,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/event-return.png",
+      "disposition": "promoted-phase-guild"
     },
     {
       "path": "icons/ui/event-settlement.png",
@@ -874,8 +874,8 @@
       "accessibility": "Provide an accessible name independently of icon shape or color.",
       "fallback": "Keep every critical control and financial event readable by its live label.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/icons/ui/event-settlement.png",
+      "disposition": "promoted-phase-guild"
     },
     {
       "path": "icons/ui/event-shortfall.png",
