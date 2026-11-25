@@ -150,6 +150,8 @@ img[src*="/pixel-ui/"] {
   box-shadow: inset 0 2px 0 var(--mimic-color-line);
   color: var(--mimic-color-hud-dark);
   font: inherit;
+  max-width: 100%;
+  min-width: 0;
   padding: 0 var(--mimic-space-3);
 }
 
