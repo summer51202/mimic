@@ -438,6 +438,9 @@
     },
     "createCorrection": "訂正を追加（追加後は変更不可）",
     "list": {
+      "correctedTo": "{count}回訂正済み · 訂正後 <amount></amount>",
+      "correctedVoid": "{count}回訂正済み · 無効",
+      "correctionReason": "最新の訂正理由：<reason></reason>",
       "empty": "共同の支出はまだありません。最初の支払いと割り勘を追加しましょう。",
       "date": "共同の支出 · <nowrap><date></date></nowrap>",
       "payments": "支払い：<items></items>",

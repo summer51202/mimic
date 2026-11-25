@@ -1,6 +1,6 @@
 "use client";
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import type { FinancialSpace } from '@/shared/api/financial-space-contracts';
 import type { Member } from '@/shared/api/domain-contracts';
@@ -8,7 +8,7 @@ import type { SharedParticipant } from '@/shared/api/shared-finance-contracts';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { PixelField } from '@/shared/ui/pixel-field';
-import { PixelPanel } from '@/shared/ui/pixel-panel';
+import { PixelNotebook } from '@/shared/ui/pixel-notebook';
 import { useOnline } from '../personal-expenses/use-online';
 
 type ParticipantSpace = Extract<FinancialSpace, { access: 'PARTICIPANT' }>;
@@ -17,6 +17,7 @@ export function SharedLifecyclePanel({ space, currentUserId, participants, membe
   space: ParticipantSpace; currentUserId: string; participants: SharedParticipant[]; members: Member[]; onChanged: () => void | Promise<void>;
 }) {
   const t = useTranslations('settlement.lifecycle');
+  const titleId = useId();
   const common = useTranslations('common');
   const [selected, setSelected] = useState('');
   const [archiveOpen, setArchiveOpen] = useState(false);
@@ -56,7 +57,7 @@ export function SharedLifecyclePanel({ space, currentUserId, participants, membe
     }
     finally { setBusy(false); }
   }
-  return <PixelPanel className="shared-lifecycle"><div className="shared-section-heading"><div><p>{t('eyebrow')}</p><h2>{t('heading')}</h2></div></div>
+  return <PixelNotebook variant="wood" className="shared-lifecycle" titleId={titleId}><div className="shared-section-heading"><div><p>{t('eyebrow')}</p><h2 id={titleId}>{t('heading')}</h2></div></div>
     {error && <p role="alert">{error}</p>}
     <ul className="shared-participant-list">{participants.filter(person => person.effective_to === null).map(person => <li key={person.id}>
       <span>{t.rich('participantWithRole', {
@@ -84,5 +85,5 @@ export function SharedLifecyclePanel({ space, currentUserId, participants, membe
       <PixelButton emphasis="danger" disabled={busy || !online || confirmation !== space.name}
         onClick={() => void mutate(`/api/app/spaces/${space.id}/archive`, { version: space.version })}>{t('confirmArchive')}</PixelButton>
     </PixelDialog>
-  </PixelPanel>;
+  </PixelNotebook>;
 }

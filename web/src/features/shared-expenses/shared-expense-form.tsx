@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from 'next-intl';
+import { LedgerIcon } from '@/shared/ui/pixel-notebook';
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import type { TaxonomyTerm } from '@/shared/api/taxonomy-contracts';
@@ -151,9 +152,9 @@ export function SharedExpenseForm({ groupId, spaceId, spaceVersion, writable, cu
     </fieldset>
     <TaxonomyPicker spaceId={spaceId} categoryId={category} tagIds={tags} historicalTerms={terms} onChange={(id, ids) => { setDirty(true); setCategory(id); setTags(ids); }} disabled={busy || recoveryPending} />
     <PixelField label={t('shared.form.note')} value={note} onChange={event => change(setNote, event.target.value)} maxLength={2000} disabled={busy || recoveryPending} />
-    {!online && <p role="status">{t('shared.form.offline')}</p>}
+    {!online && <p className="ledger-with-icon" role="status"><LedgerIcon name="status-offline" size={32} />{t('shared.form.offline')}</p>}
     {draft.storageError && <p role="alert">{t('shared.form.storageError')}</p>}
-    {error && <p role="alert">{error}</p>}
+    {error && <p role="alert" className={locked ? "ledger-with-icon" : undefined}>{locked && <LedgerIcon name="status-lock" size={32} />}{error}</p>}
     {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void refreshVersion()} disabled={busy || !online}>{t('common.loadLatest')}</PixelButton>}
     {locked && lockKind !== 'PENDING' && record && onCorrection && <PixelButton type="button" emphasis="secondary" onClick={() => onCorrection(record)}>{t('shared.createCorrection')}</PixelButton>}
     <PixelButton disabled={!online || busy || conflict || !writable || recoveryPending}>{busy ? t('common.confirming') : draft.reviewed ? t('drafts.resend') : record ? t('common.saveChanges') : t('common.saveExpense')}</PixelButton>

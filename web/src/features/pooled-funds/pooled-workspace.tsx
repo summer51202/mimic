@@ -20,7 +20,6 @@ import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { PixelField } from '@/shared/ui/pixel-field';
 import { LedgerIcon, PixelNotebook } from '@/shared/ui/pixel-notebook';
-import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
 import type { PooledWorkspaceData } from './pooled-queries';
 import { PooledExpenseForm } from './pooled-expense-form';
@@ -167,12 +166,12 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
     {notice && <p role="status" className="pooled-notice">{notice}</p>}
     {error && <div role="alert" className="pooled-alert"><p>{error}</p><PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void refresh()}>{common('reload')}</PixelButton></div>}
 
-    <section className="pooled-vault" aria-labelledby="pooled-balance-title">
-      <PixelPanel className="pooled-balance-card pooled-balance-card--book"><p id="pooled-balance-title">{t('ledgerBalance')}</p><strong data-testid="pooled-book">{money(workspace.summary.book_balance_minor)}</strong><span>{t('confirmedOnly')}</span></PixelPanel>
-      <PixelPanel className="pooled-balance-card"><p>{t('frontedUnpaid')}</p><strong data-testid="pooled-pending">{money(workspace.summary.pending_reimbursement_minor)}</strong><span>{t('awaitingKeeper')}</span></PixelPanel>
-      <PixelPanel className="pooled-balance-card"><p>{t('sentAwaitingReceipt')}</p><strong data-testid="pooled-sent-awaiting">{money(workspace.summary.sent_awaiting_receipt_minor)}</strong><span>{t('deductedFromLedger')}</span></PixelPanel>
-      <PixelPanel className="pooled-balance-card"><p>{t('availableBalance')}</p><strong data-testid="pooled-available">{money(workspace.summary.available_balance_minor)}</strong><span>{t('availableExplanation')}</span></PixelPanel>
-    </section>
+    <PixelNotebook className="pooled-vault summary-notebook" titleId="pooled-balance-title">
+      <div className="pooled-balance-card pooled-balance-card--book"><p id="pooled-balance-title">{t('ledgerBalance')}</p><strong data-testid="pooled-book">{money(workspace.summary.book_balance_minor)}</strong><span>{t('confirmedOnly')}</span></div>
+      <div className="pooled-balance-card"><p>{t('frontedUnpaid')}</p><strong data-testid="pooled-pending">{money(workspace.summary.pending_reimbursement_minor)}</strong><span>{t('awaitingKeeper')}</span></div>
+      <div className="pooled-balance-card"><p>{t('sentAwaitingReceipt')}</p><strong data-testid="pooled-sent-awaiting">{money(workspace.summary.sent_awaiting_receipt_minor)}</strong><span>{t('deductedFromLedger')}</span></div>
+      <div className="pooled-balance-card"><p>{t('availableBalance')}</p><strong data-testid="pooled-available">{money(workspace.summary.available_balance_minor)}</strong><span>{t('availableExplanation')}</span></div>
+    </PixelNotebook>
     {workspace.summary.shortfall_minor !== '0' && <div role="alert" className="pooled-shortfall"><strong className="ledger-with-icon"><LedgerIcon name="event-shortfall" size={32} />{t.rich('shortfall', {
       amount: () => <>{money(workspace.summary.shortfall_minor)}</>,
     })}</strong><span>{t('coverShortfall')}</span></div>}
@@ -239,7 +238,7 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
       })}</ul>}
     </PixelNotebook>
 
-    <PixelPanel><div className="pooled-section-heading"><div><p>{t('participantsEyebrow')}</p><h2>{t('participantsHeading')}</h2></div></div>
+    <PixelNotebook variant="wood" className="pooled-participants-board" titleId="pooled-participants-title"><div className="pooled-section-heading"><div><p>{t('participantsEyebrow')}</p><h2 id="pooled-participants-title">{t('participantsHeading')}</h2></div></div>
       <ul className="pooled-participants">{data.participants.filter((person) => person.effective_to === null).map((person) => <li key={person.id}><span>{t.rich('participantWithRole', {
         name: () => <>{person.display_name}</>, role: () => <>{person.role === 'MANAGER' ? t('keeper') : t('participant')}</>,
       })}</span>
@@ -250,20 +249,20 @@ export function PooledWorkspace({ initial, quick = false }: { initial: PooledWor
         })}</option>)}</select></label>
         <PixelButton type="button" disabled={!selectedParticipant || busy || !online} onClick={() => void participantMutation(`/api/app/spaces/${space.id}/participants`, { user_id: selectedParticipant, version: space.version }, t('participantAdded'))}>{t('addToChest')}</PixelButton></div>}
       {current && <PixelButton type="button" emphasis="secondary" disabled={busy || !online} onClick={() => void leave()}>{t('leaveChest')}</PixelButton>}
-    </PixelPanel>
+    </PixelNotebook>
 
-    <PixelPanel className="pooled-closing"><div className="pooled-section-heading"><div><p>{t('closingEyebrow')}</p><h2>{active ? t('readyToClose') : closing ? t('fundReturn') : t('archived')}</h2></div></div>
+    <PixelNotebook variant="wood" className="pooled-closing" titleId="pooled-closing-title"><div className="pooled-section-heading"><div><p>{t('closingEyebrow')}</p><h2 id="pooled-closing-title">{active ? t('readyToClose') : closing ? t('fundReturn') : t('archived')}</h2></div></div>
       {active && manager && <PixelButton type="button" emphasis="danger" disabled={busy || !online} onClick={() => void mutation(`/api/app/spaces/${space.id}/pooled-funds/closing`, { version: space.version },
         `closing:${space.version}`, pooledLifecycleMutationSchema.parse, t('closingStarted'))}>{t('startClosing')}</PixelButton>}
       {closing && !workspace.return_plan && workspace.summary.book_balance_minor !== '0' && manager && <PixelButton type="button" onClick={() => setDialog('returns')}>{t('specifyReturns')}</PixelButton>}
-      {workspace.return_plan && <ul className="pooled-ledger">{workspace.return_plan.returns.map((item) => <li key={item.id}><div><strong>{nameFor(item.recipient_user_id)}</strong><span>{t.rich('returnAmountAndStatus', {
+      {workspace.return_plan && <ul className="pooled-ledger">{workspace.return_plan.returns.map((item) => <li key={item.id}><LedgerIcon name="event-return" /><div><strong>{nameFor(item.recipient_user_id)}</strong><span>{t.rich('returnAmountAndStatus', {
         amount: () => <>{money(item.amount_minor)}</>, status: () => <>{t(`workflowStatus.${item.status}`)}</>,
       })}</span></div>
         {item.status === 'AWAITING_PAYMENT' && manager && <PixelButton type="button" disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, false)}>{t('confirmReturnSent')}</PixelButton>}
         {item.status === 'SENT' && item.recipient_user_id === currentUserId && <PixelButton type="button" disabled={busy || !online} onClick={() => void returnAction(item.id, item.version, true)}>{t('confirmReturnReceived')}</PixelButton>}</li>)}</ul>}
       {closing && manager && <PixelButton type="button" emphasis="danger" disabled={busy || !online} onClick={() => void mutation(`/api/app/spaces/${space.id}/pooled-funds/archive`, { version: space.version },
         `archive:${space.version}`, pooledLifecycleMutationSchema.parse, t('fundArchived'))}>{t('archiveFund')}</PixelButton>}
-    </PixelPanel>
+    </PixelNotebook>
 
     <PixelDialog open={dialog === 'commitment'} title={editingCommitment ? t('editSchedule') : t('createSchedule')} closeLabel={common('close')} closeDisabled={busy} onClose={() => setDialog(null)}>
       {dialog === 'commitment' && <CommitmentForm space={space} participants={data.participants} commitment={editingCommitment} busy={busy || !online}

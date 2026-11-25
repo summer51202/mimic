@@ -8,6 +8,15 @@
   overflow-wrap: anywhere;
 }
 
+.shared-correction-label {
+  align-items: start;
+  display: flex;
+  gap: .5rem;
+}
+
+.shared-correction-label > span { flex-shrink: 0; }
+.shared-correction-label > div { min-width: 0; }
+
 .shared-page :where(p, span, strong, h1, h2, h3, label):lang(en),
 .shared-space-list :is(a, div):lang(en) {
   hyphens: auto;

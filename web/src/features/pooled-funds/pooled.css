@@ -11,7 +11,8 @@
 .pooled-vault { display: grid; gap: var(--mimic-space-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .pooled-balance-card { position: relative; }
 .pooled-balance-card::after { background: var(--mimic-color-line); bottom: .5rem; content: ''; height: 4px; image-rendering: pixelated; position: absolute; right: .5rem; width: 28%; }
-.pooled-balance-card--book { border-color: var(--mimic-color-coin-action); }
+.summary-notebook .pooled-balance-card::after { content: none; }
+.summary-notebook .pooled-balance-card--book { color: var(--mimic-color-notebook-text); }
 .pooled-balance-card p, .pooled-balance-card span { margin: 0; }
 .pooled-balance-card strong { display: block; font-size: clamp(1.4rem, 4vw, 2.35rem); font-variant-numeric: tabular-nums; margin-block: var(--mimic-space-2); }
 .pooled-balance-card span { color: var(--mimic-color-hud-dark); font-size: .875rem; }
@@ -34,7 +35,6 @@
 .pooled-form fieldset label { align-items: center; display: flex; min-height: 2.75rem; }
 .pooled-form input[type='radio'] { height: 1.5rem; margin-inline-end: var(--mimic-space-2); width: 1.5rem; }
 .pooled-return-total { border-block: 2px dashed var(--mimic-color-line); font-size: 1.1rem; font-weight: 800; padding: var(--mimic-space-3); }
-.pooled-closing { border-color: var(--mimic-color-coin-action); }
 
 @media (max-width: 760px) {
   .pooled-page { gap: var(--mimic-space-4); }

@@ -150,8 +150,8 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
         </select></label>
         <label className="pixel-field">{t('month')}<input className="pixel-field__input" type="month" value={monthData.month} onChange={e => { if (/^\d{4}-\d{2}$/.test(e.target.value)) router.push(`/app/personal?space=${space.id}&month=${e.target.value}`); }} /></label>
       </div>
-      <div className="personal-summary">
-        <PixelPanel className="personal-total">
+      <PixelNotebook className="personal-summary summary-notebook" titleId="personal-breakdown-title">
+        <div className="personal-total">
           <p>{t.rich('monthlySpending', {
             nowrap: nowrapDate,
             month: () => <>{monthData.month}</>,
@@ -159,9 +159,9 @@ export function PersonalPage({ data, quick = false }: { data: PersonalPageData; 
           })}</p>
           <strong data-testid="monthly-spending">{money(monthData.spending_minor)}</strong>
           <p>{t.rich('onlyChest', { chest: () => <>{space.name}</> })}</p>
-        </PixelPanel>
-        <PixelPanel><h2>{t('breakdown')}</h2>{monthData.categories.length ? <ul className="personal-breakdown">{monthData.categories.map(category => <li key={category.category_id}><span>{category.category_name}</span><strong>{money(category.spending_minor)}</strong></li>)}</ul> : <p>{t('noExpenses')}</p>}</PixelPanel>
-      </div>
+        </div>
+        <div><h2 id="personal-breakdown-title">{t('breakdown')}</h2>{monthData.categories.length ? <ul className="personal-breakdown">{monthData.categories.map(category => <li key={category.category_id}><span>{category.category_name}</span><strong>{money(category.spending_minor)}</strong></li>)}</ul> : <p>{t('noExpenses')}</p>}</div>
+      </PixelNotebook>
       <PixelNotebook titleId="personal-records-title"><div className="personal-heading"><h2 id="personal-records-title">{t('dailyExpenses')}</h2><PixelButton disabled={space.status !== 'ACTIVE'} onClick={() => { setEditing(undefined); setDialog('expense'); }}>{t('record')}</PixelButton></div>
         {!online && <NotebookOfflineNotice />}
         <ul className="notebook-list personal-records">{monthData.items.map(record => <li key={record.id} className="notebook-row"><LedgerIcon name="event-expense" /><div>{record.entry_type === 'SHARED_REFERENCE' && <div className="personal-record-source"><span className="personal-source-badge">{t('sharedSource')}</span>{record.source_locked && <span className="personal-lock-badge notebook-secondary"><LedgerIcon name="status-lock" size={32} />{t('sourceLocked')}</span>}</div>}

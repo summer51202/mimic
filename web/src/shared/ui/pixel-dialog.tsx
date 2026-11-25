@@ -12,7 +12,6 @@ import {
 import { useTranslations } from "next-intl";
 
 import { PixelButton } from "./pixel-button";
-import { PixelFrame } from "./pixel-frame";
 
 type PixelDialogProps = Omit<
   DialogHTMLAttributes<HTMLDialogElement>,
@@ -120,7 +119,7 @@ export function PixelDialog({
       ref={dialogRef}
       role="dialog"
     >
-      <PixelFrame variant="dialog" className="pixel-dialog__frame">
+      <div className="pixel-dialog__frame">
         <div className="pixel-dialog__header">
           <h2 className="pixel-dialog__title" id={titleId}>
             {title}
@@ -141,7 +140,7 @@ export function PixelDialog({
           </p>
         ) : null}
         <div className="pixel-dialog__body">{children}</div>
-      </PixelFrame>
+      </div>
     </dialog>
   );
 }

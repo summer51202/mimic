@@ -6,3 +6,12 @@
 .task-card h2,.task-card p{margin:0}.task-card strong{grid-column:2;grid-row:2/4;align-self:center;font-size:clamp(1.2rem,4vw,1.8rem);font-variant-numeric:tabular-nums}.task-card__urgency{font-weight:700;color:var(--mimic-color-coin-deep)}.task-card--overdue{border-color:var(--mimic-color-heart-critical)}.task-card--overdue .task-card__urgency{color:var(--mimic-color-heart-critical)}
 .task-center__generated{opacity:.75}@media(max-width:540px){.task-center__hero{align-items:flex-start;flex-direction:column}.task-card{grid-template-columns:1fr}.task-card strong{grid-column:1;grid-row:auto}.task-card span:last-child{justify-self:end}}
 .task-card:lang(en){hyphens:auto}
+
+.task-card { grid-template-columns: auto minmax(0, 1fr) auto; }
+.task-card__icon { grid-column: 1; grid-row: 1 / span 4; }
+.task-card > :not(.task-card__icon, strong) { grid-column: 2; }
+.task-card strong { grid-column: 3; }
+@media (max-width: 540px) {
+  .task-card { grid-template-columns: auto minmax(0, 1fr); }
+  .task-card strong { grid-column: 2; }
+}

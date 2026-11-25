@@ -13,7 +13,7 @@ const pngSignature = "89504e470d0a1a0a";
 
 const assets = [["mimiku-hero.png", 1672, 941]] as const;
 
-it("ships exactly the approved Phase 2A–2F consumers with their SHA-256 values", async () => {
+it("ships exactly the approved Phase 2A–2F and Guild consumers with their SHA-256 values", async () => {
   const runtime = "web/public/pixel-ui/v1";
   const directory = path.resolve(process.cwd(), "../", runtime);
   const expected = new Set([
@@ -77,6 +77,12 @@ it("ships exactly the approved Phase 2A–2F consumers with their SHA-256 values
   ];
   const notebook = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-2f");
   expect(notebook.map(({ path }) => path).sort()).toEqual(phase2f.sort());
+  const phaseGuild = [
+    "frames/frame-wood.png",
+    ...["event-correction", "event-return", "event-settlement"].map((name) => `icons/ui/${name}.png`),
+  ];
+  const guild = manifest.assets.filter(({ disposition }) => disposition === "promoted-phase-guild");
+  expect(guild.map(({ path }) => path).sort()).toEqual(phaseGuild.sort());
   const master = manifest.assets.find(({ path }) => path === "mimiku/action-record-ledger-inkline.png")!;
   expect(master.export_method).toBe("local-paper-sample-composite-2r");
   for (const variant of ["desktop", "phone"]) {
@@ -92,9 +98,11 @@ it("ships exactly the approved Phase 2A–2F consumers with their SHA-256 values
   const files = (await readdir(directory, { recursive: true, withFileTypes: true }))
     .filter((entry) => !entry.isDirectory())
     .map((entry) => path.relative(directory, path.join(entry.parentPath, entry.name)).replaceAll("\\", "/"));
-  expect(files.sort()).toEqual([...expected, ...phase2b, ...phase2c, ...phase2d, ...phase2e1, ...phase2e, ...phase2f].sort());
+  expect(files.sort()).toEqual([
+    ...expected, ...phase2b, ...phase2c, ...phase2d, ...phase2e1, ...phase2e, ...phase2f, ...phaseGuild,
+  ].sort());
 
-  for (const asset of [...promoted, ...added, ...home, ...icons, ...configs, ...warm, ...notebook]) {
+  for (const asset of [...promoted, ...added, ...home, ...icons, ...configs, ...warm, ...notebook, ...guild]) {
     expect(asset.runtime_target).toBe(`${runtime}/${asset.path}`);
     const bytes = await readFile(path.join(directory, asset.path));
     expect(createHash("sha256").update(bytes).digest("hex")).toBe(asset.sha256);

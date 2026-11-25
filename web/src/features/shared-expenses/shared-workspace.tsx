@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { appFetch } from '@/shared/api/app-fetch';
 import { financialSpaceSchema } from '@/shared/api/financial-space-contracts';
-import { sharedBatchPageSchema, sharedCorrectionPageSchema, sharedExpenseMutationSchema, sharedExpensePageSchema,
+import { sharedBatchPageSchema, sharedExpenseMutationSchema, sharedExpensePageSchema,
   sharedParticipantSchema, sharedSummarySchema, type SharedExpense } from '@/shared/api/shared-finance-contracts';
 import { parseMinorUnit } from '@/shared/finance/minor-unit';
 import { useFormatMoney } from '@/shared/i18n/format';
@@ -14,10 +14,10 @@ import { useRecordLedgerCompanion } from '@/shared/scene/record-ledger-companion
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { LedgerIcon, NotebookOfflineNotice, PixelNotebook } from '@/shared/ui/pixel-notebook';
-import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { useOnline } from '../personal-expenses/use-online';
 import { SharedExpenseForm } from './shared-expense-form';
 import { SharedExpenseList } from './shared-expense-list';
+import { loadSharedCorrections } from './load-shared-corrections';
 import { applyExpenseCorrections } from './shared-money';
 import type { SharedWorkspaceData } from './shared-queries';
 import { SettlementPanel } from '../shared-settlements/settlement-panel';
@@ -66,19 +66,19 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
     return batch?.status === 'PENDING' ? 'PENDING' as const : batch?.status === 'COMPLETED' ? 'PERMANENT' as const : undefined;
   };
   async function refresh() {
-    const [spaceResponse, participantResponse, expenseResponse, summaryResponse, batchResponse, correctionResponse] = await Promise.all([
+    const [spaceResponse, participantResponse, expenseResponse, summaryResponse, batchResponse, corrections] = await Promise.all([
       appFetch<{ data: unknown }>(`/api/app/spaces/${space.id}`, { method: 'GET' }),
       appFetch<{ data: unknown }>(`/api/app/spaces/${space.id}/participants`, { method: 'GET' }),
       appFetch<{ data: unknown }>(`/api/app/spaces/${space.id}/shared-expenses`, { method: 'GET' }),
       appFetch<{ data: unknown }>(`/api/app/spaces/${space.id}/shared-expenses/summary`, { method: 'GET' }),
       appFetch<{ data: unknown }>(`/api/app/spaces/${space.id}/shared-settlements`, { method: 'GET' }),
-      appFetch<{ data: unknown }>(`/api/app/spaces/${space.id}/shared-corrections`, { method: 'GET' }),
+      loadSharedCorrections(async suffix => (await appFetch<{ data: unknown }>(`/api/app/spaces/${space.id}/shared-corrections${suffix}`, { method: 'GET' })).data),
     ]);
     const latestSpace = financialSpaceSchema.parse(spaceResponse.data);
     if (latestSpace.access !== 'PARTICIPANT' || latestSpace.mode !== 'SHARED_EXPENSES') throw new Error('SPACE_NOT_FOUND');
     const next = { ...data, space: latestSpace, participants: sharedParticipantSchema.array().parse(participantResponse.data),
       expenses: sharedExpensePageSchema.parse(expenseResponse.data), summary: sharedSummarySchema.parse(summaryResponse.data),
-      batches: sharedBatchPageSchema.parse(batchResponse.data), corrections: sharedCorrectionPageSchema.parse(correctionResponse.data) };
+      batches: sharedBatchPageSchema.parse(batchResponse.data), corrections };
     setData(next); setError(''); return next;
   }
   async function reload() {
@@ -124,21 +124,21 @@ export function SharedWorkspace({ initial, quick = false }: { initial: SharedWor
       mode="SHARED_EXPENSES" spaceVersion={space.version} />}
     {notice && <p role="status" className="shared-notice">{notice}</p>}
     {error && <div role="alert"><p>{error}</p><PixelButton emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>{t('common.reload')}</PixelButton></div>}
-    <section className="shared-summary" aria-labelledby="shared-summary-title"><PixelPanel><p>{t('shared.total')}</p><strong data-testid="shared-spending">{money(data.summary.spending_minor)}</strong><p>{t('shared.notBalance')}</p></PixelPanel>
-      <PixelPanel><h2 id="shared-summary-title">{t('shared.position')}</h2><ul>{data.summary.positions.map(position => {
+    <PixelNotebook className="shared-summary summary-notebook" titleId="shared-summary-title"><div><p>{t('shared.total')}</p><strong data-testid="shared-spending">{money(data.summary.spending_minor)}</strong><p>{t('shared.notBalance')}</p></div>
+      <div><h2 id="shared-summary-title">{t('shared.position')}</h2><ul>{data.summary.positions.map(position => {
         const value = parseMinorUnit(position.amount_minor); const state = value > BigInt(0) ? t('shared.owed') : value < BigInt(0) ? t('shared.owe') : t('shared.settled');
         const amount = value < BigInt(0) ? (-value).toString() : value.toString();
         return <li key={position.user_id}>{t.rich('shared.positionLine', {
           name: () => <>{nameFor(position.user_id)}</>, state: () => <>{state}</>, amount: () => <>{money(amount)}</>,
         })}</li>;
-      })}</ul></PixelPanel></section>
+      })}</ul></div></PixelNotebook>
     <SettlementPanel spaceId={space.id} spaceVersion={space.version} currency={space.currency} timezone={space.timezone} currentUserId={group.current_user_id}
       manager={active && manager} batches={data.batches.items} nameFor={nameFor} onChanged={async () => { await refresh(); setNotice(t('shared.settlementUpdated')); }} />
     <PixelNotebook titleId="shared-expenses-title"><div className="shared-section-heading"><h2 id="shared-expenses-title">{t('shared.expenses')}</h2>
       {active && <PixelButton onClick={() => { setEditing(undefined); setDialog('expense'); }}>{t('shared.addExpense')}</PixelButton>}
     </div>
       {!online && <NotebookOfflineNotice />}
-      <SharedExpenseList expenses={data.expenses.items} currency={space.currency} currentUserId={group.current_user_id} manager={manager} readOnly={!active} nameFor={nameFor}
+      <SharedExpenseList corrections={data.corrections.items} expenses={data.expenses.items} currency={space.currency} currentUserId={group.current_user_id} manager={manager} readOnly={!active} nameFor={nameFor}
         onEdit={record => { setEditing(record); setDialog('expense'); }} onDelete={record => { setEditing(record); setDialog('delete'); setError(''); }}
         onReference={record => { setEditing(record); setDialog('reference'); setError(''); }} />
       {data.expenses.next_cursor && <PixelButton emphasis="secondary" disabled={busy || !online} onClick={() => void moreExpenses()}>{t('shared.moreExpenses')}</PixelButton>}

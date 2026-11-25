@@ -8,7 +8,7 @@ import { useFormatMoney } from '@/shared/i18n/format';
 import { PixelButton } from '@/shared/ui/pixel-button';
 import { PixelDialog } from '@/shared/ui/pixel-dialog';
 import { PixelField } from '@/shared/ui/pixel-field';
-import { PixelPanel } from '@/shared/ui/pixel-panel';
+import { LedgerIcon, PixelNotebook } from '@/shared/ui/pixel-notebook';
 import { useOnline } from '../personal-expenses/use-online';
 
 function today(timezone: string) {
@@ -68,11 +68,11 @@ export function SettlementPanel({ spaceId, spaceVersion, currency, timezone, cur
     await mutate(`/api/app/spaces/${spaceId}/shared-settlements/${batch.id}/transfers/${transfer.id}/${received ? 'received' : 'sent'}`,
       transfer.version, received ? 'received' : 'sent');
   }
-  return <PixelPanel className="shared-settlements"><div className="shared-section-heading"><div><p>{t('eyebrow')}</p><h2>{t('heading')}</h2></div>
+  return <PixelNotebook variant="wood" titleId="settlement-board-title" className="shared-settlements"><div className="shared-section-heading"><div><p>{t('eyebrow')}</p><h2 id="settlement-board-title">{t('heading')}</h2></div>
     {manager && <PixelButton disabled={!online || busy} onClick={() => setStarting(true)}>{t('start')}</PixelButton>}</div>
     <p>{t('selfReported')}</p>
     {error && <p role="alert">{error}</p>}
-    {!batches.length ? <p>{t('empty')}</p> : <ol className="settlement-trail">{batches.map(batch => <li key={batch.id}>
+    {!batches.length ? <p>{t('empty')}</p> : <ol className="settlement-trail">{batches.map(batch => <li key={batch.id}><LedgerIcon name="event-settlement" /><div className="board-entry">
       <div className="shared-section-heading"><strong>{t.rich('periodRange', {
         nowrap: nowrapDate,
         start: () => <>{batch.period_start}</>, end: () => <>{batch.period_end}</>,
@@ -87,12 +87,12 @@ export function SettlementPanel({ spaceId, spaceVersion, currency, timezone, cur
       </li>)}</ul> : <p>{t('autoCompleted')}</p>}
       {manager && batch.status === 'PENDING' && batch.transfers.every(transfer => transfer.status === 'AWAITING_PAYMENT') &&
         <PixelButton emphasis="secondary" disabled={!online || busy} onClick={() => void mutate(`/api/app/spaces/${spaceId}/shared-settlements/${batch.id}/cancel`, batch.version, 'cancel')}>{t('cancel')}</PixelButton>}
-    </li>)}</ol>}
+    </div></li>)}</ol>}
     <PixelDialog open={starting} title={t('start')} closeLabel={common('close')} closeDisabled={busy} onClose={() => setStarting(false)}>
       <form onSubmit={start} className="shared-form"><p>{t('cutoffDescription')}</p>
         <PixelField label={t('cutoff')} type="date" value={periodEnd} onChange={event => setPeriodEnd(event.target.value)} required disabled={busy} />
         {error && <p role="alert">{error}</p>}<PixelButton disabled={!online || busy}>{busy ? t('creating') : t('createAndLock')}</PixelButton>
       </form>
     </PixelDialog>
-  </PixelPanel>;
+  </PixelNotebook>;
 }

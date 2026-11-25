@@ -64,7 +64,13 @@ const phase2f = [
     .map((name) => `icons/ui/${name}.png`),
 ];
 
+const phaseGuild = [
+  "frames/frame-wood.png",
+  ...["event-settlement", "event-correction", "event-return"].map((name) => `icons/ui/${name}.png`),
+];
+
 const dispositions = new Map([
+  ...phaseGuild.map((path) => [path, "promoted-phase-guild"]),
   ...phase2f.map((path) => [path, "promoted-phase-2f"]),
   ...phase2a.map((path) => [path, "promoted-phase-2a"]),
   ...phase2b.map((path) => [path, "promoted-phase-2b"]),
@@ -74,6 +80,7 @@ const dispositions = new Map([
   ...phase2e.map((path) => [path, "promoted-phase-2e"]),
 ]);
 const selections = new Map([
+  ["--phase-guild", { paths: phaseGuild, label: "Phase Guild" }],
   ["--phase-2f", { paths: [...phase2f, ledgerTiming], label: "Phase 2F" }],
   ["--phase-2d", { paths: phase2d, label: "Phase 2D" }],
   ["--phase-2e1", { paths: phase2e1, label: "Phase 2E-1" }],
@@ -82,10 +89,10 @@ const selections = new Map([
 const args = process.argv.slice(2);
 const selection = args.length ? selections.get(args[0]) : {
   paths: [...dispositions.keys()],
-  label: "Phase 2A–2F",
+  label: "Phase 2A–Guild",
 };
 if (args.length > 1 || !selection) {
-  throw new Error("Usage: npm run assets:promote -- [--phase-2d|--phase-2e1|--phase-2e|--phase-2f]");
+  throw new Error("Usage: npm run assets:promote -- [--phase-2d|--phase-2e1|--phase-2e|--phase-2f|--phase-guild]");
 }
 
 const manifestText = await readFile(manifestPath, "utf8");

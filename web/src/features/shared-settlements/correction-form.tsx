@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from 'next-intl';
+import { LedgerIcon } from '@/shared/ui/pixel-notebook';
 import { useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import { sharedCorrectionSchema, type SharedCorrection, type SharedExpense, type SharedParticipant } from '@/shared/api/shared-finance-contracts';
@@ -82,7 +83,7 @@ export function CorrectionForm({ spaceId, currency, timezone, sourceExpense, sou
         value={payerValues[row.user_id]} onChange={event => setPayerValues({ ...payerValues, [row.user_id]: event.target.value })} required />)}</fieldset>
       <fieldset><legend>{t('shares')}</legend>{sourceExpense.allocations.map(row => <PixelField key={row.user_id} label={t('correctedShare', { name: nameFor(row.user_id) })} inputMode="decimal"
         value={allocationValues[row.user_id]} onChange={event => setAllocationValues({ ...allocationValues, [row.user_id]: event.target.value })} required />)}</fieldset></>}
-    {!online && <p role="status">{t('offline')}</p>}{error && <p role="alert">{error}</p>}
+    {!online && <p className="ledger-with-icon" role="status"><LedgerIcon name="status-offline" size={32} />{t('offline')}</p>}{error && <p role="alert">{error}</p>}
     {conflict && onReload && <PixelButton type="button" emphasis="secondary" onClick={() => void reload()} disabled={busy || !online}>{t('reload')}</PixelButton>}
     <PixelButton disabled={busy || !online || conflict}>{busy ? t('creating') : t('create')}</PixelButton>
   </form>;

@@ -6,13 +6,14 @@ import { groupDetailSchema, memberSchema } from '@/shared/api/domain-contracts';
 import { ApiError } from '@/shared/api/errors';
 import {
   sharedBatchPageSchema,
-  sharedCorrectionPageSchema,
   sharedExpensePageSchema,
   sharedParticipantSchema,
   sharedSummarySchema,
 } from '@/shared/api/shared-finance-contracts';
 import { taxonomyPickerSchema } from '@/shared/api/taxonomy-contracts';
 import { taxonomyTermSchema } from '@/shared/api/taxonomy-contracts';
+
+import { loadSharedCorrections } from './load-shared-corrections';
 
 const uuid = z.string().uuid();
 
@@ -39,7 +40,7 @@ export async function loadSharedWorkspace(spaceId: string) {
     authenticatedServerApi(`/spaces/${spaceId}/shared-expenses`, { method: 'GET' }),
     authenticatedServerApi(`/spaces/${spaceId}/shared-expenses/summary`, { method: 'GET' }),
     authenticatedServerApi(`/spaces/${spaceId}/shared-settlements`, { method: 'GET' }),
-    authenticatedServerApi(`/spaces/${spaceId}/shared-corrections`, { method: 'GET' }),
+    loadSharedCorrections(suffix => authenticatedServerApi(`/spaces/${spaceId}/shared-corrections${suffix}`, { method: 'GET' })),
     authenticatedServerApi('/me/spaces', { method: 'GET' }),
     authenticatedServerApi('/me/taxonomy?kind=TAG&include_inactive=true', { method: 'GET' }),
   ]);
@@ -54,7 +55,7 @@ export async function loadSharedWorkspace(spaceId: string) {
     expenses: sharedExpensePageSchema.parse(expenses),
     summary: sharedSummarySchema.parse(summary),
     batches: sharedBatchPageSchema.parse(batches),
-    corrections: sharedCorrectionPageSchema.parse(corrections),
+    corrections,
     personalSpaces: financialSpaceSchema.array().parse(personalSpaces).flatMap(item => item.access === 'PARTICIPANT'
       && item.mode === 'PERSONAL_EXPENSES' && item.status === 'ACTIVE' && item.currency === space.currency ? [item] : []),
     personalTags: taxonomyTermSchema.array().parse(personalTags),

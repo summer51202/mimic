@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
+import { LedgerIcon } from '@/shared/ui/pixel-notebook';
 import { useRef, useState, type FormEvent } from 'react';
 import { appFetch, AppClientError } from '@/shared/api/app-fetch';
 import {
@@ -81,7 +82,7 @@ export function PersonalReferenceForm({ spaceId, reference, terms, onSaved, onRe
     </fieldset>}
     <PixelField label={t('note')} value={note} onChange={event => { setNote(event.target.value); setConflict(false); }} maxLength={2000} disabled={busy}
       description={t('privacy')} />
-    {!online && <p role="status">{t('offline')}</p>}
+    {!online && <p className="ledger-with-icon" role="status"><LedgerIcon name="status-offline" size={32} />{t('offline')}</p>}
     {error && <p role="alert">{error}</p>}
     {latest && <p role="status">{latest.note
       ? t.rich('latestWithNote', { note: latest.note, privateNote: (chunks) => <>{chunks}</> })

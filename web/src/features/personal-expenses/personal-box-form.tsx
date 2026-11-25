@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
+import { LedgerIcon } from '@/shared/ui/pixel-notebook';
 import { useState, type FormEvent } from 'react';
 import { appFetch } from '@/shared/api/app-fetch';
 import { financialSpaceSchema, type FinancialSpace } from '@/shared/api/financial-space-contracts';
@@ -32,7 +33,7 @@ export function PersonalBoxForm({ onCreated }: { onCreated: (space: FinancialSpa
       {['TWD', 'USD', 'JPY', 'EUR', 'HKD', 'CNY', 'KRW', 'KWD'].map(code => <option key={code}>{code}</option>)}
     </select></label>
     {error && <p role="alert">{error}</p>}
-    {!online && <p role="status">{t('offline')}</p>}
+    {!online && <p className="ledger-with-icon" role="status"><LedgerIcon name="status-offline" size={32} />{t('offline')}</p>}
     <PixelButton disabled={busy || !online}>{busy ? t('creating') : t('create')}</PixelButton>
   </form>;
 }

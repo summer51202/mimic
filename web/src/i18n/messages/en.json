@@ -438,6 +438,9 @@
     },
     "createCorrection": "Create a permanent correction",
     "list": {
+      "correctedTo": "Corrected {count, plural, one {once} other {# times}} · Now <amount></amount>",
+      "correctedVoid": "Corrected {count, plural, one {once} other {# times}} · Voided",
+      "correctionReason": "Latest reason: <reason></reason>",
       "empty": "No shared expenses yet. Add your first payment and split.",
       "date": "Shared expense · <nowrap><date></date></nowrap>",
       "payments": "Paid by: <items></items>",

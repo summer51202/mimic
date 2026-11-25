@@ -438,6 +438,9 @@
     },
     "createCorrection": "建立不可變更的更正",
     "list": {
+      "correctedTo": "已更正 {count} 次 · 更正後 <amount></amount>",
+      "correctedVoid": "已更正 {count} 次 · 已作廢",
+      "correctionReason": "最新更正原因：<reason></reason>",
       "empty": "還沒有共同支出。從第一筆付款與分攤開始。",
       "date": "共同支出 · <date></date>",
       "payments": "付款：<items></items>",

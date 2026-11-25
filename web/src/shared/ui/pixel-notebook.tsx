@@ -4,21 +4,25 @@ import frames from "../../../public/pixel-ui/v1/frames/frames.json";
 import { NavigationIcon } from "@/shared/navigation/navigation-icon";
 import styles from "./pixel-notebook.module.css";
 
-const { file, slice, scale, repeat, minPadding } = frames.frames.notebook;
+function getFrameStyle(variant: "notebook" | "wood") {
+const { file, slice, scale, repeat } = frames.frames[variant];
+const { minPadding } = frames.frames.notebook;
 const frameWidth = slice * scale;
-const frameStyle = {
+return {
   "--notebook-frame": `url(/pixel-ui/v1/frames/${file}) ${slice} fill / ${frameWidth}px / 0 ${repeat}`,
   "--notebook-phone-inset": `${frameWidth + minPadding.phone}px`,
   "--notebook-desktop-inset": `${frameWidth + minPadding.desktop}px`,
 } as CSSProperties;
+}
 
-export function PixelNotebook({ titleId, children, className }: {
+export function PixelNotebook({ titleId, children, className, variant = "notebook" }: {
   titleId: string;
+  variant?: "notebook" | "wood";
   children: ReactNode;
   className?: string;
 }) {
   return (
-    <section aria-labelledby={titleId} className={[styles.notebook, className].filter(Boolean).join(" ")} style={frameStyle}>
+    <section aria-labelledby={titleId} className={[styles.notebook, variant === "wood" && "board", className].filter(Boolean).join(" ")} style={getFrameStyle(variant)}>
       {children}
     </section>
   );

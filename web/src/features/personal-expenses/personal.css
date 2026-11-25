@@ -3,7 +3,7 @@
 .personal-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
 .personal-eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .06em; color: var(--mimic-color-ink-soft); }
 .personal-controls, .personal-summary { display: grid; gap: 1rem; grid-template-columns: minmax(0, 1fr); }
-.personal-total { background: var(--mimic-color-coin); }
+.summary-notebook .personal-total { background: transparent; color: var(--mimic-color-notebook-text); }
 .personal-total > strong { display: block; font-size: clamp(1.8rem, 4vw, 3rem); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; margin: 1rem 0; }
 .personal-breakdown { list-style: none; padding: 0; margin: 0; }
 .personal-breakdown li { display: flex; justify-content: space-between; gap: 1rem; padding: .4rem 0; overflow-wrap: anywhere; }
