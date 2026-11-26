@@ -24,8 +24,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/alchemist-full.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/alchemist-portrait.png",
@@ -49,8 +49,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/alchemist-portrait.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/bard-full.png",
@@ -74,8 +74,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/bard-full.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/bard-portrait.png",
@@ -99,8 +99,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/bard-portrait.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/cartographer-full.png",
@@ -124,8 +124,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/cartographer-full.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/cartographer-portrait.png",
@@ -149,8 +149,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/cartographer-portrait.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/mage-full.png",
@@ -174,8 +174,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/mage-full.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/mage-portrait.png",
@@ -199,8 +199,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/mage-portrait.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/physician-full.png",
@@ -224,8 +224,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/physician-full.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/physician-portrait.png",
@@ -249,8 +249,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/physician-portrait.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/ranger-full.png",
@@ -274,8 +274,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/ranger-full.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/ranger-portrait.png",
@@ -299,8 +299,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/ranger-portrait.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/rogue-full.png",
@@ -324,8 +324,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/rogue-full.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/rogue-portrait.png",
@@ -349,8 +349,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/rogue-portrait.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/warrior-full.png",
@@ -374,8 +374,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/warrior-full.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "avatars/warrior-portrait.png",
@@ -399,8 +399,8 @@
       "accessibility": "Decorative beside the live member name and class.",
       "fallback": "Keep the reserved avatar slot and live member name and class.",
       "reduced_motion": "Static asset.",
-      "runtime_target": null,
-      "disposition": "staged-only-until-consumer-plan"
+      "runtime_target": "web/public/pixel-ui/v1/avatars/warrior-portrait.png",
+      "disposition": "promoted-phase-avatar"
     },
     {
       "path": "frames/frame-dialogue.png",
