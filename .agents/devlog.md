@@ -2796,3 +2796,25 @@
 **What changed:** `.pixel-field__input` 加上 `max-width: 100%; min-width: 0;`；新增展示資料腳本；Avatar spec（只 commit，不實作）與像素回歸標準入庫。lint 0 錯誤、typecheck 通過、Vitest 138 檔 725 項通過。demo-data 在本機 production build 六步全 ✓，重跑冪等。溢出檢查（三語 × 320／360，展示隊長與 55 字顯示名稱成員兩種視角，含 56 字個人寶箱）：/app 頁面 144 格、新增／編輯彈窗 144 格全部不溢出。像素回歸（基線 1b5594e 乾淨 worktree，三語 × 320／390／1440）：一般資料 141／144 零差異，長名稱資料只有預期的兩個彈窗不同。
 **Decisions:** 一般資料下「新增共同支出」彈窗在 320 寬三語都有差異，依標準停下回報。原因是基線輸入框固有寬度大於容器（付款金額 +3 px；en 的分類／標籤欄位 +31 px，越過 fieldset 邊框），屬於同一個 bug。Ed 同意列為預期差異，不縮小修正範圍。全高比對確認差異只來自欄位寬度和連帶的換行，360 寬三語零差異。長名稱資料的「加入我的帳本」彈窗，基線 dialog.scrollWidth 是 1023／1049 px，候選等於 clientWidth。
 **Known gaps / follow-ups:** 截圖、SHA-256 清單與證據放在 .tmp/p1/（不進 git）。尚未 push；staging 跑 demo-data 及隔天補上更正資料要等 Ed 同意。
+
+## 2026-11-26 — Avatar Phase（職業選擇）實作，停在視覺審核
+
+**Task:** 依 `docs/superpowers/specs/2026-11-25-phase-avatar-design.md` 實作 8 職業：後端欄位與 API、首次選擇彈窗、Home 角色、設定頁、群組名單、三語字串，並做像素回歸與 CI。
+**Scope:** backend（migration `20261125000100_user_avatar_class`、users、groups、測試）；web（`features/avatar/`、home、settings、groups roster、`shared/avatar/`、合約、layout 訊息、三語 messages、素材推廣腳本與契約測試）；素材 manifest；`docs/i18n/glossary.md`；`docs/design/assets/reviews/2026-11-19-phase-guild/ja-strings-for-review.md`；審閱資料夾 `docs/design/assets/reviews/2026-11-25-phase-avatar/`。
+**What changed:**
+- `"User".avatar_class VARCHAR(20)` 加 CHECK（8 值）、`avatar_prompt_dismissed_at TIMESTAMPTZ`；`GET/PATCH /me` 回傳 `avatar_class`、`avatar_prompt_dismissed`，PATCH 驗證照 spec §3.2；`GET /groups/:id/members` 加 `avatar_class`。
+- web 合約新欄位 optional：缺欄位＝舊 API（不提示、不顯示角色與設定區塊、名單空位），`null`＝未選。
+- 首次提示 `AvatarPicker`（radiogroup、方向鍵、黃銅選中框、離線停用）；Home 依 `layout.json` slot 繪製角色並讓手機卡片避開；設定頁職業區塊與更改彈窗；名單改為本人職業頭像或 48 px 虛線空位。
+- 推廣 16 張 avatar（`--phase-avatar`）；19 個三語字串；glossary 與日文審閱清單 #4–22。
+- 測試：後端 unit 352、HTTP 54、migration-only 14、spaces-db 156；web Vitest 140 檔 759 項。
+
+**Decisions:** CHECK 而非 Prisma enum（日後加值較容易）；舊 API 時設定頁不顯示職業區塊（舊 API 會靜默丟掉欄位）；首次提示的 X 只關閉當次；角色以 192 master 的不透明範圍拉到 slot 方框；picker 自行補 dialog 置中（全域 reset 清掉 margin，同其他功能頁做法）。
+**Known gaps / follow-ups:** Home 角色是非整數倍縮放，要不要另出 1× 場景角色圖待 Ed 決定；`groups.avatar` 字串與 4 張舊頭像下一輪清理；之後另開一輪把合約欄位改必填。未 commit。
+
+## 2026-11-26 — Phase Avatar 核准（小德審閱）
+
+**Task:** 審閱 Avatar Phase 並 commit。
+**Scope:** 素材推廣、web、docs、後端 migration 與 API。
+**What changed:** Ed 核准整體外觀；接受 Home 角色非整數倍縮放為已知例外；確認首次提示的 X 只關閉當次。小德核對三語字串（各新增 19、既有 770 不變）、16 張素材與 approved 逐位元相同、migration 內容，記錄 decision-log。
+**Decisions:** commit 分 art → feat(web) → docs → feat(api)，先 push web 再 push 後端。
+**Known gaps / follow-ups:** 合約欄位改必填另開一輪；舊頭像與 `groups.avatar` 清理；日文 22 句待審閱。

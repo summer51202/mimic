@@ -167,3 +167,12 @@
 | 確認已付款／確認已收款 | Confirm payment / Confirm receipt |  | 結算批次 |
 | 參與者與封存 | Participants and archiving |  | 分帳生命週期 |
 | 分攤方式／常用／建議 | Split method / Often used / Suggested |  | 分帳表單／分類選擇器 |
+| 職業 | Class | 職業 | Avatar Phase。見た目だけを変える。ゲーム上の効果はない |
+| 戰士 | Warrior | 戦士 | 職業 |
+| 法師 | Mage | 魔法使い | 職業 |
+| 遊俠 | Ranger | レンジャー | 職業 |
+| 盜賊 | Rogue | 盗賊 | 職業 |
+| 鍊金術士 | Alchemist | 錬金術師 | 職業 |
+| 吟遊詩人 | Bard | 吟遊詩人 | 職業 |
+| 製圖師 | Cartographer | 地図職人 | 職業 |
+| 醫者 | Physician | 医術師 | 職業 |

@@ -1,0 +1,7018 @@
+{
+ "run": "B-partner",
+ "summary": {
+  "run": "B-partner",
+  "cells": 72,
+  "identical": 0,
+  "expectedOnly": 72,
+  "failures": [],
+  "byPage": {
+   "home": {
+    "cells": 18,
+    "identical": 0,
+    "expectedOnly": 18,
+    "maxRaw": 13147
+   },
+   "home-group": {
+    "cells": 18,
+    "identical": 0,
+    "expectedOnly": 18,
+    "maxRaw": 13147
+   },
+   "group-detail": {
+    "cells": 18,
+    "identical": 0,
+    "expectedOnly": 18,
+    "maxRaw": 3528
+   },
+   "settings": {
+    "cells": 18,
+    "identical": 0,
+    "expectedOnly": 18,
+    "maxRaw": 0
+   }
+  },
+  "consoleErrors": 0,
+  "added": [
+   "…（尚未選擇職業）",
+   "…(no class yet)",
+   "…（職業未選択）"
+  ]
+ },
+ "fixedSupplement": [
+  {
+   "key": "settings-en-320x568",
+   "verified": [
+    {
+     "tag": "nav",
+     "cls": "app-navigation_navigation__Jr8rF",
+     "scrollY": 893,
+     "overlapWithE": 0,
+     "diff": 0
+    }
+   ],
+   "unverified": []
+  },
+  {
+   "key": "settings-en-360x800",
+   "verified": [
+    {
+     "tag": "a",
+     "cls": "pixel-app-shell_quickAction__zNgkb",
+     "scrollY": 577,
+     "overlapWithE": 0,
+     "diff": 0
+    }
+   ],
+   "unverified": []
+  },
+  {
+   "key": "settings-ja-320x568",
+   "verified": [
+    {
+     "tag": "nav",
+     "cls": "app-navigation_navigation__Jr8rF",
+     "scrollY": 884,
+     "overlapWithE": 0,
+     "diff": 0
+    }
+   ],
+   "unverified": []
+  },
+  {
+   "key": "settings-ja-360x800",
+   "verified": [
+    {
+     "tag": "a",
+     "cls": "pixel-app-shell_quickAction__zNgkb",
+     "scrollY": 592,
+     "overlapWithE": 0,
+     "diff": 0
+    }
+   ],
+   "unverified": []
+  },
+  {
+   "key": "settings-zh-TW-320x568",
+   "verified": [
+    {
+     "tag": "nav",
+     "cls": "app-navigation_navigation__Jr8rF",
+     "scrollY": 860,
+     "overlapWithE": 0,
+     "diff": 0
+    }
+   ],
+   "unverified": []
+  },
+  {
+   "key": "settings-zh-TW-360x800",
+   "verified": [
+    {
+     "tag": "a",
+     "cls": "pixel-app-shell_quickAction__zNgkb",
+     "scrollY": 592,
+     "overlapWithE": 0,
+     "diff": 0
+    }
+   ],
+   "unverified": []
+  }
+ ],
+ "cells": [
+  {
+   "key": "home-zh-TW-320x568",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:23 UTC",
+    "狀態時間：2026-11-26 03:23 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1147,
+    1147
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     19,
+     335,
+     102,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 19,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-zh-TW-320x568",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:23 UTC",
+    "狀態時間：2026-11-26 03:23 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1958,
+    1958
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     19,
+     335,
+     102,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 19,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-zh-TW-320x568",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1699,
+    1699
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 1688,
+    "bbox": [
+     44,
+     739,
+     91,
+     786
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 1688,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 392,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 507.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 623.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 739.34375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 392,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 507.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 623.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 739.34375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 146,
+      "y": 436,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0.2,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-zh-TW-320x568",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1162,
+    1428
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 10197,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 480.71875,
+      "w": 232,
+      "h": 250
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 266,
+    "nextTop": [
+     746.71875,
+     746.71875
+    ],
+    "height": [
+     1428,
+     1428
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 146,
+      "y": 436,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0.0886,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0.765,
+     "verifiedIn": "viewport supplement (fixed-supplement)"
+    }
+   ]
+  },
+  {
+   "key": "home-zh-TW-360x800",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:24 UTC",
+    "狀態時間：2026-11-26 03:24 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1147,
+    1147
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     39,
+     335,
+     122,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 39,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-zh-TW-360x800",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:24 UTC",
+    "狀態時間：2026-11-26 03:24 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1928,
+    1928
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     39,
+     335,
+     122,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 39,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-zh-TW-360x800",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1699,
+    1699
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 1840,
+    "bbox": [
+     44,
+     508,
+     91,
+     555
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 1840,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 392,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 507.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 623.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 739.34375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 392,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 507.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 623.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 739.34375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 186,
+      "y": 668,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0.1778,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-zh-TW-360x800",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1162,
+    1392
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13108,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 480.71875,
+      "w": 272,
+      "h": 214
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 230,
+    "nextTop": [
+     710.71875,
+     710.71875
+    ],
+    "height": [
+     1392,
+     1392
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 186,
+      "y": 668,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0.4177,
+     "verifiedIn": "viewport supplement (fixed-supplement)"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-zh-TW-390x844",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:24 UTC",
+    "狀態時間：2026-11-26 03:24 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1126,
+    1126
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     54,
+     335,
+     137,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 54,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-zh-TW-390x844",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:24 UTC",
+    "狀態時間：2026-11-26 03:24 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1928,
+    1928
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     54,
+     335,
+     137,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 54,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-zh-TW-390x844",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1471,
+    1471
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     44,
+     415,
+     91,
+     608
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 342.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 415.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 487.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 560.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 342.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 415.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 487.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 560.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 216,
+      "y": 712,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-zh-TW-390x844",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1164,
+    1394
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13428,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 482.71875,
+      "w": 302,
+      "h": 214
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 230,
+    "nextTop": [
+     712.71875,
+     712.71875
+    ],
+    "height": [
+     1394,
+     1394
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 216,
+      "y": 712,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-zh-TW-768x1024",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:25 UTC",
+    "狀態時間：2026-11-26 03:25 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1048,
+    1048
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     363,
+     343,
+     446,
+     461
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 363,
+      "y": 343,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-zh-TW-768x1024",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:25 UTC",
+    "狀態時間：2026-11-26 03:25 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1890,
+    1890
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     363,
+     343,
+     446,
+     461
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 363,
+      "y": 343,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-zh-TW-768x1024",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    2474,
+    2474
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     898,
+     347,
+     1703
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 519.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 898.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1276.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1655.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 519.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 898.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1276.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1655.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 594,
+      "y": 952,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-zh-TW-768x1024",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1024,
+    1124
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13640,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 428.71875,
+      "w": 408,
+      "h": 158
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 174,
+    "nextTop": [
+     602.71875,
+     602.71875
+    ],
+    "height": [
+     1124,
+     1124
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 594,
+      "y": 952,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-zh-TW-1024x768",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:25 UTC",
+    "狀態時間：2026-11-26 03:25 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    930,
+    930
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 5204,
+    "bbox": [
+     534,
+     244,
+     606,
+     347
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 5204,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 534.587646484375,
+      "y": 244.1765594482422,
+      "w": 72.0302734375,
+      "h": 102.90040588378906
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-zh-TW-1024x768",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:25 UTC",
+    "狀態時間：2026-11-26 03:25 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    1316,
+    1316
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 5204,
+    "bbox": [
+     534,
+     244,
+     606,
+     347
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 5204,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 534.587646484375,
+      "y": 244.1765594482422,
+      "w": 72.0302734375,
+      "h": 102.90040588378906
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-zh-TW-1024x768",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    1034,
+    1034
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     439,
+     347,
+     632
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 366.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 439.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 511.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 584.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 366.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 439.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 511.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 584.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 850,
+      "y": 696,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-zh-TW-1024x768",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    950,
+    1124
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 14152,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 428.71875,
+      "w": 664,
+      "h": 158
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 174,
+    "nextTop": [
+     602.71875,
+     602.71875
+    ],
+    "height": [
+     1124,
+     1124
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 850,
+      "y": 696,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-zh-TW-1440x900",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:26 UTC",
+    "狀態時間：2026-11-26 03:26 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1059,
+    1059
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 13147,
+    "bbox": [
+     683,
+     333,
+     799,
+     498
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13147,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 683.800048828125,
+      "y": 333.6000061035156,
+      "w": 115.5,
+      "h": 165
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-zh-TW-1440x900",
+   "attempt": 1,
+   "asOf": [
+    "狀態時間：2026-11-26 03:26 UTC",
+    "狀態時間：2026-11-26 03:26 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1446,
+    1446
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 13147,
+    "bbox": [
+     683,
+     333,
+     799,
+     498
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13147,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 683.800048828125,
+      "y": 333.6000061035156,
+      "w": 115.5,
+      "h": 165
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-zh-TW-1440x900",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1034,
+    1034
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     439,
+     347,
+     632
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 366.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 439.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 511.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 584.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 366.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 439.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 511.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 584.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 1266,
+      "y": 828,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-zh-TW-1440x900",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    950,
+    1124
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 14984,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 428.71875,
+      "w": 1080,
+      "h": 158
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 174,
+    "nextTop": [
+     602.71875,
+     602.71875
+    ],
+    "height": [
+     1124,
+     1124
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 1266,
+      "y": 828,
+      "w": 158,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-en-320x568",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:26 UTC",
+    "As of 2026-11-26 03:26 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1175,
+    1175
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     19,
+     335,
+     102,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 19,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-en-320x568",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:26 UTC",
+    "As of 2026-11-26 03:26 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    2030,
+    2030
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     19,
+     335,
+     102,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 19,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-en-320x568",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1672,
+    1672
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 1688,
+    "bbox": [
+     44,
+     726,
+     91,
+     773
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 1688,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 388,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 500.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 613.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 726.34375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 388,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 500.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 613.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 726.34375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 109.484375,
+      "y": 436,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0.2,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-en-320x568",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1199,
+    1461
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 14208,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 524.71875,
+      "w": 232,
+      "h": 246
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 262,
+    "nextTop": [
+     786.71875,
+     786.71875
+    ],
+    "height": [
+     1461,
+     1461
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 109.484375,
+      "y": 436,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0.5274,
+     "verifiedIn": "viewport supplement (fixed-supplement)"
+    }
+   ]
+  },
+  {
+   "key": "home-en-360x800",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:27 UTC",
+    "As of 2026-11-26 03:27 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1129,
+    1129
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     39,
+     335,
+     122,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 39,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-en-360x800",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:27 UTC",
+    "As of 2026-11-26 03:27 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1970,
+    1970
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     39,
+     335,
+     122,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 39,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-en-360x800",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1672,
+    1672
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 1904,
+    "bbox": [
+     44,
+     501,
+     91,
+     727
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 1904,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 388,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 500.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 613.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 726.34375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 388,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 500.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 613.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 726.34375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 149.484375,
+      "y": 668,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0.1716,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-en-360x800",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1151,
+    1377
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 14467,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 476.71875,
+      "w": 272,
+      "h": 210
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 226,
+    "nextTop": [
+     702.71875,
+     702.71875
+    ],
+    "height": [
+     1377,
+     1377
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 149.484375,
+      "y": 668,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0.295,
+     "verifiedIn": "viewport supplement (fixed-supplement)"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-en-390x844",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:27 UTC",
+    "As of 2026-11-26 03:27 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1129,
+    1129
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     54,
+     335,
+     137,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 54,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-en-390x844",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:27 UTC",
+    "As of 2026-11-26 03:27 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1952,
+    1952
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     54,
+     335,
+     137,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 54,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-en-390x844",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1512,
+    1512
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     44,
+     467,
+     91,
+     660
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 394.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 467.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 539.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 612.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 394.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 467.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 539.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 612.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 179.484375,
+      "y": 712,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-en-390x844",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1153,
+    1379
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 14996,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 478.71875,
+      "w": 302,
+      "h": 210
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 226,
+    "nextTop": [
+     704.71875,
+     704.71875
+    ],
+    "height": [
+     1379,
+     1379
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 179.484375,
+      "y": 712,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-en-768x1024",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:28 UTC",
+    "As of 2026-11-26 03:28 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1054,
+    1054
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     363,
+     343,
+     446,
+     461
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 363,
+      "y": 343,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-en-768x1024",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:28 UTC",
+    "As of 2026-11-26 03:28 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1890,
+    1890
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     363,
+     343,
+     446,
+     461
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 363,
+      "y": 343,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-en-768x1024",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    2615,
+    2615
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     975,
+     347,
+     1888
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 542.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 975.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1407.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1840.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 542.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 975.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1407.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1840.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 557.484375,
+      "y": 952,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-en-768x1024",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1024,
+    1133
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 15208,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 448.71875,
+      "w": 408,
+      "h": 154
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 170,
+    "nextTop": [
+     618.71875,
+     618.71875
+    ],
+    "height": [
+     1133,
+     1133
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 557.484375,
+      "y": 952,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-en-1024x768",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:28 UTC",
+    "As of 2026-11-26 03:28 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    917,
+    917
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 5204,
+    "bbox": [
+     534,
+     244,
+     606,
+     347
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 5204,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 534.587646484375,
+      "y": 244.1765594482422,
+      "w": 72.0302734375,
+      "h": 102.90040588378906
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-en-1024x768",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:28 UTC",
+    "As of 2026-11-26 03:28 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    1336,
+    1336
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 5204,
+    "bbox": [
+     534,
+     244,
+     606,
+     347
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 5204,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 534.587646484375,
+      "y": 244.1765594482422,
+      "w": 72.0302734375,
+      "h": 102.90040588378906
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-en-1024x768",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    1026,
+    1026
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     435,
+     347,
+     628
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 362.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 435.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 507.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 580.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 362.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 435.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 507.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 580.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 813.484375,
+      "y": 696,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-en-1024x768",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    939,
+    1109
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 15720,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 424.71875,
+      "w": 664,
+      "h": 154
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 170,
+    "nextTop": [
+     594.71875,
+     594.71875
+    ],
+    "height": [
+     1109,
+     1109
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 813.484375,
+      "y": 696,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-en-1440x900",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:29 UTC",
+    "As of 2026-11-26 03:29 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1047,
+    1047
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 13147,
+    "bbox": [
+     683,
+     333,
+     799,
+     498
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13147,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 683.800048828125,
+      "y": 333.6000061035156,
+      "w": 115.5,
+      "h": 165
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-en-1440x900",
+   "attempt": 1,
+   "asOf": [
+    "As of 2026-11-26 03:29 UTC",
+    "As of 2026-11-26 03:29 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1466,
+    1466
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 13147,
+    "bbox": [
+     683,
+     333,
+     799,
+     498
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13147,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 683.800048828125,
+      "y": 333.6000061035156,
+      "w": 115.5,
+      "h": 165
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-en-1440x900",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1026,
+    1026
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     435,
+     347,
+     628
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 362.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 435.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 507.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 580.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 362.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 435.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 507.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 580.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 1229.484375,
+      "y": 828,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-en-1440x900",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    939,
+    1109
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 16552,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 424.71875,
+      "w": 1080,
+      "h": 154
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 170,
+    "nextTop": [
+     594.71875,
+     594.71875
+    ],
+    "height": [
+     1109,
+     1109
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 1229.484375,
+      "y": 828,
+      "w": 194.515625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-ja-320x568",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:29 UTC",
+    "データの確認時点：2026-11-26 03:29 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1147,
+    1147
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     19,
+     335,
+     102,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 19,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-ja-320x568",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:29 UTC",
+    "データの確認時点：2026-11-26 03:29 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    2013,
+    2013
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     19,
+     335,
+     102,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 19,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-ja-320x568",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1763,
+    1763
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3464,
+    "bbox": [
+     44,
+     568,
+     91,
+     848
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3464,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 448,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 565.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 683.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 801.34375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 448,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 565.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 683.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 801.34375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 149.9375,
+      "y": 436,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0.0092,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-ja-320x568",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     320,
+     320
+    ],
+    "candidate": [
+     320,
+     320
+    ]
+   },
+   "height": [
+    1186,
+    1452
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 10863,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 480.71875,
+      "w": 232,
+      "h": 250
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 266,
+    "nextTop": [
+     746.71875,
+     746.71875
+    ],
+    "height": [
+     1452,
+     1452
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 149.9375,
+      "y": 436,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0.0881,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 496,
+      "w": 320,
+      "h": 72
+     },
+     "overlapWithE": 0.765,
+     "verifiedIn": "viewport supplement (fixed-supplement)"
+    }
+   ]
+  },
+  {
+   "key": "home-ja-360x800",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:30 UTC",
+    "データの確認時点：2026-11-26 03:30 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1147,
+    1147
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     39,
+     335,
+     122,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 39,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-ja-360x800",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:30 UTC",
+    "データの確認時点：2026-11-26 03:30 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1979,
+    1979
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     39,
+     335,
+     122,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 39,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-ja-360x800",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1707,
+    1707
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 1840,
+    "bbox": [
+     44,
+     510,
+     91,
+     557
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 1840,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 392,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 509.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 627.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 745.34375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 392,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 509.78125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 627.5625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 745.34375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 189.9375,
+      "y": 668,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0.1778,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-ja-360x800",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     360,
+     360
+    ],
+    "candidate": [
+     360,
+     360
+    ]
+   },
+   "height": [
+    1162,
+    1392
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13774,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 480.71875,
+      "w": 272,
+      "h": 214
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 230,
+    "nextTop": [
+     710.71875,
+     710.71875
+    ],
+    "height": [
+     1392,
+     1392
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 189.9375,
+      "y": 668,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0.4152,
+     "verifiedIn": "viewport supplement (fixed-supplement)"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 728,
+      "w": 360,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-ja-390x844",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:30 UTC",
+    "データの確認時点：2026-11-26 03:30 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1147,
+    1147
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     54,
+     335,
+     137,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 54,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-ja-390x844",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:30 UTC",
+    "データの確認時点：2026-11-26 03:30 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1928,
+    1928
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     54,
+     335,
+     137,
+     453
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 54,
+      "y": 335,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-ja-390x844",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1531,
+    1531
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     44,
+     473,
+     91,
+     667
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 44,
+      "y": 398.890625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 472.671875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 546.453125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 620.234375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 398.890625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 472.671875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 546.453125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 44,
+      "y": 620.234375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 219.9375,
+      "y": 712,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-ja-390x844",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     390,
+     390
+    ],
+    "candidate": [
+     390,
+     390
+    ]
+   },
+   "height": [
+    1164,
+    1394
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 14086,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 44,
+      "y": 482.71875,
+      "w": 302,
+      "h": 214
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 230,
+    "nextTop": [
+     712.71875,
+     712.71875
+    ],
+    "height": [
+     1394,
+     1394
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 219.9375,
+      "y": 712,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "fixed",
+     "rect": {
+      "x": 0,
+      "y": 772,
+      "w": 390,
+      "h": 72
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-ja-768x1024",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:30 UTC",
+    "データの確認時点：2026-11-26 03:30 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1048,
+    1048
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     363,
+     343,
+     446,
+     461
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 363,
+      "y": 343,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-ja-768x1024",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:31 UTC",
+    "データの確認時点：2026-11-26 03:31 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1911,
+    1911
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 6857,
+    "bbox": [
+     363,
+     343,
+     446,
+     461
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 6857,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 363,
+      "y": 343,
+      "w": 84,
+      "h": 119
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-ja-768x1024",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    2562,
+    2562
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     931,
+     347,
+     1780
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 530.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 931.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1331.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1732.734375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 530.390625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 931.171875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1331.953125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 1732.734375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 597.9375,
+      "y": 952,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-ja-768x1024",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     768,
+     768
+    ],
+    "candidate": [
+     768,
+     768
+    ]
+   },
+   "height": [
+    1024,
+    1148
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 14298,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 452.71875,
+      "w": 408,
+      "h": 158
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 174,
+    "nextTop": [
+     626.71875,
+     626.71875
+    ],
+    "height": [
+     1148,
+     1148
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 960
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 597.9375,
+      "y": 952,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-ja-1024x768",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:31 UTC",
+    "データの確認時点：2026-11-26 03:31 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    930,
+    930
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 5204,
+    "bbox": [
+     534,
+     244,
+     606,
+     347
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 5204,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 534.587646484375,
+      "y": 244.1765594482422,
+      "w": 72.0302734375,
+      "h": 102.90040588378906
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-ja-1024x768",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:31 UTC",
+    "データの確認時点：2026-11-26 03:31 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    1316,
+    1316
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 5204,
+    "bbox": [
+     534,
+     244,
+     606,
+     347
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 5204,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 534.587646484375,
+      "y": 244.1765594482422,
+      "w": 72.0302734375,
+      "h": 102.90040588378906
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-ja-1024x768",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    1038,
+    1038
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     441,
+     347,
+     635
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 366.890625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 440.671875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 514.453125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 588.234375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 366.890625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 440.671875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 514.453125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 588.234375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 853.9375,
+      "y": 696,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-ja-1024x768",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1024,
+     1024
+    ],
+    "candidate": [
+     1024,
+     1024
+    ]
+   },
+   "height": [
+    950,
+    1124
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 14810,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 428.71875,
+      "w": 664,
+      "h": 158
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 174,
+    "nextTop": [
+     602.71875,
+     602.71875
+    ],
+    "height": [
+     1124,
+     1124
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1024,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 704
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 853.9375,
+      "y": 696,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-ja-1440x900",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:31 UTC",
+    "データの確認時点：2026-11-26 03:31 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1059,
+    1059
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 13147,
+    "bbox": [
+     683,
+     333,
+     799,
+     498
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13147,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 683.800048828125,
+      "y": 333.6000061035156,
+      "w": 115.5,
+      "h": 165
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "home-group-ja-1440x900",
+   "attempt": 1,
+   "asOf": [
+    "データの確認時点：2026-11-26 03:32 UTC",
+    "データの確認時点：2026-11-26 03:32 UTC"
+   ],
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1446,
+    1446
+   ],
+   "textEqual": true,
+   "raw": {
+    "count": 13147,
+    "bbox": [
+     683,
+     333,
+     799,
+     498
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 13147,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 683.800048828125,
+      "y": 333.6000061035156,
+      "w": 115.5,
+      "h": 165
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "group-detail-ja-1440x900",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    1038,
+    1038
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": 3528,
+    "bbox": [
+     300,
+     441,
+     347,
+     635
+    ]
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 3528,
+    "bbox": null
+   },
+   "E": {
+    "base": [
+     {
+      "x": 300,
+      "y": 366.890625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 440.671875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 514.453125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 588.234375,
+      "w": 48,
+      "h": 48
+     }
+    ],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 366.890625,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 440.671875,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 514.453125,
+      "w": 48,
+      "h": 48
+     },
+     {
+      "x": 300,
+      "y": 588.234375,
+      "w": 48,
+      "h": 48
+     }
+    ]
+   },
+   "spill": 0,
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 1269.9375,
+      "y": 828,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  },
+  {
+   "key": "settings-ja-1440x900",
+   "attempt": 1,
+   "prompt": {
+    "base": null,
+    "candidate": null
+   },
+   "width": {
+    "base": [
+     1440,
+     1440
+    ],
+    "candidate": [
+     1440,
+     1440
+    ]
+   },
+   "height": [
+    950,
+    1124
+   ],
+   "textEqual": false,
+   "raw": {
+    "count": -1,
+    "bbox": null
+   },
+   "outsideE": {
+    "count": 0,
+    "excluded": 15642,
+    "bbox": null
+   },
+   "E": {
+    "base": [],
+    "candidate": [
+     {
+      "x": 300,
+      "y": 428.71875,
+      "w": 1080,
+      "h": 158
+     }
+    ]
+   },
+   "spill": 3,
+   "padding": {
+    "side": "base",
+    "delta": 174,
+    "nextTop": [
+     602.71875,
+     602.71875
+    ],
+    "height": [
+     1124,
+     1124
+    ],
+    "aligned": true
+   },
+   "fixed": [
+    {
+     "el": "header.pixel-app-shell_topBar__pzbPX",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 64
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "nav.app-navigation_navigation__Jr8rF",
+     "position": "sticky",
+     "rect": {
+      "x": 0,
+      "y": 64,
+      "w": 240,
+      "h": 836
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    },
+    {
+     "el": "a.pixel-app-shell_quickAction__zNgkb",
+     "position": "fixed",
+     "rect": {
+      "x": 1269.9375,
+      "y": 828,
+      "w": 154.0625,
+      "h": 48
+     },
+     "overlapWithE": 0,
+     "verifiedIn": "full-page (padded) screenshot"
+    }
+   ]
+  }
+ ]
+}
