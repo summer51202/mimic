@@ -142,8 +142,7 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
         </div>
       </section>
 
-      {/* An API without avatar fields (older deployment) keeps Settings exactly as before. */}
-      {profile.avatar_class !== undefined ? <SettingsAvatar initialClass={profile.avatar_class} /> : null}
+      <SettingsAvatar initialClass={profile.avatar_class} />
 
       <form className={styles.form} noValidate onSubmit={saveProfile}>
         <PixelField

@@ -7,12 +7,6 @@ export const pixelUiFiles = {
     serious: "/pixel-ui/characters/mimiku-serious.png",
     lost: "/pixel-ui/characters/mimiku-lost.png",
   },
-  avatars: [
-    "/pixel-ui/avatars/avatar-01.png",
-    "/pixel-ui/avatars/avatar-02.png",
-    "/pixel-ui/avatars/avatar-03.png",
-    "/pixel-ui/avatars/avatar-04.png",
-  ],
   deferred: {
     scenes: {
       treasuryMobile: "/pixel-ui/scenes/treasury-mobile.png",

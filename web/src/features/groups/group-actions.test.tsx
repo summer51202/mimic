@@ -32,7 +32,7 @@ const group: GroupDetail = {
 
 const members: Member[] = [
   { user_id: "u1", display_name: "小明", mimic_id: "MIMIC-2345-6789", role: "owner", status: "active", avatar_class: "bard" },
-  { user_id: "u2", display_name: "小美", mimic_id: "MIMIC-ABCD-EFGH", role: "member", status: "active" },
+  { user_id: "u2", display_name: "小美", mimic_id: "MIMIC-ABCD-EFGH", role: "member", status: "active", avatar_class: null },
 ];
 
 afterEach(() => {

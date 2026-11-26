@@ -565,7 +565,6 @@
     "active": "Active",
     "left": "Left",
     "removed": "Removed",
-    "avatar": "Avatar for {name}",
     "dangerZone": "Danger zone",
     "dangerDescription": "You can delete a party before bookkeeping starts.",
     "deleteEmpty": "Delete empty party",
@@ -934,6 +933,7 @@
     "settingsHeading": "Class",
     "none": "Not chosen",
     "change": "Change class",
+    "choose": "Choose class",
     "rosterAlt": "{name} ({class})",
     "rosterAltNone": "{name} (no class yet)",
     "saveFailed": "Your class wasn't saved. Try again later."

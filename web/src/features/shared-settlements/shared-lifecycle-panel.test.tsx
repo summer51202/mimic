@@ -17,9 +17,9 @@ const participants = [
   { id: b, user_id: b, display_name: '阿美', role: 'PARTICIPANT' as const, effective_from: '2026-01-01', effective_to: null },
 ];
 const members = [
-  { user_id: a, display_name: '阿明', mimic_id: 'MIMIC-2345-6789', role: 'owner', status: 'active' },
-  { user_id: b, display_name: '阿美', mimic_id: 'MIMIC-ABCD-EFGH', role: 'member', status: 'active' },
-  { user_id: c, display_name: '阿和', mimic_id: 'MIMIC-CDEF-GHJK', role: 'member', status: 'active' },
+  { user_id: a, display_name: '阿明', mimic_id: 'MIMIC-2345-6789', role: 'owner', status: 'active', avatar_class: null },
+  { user_id: b, display_name: '阿美', mimic_id: 'MIMIC-ABCD-EFGH', role: 'member', status: 'active', avatar_class: null },
+  { user_id: c, display_name: '阿和', mimic_id: 'MIMIC-CDEF-GHJK', role: 'member', status: 'active', avatar_class: null },
 ];
 beforeEach(() => { mocks.request.mockReset().mockResolvedValue({ data: {} }); Object.defineProperty(navigator, 'onLine', { configurable: true, value: true }); });
 afterEach(cleanup);

@@ -20,6 +20,8 @@ const profile = {
   display_name: "Edward",
   locale: "zh-TW",
   timezone: "Asia/Taipei",
+  avatar_class: null,
+  avatar_prompt_dismissed: false,
 };
 
 afterEach(() => {
@@ -200,18 +202,14 @@ describe("SettingsForm", () => {
 });
 
 describe("SettingsForm class section (Phase Avatar)", () => {
-  it("keeps Settings unchanged when the API does not send avatar fields", () => {
-    render(<SettingsForm profile={profile} />);
-    expect(screen.queryByRole("heading", { name: "職業" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "更改職業" })).not.toBeInTheDocument();
-  });
-
   it("shows a neutral slot before a class is chosen", () => {
     const { container } = render(<SettingsForm profile={{ ...profile, avatar_class: null, avatar_prompt_dismissed: true }} />);
     expect(screen.getByRole("heading", { name: "職業" })).toBeVisible();
     expect(screen.getByText("尚未選擇")).toBeVisible();
     expect(container.querySelector('[data-avatar-slot="empty"]')).toHaveAttribute("aria-hidden", "true");
     expect(screen.queryAllByRole("img")).toEqual([]);
+    expect(screen.getByRole("button", { name: "選擇職業" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "更改職業" })).not.toBeInTheDocument();
   });
 
   it("changes the class with 取消 instead of 之後再說", async () => {

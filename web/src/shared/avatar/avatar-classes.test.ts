@@ -35,8 +35,8 @@ describe("avatar classes", () => {
     expect([portrait.width, portrait.height]).toEqual([96, 96]);
   });
 
-  it("keeps a missing field distinct from not chosen", () => {
-    expect(avatarClassFieldSchema.parse(undefined)).toBeUndefined();
+  it("requires the field and reads unknown classes as not chosen", () => {
+    expect(() => avatarClassFieldSchema.parse(undefined)).toThrow();
     expect(avatarClassFieldSchema.parse(null)).toBeNull();
     expect(avatarClassFieldSchema.parse("bard")).toBe("bard");
     expect(avatarClassFieldSchema.parse("knight")).toBeNull();

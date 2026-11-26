@@ -57,6 +57,7 @@ describe("group queries", () => {
         mimic_id: "MIMIC-2345-6789",
         role: "owner",
         status: "active",
+        avatar_class: null,
       },
     ]);
 

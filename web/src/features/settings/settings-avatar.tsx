@@ -25,7 +25,7 @@ export function SettingsAvatar({ initialClass }: { initialClass: AvatarClass | n
           {avatarClass ? t(`class.${avatarClass}`) : t("none")}
         </p>
         <PixelButton emphasis="secondary" onClick={() => setPicking(true)} type="button">
-          {t("change")}
+          {avatarClass ? t("change") : t("choose")}
         </PixelButton>
       </div>
       {picking ? (

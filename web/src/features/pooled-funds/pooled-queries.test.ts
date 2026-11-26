@@ -23,7 +23,7 @@ describe('pooled workspace server query', () => {
         available_balance_minor: '0', sent_awaiting_receipt_minor: '0', shortfall_minor: '0' }, commitments: [], expenses: [], corrections: [], return_plan: null };
       if (path.endsWith('/participants')) return [{ id: userId, user_id: userId, display_name: '小明', role: 'MANAGER', effective_from: '2026-09-01', effective_to: null }];
       if (path === `/groups/${groupId}`) return { id: groupId, name: '我們家', group_type: 'GROUP', default_currency: 'TWD', status: 'ACTIVE', role: 'member', current_user_id: userId };
-      if (path.endsWith('/members')) return [{ user_id: userId, display_name: '小明', mimic_id: 'MIMIC-2345-6789', role: 'member', status: 'active' }];
+      if (path.endsWith('/members')) return [{ user_id: userId, display_name: '小明', mimic_id: 'MIMIC-2345-6789', role: 'member', status: 'active', avatar_class: null }];
       if (path.includes('/taxonomy')) return { terms: [term], recent_ids: [], frequent_ids: [], context_ids: [] };
       throw new Error(`unexpected ${path}`);
     });

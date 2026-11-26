@@ -23,8 +23,8 @@ const initial = {
     first_formal_record_at: at },
   group: { id: groupId, name: '我們家', group_type: 'GROUP', default_currency: 'TWD', status: 'ACTIVE', role: 'member', current_user_id: owner },
   members: [
-    { user_id: owner, display_name: '小明', mimic_id: 'MIMIC-AAAA-BBBB', role: 'member', status: 'active' },
-    { user_id: member, display_name: '小美', mimic_id: 'MIMIC-CCCC-DDDD', role: 'member', status: 'active' },
+    { user_id: owner, display_name: '小明', mimic_id: 'MIMIC-AAAA-BBBB', role: 'member', status: 'active', avatar_class: null },
+    { user_id: member, display_name: '小美', mimic_id: 'MIMIC-CCCC-DDDD', role: 'member', status: 'active', avatar_class: null },
   ],
   participants: [
     { id: owner, user_id: owner, display_name: '小明', role: 'MANAGER', effective_from: '2026-09-01', effective_to: null },

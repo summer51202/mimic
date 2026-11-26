@@ -17,16 +17,15 @@ export async function loadTasks() {
 
 // Keep the raw class: a class this build does not know yet was still chosen, so no prompt.
 const homeAvatarSchema = z.object({
-  avatar_class: z.string().nullable().optional(),
-  avatar_prompt_dismissed: z.boolean().optional(),
+  avatar_class: z.string().nullable(),
+  avatar_prompt_dismissed: z.boolean(),
 });
 
 export type HomeAvatar = { avatarClass: AvatarClass | null; prompt: boolean };
 
 /**
  * Phase Avatar: the current user's class for the Home scene. `/home` stays unchanged, so
- * this reads `/me`. An API without the avatar fields (older deployment) means no
- * character and no prompt. A failed read only costs the cosmetic layer, never Home itself.
+ * this reads `/me`. A failed read only costs the cosmetic layer, never Home itself.
  */
 export async function loadHomeAvatar(): Promise<HomeAvatar> {
   let me;

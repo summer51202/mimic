@@ -22,6 +22,8 @@ describe("getSettingsProfile", () => {
       display_name: "Edward",
       locale: "zh-TW",
       timezone: "Asia/Taipei",
+      avatar_class: null,
+      avatar_prompt_dismissed: true,
     };
     authenticatedServerApiMock.mockResolvedValueOnce(profile);
 

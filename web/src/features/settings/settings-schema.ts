@@ -13,7 +13,7 @@ export const settingsProfileSchema = z.object({
   locale: z.string().trim().min(1).max(20),
   timezone: z.string().trim().min(1).max(100),
   avatar_class: avatarClassFieldSchema,
-  avatar_prompt_dismissed: z.boolean().optional(),
+  avatar_prompt_dismissed: z.boolean(),
 });
 
 export const displayNameSchema = z.object({

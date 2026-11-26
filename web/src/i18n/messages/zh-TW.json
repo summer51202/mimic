@@ -565,7 +565,6 @@
     "active": "有效",
     "left": "已離開",
     "removed": "已移除",
-    "avatar": "{name}的頭像",
     "dangerZone": "危險區",
     "dangerDescription": "群組尚未開始記帳時，才能刪除。",
     "deleteEmpty": "刪除空群組",
@@ -934,6 +933,7 @@
     "settingsHeading": "職業",
     "none": "尚未選擇",
     "change": "更改職業",
+    "choose": "選擇職業",
     "rosterAlt": "{name}（{class}）",
     "rosterAltNone": "{name}（尚未選擇職業）",
     "saveFailed": "職業還沒儲存，請稍後再試。"

@@ -22,10 +22,6 @@ const expectedDimensions = new Map<string, readonly [number, number]>([
   ["mimiku-lost.png", [512, 512]],
   ["treasury-mobile.png", [512, 1024]],
   ["treasury-desktop.png", [1024, 620]],
-  ["avatar-01.png", [96, 96]],
-  ["avatar-02.png", [96, 96]],
-  ["avatar-03.png", [96, 96]],
-  ["avatar-04.png", [96, 96]],
   ["frames-ui.png", [256, 166]],
 ]);
 
@@ -56,12 +52,7 @@ describe("pixelUiAssets", () => {
       success: pixelUiFiles.characters.happy,
       blockingError: pixelUiFiles.characters.serious,
     });
-    expect(pixelUiFiles.avatars).toEqual([
-      "/pixel-ui/avatars/avatar-01.png",
-      "/pixel-ui/avatars/avatar-02.png",
-      "/pixel-ui/avatars/avatar-03.png",
-      "/pixel-ui/avatars/avatar-04.png",
-    ]);
+    expect(pixelUiFiles).not.toHaveProperty("avatars");
   });
 
   it.each([...allRuntimePixelUiPaths()])(
@@ -79,22 +70,6 @@ describe("pixelUiAssets", () => {
       expect(image.subarray(0, 8).toString("hex")).toBe(pngSignature);
       expect(image.readUInt32BE(16)).toBe(dimensions?.[0]);
       expect(image.readUInt32BE(20)).toBe(dimensions?.[1]);
-    },
-  );
-
-  it.each(pixelUiFiles.avatars)(
-    "exports %s as clean transparent 2x avatar art",
-    async (publicPath) => {
-      const inspection = await inspectPng(publicFile(publicPath));
-
-      expect(inspection).toMatchObject({
-        width: 96,
-        height: 96,
-        channels: 4,
-        hasTransparentPixel: true,
-        connectedNeutralPixels: 0,
-        opaqueNeutralCheckerPixels: 0,
-      });
     },
   );
 
@@ -144,12 +119,6 @@ describe("pixelUiAssets", () => {
     expect(bounds.y).toBeGreaterThan(0);
     expect(bounds.x + bounds.width).toBeLessThan(248);
     expect(bounds.y + bounds.height).toBeLessThan(166);
-  });
-
-  it("preserves opaque near-neutral pixels in avatar eye artwork", async () => {
-    const inspection = await inspectPng(publicFile(pixelUiFiles.avatars[0]));
-
-    expect(inspection.opaqueNearNeutralPixels).toBeGreaterThan(0);
   });
 
   it("preserves the root icon byte-for-byte", async () => {
@@ -212,10 +181,6 @@ describe("pixelUiAssets", () => {
   it("reproduces committed assets twice without residual temp files", async () => {
     const outputDirectory = await mkdtemp(path.join(tmpdir(), "mimic-pixel-export-"));
     const committedFiles = new Map([
-      ...pixelUiFiles.avatars.map((publicPath) => [
-        path.basename(publicPath),
-        path.join(process.cwd(), "public", publicPath),
-      ] as const),
       [
         path.basename(pixelUiFiles.deferred.frame),
         path.join(process.cwd(), "public", pixelUiFiles.deferred.frame),
@@ -277,7 +242,6 @@ function publicFile(publicPath: string): string {
 
 function* allRuntimePixelUiPaths(): Generator<string> {
   yield* Object.values(pixelUiFiles.characters);
-  yield* pixelUiFiles.avatars;
   yield* Object.values(pixelUiFiles.deferred.scenes);
   yield pixelUiFiles.deferred.frame;
 }

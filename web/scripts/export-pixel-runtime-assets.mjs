@@ -18,12 +18,6 @@ const sourcePath = path.join(
   "icons-ui.png",
 );
 
-const avatarExports = [
-  ["avatar-01.png", 85, 360, 170, 180],
-  ["avatar-02.png", 255, 360, 170, 180],
-  ["avatar-03.png", 430, 360, 170, 180],
-  ["avatar-04.png", 610, 360, 170, 180],
-];
 const frameExport = ["frames-ui.png", 1280, 575, 240, 166];
 
 if (isMainModule()) {
@@ -32,22 +26,9 @@ if (isMainModule()) {
 
 export async function exportRuntimeAssets(outputDirectory) {
   const source = PNG.sync.read(await readFile(sourcePath));
-  const avatarDirectory = outputDirectory ?? path.join(runtimeDirectory, "avatars");
   const frameDirectory = outputDirectory ?? path.join(runtimeDirectory, "frames");
-  await mkdir(avatarDirectory, { recursive: true });
   await mkdir(frameDirectory, { recursive: true });
   const pendingWrites = [];
-
-  for (const [filename, x, y, width, height] of avatarExports) {
-    const avatarCrop = crop(source, x, y, width, height);
-    clearConnectedNeutralBackground(avatarCrop);
-    const bounds = nonTransparentBounds(avatarCrop);
-    const contained = resizeContainNearest(avatarCrop, bounds, 88, 88);
-    pendingWrites.push([
-      path.join(avatarDirectory, filename),
-      centerWithoutResampling(contained, 96, 96),
-    ]);
-  }
 
   const [frameFilename, frameX, frameY, frameWidth, frameHeight] = frameExport;
   const frameCrop = crop(source, frameX, frameY, frameWidth, frameHeight);

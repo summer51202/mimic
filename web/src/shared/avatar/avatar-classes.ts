@@ -21,15 +21,13 @@ export function isAvatarClass(value: unknown): value is AvatarClass {
 }
 
 /**
- * Contract field for `avatar_class`. Optional until the API that sends it is deployed
- * everywhere (spec §3.3): a missing field stays `undefined` ("this API does not know
- * classes"), while `null` or a value this build does not know means "not chosen".
+ * Contract field for `avatar_class`: required. `null` or a value this build does not
+ * know means "not chosen".
  */
 export const avatarClassFieldSchema = z
   .string()
   .nullable()
-  .transform((value): AvatarClass | null => (isAvatarClass(value) ? value : null))
-  .optional();
+  .transform((value): AvatarClass | null => (isAvatarClass(value) ? value : null));
 
 export const avatarPortraitSrc = (avatarClass: AvatarClass) =>
   `${sceneAssetRoot}/avatars/${avatarClass}-portrait.png`;

@@ -565,7 +565,6 @@
     "active": "参加中",
     "left": "脱退済み",
     "removed": "除外済み",
-    "avatar": "{name}のアバター",
     "dangerZone": "危険な操作",
     "dangerDescription": "記録をまだ始めていないパーティーだけ削除できます。",
     "deleteEmpty": "空のパーティーを削除",
@@ -934,6 +933,7 @@
     "settingsHeading": "職業",
     "none": "未選択",
     "change": "職業を変更",
+    "choose": "職業を選ぶ",
     "rosterAlt": "{name}（{class}）",
     "rosterAltNone": "{name}（職業未選択）",
     "saveFailed": "職業を保存できませんでした。しばらくしてからもう一度お試しください。"

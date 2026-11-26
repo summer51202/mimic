@@ -9,6 +9,8 @@ const profile = {
   display_name: "Edward",
   locale: "zh-TW",
   timezone: "Asia/Taipei",
+  avatar_class: "bard",
+  avatar_prompt_dismissed: false,
 };
 
 describe("settings schemas", () => {
@@ -20,6 +22,8 @@ describe("settings schemas", () => {
     expect(() =>
       settingsProfileSchema.parse({ ...profile, mimic_id: "user-1" }),
     ).toThrow();
+    expect(() => settingsProfileSchema.parse({ ...profile, avatar_class: undefined })).toThrow();
+    expect(() => settingsProfileSchema.parse({ ...profile, avatar_prompt_dismissed: undefined })).toThrow();
   });
 
   it("trims valid display names and rejects blank or oversized names", () => {

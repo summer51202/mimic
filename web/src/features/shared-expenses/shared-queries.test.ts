@@ -34,7 +34,7 @@ describe('shared server queries', () => {
       if (path === '/me/taxonomy?kind=TAG&include_inactive=true') return [privateTag];
       if (path.endsWith('/participants')) return [{ id: userId, user_id: userId, display_name: '阿明', role: 'MANAGER', effective_from: '2026-09-01', effective_to: null }];
       if (path === `/groups/${groupId}`) return { id: groupId, name: '旅伴', group_type: 'GROUP', default_currency: 'TWD', status: 'ACTIVE', role: 'owner', current_user_id: userId };
-      if (path.endsWith('/members')) return [{ user_id: userId, display_name: '阿明', mimic_id: 'MIMIC-2345-6789', role: 'owner', status: 'active' }];
+      if (path.endsWith('/members')) return [{ user_id: userId, display_name: '阿明', mimic_id: 'MIMIC-2345-6789', role: 'owner', status: 'active', avatar_class: null }];
       if (path.includes('/taxonomy')) return { terms: [term], recent_ids: [], frequent_ids: [], context_ids: [] };
       if (path.endsWith('/shared-expenses')) return { space_id: spaceId, space_version: 1, items: [], next_cursor: null };
       if (path.endsWith('/summary')) return { space_id: spaceId, mode: 'SHARED_EXPENSES', currency: 'TWD', space_version: 1, spending_minor: '0', positions: [{ user_id: userId, amount_minor: '0' }] };
