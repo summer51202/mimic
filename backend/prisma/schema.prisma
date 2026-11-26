@@ -113,6 +113,9 @@ model User {
   displayName                  String                         @map("display_name") @db.VarChar(100)
   mimicId                      String                         @unique @map("mimic_id") @db.VarChar(15)
   avatarUrl                    String?                        @map("avatar_url") @db.VarChar(500)
+  /// One of AVATAR_CLASSES; a CHECK constraint (migration 20261125000100) enforces the set.
+  avatarClass                  String?                        @map("avatar_class") @db.VarChar(20)
+  avatarPromptDismissedAt      DateTime?                      @map("avatar_prompt_dismissed_at") @db.Timestamptz(6)
   locale                       String                         @default("zh-TW") @db.VarChar(20)
   timezone                     String                         @default("Asia/Taipei") @db.VarChar(100)
   status                       UserStatus                     @default(ACTIVE)

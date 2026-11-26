@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
+import { toAvatarClass } from '../users/avatar-class';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { CreateGroupInviteDto } from './dto/create-group-invite.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
@@ -50,6 +51,7 @@ export class GroupsController {
         mimic_id: member.user.mimicId,
         role: member.role.toLowerCase(),
         status: member.status.toLowerCase(),
+        avatar_class: toAvatarClass(member.user.avatarClass),
       })),
     };
   }

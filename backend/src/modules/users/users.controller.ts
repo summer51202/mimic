@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../auth/current-user.decorator';
 import { JwtAuthGuard, RequestUser } from '../auth/jwt-auth.guard';
+import { toAvatarClass } from './avatar-class';
 import { UpdateMeDto } from './dto/update-me.dto';
 import { UsersService } from './users.service';
 
@@ -36,6 +37,8 @@ export class UsersController {
       displayName: dto.display_name,
       locale: dto.locale,
       timezone: dto.timezone,
+      avatarClass: toAvatarClass(dto.avatar_class) ?? undefined,
+      avatarPromptDismissed: dto.avatar_prompt_dismissed === true ? true : undefined,
     });
     return { data: this.mapMe(updatedUser) };
   }
@@ -48,6 +51,8 @@ export class UsersController {
       displayName: string;
       locale: string;
       timezone: string;
+      avatarClass?: string | null;
+      avatarPromptDismissedAt?: Date | null;
     } | null,
   ) {
     if (!user) {
@@ -61,6 +66,8 @@ export class UsersController {
       display_name: user.displayName,
       locale: user.locale,
       timezone: user.timezone,
+      avatar_class: toAvatarClass(user.avatarClass),
+      avatar_prompt_dismissed: user.avatarPromptDismissedAt != null,
     };
   }
 }

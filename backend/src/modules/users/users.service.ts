@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import type { AvatarClass } from './avatar-class';
 import * as mimicId from './mimic-id';
 
 const MAX_MIMIC_ID_ATTEMPTS = 5;
@@ -55,6 +56,8 @@ export class UsersService {
       displayName?: string;
       locale?: string;
       timezone?: string;
+      avatarClass?: AvatarClass;
+      avatarPromptDismissed?: true;
     },
   ) {
     return this.prisma.user.update({
@@ -63,6 +66,8 @@ export class UsersService {
         displayName: input.displayName,
         locale: input.locale,
         timezone: input.timezone,
+        avatarClass: input.avatarClass,
+        avatarPromptDismissedAt: input.avatarPromptDismissed ? new Date() : undefined,
       },
     });
   }

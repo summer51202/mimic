@@ -76,6 +76,28 @@ describe('Prisma migration contracts', () => {
     expect(migration).toContain("status IN ('ACTIVE', 'CLOSING')");
     expect(migration).toContain("status = 'ARCHIVED'");
   });
+
+  it('adds the cosmetic avatar class and prompt dismissal as nullable User columns only', () => {
+    const migration = readFileSync(
+      join(__dirname, '20261125000100_user_avatar_class', 'migration.sql'),
+      'utf8',
+    );
+    const statements = migration.split('\n').filter(line => line && !line.startsWith('--')).join('\n');
+
+    expect(statements).toContain('ALTER TABLE "User" ADD COLUMN "avatar_class" VARCHAR(20);');
+    expect(statements).toContain('ALTER TABLE "User" ADD COLUMN "avatar_prompt_dismissed_at" TIMESTAMPTZ(6);');
+    expect(statements).toContain('ADD CONSTRAINT "User_avatar_class_check" CHECK');
+    expect(statements).toContain('"avatar_class" IS NULL OR "avatar_class" IN (');
+    for (const avatarClass of ['warrior', 'mage', 'ranger', 'rogue', 'alchemist', 'bard', 'cartographer', 'physician']) {
+      expect(statements).toContain(`'${avatarClass}'`);
+    }
+    // Existing users keep NULL; no backfill, no default, and the unused avatar_url is untouched.
+    expect(statements).not.toMatch(/NOT NULL|DEFAULT|UPDATE |avatar_url|"users"/);
+    // It is the newest migration, so no deployed migration was edited to add it.
+    const names = readdirSync(__dirname, { withFileTypes: true })
+      .filter(entry => entry.isDirectory()).map(entry => entry.name).sort();
+    expect(names.at(-1)).toBe('20261125000100_user_avatar_class');
+  });
   // Phase 2I-2S. Railway databases are built only by `prisma migrate deploy`, so system taxonomy must come
   // from migrations, not from prisma/seed.ts. NEVER edit a deployed taxonomy migration: when the catalog in
   // src/modules/taxonomy/system-taxonomy.ts changes (for example 2I-b adding `ja`), add a NEW migration with

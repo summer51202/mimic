@@ -94,8 +94,19 @@ describe('Group detail and management', () => {
         user: {
           displayName: 'Edward',
           mimicId: 'MIMIC-2345-6789',
+          avatarClass: 'cartographer',
         },
         role: 'OWNER',
+        status: 'ACTIVE',
+      },
+      {
+        userId: 'user-2',
+        user: {
+          displayName: 'Mina',
+          mimicId: 'MIMIC-ABCD-EFGH',
+          avatarClass: null,
+        },
+        role: 'MEMBER',
         status: 'ACTIVE',
       },
     ]);
@@ -111,6 +122,15 @@ describe('Group detail and management', () => {
             mimic_id: 'MIMIC-2345-6789',
             role: 'owner',
             status: 'active',
+            avatar_class: 'cartographer',
+          },
+          {
+            user_id: 'user-2',
+            display_name: 'Mina',
+            mimic_id: 'MIMIC-ABCD-EFGH',
+            role: 'member',
+            status: 'active',
+            avatar_class: null,
           },
         ],
       });

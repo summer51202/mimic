@@ -5,6 +5,35 @@ import { UsersService } from './users.service';
 describe('UsersService', () => {
   afterEach(() => jest.restoreAllMocks());
 
+  it('stores a chosen class and leaves the prompt dismissal untouched', async () => {
+    const prisma = { user: { update: jest.fn().mockResolvedValue({ id: 'user-1' }) } };
+    const service = new UsersService(prisma as never);
+
+    await service.updateProfile('user-1', { avatarClass: 'physician' });
+
+    expect(prisma.user.update).toHaveBeenCalledWith({
+      where: { id: 'user-1' },
+      data: {
+        displayName: undefined,
+        locale: undefined,
+        timezone: undefined,
+        avatarClass: 'physician',
+        avatarPromptDismissedAt: undefined,
+      },
+    });
+  });
+
+  it('timestamps a dismissed first-time prompt without touching the class', async () => {
+    const prisma = { user: { update: jest.fn().mockResolvedValue({ id: 'user-1' }) } };
+    const service = new UsersService(prisma as never);
+
+    await service.updateProfile('user-1', { avatarPromptDismissed: true });
+
+    const { data } = prisma.user.update.mock.calls[0][0];
+    expect(data.avatarClass).toBeUndefined();
+    expect(data.avatarPromptDismissedAt).toBeInstanceOf(Date);
+  });
+
   it('assigns a generated Mimic ID when creating a user', async () => {
     const prisma = {
       user: {
