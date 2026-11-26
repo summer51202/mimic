@@ -1,0 +1,33 @@
+/* Phase Avatar: the neutral slot shown before a class is chosen. It never pretends to be a class. */
+.empty {
+  display: block;
+  flex: none;
+  box-sizing: border-box;
+  border: 2px dashed var(--mimic-color-disabled-edge);
+  background: transparent;
+}
+
+.size48 {
+  width: 48px;
+  height: 48px;
+}
+
+.size96 {
+  width: 96px;
+  height: 96px;
+}
+
+.portrait {
+  display: block;
+  flex: none;
+  image-rendering: pixelated;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

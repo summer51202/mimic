@@ -169,7 +169,7 @@ it("keeps all Gate B sources in the approved directory and records production pr
     expect(publicPaths.has(path.normalize(asset.path))).toBe(false);
     const revisedLedger = /(?:action|mimiku)-record-ledger-inkline/.test(asset.path);
     const supersededLedger = /(?:action|mimiku)-record-ledger(?:-(?:desktop|phone))?\.png$/.test(asset.path);
-    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c", "promoted-phase-2d", "promoted-phase-2e1", "promoted-phase-2e", "promoted-phase-2f", "promoted-phase-guild"].includes(asset.disposition)) {
+    if (["promoted-phase-2a", "promoted-phase-2b", "promoted-phase-2c", "promoted-phase-2d", "promoted-phase-2e1", "promoted-phase-2e", "promoted-phase-2f", "promoted-phase-guild", "promoted-phase-avatar"].includes(asset.disposition)) {
       expect(asset.runtime_target).toBe(`web/public/pixel-ui/v1/${asset.path}`);
     } else {
       expect(asset.runtime_target).toBeNull();

@@ -31,7 +31,7 @@ const group: GroupDetail = {
 };
 
 const members: Member[] = [
-  { user_id: "u1", display_name: "小明", mimic_id: "MIMIC-2345-6789", role: "owner", status: "active" },
+  { user_id: "u1", display_name: "小明", mimic_id: "MIMIC-2345-6789", role: "owner", status: "active", avatar_class: "bard" },
   { user_id: "u2", display_name: "小美", mimic_id: "MIMIC-ABCD-EFGH", role: "member", status: "active" },
 ];
 
@@ -57,8 +57,8 @@ beforeEach(() => {
 });
 
 describe("group detail actions", () => {
-  it("renders roster with deterministic avatars and literal role labels", () => {
-    render(<GroupDetailView group={group} members={members} />);
+  it("renders each member's own class or a neutral slot, with literal role labels", () => {
+    const { container } = render(<GroupDetailView group={group} members={members} />);
 
     expect(screen.getByRole("heading", { name: "我們的生活基金" })).toBeVisible();
     expect(screen.getByText("擁有者")).toBeVisible();
@@ -66,13 +66,17 @@ describe("group detail actions", () => {
     expect(screen.getByText("MIMIC-2345-6789")).toBeVisible();
     expect(screen.getByText("MIMIC-ABCD-EFGH")).toBeVisible();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    const avatar = screen.getAllByRole("img", { hidden: true })[0];
+    const [avatar, ...others] = screen.getAllByRole("img");
+    expect(others).toEqual([]);
+    expect(avatar).toHaveAccessibleName("小明（吟遊詩人）");
     expect(avatar).toHaveAttribute("data-pixel-avatar");
-    expect(avatar).toHaveAttribute(
-      "src",
-      expect.stringContaining("avatar-01.png"),
-    );
-    expect(avatar).not.toHaveAttribute("src", expect.stringContaining("/_next/image"));
+    expect(avatar).toHaveAttribute("src", "/pixel-ui/v1/avatars/bard-portrait.png");
+    expect(avatar).toHaveAttribute("width", "48");
+    // A member without a class (or an API that does not send one) never borrows a portrait.
+    const empty = container.querySelector('[data-avatar-slot="empty"]');
+    expect(empty).toHaveAttribute("aria-hidden", "true");
+    expect(empty?.closest("li")).toHaveTextContent("小美（尚未選擇職業）");
+    expect(container.innerHTML).not.toMatch(/avatar-0\d\.png/);
   });
 
   it("assigns long group and member names to explicit text owners", () => {

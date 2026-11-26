@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { mimicIdSchema } from "@/shared/api/domain-contracts";
+import { avatarClassFieldSchema } from "@/shared/avatar/avatar-classes";
 
 export { mimicIdSchema };
 
@@ -11,6 +12,8 @@ export const settingsProfileSchema = z.object({
   display_name: z.string().trim().min(1).max(100),
   locale: z.string().trim().min(1).max(20),
   timezone: z.string().trim().min(1).max(100),
+  avatar_class: avatarClassFieldSchema,
+  avatar_prompt_dismissed: z.boolean().optional(),
 });
 
 export const displayNameSchema = z.object({

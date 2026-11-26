@@ -914,5 +914,28 @@
       "SENT": "Sent, awaiting receipt",
       "COMPLETED": "Completed"
     }
+  },
+  "avatar": {
+    "class": {
+      "warrior": "Warrior",
+      "mage": "Mage",
+      "ranger": "Ranger",
+      "rogue": "Rogue",
+      "alchemist": "Alchemist",
+      "bard": "Bard",
+      "cartographer": "Cartographer",
+      "physician": "Physician"
+    },
+    "pickerTitle": "Choose your class",
+    "pickerIntro": "Your class only changes how you look in mimic. You can change it anytime in Settings.",
+    "confirm": "Choose",
+    "later": "Later",
+    "cancel": "Cancel",
+    "settingsHeading": "Class",
+    "none": "Not chosen",
+    "change": "Change class",
+    "rosterAlt": "{name} ({class})",
+    "rosterAltNone": "{name} (no class yet)",
+    "saveFailed": "Your class wasn't saved. Try again later."
   }
 }

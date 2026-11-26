@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { avatarClassFieldSchema } from "@/shared/avatar/avatar-classes";
+
 export const idSchema = z.string().trim().min(1).max(128);
 export const currencySchema = z.string().regex(/^[A-Z]{3}$/);
 export const minorUnitSchema = z
@@ -35,6 +37,7 @@ export const memberSchema = z.object({
   mimic_id: mimicIdSchema,
   role: statusSchema,
   status: statusSchema,
+  avatar_class: avatarClassFieldSchema,
 });
 
 export const inviteCreatedSchema = z.object({

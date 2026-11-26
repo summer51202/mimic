@@ -45,6 +45,11 @@
   background-size: 100% 100%;
 }
 
+.avatar {
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
 .sheet {
   display: none;
   position: absolute;

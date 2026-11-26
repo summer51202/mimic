@@ -198,3 +198,37 @@ describe("SettingsForm", () => {
     expect(onLogout).not.toHaveBeenCalled();
   });
 });
+
+describe("SettingsForm class section (Phase Avatar)", () => {
+  it("keeps Settings unchanged when the API does not send avatar fields", () => {
+    render(<SettingsForm profile={profile} />);
+    expect(screen.queryByRole("heading", { name: "職業" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "更改職業" })).not.toBeInTheDocument();
+  });
+
+  it("shows a neutral slot before a class is chosen", () => {
+    const { container } = render(<SettingsForm profile={{ ...profile, avatar_class: null, avatar_prompt_dismissed: true }} />);
+    expect(screen.getByRole("heading", { name: "職業" })).toBeVisible();
+    expect(screen.getByText("尚未選擇")).toBeVisible();
+    expect(container.querySelector('[data-avatar-slot="empty"]')).toHaveAttribute("aria-hidden", "true");
+    expect(screen.queryAllByRole("img")).toEqual([]);
+  });
+
+  it("changes the class with 取消 instead of 之後再說", async () => {
+    const user = userEvent.setup();
+    appFetchMock.mockResolvedValueOnce({ data: { ...profile, avatar_class: "rogue", avatar_prompt_dismissed: false } });
+    const { container } = render(<SettingsForm profile={{ ...profile, avatar_class: "mage", avatar_prompt_dismissed: false }} />);
+
+    expect(screen.getByText("法師")).toBeVisible();
+    expect(container.querySelector('[data-avatar-slot="mage"]')).toHaveAttribute("src", "/pixel-ui/v1/avatars/mage-portrait.png");
+    await user.click(screen.getByRole("button", { name: "更改職業" }));
+    expect(screen.getByRole("button", { name: "取消" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "之後再說" })).not.toBeInTheDocument();
+    await user.click(screen.getByRole("radio", { name: "盜賊" }));
+    await user.click(screen.getByRole("button", { name: "決定" }));
+
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(appFetchMock).toHaveBeenCalledWith("/api/app/me", { method: "PATCH", body: JSON.stringify({ avatar_class: "rogue" }) });
+    expect(screen.getByText("盜賊")).toBeVisible();
+  });
+});

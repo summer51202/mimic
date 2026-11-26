@@ -4,6 +4,7 @@ import { useLayoutEffect, useMemo, useRef, type CSSProperties, type ReactNode } 
 import { useTranslations } from "next-intl";
 import layout from "../../../public/pixel-ui/v1/scenes/home/layout.json";
 import type { HomeCard } from "@/shared/api/home-contracts";
+import { avatarFullBounds, avatarFullSize, avatarFullSrc, type AvatarClass } from "@/shared/avatar/avatar-classes";
 import { boxStyle, layersWithArchitecture, sceneAssetRoot } from "@/shared/scene/geometry";
 import { ScenePauseButton } from "@/shared/scene/scene-pause-button";
 import { useSceneMotion, type SceneVariant } from "@/shared/scene/use-scene-motion";
@@ -23,10 +24,28 @@ const dimensions = Object.fromEntries(Object.entries(layout).flatMap(([variant, 
   }).map(([key, value]) => [`--${variant}-${key}`, `${value}px`]);
 })) as CSSProperties;
 
-function HomeRoom({ variant }: { variant: SceneVariant }) {
+// The slot box in layout.json is the class's opaque area in scene pixels; map the
+// master's opaque bounds onto it so the approved placement and safe zones hold.
+function avatarStyle(avatarClass: AvatarClass, variant: SceneVariant): CSSProperties {
+  const slot = layout[variant].avatarSlots[avatarClass];
+  const bounds = avatarFullBounds[avatarClass];
+  const sx = slot.width / bounds.width;
+  const sy = slot.height / bounds.height;
+  return {
+    ...boxStyle(slot),
+    zIndex: slot.depth,
+    backgroundImage: `url(${avatarFullSrc(avatarClass)})`,
+    backgroundSize: `${avatarFullSize * sx}px ${avatarFullSize * sy}px`,
+    backgroundPosition: `${-bounds.x * sx}px ${-bounds.y * sy}px`,
+  };
+}
+
+function HomeRoom({ variant, avatarClass }: { variant: SceneVariant; avatarClass: AvatarClass | null }) {
   const scene = layout[variant];
   return <div data-home-viewport={variant} className={styles.viewport} aria-hidden="true">
     <div data-home-scene={variant} className={styles.scene} style={{ width: scene.width, height: scene.height }}>
+      {avatarClass && <div data-layer="avatar" data-avatar-class={avatarClass}
+        className={`${styles.layer} ${styles.avatar}`} style={avatarStyle(avatarClass, variant)} />}
       {layersWithArchitecture(scene).map((layer) => {
         const sheets = layer.id === "mimiku" ? ["idle", "ledger"] as const
           : layer.id === "fire" ? ["fire"] as const : [];
@@ -45,7 +64,8 @@ function HomeRoom({ variant }: { variant: SceneVariant }) {
   </div>;
 }
 
-export function HomeScene({ cards, online, taskCount, context, activityKey, adventure, openQuick }: {
+export function HomeScene({ avatarClass = null, cards, online, taskCount, context, activityKey, adventure, openQuick }: {
+  avatarClass?: AvatarClass | null;
   cards: HomeCard[];
   online: boolean;
   taskCount: number;
@@ -84,8 +104,10 @@ export function HomeScene({ cards, online, taskCount, context, activityKey, adve
 
       const enlargedText = textScale.getBoundingClientRect().width >= 32;
       // Desktop actors are beside the card. On mobile the card is above them.
+      // The chosen class stands left of the fire, above it: keep the card clear of it too.
       const nextContentTop = desktop ? dy
-        : Math.min(...scene.layers.filter(({ id }) => id === "fire" || id === "mimiku").map((layer) => layer.y));
+        : Math.min(...scene.layers.filter(({ id }) => id === "fire" || id === "mimiku").map((layer) => layer.y),
+          ...(avatarClass ? [scene.avatarSlots[avatarClass].y] : []));
       const cardLimit = Math.max(cardHeight, nextContentTop - y - 8) * scale;
       stage.toggleAttribute("data-card-flow", enlargedText || card.getBoundingClientRect().height > cardLimit);
       stage.toggleAttribute("data-dialogue-flow", enlargedText || dialogue.getBoundingClientRect().height > dh * scale + 0.05);
@@ -99,13 +121,13 @@ export function HomeScene({ cards, online, taskCount, context, activityKey, adve
       observer.disconnect();
       window.removeEventListener("resize", syncLayout);
     };
-  }, []);
+  }, [avatarClass]);
 
   return (
     <div className={styles.content} data-home-content style={dimensions}>
       <div ref={stageRef} data-home-stage className={styles.stage}>
-        <HomeRoom variant="desktop" />
-        <HomeRoom variant="phone" />
+        <HomeRoom variant="desktop" avatarClass={avatarClass} />
+        <HomeRoom variant="phone" avatarClass={avatarClass} />
         <span ref={textScaleRef} className={styles.textScale} aria-hidden="true" />
         <div ref={cardRef} className={styles.card} data-home-card>{adventure}</div>
         <div ref={dialogueRef} className={styles.dialogue} data-home-dialogue>

@@ -914,5 +914,28 @@
       "SENT": "已送出，待收款確認",
       "COMPLETED": "已完成"
     }
+  },
+  "avatar": {
+    "class": {
+      "warrior": "戰士",
+      "mage": "法師",
+      "ranger": "遊俠",
+      "rogue": "盜賊",
+      "alchemist": "鍊金術士",
+      "bard": "吟遊詩人",
+      "cartographer": "製圖師",
+      "physician": "醫者"
+    },
+    "pickerTitle": "選擇你的職業",
+    "pickerIntro": "職業只會改變你在 mimic 裡的樣子，之後隨時可以在設定更改。",
+    "confirm": "決定",
+    "later": "之後再說",
+    "cancel": "取消",
+    "settingsHeading": "職業",
+    "none": "尚未選擇",
+    "change": "更改職業",
+    "rosterAlt": "{name}（{class}）",
+    "rosterAltNone": "{name}（尚未選擇職業）",
+    "saveFailed": "職業還沒儲存，請稍後再試。"
   }
 }

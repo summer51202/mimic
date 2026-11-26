@@ -71,7 +71,10 @@ vi.mock("@/features/groups/group-queries", () => ({
   listGroups: listGroupsMock,
   listMembers: listMembersMock,
 }));
-vi.mock("@/features/home/home-queries", () => ({ loadHome: loadHomeMock }));
+vi.mock("@/features/home/home-queries", () => ({
+  loadHome: loadHomeMock,
+  loadHomeAvatar: vi.fn(async () => ({ avatarClass: null, prompt: false })),
+}));
 vi.mock("@/features/home/home-page", () => ({
   HomePage: ({ data, openQuick }: { data: { context: { kind: string } }; openQuick: boolean }) => <div>home:{data.context.kind}:{String(openQuick)}</div>,
 }));

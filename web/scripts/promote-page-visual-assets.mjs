@@ -69,7 +69,11 @@ const phaseGuild = [
   ...["event-settlement", "event-correction", "event-return"].map((name) => `icons/ui/${name}.png`),
 ];
 
+const avatarClasses = ["warrior", "mage", "ranger", "rogue", "alchemist", "bard", "cartographer", "physician"];
+const phaseAvatar = avatarClasses.flatMap((name) => [`avatars/${name}-full.png`, `avatars/${name}-portrait.png`]);
+
 const dispositions = new Map([
+  ...phaseAvatar.map((path) => [path, "promoted-phase-avatar"]),
   ...phaseGuild.map((path) => [path, "promoted-phase-guild"]),
   ...phase2f.map((path) => [path, "promoted-phase-2f"]),
   ...phase2a.map((path) => [path, "promoted-phase-2a"]),
@@ -80,6 +84,7 @@ const dispositions = new Map([
   ...phase2e.map((path) => [path, "promoted-phase-2e"]),
 ]);
 const selections = new Map([
+  ["--phase-avatar", { paths: phaseAvatar, label: "Phase Avatar" }],
   ["--phase-guild", { paths: phaseGuild, label: "Phase Guild" }],
   ["--phase-2f", { paths: [...phase2f, ledgerTiming], label: "Phase 2F" }],
   ["--phase-2d", { paths: phase2d, label: "Phase 2D" }],
@@ -89,10 +94,10 @@ const selections = new Map([
 const args = process.argv.slice(2);
 const selection = args.length ? selections.get(args[0]) : {
   paths: [...dispositions.keys()],
-  label: "Phase 2A–Guild",
+  label: "Phase 2A–Avatar",
 };
 if (args.length > 1 || !selection) {
-  throw new Error("Usage: npm run assets:promote -- [--phase-2d|--phase-2e1|--phase-2e|--phase-2f|--phase-guild]");
+  throw new Error("Usage: npm run assets:promote -- [--phase-2d|--phase-2e1|--phase-2e|--phase-2f|--phase-guild|--phase-avatar]");
 }
 
 const manifestText = await readFile(manifestPath, "utf8");

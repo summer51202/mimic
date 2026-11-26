@@ -26,13 +26,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
-  const { auth, brand, common, drafts, groups, home, invite, language, landing,
+  const { auth, avatar, brand, common, drafts, groups, home, invite, language, landing,
     nav, personal, pooled, pwa, routeState, settings, settlement, shared, shell, tasks, taxonomy } = messages;
   return (
     <html lang={htmlLang(locale)}>
       <body>
         <NextIntlClientProvider messages={{
-          auth, brand, common, drafts, groups, home, invite, language, personal, pooled,
+          auth, avatar, brand, common, drafts, groups, home, invite, language, personal, pooled,
           pwa, routeState, settings, settlement, shared, shell, tasks, taxonomy,
           nav: { home: nav.home, chests: nav.chests, parties: nav.parties, quests: nav.quests,
             settings: nav.settings, comingSoon: nav.comingSoon },

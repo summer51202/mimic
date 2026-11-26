@@ -914,5 +914,28 @@
       "SENT": "送金済み・受け取り待ち",
       "COMPLETED": "完了"
     }
+  },
+  "avatar": {
+    "class": {
+      "warrior": "戦士",
+      "mage": "魔法使い",
+      "ranger": "レンジャー",
+      "rogue": "盗賊",
+      "alchemist": "錬金術師",
+      "bard": "吟遊詩人",
+      "cartographer": "地図職人",
+      "physician": "医術師"
+    },
+    "pickerTitle": "職業を選ぶ",
+    "pickerIntro": "職業で変わるのは mimic での見た目だけです。設定からいつでも変更できます。",
+    "confirm": "決定",
+    "later": "あとで",
+    "cancel": "キャンセル",
+    "settingsHeading": "職業",
+    "none": "未選択",
+    "change": "職業を変更",
+    "rosterAlt": "{name}（{class}）",
+    "rosterAltNone": "{name}（職業未選択）",
+    "saveFailed": "職業を保存できませんでした。しばらくしてからもう一度お試しください。"
   }
 }

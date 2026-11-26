@@ -1,6 +1,7 @@
 "use client";
 import { nowrapDate } from '@/shared/i18n/nowrap-date';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Group } from '@/shared/api/domain-contracts';
 import type { HomeCard, HomeResponse } from '@/shared/api/home-contracts';
@@ -10,6 +11,8 @@ import { homeActivityKey, isNewerHomeActivity } from '@/shared/scene/home-activi
 import { PixelPanel } from '@/shared/ui/pixel-panel';
 import { formatGeneratedAt } from '@/shared/ui/format-generated-at';
 import { useOnline } from '../personal-expenses/use-online';
+import { AvatarPicker } from '../avatar/avatar-picker';
+import type { HomeAvatar } from './home-queries';
 import { HomeScene } from './home-scene';
 
 function participantHref(card: Extract<HomeCard, { access: 'PARTICIPANT' }>) {
@@ -68,14 +71,28 @@ function CardSummary({ card }: { card: Extract<HomeCard, { access: 'PARTICIPANT'
     })}</small>}</>;
 }
 
-export function HomePage({ data, groups, openQuick }: { data: HomeResponse; groups: Group[]; openQuick: boolean }) {
+const noAvatar: HomeAvatar = { avatarClass: null, prompt: false };
+
+export function HomePage({ avatar = noAvatar, data, groups, openQuick }: {
+  avatar?: HomeAvatar; data: HomeResponse; groups: Group[]; openQuick: boolean;
+}) {
   const t = useTranslations();
+  // Local choices win until the server sends a newer profile (a new `avatar` object).
+  const [local, setLocal] = useState({ from: avatar, ...avatar });
+  if (local.from !== avatar) setLocal({ from: avatar, ...avatar });
   const online = useOnline();
   const latest = latestActivity(data.cards);
   const title = data.context.kind === 'PERSONAL' ? t('nav.chests') : data.context.name;
   const description = t(data.context.kind === 'PERSONAL' ? 'home.personalDescription' : 'home.groupDescription');
   return <div className="space-home">
+    {local.prompt && <AvatarPicker
+      initialClass={null} mode="first"
+      onChosen={(avatarClass) => setLocal({ ...local, avatarClass, prompt: false })}
+      onClose={() => setLocal({ ...local, prompt: false })}
+      onDismissed={() => setLocal({ ...local, prompt: false })}
+    />}
     <HomeScene
+      avatarClass={local.avatarClass}
       cards={data.cards} openQuick={openQuick} online={online} taskCount={data.task_count}
       context={data.context.kind === 'PERSONAL' ? 'personal' : data.context.id}
       activityKey={latestRecordedKey(data.cards)}

@@ -9,6 +9,7 @@ import { PixelButton } from "@/shared/ui/pixel-button";
 import { PixelField } from "@/shared/ui/pixel-field";
 import { PixelNotice } from "@/shared/ui/pixel-notice";
 
+import { SettingsAvatar } from "./settings-avatar";
 import { displayNameSchema, type SettingsProfile } from "./settings-schema";
 import styles from "./settings.module.css";
 
@@ -140,6 +141,9 @@ export function SettingsForm({ profile, onLogout }: SettingsFormProps) {
           </PixelButton>
         </div>
       </section>
+
+      {/* An API without avatar fields (older deployment) keeps Settings exactly as before. */}
+      {profile.avatar_class !== undefined ? <SettingsAvatar initialClass={profile.avatar_class} /> : null}
 
       <form className={styles.form} noValidate onSubmit={saveProfile}>
         <PixelField

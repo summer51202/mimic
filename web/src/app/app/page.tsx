@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 
 import { selectGroupId } from "@/features/groups/group-selection";
 import { listGroups } from "@/features/groups/group-queries";
-import { loadHome } from "@/features/home/home-queries";
+import { loadHome, loadHomeAvatar } from "@/features/home/home-queries";
 import { HomePage } from "@/features/home/home-page";
 import { AppReadFailure } from "@/shared/ui/app-read-failure";
 import '@/features/home/home.css';
@@ -30,8 +30,8 @@ export default async function AppPage({ searchParams }: AppPageProps) {
   const quick = (Array.isArray(params.quick) ? params.quick[0] : params.quick) === '1';
   const selectedGroupId = urlGroup ? selectGroupId(urlGroup, undefined, groups)
     : quick ? selectGroupId(undefined, cookieStore.get(groupPreferenceCookie)?.value, groups) : null;
-  let home;
-  try { home = await loadHome(selectedGroupId ?? undefined); }
+  let home, avatar;
+  try { [home, avatar] = await Promise.all([loadHome(selectedGroupId ?? undefined), loadHomeAvatar()]); }
   catch (error) { return <AppReadFailure error={error} />; }
-  return <HomePage data={home} groups={groups} openQuick={quick} />;
+  return <HomePage avatar={avatar} data={home} groups={groups} openQuick={quick} />;
 }
