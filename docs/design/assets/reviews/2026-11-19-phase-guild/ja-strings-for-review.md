@@ -3,7 +3,7 @@
 - 狀態：累加中，尚未交給審閱者。
 - 用語依據：`.tmp/2ib-ja-review-result.json` 的用語集（2I-b 上線後改看 `docs/i18n/glossary.md`）。
 - 一般 UI 用です・ます體；ICU 複數只用 `other`。
-- #1–3 為公會 Phase；#4–22 為 Avatar Phase（spec `docs/superpowers/specs/2026-11-25-phase-avatar-design.md` §6）。
+- #1–3 為公會 Phase；#4–22 為 Avatar Phase（spec `docs/superpowers/specs/2026-11-25-phase-avatar-design.md` §6）；#23 為 Avatar 收尾輪（2026-11-26）。
 
 | # | key | 使用位置 | zh-TW | en | ja（草稿） | 備註 |
 |---|---|---|---|---|---|---|
@@ -29,3 +29,4 @@
 | 20 | `avatar.rosterAlt` | パーティーのメンバー一覧。頭像の代替テキスト（読み上げのみ） | {name}（{class}） | {name} ({class}) | {name}（{class}） | `{name}` は表示名、`{class}` は職業名 |
 | 21 | `avatar.rosterAltNone` | 同上。職業未選択のメンバー（空枠、読み上げのみ） | {name}（尚未選擇職業） | {name} (no class yet) | {name}（職業未選択） | `{name}` は表示名 |
 | 22 | `avatar.saveFailed` | ダイアログ内のエラー。保存に失敗したとき | 職業還沒儲存，請稍後再試。 | Your class wasn't saved. Try again later. | 職業を保存できませんでした。しばらくしてからもう一度お試しください。 |  |
+| 23 | `avatar.choose` | 設定ページのボタン。まだ職業を選んでいないとき（選択済みなら #19）。ダイアログを開く | 選擇職業 | Choose class | 職業を選ぶ | #12 と同じ文言 |

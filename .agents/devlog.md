@@ -2818,3 +2818,17 @@
 **What changed:** Ed 核准整體外觀；接受 Home 角色非整數倍縮放為已知例外；確認首次提示的 X 只關閉當次。小德核對三語字串（各新增 19、既有 770 不變）、16 張素材與 approved 逐位元相同、migration 內容，記錄 decision-log。
 **Decisions:** commit 分 art → feat(web) → docs → feat(api)，先 push web 再 push 後端。
 **Known gaps / follow-ups:** 合約欄位改必填另開一輪；舊頭像與 `groups.avatar` 清理；日文 22 句待審閱。
+
+## 2026-11-26 — Avatar 收尾（合約必填、舊頭像清理、選擇職業按鈕）
+
+**Task:** Avatar Phase 收尾：web 合約欄位改必填、刪除 4 張舊名單頭像與 `groups.avatar`、設定頁未選職業時按鈕改「選擇職業」。
+**Scope:** web（`shared/avatar/avatar-classes.ts`、`features/home/home-queries.ts`、`features/settings/`、`shared/brand/pixel-ui-assets.ts`、`scripts/export-pixel-runtime-assets.mjs`、`public/pixel-ui/avatars/`、三語 messages、相關測試）；docs（`ja-strings-for-review.md`、`decision-log.md`）。不動 backend。
+**What changed:**
+- `avatarClassFieldSchema` 與 `/me`、成員名單的 avatar 欄位改必填；移除「缺欄位＝舊 API」分支，設定頁職業區塊一律顯示；不認得的職業值仍視為未選。
+- 刪除 `pixelUiFiles.avatars`、avatar-01..04.png、匯出腳本的頭像輸出（只剩 frame）與對應資產測試；刪除三語 `groups.avatar`。
+- 新增 `avatar.choose`（選擇職業／Choose class／職業を選ぶ），未選職業時取代 `avatar.change`；日文加入審閱清單 #23。
+- 刪除的測試：home-queries 的「API 沒有 avatar 欄位」「只有職業欄位、沒有 dismissal 欄位」兩列；settings-form 的「API 沒送 avatar 欄位時設定頁不變」；pixel-ui-assets 的 4 張舊頭像 PNG 檢查、4 張「2x avatar art」檢查、「avatar eye artwork」檢查。web Vitest 140 檔 747 項。
+- 驗證：lint／typecheck／test 通過；WSL Docker node:22 跑 CI Web job（747／747）與兩個 web Dockerfile 都通過；像素回歸（e5a4320 基線 vs 候選，同一個 e5a4320 API，三語 × 320／390／1440，14 頁 × 4 位使用者）只有未選職業使用者的設定頁按鈕有差異，E 以外 0。
+
+**Decisions:** 匯出腳本保留 `resizeContainNearest` 等共用函式（仍被測試與 `clean-mimiku-alpha.mjs` 使用），只拿掉頭像輸出；CI 樹用暫時 index 寫出 tree 再以 `core.autocrlf=false` 的 git archive 取得 commit 位元組。
+**Known gaps / follow-ups:** 本機 Windows 全套測試時 Gate B 測試偶爾在 20 秒逾時（單獨跑 19／19 通過，CI Linux 全過）。審閱截圖在 `.tmp/avatar-tidy/review/`（不進 git）。未 push。

@@ -531,3 +531,12 @@ Approved by the user on 2026-11-26 after the reviewer's visual review. Spec `doc
 - Tests / CI: backend unit 352, HTTP e2e 54, migration-only 14, spaces-db 156; web Vitest 759; both trees (web-only, all) pass the five CI jobs in WSL Docker `node:22`; both web Dockerfiles build.
 
 Deployment: web first (art, web, docs commits), then the API commit (2H rule: new fields optional on the web).
+
+### Avatar tidy-up — required contract fields, legacy roster avatars retired, "Choose class" — 2026-11-26
+
+Web-only follow-up to Phase Avatar, implemented in commit `54c31cb` on baseline `e5a4320` (backend unchanged; the API at `e5a4320` already sends every field).
+
+- User decisions (2026-11-26): the user agreed to delete the four legacy roster avatars (`web/public/pixel-ui/avatars/avatar-01..04.png`, `pixelUiFiles.avatars`) together with their entries in `web/scripts/export-pixel-runtime-assets.mjs` and the matching asset tests (the exporter now writes only `frames-ui.png`), and to delete the unused `groups.avatar` string in zh-TW/en/ja. Every other existing string is unchanged.
+- Contract (2H rule, API deployed): `/me` `avatar_class` (one of the eight or null) and `avatar_prompt_dismissed` (boolean), and the member roster `avatar_class`, are now required in the web contracts. The "field absent = old API" branches are removed: Settings always shows the class section; Home's prompt and actor read null/value only. An unknown class value still reads as not chosen.
+- Copy: new key `avatar.choose` (zh-TW 選擇職業, en Choose class, ja 職業を選ぶ) on the Settings button while no class is chosen; `avatar.change` once a class is chosen; the dialog it opens is unchanged. Japanese added to the pending review list (#23).
+- Regression (per `docs/design/pixel-regression-standard.md`, tolerance 0): production builds of `e5a4320` and the candidate on the same `e5a4320` API, three locales × 320/390/1440, 14 pages, four users. Only the no-class users' Settings button changed (E = the button; 0 pixels outside E, equal page heights); every other page, the roster, Home with and without the prompt, and chosen-class Settings are pixel-identical.
